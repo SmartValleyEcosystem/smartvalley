@@ -1,0 +1,1 @@
+java -jar swagger.jar generate -i http://localhost:51337/swagger/v1/swagger.json -l typescript-angular2 -o SmartValley.FrontEnd\src\app\new_backend
