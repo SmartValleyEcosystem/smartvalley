@@ -1,0 +1,3 @@
+[submodule "icolab.common"]
+	path = icolab.common
+	url = https://bitbucket.org/itrk-rassvet-capital/icolab.common.git

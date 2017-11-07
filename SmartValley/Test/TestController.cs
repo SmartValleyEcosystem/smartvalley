@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using IcoLab.Common.Web.WebApi;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using SmartValley.Authentication;
-using SmartValley.Common;
 using SmartValley.Test.Rest;
 
 namespace SmartValley.Test

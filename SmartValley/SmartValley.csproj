@@ -14,4 +14,9 @@
     <DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\icolab.common\IcoLab.Common.Web\IcoLab.Common.Web.csproj" />
+    <ProjectReference Include="..\..\icolab.common\IcoLab.Common\IcoLab.Common.csproj" />
+  </ItemGroup>
+
 </Project>
