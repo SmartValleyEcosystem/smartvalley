@@ -1,4 +1,4 @@
-﻿namespace SmartValley.Test.Rest
+﻿namespace SmartValley.WebApi.Test.Rest
 {
     public class TestResponse
     {

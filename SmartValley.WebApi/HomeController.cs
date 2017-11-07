@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace SmartValley
+namespace SmartValley.WebApi
 {
     public class HomeController : Controller
     {

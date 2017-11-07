@@ -2,16 +2,12 @@
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using IcoLab.Common.Web.WebApi;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Cors.Infrastructure;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Net.Http.Headers;
-using SmartValley.Common;
+using SmartValley.WebApi.WebApi;
 
-namespace SmartValley.Authentication
+namespace SmartValley.WebApi.Authentication
 {
     public class MetamaskAuthenticationHandler : AuthenticationHandler<MetamaskAuthenticationOptions>
     {
@@ -22,12 +18,12 @@ namespace SmartValley.Authentication
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {         
-            if (!Request.Headers.TryGetValue(CustomCorsConstants.XNewEthereumAddress, out var ethAddress))
+            if (!Request.Headers.TryGetValue(SvCustomCorsConstants.XNewEthereumAddress, out var ethAddress))
             {
                 return (AuthenticateResult.Fail("Cannot read eth address header."));
             }
 
-            if (!Request.Headers.TryGetValue(CustomCorsConstants.XNewEthereumAddress, out var signature))
+            if (!Request.Headers.TryGetValue(SvCustomCorsConstants.XNewEthereumAddress, out var signature))
             {
                return AuthenticateResult.Fail("Cannot read signature header.");
             }

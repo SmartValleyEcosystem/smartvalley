@@ -1,4 +1,5 @@
-﻿using IcoLab.Common.Web.WebApi;
+﻿using IcoLab.Common.Web.Extensions;
+using IcoLab.Common.Web.WebApi;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
@@ -6,11 +7,11 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using SmartValley.Authentication;
-using SmartValley.Common;
+using SmartValley.WebApi.Authentication;
+using SmartValley.WebApi.WebApi;
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace SmartValley
+namespace SmartValley.WebApi
 {
     public class Startup
     {
@@ -54,7 +55,7 @@ namespace SmartValley
 
             app.UseRewriter(options);
 
-            app.UseCors(CustomCorsConstants.CorsPolicyName);
+            app.UseCors(SvCustomCorsConstants.CorsPolicyName);
 
             if (env.IsDevelopment())
             {
@@ -88,10 +89,10 @@ namespace SmartValley
             corsPolicyBuilder.WithOrigins(url);
             corsPolicyBuilder.AllowAnyHeader();
             corsPolicyBuilder.AllowAnyMethod();
-            corsPolicyBuilder.WithExposedHeaders(CustomCorsConstants.XNewEthereumAddress, CustomCorsConstants.XNewSignature);
+            corsPolicyBuilder.WithExposedHeaders(SvCustomCorsConstants.XNewEthereumAddress, SvCustomCorsConstants.XNewSignature);
             corsPolicyBuilder.AllowCredentials();
 
-            services.AddCors(options => { options.AddPolicy(CustomCorsConstants.CorsPolicyName, corsPolicyBuilder.Build()); });
+            services.AddCors(options => { options.AddPolicy(SvCustomCorsConstants.CorsPolicyName, corsPolicyBuilder.Build()); });
         }
     }
 }

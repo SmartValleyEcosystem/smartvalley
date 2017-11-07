@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartValley", "SmartValley\SmartValley.csproj", "{548BD6DC-4179-4DA2-827F-87F9366BBB6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IcoLab.Common", "IcoLab.Common\IcoLab.Common\IcoLab.Common.csproj", "{74AFFA99-7464-422B-B6FA-A793F750A954}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IcoLab.Common", "..\icolab.common\IcoLab.Common\IcoLab.Common.csproj", "{43A75C9C-E170-427B-A5CA-4EFCBE500B98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IcoLab.Common.Web", "IcoLab.Common\IcoLab.Common.Web\IcoLab.Common.Web.csproj", "{EB6FB91D-3960-4355-9DB7-500CCBA21B29}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IcoLab.Common.Web", "..\icolab.common\IcoLab.Common.Web\IcoLab.Common.Web.csproj", "{4D7E84C4-E5BE-41EB-81BA-DBC27AF0D2DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartValley.WebApi", "SmartValley.WebApi\SmartValley.WebApi.csproj", "{B5738A62-CA21-42F7-84A6-AB1E5C90FB6E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{548BD6DC-4179-4DA2-827F-87F9366BBB6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{548BD6DC-4179-4DA2-827F-87F9366BBB6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{548BD6DC-4179-4DA2-827F-87F9366BBB6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{548BD6DC-4179-4DA2-827F-87F9366BBB6D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{43A75C9C-E170-427B-A5CA-4EFCBE500B98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{43A75C9C-E170-427B-A5CA-4EFCBE500B98}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{43A75C9C-E170-427B-A5CA-4EFCBE500B98}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{43A75C9C-E170-427B-A5CA-4EFCBE500B98}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4D7E84C4-E5BE-41EB-81BA-DBC27AF0D2DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4D7E84C4-E5BE-41EB-81BA-DBC27AF0D2DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4D7E84C4-E5BE-41EB-81BA-DBC27AF0D2DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4D7E84C4-E5BE-41EB-81BA-DBC27AF0D2DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74AFFA99-7464-422B-B6FA-A793F750A954}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74AFFA99-7464-422B-B6FA-A793F750A954}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74AFFA99-7464-422B-B6FA-A793F750A954}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74AFFA99-7464-422B-B6FA-A793F750A954}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB6FB91D-3960-4355-9DB7-500CCBA21B29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB6FB91D-3960-4355-9DB7-500CCBA21B29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB6FB91D-3960-4355-9DB7-500CCBA21B29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB6FB91D-3960-4355-9DB7-500CCBA21B29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5738A62-CA21-42F7-84A6-AB1E5C90FB6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5738A62-CA21-42F7-84A6-AB1E5C90FB6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5738A62-CA21-42F7-84A6-AB1E5C90FB6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5738A62-CA21-42F7-84A6-AB1E5C90FB6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

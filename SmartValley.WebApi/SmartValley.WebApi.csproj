@@ -15,8 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\icolab.common\IcoLab.Common.Web\IcoLab.Common.Web.csproj" />
-    <ProjectReference Include="..\..\icolab.common\IcoLab.Common\IcoLab.Common.csproj" />
+    <ProjectReference Include="..\IcoLab.Common\IcoLab.Common.Web\IcoLab.Common.Web.csproj" />
   </ItemGroup>
 
 </Project>

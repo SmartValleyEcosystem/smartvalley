@@ -1,7 +1,6 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 
-namespace SmartValley.Authentication
+namespace SmartValley.WebApi.Authentication
 {
     public class MetamaskAuthenticationOptions : AuthenticationSchemeOptions
     {
