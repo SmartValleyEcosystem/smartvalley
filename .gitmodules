@@ -1,6 +1,6 @@
-[submodule "IcoLab.Common"]
-	path = IcoLab.Common
-	url = https://bitbucket.org/itrk-rassvet-capital/icolab.common.git
 [submodule "IcoLab.Web.Common"]
 	path = IcoLab.Web.Common
 	url = https://bitbucket.org/itrk-rassvet-capital/icolab.web.common.git
+[submodule "IcoLab.Common"]
+	path = IcoLab.Common
+	url = https://bitbucket.org/itrk-rassvet-capital/icolab.common.git
