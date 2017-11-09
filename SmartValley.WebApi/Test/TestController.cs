@@ -6,7 +6,7 @@ using SmartValley.WebApi.Test.Rest;
 namespace SmartValley.WebApi.Test
 {
     [Route("/api/test")]
-    [Authorize(AuthenticationSchemes = MetamaskAuthenticationOptions.DefaultScheme)]
+    [Authorize(AuthenticationSchemes = EcdsaAuthenticationOptions.DefaultScheme)]
     public class TestController : Controller
     {
         [HttpGet]
@@ -15,7 +15,6 @@ namespace SmartValley.WebApi.Test
             return new TestResponse {Value = "Get"};
         }
 
-        [AllowAnonymous]
         [HttpGet(nameof(GetCustom))]
         public TestResponse GetCustom()
         {
