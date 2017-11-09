@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Nethereum.Signer;
 using SmartValley.WebApi.Authentication;
+using SmartValley.WebApi.ExceptionHandler;
 using SmartValley.WebApi.WebApi;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -40,11 +41,11 @@ namespace SmartValley.WebApi
                                            options.DefaultAuthenticateScheme = EcdsaAuthenticationOptions.DefaultScheme;
                                            options.DefaultChallengeScheme = EcdsaAuthenticationOptions.DefaultScheme;
                                        })
-                    .AddScheme<EcdsaAuthenticationOptions, EcdsaAuthenticationHandler>(EcdsaAuthenticationOptions.DefaultScheme, options => { options.ClaimsIssuer });
+                    .AddScheme<EcdsaAuthenticationOptions, EcdsaAuthenticationHandler>(EcdsaAuthenticationOptions.DefaultScheme, options => { });
 
             services.AddSingleton<EthereumMessageSigner, EthereumMessageSigner>();
 
-            services.AddMvc();
+            services.AddMvc(options => { options.Filters.Add(new AppErrorsExceptionFilter()); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

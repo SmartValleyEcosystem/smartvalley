@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
@@ -53,8 +54,12 @@ namespace SmartValley.WebApi.Authentication
                 return Task.FromResult(AuthenticateResult.Fail($"Signed message is invalid"));
             }
 
-            var identities = new List<ClaimsIdentity> {new ClaimsIdentity(EcdsaAuthenticationOptions.DefaultScheme)};
-            var ticket = new AuthenticationTicket(new ClaimsPrincipal(identities), EcdsaAuthenticationOptions.DefaultScheme);
+            var identities = new List<ClaimsIdentity>
+                             {
+                                 new ClaimsIdentity(EcdsaAuthenticationOptions.DefaultScheme)
+                             };
+            
+            var ticket = new AuthenticationTicket(new ClaimsPrincipal(new User(ethAddress, true)), EcdsaAuthenticationOptions.DefaultScheme);
 
             return Task.FromResult(AuthenticateResult.Success(ticket));
         }
