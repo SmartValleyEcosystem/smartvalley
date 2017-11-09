@@ -1,9 +1,14 @@
-import { NgModule }              from '@angular/core';
-import { RouterModule, Routes }  from '@angular/router';
-import {TestComponent} from "./components/test/test.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { LandingComponent } from './components/landing/landing.component';
+import { MetamaskHowtoComponent } from './components/metamask-howto/metamask-howto.component';
+import { LoginSuccessComponent } from './components/login-success/login-success.component';
 
 const appRoutes: Routes = [
-  { path: '',  pathMatch: 'full', component: TestComponent },
+  { path: '', redirectTo: '/landing',  pathMatch: 'full' },
+  { path: 'landing',  pathMatch: 'full', component: LandingComponent },
+  { path: 'metamaskhowto',  pathMatch: 'full', component: MetamaskHowtoComponent },
+  { path: 'loggedin',  pathMatch: 'full', component: LoginSuccessComponent },
 ];
 
 @NgModule({
