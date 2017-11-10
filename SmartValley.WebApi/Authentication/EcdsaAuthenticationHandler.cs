@@ -31,19 +31,19 @@ namespace SmartValley.WebApi.Authentication
                 return Task.FromResult(AuthenticateResult.Fail($"Cannot read {SvCustomCorsConstants.XEthereumAddress} header."));
             }
 
-            if (!Request.Headers.TryGetValue(SvCustomCorsConstants.XMessage, out var message))
+            if (!Request.Headers.TryGetValue(SvCustomCorsConstants.XSignedText, out var signedText))
             {
-                return Task.FromResult(AuthenticateResult.Fail($"Cannot read {SvCustomCorsConstants.XMessage} header."));
+                return Task.FromResult(AuthenticateResult.Fail($"Cannot read {SvCustomCorsConstants.XSignedText} header."));
             }
 
-            if (!Request.Headers.TryGetValue(SvCustomCorsConstants.XSignedMessage, out var signedMessage))
+            if (!Request.Headers.TryGetValue(SvCustomCorsConstants.XSignature, out var signature))
             {
-                return Task.FromResult(AuthenticateResult.Fail($"Cannot read {SvCustomCorsConstants.XSignedMessage} header."));
+                return Task.FromResult(AuthenticateResult.Fail($"Cannot read {SvCustomCorsConstants.XSignature} header."));
             }
 
             try
             {
-                var isValid = IsSignedMessageValid(ethereumAddess, message, signedMessage);
+                var isValid = IsSignedMessageValid(ethereumAddess, signedText, signature);
                 if (!isValid)
                 {
                     return Task.FromResult(AuthenticateResult.Fail($"Signed message is invalid"));
@@ -58,7 +58,7 @@ namespace SmartValley.WebApi.Authentication
                              {
                                  new ClaimsIdentity(EcdsaAuthenticationOptions.DefaultScheme)
                              };
-            
+
             var ticket = new AuthenticationTicket(new ClaimsPrincipal(new User(ethereumAddess, true)), EcdsaAuthenticationOptions.DefaultScheme);
 
             return Task.FromResult(AuthenticateResult.Success(ticket));

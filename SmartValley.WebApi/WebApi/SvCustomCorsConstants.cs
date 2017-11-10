@@ -4,7 +4,7 @@
     {
         public const string CorsPolicyName = "SVPolicy";
         public const string XEthereumAddress = "X-Ethereum-Address";
-        public const string XSignedMessage = "X-Signed-Message";
-        public const string XMessage = "X-Message";
+        public const string XSignature = "X-Signed-Message";
+        public const string XSignedText = "X-Message";
     }
 }

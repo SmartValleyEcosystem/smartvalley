@@ -88,7 +88,7 @@ namespace SmartValley.WebApi
             corsPolicyBuilder.WithOrigins(url);
             corsPolicyBuilder.AllowAnyHeader();
             corsPolicyBuilder.AllowAnyMethod();
-            corsPolicyBuilder.WithExposedHeaders(SvCustomCorsConstants.XEthereumAddress, SvCustomCorsConstants.XMessage, SvCustomCorsConstants.XSignedMessage);
+            corsPolicyBuilder.WithExposedHeaders(SvCustomCorsConstants.XEthereumAddress, SvCustomCorsConstants.XSignedText, SvCustomCorsConstants.XSignature);
             corsPolicyBuilder.AllowCredentials();
 
             services.AddCors(options => { options.AddPolicy(SvCustomCorsConstants.CorsPolicyName, corsPolicyBuilder.Build()); });
