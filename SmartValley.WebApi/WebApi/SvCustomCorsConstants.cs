@@ -3,8 +3,8 @@
     public class SvCustomCorsConstants
     {
         public const string CorsPolicyName = "SVPolicy";
-        public static string XNewEthereumAddress = "X-New-Eth-Address";
-        public static string XNewSignedMessage = "X-New-Signed-Message";
-        public static string XNewMessage = "X-New-Message";
+        public const string XEthereumAddress = "X-Ethereum-Address";
+        public const string XSignedMessage = "X-Signed-Message";
+        public const string XMessage = "X-Message";
     }
 }

@@ -62,7 +62,7 @@ namespace SmartValley.WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "SmartValley API V1"); });
             }
-
+    
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseAuthentication();
@@ -88,7 +88,7 @@ namespace SmartValley.WebApi
             corsPolicyBuilder.WithOrigins(url);
             corsPolicyBuilder.AllowAnyHeader();
             corsPolicyBuilder.AllowAnyMethod();
-            corsPolicyBuilder.WithExposedHeaders(SvCustomCorsConstants.XNewEthereumAddress, SvCustomCorsConstants.XNewMessage, SvCustomCorsConstants.XNewSignedMessage);
+            corsPolicyBuilder.WithExposedHeaders(SvCustomCorsConstants.XEthereumAddress, SvCustomCorsConstants.XMessage, SvCustomCorsConstants.XSignedMessage);
             corsPolicyBuilder.AllowCredentials();
 
             services.AddCors(options => { options.AddPolicy(SvCustomCorsConstants.CorsPolicyName, corsPolicyBuilder.Build()); });

@@ -4,11 +4,11 @@ namespace SmartValley.WebApi.ExceptionHandler
 {
     public class AppErrorException : Exception
     {
-        public AppError Error { get; }
-
-        public AppErrorException(AppError error)
+        public AppErrorException(ErrorCode code)
         {
-            Error = error;
+            Error = new AppError(code);
         }
+
+        public AppError Error { get; }
     }
 }

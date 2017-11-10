@@ -17,11 +17,10 @@ namespace SmartValley.WebApi.ExceptionHandler
             }
             else
             {
-                context.Result = new ObjectResult(new AppError(ErrorCode.ServerError, message: context.Exception.ToString())
-                                     )
-                                     {
-                                         StatusCode = (int) HttpStatusCode.InternalServerError
-                                     };
+                context.Result = new ObjectResult(new AppError(ErrorCode.ServerError, message: context.Exception.ToString()))
+                                 {
+                                     StatusCode = (int) HttpStatusCode.InternalServerError
+                                 };
             }
         }
     }
