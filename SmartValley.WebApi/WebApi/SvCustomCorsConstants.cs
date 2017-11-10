@@ -4,6 +4,7 @@
     {
         public const string CorsPolicyName = "SVPolicy";
         public static string XNewEthereumAddress = "X-New-Eth-Address";
-        public static string XNewSignature = "X-New-Signature";
+        public static string XNewSignedMessage = "X-New-Signed-Message";
+        public static string XNewMessage = "X-New-Message";
     }
 }

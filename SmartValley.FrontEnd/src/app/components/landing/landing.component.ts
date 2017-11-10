@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit} from '@angular/core';
+import { Component, NgZone} from '@angular/core';
 import { isNullOrUndefined } from 'util';
 import { Router } from '@angular/router';
 import { Web3Service } from '../../services/web3-service';
@@ -9,7 +9,7 @@ import { Web3Service } from '../../services/web3-service';
   styleUrls: ['./landing.component.css']
 })
 
-export class LandingComponent implements OnInit {
+export class LandingComponent {
 
   errorMessage: string;
 
@@ -18,15 +18,12 @@ export class LandingComponent implements OnInit {
               private web3Service: Web3Service) {
   }
 
-  ngOnInit() {
-  }
-
   async tryIt() {
     this.web3Service.initialize();
 
     if (this.web3Service.isAvailable()) {
       try {
-        const isRinkeby = await this.web3Service.checkNetwork();
+        const isRinkeby = await this.web3Service.isRinkeby();
         if (!isRinkeby) {
           this.showError('Please switch to the Rinkeby network');
           return;

@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Nethereum.Signer;
 using SmartValley.WebApi.Authentication;
+using SmartValley.WebApi.ExceptionHandler;
 using SmartValley.WebApi.WebApi;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -36,12 +38,14 @@ namespace SmartValley.WebApi
 
             services.AddAuthentication(options =>
                                        {
-                                           options.DefaultAuthenticateScheme = MetamaskAuthenticationOptions.DefaultScheme;
-                                           options.DefaultChallengeScheme = MetamaskAuthenticationOptions.DefaultScheme;
+                                           options.DefaultAuthenticateScheme = EcdsaAuthenticationOptions.DefaultScheme;
+                                           options.DefaultChallengeScheme = EcdsaAuthenticationOptions.DefaultScheme;
                                        })
-                    .AddScheme<MetamaskAuthenticationOptions, MetamaskAuthenticationHandler>(MetamaskAuthenticationOptions.DefaultScheme, options => { });
+                    .AddScheme<EcdsaAuthenticationOptions, EcdsaAuthenticationHandler>(EcdsaAuthenticationOptions.DefaultScheme, options => { });
 
-            services.AddMvc();
+            services.AddSingleton<EthereumMessageSigner, EthereumMessageSigner>();
+
+            services.AddMvc(options => { options.Filters.Add(new AppErrorsExceptionFilter()); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,11 +53,6 @@ namespace SmartValley.WebApi
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
-            var options = new RewriteOptions()
-                .AddRedirectToHttps();
-
-            app.UseRewriter(options);
 
             app.UseCors(SvCustomCorsConstants.CorsPolicyName);
 
@@ -89,7 +88,7 @@ namespace SmartValley.WebApi
             corsPolicyBuilder.WithOrigins(url);
             corsPolicyBuilder.AllowAnyHeader();
             corsPolicyBuilder.AllowAnyMethod();
-            corsPolicyBuilder.WithExposedHeaders(SvCustomCorsConstants.XNewEthereumAddress, SvCustomCorsConstants.XNewSignature);
+            corsPolicyBuilder.WithExposedHeaders(SvCustomCorsConstants.XNewEthereumAddress, SvCustomCorsConstants.XNewMessage, SvCustomCorsConstants.XNewSignedMessage);
             corsPolicyBuilder.AllowCredentials();
 
             services.AddCors(options => { options.AddPolicy(SvCustomCorsConstants.CorsPolicyName, corsPolicyBuilder.Build()); });

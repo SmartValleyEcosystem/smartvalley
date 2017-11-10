@@ -1,17 +1,15 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
-import {HttpModule} from '@angular/http';
-import {MatButtonModule, MatMenuModule, MatCardModule, MatToolbarModule, MatIconModule} from '@angular/material';
-
 import {AppComponent} from './app.component';
-import {AppRoutingModule} from './app-routing.module';
 import {MetamaskHowtoComponent} from './components/metamask-howto/metamask-howto.component';
-import {TestService} from './backend/api/test.service';
-import 'hammerjs';
 import {LandingComponent} from './components/landing/landing.component';
 import {LoginSuccessComponent} from './components/login-success/login-success.component';
+import {BrowserModule} from '@angular/platform-browser';
+import {HttpClientModule} from '@angular/common/http';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {AppRoutingModule} from './app-routing.module';
+import {MatButtonModule, MatCardModule, MatIconModule, MatMenuModule, MatToolbarModule} from '@angular/material';
 import {Web3Service} from './services/web3-service';
+import {IsAuthorizedGuard} from './is-authorized.guard';
 
 @NgModule({
   declarations: [
@@ -22,7 +20,7 @@ import {Web3Service} from './services/web3-service';
   ],
   imports: [
     BrowserModule,
-    HttpModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     MatButtonModule,
@@ -32,7 +30,7 @@ import {Web3Service} from './services/web3-service';
     MatIconModule
 
   ],
-  providers: [TestService, Web3Service],
+  providers: [Web3Service, IsAuthorizedGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {

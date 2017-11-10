@@ -58,7 +58,7 @@ export class Web3Service {
     return this.web3.eth.accounts[0];
   }
 
-  public async checkNetwork(): Promise<boolean> {
+  public isRinkeby(): Promise<boolean> {
     if (!this.isInitialized) {
       return Promise.reject('Web3Service is not available.');
     }

@@ -2,7 +2,7 @@
 
 namespace SmartValley.WebApi.Authentication
 {
-    public class MetamaskAuthenticationOptions : AuthenticationSchemeOptions
+    public class EcdsaAuthenticationOptions : AuthenticationSchemeOptions
     {
         public const string DefaultScheme = "Metamask";
     }
