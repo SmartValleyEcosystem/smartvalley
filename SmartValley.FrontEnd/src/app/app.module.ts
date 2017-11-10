@@ -1,22 +1,23 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
-import {MatButtonModule, MatMenuModule, MatCardModule, MatToolbarModule, MatIconModule} from '@angular/material';
-
 import {AppComponent} from './app.component';
-import {AppRoutingModule} from './app-routing.module';
 import {MetamaskHowtoComponent} from './components/metamask-howto/metamask-howto.component';
-import {TestComponent} from './components/test/test.component';
-import {TestService} from "./backend/api/test.service";
-import 'hammerjs';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
-
+import {LandingComponent} from './components/landing/landing.component';
+import {LoginSuccessComponent} from './components/login-success/login-success.component';
+import {BrowserModule} from '@angular/platform-browser';
+import {HttpClientModule} from '@angular/common/http';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {AppRoutingModule} from './app-routing.module';
+import {MatButtonModule, MatCardModule, MatIconModule, MatMenuModule, MatToolbarModule} from '@angular/material';
+import {Web3Service} from './services/web3-service';
+import {IsAuthorizedGuard} from './is-authorized.guard';
+import {LoginInfoService} from './services/login-info-service';
 
 @NgModule({
   declarations: [
     AppComponent,
     MetamaskHowtoComponent,
-    TestComponent
+    LandingComponent,
+    LoginSuccessComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +31,7 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
     MatIconModule
 
   ],
-  providers: [TestService],
+  providers: [LoginInfoService, Web3Service, IsAuthorizedGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {
