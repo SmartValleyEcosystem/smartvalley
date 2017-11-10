@@ -24,7 +24,7 @@ export class LandingComponent {
 
     if (this.web3Service.isAvailable()) {
       try {
-        const isRinkeby = await this.web3Service.isRinkeby();
+        const isRinkeby = await this.web3Service.isRinkebyNetwork();
         if (!isRinkeby) {
           this.showError('Please switch to the Rinkeby network');
           return;
