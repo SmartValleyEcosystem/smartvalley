@@ -28,17 +28,17 @@ export class Web3Service {
       return Promise.reject('Web3Service is not available.');
     }
 
-    const signedMessage = await this.getSignedMessage(message, from);
+    const signature = await this.getSignature(message, from);
 
-    const isSignatureCorrect = await this.checkSignature(signedMessage, from, message);
+    const isSignatureCorrect = await this.checkSignature(signature, from, message);
     if (!isSignatureCorrect) {
       throw Error('Message signature is incorrect.');
     }
 
-    return signedMessage;
+    return signature;
   }
 
-  private async getSignedMessage(message: string, from: string): Promise<string> {
+  private getSignature(message: string, from: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       this.web3.personal.sign(this.web3.toHex(message), from, (err, result) => {
         if (!isNullOrUndefined(result)) {

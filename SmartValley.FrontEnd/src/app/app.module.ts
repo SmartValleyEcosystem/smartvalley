@@ -10,6 +10,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {MatButtonModule, MatCardModule, MatIconModule, MatMenuModule, MatToolbarModule} from '@angular/material';
 import {Web3Service} from './services/web3-service';
 import {IsAuthorizedGuard} from './is-authorized.guard';
+import {LoginInfoService} from './services/login-info-service';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import {IsAuthorizedGuard} from './is-authorized.guard';
     MatIconModule
 
   ],
-  providers: [Web3Service, IsAuthorizedGuard],
+  providers: [LoginInfoService, Web3Service, IsAuthorizedGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {
