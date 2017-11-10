@@ -20,8 +20,6 @@ export class LandingComponent {
   }
 
   async tryIt() {
-    this.web3Service.initialize();
-
     if (this.web3Service.isAvailable()) {
       try {
         const isRinkeby = await this.web3Service.isRinkebyNetwork();
@@ -36,7 +34,7 @@ export class LandingComponent {
 
       const from = this.web3Service.getAccount();
       if (this.loginService.isLoggedIn(from)) {
-        await this.navigateTo('/loggedin');
+        await this.router.navigate(['/loggedin']);
         return;
       }
 
@@ -44,20 +42,16 @@ export class LandingComponent {
         const signature = await this.web3Service.sign('Confirm login', from);
         this.loginService.saveLoginInfo(from, signature);
 
-        await this.navigateTo('/loggedin');
+        await this.router.navigate(['/loggedin']);
       } catch (reason) {
         this.showError(reason);
       }
     } else {
-      await this.navigateTo('/metamaskhowto');
+      await this.router.navigate(['/metamaskhowto']);
     }
   }
 
   private showError(message: string) {
     this.errorMessage = message;
-  }
-
-  private async navigateTo(path: string): Promise<any> {
-      await this.router.navigate([path]);
   }
 }
