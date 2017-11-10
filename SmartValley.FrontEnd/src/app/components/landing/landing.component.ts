@@ -1,4 +1,4 @@
-import { Component, NgZone} from '@angular/core';
+import { Component } from '@angular/core';
 import { isNullOrUndefined } from 'util';
 import { Router } from '@angular/router';
 import { Web3Service } from '../../services/web3-service';
@@ -13,9 +13,7 @@ export class LandingComponent {
 
   errorMessage: string;
 
-  constructor(private router: Router,
-              private ngZone: NgZone,
-              private web3Service: Web3Service) {
+  constructor(private router: Router, private web3Service: Web3Service) {
   }
 
   async tryIt() {
@@ -59,8 +57,6 @@ export class LandingComponent {
   }
 
   private async navigateTo(path: string): Promise<any> {
-    this.ngZone.run(async () => {
       await this.router.navigate([path]);
-    });
   }
 }
