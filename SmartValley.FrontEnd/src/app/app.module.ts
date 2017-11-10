@@ -1,7 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
-import {HttpModule} from "@angular/http";
 import {MatButtonModule, MatMenuModule, MatCardModule, MatToolbarModule, MatIconModule} from '@angular/material';
 
 import {AppComponent} from './app.component';
@@ -10,6 +9,7 @@ import {MetamaskHowtoComponent} from './components/metamask-howto/metamask-howto
 import {TestComponent} from './components/test/test.component';
 import {TestService} from "./backend/api/test.service";
 import 'hammerjs';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
@@ -20,7 +20,7 @@ import 'hammerjs';
   ],
   imports: [
     BrowserModule,
-    HttpModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     MatButtonModule,
