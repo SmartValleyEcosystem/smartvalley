@@ -1,5 +1,4 @@
-﻿using IcoLab.Common.Web.WebApi;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.Test.Rest;
@@ -15,7 +14,7 @@ namespace SmartValley.WebApi.Test
         {
             return new TestResponse {Value = "Get"};
         }
-      
+
         [AllowAnonymous]
         [HttpGet(nameof(GetCustom))]
         public TestResponse GetCustom()

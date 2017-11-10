@@ -1,5 +1,5 @@
-﻿using IcoLab.Common.Web.Extensions;
-using IcoLab.Common.Web.WebApi;
+﻿using IcoLab.Common.Web.WebApi;
+using IcoLab.Web.Common.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
