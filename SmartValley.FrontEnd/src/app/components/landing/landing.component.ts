@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {Web3Service} from '../../services/web3-service';
 import {LoginInfoService} from '../../services/login-info-service';
+import {Paths} from '../../paths';
 
 @Component({
   selector: 'app-landing',
@@ -34,7 +35,7 @@ export class LandingComponent {
 
       const from = this.web3Service.getAccount();
       if (this.loginService.isLoggedIn(from)) {
-        await this.router.navigate(['/loggedin']);
+        await this.router.navigate([Paths.LoggedIn]);
         return;
       }
 
@@ -42,12 +43,12 @@ export class LandingComponent {
         const signature = await this.web3Service.sign('Confirm login', from);
         this.loginService.saveLoginInfo(from, signature);
 
-        await this.router.navigate(['/loggedin']);
+        await this.router.navigate([Paths.LoggedIn]);
       } catch (reason) {
         this.showError(reason);
       }
     } else {
-      await this.router.navigate(['/metamaskhowto']);
+      await this.router.navigate([Paths.MetaMaskHowTo]);
     }
   }
 

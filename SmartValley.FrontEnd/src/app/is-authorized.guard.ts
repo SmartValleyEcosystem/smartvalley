@@ -3,6 +3,7 @@ import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '
 import {Observable} from 'rxjs/Observable';
 import {Web3Service} from './services/web3-service';
 import {LoginInfoService} from './services/login-info-service';
+import {Paths} from './paths';
 
 @Injectable()
 export class IsAuthorizedGuard implements CanActivate {
@@ -15,11 +16,8 @@ export class IsAuthorizedGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-
-    this.web3Service.initialize();
-
     if (!this.web3Service.isAvailable()) {
-      this.router.navigate(['/metamaskhowto']);
+      this.router.navigate([Paths.MetaMaskHowTo]);
       return false;
     }
 
@@ -28,7 +26,7 @@ export class IsAuthorizedGuard implements CanActivate {
       return true;
     }
 
-    this.router.navigate(['/landing']);
+    this.router.navigate([Paths.Landing]);
     return false;
   }
 }
