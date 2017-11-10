@@ -26,24 +26,24 @@ namespace SmartValley.WebApi.Authentication
 
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            if (!Request.Headers.TryGetValue(SvCustomCorsConstants.XNewEthereumAddress, out var ethAddress))
+            if (!Request.Headers.TryGetValue(SvCustomCorsConstants.XEthereumAddress, out var ethereumAddess))
             {
-                return Task.FromResult(AuthenticateResult.Fail($"Cannot read {SvCustomCorsConstants.XNewEthereumAddress} header."));
+                return Task.FromResult(AuthenticateResult.Fail($"Cannot read {SvCustomCorsConstants.XEthereumAddress} header."));
             }
 
-            if (!Request.Headers.TryGetValue(SvCustomCorsConstants.XNewMessage, out var message))
+            if (!Request.Headers.TryGetValue(SvCustomCorsConstants.XMessage, out var message))
             {
-                return Task.FromResult(AuthenticateResult.Fail($"Cannot read {SvCustomCorsConstants.XNewMessage} header."));
+                return Task.FromResult(AuthenticateResult.Fail($"Cannot read {SvCustomCorsConstants.XMessage} header."));
             }
 
-            if (!Request.Headers.TryGetValue(SvCustomCorsConstants.XNewSignedMessage, out var signedMessage))
+            if (!Request.Headers.TryGetValue(SvCustomCorsConstants.XSignedMessage, out var signedMessage))
             {
-                return Task.FromResult(AuthenticateResult.Fail($"Cannot read {SvCustomCorsConstants.XNewSignedMessage} header."));
+                return Task.FromResult(AuthenticateResult.Fail($"Cannot read {SvCustomCorsConstants.XSignedMessage} header."));
             }
 
             try
             {
-                var isValid = IsSignedMessageValid(ethAddress, message, signedMessage);
+                var isValid = IsSignedMessageValid(ethereumAddess, message, signedMessage);
                 if (!isValid)
                 {
                     return Task.FromResult(AuthenticateResult.Fail($"Signed message is invalid"));
@@ -59,7 +59,7 @@ namespace SmartValley.WebApi.Authentication
                                  new ClaimsIdentity(EcdsaAuthenticationOptions.DefaultScheme)
                              };
             
-            var ticket = new AuthenticationTicket(new ClaimsPrincipal(new User(ethAddress, true)), EcdsaAuthenticationOptions.DefaultScheme);
+            var ticket = new AuthenticationTicket(new ClaimsPrincipal(new User(ethereumAddess, true)), EcdsaAuthenticationOptions.DefaultScheme);
 
             return Task.FromResult(AuthenticateResult.Success(ticket));
         }

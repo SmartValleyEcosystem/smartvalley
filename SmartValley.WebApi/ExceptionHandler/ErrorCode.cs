@@ -2,7 +2,6 @@
 {
     public enum ErrorCode
     {
-        ServerError,
-        ValidatationError
+        ServerError
     }
 }
