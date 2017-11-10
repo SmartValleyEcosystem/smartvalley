@@ -15,10 +15,7 @@ export class Web3Service {
   public initialize(): void {
     if (typeof window['web3'] !== 'undefined') {
       this.web3 = new this.Web3(window['web3'].currentProvider);
-      if (!this.isMetaMask()) {
-        return;
-      }
-      this.isInitialized = true;
+      this.isInitialized = this.isMetaMask();
     }
   }
 
