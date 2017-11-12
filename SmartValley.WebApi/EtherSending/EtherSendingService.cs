@@ -54,12 +54,12 @@ namespace SmartValley.WebApi.EtherSending
             return Web3.Convert.FromWei(balance.Value);
         }
 
-        public async Task GiftEthAsync(string address)
+        public async Task GiftEtherAsync(string address)
         {
-            var giftEthFunction = GetFunction("giftEth");
-            var transactionInput = giftEthFunction.CreateTransactionInput(
+            var giftEtherFunction = GetFunction("giftEth");
+            var transactionInput = giftEtherFunction.CreateTransactionInput(
                 _contractOwner,
-                new HexBigInteger(BigInteger.Parse("90000")),
+                new HexBigInteger(new BigInteger(30000)),
                 null,
                 functionInput: address);
 
@@ -76,7 +76,7 @@ namespace SmartValley.WebApi.EtherSending
         private async Task WaitForConfirmationAsync(string transactionHash)
         {
             while (await GetTransactionReceiptAsync(transactionHash) == null)
-                await Task.Delay(5000);
+                await Task.Delay(1000);
         }
 
         private Task<TransactionReceipt> GetTransactionReceiptAsync(string transactionHash)
