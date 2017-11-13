@@ -22,5 +22,6 @@
       <Name>IcoLab.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\IcoLab.Web.Common\IcoLab.Web.Common\IcoLab.Web.Common.csproj" />
+    <ProjectReference Include="..\SmartValley.Data.SQL\SmartValley.Data.SQL.csproj" />
   </ItemGroup>
 </Project>

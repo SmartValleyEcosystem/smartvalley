@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Nethereum.Signer;
+using SmartValley.Data.SQL.Core;
 using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.ExceptionHandler;
 using SmartValley.WebApi.WebApi;
@@ -46,6 +48,8 @@ namespace SmartValley.WebApi
             services.AddSingleton<EthereumMessageSigner, EthereumMessageSigner>();
 
             services.AddMvc(options => { options.Filters.Add(new AppErrorsExceptionFilter()); });
+
+            services.AddDbContext<AppDBContext>(options =>options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
