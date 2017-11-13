@@ -1,0 +1,8 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Smart valley</span>
+    <span class="example-spacer"></span>
+    <span>Balance: {{currentBalance}}</span>
+    <button *ngIf="!hadReceiviedEther" (click)="receieveEth()" mat-button>Receive ETH</button>
+  </mat-toolbar-row>
+</mat-toolbar>

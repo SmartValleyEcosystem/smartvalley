@@ -4,34 +4,49 @@ import {MetamaskHowtoComponent} from './components/metamask-howto/metamask-howto
 import {LandingComponent} from './components/landing/landing.component';
 import {LoginSuccessComponent} from './components/login-success/login-success.component';
 import {BrowserModule} from '@angular/platform-browser';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from './app-routing.module';
-import {MatButtonModule, MatCardModule, MatIconModule, MatMenuModule, MatToolbarModule} from '@angular/material';
 import {Web3Service} from './services/web3-service';
 import {IsAuthorizedGuard} from './is-authorized.guard';
 import {LoginInfoService} from './services/login-info-service';
+import {HeaderComponent} from './components/header/header.component';
+import {MaterialModule} from './shared/material.module';
+import {PrimeNgModule} from './shared/prime-ng.module';
+import {NotificationService} from './services/notification-service';
+import { NotificationsComponent } from './components/common/notifications/notifications.component';
+import {BalanceApiClient} from "./api/balance/balance-api-client";
+import {AuthHeaderInterceptor} from "./api/auth-header-interceptor";
 
 @NgModule({
   declarations: [
     AppComponent,
+    AppComponent,
     MetamaskHowtoComponent,
     LandingComponent,
-    LoginSuccessComponent
+    LoginSuccessComponent,
+    HeaderComponent,
+    NotificationsComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    AppRoutingModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatCardModule,
-    MatToolbarModule,
-    MatIconModule
-
+    MaterialModule,
+    PrimeNgModule,
+    AppRoutingModule
   ],
-  providers: [LoginInfoService, Web3Service, IsAuthorizedGuard],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthHeaderInterceptor,
+      multi: true
+    },
+    BalanceApiClient,
+    LoginInfoService,
+    Web3Service,
+    NotificationService,
+    IsAuthorizedGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -22,7 +22,7 @@ export class IsAuthorizedGuard implements CanActivate {
     }
 
     const account = this.web3Service.getAccount();
-    if (this.loginService.isLoggedIn(account)) {
+    if (this.loginService.isLoggedInBy(account)) {
       return true;
     }
 
