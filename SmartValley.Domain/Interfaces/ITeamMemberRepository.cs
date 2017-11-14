@@ -1,6 +1,6 @@
 ﻿namespace SmartValley.Domain.Interfaces
 {
-    public interface IPersonRepository
+    public interface ITeamMemberRepository
     {
 
     }

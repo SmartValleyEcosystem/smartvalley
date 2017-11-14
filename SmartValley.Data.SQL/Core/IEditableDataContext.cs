@@ -10,7 +10,7 @@ namespace SmartValley.Data.SQL.Core
     {
         DbSet<Application> Applications { get; set; }
         DbSet<Project> Projects { get; set; }
-        DbSet<Person> Persons { get; set; }
+        DbSet<TeamMember> Persons { get; set; }
         Task<int> SaveAsync();
         EntityEntry<T> Entity<T>(T x) where T : class;
         DbSet<T> DbSet<T>() where T : class;

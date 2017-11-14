@@ -15,7 +15,7 @@ namespace SmartValley.Data.SQL.Tests.Tests
         private readonly TestEnvironment _env;
 
         private List<Project> _projects;
-        private List<Person> _persons;
+        private List<TeamMember> _persons;
         private List<Application> _applications;
         public ApplicationTestInit()
         {
@@ -39,11 +39,11 @@ namespace SmartValley.Data.SQL.Tests.Tests
                                 new Application { ProjectStatus = "ProjStat1", WhitePaperLink = "www1", CryptoCurrency = "Bitcoin", FinancialModelLink = "Fin1", HardCap = 50000.0m, InvestmentsAreAttracted = true, MVPLink = "mvp1", SoftCap = 50000.0m },
                                 new Application { ProjectStatus = "ProjStat2",  WhitePaperLink = "www2", CryptoCurrency = "Ethereum", FinancialModelLink = "Fin2", HardCap = 20000.0m, InvestmentsAreAttracted = false, MVPLink = "mvp2", SoftCap = 30000.0m }
                             };
-            _persons = new List<Person>
+            _persons = new List<TeamMember>
                        {
-                           new Person { ApplicationId = _applications[0].Id, FullName = "Max Payne", PersonType = PersonType.PR, FacebookLink = "FB1", LinkedInLink = "LinkedIN1" },
-                           new Person { ApplicationId = _applications[1].Id, FullName = "Ivan Ivanov", PersonType = PersonType.CFO, FacebookLink = "FB2", LinkedInLink = "LinkedIN2" },
-                           new Person { ApplicationId = _applications[1].Id, FullName = "Vasya Pupkin", PersonType = PersonType.CMO, FacebookLink = "FB2", LinkedInLink = "LinkedIN2" }
+                           new TeamMember { ApplicationId = _applications[0].Id, FullName = "Max Payne", PersonType = MemberType.PR, FacebookLink = "FB1", LinkedInLink = "LinkedIN1" },
+                           new TeamMember { ApplicationId = _applications[1].Id, FullName = "Ivan Ivanov", PersonType = MemberType.CFO, FacebookLink = "FB2", LinkedInLink = "LinkedIN2" },
+                           new TeamMember { ApplicationId = _applications[1].Id, FullName = "Vasya Pupkin", PersonType = MemberType.CMO, FacebookLink = "FB2", LinkedInLink = "LinkedIN2" }
                        };
         }
 

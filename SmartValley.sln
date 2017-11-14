@@ -9,11 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartValley.WebApi", "Smart
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IcoLab.Web.Common", "IcoLab.Web.Common\IcoLab.Web.Common\IcoLab.Web.Common.csproj", "{F742FE92-FCDD-4EF6-918B-C3595953CA49}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartValley.Domain", "SmartValley.Domain\SmartValley.Domain.csproj", "{9345A991-539F-4E0C-B6F4-3310D883D2DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartValley.Data.SQL", "SmartValley.Data.SQL\SmartValley.Data.SQL.csproj", "{7CF0857B-A3ED-4055-812A-1DA984137FAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartValley.Data.SQL", "SmartValley.Data.SQL\SmartValley.Data.SQL.csproj", "{7CF0857B-A3ED-4055-812A-1DA984137FAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartValley.Data.SQL.Tests", "SmartValley.Data.SQL.Tests\SmartValley.Data.SQL.Tests.csproj", "{76C3FDE5-6CD9-478E-AF0C-29BD358C6CF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartValley.Data.SQL.Tests", "SmartValley.Data.SQL.Tests\SmartValley.Data.SQL.Tests.csproj", "{76C3FDE5-6CD9-478E-AF0C-29BD358C6CF5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartValley.Domain", "SmartValley.Domain\SmartValley.Domain.csproj", "{97033F10-3AB1-4571-AABC-985FEA1F6DBA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +33,6 @@ Global
 		{F742FE92-FCDD-4EF6-918B-C3595953CA49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F742FE92-FCDD-4EF6-918B-C3595953CA49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F742FE92-FCDD-4EF6-918B-C3595953CA49}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9345A991-539F-4E0C-B6F4-3310D883D2DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9345A991-539F-4E0C-B6F4-3310D883D2DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9345A991-539F-4E0C-B6F4-3310D883D2DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9345A991-539F-4E0C-B6F4-3310D883D2DB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7CF0857B-A3ED-4055-812A-1DA984137FAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7CF0857B-A3ED-4055-812A-1DA984137FAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CF0857B-A3ED-4055-812A-1DA984137FAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{76C3FDE5-6CD9-478E-AF0C-29BD358C6CF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76C3FDE5-6CD9-478E-AF0C-29BD358C6CF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76C3FDE5-6CD9-478E-AF0C-29BD358C6CF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97033F10-3AB1-4571-AABC-985FEA1F6DBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97033F10-3AB1-4571-AABC-985FEA1F6DBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97033F10-3AB1-4571-AABC-985FEA1F6DBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97033F10-3AB1-4571-AABC-985FEA1F6DBA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

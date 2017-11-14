@@ -1,6 +1,6 @@
 ﻿namespace SmartValley.Domain.Entities
 {
-    public enum PersonType
+    public enum MemberType
     {
         CEO,
         CFO,

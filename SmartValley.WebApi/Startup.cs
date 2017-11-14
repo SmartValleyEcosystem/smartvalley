@@ -38,7 +38,7 @@ namespace SmartValley.WebApi
 
             ConfigureCorsPolicy(services);
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "SmartValley API", Version = "v1"}); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "SmartValley API", Version = "v1" }); });
 
             services.AddAuthentication(options =>
                                        {
@@ -57,7 +57,7 @@ namespace SmartValley.WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-            public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -70,7 +70,7 @@ namespace SmartValley.WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "SmartValley API V1"); });
             }
-    
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseAuthentication();
@@ -79,7 +79,7 @@ namespace SmartValley.WebApi
                        {
                            routes.MapSpaFallbackRoute(
                                name: "spa-fallback",
-                               defaults: new {controller = "Home", action = "Index"});
+                               defaults: new { controller = "Home", action = "Index" });
                        });
         }
 

@@ -4,9 +4,9 @@ using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
 {
-    public class PersonRepository : EntityCrudRepository<Person>, IPersonRepository
+    public class TeamMemberRepository : EntityCrudRepository<TeamMember>, ITeamMemberRepository
     {
-        public PersonRepository(IReadOnlyDataContext readContext, IEditableDataContext editContext)
+        public TeamMemberRepository(IReadOnlyDataContext readContext, IEditableDataContext editContext)
             : base(readContext, editContext)
         {
 

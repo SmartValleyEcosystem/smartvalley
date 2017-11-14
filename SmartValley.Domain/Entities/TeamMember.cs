@@ -3,7 +3,7 @@ using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
 {
-    public class Person : IEntityWithId
+    public class TeamMember : IEntityWithId
     {
         public long Id { get; set; }
 
@@ -21,6 +21,6 @@ namespace SmartValley.Domain.Entities
         [MaxLength(100)]
         public string LinkedInLink { get; set; }
 
-        public PersonType PersonType { get; set; }
+        public MemberType PersonType { get; set; }
     }
 }
