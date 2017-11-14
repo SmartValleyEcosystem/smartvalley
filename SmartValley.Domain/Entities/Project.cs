@@ -9,11 +9,11 @@ namespace SmartValley.Domain.Entities
 
         [Required]
         [MaxLength(20)]
-        public string AuthorLogin { get; set; }
+        public string AuthorAddress { get; set; }
 
         [Required]
         [MaxLength(42)]
-        public string AuthorAddress { get; set; }
+        public string ProjectAddress { get; set; }
 
         [Required]
         [MaxLength(50)]
