@@ -1,16 +1,13 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {LandingComponent} from './components/landing/landing.component';
-import {MetamaskHowtoComponent} from './components/metamask-howto/metamask-howto.component';
-import {LoginSuccessComponent} from './components/login-success/login-success.component';
-import {IsAuthorizedGuard} from './is-authorized.guard';
 import {Paths} from './paths';
+import {RouterModule, Routes} from '@angular/router';
+import {NgModule} from '@angular/core';
+import {MetamaskHowtoComponent} from './components/metamask-howto/metamask-howto.component';
+import {RootComponent} from './components/root/root.component';
+import {IfWeb3Initialized} from './routing/IfWeb3Initialized';
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: Paths.Landing,  pathMatch: 'full' },
-  { path: Paths.Landing,  pathMatch: 'full', component: LandingComponent },
-  { path: Paths.MetaMaskHowTo,  pathMatch: 'full', component: MetamaskHowtoComponent },
-  { path: Paths.LoggedIn,  pathMatch: 'full', component: LoginSuccessComponent, canActivate: [IsAuthorizedGuard] },
+  {path: Paths.Root, pathMatch: 'full', component: RootComponent, canActivate: [IfWeb3Initialized]},
+  {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent}
 ];
 
 @NgModule({
@@ -21,4 +18,5 @@ const appRoutes: Routes = [
     RouterModule
   ]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}

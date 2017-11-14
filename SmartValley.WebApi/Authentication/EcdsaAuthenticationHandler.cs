@@ -54,11 +54,6 @@ namespace SmartValley.WebApi.Authentication
                 return Task.FromResult(AuthenticateResult.Fail($"Signed message is invalid"));
             }
 
-            var identities = new List<ClaimsIdentity>
-                             {
-                                 new ClaimsIdentity(EcdsaAuthenticationOptions.DefaultScheme)
-                             };
-
             var ticket = new AuthenticationTicket(new ClaimsPrincipal(new User(ethereumAddess, true)), EcdsaAuthenticationOptions.DefaultScheme);
 
             return Task.FromResult(AuthenticateResult.Success(ticket));
@@ -66,9 +61,7 @@ namespace SmartValley.WebApi.Authentication
 
         private bool IsSignedMessageValid(string ethAddress, string message, string signedMessage)
         {
-            var converter = new HexUTF8StringConvertor();
-            var rawMesagge = converter.ConvertFromHex(message);
-            var publicKey = _ethereumMessageSigner.EncodeUTF8AndEcRecover(rawMesagge, signedMessage);
+            var publicKey = _ethereumMessageSigner.EncodeUTF8AndEcRecover(message, signedMessage);
             return publicKey.Equals(ethAddress, StringComparison.OrdinalIgnoreCase);
         }
     }
