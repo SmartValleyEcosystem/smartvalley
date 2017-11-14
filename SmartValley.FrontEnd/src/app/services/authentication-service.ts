@@ -22,11 +22,11 @@ export class AuthenticationService {
     return window.localStorage[account];
   }
 
-  public saveSignatureByAddrsess(account: string, signature: string) {
+  public saveSignatureForAddrsess(account: string, signature: string) {
     window.localStorage[account] = signature;
   }
 
-  public remove(account: string) {
+  public removeSignatureByAddress(account: string) {
     window.localStorage.removeItem(account);
   }
 
@@ -34,7 +34,7 @@ export class AuthenticationService {
     try {
       const accounts = await this.web3Service.getAccounts();
       const signature = await this.web3Service.sign(AuthenticationService.MESSAGE_TO_SIGN, accounts[0]);
-      this.saveSignatureByAddrsess(accounts[0], signature);
+      this.saveSignatureForAddrsess(accounts[0], signature);
     } catch (e) {
       this._notificationService.notify('error', 'Failed to authenticate!');
       return false;
@@ -51,7 +51,7 @@ export class AuthenticationService {
       return null;
     }
     const signature = this.getSignatureByAddress(accounts[0]);
-    const userInfo = new UserInfo(accounts[0], signature, false);
+
     if (isNullOrUndefined(signature)) {
       return null;
     }
@@ -59,11 +59,8 @@ export class AuthenticationService {
     if (!isSignatureValid) {
       return null;
     }
+    const userInfo = new UserInfo(accounts[0], signature, false);
     userInfo.isAuthenticated = true;
     return userInfo;
-  }
-
-  public getUserInfoAsObservable(): Observable<UserInfo> {
-    return Observable.fromPromise(this.getUserInfo());
   }
 }
