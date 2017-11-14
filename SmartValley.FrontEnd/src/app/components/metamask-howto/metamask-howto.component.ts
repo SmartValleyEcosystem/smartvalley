@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Web3Service} from "../../services/web3-service";
-import {Router} from "@angular/router";
-import {Paths} from "../../paths";
+import {Web3Service} from '../../services/web3-service';
+import {Router} from '@angular/router';
+import {Paths} from '../../paths';
+
 
 @Component({
   selector: 'app-metamask-howto',
@@ -12,7 +13,7 @@ export class MetamaskHowtoComponent {
 
   constructor(private web3Service: Web3Service, private router: Router) {
     if (this.web3Service.isInitialized) {
-      this.router.navigate([Paths.TryIt]);
+      this.router.navigate([Paths.Root]);
     }
   }
 }

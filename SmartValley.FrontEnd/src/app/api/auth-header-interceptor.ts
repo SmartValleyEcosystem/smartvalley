@@ -18,11 +18,13 @@ export class AuthHeaderInterceptor implements HttpInterceptor {
 
     return this.authenticationService.getUserInfoAsObservable()
       .mergeMap((user: UserInfo) => {
-
-        const headers = req.headers
-          .append(Constants.XEthereumAddress, user != null ? user.ethereumAddress : null)
-          .append(Constants.XSignature, user != null ? user.signature : null)
-          .append(Constants.XSignedText, AuthenticationService.MESSAGE_TO_SIGN);
+        let headers = new HttpHeaders();
+        if (user != null) {
+          headers = req.headers
+            .append(Constants.XEthereumAddress, user.ethereumAddress)
+            .append(Constants.XSignature, user.signature)
+            .append(Constants.XSignedText, AuthenticationService.MESSAGE_TO_SIGN);
+        }
         const request = user != null ? req.clone({headers: headers}) : req;
         return next.handle(request);
       });

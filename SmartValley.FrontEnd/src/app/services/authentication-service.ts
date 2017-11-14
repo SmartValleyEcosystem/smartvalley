@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import {Web3Service} from './web3-service';
 import {Resolve} from '@angular/router';
@@ -11,8 +11,10 @@ import {Paths} from '../paths';
 @Injectable()
 export class AuthenticationService {
 
-  constructor(private web3Service: Web3Service, private notificationService: NotificationService) {
+  constructor(private web3Service: Web3Service, private _notificationService: NotificationService) {
   }
+
+  public userInfoChanged: EventEmitter<any> = new EventEmitter<any>();
 
   static MESSAGE_TO_SIGN = 'Confirm login';
 
@@ -34,11 +36,12 @@ export class AuthenticationService {
       const signature = await this.web3Service.sign(AuthenticationService.MESSAGE_TO_SIGN, accounts[0]);
       this.saveSignatureByAddrsess(accounts[0], signature);
     } catch (e) {
-      this.notificationService.notify('error', 'Failed to authenticate!');
+      this._notificationService.notify('error', 'Failed to authenticate!');
       return false;
     }
 
-    this.notificationService.notify('success', 'Succsessfuly authenticated!');
+    this._notificationService.notify('success', 'Succsessfuly authenticated!');
+    this.userInfoChanged.emit();
     return true;
   }
 
