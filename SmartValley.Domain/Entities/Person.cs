@@ -8,9 +8,7 @@ namespace SmartValley.Domain.Entities
 
         public long ApplicationId { get; set; }
 
-        public string FirstName { get; set; }
-
-        public string SecondName { get; set; }
+        public string FullName { get; set; }
 
         public string FacebookLink { get; set; }
 
