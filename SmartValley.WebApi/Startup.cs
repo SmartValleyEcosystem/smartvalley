@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Nethereum.Signer;
 using SmartValley.Data.SQL.Core;
+using SmartValley.Data.SQL.Repositories;
+using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.ExceptionHandler;
 using SmartValley.WebApi.WebApi;
@@ -49,11 +51,18 @@ namespace SmartValley.WebApi
 
             services.AddMvc(options => { options.Filters.Add(new AppErrorsExceptionFilter()); });
 
-            services.AddDbContext<AppDBContext>(options =>options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            AddDBContext(services);
+        }
+
+        private void AddDBContext(IServiceCollection services)
+        {
+            services.AddTransient<IApplicationRepository, ApplicationRepository>();
+            services.AddTransient<IProjectRepository, ProjectRepository>();
+            services.AddDbContext<AppDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+            public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();

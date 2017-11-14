@@ -8,7 +8,6 @@ namespace SmartValley.Data.SQL.Core
     {
         IQueryable<Application> Applications { get; }
         IQueryable<Project> Projects { get; }
-        IQueryable<Country> Countries { get; }
         IQueryable<Person> Persons { get; }
         IQueryable<T> GetAll<T>() where T : class;
     }

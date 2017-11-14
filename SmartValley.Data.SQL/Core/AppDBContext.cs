@@ -2,11 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.Data.SQL.Core
 {
-    public sealed class AppDBContext : DbContext, IReadOnlyDataContext
+    public sealed class AppDBContext : DbContext, IReadOnlyDataContext, IEditableDataContext
     {
         public AppDBContext(DbContextOptions options)
             : base(options)
@@ -15,12 +16,10 @@ namespace SmartValley.Data.SQL.Core
         }
         IQueryable<Application> IReadOnlyDataContext.Applications => Applications.AsNoTracking();
         IQueryable<Project> IReadOnlyDataContext.Projects => Projects.AsNoTracking();
-        IQueryable<Country> IReadOnlyDataContext.Countries => Countries.AsNoTracking();
         IQueryable<Person> IReadOnlyDataContext.Persons => Persons.AsNoTracking();
 
         public DbSet<Application> Applications { get; set; }
         public DbSet<Project> Projects { get; set; }
-        public DbSet<Country> Countries { get; set; }
         public DbSet<Person> Persons { get; set; }
 
         public IQueryable<T> GetAll<T>() where T : class
@@ -42,5 +41,21 @@ namespace SmartValley.Data.SQL.Core
         {
             return Entry(x);
         }
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
+
+        //    modelBuilder.Entity<EtherUsdPriceHistory>()
+        //                .HasIndex(e => e.ContractAddress);
+
+        //    modelBuilder.Entity<Investment>()
+        //                .HasIndex(i => i.BitcoinTxId)
+        //                .IsUnique(true);
+
+        //    modelBuilder.Entity<EthereumTransaction>()
+        //                .HasIndex(i => i.TransactionId)
+        //                .IsUnique(true);
+        //}
     }
 }

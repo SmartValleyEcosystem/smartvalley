@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace SmartValley.Data.SQL.Core
+namespace SmartValley.Domain.Core
 {
     public interface IEntityWithId
     {
-        Guid Id { get; set; }
+        long Id { get; set; }
     }
 }

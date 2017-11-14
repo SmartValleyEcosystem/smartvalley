@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -12,7 +10,6 @@ namespace SmartValley.Data.SQL.Core
     {
         DbSet<Application> Applications { get; set; }
         DbSet<Project> Projects { get; set; }
-        DbSet<Country> Countries { get; set; }
         DbSet<Person> Persons { get; set; }
         Task<int> Save();
         EntityEntry<T> Entity<T>(T x) where T : class;

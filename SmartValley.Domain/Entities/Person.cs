@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
 {
-    public class Person
+    public class Person : IEntityWithId
     {
-        public Guid Id { get; set; }
+        public long Id { get; set; }
+
+        public long ApplicationId { get; set; }
 
         public string FirstName { get; set; }
 
@@ -17,6 +18,6 @@ namespace SmartValley.Domain.Entities
 
         public PersonType PersonType { get; set; }
 
-        public virtual IEnumerable<PersonApplication> Applications { get; set; }
+        //public virtual Application Application { get; set; }
     }
 }

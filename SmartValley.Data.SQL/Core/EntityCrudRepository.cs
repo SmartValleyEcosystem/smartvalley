@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SmartValley.Domain.Core;
 
 namespace SmartValley.Data.SQL.Core
 {
@@ -22,7 +23,7 @@ namespace SmartValley.Data.SQL.Core
 
         public Task<List<T>> GetAllAsync() => ReadContext.GetAll<T>().ToListAsync();
 
-        public Task<T> GetByIdAsync(Guid id)
+        public Task<T> GetByIdAsync(long id)
         {
             return ReadContext.GetAll<T>().FirstOrDefaultAsync(x => x.Id == id);
         }
@@ -104,7 +105,7 @@ namespace SmartValley.Data.SQL.Core
             return SaveToDBAsync();
         }
 
-        public Task<int> RemoveByIdAsync(Guid id)
+        public Task<int> RemoveByIdAsync(long id)
         {
             return RemoveAsync(new T { Id = id });
         }

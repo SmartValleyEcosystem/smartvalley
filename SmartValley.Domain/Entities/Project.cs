@@ -1,21 +1,19 @@
-﻿using System;
+﻿using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
 {
-    public class Project
+    public class Project: IEntityWithId
     {
-        public Guid Id { get; set; }
+        public long Id { get; set; }
 
         public string Name { get; set; }
+
+        public string Country { get; set; }
 
         public string ProjectArea { get; set; }
 
         public string ProblemDesc { get; set; }
 
         public string SolutionDesc { get; set; }
-
-        public string ProjectStatus { get; set; }
-
-        public string WhitePaperLink { get; set; }
     }
 }

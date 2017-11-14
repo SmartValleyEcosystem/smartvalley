@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
 {
-    public class Application
+    public class Application : IEntityWithId
     {
-        public Guid Id { get; set; }
-        public Guid ProjectId { get; set; }
-        public Guid CountryId { get; set; }
-        public Guid CryptoCurrencyId { get; set; }
+        public long Id { get; set; }
+        public long ProjectId { get; set; }
 
         public decimal SoftCap { get; set; }
 
@@ -20,10 +17,13 @@ namespace SmartValley.Domain.Entities
 
         public string MVPLink { get; set; }
 
-        public virtual CryptoCurrency CryptoCurrency { get; set; }
-        public virtual Country Country { get; set; }
-        public virtual IEnumerable<PersonApplication> TeamPersons { get; set; }
-        public virtual Project Project { get; set; }
+        public string CryptoCurrency { get; set; }
+
+        public string ProjectStatus { get; set; }
+
+        public string WhitePaperLink { get; set; }
+        
+        //public virtual Project Project { get; set; }
 
     }
 }
