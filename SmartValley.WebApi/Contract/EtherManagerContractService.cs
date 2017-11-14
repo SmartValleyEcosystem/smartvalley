@@ -6,10 +6,12 @@ using Nethereum.JsonRpc.IpcClient;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Util;
 using Nethereum.Web3;
+using SmartValley.WebApi.ExceptionHandler;
 
-namespace SmartValley.WebApi.EtherSending
+namespace SmartValley.WebApi.Contract
 {
-    public class EtherSendingService
+    // ReSharper disable once ClassNeverInstantiated.Global
+    public class EtherManagerContractService : IEtherManagerContractService
     {
         private readonly string _contractOwner;
         private readonly string _contractAddress;
@@ -18,32 +20,18 @@ namespace SmartValley.WebApi.EtherSending
 
         private readonly Web3 _web3;
 
-        public EtherSendingService(
-            IOptions<Web3Options> web3Configuration,
-            IOptions<ContractOptions> contractConfiguration)
-            : this(contractConfiguration.Value.Owner,
-                   contractConfiguration.Value.Address,
-                   contractConfiguration.Value.Abi,
-                   contractConfiguration.Value.Password,
-                   web3Configuration.Value.NodeAddress)
+        public EtherManagerContractService(IOptions<NethereumOptions> nethereumConfiguration)
         {
+            var contractOptions = nethereumConfiguration.Value.Contract;
+            _contractOwner = contractOptions.Owner;
+            _contractAddress = contractOptions.Address;
+            _contractAbi = contractOptions.Abi;
+            _password = contractOptions.Password;
+
+            _web3 = InitializeWeb3(nethereumConfiguration.Value.RpcAddress);
         }
 
-        public EtherSendingService(
-            string contractOwner,
-            string contractAddress,
-            string contractAbi,
-            string password,
-            string nodeAddress)
-        {
-            _contractOwner = contractOwner;
-            _contractAddress = contractAddress;
-            _contractAbi = contractAbi;
-            _password = password;
-            _web3 = InitializeWeb3(nodeAddress);
-        }
-
-        public Task<bool> HadReceivedEtherAsync(string address)
+        public Task<bool> HasReceivedEtherAsync(string address)
             => GetFunction("receiversMap").CallAsync<bool>(address);
 
         public async Task<double> GetEtherBalanceAsync(string address)
@@ -54,6 +42,9 @@ namespace SmartValley.WebApi.EtherSending
 
         public async Task SendEtherToAsync(string address)
         {
+            if (await HasReceivedEtherAsync(address))
+                throw new EtherAlreadySentException(address);
+
             var giftEtherFunction = GetFunction("giftEth");
             var transactionInput = await CreateTransactionInput(giftEtherFunction, functionInput: address);
             var transactionHash = await _web3.Personal.SignAndSendTransaction.SendRequestAsync(transactionInput, _password);
@@ -66,7 +57,7 @@ namespace SmartValley.WebApi.EtherSending
             var gas = new HexBigInteger(estimatedGasHex.Value * 110 / 100); // Adding 10% just in case
             var gasPrice = new HexBigInteger(Web3.Convert.GetEthUnitValue(UnitConversion.EthUnit.Gwei));
 
-            return function.CreateTransactionInput(_contractOwner, gas, gasPrice, null, functionInput);
+            return function.CreateTransactionInput(_contractOwner, gas, gasPrice, new HexBigInteger(0), functionInput);
         }
 
         private Function GetFunction(string functionName)
@@ -84,10 +75,10 @@ namespace SmartValley.WebApi.EtherSending
         private Task<TransactionReceipt> GetReceiptAsync(string transactionHash)
             => _web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync(transactionHash);
 
-        private static Web3 InitializeWeb3(string nodeAddress)
+        private static Web3 InitializeWeb3(string rpcAddress)
         {
-            if (!string.IsNullOrEmpty(nodeAddress))
-                return new Web3(nodeAddress);
+            if (!string.IsNullOrEmpty(rpcAddress))
+                return new Web3(rpcAddress);
 
             var ipcClient = new IpcClient("./geth.ipc");
             return new Web3(ipcClient);

@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Primitives;
 using Nethereum.Signer;
-using Nethereum.Hex.HexConvertors;
 using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Authentication
@@ -26,19 +22,19 @@ namespace SmartValley.WebApi.Authentication
 
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            if (!Request.Headers.TryGetValue(SvCustomCorsConstants.XEthereumAddress, out var ethereumAddess))
+            if (!Request.Headers.TryGetValue(Headers.XEthereumAddress, out var ethereumAddess))
             {
-                return Task.FromResult(AuthenticateResult.Fail($"Cannot read {SvCustomCorsConstants.XEthereumAddress} header."));
+                return Task.FromResult(AuthenticateResult.Fail($"Cannot read {Headers.XEthereumAddress} header."));
             }
 
-            if (!Request.Headers.TryGetValue(SvCustomCorsConstants.XSignedText, out var signedText))
+            if (!Request.Headers.TryGetValue(Headers.XSignedText, out var signedText))
             {
-                return Task.FromResult(AuthenticateResult.Fail($"Cannot read {SvCustomCorsConstants.XSignedText} header."));
+                return Task.FromResult(AuthenticateResult.Fail($"Cannot read {Headers.XSignedText} header."));
             }
 
-            if (!Request.Headers.TryGetValue(SvCustomCorsConstants.XSignature, out var signature))
+            if (!Request.Headers.TryGetValue(Headers.XSignature, out var signature))
             {
-                return Task.FromResult(AuthenticateResult.Fail($"Cannot read {SvCustomCorsConstants.XSignature} header."));
+                return Task.FromResult(AuthenticateResult.Fail($"Cannot read {Headers.XSignature} header."));
             }
 
             try
