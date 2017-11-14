@@ -1,35 +1,29 @@
-import { Injectable } from '@angular/core';
-import { isNullOrUndefined } from 'util';
+import {Injectable} from '@angular/core';
+import {isNullOrUndefined} from 'util';
+import "rxjs/add/observable/timer";
 
 @Injectable()
 export class Web3Service {
+
   private rinkebyNetworkId = '4';
   private metamaskProviderName = 'MetamaskInpageProvider';
 
   private web3: any;
-  private isInitialized = false;
+  private _isInitialized = false;
 
-  constructor() {
+  get isInitialized(): boolean {
+    return this._isInitialized;
   }
 
   public initialize(): void {
     if (typeof window['web3'] !== 'undefined') {
       this.web3 = new this.Web3(window['web3'].currentProvider);
-      this.isInitialized = this.isMetaMask();
+      this._isInitialized = this.isMetaMask();
     }
-  }
-
-  public isAvailable(): boolean {
-    return this.isInitialized;
   }
 
   public async sign(message: string, from: string): Promise<string> {
-    if (!this.isInitialized) {
-      return Promise.reject('Web3Service is not available.');
-    }
-
     const signature = await this.getSignature(message, from);
-
     const isSignatureCorrect = await this.checkSignature(signature, from, message);
     if (!isSignatureCorrect) {
       throw Error('Message signature is incorrect.');
@@ -39,6 +33,9 @@ export class Web3Service {
   }
 
   private getSignature(message: string, from: string): Promise<string> {
+    if (!this.isInitialized) {
+      return Promise.reject('Check your metamask please');
+    }
     return new Promise<string>((resolve, reject) => {
       this.web3.personal.sign(this.web3.toHex(message), from, (err, result) => {
         if (!isNullOrUndefined(result)) {
@@ -50,19 +47,21 @@ export class Web3Service {
     });
   }
 
-  public getAccount(): string {
-    if (!this.isInitialized) {
-      throw Error('Web3Service is not available.');
-    }
 
-    return this.web3.eth.accounts[0];
+  public getAccounts(): Promise<Array<string>> {
+    return new Promise<Array<string>>((resolve, reject) => {
+      this.web3.eth.getAccounts((err, accs) => {
+        if (!isNullOrUndefined(accs)) {
+          resolve(accs);
+        } else {
+          reject('No accs fouund: ' + err);
+        }
+      });
+    });
+
   }
 
   public isRinkebyNetwork(): Promise<boolean> {
-    if (!this.isInitialized) {
-      return Promise.reject('Web3Service is not available.');
-    }
-
     return new Promise<boolean>((resolve, reject) => {
       this.web3.version.getNetwork((err, networkId) => {
         if (!isNullOrUndefined(networkId)) {
@@ -74,7 +73,7 @@ export class Web3Service {
     });
   }
 
-  private checkSignature(signedMessage: string, account: string, originalMessage: string): Promise<boolean> {
+  public checkSignature(signedMessage: string, account: string, originalMessage: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       this.web3.personal.ecRecover(this.web3.toHex(originalMessage), signedMessage, (err, result) => {
         if (!isNullOrUndefined(result)) {

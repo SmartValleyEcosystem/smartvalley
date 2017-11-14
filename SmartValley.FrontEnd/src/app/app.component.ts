@@ -7,7 +7,6 @@ import {Web3Service} from './services/web3-service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-  title = 'Smart Valley';
 
   constructor(private web3Service: Web3Service) {
   }

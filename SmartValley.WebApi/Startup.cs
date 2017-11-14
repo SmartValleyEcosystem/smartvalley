@@ -4,11 +4,16 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Nethereum.Signer;
+using SmartValley.Data.SQL.Core;
+using SmartValley.Data.SQL.Repositories;
+using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Authentication;
+using SmartValley.WebApi.Contract;
 using SmartValley.WebApi.ExceptionHandler;
 using SmartValley.WebApi.WebApi;
 using Swashbuckle.AspNetCore.Swagger;
@@ -30,11 +35,11 @@ namespace SmartValley.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.ConfigureOptions(Configuration, typeof(SiteOptions));
+            services.ConfigureOptions(Configuration, typeof(SiteOptions), typeof(ContractOptions));
 
             ConfigureCorsPolicy(services);
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "SmartValley API", Version = "v1"}); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "SmartValley API", Version = "v1" }); });
 
             services.AddAuthentication(options =>
                                        {
@@ -43,9 +48,14 @@ namespace SmartValley.WebApi
                                        })
                     .AddScheme<EcdsaAuthenticationOptions, EcdsaAuthenticationHandler>(EcdsaAuthenticationOptions.DefaultScheme, options => { });
 
-            services.AddSingleton<EthereumMessageSigner, EthereumMessageSigner>();
+            services.AddSingleton<EthereumMessageSigner>();
+            services.AddSingleton<IEtherManagerContractService, EtherManagerContractServiceStub>();
 
             services.AddMvc(options => { options.Filters.Add(new AppErrorsExceptionFilter()); });
+
+            services.AddTransient<IApplicationRepository, ApplicationRepository>();
+            services.AddTransient<IProjectRepository, ProjectRepository>();
+            services.AddDbContext<AppDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,7 +72,7 @@ namespace SmartValley.WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "SmartValley API V1"); });
             }
-    
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseAuthentication();
@@ -71,7 +81,7 @@ namespace SmartValley.WebApi
                        {
                            routes.MapSpaFallbackRoute(
                                name: "spa-fallback",
-                               defaults: new {controller = "Home", action = "Index"});
+                               defaults: new { controller = "Home", action = "Index" });
                        });
         }
 
