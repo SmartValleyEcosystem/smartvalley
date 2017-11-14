@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
@@ -22,10 +23,10 @@ namespace SmartValley.Data.SQL.Tests
         /// <typeparam name="T"></typeparam>
         /// <param name="entities"></param>
         /// <returns></returns>
-        public async Task LoadDataAsync<T>(IEnumerable<T> entities) where T : class
+        public async Task LoadData<T>(IEnumerable<T> entities) where T : class
         {
             await Context.AddRangeAsync(entities);
-            await Context.SaveChangesAsync();
+            Context.SaveChanges();
         }
 
         /// <summary>

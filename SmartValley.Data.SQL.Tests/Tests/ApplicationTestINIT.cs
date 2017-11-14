@@ -48,15 +48,15 @@ namespace SmartValley.Data.SQL.Tests.Tests
         }
 
         [SetUp]
-        public async Task LoadData()
+        public void LoadData()
         {
-            await _env.LoadDataAsync(_persons);
-            await _env.LoadDataAsync(_projects);
-            await _env.LoadDataAsync(_applications);
+            _env.LoadData(_persons);
+            _env.LoadData(_projects);
+            _env.LoadData(_applications);
         }
 
         [TearDown]
-        public async Task ClearData()
+        public void ClearData()
         {
             _env.DeleteData(_applications);
             _env.DeleteData(_persons);

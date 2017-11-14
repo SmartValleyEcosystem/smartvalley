@@ -27,7 +27,7 @@ namespace SmartValley.Data.SQL.Core
             return Set<T>().AsNoTracking();
         }
 
-        public Task<int> SaveChangesAsync()
+        public Task<int> SaveAsync()
         {
             return SaveChangesAsync();
         }

@@ -76,7 +76,7 @@ namespace SmartValley.Data.SQL.Core
 
         private Task<int> SaveToDBAsync()
         {
-            return EditContext.SaveChangesAsync();
+            return EditContext.SaveAsync();
         }
 
         public Task<int> AddRangeAsync(IEnumerable<T> entities)
