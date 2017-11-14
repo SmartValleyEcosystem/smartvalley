@@ -4,7 +4,7 @@ namespace SmartValley.WebApi.Contract
 {
     public class EtherManagerContractServiceStub : IEtherManagerContractService
     {
-        public Task<bool> HadReceivedEtherAsync(string address)
+        public Task<bool> HasReceivedEtherAsync(string address)
         {
             return Task.FromResult(false);
         }

@@ -1,10 +1,8 @@
-﻿using System.Threading.Tasks;
-
-namespace SmartValley.WebApi.User
+﻿namespace SmartValley.WebApi.Balance
 {
     public class BalanceResponse
     {
-        public bool HadReceiviedEther { get; set; }
+        public bool WasEtherReceived { get; set; }
         public double Balance { get; set; }
     }
 }

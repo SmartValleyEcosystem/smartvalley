@@ -1,30 +1,30 @@
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {MetamaskHowtoComponent} from './components/metamask-howto/metamask-howto.component';
-import {LandingComponent} from './components/landing/landing.component';
-import {LoginSuccessComponent} from './components/login-success/login-success.component';
+import {TryItComponent} from './components/try-it/try-it.component';
+import {RootComponent} from './components/root/root.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from './app-routing.module';
 import {Web3Service} from './services/web3-service';
-import {IsAuthorizedGuard} from './is-authorized.guard';
-import {LoginInfoService} from './services/login-info-service';
+import {IfAuthenticated, IfWeb3Initialized} from './IfAuthenticated';
+import {AuthenticationService} from './services/authentication-service';
 import {HeaderComponent} from './components/header/header.component';
 import {MaterialModule} from './shared/material.module';
 import {PrimeNgModule} from './shared/prime-ng.module';
 import {NotificationService} from './services/notification-service';
-import { NotificationsComponent } from './components/common/notifications/notifications.component';
-import {BalanceApiClient} from "./api/balance/balance-api-client";
-import {AuthHeaderInterceptor} from "./api/auth-header-interceptor";
+import {NotificationsComponent} from './components/common/notifications/notifications.component';
+import {BalanceApiClient} from './api/balance/balance-api-client';
+import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
     AppComponent,
     MetamaskHowtoComponent,
-    LandingComponent,
-    LoginSuccessComponent,
+    TryItComponent,
+    RootComponent,
     HeaderComponent,
     NotificationsComponent,
   ],
@@ -43,10 +43,11 @@ import {AuthHeaderInterceptor} from "./api/auth-header-interceptor";
       multi: true
     },
     BalanceApiClient,
-    LoginInfoService,
+    AuthenticationService,
     Web3Service,
     NotificationService,
-    IsAuthorizedGuard],
+    IfAuthenticated,
+    IfWeb3Initialized],
   bootstrap: [AppComponent]
 })
 export class AppModule {

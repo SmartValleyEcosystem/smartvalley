@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.WebApi.Contract;
 
-namespace SmartValley.WebApi.User
+namespace SmartValley.WebApi.Balance
 {
     [Route("api/balance/")]
     [Authorize]
@@ -21,7 +21,7 @@ namespace SmartValley.WebApi.User
         {
             return new BalanceResponse
                    {
-                       HadReceiviedEther = await _etherManagerContractService.HadReceivedEtherAsync(User.Identity.Name),
+                       WasEtherReceived = await _etherManagerContractService.HasReceivedEtherAsync(User.Identity.Name),
                        Balance = await _etherManagerContractService.GetEtherBalanceAsync(User.Identity.Name)
                    };
         }

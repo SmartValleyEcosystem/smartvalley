@@ -11,8 +11,8 @@ import {Paths} from "../../paths";
 export class MetamaskHowtoComponent {
 
   constructor(private web3Service: Web3Service, private router: Router) {
-    if (this.web3Service.isAvailable()) {
-      this.router.navigate([Paths.LoggedIn]);
+    if (this.web3Service.isInitialized) {
+      this.router.navigate([Paths.TryIt]);
     }
   }
 }
