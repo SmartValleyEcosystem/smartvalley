@@ -23,4 +23,7 @@
     </ProjectReference>
     <ProjectReference Include="..\IcoLab.Web.Common\IcoLab.Web.Common\IcoLab.Web.Common.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Projects" />
+  </ItemGroup>
 </Project>
