@@ -1,4 +1,5 @@
-﻿using SmartValley.Domain.Core;
+﻿using System.ComponentModel.DataAnnotations;
+using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
 {
@@ -8,14 +9,18 @@ namespace SmartValley.Domain.Entities
 
         public long ApplicationId { get; set; }
 
+        [Required]
+        [MaxLength(50)]
         public string FullName { get; set; }
 
+        [Url]
+        [MaxLength(100)]
         public string FacebookLink { get; set; }
 
+        [Url]
+        [MaxLength(100)]
         public string LinkedInLink { get; set; }
 
         public PersonType PersonType { get; set; }
-
-        //public virtual Application Application { get; set; }
     }
 }

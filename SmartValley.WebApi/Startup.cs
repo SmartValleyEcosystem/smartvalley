@@ -51,11 +51,6 @@ namespace SmartValley.WebApi
 
             services.AddMvc(options => { options.Filters.Add(new AppErrorsExceptionFilter()); });
 
-            AddDBContext(services);
-        }
-
-        private void AddDBContext(IServiceCollection services)
-        {
             services.AddTransient<IApplicationRepository, ApplicationRepository>();
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddDbContext<AppDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));

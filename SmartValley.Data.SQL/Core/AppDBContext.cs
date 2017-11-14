@@ -41,21 +41,5 @@ namespace SmartValley.Data.SQL.Core
         {
             return Entry(x);
         }
-
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    base.OnModelCreating(modelBuilder);
-
-        //    modelBuilder.Entity<EtherUsdPriceHistory>()
-        //                .HasIndex(e => e.ContractAddress);
-
-        //    modelBuilder.Entity<Investment>()
-        //                .HasIndex(i => i.BitcoinTxId)
-        //                .IsUnique(true);
-
-        //    modelBuilder.Entity<EthereumTransaction>()
-        //                .HasIndex(i => i.TransactionId)
-        //                .IsUnique(true);
-        //}
     }
 }
