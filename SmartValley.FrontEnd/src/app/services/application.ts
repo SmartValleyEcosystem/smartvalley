@@ -1,26 +1,22 @@
-import {TeamMember} from '../services/team-member';
+import {ITeamMember} from '../services/team-member';
 
 export class Application {
 
   constructor() {
-
-    this.CEO = new TeamMember();
-    this.CFO = new TeamMember();
-    this.CMO = new TeamMember();
-    this.CTO = new TeamMember();
-    this.PR = new TeamMember();
+    this.TeamMembers = new Array<ITeamMember>();
   }
+
   name = '';
 
   projectArea = '';
 
-  probDesc = '';
+  probablyDescription = '';
 
-  solDesc = '';
+  solutionDescription = '';
 
-  projStat = '';
+  projectStatus = '';
 
-  wpLink = '';
+  whitePaperLink = '';
 
   blockChainType = '';
 
@@ -32,19 +28,11 @@ export class Application {
 
   hardCap = '';
 
-  attractInv = false;
+  attractedInvestnemts = false;
 
-  finModelLink = '';
+  financeModelLink = '';
 
-  CEO: TeamMember;
-
-  CFO: TeamMember;
-
-  CMO: TeamMember;
-
-  CTO: TeamMember;
-
-  PR: TeamMember;
+  TeamMembers: Array<ITeamMember>;
 
   authorAddress: string;
 }

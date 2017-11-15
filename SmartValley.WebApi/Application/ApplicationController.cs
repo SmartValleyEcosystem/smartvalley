@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SmartValley.WebApi.Application
 {
-    [Produces("application/json")]
     [Route("api/application")]
     [Authorize]
     public class ApplicationController : Controller
@@ -15,8 +14,9 @@ namespace SmartValley.WebApi.Application
         {
             _service = service;
         }
+
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]ApplicationRequest model)
+        public async Task<IActionResult> Post([FromBody] ApplicationRequest model)
         {
             await _service.CreateApplication(model);
             return Ok(model);

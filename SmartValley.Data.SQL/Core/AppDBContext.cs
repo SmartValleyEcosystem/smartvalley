@@ -14,6 +14,7 @@ namespace SmartValley.Data.SQL.Core
         {
             Database.EnsureCreated();
         }
+
         IQueryable<Application> IReadOnlyDataContext.Applications => Applications.AsNoTracking();
         IQueryable<Project> IReadOnlyDataContext.Projects => Projects.AsNoTracking();
         IQueryable<TeamMember> IReadOnlyDataContext.Persons => Persons.AsNoTracking();

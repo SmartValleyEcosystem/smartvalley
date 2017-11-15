@@ -40,7 +40,7 @@ namespace SmartValley.WebApi
 
             ConfigureCorsPolicy(services);
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "SmartValley API", Version = "v1" }); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "SmartValley API", Version = "v1"}); });
 
             services.AddAuthentication(options =>
                                        {
@@ -52,7 +52,11 @@ namespace SmartValley.WebApi
             services.AddSingleton<EthereumMessageSigner>();
             services.AddSingleton<IEtherManagerContractService, EtherManagerContractServiceStub>();
 
-            services.AddMvc(options => { options.Filters.Add(new AppErrorsExceptionFilter()); });
+            services.AddMvc(options =>
+                            {
+                                options.Filters.Add(new AppErrorsExceptionFilter());
+                                options.Filters.Add(new ModelStateFilter());
+                            });
 
             var builder = new DbContextOptionsBuilder<AppDBContext>();
             builder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
@@ -89,7 +93,7 @@ namespace SmartValley.WebApi
                        {
                            routes.MapSpaFallbackRoute(
                                name: "spa-fallback",
-                               defaults: new { controller = "Home", action = "Index" });
+                               defaults: new {controller = "Home", action = "Index"});
                        });
         }
 

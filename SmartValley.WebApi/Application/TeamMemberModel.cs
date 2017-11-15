@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace SmartValley.WebApi.Application
+﻿namespace SmartValley.WebApi.Application
 {
-    public class TeamMemberModel
+    public class TeamMemberRequest
     {
+        public string MemberType { get; set; }
         public string FullName { get; set; }
 
-        public string FbLink { get; set; }
+        public string FacebookLink { get; set; }
 
         public string LinkedInLink { get; set; }
     }

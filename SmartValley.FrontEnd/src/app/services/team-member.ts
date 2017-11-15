@@ -1,8 +1,8 @@
-export class TeamMember {
+import {EnumTeamMemberType} from './enumTeamMemberType';
 
-  fullName = '';
-
-  fbLink = '';
-
-  linkedInLink = '';
+export interface ITeamMember {
+  memberType: EnumTeamMemberType;
+  fullName: '';
+  facebookLink: '';
+  linkedInLink: '';
 }

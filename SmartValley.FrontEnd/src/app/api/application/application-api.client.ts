@@ -9,7 +9,7 @@ export class ApplicationApiClient extends BaseApiClient {
     super();
   }
 
-  async createProjectAsync(application: Application) {
+  async createApplicationAsync(application: Application) {
     await this.http.post(this.baseApiUrl + '/application', application).subscribe();
   }
 }

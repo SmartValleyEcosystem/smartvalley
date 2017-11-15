@@ -1,11 +1,11 @@
-  <h2>Create new project for scoring</h2>
-  <h3>Main information:</h3>
+<h2>Create new project for scoring</h2>
+<h3>Main information:</h3>
 <form [formGroup]="applicationForm" (ngSubmit)="onSubmit()" novalidate>
-    <div class="form-group">
-      <label class="center-block">Name
-        <input class="form-control" formControlName="name" placeholder="Prover">
-      </label>
-    </div>
+  <div class="form-group">
+    <label class="center-block">Name
+      <input class="form-control" formControlName="name" placeholder="Prover">
+    </label>
+  </div>
   <div class="form-group">
     <label class="center-block">Project Area
       <input class="form-control" formControlName="projectArea" placeholder="Biotechnology">
@@ -13,87 +13,46 @@
   </div>
   <div class="form-group">
     <label class="center-block">Problem description
-      <input class="form-control" formControlName="probDesc" placeholder="Technology of Authenticity Verification of Video Content">
+      <input class="form-control" formControlName="probablyDescription"
+             placeholder="Technology of Authenticity Verification of Video Content">
     </label>
   </div>
   <div class="form-group">
     <label class="center-block">Solution description
-      <input class="form-control" formControlName="solDesc" placeholder="Technology of Authenticity Verification of Video Content">
+      <input class="form-control" formControlName="solutionDescription"
+             placeholder="Technology of Authenticity Verification of Video Content">
     </label>
   </div>
   <div class="form-group">
     <label class="center-block">Current project status
-      <input class="form-control" formControlName="projStat" placeholder="We already develop MVP">
+      <input class="form-control" formControlName="projectStatus" placeholder="We already develop MVP">
     </label>
   </div>
   <div class="form-group">
     <label class="center-block">White paper link
-      <input class="form-control" formControlName="wpLink" pattern="https?://.+" title="Include http://" placeholder="https://">
+      <input class="form-control" formControlName="whitePaperLink" pattern="https?://.+" title="Include http://"
+             placeholder="https://">
     </label>
   </div>
 
-    <h3>Team</h3>
-  <div formGroupName="CEO" class="form-group">
-    <label class="center-block">CEO
-      <input class="form-control" formControlName="fullName" placeholder="Stan Cooper">
-    </label>
-    <label class="center-block">FB link:
-      <input class="form-control" formControlName="fbLink" placeholder="www.facebook.com/stancooper">
-    </label>
-    <label class="center-block">Linkedin link:
-      <input class="form-control" formControlName="linkedInLink" placeholder="www.linkedin.com/stancooper">
-    </label>
+  <h3>Team</h3>
+  <div *ngFor="let member of teamMembers; let i = index">
+    <div [formGroup]="member">
+      <div class="form-group">
+        <label class="center-block">{{member.value.title}}
+          <input class="form-control" formControlName="fullName" placeholder="Stan Cooper">
+        </label>
+        <label class="center-block">FB link:
+          <input class="form-control" formControlName="facebookLink" placeholder="www.facebook.com/stancooper">
+        </label>
+        <label class="center-block">Linkedin link:
+          <input class="form-control" formControlName="linkedInLink" placeholder="www.linkedin.com/stancooper">
+        </label>
+      </div>
+    </div>
   </div>
 
-  <div formGroupName="CFO" class="form-group">
-    <label class="center-block">CFO
-      <input class="form-control" formControlName="fullName" placeholder="Ivan Ivanov">
-    </label>
-    <label class="center-block">FB link:
-      <input class="form-control" formControlName="fbLink" placeholder="Ivan Ivanov">
-    </label>
-    <label class="center-block">Linkedin link:
-      <input class="form-control" formControlName="linkedInLink" placeholder="Ivan Ivanov">
-    </label>
-  </div>
-
-  <div formGroupName="CMO" class="form-group">
-    <label class="center-block">CMO
-      <input class="form-control" formControlName="fullName" placeholder="Ivan Ivanov">
-    </label>
-    <label class="center-block">FB link:
-      <input class="form-control" formControlName="fbLink" placeholder="Ivan Ivanov">
-    </label>
-    <label class="center-block">Linkedin link:
-      <input class="form-control" formControlName="linkedInLink" placeholder="Ivan Ivanov">
-    </label>
-  </div>
-
-  <div formGroupName="CTO" class="form-group">
-    <label class="center-block">CTO
-      <input class="form-control" formControlName="fullName" placeholder="Ivan Ivanov">
-    </label>
-    <label class="center-block">FB link:
-      <input class="form-control" formControlName="fbLink" placeholder="Ivan Ivanov">
-    </label>
-    <label class="center-block">Linkedin link:
-      <input class="form-control" formControlName="linkedInLink" placeholder="Ivan Ivanov">
-    </label>
-  </div>
-
-  <div formGroupName="PR" class="form-group">
-    <label class="center-block">PR
-      <input class="form-control" formControlName="fullName" placeholder="Ivan Ivanov">
-    </label>
-    <label class="center-block">FB link:
-      <input class="form-control" formControlName="fbLink" placeholder="Ivan Ivanov">
-    </label>
-    <label class="center-block">Linkedin link:
-      <input class="form-control" formControlName="linkedInLink" placeholder="Ivan Ivanov">
-    </label>
-  </div>
-
-    <h3>Legal part</h3>
+  <h3>Legal part</h3>
 
   <div class="form-group">
     <label class="center-block">In which country is the incorporation made?
@@ -111,14 +70,14 @@
       <input class="form-control" formControlName="hardCap">
     </label>
     <label class="center-block">Financial model link:
-      <input class="form-control" formControlName="finModelLink">
+      <input class="form-control" formControlName="financeModelLink">
     </label>
     <label class="center-block">Attracted investnemts:
-      <input class="form-control" formControlName="attractInv">
+      <input class="form-control" formControlName="attractedInvestnemts">
     </label>
   </div>
 
-    <h3>Tech</h3>
+  <h3>Tech</h3>
 
   <div class="form-group">
     <label class="center-block">Which blockchain you want to use?
@@ -129,5 +88,5 @@
     </label>
   </div>
 
-    <input type="submit" value="Create project"/>
- </form>
+  <input type="submit" value="Create project"/>
+</form>
