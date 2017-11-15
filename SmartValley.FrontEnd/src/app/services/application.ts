@@ -1,38 +1,38 @@
-import {ITeamMember} from '../services/team-member';
+import {TeamMember} from '../services/team-member';
 
 export class Application {
 
   constructor() {
-    this.TeamMembers = new Array<ITeamMember>();
+    this.TeamMembers = new Array<TeamMember>();
   }
 
-  name = '';
+  name: string;
 
-  projectArea = '';
+  projectArea: string;
 
-  probablyDescription = '';
+  probablyDescription: string;
 
-  solutionDescription = '';
+  solutionDescription: string;
 
-  projectStatus = '';
+  projectStatus: string;
 
-  whitePaperLink = '';
+  whitePaperLink: string;
 
-  blockChainType = '';
+  blockChainType: string;
 
-  country = '';
+  country: string;
 
-  mvpLink = '';
+  mvpLink: string;
 
-  softCap = '';
+  softCap: string;
 
-  hardCap = '';
+  hardCap: string;
 
   attractedInvestnemts = false;
 
-  financeModelLink = '';
+  financeModelLink: string;
 
-  TeamMembers: Array<ITeamMember>;
+  TeamMembers: Array<TeamMember>;
 
   authorAddress: string;
 }

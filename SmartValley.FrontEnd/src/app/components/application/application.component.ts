@@ -4,7 +4,7 @@ import {ApplicationApiClient} from '../../api/application/application-api.client
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Application} from '../../services/application';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
-import {ITeamMember} from '../../services/team-member';
+import {TeamMember} from '../../services/team-member';
 
 
 @Component({
@@ -43,7 +43,7 @@ export class ApplicationComponent {
 
     const userInfo = await this.authenticationService.getUserInfo();
     application.authorAddress = userInfo.ethereumAddress;
-    application.TeamMembers = new Array<ITeamMember>();
+    application.TeamMembers = new Array<TeamMember>();
     for (const item in this.teamMembers) {
       if (true) {
         application.TeamMembers.push(this.teamMembers[item].value);
