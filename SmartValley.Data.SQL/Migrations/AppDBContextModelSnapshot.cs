@@ -61,7 +61,7 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<string>("AuthorAddress")
                         .IsRequired()
-                        .HasMaxLength(20);
+                        .HasMaxLength(42);
 
                     b.Property<string>("Country")
                         .IsRequired()

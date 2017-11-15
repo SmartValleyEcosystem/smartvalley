@@ -41,5 +41,20 @@ namespace SmartValley.Data.SQL.Core
         {
             return Entry(x);
         }
+
+        public static IEditableDataContext CreateEditable(DbContextOptions<AppDBContext> options)
+        {
+            return new AppDBContext(options);
+        }
+
+        public static IReadOnlyDataContext CreateReadOnly(DbContextOptions<AppDBContext> options)
+        {
+            var context = new AppDBContext(options);
+            context.ChangeTracker.AutoDetectChangesEnabled = false;
+            context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
+            context.Database.AutoTransactionsEnabled = false;
+            return context;
+        }
     }
 }

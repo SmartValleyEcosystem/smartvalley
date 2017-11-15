@@ -12,6 +12,7 @@ using Nethereum.Signer;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Data.SQL.Repositories;
 using SmartValley.Domain.Interfaces;
+using SmartValley.WebApi.Application;
 using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.Contract;
 using SmartValley.WebApi.ExceptionHandler;
@@ -53,9 +54,16 @@ namespace SmartValley.WebApi
 
             services.AddMvc(options => { options.Filters.Add(new AppErrorsExceptionFilter()); });
 
-            services.AddTransient<IApplicationRepository, ApplicationRepository>();
-            services.AddTransient<IProjectRepository, ProjectRepository>();
+            var builder = new DbContextOptionsBuilder<AppDBContext>();
+            builder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            var dbOptions = builder.Options;
             services.AddDbContext<AppDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient(x => AppDBContext.CreateEditable(dbOptions));
+            services.AddTransient(x => AppDBContext.CreateReadOnly(dbOptions));
+            services.AddTransient<TeamMemberRepository, TeamMemberRepository>();
+            services.AddTransient<ApplicationRepository, ApplicationRepository>();
+            services.AddTransient<ProjectRepository, ProjectRepository>();
+            services.AddSingleton<IApplicationService, ApplicationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

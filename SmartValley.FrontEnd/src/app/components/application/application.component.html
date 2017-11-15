@@ -1,101 +1,133 @@
   <h2>Create new project for scoring</h2>
   <h3>Main information:</h3>
-  <!--<form (action)="diagnostic()">-->
+<form [formGroup]="applicationForm" (ngSubmit)="onSubmit()" novalidate>
     <div class="form-group">
-      <label for="name">Name</label>
-      <input required [value]="name" (input)="name = $event.target.value" type="text" class="form-control" id="name" name="name" placeholder="Prover">
+      <label class="center-block">Name
+        <input class="form-control" formControlName="name" placeholder="Prover">
+      </label>
     </div>
-    <div class="form-group">
-      <label for="projectArea">Project Area</label>
-      <input required [value]="projectArea" (input)="projectArea = $event.target.value" type="text" class="form-control" id="projectArea" name="projectArea" placeholder="Prover">
-    </div>
-    <div class="form-group">
-      <label for="probDesc">Problem description</label>
-      <textarea required [value]="probDesc" (input)="probDesc = $event.target.value" class="form-control" id="probDesc" name="probDesc" placeholder="Technology of Authenticity Verification of Video Content"></textarea>
-    </div>
-    <div class="form-group">
-      <label for="solDesc">Solution description</label>
-      <textarea required [value]="solDesc" (input)="solDesc = $event.target.value" class="form-control" id="solDesc" name="solDesc" placeholder="Technology of Authenticity Verification of Video Content"></textarea>
-    </div>
-    <div class="form-group">
-      <label for="projStatus">Current project status</label>
-      <textarea required [value]="projStat" (input)="projStat = $event.target.value" class="form-control" id="projStatus" name="projStatus" placeholder="We already develop MVP"></textarea>
-    </div>
-    <div class="form-group">
-      <label for="wpLink">White paper link</label>
-      <input required [value]="wpLink" (input)="wpLink = $event.target.value" type="url" class="form-control" id="wpLink" name="wpLink" pattern="https?://.+" title="Include http://" placeholder="https://">
-    </div>
+  <div class="form-group">
+    <label class="center-block">Project Area
+      <input class="form-control" formControlName="projectArea" placeholder="Biotechnology">
+    </label>
+  </div>
+  <div class="form-group">
+    <label class="center-block">Problem description
+      <input class="form-control" formControlName="probDesc" placeholder="Technology of Authenticity Verification of Video Content">
+    </label>
+  </div>
+  <div class="form-group">
+    <label class="center-block">Solution description
+      <input class="form-control" formControlName="solDesc" placeholder="Technology of Authenticity Verification of Video Content">
+    </label>
+  </div>
+  <div class="form-group">
+    <label class="center-block">Current project status
+      <input class="form-control" formControlName="projStat" placeholder="We already develop MVP">
+    </label>
+  </div>
+  <div class="form-group">
+    <label class="center-block">White paper link
+      <input class="form-control" formControlName="wpLink" pattern="https?://.+" title="Include http://" placeholder="https://">
+    </label>
+  </div>
 
     <h3>Team</h3>
-    <div class="form-group">
-      <label for="ceo">CEO</label>
-      <input [value]="CEO.fullName" (input)="CEO.fullName = $event.target.value" type="text" class="form-control" id="ceo" name="ceo" placeholder="Ivan Ivanov">
-      <label for="fbCeo">FB link:</label>
-      <input [value]="CEO.fbLink" (input)="CEO.fbLink = $event.target.value" type="text" class="form-control" id="fbCeo" name="fbCeo" placeholder="Ivan Ivanov">
-      <label for="lkCeo">Linkedin link:</label>
-      <input [value]="CEO.linkedInLink" (input)="CEO.linkedInLink = $event.target.value" type="text" class="form-control" id="lkCeo" name="lkCeo" placeholder="Ivan Ivanov">
-    </div>
+  <div formGroupName="CEO" class="form-group">
+    <label class="center-block">CEO
+      <input class="form-control" formControlName="fullName" placeholder="Stan Cooper">
+    </label>
+    <label class="center-block">FB link:
+      <input class="form-control" formControlName="fbLink" placeholder="www.facebook.com/stancooper">
+    </label>
+    <label class="center-block">Linkedin link:
+      <input class="form-control" formControlName="linkedInLink" placeholder="www.linkedin.com/stancooper">
+    </label>
+  </div>
 
-    <div class="form-group">
-      <label for="cfo">CFO</label>
-      <input [value]="CFO.fullName" (input)="CFO.fullName = $event.target.value"  type="text" class="form-control" id="cfo" name="cfo" placeholder="Ivan Ivanov">
-      <label for="fbCfo">FB link:</label>
-      <input [value]="CFO.fbLink" (input)="CFO.fbLink = $event.target.value"  type="text" class="form-control" id="fbCfo" name="fbCfo" placeholder="Ivan Ivanov">
-      <label for="lkCfo">Linkedin link:</label>
-      <input [value]="CFO.linkedInLink" (input)="CFO.linkedInLink = $event.target.value"  type="text" class="form-control" id="lkCfo" name="lkCfo" placeholder="Ivan Ivanov">
-    </div>
+  <div formGroupName="CFO" class="form-group">
+    <label class="center-block">CFO
+      <input class="form-control" formControlName="fullName" placeholder="Ivan Ivanov">
+    </label>
+    <label class="center-block">FB link:
+      <input class="form-control" formControlName="fbLink" placeholder="Ivan Ivanov">
+    </label>
+    <label class="center-block">Linkedin link:
+      <input class="form-control" formControlName="linkedInLink" placeholder="Ivan Ivanov">
+    </label>
+  </div>
 
-    <div class="form-group">
-      <label for="cmo">CMO</label>
-      <input [value]="CMO.fullName" (input)="CMO.fullName = $event.target.value"  type="text" class="form-control" id="cmo" name="cmo" placeholder="Ivan Ivanov">
-      <label for="fbCmo">FB link:</label>
-      <input [value]="CMO.fbLink" (input)="CMO.fbLink = $event.target.value"  type="text" class="form-control" id="fbCmo" name="fbCmo" placeholder="Ivan Ivanov">
-      <label for="lkCmo">Linkedin link:</label>
-      <input [value]="CMO.linkedInLink" (input)="CMO.linkedInLink = $event.target.value"  type="text" class="form-control" id="lkCmo" name="lkCmo" placeholder="Ivan Ivanov">
-    </div>
+  <div formGroupName="CMO" class="form-group">
+    <label class="center-block">CMO
+      <input class="form-control" formControlName="fullName" placeholder="Ivan Ivanov">
+    </label>
+    <label class="center-block">FB link:
+      <input class="form-control" formControlName="fbLink" placeholder="Ivan Ivanov">
+    </label>
+    <label class="center-block">Linkedin link:
+      <input class="form-control" formControlName="linkedInLink" placeholder="Ivan Ivanov">
+    </label>
+  </div>
 
-    <div class="form-group">
-      <label for="cto">CTO</label>
-      <input [value]="CTO.fullName" (input)="CTO.fullName = $event.target.value"  type="text" class="form-control" id="cto" name="cto" placeholder="Ivan Ivanov">
-      <label for="fbCto">FB link:</label>
-      <input [value]="CTO.fbLink" (input)="CTO.fbLink = $event.target.value"  type="text" class="form-control" id="fbCto" name="fbCto" placeholder="Ivan Ivanov">
-      <label for="lkCto">Linkedin link:</label>
-      <input [value]="CTO.linkedInLink" (input)="CTO.linkedInLink = $event.target.value"  type="text" class="form-control" id="lkCto" name="lkCto" placeholder="Ivan Ivanov">
-    </div>
+  <div formGroupName="CTO" class="form-group">
+    <label class="center-block">CTO
+      <input class="form-control" formControlName="fullName" placeholder="Ivan Ivanov">
+    </label>
+    <label class="center-block">FB link:
+      <input class="form-control" formControlName="fbLink" placeholder="Ivan Ivanov">
+    </label>
+    <label class="center-block">Linkedin link:
+      <input class="form-control" formControlName="linkedInLink" placeholder="Ivan Ivanov">
+    </label>
+  </div>
 
-    <div class="form-group">
-      <label for="pr">PR</label>
-      <input [value]="PR.fullName" (input)="PR.fullName = $event.target.value"  type="text" class="form-control" id="pr" name="pr" placeholder="Ivan Ivanov">
-      <label for="fbPR">FB link:</label>
-      <input [value]="PR.fbLink" (input)="PR.fbLink = $event.target.value"  type="text" class="form-control" id="fbPR" name="fbPR" placeholder="Ivan Ivanov">
-      <label for="lkPR">Linkedin link:</label>
-      <input [value]="PR.linkedInLink" (input)="PR.linkedInLink = $event.target.value"  type="text" class="form-control" id="lkPR" name="lkPR" placeholder="Ivan Ivanov">
-    </div>
+  <div formGroupName="PR" class="form-group">
+    <label class="center-block">PR
+      <input class="form-control" formControlName="fullName" placeholder="Ivan Ivanov">
+    </label>
+    <label class="center-block">FB link:
+      <input class="form-control" formControlName="fbLink" placeholder="Ivan Ivanov">
+    </label>
+    <label class="center-block">Linkedin link:
+      <input class="form-control" formControlName="linkedInLink" placeholder="Ivan Ivanov">
+    </label>
+  </div>
 
     <h3>Legal part</h3>
-    <div class="form-group">
-      <label for="country">In which country is the incorporation made?</label>
-      <input [value]="country" (input)="country = $event.target.value"  type="text" class="form-control" id="country" name="country" placeholder="Switzerland">
-    </div>
 
-    <h3>Finance</h3>
-    <div class="form-group">
-      <label>How much money you want to raise?</label>
-      <label for="softCap">Soft cap:</label>
-      <input [value]="softCap" (input)="softCap = $event.target.value"  type="text" class="form-control" id="softCap" name="softCap" placeholder="10 min. USD">
-      <label for="hardCap">Hard cap:</label>
-      <input [value]="hardCap" (input)="hardCap = $event.target.value" type="text" class="form-control" id="hardCap" name="hardCap" placeholder="80 min. USD">
-      <label for="attractInv">Did your team attract investments?</label>
-      <input [value]="attractInv" (input)="attractInv = $event.target.value" type="text" class="form-control" id="attractInv" name="attractInv" placeholder="Yes...">
-    </div>
+  <div class="form-group">
+    <label class="center-block">In which country is the incorporation made?
+      <input class="form-control" formControlName="country" placeholder="Russian Federation">
+    </label>
+  </div>
+
+  <h3>Finance</h3>
+  <label>How much money you want to raise?</label>
+  <div class="form-group">
+    <label class="center-block">Soft cap:
+      <input class="form-control" formControlName="softCap">
+    </label>
+    <label class="center-block">Hard cap:
+      <input class="form-control" formControlName="hardCap">
+    </label>
+    <label class="center-block">Financial model link:
+      <input class="form-control" formControlName="finModelLink">
+    </label>
+    <label class="center-block">Attracted investnemts:
+      <input class="form-control" formControlName="attractInv">
+    </label>
+  </div>
 
     <h3>Tech</h3>
-    <div class="form-group">
-      <label for="blockchainType">Which blockchain you want to use?</label>
-      <input [value]="blockChainType" (input)="blockChainType = $event.target.value"  type="text" class="form-control" id="blockchainType" name="blockchainType" placeholder="Ethereum">
-      <label for="mvpLink">Prototype/MVP link:</label>
-      <input [value]="mvpLink" (input)="mvpLink = $event.target.value" type="url" class="form-control" id="mvpLink" name="mvpLink" pattern="https?://.+" title="Include http://" placeholder="https://">
-    </div>
 
-    <input type="submit" value="Create" (click)="diagnostic()"/>
-  <!--</form>-->
+  <div class="form-group">
+    <label class="center-block">Which blockchain you want to use?
+      <input class="form-control" formControlName="blockChainType" placeholder="Ethereum">
+    </label>
+    <label class="center-block">Prototype/MVP link:
+      <input class="form-control" formControlName="mvpLink">
+    </label>
+  </div>
+
+    <input type="submit" value="Create project"/>
+ </form>
