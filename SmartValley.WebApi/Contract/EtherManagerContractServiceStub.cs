@@ -14,7 +14,7 @@ namespace SmartValley.WebApi.Contract
             return Task.FromResult(1.5);
         }
 
-        public Task SendEtherToAsync(string address)
+        public Task SendEtherTo(string address)
         {
             return  Task.Delay(5000);
         }
