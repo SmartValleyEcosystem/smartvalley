@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace SmartValley.Application.Contracts
 {
@@ -11,8 +10,6 @@ namespace SmartValley.Application.Contracts
         }
 
         public Task<string> AddProjectAsync(string author, string applicationHash, string name)
-        {
-            throw new NotImplementedException();
-        }
+            => SignAndSendTransactionAsync<string>("addProject", author, applicationHash, name);
     }
 }

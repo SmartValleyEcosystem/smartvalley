@@ -45,6 +45,15 @@ namespace SmartValley.Application.Contracts
             await WaitForConfirmationAsync(transactionHash);
         }
 
+        protected async Task<TResult> SignAndSendTransactionAsync<TResult>(string functionName, params object[] functionInput)
+        {
+            var function = GetFunction(functionName);
+            var transactionInput = await CreateTransactionInputAsync(function, functionInput);
+            var request = _web3.Personal.SignAndSendTransaction.BuildRequest(transactionInput, _password);
+
+            return await _web3.Client.SendRequestAsync<TResult>(request);
+        }
+
         private async Task WaitForConfirmationAsync(string transactionHash)
         {
             while (await GetReceiptAsync(transactionHash) == null)
