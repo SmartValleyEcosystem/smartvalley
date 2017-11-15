@@ -13,6 +13,8 @@ namespace SmartValley.WebApi.Contract
     // ReSharper disable once ClassNeverInstantiated.Global
     public class EtherManagerContractService : IEtherManagerContractService
     {
+        private const int AdditionalGasPercent = 10;
+
         private readonly string _contractOwner;
         private readonly string _contractAddress;
         private readonly string _contractAbi;
@@ -54,7 +56,7 @@ namespace SmartValley.WebApi.Contract
         private async Task<TransactionInput> CreateTransactionInput(Function function, params object[] functionInput)
         {
             var estimatedGasHex = await function.EstimateGasAsync(functionInput);
-            var gas = new HexBigInteger(estimatedGasHex.Value * 110 / 100); // Adding 10% just in case
+            var gas = new HexBigInteger(estimatedGasHex.Value * (100 + AdditionalGasPercent) / 100); // Adding some gas just in case
             var gasPrice = new HexBigInteger(Web3.Convert.GetEthUnitValue(UnitConversion.EthUnit.Gwei));
 
             return function.CreateTransactionInput(_contractOwner, gas, gasPrice, new HexBigInteger(0), functionInput);
