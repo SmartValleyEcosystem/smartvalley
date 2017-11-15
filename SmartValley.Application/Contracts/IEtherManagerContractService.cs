@@ -1,12 +1,10 @@
 ﻿using System.Threading.Tasks;
 
-namespace SmartValley.WebApi.Contract
+namespace SmartValley.Application.Contracts
 {
     public interface IEtherManagerContractService
     {
         Task<bool> HasReceivedEtherAsync(string address);
-
-        Task<double> GetEtherBalanceAsync(string address);
 
         Task SendEtherToAsync(string address);
     }

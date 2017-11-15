@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Nethereum.JsonRpc.IpcClient" Version="2.1.0" />
+    <PackageReference Include="Nethereum.Web3" Version="2.1.0" />
+  </ItemGroup>
+</Project>

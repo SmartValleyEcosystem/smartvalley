@@ -8,11 +8,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Nethereum.Signer;
+using SmartValley.Application;
+using SmartValley.Application.Contracts;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Data.SQL.Repositories;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Authentication;
-using SmartValley.WebApi.Contract;
 using SmartValley.WebApi.ExceptionHandler;
 using SmartValley.WebApi.WebApi;
 using Swashbuckle.AspNetCore.Swagger;
@@ -22,7 +23,7 @@ namespace SmartValley.WebApi
     public class Startup
     {
         private const string CorsPolicyName = "SVPolicy";
-        
+
         private readonly IHostingEnvironment _currentEnvironment;
 
         public Startup(IConfiguration configuration, IHostingEnvironment currentEnvironment)
@@ -52,6 +53,8 @@ namespace SmartValley.WebApi
 
             services.AddSingleton<EthereumMessageSigner>();
             services.AddSingleton<IEtherManagerContractService, EtherManagerContractService>();
+            services.AddSingleton<IProjectManagerContractService, ProjectManagerContractService>();
+            services.AddSingleton<EthereumClient>();
 
             services.AddMvc(options => { options.Filters.Add(new AppErrorsExceptionFilter()); });
 

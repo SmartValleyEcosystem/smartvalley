@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SmartValley.WebApi.Contract;
+using SmartValley.Application;
+using SmartValley.Application.Contracts;
 
 namespace SmartValley.WebApi.Balance
 {
@@ -10,17 +11,19 @@ namespace SmartValley.WebApi.Balance
     public class BalanceController : Controller
     {
         private readonly IEtherManagerContractService _etherManagerContractService;
+        private readonly EthereumClient _ethereumClient;
 
-        public BalanceController(IEtherManagerContractService etherManagerContractService)
+        public BalanceController(IEtherManagerContractService etherManagerContractService, EthereumClient ethereumClient)
         {
             _etherManagerContractService = etherManagerContractService;
+            _ethereumClient = ethereumClient;
         }
 
         [HttpGet]
         public async Task<BalanceResponse> Get()
         {
             var wasEtherReceived = await _etherManagerContractService.HasReceivedEtherAsync(User.Identity.Name);
-            var balance = await _etherManagerContractService.GetEtherBalanceAsync(User.Identity.Name);
+            var balance = await _ethereumClient.GetBalanceAsync(User.Identity.Name);
 
             return new BalanceResponse
                    {
