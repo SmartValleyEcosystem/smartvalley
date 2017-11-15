@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using SmartValley.Data.SQL.Repositories;
-using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Application
 {
@@ -26,7 +24,7 @@ namespace SmartValley.WebApi.Application
                 throw new ArgumentNullException();
             }
 
-            var project = new Project
+            var project = new Domain.Entities.Project
                           {
                               Name = model.Name,
                               Country = model.Country,
