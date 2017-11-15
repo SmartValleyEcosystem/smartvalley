@@ -17,6 +17,7 @@ import {NotificationsComponent} from './components/common/notifications/notifica
 import {BalanceApiClient} from './api/balance/balance-api-client';
 import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
 import {IfWeb3Initialized} from "./routing/IfWeb3Initialized";
+import { ApplicationComponent } from './components/application/application.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import {IfWeb3Initialized} from "./routing/IfWeb3Initialized";
     RootComponent,
     HeaderComponent,
     NotificationsComponent,
+    ApplicationComponent,
   ],
   imports: [
     BrowserModule,
