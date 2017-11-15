@@ -10,19 +10,19 @@ namespace SmartValley.WebApi.Balance
     [Authorize]
     public class BalanceController : Controller
     {
-        private readonly IEtherManagerContractService _etherManagerContractService;
+        private readonly IEtherManagerContractClient _etherManagerContractClient;
         private readonly EthereumClient _ethereumClient;
 
-        public BalanceController(IEtherManagerContractService etherManagerContractService, EthereumClient ethereumClient)
+        public BalanceController(IEtherManagerContractClient etherManagerContractClient, EthereumClient ethereumClient)
         {
-            _etherManagerContractService = etherManagerContractService;
+            _etherManagerContractClient = etherManagerContractClient;
             _ethereumClient = ethereumClient;
         }
 
         [HttpGet]
         public async Task<BalanceResponse> Get()
         {
-            var wasEtherReceived = await _etherManagerContractService.HasReceivedEtherAsync(User.Identity.Name);
+            var wasEtherReceived = await _etherManagerContractClient.HasReceivedEtherAsync(User.Identity.Name);
             var balance = await _ethereumClient.GetBalanceAsync(User.Identity.Name);
 
             return new BalanceResponse
@@ -33,6 +33,6 @@ namespace SmartValley.WebApi.Balance
         }
 
         [HttpPost]
-        public Task Post() => _etherManagerContractService.SendEtherToAsync(User.Identity.Name);
+        public Task Post() => _etherManagerContractClient.SendEtherToAsync(User.Identity.Name);
     }
 }

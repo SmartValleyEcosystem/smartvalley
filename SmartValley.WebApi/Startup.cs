@@ -52,8 +52,8 @@ namespace SmartValley.WebApi
                     .AddScheme<EcdsaAuthenticationOptions, EcdsaAuthenticationHandler>(EcdsaAuthenticationOptions.DefaultScheme, options => { });
 
             services.AddSingleton<EthereumMessageSigner>();
-            services.AddSingleton<IEtherManagerContractService, EtherManagerContractService>();
-            services.AddSingleton<IProjectManagerContractService, ProjectManagerContractService>();
+            services.AddSingleton<IEtherManagerContractClient, EtherManagerContractClient>();
+            services.AddSingleton<IProjectManagerContractClient, ProjectManagerContractClient>();
             services.AddSingleton<EthereumClient>();
 
             services.AddMvc(options => { options.Filters.Add(new AppErrorsExceptionFilter()); });

@@ -2,9 +2,9 @@
 
 namespace SmartValley.Application.Contracts
 {
-    public class ProjectManagerContractService : EthereumContractClient, IProjectManagerContractService
+    public class ProjectManagerContractClient : EthereumContractClient, IProjectManagerContractClient
     {
-        public ProjectManagerContractService(NethereumOptions nethereumOptions)
+        public ProjectManagerContractClient(NethereumOptions nethereumOptions)
             : base(nethereumOptions.RpcAddress, nethereumOptions.ProjectManagerContract)
         {
         }

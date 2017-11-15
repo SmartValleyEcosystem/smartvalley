@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 namespace SmartValley.Application.Contracts
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class EtherManagerContractService : EthereumContractClient, IEtherManagerContractService
+    public class EtherManagerContractClient : EthereumContractClient, IEtherManagerContractClient
     {
-        public EtherManagerContractService(NethereumOptions nethereumOptions)
+        public EtherManagerContractClient(NethereumOptions nethereumOptions)
             : base(nethereumOptions.RpcAddress, nethereumOptions.EtherManagerContract)
         {
         }
