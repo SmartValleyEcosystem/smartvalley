@@ -27,9 +27,6 @@ namespace SmartValley.WebApi.Balance
         }
 
         [HttpPost]
-        public Task Post()
-        {
-            return _etherManagerContractService.SendEtherTo(User.Identity.Name);
-        }
+        public Task Post() => _etherManagerContractService.SendEtherToAsync(User.Identity.Name);
     }
 }
