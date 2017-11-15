@@ -19,17 +19,17 @@ namespace SmartValley.WebApi.Balance
         [HttpGet]
         public async Task<BalanceResponse> Get()
         {
+            var wasEtherReceived = await _etherManagerContractService.HasReceivedEtherAsync(User.Identity.Name);
+            var balance = await _etherManagerContractService.GetEtherBalanceAsync(User.Identity.Name);
+
             return new BalanceResponse
                    {
-                       WasEtherReceived = await _etherManagerContractService.HasReceivedEtherAsync(User.Identity.Name),
-                       Balance = await _etherManagerContractService.GetEtherBalanceAsync(User.Identity.Name)
+                       WasEtherReceived = wasEtherReceived,
+                       Balance = balance
                    };
         }
 
         [HttpPost]
-        public async Task Post()
-        {
-            await _etherManagerContractService.SendEtherTo(User.Identity.Name);
-        }
+        public Task Post() => _etherManagerContractService.SendEtherToAsync(User.Identity.Name);
     }
 }

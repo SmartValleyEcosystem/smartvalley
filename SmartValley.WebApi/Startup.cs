@@ -3,7 +3,6 @@ using IcoLab.Web.Common.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,24 +21,27 @@ namespace SmartValley.WebApi
 {
     public class Startup
     {
+        private const string CorsPolicyName = "SVPolicy";
+        
+        private readonly IHostingEnvironment _currentEnvironment;
+
         public Startup(IConfiguration configuration, IHostingEnvironment currentEnvironment)
         {
             Configuration = configuration;
             _currentEnvironment = currentEnvironment;
         }
 
-        private readonly IHostingEnvironment _currentEnvironment;
-
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        // ReSharper disable once UnusedMember.Global
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureOptions(Configuration, typeof(SiteOptions), typeof(ContractOptions));
 
             ConfigureCorsPolicy(services);
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "SmartValley API", Version = "v1" }); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "SmartValley API", Version = "v1"}); });
 
             services.AddAuthentication(options =>
                                        {
@@ -49,7 +51,7 @@ namespace SmartValley.WebApi
                     .AddScheme<EcdsaAuthenticationOptions, EcdsaAuthenticationHandler>(EcdsaAuthenticationOptions.DefaultScheme, options => { });
 
             services.AddSingleton<EthereumMessageSigner>();
-            services.AddSingleton<IEtherManagerContractService, EtherManagerContractServiceStub>();
+            services.AddSingleton<IEtherManagerContractService, EtherManagerContractService>();
 
             services.AddMvc(options => { options.Filters.Add(new AppErrorsExceptionFilter()); });
 
@@ -59,12 +61,13 @@ namespace SmartValley.WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // ReSharper disable once UnusedMember.Global
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseCors(SvCustomCorsConstants.CorsPolicyName);
+            app.UseCors(CorsPolicyName);
 
             if (env.IsDevelopment())
             {
@@ -81,7 +84,7 @@ namespace SmartValley.WebApi
                        {
                            routes.MapSpaFallbackRoute(
                                name: "spa-fallback",
-                               defaults: new { controller = "Home", action = "Index" });
+                               defaults: new {controller = "Home", action = "Index"});
                        });
         }
 
@@ -98,10 +101,10 @@ namespace SmartValley.WebApi
             corsPolicyBuilder.WithOrigins(url);
             corsPolicyBuilder.AllowAnyHeader();
             corsPolicyBuilder.AllowAnyMethod();
-            corsPolicyBuilder.WithExposedHeaders(SvCustomCorsConstants.XEthereumAddress, SvCustomCorsConstants.XSignedText, SvCustomCorsConstants.XSignature);
+            corsPolicyBuilder.WithExposedHeaders(Headers.XEthereumAddress, Headers.XSignedText, Headers.XSignature);
             corsPolicyBuilder.AllowCredentials();
 
-            services.AddCors(options => { options.AddPolicy(SvCustomCorsConstants.CorsPolicyName, corsPolicyBuilder.Build()); });
+            services.AddCors(options => { options.AddPolicy(CorsPolicyName, corsPolicyBuilder.Build()); });
         }
     }
 }
