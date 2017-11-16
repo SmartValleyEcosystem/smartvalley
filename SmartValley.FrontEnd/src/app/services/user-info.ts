@@ -13,4 +13,3 @@ export class UserInfo {
     return new UserInfo(null, null, false);
   }
 }
-

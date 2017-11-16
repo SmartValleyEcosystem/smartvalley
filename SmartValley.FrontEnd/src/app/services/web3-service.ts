@@ -47,18 +47,16 @@ export class Web3Service {
     });
   }
 
-
   public getAccounts(): Promise<Array<string>> {
     return new Promise<Array<string>>((resolve, reject) => {
-      this.web3.eth.getAccounts((err, accs) => {
-        if (!isNullOrUndefined(accs)) {
-          resolve(accs);
+      this.web3.eth.getAccounts((err, accounts) => {
+        if (!isNullOrUndefined(accounts)) {
+          resolve(accounts);
         } else {
-          reject('No accs fouund: ' + err);
+          reject('No accounts found: ' + err);
         }
       });
     });
-
   }
 
   public isRinkebyNetwork(): Promise<boolean> {

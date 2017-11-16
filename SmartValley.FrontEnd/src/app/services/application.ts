@@ -28,7 +28,7 @@ export class Application {
 
   hardCap: string;
 
-  attractedInvestnemts = false;
+  attractedInvestments = false;
 
   financeModelLink: string;
 
