@@ -5,6 +5,6 @@ namespace SmartValley.WebApi.Application
 {
     public interface IApplicationService
     {
-        Task CreateApplication(ApplicationRequest model);
+        Task CreateApplicationAsync(ApplicationRequest applicationRequest);
     }
 }

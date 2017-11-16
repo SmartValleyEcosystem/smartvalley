@@ -6,9 +6,12 @@ namespace SmartValley.WebApi.Application
     public class ApplicationRequest
     {
         public string Name { get; set; }
+
         public string AuthorAddress { get; set; }
 
         public string ProjectArea { get; set; }
+
+        public string ProjectId { get; set; }
 
         public string ProbablyDescription { get; set; }
 

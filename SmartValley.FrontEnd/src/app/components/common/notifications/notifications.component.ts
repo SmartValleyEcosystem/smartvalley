@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 import {Message} from 'primeng/primeng';
-import {NotificationService} from "../../../services/notification-service";
+import {NotificationService} from '../../../services/notification-service';
 
 @Component({
   selector: 'app-notifications',

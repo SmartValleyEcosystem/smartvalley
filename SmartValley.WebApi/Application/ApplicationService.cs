@@ -1,45 +1,69 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using SmartValley.Application.Exceptions;
 using SmartValley.Data.SQL.Repositories;
+using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Application
 {
     public class ApplicationService : IApplicationService
     {
-        private readonly ApplicationRepository _appRepository;
-        private readonly ProjectRepository _projRepository;
+        private readonly ApplicationRepository _applicationRepository;
+        private readonly ProjectRepository _projectRepository;
         private readonly TeamMemberRepository _teamRepository;
 
-        public ApplicationService(ApplicationRepository appRepository, ProjectRepository projRepository, TeamMemberRepository teamRepository)
+        public ApplicationService(
+            ApplicationRepository applicationRepository,
+            ProjectRepository projectRepository,
+            TeamMemberRepository teamRepository)
         {
-            _appRepository = appRepository;
-            _projRepository = projRepository;
+            _applicationRepository = applicationRepository;
+            _projectRepository = projectRepository;
             _teamRepository = teamRepository;
         }
 
-        public async Task CreateApplication(ApplicationRequest model)
+        public async Task CreateApplicationAsync(ApplicationRequest applicationRequest)
         {
-            if (model == null)
-            {
+            if (applicationRequest == null)
                 throw new ArgumentNullException();
-            }
 
-            var project = new Domain.Entities.Project
-                          {
-                              Name = model.Name,
-                              Country = model.Country,
-                              ProjectArea = model.ProjectArea,
-                              ProblemDesc = model.ProbablyDescription,
-                              SolutionDesc = model.SolutionDescription,
-                              AuthorAddress = model.AuthorAddress,
-                              ProjectAddress = "projAddress"
-                          };
+            var project = await AddProjectAsync(applicationRequest);
 
-            var projectResult = await _projRepository.AddAsync(project);
+            var application = await AddApplicationAsync(applicationRequest, project.Id);
 
+            var teamMembers = applicationRequest
+                .TeamMembers
+                .Select(m => CreateTeamMember(m, application.Id)).ToArray();
+
+            await _teamRepository.AddRangeAsync(teamMembers);
+        }
+
+        private static TeamMember CreateTeamMember(TeamMemberRequest memberRequest, long applicationId)
+        {
+            return new TeamMember
+                   {
+                       ApplicationId = applicationId,
+                       FullName = memberRequest.FullName,
+                       PersonType = ToPersonType(memberRequest.MemberType),
+                       FacebookLink = memberRequest.FacebookLink,
+                       LinkedInLink = memberRequest.LinkedInLink
+                   };
+        }
+
+        private static MemberType ToPersonType(string memberType)
+        {
+            if (Enum.TryParse(memberType, out MemberType result))
+                return result;
+
+            throw new AppErrorException(ErrorCode.ValidatationError, $"Unknown team member type: '{memberType}'");
+        }
+
+        private async Task<Domain.Entities.Application> AddApplicationAsync(ApplicationRequest model, long projectId)
+        {
             var application = new Domain.Entities.Application
                               {
-                                  ProjectId = project.Id,
+                                  ProjectId = projectId,
                                   SoftCap = decimal.Parse(model.SoftCap),
                                   HardCap = decimal.Parse(model.HardCap),
                                   CryptoCurrency = model.BlockChainType,
@@ -50,7 +74,27 @@ namespace SmartValley.WebApi.Application
                                   MVPLink = model.MvpLink
                               };
 
-            var applicationResult = _appRepository.AddAsync(application);
+            await _applicationRepository.AddAsync(application);
+
+            return application;
+        }
+
+        private async Task<Project> AddProjectAsync(ApplicationRequest model)
+        {
+            var project = new Project
+                          {
+                              Name = model.Name,
+                              Country = model.Country,
+                              ProjectArea = model.ProjectArea,
+                              ProblemDesc = model.ProbablyDescription,
+                              SolutionDesc = model.SolutionDescription,
+                              AuthorAddress = model.AuthorAddress,
+                              ProjectAddress = "projAddress"
+                          };
+
+            await _projectRepository.AddAsync(project);
+
+            return project;
         }
     }
 }

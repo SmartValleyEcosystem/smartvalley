@@ -1,22 +1,18 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import {Web3Service} from './web3-service';
-import {Resolve} from '@angular/router';
 import {NotificationService} from './notification-service';
 import {UserInfo} from './user-info';
-import {Observable} from 'rxjs/Observable';
-import {Paths} from '../paths';
-
 
 @Injectable()
 export class AuthenticationService {
 
-  constructor(private web3Service: Web3Service, private _notificationService: NotificationService) {
-  }
+  static MESSAGE_TO_SIGN = 'Confirm login';
 
   public userInfoChanged: EventEmitter<any> = new EventEmitter<any>();
 
-  static MESSAGE_TO_SIGN = 'Confirm login';
+  constructor(private web3Service: Web3Service, private _notificationService: NotificationService) {
+  }
 
   public getSignatureByAddress(account: string) {
     return window.localStorage[account];
@@ -40,7 +36,7 @@ export class AuthenticationService {
       return false;
     }
 
-    this._notificationService.notify('success', 'Succsessfuly authenticated!');
+    this._notificationService.notify('success', 'Successfully authenticated!');
     this.userInfoChanged.emit();
     return true;
   }

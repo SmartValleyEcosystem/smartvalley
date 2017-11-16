@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {AuthenticationService} from '../../services/authentication-service';
-import {Web3Service} from "../../services/web3-service";
+import {Web3Service} from '../../services/web3-service';
 
 @Component({
   selector: 'app-header',
@@ -12,9 +12,11 @@ export class HeaderComponent implements OnInit {
 
   public currentBalance: number;
   public wasEtherReceived: boolean;
-  public isAunthenticated: boolean;
+  public isAuthenticated: boolean;
 
-  constructor(private balanceApiClient: BalanceApiClient, private authenticationService: AuthenticationService, private web3Service: Web3Service) {
+  constructor(private balanceApiClient: BalanceApiClient,
+              private authenticationService: AuthenticationService,
+              private web3Service: Web3Service) {
     this.authenticationService.userInfoChanged.subscribe(async () => await this.updateHeader());
   }
 
@@ -31,11 +33,11 @@ export class HeaderComponent implements OnInit {
       const result = await this.balanceApiClient.getBalance();
       this.currentBalance = result.balance;
       this.wasEtherReceived = result.wasEtherReceived;
-      this.isAunthenticated = true;
+      this.isAuthenticated = true;
     }
   }
 
-  async receieveEth() {
+  async receiveEth() {
     await this.balanceApiClient.receiveEther();
   }
 }
