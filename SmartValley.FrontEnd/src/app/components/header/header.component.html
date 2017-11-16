@@ -1,6 +1,6 @@
-<mat-toolbar color="primary">
+<mat-toolbar>
   <mat-toolbar-row>
-    <span>Smart valley</span>
+    <a [routerLink] = "['/']">Smart valley</a>
     <span class="example-spacer"></span>
     <div *ngIf="isAunthenticated">
       <span>Balance: {{currentBalance}} ETH</span>

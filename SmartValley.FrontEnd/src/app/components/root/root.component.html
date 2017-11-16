@@ -1,6 +1,6 @@
 <div class="flex-container">
   <button *ngIf="userInfo == null" mat-raised-button (click)="tryIt()">Try It!</button>
-  <app-application *ngIf="userInfo != null"></app-application>
+  <button mat-raised-button class="sm-btn-primary" (click)="redirect('scorring')">Become an expert</button>
 </div>
 
 

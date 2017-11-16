@@ -1,0 +1,45 @@
+.scorring-header{
+  margin-bottom: 20px;
+}
+.scorring-header__country{
+  color: rgba(0,0,0,0.5);
+}
+.scorring-header__title > span{
+  display: block;
+  margin: 5px 0px;
+}
+.scorring-footer{
+  margin-top: 10px;
+}
+.scorring-rating{
+  display: inline-block;
+}
+.scorring-rating > span{
+   display: block;
+ }
+.scorring-footer > a{
+  float:right;
+}
+.scorring-desc{
+  margin-bottom: 60px;
+  color: white;
+  margin-left: 60px;
+  padding: inherit;
+}
+.scorring-desc h1{
+  letter-spacing: 7px;
+  font-size: 50px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+.scorring-card{
+  height: 530px;
+  display: inline-block;
+  max-width: 47%;
+  margin: 15px;
+}
+.scorring-card-block{
+  margin: 50px;
+  padding: 0px;
+}

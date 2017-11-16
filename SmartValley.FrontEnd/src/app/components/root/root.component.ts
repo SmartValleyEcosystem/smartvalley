@@ -15,7 +15,7 @@ export class RootComponent implements OnInit {
   public userInfo: UserInfo;
 
   async ngOnInit() {
-  await this.updateUserInfo();
+    await this.updateUserInfo();
   }
 
   constructor(private router: Router,
@@ -27,6 +27,10 @@ export class RootComponent implements OnInit {
 
   async updateUserInfo() {
     this.userInfo = await this.authenticationService.getUserInfo();
+  }
+
+  redirect(pagename: string) {
+    this.router.navigate(['/' + pagename ]);
   }
 
   async tryIt() {
