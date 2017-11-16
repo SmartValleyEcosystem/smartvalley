@@ -8,6 +8,10 @@ namespace SmartValley.WebApi.ExceptionHandler
         {
             Error = new AppError(code);
         }
+        public AppErrorException(AppError error)
+        {
+            Error = error;
+        }
 
         public AppErrorException(ErrorCode code, string message)
         {

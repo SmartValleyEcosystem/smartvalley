@@ -2,7 +2,8 @@
 {
     public enum ErrorCode
     {
+        EtherAlreadySent,
         ServerError,
-        EtherAlreadySent
+        ValidatationError
     }
 }

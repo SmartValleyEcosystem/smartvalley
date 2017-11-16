@@ -1,10 +1,7 @@
 import {BalanceResponse} from './balance-response';
-import {Http, Response, RequestOptions, Headers} from '@angular/http';
-
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {BaseApiClient} from "../base-api-client";
+import {BaseApiClient} from '../base-api-client';
 
 @Injectable()
 export class BalanceApiClient extends BaseApiClient {
@@ -17,6 +14,6 @@ export class BalanceApiClient extends BaseApiClient {
   }
 
   async receiveEther() {
-    await this.http.post(this.baseApiUrl + '/api/balance', null).subscribe();
+    await this.http.post(this.baseApiUrl + '/balance', null).subscribe();
   }
 }

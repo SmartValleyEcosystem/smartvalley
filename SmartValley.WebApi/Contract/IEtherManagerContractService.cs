@@ -7,7 +7,6 @@ namespace SmartValley.WebApi.Contract
         Task<bool> HasReceivedEtherAsync(string address);
 
         Task<double> GetEtherBalanceAsync(string address);
-
         Task SendEtherToAsync(string address);
     }
 }

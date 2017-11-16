@@ -8,7 +8,7 @@ namespace SmartValley.Domain.Entities
         public long Id { get; set; }
 
         [Required]
-        [MaxLength(20)]
+        [MaxLength(42)]
         public string AuthorAddress { get; set; }
 
         [Required]
