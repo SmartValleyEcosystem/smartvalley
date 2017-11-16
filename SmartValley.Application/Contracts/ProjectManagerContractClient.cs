@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Nethereum.ABI.Encoders;
 
 namespace SmartValley.Application.Contracts
 {
@@ -9,7 +10,12 @@ namespace SmartValley.Application.Contracts
         {
         }
 
-        public Task<string> AddProjectAsync(string author, string applicationHash, string name)
-            => SignAndSendTransactionAsync<string>("addProject", author, applicationHash, name);
+        public async Task<string> AddProjectAsync(string projectId, string signedTransactionData)
+        {
+            await SendRawTransactionAsync(signedTransactionData);
+
+            var encodedProjectId = new Bytes32TypeEncoder().Encode(projectId);
+            return await GetFunction("projectsMap").CallAsync<string>(encodedProjectId);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using SmartValley.Application.Exceptions;
 
 namespace SmartValley.WebApi.ExceptionHandler
 {

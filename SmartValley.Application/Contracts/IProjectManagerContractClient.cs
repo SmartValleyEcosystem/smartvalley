@@ -4,6 +4,6 @@ namespace SmartValley.Application.Contracts
 {
     public interface IProjectManagerContractClient
     {
-        Task<string> AddProjectAsync(string author, string applicationHash, string name);
+        Task<string> AddProjectAsync(string projectId, string signedTransactionData);
     }
 }

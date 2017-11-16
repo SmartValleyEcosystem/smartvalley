@@ -1,5 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using SmartValley.Application.Exceptions;
 
 namespace SmartValley.Application.Contracts
 {
@@ -17,8 +17,7 @@ namespace SmartValley.Application.Contracts
         public async Task SendEtherToAsync(string address)
         {
             if (await HasReceivedEtherAsync(address))
-                //throw new EtherAlreadySentException(address);
-                throw new InvalidOperationException();
+                throw new EtherAlreadySentException(address);
 
             await SignAndSendTransactionAsync("giftEth", address);
         }

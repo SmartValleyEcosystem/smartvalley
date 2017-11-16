@@ -1,4 +1,4 @@
-﻿namespace SmartValley.WebApi.ExceptionHandler
+﻿namespace SmartValley.Application.Exceptions
 {
     public class EtherAlreadySentException : AppErrorException
     {
