@@ -11,6 +11,8 @@ namespace SmartValley.WebApi.Application
 
         public string ProjectArea { get; set; }
 
+        public string ProjectId { get; set; }
+
         public string ProbablyDescription { get; set; }
 
         public string SolutionDescription { get; set; }

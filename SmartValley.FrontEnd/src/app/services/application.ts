@@ -1,14 +1,16 @@
-import {TeamMember} from '../services/team-member';
+import {TeamMember} from './team-member';
 
 export class Application {
 
   constructor() {
-    this.TeamMembers = new Array<TeamMember>();
+    this.teamMembers = [];
   }
 
   name: string;
 
   projectArea: string;
+
+  projectId: string;
 
   probablyDescription: string;
 
@@ -32,7 +34,7 @@ export class Application {
 
   financeModelLink: string;
 
-  TeamMembers: Array<TeamMember>;
+  teamMembers: Array<TeamMember>;
 
   authorAddress: string;
 }

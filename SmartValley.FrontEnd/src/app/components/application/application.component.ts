@@ -4,6 +4,7 @@ import {ApplicationApiClient} from '../../api/application/application-api.client
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Application} from '../../services/application';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
+import {v4 as uuid} from 'uuid';
 
 @Component({
   selector: 'app-application',
@@ -16,7 +17,9 @@ export class ApplicationComponent {
 
   teamMembers: Array<FormGroup>;
 
-  constructor(private fb: FormBuilder, private authenticationService: AuthenticationService, private apiClient: ApplicationApiClient) {
+  constructor(private formBuilder: FormBuilder,
+              private authenticationService: AuthenticationService,
+              private apiClient: ApplicationApiClient) {
     this.createForm();
   }
 
@@ -39,18 +42,20 @@ export class ApplicationComponent {
     application.solutionDescription = formModel.solutionDescription;
     application.whitePaperLink = formModel.whitePaperLink;
 
+    application.projectId = uuid();
+
     const userInfo = await this.authenticationService.getUserInfo();
     application.authorAddress = userInfo.ethereumAddress;
-    application.TeamMembers = [];
+    application.teamMembers = [];
     for (const teamMember of this.teamMembers) {
-      application.TeamMembers.push(teamMember.value);
+      application.teamMembers.push(teamMember.value);
     }
 
     return application;
   }
 
   createForm() {
-    this.applicationForm = this.fb.group({
+    this.applicationForm = this.formBuilder.group({
       name: ['', Validators.required],
       whitePaperLink: ['', Validators.pattern('https?://.+')],
       projectArea: '',
@@ -70,7 +75,7 @@ export class ApplicationComponent {
     for (const item in EnumTeamMemberType) {
       if (typeof EnumTeamMemberType[item] === 'number') {
 
-        const group = this.fb.group({
+        const group = this.formBuilder.group({
           memberType: EnumTeamMemberType[item],
           title: item,
           fullName: '',

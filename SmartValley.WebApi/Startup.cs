@@ -38,7 +38,7 @@ namespace SmartValley.WebApi
         // ReSharper disable once UnusedMember.Global
         public void ConfigureServices(IServiceCollection services)
         {
-            services.ConfigureOptions(Configuration, typeof(SiteOptions), typeof(ContractOptions));
+            services.ConfigureOptions(Configuration, typeof(SiteOptions), typeof(ContractOptions), typeof(NethereumOptions));
 
             ConfigureCorsPolicy(services);
 

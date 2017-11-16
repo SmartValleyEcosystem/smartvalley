@@ -19,7 +19,7 @@ import {BalanceApiClient} from './api/balance/balance-api-client';
 import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
 import {IfWeb3Initialized} from './routing/IfWeb3Initialized';
 import { ApplicationComponent } from './components/application/application.component';
-import { ReactiveFormsModule } from '@angular/forms';  // <-- #1 import module
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
