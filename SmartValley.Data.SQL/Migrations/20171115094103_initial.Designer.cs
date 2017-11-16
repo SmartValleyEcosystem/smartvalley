@@ -12,7 +12,7 @@ using System;
 namespace SmartValley.Data.SQL.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20171114131138_initial")]
+    [Migration("20171115094103_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,7 +62,7 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<string>("AuthorAddress")
                         .IsRequired()
-                        .HasMaxLength(20);
+                        .HasMaxLength(42);
 
                     b.Property<string>("Country")
                         .IsRequired()

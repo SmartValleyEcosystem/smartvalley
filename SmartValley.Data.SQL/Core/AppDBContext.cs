@@ -14,6 +14,7 @@ namespace SmartValley.Data.SQL.Core
         {
             Database.EnsureCreated();
         }
+
         IQueryable<Application> IReadOnlyDataContext.Applications => Applications.AsNoTracking();
         IQueryable<Project> IReadOnlyDataContext.Projects => Projects.AsNoTracking();
         IQueryable<TeamMember> IReadOnlyDataContext.Persons => Persons.AsNoTracking();
@@ -40,6 +41,21 @@ namespace SmartValley.Data.SQL.Core
         public EntityEntry<T> Entity<T>(T x) where T : class
         {
             return Entry(x);
+        }
+
+        public static IEditableDataContext CreateEditable(DbContextOptions<AppDBContext> options)
+        {
+            return new AppDBContext(options);
+        }
+
+        public static IReadOnlyDataContext CreateReadOnly(DbContextOptions<AppDBContext> options)
+        {
+            var context = new AppDBContext(options);
+            context.ChangeTracker.AutoDetectChangesEnabled = false;
+            context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+
+            context.Database.AutoTransactionsEnabled = false;
+            return context;
         }
     }
 }

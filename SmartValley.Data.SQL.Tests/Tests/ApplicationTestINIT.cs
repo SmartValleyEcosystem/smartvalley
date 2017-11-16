@@ -30,8 +30,8 @@ namespace SmartValley.Data.SQL.Tests.Tests
         {
             _projects = new List<Project>
                         {
-                            new Project { Name="Project1", SolutionDesc = "Sol1", ProblemDesc = "Prob1", ProjectArea = "ProjA1", Country = "Russia"},
-                            new Project { Name="Project2", SolutionDesc = "Sol2", ProblemDesc = "Prob2", ProjectArea = "ProjA2", Country = "USA"}
+                            new Project { Name="Project1", SolutionDesc = "Sol1", ProblemDesc = "Prob1", ProjectArea = "ProjA1", Country = "Russia", ProjectAddress = "PA1", AuthorAddress = "PA1"},
+                            new Project { Name="Project2", SolutionDesc = "Sol2", ProblemDesc = "Prob2", ProjectArea = "ProjA2", Country = "USA", ProjectAddress = "PA2", AuthorAddress = "PA1"}
                         };
 
             _applications = new List<Application>
@@ -48,11 +48,11 @@ namespace SmartValley.Data.SQL.Tests.Tests
         }
 
         [SetUp]
-        public void LoadData()
+        public async Task LoadData()
         {
-            _env.LoadData(_persons);
-            _env.LoadData(_projects);
-            _env.LoadData(_applications);
+            await _env.LoadData(_persons);
+            await _env.LoadData(_projects);
+            await _env.LoadData(_applications);
         }
 
         [TearDown]

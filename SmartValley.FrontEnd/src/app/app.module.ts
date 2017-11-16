@@ -9,6 +9,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {Web3Service} from './services/web3-service';
 import {IfAuthenticated} from './routing/IfAuthenticated';
 import {AuthenticationService} from './services/authentication-service';
+import {ApplicationApiClient} from './api/application/application-api.client';
 import {HeaderComponent} from './components/header/header.component';
 import {MaterialModule} from './shared/material.module';
 import {PrimeNgModule} from './shared/prime-ng.module';
@@ -16,7 +17,9 @@ import {NotificationService} from './services/notification-service';
 import {NotificationsComponent} from './components/common/notifications/notifications.component';
 import {BalanceApiClient} from './api/balance/balance-api-client';
 import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
-import {IfWeb3Initialized} from "./routing/IfWeb3Initialized";
+import {IfWeb3Initialized} from './routing/IfWeb3Initialized';
+import { ApplicationComponent } from './components/application/application.component';
+import { ReactiveFormsModule } from '@angular/forms';  // <-- #1 import module
 
 @NgModule({
   declarations: [
@@ -26,6 +29,7 @@ import {IfWeb3Initialized} from "./routing/IfWeb3Initialized";
     RootComponent,
     HeaderComponent,
     NotificationsComponent,
+    ApplicationComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +37,8 @@ import {IfWeb3Initialized} from "./routing/IfWeb3Initialized";
     BrowserAnimationsModule,
     MaterialModule,
     PrimeNgModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule
   ],
   providers: [
     {
@@ -42,6 +47,7 @@ import {IfWeb3Initialized} from "./routing/IfWeb3Initialized";
       multi: true
     },
     BalanceApiClient,
+    ApplicationApiClient,
     AuthenticationService,
     Web3Service,
     NotificationService,

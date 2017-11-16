@@ -12,7 +12,7 @@ using SmartValley.Application;
 using SmartValley.Application.Contracts;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Data.SQL.Repositories;
-using SmartValley.Domain.Interfaces;
+using SmartValley.WebApi.Application;
 using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.ExceptionHandler;
 using SmartValley.WebApi.WebApi;
@@ -56,11 +56,22 @@ namespace SmartValley.WebApi
             services.AddSingleton<IProjectManagerContractClient, ProjectManagerContractClient>();
             services.AddSingleton<EthereumClient>();
 
-            services.AddMvc(options => { options.Filters.Add(new AppErrorsExceptionFilter()); });
+            services.AddMvc(options =>
+                            {
+                                options.Filters.Add(new AppErrorsExceptionFilter());
+                                options.Filters.Add(new ModelStateFilter());
+                            });
 
-            services.AddTransient<IApplicationRepository, ApplicationRepository>();
-            services.AddTransient<IProjectRepository, ProjectRepository>();
+            var builder = new DbContextOptionsBuilder<AppDBContext>();
+            builder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            var dbOptions = builder.Options;
             services.AddDbContext<AppDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient(x => AppDBContext.CreateEditable(dbOptions));
+            services.AddTransient(x => AppDBContext.CreateReadOnly(dbOptions));
+            services.AddTransient<TeamMemberRepository, TeamMemberRepository>();
+            services.AddTransient<ApplicationRepository, ApplicationRepository>();
+            services.AddTransient<ProjectRepository, ProjectRepository>();
+            services.AddTransient<IApplicationService, ApplicationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

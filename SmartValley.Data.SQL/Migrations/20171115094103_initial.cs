@@ -53,7 +53,7 @@ namespace SmartValley.Data.SQL.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    AuthorAddress = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    AuthorAddress = table.Column<string>(type: "nvarchar(42)", maxLength: 42, nullable: false),
                     Country = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ProblemDesc = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
