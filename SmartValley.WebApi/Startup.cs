@@ -69,7 +69,7 @@ namespace SmartValley.WebApi
             services.AddTransient<TeamMemberRepository, TeamMemberRepository>();
             services.AddTransient<ApplicationRepository, ApplicationRepository>();
             services.AddTransient<ProjectRepository, ProjectRepository>();
-            services.AddSingleton<IApplicationService, ApplicationService>();
+            services.AddTransient<IApplicationService, ApplicationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
