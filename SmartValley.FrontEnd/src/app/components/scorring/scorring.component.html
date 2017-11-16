@@ -28,7 +28,7 @@
                   <div class="scorring-footer">
                     <div class="scorring-rating">
                       <span>Scoring rating:</span>
-                      <span>{{scorring.scoringRating}}</span>
+                      <span class="score" [style.color] = "ratingToRgb(scorring.scoringRating)">{{scorring.scoringRating}}</span>
                     </div>
                     <a href="#" class="btn btn-primary">View report</a>
                   </div>

@@ -47,6 +47,42 @@ export class ScorringComponent implements OnInit {
       expertType: 'HR',
       projectImgUrl: 'https://png.icons8.com/?id=50284&size=280'
     });
+
+    this.scorrings.push(<Scorring>{
+      projectName: 'B2Broker',
+      projectArea: 'Brokering',
+      projectCountry: 'Russia',
+      scoringRating: 50,
+      projectDescription: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
+      expertType: 'HR',
+      projectImgUrl: 'https://png.icons8.com/?id=50284&size=280'
+    });
+
+    this.scorrings.push(<Scorring>{
+      projectName: 'B2Broker',
+      projectArea: 'Brokering',
+      projectCountry: 'Russia',
+      scoringRating: 14,
+      projectDescription: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
+      expertType: 'HR',
+      projectImgUrl: 'https://png.icons8.com/?id=50284&size=280'
+    });
+  }
+
+  ratingToRgb(rating: number) {
+    const startNumber = 40;
+    let red = 255 - startNumber;
+    let green = startNumber;
+    if (rating < 50) {
+      green += rating * 5;
+      red = 255 - startNumber;
+    }
+    else {
+      green = 255 - startNumber;
+      red -= (rating - 50) * 5;
+    }
+
+    return 'rgb(' + red + ',' + green + ',' + startNumber + ')';
   }
 
   ngOnInit() {

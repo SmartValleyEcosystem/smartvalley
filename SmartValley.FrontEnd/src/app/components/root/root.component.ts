@@ -33,7 +33,7 @@ export class RootComponent implements OnInit {
   redirect(pagename: string) {
     this.router.navigate(['/' + pagename]);
   }
-  
+
   async createProject() {
     try {
       const isRinkeby = await
