@@ -8,12 +8,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Nethereum.Signer;
+using SmartValley.Application;
+using SmartValley.Application.Contracts;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Data.SQL.Repositories;
-using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Application;
 using SmartValley.WebApi.Authentication;
-using SmartValley.WebApi.Contract;
 using SmartValley.WebApi.ExceptionHandler;
 using SmartValley.WebApi.WebApi;
 using Swashbuckle.AspNetCore.Swagger;
@@ -23,7 +23,7 @@ namespace SmartValley.WebApi
     public class Startup
     {
         private const string CorsPolicyName = "SVPolicy";
-        
+
         private readonly IHostingEnvironment _currentEnvironment;
 
         public Startup(IConfiguration configuration, IHostingEnvironment currentEnvironment)
@@ -38,7 +38,7 @@ namespace SmartValley.WebApi
         // ReSharper disable once UnusedMember.Global
         public void ConfigureServices(IServiceCollection services)
         {
-            services.ConfigureOptions(Configuration, typeof(SiteOptions), typeof(ContractOptions));
+            services.ConfigureOptions(Configuration, typeof(SiteOptions), typeof(ContractOptions), typeof(NethereumOptions));
 
             ConfigureCorsPolicy(services);
 
@@ -52,7 +52,9 @@ namespace SmartValley.WebApi
                     .AddScheme<EcdsaAuthenticationOptions, EcdsaAuthenticationHandler>(EcdsaAuthenticationOptions.DefaultScheme, options => { });
 
             services.AddSingleton<EthereumMessageSigner>();
-            services.AddSingleton<IEtherManagerContractService, EtherManagerContractService>();
+            services.AddSingleton<IEtherManagerContractClient, EtherManagerContractClient>();
+            services.AddSingleton<IProjectManagerContractClient, ProjectManagerContractClient>();
+            services.AddSingleton<EthereumClient>();
 
             services.AddMvc(options =>
                             {

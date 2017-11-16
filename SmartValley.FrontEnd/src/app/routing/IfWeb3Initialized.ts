@@ -17,6 +17,5 @@ export class IfWeb3Initialized implements CanActivate {
       return false;
     }
     return true;
-
   }
 }

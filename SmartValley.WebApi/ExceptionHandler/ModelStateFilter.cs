@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc.Filters;
+using SmartValley.Application.Exceptions;
 
 namespace SmartValley.WebApi.ExceptionHandler
 {
@@ -9,9 +10,12 @@ namespace SmartValley.WebApi.ExceptionHandler
         {
             if (context.ModelState.IsValid)
                 return;
-            var fieldErrors = context.ModelState.Keys
-                                     .ToDictionary(key => key, key => context.ModelState[key].Errors
-                                                                             .Select(x => x.ErrorMessage).ToList());
+
+            var fieldErrors = context
+                .ModelState.Keys
+                .ToDictionary(
+                    key => key,
+                    key => context.ModelState[key].Errors.Select(x => x.ErrorMessage).ToList());
 
             throw new AppErrorException(new AppError(ErrorCode.ValidatationError, fieldErrors));
         }

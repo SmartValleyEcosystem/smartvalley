@@ -13,11 +13,10 @@ export class IfAuthenticated implements CanActivate {
                     state: RouterStateSnapshot): Promise<boolean> {
 
     const userInfo = await this.authenticationService.getUserInfo();
-    if(userInfo == null) {
+    if (userInfo == null) {
       this.router.navigate([Paths.Root]);
     }
     return userInfo != null && userInfo.isAuthenticated;
 
   }
 }
-
