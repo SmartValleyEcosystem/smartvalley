@@ -30,11 +30,11 @@ export class RootComponent implements OnInit {
     this.userInfo = await this.authenticationService.getUserInfo();
   }
 
-  async createProject() {
   redirect(pagename: string) {
-    this.router.navigate(['/' + pagename ]);
+    this.router.navigate(['/' + pagename]);
   }
-
+  
+  async createProject() {
     try {
       const isRinkeby = await
         this.web3Service.isRinkebyNetwork();
