@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {BalanceApiClient} from '../../api/balance/balance-api-client';
-import {AuthenticationService} from '../../services/authentication-service';
-import {Web3Service} from '../../services/web3-service';
+import {Component, OnInit} from "@angular/core";
+import {BalanceApiClient} from "../../api/balance/balance-api-client";
+import {AuthenticationService} from "../../services/authentication-service";
+import {Web3Service} from "../../services/web3-service";
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  selector: "app-header",
+  templateUrl: "./header.component.html",
+  styleUrls: ["./header.component.css"]
 })
 export class HeaderComponent implements OnInit {
 
@@ -17,27 +17,18 @@ export class HeaderComponent implements OnInit {
   constructor(private balanceApiClient: BalanceApiClient,
               private authenticationService: AuthenticationService,
               private web3Service: Web3Service) {
-    this.authenticationService.userInfoChanged.subscribe(async () => await this.updateHeader());
+
   }
 
   async ngOnInit() {
-    if (!this.web3Service.isInitialized) {
-      return;
-    }
-    await this.updateHeader();
   }
 
   async updateHeader() {
-    const userInfo = await this.authenticationService.getUserInfo();
-    if (userInfo != null && userInfo.isAuthenticated) {
-      const result = await this.balanceApiClient.getBalance();
-      this.currentBalance = result.balance;
-      this.wasEtherReceived = result.wasEtherReceived;
-      this.isAuthenticated = true;
-    }
+
   }
 
+
   async receiveEth() {
-    await this.balanceApiClient.receiveEther();
+    await  this.balanceApiClient.receiveEther();
   }
 }

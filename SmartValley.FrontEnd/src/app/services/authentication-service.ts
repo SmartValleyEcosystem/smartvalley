@@ -7,7 +7,7 @@ import {UserInfo} from './user-info';
 @Injectable()
 export class AuthenticationService {
 
-  static MESSAGE_TO_SIGN = 'Confirm login';
+
 
   public userInfoChanged: EventEmitter<any> = new EventEmitter<any>();
 
