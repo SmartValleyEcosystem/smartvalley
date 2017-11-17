@@ -23,6 +23,7 @@ import { ApplicationComponent } from './components/application/application.compo
 import { ReactiveFormsModule } from '@angular/forms';
 import { ScorringComponent } from './components/scorring/scorring.component';  // <-- #1 import module
 import {MatTabsModule} from '@angular/material';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {MatTabsModule} from '@angular/material';
     HeaderComponent,
     NotificationsComponent,
     ApplicationComponent,
-    ScorringComponent
+    ScorringComponent,
+    FooterComponent
   ],
   imports: [
     MatTabsModule,

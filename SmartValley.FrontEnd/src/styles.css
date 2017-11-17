@@ -1,6 +1,5 @@
 @import "~@angular/material/prebuilt-themes/purple-green.css";
 @import "~bootstrap/dist/css/bootstrap.css";
-@import "~font-awesome/css/font-awesome.css";
 
 body {
   background: rgb(32, 32, 32);
@@ -89,13 +88,6 @@ body {
   box-shadow: 0px 3px 14px 2px rgba(219, 219, 219, 1);
 }
 
-.sm-header {
-  color: white;
-  height: 100px;
-  padding-top: 45px;
-  padding-bottom: 45px;
-}
-
 .sm-btn-primary {
   background: rgb(246, 150, 1);
   width: 270px;
@@ -123,23 +115,4 @@ body {
 }
 .mat-tab-body-wrapper{
   margin-top: 50px;
-}
-.social-icons{
-  letter-spacing: 0.4em;
-  display: inline-block;
-  right: 0;
-  position: absolute;
-  padding: 0;
-}
-.sm-header a{
-  text-decoration: none;
-}
-.sm-header a > i{
-  font-size: 1.5em;
-}
-.sm-terms{
-  text-align: center;
-}
-.sm-copyright{
-  font-size: 0.9em;
 }

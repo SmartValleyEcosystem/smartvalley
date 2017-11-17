@@ -1,0 +1,27 @@
+@import "~font-awesome/css/font-awesome.css";
+
+.sm-footer {
+  color: white;
+  height: 100px;
+  padding-top: 45px;
+  padding-bottom: 45px;
+}
+.sm-footer a{
+  text-decoration: none;
+}
+.sm-footer a > i{
+  font-size: 1.5em;
+}
+.sm-terms{
+  text-align: center;
+}
+.sm-copyright{
+  font-size: 0.9em;
+}
+.sm-social-icons{
+  letter-spacing: 0.4em;
+  display: inline-block;
+  right: 0;
+  position: absolute;
+  padding: 0;
+}
