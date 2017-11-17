@@ -6,31 +6,31 @@
         Angular Material tabs organize content into separate views where only one view can be visible at a time. Each tab's label is shown in the tab header and the active tab's label is designated with the animated ink bar. When the list of tab labels exceeds the width of the header, pagination controls appear to let the user scroll left and right across the labels.
       </p>
     </div>
-    <ngb-tabset class="col-12">
-      <ngb-tab title="Project for scroing">
+    <ngb-tabset class="col-12 scorring-projects">
+      <ngb-tab class="col-3" title="Project for scroing">
         <ng-template ngbTabContent>
-          <span>Choose expertise</span>
+          <span class="choose">Choose expertise</span>
           <mat-tab-group>
             <mat-tab label="HR">
-              <div class="card col-6 scorring-card" *ngFor="let scorring of scorrings;">
+              <div class="card col-12 scorring-card" *ngFor="let scorring of scorrings;">
                 <div class="card-block scorring-card-block">
-                  <div class="scorring-header">
-                    <img style="display: inline;width: 100px;" src="{{scorring.projectImgUrl}}"/>
-                    <div class="scorring-header__title" style="position: absolute; display: inline;">
+                  <div class="scorring-header col-4">
+                    <img style="width: 100px;" src="{{scorring.projectImgUrl}}"/>
+                    <div class="scorring-header__title">
                       <span>{{scorring.projectName}}</span>
                       <span class="scorring-header__country">{{scorring.projectCountry}}</span>
                       <span>{{scorring.projectArea}}</span>
                     </div>
                   </div>
-                  <div class="scorring-content">
+                  <div class="scorring-content col-5">
                     <p class="card-text">{{scorring.projectDescription}}</p>
                   </div>
-                  <div class="scorring-footer">
+                  <div class="scorring-footer col-3">
                     <div class="scorring-rating">
                       <span>Scoring rating:</span>
-                      <span class="score" [style.color] = "ratingToRgb(scorring.scoringRating)">{{scorring.scoringRating}}</span>
+                      <span class="score">{{scorring.scoringRating}}</span>
                     </div>
-                    <a href="#" class="btn btn-primary">View report</a>
+                    <a href="#" class="col-12 scorring-btn btn btn-primary">View report</a>
                   </div>
                 </div>
               </div>

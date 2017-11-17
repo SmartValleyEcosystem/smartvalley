@@ -1,14 +1,9 @@
 @import "~@angular/material/prebuilt-themes/purple-green.css";
 @import "~bootstrap/dist/css/bootstrap.css";
+@import "~font-awesome/css/font-awesome.css";
 
 body {
   background: rgb(32, 32, 32);
-}
-
-.container {
-  margin-left: 220px;
-  width: auto;
-  margin-right: 220px;
 }
 
 .mat-toolbar {
@@ -17,11 +12,6 @@ body {
 
 .nav-tabs {
   border-bottom: inherit;
-}
-
-.nav-tabs .nav-item {
-  margin-left: 30px;
-  width: 270px;
 }
 
 .nav-tabs .nav-link {
@@ -45,6 +35,7 @@ body {
 
 .nav-tabs .nav-item:first-child {
   margin-left: 60px;
+  padding-left: 0px;
 }
 
 .tab-content {
@@ -78,7 +69,7 @@ body {
   margin-left: 60px;
 }
 
-.mat-tab-label-active {
+.mat-tab-label-active, .choose, .scorring-rating > span {
   color: rgb(180, 180, 180) !important;
 }
 
@@ -88,6 +79,7 @@ body {
 }
 .mat-tab-labels .mat-tab-label:first-child {
   margin-left: 0px;
+  padding-left: 0px;
 }
 
 .card {
@@ -99,17 +91,9 @@ body {
 
 .sm-header {
   color: white;
-
   height: 100px;
-  margin-left: 220px;
-  width: auto;
-  margin-right: 220px;
-  padding: 45px 60px;
-  display: flex;
-}
-
-.sm-copyright {
-  margin-left: 60px;
+  padding-top: 45px;
+  padding-bottom: 45px;
 }
 
 .sm-btn-primary {
@@ -129,4 +113,33 @@ body {
   padding-top: 20px;
   display: block;
   line-height: initial;
+}
+
+.mat-tab-label:focus{
+  background-color: inherit !important;
+}
+.mat-ink-bar{
+  background-color: rgb(72, 138, 232) !important;
+}
+.mat-tab-body-wrapper{
+  margin-top: 50px;
+}
+.social-icons{
+  letter-spacing: 0.4em;
+  display: inline-block;
+  right: 0;
+  position: absolute;
+  padding: 0;
+}
+.sm-header a{
+  text-decoration: none;
+}
+.sm-header a > i{
+  font-size: 1.5em;
+}
+.sm-terms{
+  text-align: center;
+}
+.sm-copyright{
+  font-size: 0.9em;
 }

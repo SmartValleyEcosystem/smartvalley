@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {Scorring} from '../../services/scorring';
 
 
@@ -7,7 +7,7 @@ import {Scorring} from '../../services/scorring';
   templateUrl: './scorring.component.html',
   styleUrls: ['./scorring.component.css']
 })
-export class ScorringComponent implements OnInit {
+export class ScorringComponent {
 
   public scorrings: Array<Scorring>;
 
@@ -17,12 +17,12 @@ export class ScorringComponent implements OnInit {
 
   // тестовые данные
   initTestData() {
-    this.scorrings = new Array<Scorring>();
+    this.scorrings = [];
     this.scorrings.push(<Scorring>{
       projectName: 'Rega Risk Sharing',
       projectArea: 'Crowdsurance',
       projectCountry: 'Russia',
-      scoringRating: 99,
+      scoringRating: 'in progress',
       projectDescription: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
       expertType: 'HR',
       projectImgUrl: 'https://png.icons8.com/?id=50284&size=280'
@@ -32,7 +32,7 @@ export class ScorringComponent implements OnInit {
       projectName: 'BitClave Active Search Ecosystem',
       projectArea: 'Rotetechnology',
       projectCountry: 'Russia',
-      scoringRating: 89,
+      scoringRating: 'in progress',
       projectDescription: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
       expertType: 'HR',
       projectImgUrl: 'https://png.icons8.com/?id=50284&size=280'
@@ -42,7 +42,7 @@ export class ScorringComponent implements OnInit {
       projectName: 'B2Broker',
       projectArea: 'Brokering',
       projectCountry: 'Russia',
-      scoringRating: 65,
+      scoringRating: 'in progress',
       projectDescription: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
       expertType: 'HR',
       projectImgUrl: 'https://png.icons8.com/?id=50284&size=280'
@@ -52,7 +52,7 @@ export class ScorringComponent implements OnInit {
       projectName: 'B2Broker',
       projectArea: 'Brokering',
       projectCountry: 'Russia',
-      scoringRating: 50,
+      scoringRating: 'in progress',
       projectDescription: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
       expertType: 'HR',
       projectImgUrl: 'https://png.icons8.com/?id=50284&size=280'
@@ -62,30 +62,11 @@ export class ScorringComponent implements OnInit {
       projectName: 'B2Broker',
       projectArea: 'Brokering',
       projectCountry: 'Russia',
-      scoringRating: 14,
+      scoringRating: 'in progress',
       projectDescription: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
       expertType: 'HR',
       projectImgUrl: 'https://png.icons8.com/?id=50284&size=280'
     });
-  }
-
-  ratingToRgb(rating: number) {
-    const startNumber = 40;
-    let red = 255 - startNumber;
-    let green = startNumber;
-    if (rating < 50) {
-      green += rating * 5;
-      red = 255 - startNumber;
-    }
-    else {
-      green = 255 - startNumber;
-      red -= (rating - 50) * 5;
-    }
-
-    return 'rgb(' + red + ',' + green + ',' + startNumber + ')';
-  }
-
-  ngOnInit() {
   }
 
 }

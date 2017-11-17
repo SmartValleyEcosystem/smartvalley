@@ -1,5 +1,6 @@
 .scorring-header{
-  margin-bottom: 20px;
+  display: inline-block;
+  padding: 0;
 }
 .scorring-header__country{
   color: rgba(0,0,0,0.5);
@@ -8,8 +9,16 @@
   display: block;
   margin: 5px 0px;
 }
+.scorring-header__title > span:first-child{
+   font-size: 1.5em;
+ }
 .scorring-footer{
-  margin-top: 10px;
+  text-align: right;
+  max-width: calc(25% - 8px);
+  display: inline-block;
+  padding: 0;
+  position: absolute;
+  height: 100%;
 }
 .scorring-rating{
   display: inline-block;
@@ -23,8 +32,18 @@
 .scorring-desc{
   margin-bottom: 60px;
   color: white;
-  margin-left: 60px;
-  padding: inherit;
+  padding: 0;
+}
+.scorring-content{
+  display: inline-block;
+  padding: 0;
+}
+.scorring-projects{
+  flex: inherit;
+  max-width: none;
+  margin-left: -75px;
+  margin-right: -75px;
+  width: calc(100% + 165px);
 }
 .scorring-desc h1{
   letter-spacing: 7px;
@@ -34,15 +53,24 @@
   text-transform: uppercase;
 }
 .scorring-card{
-  height: 530px;
   display: inline-block;
-  max-width: 47%;
-  margin: 15px;
+  margin: 0px;
+  padding: 0px;
+  margin-bottom: 1rem;
 }
+.scorring-btn{
+  background-color: rgb(72, 138, 232) !important;
+  padding-bottom: 1em;
+  padding-top: 1em;
+  }
 .scorring-card-block{
-  margin: 50px;
+  position: relative;
   padding: 0px;
 }
+.scorring-card-block > div{
+  padding: 40px;
+  vertical-align: top;
+ }
 .scorring-rating > .score{
-  font-size: 40px;
+  font-size: 1.5em;
 }

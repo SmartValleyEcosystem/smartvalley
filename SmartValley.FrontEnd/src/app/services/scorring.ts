@@ -5,6 +5,6 @@ export interface Scorring {
   projectCountry: string;
   projectArea: string;
   projectDescription: string;
-  scoringRating: number;
+  scoringRating: string;
   expertType: string;
 }
