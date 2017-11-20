@@ -60,7 +60,7 @@ export class AuthenticationService {
     if (!isNullOrUndefined(user)) {
       if (user.account !== metamaskAccount) {
         await this.handleAccountSwitchAsync(metamaskAccount);
-        this.accountChanged.emit();
+        this.accountChanged.emit(user);
         return true;
       }
       return await this.checkSignatureAsync(user.account, user.signature);
