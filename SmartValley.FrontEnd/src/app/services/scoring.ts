@@ -1,4 +1,4 @@
-export interface Scorring {
+export interface Scoring {
 
   projectName: string;
   projectImgUrl: string;

@@ -5,13 +5,13 @@ import {MetamaskHowtoComponent} from './components/metamask-howto/metamask-howto
 import {RootComponent} from './components/root/root.component';
 import {ApplicationComponent} from './components/application/application.component';
 import {IfAuthenticated} from './routing/IfAuthenticated';
-import {ScorringComponent} from "./components/scorring/scorring.component";
+import {ScoringComponent} from './components/scoring/scoring.component';
 
 const appRoutes: Routes = [
   {path: Paths.Root, pathMatch: 'full', component: RootComponent},
   {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent},
   {path: Paths.Application, pathMatch: 'full', component: ApplicationComponent, canActivate: [IfAuthenticated]},
-  {path: Paths.BecomeExpert, pathMatch: 'full', component: ScorringComponent}
+  {path: Paths.BecomeExpert, pathMatch: 'full', component: ScoringComponent}
 ];
 
 @NgModule({

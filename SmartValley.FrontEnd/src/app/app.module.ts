@@ -19,11 +19,11 @@ import {NotificationsComponent} from './components/common/notifications/notifica
 import {BalanceApiClient} from './api/balance/balance-api-client';
 import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
 import {IfWeb3Initialized} from './routing/IfWeb3Initialized';
-import { ApplicationComponent } from './components/application/application.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { ScorringComponent } from './components/scorring/scorring.component';  // <-- #1 import module
+import {ApplicationComponent} from './components/application/application.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {ScoringComponent} from './components/scoring/scoring.component';  // <-- #1 import module
 import {MatTabsModule} from '@angular/material';
-import { FooterComponent } from './components/footer/footer.component';
+import {FooterComponent} from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +34,7 @@ import { FooterComponent } from './components/footer/footer.component';
     HeaderComponent,
     NotificationsComponent,
     ApplicationComponent,
-    ScorringComponent,
+    ScoringComponent,
     FooterComponent
   ],
   imports: [

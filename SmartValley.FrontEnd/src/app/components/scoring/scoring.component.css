@@ -1,18 +1,18 @@
-.scorring-header{
+.scoring-header{
   display: inline-block;
   padding: 0;
 }
-.scorring-header__country{
+.scoring-header__country{
   color: rgba(0,0,0,0.5);
 }
-.scorring-header__title > span{
+.scoring-header__title > span{
   display: block;
   margin: 5px 0px;
 }
-.scorring-header__title > span:first-child{
+.scoring-header__title > span:first-child{
    font-size: 1.5em;
  }
-.scorring-footer{
+.scoring-footer{
   text-align: right;
   max-width: calc(25% - 8px);
   display: inline-block;
@@ -20,45 +20,45 @@
   position: absolute;
   height: 100%;
 }
-.scorring-rating{
+.scoring-rating{
   display: inline-block;
 }
-.scorring-rating > span{
+.scoring-rating > span{
    display: block;
  }
-.scorring-footer > a{
+.scoring-footer > a{
   float:right;
 }
-.scorring-desc{
+.scoring-desc{
   margin-bottom: 60px;
   color: white;
   padding: 0;
 }
-.scorring-content{
+.scoring-content{
   display: inline-block;
   padding: 0;
 }
-.scorring-projects{
+.scoring-projects{
   flex: inherit;
   max-width: none;
   margin-left: -75px;
   margin-right: -75px;
   width: calc(100% + 165px);
 }
-.scorring-desc h1{
+.scoring-desc h1{
   letter-spacing: 7px;
   font-size: 50px;
   font-weight: 700;
   margin-bottom: 20px;
   text-transform: uppercase;
 }
-.scorring-card{
+.scoring-card{
   display: inline-block;
   margin: 0px;
   padding: 0px;
   margin-bottom: 1rem;
 }
-.scorring-btn{
+.scoring-btn{
   background-color: rgb(72, 138, 232) !important;
   padding-bottom: 1em;
   padding-top: 1em;
@@ -66,14 +66,14 @@
   right: 40px;
   position: absolute;
   }
-.scorring-card-block{
+.scoring-card-block{
   position: relative;
   padding: 0px;
 }
-.scorring-card-block > div{
+.scoring-card-block > div{
   padding: 40px;
   vertical-align: top;
  }
-.scorring-rating > .score{
+.scoring-rating > .score{
   font-size: 1.5em;
 }

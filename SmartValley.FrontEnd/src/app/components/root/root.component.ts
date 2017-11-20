@@ -30,8 +30,8 @@ export class RootComponent implements OnInit {
     this.userInfo = await this.authenticationService.getUserInfo();
   }
 
-  redirect(pagename: string) {
-    this.router.navigate(['/' + pagename]);
+  async navigateToScoring() {
+    await this.router.navigate([Paths.BecomeExpert]);
   }
 
   async createProject() {

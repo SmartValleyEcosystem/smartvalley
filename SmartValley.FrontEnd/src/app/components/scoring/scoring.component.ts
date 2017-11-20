@@ -1,15 +1,14 @@
 import {Component} from '@angular/core';
-import {Scorring} from '../../services/scorring';
-
+import {Scoring} from '../../services/scoring';
 
 @Component({
-  selector: 'app-scorring',
-  templateUrl: './scorring.component.html',
-  styleUrls: ['./scorring.component.css']
+  selector: 'app-scoring',
+  templateUrl: './scoring.component.html',
+  styleUrls: ['./scoring.component.css']
 })
-export class ScorringComponent {
+export class ScoringComponent {
 
-  public scorrings:  Array<Scorring>;
+  public scorings: Array<Scoring>;
 
   constructor() {
     this.initTestData();
@@ -17,8 +16,8 @@ export class ScorringComponent {
 
   // тестовые данные
   initTestData() {
-    this.scorrings = [];
-    this.scorrings.push(<Scorring>{
+    this.scorings = [];
+    this.scorings.push(<Scoring>{
       projectName: 'Rega Risk Sharing',
       projectArea: 'Crowdsurance',
       projectCountry: 'Russia',
@@ -28,7 +27,7 @@ export class ScorringComponent {
       projectImgUrl: 'https://png.icons8.com/?id=50284&size=280'
     });
 
-    this.scorrings.push(<Scorring>{
+    this.scorings.push(<Scoring>{
       projectName: 'BitClave Active Search Ecosystem',
       projectArea: 'Rotetechnology',
       projectCountry: 'Russia',
@@ -38,7 +37,7 @@ export class ScorringComponent {
       projectImgUrl: 'https://png.icons8.com/?id=50284&size=280'
     });
 
-    this.scorrings.push(<Scorring>{
+    this.scorings.push(<Scoring>{
       projectName: 'B2Broker',
       projectArea: 'Brokering',
       projectCountry: 'Russia',
@@ -48,7 +47,7 @@ export class ScorringComponent {
       projectImgUrl: 'https://png.icons8.com/?id=50284&size=280'
     });
 
-    this.scorrings.push(<Scorring>{
+    this.scorings.push(<Scoring>{
       projectName: 'B2Broker',
       projectArea: 'Brokering',
       projectCountry: 'Russia',
@@ -58,7 +57,7 @@ export class ScorringComponent {
       projectImgUrl: 'https://png.icons8.com/?id=50284&size=280'
     });
 
-    this.scorrings.push(<Scorring>{
+    this.scorings.push(<Scoring>{
       projectName: 'B2Broker',
       projectArea: 'Brokering',
       projectCountry: 'Russia',
@@ -68,5 +67,4 @@ export class ScorringComponent {
       projectImgUrl: 'https://png.icons8.com/?id=50284&size=280'
     });
   }
-
 }
