@@ -6,31 +6,27 @@ import {User} from './user';
 import {NotificationsService} from 'angular2-notifications';
 import {Router} from '@angular/router';
 import {Paths} from '../paths';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/interval';
+import 'rxjs/add/operator/map';
+import {Subscription} from 'rxjs/Subscription';
 
 @Injectable()
 export class AuthenticationService {
 
-
-   public accountChanged: EventEmitter<any> = new EventEmitter<any>();
+  public accountChanged: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private web3Service: Web3Service,
               private notificationsService: NotificationsService,
               private router: Router) {
+
+    if (this.web3Service.isMetamaskInstalled && this.getUser() != null) {
+      this.startBackgroundChecker();
+    }
   }
 
   private readonly userKey = 'userKey';
-
-  private getSignatureByAddress(account: string) {
-    return localStorage.getItem(account);
-  }
-
-  private saveSignatureForAddrsess(account: string, signature: string) {
-    localStorage.setItem(account, signature);
-  }
-
-  private removeSignatureByAddress(account: string) {
-    localStorage.removeItem(account);
-  }
+  private backgroundChecker: Subscription;
 
   public isAuthenticated() {
     return !isNullOrUndefined(this.getUser());
@@ -60,7 +56,6 @@ export class AuthenticationService {
     if (!isNullOrUndefined(user)) {
       if (user.account !== metamaskAccount) {
         await this.handleAccountSwitchAsync(metamaskAccount);
-        this.accountChanged.emit(user);
         return true;
       }
       return await this.checkSignatureAsync(user.account, user.signature);
@@ -98,7 +93,75 @@ export class AuthenticationService {
 
   private saveUser(user: User) {
     localStorage.setItem(this.userKey, JSON.stringify(user));
+    this.accountChanged.emit(user);
+    this.startBackgroundChecker();
   }
 
+  private deleteUser() {
+    localStorage.removeItem(this.userKey);
+    this.accountChanged.emit();
+  }
 
+  private getSignatureByAddress(account: string) {
+    return localStorage.getItem(account);
+  }
+
+  private saveSignatureForAddrsess(account: string, signature: string) {
+    localStorage.setItem(account, signature);
+  }
+
+  private removeSignatureByAddress(account: string) {
+    localStorage.removeItem(account);
+  }
+
+  private startBackgroundChecker() {
+    if (!isNullOrUndefined(this.backgroundChecker) && !this.backgroundChecker.closed) {
+      console.log('Background checker already started')
+      return;
+    }
+    console.log('Starting background checker...');
+    this.backgroundChecker = Observable.interval(5 * 1000)
+      .map(async x => this.checkCurrentAuthStateAsync())
+      .subscribe();
+
+  }
+
+  private stopBackgroundChecker() {
+    if (!isNullOrUndefined(this.backgroundChecker) && !this.backgroundChecker.closed) {
+      this.backgroundChecker.unsubscribe();
+    }
+  }
+
+  private async checkCurrentAuthStateAsync() {
+    const isMetamaskEnabled = this.web3Service.isMetamaskInstalled;
+    if (!isMetamaskEnabled) {
+      this.stopUserSession();
+    }
+    const accounts = await this.web3Service.getAccountsAsync();
+    const metamaskAccount = accounts[0];
+    const user = this.getUser();
+    if (isNullOrUndefined(user)) {
+      this.stopUserSession();
+    }
+    if (user.account === metamaskAccount) {
+      return;
+    }
+    const savedSignature = this.getSignatureByAddress(metamaskAccount);
+    if (!isNullOrUndefined(savedSignature)) {
+      const isSavedSignatureValid = await this.checkSignatureAsync(metamaskAccount, savedSignature);
+      if (isSavedSignatureValid) {
+        this.saveUser(new User(metamaskAccount, savedSignature));
+      } else {
+        this.stopUserSession();
+      }
+    } else {
+      this.stopUserSession();
+    }
+  }
+
+  private stopUserSession() {
+    this.deleteUser()
+    this.stopBackgroundChecker();
+    this.router.navigate(['']);
+  }
 }

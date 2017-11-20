@@ -18,20 +18,22 @@ export class HeaderComponent implements OnInit {
   constructor(private balanceApiClient: BalanceApiClient,
               private authenticationService: AuthenticationService,
               private web3Service: Web3Service) {
-    this.authenticationService.accountChanged.subscribe(async () => await this.updateHeader());
+    this.authenticationService.accountChanged.subscribe(async () => await this.updateHeaderAsync());
   }
 
   async ngOnInit() {
-    if (this.authenticationService.isAuthenticated()) {
-      this.isAuthenticated = true;
-      this.updateHeader();
-    }
+    this.updateHeaderAsync();
   }
 
-  async updateHeader() {
-    const response = await this.balanceApiClient.getBalanceAsync();
-    this.currentBalance = response.balance;
-    this.wasEtherReceived = response.wasEtherReceived;
+  async updateHeaderAsync() {
+    if (this.authenticationService.isAuthenticated()) {
+      this.isAuthenticated = true;
+      const response = await this.balanceApiClient.getBalanceAsync();
+      this.currentBalance = response.balance;
+      this.wasEtherReceived = response.wasEtherReceived;
+    } else {
+      this.isAuthenticated = false;
+    }
   }
 
 
