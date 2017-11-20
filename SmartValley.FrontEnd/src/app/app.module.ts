@@ -13,8 +13,6 @@ import {ApplicationApiClient} from './api/application/application-api.client';
 import {HeaderComponent} from './components/header/header.component';
 import {MaterialModule} from './shared/material.module';
 import {PrimeNgModule} from './shared/prime-ng.module';
-import {NotificationService} from './services/notification-service';
-import {NotificationsComponent} from './components/common/notifications/notifications.component';
 import {BalanceApiClient} from './api/balance/balance-api-client';
 import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
 
@@ -23,6 +21,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {ScoringComponent} from './components/scoring/scoring.component';  // <-- #1 import module
 import {MatTabsModule} from '@angular/material';
 import {FooterComponent} from './components/footer/footer.component';
+import {SimpleNotificationsModule} from 'angular2-notifications';
 
 
 @NgModule({
@@ -32,7 +31,6 @@ import {FooterComponent} from './components/footer/footer.component';
     MetamaskHowtoComponent,
     RootComponent,
     HeaderComponent,
-    NotificationsComponent,
     ApplicationComponent,
     ScoringComponent,
     FooterComponent
@@ -46,7 +44,8 @@ import {FooterComponent} from './components/footer/footer.component';
     PrimeNgModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    SimpleNotificationsModule.forRoot()
   ],
   providers: [
     {
@@ -57,8 +56,7 @@ import {FooterComponent} from './components/footer/footer.component';
     BalanceApiClient,
     ApplicationApiClient,
     AuthenticationService,
-    Web3Service,
-    NotificationService],
+    Web3Service],
   bootstrap: [AppComponent]
 })
 export class AppModule {
