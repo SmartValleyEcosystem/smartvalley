@@ -62,6 +62,9 @@
   background-color: rgb(72, 138, 232) !important;
   padding-bottom: 1em;
   padding-top: 1em;
+  bottom: 40px;
+  right: 40px;
+  position: absolute;
   }
 .scorring-card-block{
   position: relative;

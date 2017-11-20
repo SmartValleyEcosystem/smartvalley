@@ -32,6 +32,18 @@ body {
   border: none;
 }
 
+.nav-item{
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 25%;
+  flex: 0 0 22%;
+  max-width: 22%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
 .nav-tabs .nav-item:first-child {
   margin-left: 60px;
   padding-left: 0px;

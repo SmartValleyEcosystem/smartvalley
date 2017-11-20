@@ -9,7 +9,7 @@ import {Scorring} from '../../services/scorring';
 })
 export class ScorringComponent {
 
-  public scorrings: Array<Scorring>;
+  public scorrings:  Array<Scorring>;
 
   constructor() {
     this.initTestData();
