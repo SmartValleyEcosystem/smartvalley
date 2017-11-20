@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
+import * as EthJs from 'ethJs';
 
 
 @Injectable()
@@ -11,25 +12,21 @@ export class Web3Service {
 
   public static MESSAGE_TO_SIGN = 'Confirm login';
 
-  public isConnected(){
-    return this.eth.
+  private readonly rinkebyNetworkId = '4';
+  // TODO next task
+  // private metamaskProviderName = 'MetamaskInpageProvider';
+  private eth: EthJs;
+
+  private initialize() {
+    this.eth = new EthJs(this.getProvider());
   }
 
-  private get metamaskProvider(): any {
+  private getProvider() {
     if (!isNullOrUndefined(window['web3']) && window['web3'].currentProvider) {
       return window['web3'].currentProvider;
     }
   }
 
-  private readonly rinkebyNetworkId = '4';
-  private metamaskProviderName = 'MetamaskInpageProvider';
-  private eth: EthJs;
-  private isExtensionEnabled = !isNullOrUndefined(window['web3']);
-
-
-  private initialize() {
-    this.eth = new EthJs(this.metamaskProvider);
-  }
 
   public isAddress(address: string): boolean {
     return EthJs.isAddress(address);
@@ -39,8 +36,12 @@ export class Web3Service {
     return await this.eth.accounts();
   }
 
-  public async signInToMetamask(address: string): Promise<string> {
+  public async sign(address: string): Promise<string> {
     return await this.eth.personal_sign(EthJs.fromUtf8(Web3Service.MESSAGE_TO_SIGN), address);
+  }
+
+  public async recoverSignature(signature: string): Promise<string> {
+    return this.eth.personal_ecRecover(EthJs.fromUtf8(Web3Service.MESSAGE_TO_SIGN), signature);
   }
 
   public async isRinkebyNetwork(): Promise<boolean> {
@@ -51,4 +52,5 @@ export class Web3Service {
   private async getNetworkVersion(): Promise<any> {
     return await this.eth.net_version();
   }
+
 }

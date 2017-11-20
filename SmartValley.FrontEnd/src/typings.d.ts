@@ -5,10 +5,9 @@ interface NodeModule {
   id: string;
 }
 
-/* SystemJS module definition */
 
 
-declare var ethJs: EthJs;
+declare var ethJs : EthJs;
 
 declare class EthJs {
 
@@ -24,7 +23,7 @@ declare class EthJs {
 
   net_version(): Promise<string>;
 
-  personal_ecRecover(signature: string, message: string): Promise<string>;
+  personal_ecRecover(message: string, signature: string): Promise<string>;
 }
 
 declare function isNullOrEmpty(str: string);

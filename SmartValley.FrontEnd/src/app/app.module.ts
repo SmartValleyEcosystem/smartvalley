@@ -7,7 +7,6 @@ import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/h
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from './app-routing.module';
 import {Web3Service} from './services/web3-service';
-import {IfAuthenticated} from './routing/IfAuthenticated';
 import {AuthenticationService} from './services/authentication-service';
 import {ApplicationApiClient} from './api/application/application-api.client';
 import {HeaderComponent} from './components/header/header.component';
@@ -17,9 +16,8 @@ import {NotificationService} from './services/notification-service';
 import {NotificationsComponent} from './components/common/notifications/notifications.component';
 import {BalanceApiClient} from './api/balance/balance-api-client';
 import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
-import {IfWeb3Initialized} from './routing/IfWeb3Initialized';
-import { ApplicationComponent } from './components/application/application.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import {ApplicationComponent} from './components/application/application.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -50,9 +48,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ApplicationApiClient,
     AuthenticationService,
     Web3Service,
-    NotificationService,
-    IfAuthenticated,
-    IfWeb3Initialized],
+    NotificationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

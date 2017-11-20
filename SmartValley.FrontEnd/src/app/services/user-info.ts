@@ -1,15 +1,9 @@
-export class UserInfo {
-  constructor(ethereumAddress, signature, isAuthentiticated) {
-    this.ethereumAddress = ethereumAddress;
+export class User {
+  constructor(ethereumAddress, signature) {
+    this.account = ethereumAddress;
     this.signature = signature;
-    this.isAuthenticated = isAuthentiticated;
   }
 
-  public ethereumAddress: string;
+  public account: string;
   public signature: string;
-  public isAuthenticated: boolean;
-
-  static anonymous(): UserInfo {
-    return new UserInfo(null, null, false);
-  }
 }
