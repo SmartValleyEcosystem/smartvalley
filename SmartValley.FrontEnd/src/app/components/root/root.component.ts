@@ -30,6 +30,10 @@ export class RootComponent implements OnInit {
   //  this.userInfo = await this.authenticationService.getUser();
   }
 
+  async navigateToScoring() {
+    await this.router.navigate([Paths.Scoring]);
+  }
+
   async createProject() {
     const isOk = await this.authenticationService.authenticate();
     if (isOk) {
