@@ -13,22 +13,20 @@ export class AuthHeaderInterceptor implements HttpInterceptor {
   constructor(private authenticationService: AuthenticationService, private web3Service: Web3Service) {
   }
 
-// TODO next task
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(req);
-    // return this.getUserInfoAsObservable()
-    //   .mergeMap((user: User) => {
-    //     let headers = new HttpHeaders();
-    //     if (user != null) {
-    //       headers = req.headers
-    //         .append(HeadersConstants.XEthereumAddress, user.account)
-    //         .append(HeadersConstants.XSignature, user.signature)
-    //         .append(HeadersConstants.XSignedText, Web3Service.MESSAGE_TO_SIGN);
-    //     }
-    //     const request = user != null ? req.clone({headers: headers}) : req;
-    //     return next.handle(request);
-    //   });
 
+    const user = this.authenticationService.getUser();
+    if (user == null) {
+      return next.handle(req);
+    }
+
+    const headers = req.headers
+      .append(HeadersConstants.XEthereumAddress, user.account)
+      .append(HeadersConstants.XSignature, user.signature)
+      .append(HeadersConstants.XSignedText, Web3Service.MESSAGE_TO_SIGN);
+
+    const request = req.clone({headers: headers});
+    return next.handle(request);
   }
 }
 

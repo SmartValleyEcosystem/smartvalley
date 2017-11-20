@@ -11,7 +11,7 @@ import {Paths} from '../paths';
 export class AuthenticationService {
 
 
-  // public userInfoChanged: EventEmitter<any> = new EventEmitter<any>();
+   public accountChanged: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private web3Service: Web3Service,
               private notificationsService: NotificationsService,
@@ -30,6 +30,10 @@ export class AuthenticationService {
 
   private removeSignatureByAddress(account: string) {
     localStorage.removeItem(account);
+  }
+
+  public isAuthenticated() {
+    return !isNullOrUndefined(this.getUser());
   }
 
   public async authenticateAsync(): Promise<Boolean> {
@@ -56,6 +60,7 @@ export class AuthenticationService {
     if (!isNullOrUndefined(user)) {
       if (user.account !== metamaskAccount) {
         await this.handleAccountSwitchAsync(metamaskAccount);
+        this.accountChanged.emit();
         return true;
       }
       return await this.checkSignatureAsync(user.account, user.signature);

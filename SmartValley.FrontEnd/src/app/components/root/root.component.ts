@@ -19,7 +19,7 @@ export class RootComponent implements OnInit {
               private authenticationService: AuthenticationService,
               private notificationsService: NotificationsService,
               private router: Router) {
-    // this.authenticationService.userInfoChanged.subscribe(async () => await this.updateUserInfo());
+    // this.authenticationService.accountChanged.subscribe(async () => await this.updateUserInfo());
   }
 
   async ngOnInit() {
