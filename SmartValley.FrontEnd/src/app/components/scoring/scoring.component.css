@@ -1,0 +1,79 @@
+.scoring-header{
+  display: inline-block;
+  padding: 0;
+}
+.scoring-header__country{
+  color: rgba(0,0,0,0.5);
+}
+.scoring-header__title > span{
+  display: block;
+  margin: 5px 0px;
+}
+.scoring-header__title > span:first-child{
+   font-size: 1.5em;
+ }
+.scoring-footer{
+  text-align: right;
+  max-width: calc(25% - 8px);
+  display: inline-block;
+  padding: 0;
+  position: absolute;
+  height: 100%;
+}
+.scoring-rating{
+  display: inline-block;
+}
+.scoring-rating > span{
+   display: block;
+ }
+.scoring-footer > a{
+  float:right;
+}
+.scoring-desc{
+  margin-bottom: 60px;
+  color: white;
+  padding: 0;
+}
+.scoring-content{
+  display: inline-block;
+  padding: 0;
+}
+.scoring-projects{
+  flex: inherit;
+  max-width: none;
+  margin-left: -75px;
+  margin-right: -75px;
+  width: calc(100% + 165px);
+}
+.scoring-desc h1{
+  letter-spacing: 7px;
+  font-size: 50px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+.scoring-card{
+  display: inline-block;
+  margin: 0px;
+  padding: 0px;
+  margin-bottom: 1rem;
+}
+.scoring-btn{
+  background-color: rgb(72, 138, 232) !important;
+  padding-bottom: 1em;
+  padding-top: 1em;
+  bottom: 40px;
+  right: 40px;
+  position: absolute;
+  }
+.scoring-card-block{
+  position: relative;
+  padding: 0px;
+}
+.scoring-card-block > div{
+  padding: 40px;
+  vertical-align: top;
+ }
+.scoring-rating > .score{
+  font-size: 1.5em;
+}

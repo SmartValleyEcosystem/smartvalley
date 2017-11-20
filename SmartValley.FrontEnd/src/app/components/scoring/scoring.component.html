@@ -1,0 +1,64 @@
+<div class="container">
+  <div class="row mx-auto">
+    <div class="col-8 scoring-desc">
+      <h1>Smart valley mvp</h1>
+      <p>
+      </p>
+    </div>
+    <ngb-tabset class="col-12 scoring-projects">
+      <ngb-tab title="Project for scoring">
+        <ng-template ngbTabContent>
+          <span class="choose">Choose expertise</span>
+          <mat-tab-group>
+            <mat-tab label="HR">
+              <div class="card col-12 scoring-card" *ngFor="let scoring of scorings;">
+                <div class="card-block scoring-card-block">
+                  <div class="scoring-header col-4">
+                    <img style="width: 100px;" src="{{scoring.projectImgUrl}}"/>
+                    <div class="scoring-header__title">
+                      <span>{{scoring.projectName}}</span>
+                      <span class="scoring-header__country">{{scoring.projectCountry}}</span>
+                      <span>{{scoring.projectArea}}</span>
+                    </div>
+                  </div>
+                  <div class="scoring-content col-5">
+                    <p class="card-text">{{scoring.projectDescription}}</p>
+                  </div>
+                  <div class="scoring-footer col-3">
+                    <div class="scoring-rating">
+                      <span>Scoring rating:</span>
+                      <span class="score">{{scoring.scoringRating}}</span>
+                    </div>
+                    <div>
+                      <a href="#" class="col-8 scoring-btn btn btn-primary">View report</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab label="Lawyer">
+              <h1>Some more tab content</h1>
+              <p>...</p>
+            </mat-tab>
+            <mat-tab label="Analyst">
+              <h1>Some more tab content</h1>
+              <p>...</p>
+            </mat-tab>
+            <mat-tab label="Technical expert">
+              <h1>Some more tab content</h1>
+              <p>...</p>
+            </mat-tab>
+          </mat-tab-group>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="My projects">
+        <ng-template ngbTabContent>
+          <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth
+            master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh
+            dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum
+            iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</div>

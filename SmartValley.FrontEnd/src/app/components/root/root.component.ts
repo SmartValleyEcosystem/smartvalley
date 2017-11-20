@@ -30,6 +30,10 @@ export class RootComponent implements OnInit {
     this.userInfo = await this.authenticationService.getUserInfo();
   }
 
+  async navigateToScoring() {
+    await this.router.navigate([Paths.Scoring]);
+  }
+
   async createProject() {
     try {
       const isRinkeby = await

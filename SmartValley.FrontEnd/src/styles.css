@@ -1,1 +1,130 @@
 @import "~@angular/material/prebuilt-themes/purple-green.css";
+@import "~bootstrap/dist/css/bootstrap.css";
+
+body {
+  background: rgb(32, 32, 32);
+}
+
+.mat-toolbar {
+  background: transparent !important;
+}
+
+.nav-tabs {
+  border-bottom: inherit;
+}
+
+.nav-tabs .nav-link {
+  background: rgb(72, 138, 232);
+  opacity: 1 !important;
+  color: white;
+  text-align: center;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  font-weight: 500;
+}
+
+.nav-tabs .nav-link.active {
+  color: black;
+  background: white;
+}
+
+.nav-tabs .nav-link {
+  border: none;
+}
+
+.nav-item{
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 25%;
+  flex: 0 0 22%;
+  max-width: 22%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.nav-tabs .nav-item:first-child {
+  margin-left: 60px;
+  padding-left: 0px;
+}
+
+.tab-content {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 0.25rem;
+}
+
+.tab-content > .active {
+  margin: 45px 60px;
+}
+
+.mat-tab-label-container {
+  margin-top: 20px;
+}
+
+.mat-tab-label {
+  min-width: 0px !important;
+  color: rgb(72, 138, 232);
+  opacity: 1 !important;
+  padding: inherit !important;
+  font-size: 30px;
+  font-weight: 100;
+  margin-left: 60px;
+}
+
+.mat-tab-label-active, .choose, .scoring-rating > span {
+  color: rgb(180, 180, 180) !important;
+}
+
+.mat-tab-labels{
+  display: inline-block !important;
+  border-bottom: 1px solid #ddd;
+}
+.mat-tab-labels .mat-tab-label:first-child {
+  margin-left: 0px;
+  padding-left: 0px;
+}
+
+.card {
+  margin: 30px;
+  -webkit-box-shadow: 0px 3px 14px 2px rgba(219, 219, 219, 1);
+  -moz-box-shadow: 0px 3px 14px 2px rgba(219, 219, 219, 1);
+  box-shadow: 0px 3px 14px 2px rgba(219, 219, 219, 1);
+}
+
+.sm-btn-primary {
+  background: rgb(246, 150, 1);
+  width: 270px;
+  margin: 0px;
+  padding: 15px 50px;
+}
+
+.sm-btn-primary > .mat-button-wrapper {
+  color: white;
+  font-weight: 500;
+  opacity: 1 !important;
+  color: white;
+  text-align: center;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  display: block;
+  line-height: initial;
+}
+
+.mat-tab-label:focus{
+  background-color: inherit !important;
+}
+.mat-ink-bar{
+  background-color: rgb(72, 138, 232) !important;
+}
+.mat-tab-body-wrapper{
+  margin-top: 50px;
+}

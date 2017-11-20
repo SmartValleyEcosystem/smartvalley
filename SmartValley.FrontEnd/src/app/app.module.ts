@@ -1,9 +1,10 @@
 import {NgModule} from '@angular/core';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppComponent} from './app.component';
 import {MetamaskHowtoComponent} from './components/metamask-howto/metamask-howto.component';
 import {RootComponent} from './components/root/root.component';
 import {BrowserModule} from '@angular/platform-browser';
-import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from './app-routing.module';
 import {Web3Service} from './services/web3-service';
@@ -18,8 +19,11 @@ import {NotificationsComponent} from './components/common/notifications/notifica
 import {BalanceApiClient} from './api/balance/balance-api-client';
 import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
 import {IfWeb3Initialized} from './routing/IfWeb3Initialized';
-import { ApplicationComponent } from './components/application/application.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import {ApplicationComponent} from './components/application/application.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {ScoringComponent} from './components/scoring/scoring.component';  // <-- #1 import module
+import {MatTabsModule} from '@angular/material';
+import {FooterComponent} from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -29,16 +33,20 @@ import { ReactiveFormsModule } from '@angular/forms';
     RootComponent,
     HeaderComponent,
     NotificationsComponent,
-    ApplicationComponent
+    ApplicationComponent,
+    ScoringComponent,
+    FooterComponent
   ],
   imports: [
+    MatTabsModule,
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
     PrimeNgModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbModule.forRoot()
   ],
   providers: [
     {

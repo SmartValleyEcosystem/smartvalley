@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
-import "rxjs/add/observable/timer";
+import 'rxjs/add/observable/timer';
 
 @Injectable()
 export class Web3Service {

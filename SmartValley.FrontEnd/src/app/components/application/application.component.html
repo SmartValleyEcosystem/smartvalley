@@ -36,7 +36,7 @@
   </div>
 
   <h3>Team</h3>
-  <div *ngFor="let member of teamMembers; let i = index">
+  <div *ngFor="let member of teamMembers;">
     <div [formGroup]="member">
       <div class="form-group">
         <label class="center-block">{{member.value.title}}

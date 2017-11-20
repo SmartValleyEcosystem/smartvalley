@@ -5,3 +5,16 @@
 .example-spacer {
   flex: 1 1 auto;
 }
+
+.sm-header{
+  color: white;
+  height: 1em;
+  padding-top: 45px;
+  padding-bottom: 45px;
+}
+.sm-header a{
+  text-decoration: none;
+}
+.sm-header__nav > a{
+  padding-left: 1em;
+}
