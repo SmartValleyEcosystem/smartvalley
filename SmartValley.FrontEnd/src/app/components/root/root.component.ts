@@ -35,7 +35,7 @@ export class RootComponent implements OnInit {
   }
 
   async createProject() {
-    const isOk = await this.authenticationService.authenticate();
+    const isOk = await this.authenticationService.authenticateAsync();
     if (isOk) {
       await this.router.navigate([Paths.Application]);
     }

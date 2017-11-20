@@ -36,24 +36,24 @@ export class Web3Service {
     return EthJs.isAddress(address);
   }
 
-  public async getAccounts(): Promise<Array<string>> {
+  public async getAccountsAsync(): Promise<Array<string>> {
     return await this.eth.accounts();
   }
 
-  public async sign(address: string): Promise<string> {
+  public async signAsync(address: string): Promise<string> {
     return await this.eth.personal_sign(EthJs.fromUtf8(Web3Service.MESSAGE_TO_SIGN), address);
   }
 
-  public async recoverSignature(signature: string): Promise<string> {
+  public async recoverSignatureAsync(signature: string): Promise<string> {
     return this.eth.personal_ecRecover(EthJs.fromUtf8(Web3Service.MESSAGE_TO_SIGN), signature);
   }
 
-  public async isRinkebyNetwork(): Promise<boolean> {
-    const version = await this.getNetworkVersion();
+  public async checkRinkebyNetworkAsync(): Promise<boolean> {
+    const version = await this.getNetworkVersionAsync();
     return version === this.rinkebyNetworkId;
   }
 
-  private async getNetworkVersion(): Promise<any> {
+  private async getNetworkVersionAsync(): Promise<any> {
     return await this.eth.net_version();
   }
 

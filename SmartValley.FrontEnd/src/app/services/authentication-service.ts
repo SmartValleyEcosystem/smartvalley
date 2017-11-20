@@ -20,32 +20,32 @@ export class AuthenticationService {
 
   private readonly userKey = 'userKey';
 
-  public getSignatureByAddress(account: string) {
+  private getSignatureByAddress(account: string) {
     return localStorage.getItem(account);
   }
 
-  public saveSignatureForAddrsess(account: string, signature: string) {
+  private saveSignatureForAddrsess(account: string, signature: string) {
     localStorage.setItem(account, signature);
   }
 
-  public removeSignatureByAddress(account: string) {
+  private removeSignatureByAddress(account: string) {
     localStorage.removeItem(account);
   }
 
-  public async authenticate(): Promise<Boolean> {
+  public async authenticateAsync(): Promise<Boolean> {
 
     if (!this.web3Service.isMetamaskInstalled) {
       this.router.navigate([Paths.MetaMaskHowTo]);
       return;
     }
-    const accounts = await this.web3Service.getAccounts();
+    const accounts = await this.web3Service.getAccountsAsync();
     const metamaskAccount = accounts[0];
 
     if (metamaskAccount == null) {
       this.notificationsService.warn('Account unavailable', 'Please unlock metamask');
       return;
     }
-    const isRinkeby = await this.web3Service.isRinkebyNetwork();
+    const isRinkeby = await this.web3Service.checkRinkebyNetworkAsync();
 
     if (!isRinkeby) {
       this.notificationsService.warn('Wrong network', 'Please change to Rinkeby');
@@ -55,35 +55,35 @@ export class AuthenticationService {
     const user = this.getUser();
     if (!isNullOrUndefined(user)) {
       if (user.account !== metamaskAccount) {
-        await this.handleAccountSwitch(metamaskAccount);
+        await this.handleAccountSwitchAsync(metamaskAccount);
         return true;
       }
-      return await this.checkSignature(user.account, user.signature);
+      return await this.checkSignatureAsync(user.account, user.signature);
     }
-    await this.signAndSave(metamaskAccount);
+    await this.signAndSaveAsync(metamaskAccount);
     return true;
   }
 
-  private async handleAccountSwitch(account: string) {
+  private async handleAccountSwitchAsync(account: string) {
     const savedSignature = this.getSignatureByAddress(account);
     if (!isNullOrUndefined(savedSignature)) {
-      const isSavedSignatureValid = await this.checkSignature(account, savedSignature);
+      const isSavedSignatureValid = await this.checkSignatureAsync(account, savedSignature);
       if (!isSavedSignatureValid) {
-        await this.signAndSave(account);
+        await this.signAndSaveAsync(account);
       }
     } else {
-      await this.signAndSave(account);
+      await this.signAndSaveAsync(account);
     }
   }
 
-  private async signAndSave(account: string) {
-    const signature = await this.web3Service.sign(account);
+  private async signAndSaveAsync(account: string) {
+    const signature = await this.web3Service.signAsync(account);
     this.saveUser(new User(account, signature));
     this.saveSignatureForAddrsess(account, signature);
   }
 
-  private async checkSignature(account: string, signature: string): Promise<Boolean> {
-    const recoveredSignature = await this.web3Service.recoverSignature(signature);
+  private async checkSignatureAsync(account: string, signature: string): Promise<Boolean> {
+    const recoveredSignature = await this.web3Service.recoverSignatureAsync(signature);
     return account === recoveredSignature;
   }
 
