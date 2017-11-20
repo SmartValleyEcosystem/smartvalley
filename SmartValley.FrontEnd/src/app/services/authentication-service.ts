@@ -2,7 +2,7 @@ import {EventEmitter, Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import {Web3Service} from './web3-service';
 import {NotificationService} from './notification-service';
-import {User} from './user-info';
+import {User} from './user';
 
 @Injectable()
 export class AuthenticationService {
