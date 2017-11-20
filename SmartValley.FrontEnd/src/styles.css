@@ -80,7 +80,7 @@ body {
   margin-left: 60px;
 }
 
-.mat-tab-label-active, .choose, .scorring-rating > span {
+.mat-tab-label-active, .choose, .scoring-rating > span {
   color: rgb(180, 180, 180) !important;
 }
 
