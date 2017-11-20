@@ -31,7 +31,7 @@ export class RootComponent implements OnInit {
   }
 
   async navigateToScoring() {
-    await this.router.navigate([Paths.BecomeExpert]);
+    await this.router.navigate([Paths.Scoring]);
   }
 
   async createProject() {

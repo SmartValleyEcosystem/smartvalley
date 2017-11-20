@@ -11,7 +11,7 @@ const appRoutes: Routes = [
   {path: Paths.Root, pathMatch: 'full', component: RootComponent},
   {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent},
   {path: Paths.Application, pathMatch: 'full', component: ApplicationComponent, canActivate: [IfAuthenticated]},
-  {path: Paths.BecomeExpert, pathMatch: 'full', component: ScoringComponent}
+  {path: Paths.Scoring, pathMatch: 'full', component: ScoringComponent}
 ];
 
 @NgModule({
