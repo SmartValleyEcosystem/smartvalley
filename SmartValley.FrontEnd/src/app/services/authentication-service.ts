@@ -20,15 +20,15 @@ export class AuthenticationService {
 
   private readonly userKey = 'userKey';
 
-  private getSignatureByAddress(account: string) {
+  private getSignatureByAccount(account: string) {
     return localStorage.getItem(account);
   }
 
-  private saveSignatureForAddrsess(account: string, signature: string) {
+  private saveSignatureForAccount(account: string, signature: string) {
     localStorage.setItem(account, signature);
   }
 
-  private removeSignatureByAddress(account: string) {
+  private removeSignatureByAccount(account: string) {
     localStorage.removeItem(account);
   }
 
@@ -65,7 +65,7 @@ export class AuthenticationService {
   }
 
   private async handleAccountSwitchAsync(account: string) {
-    const savedSignature = this.getSignatureByAddress(account);
+    const savedSignature = this.getSignatureByAccount(account);
     if (!isNullOrUndefined(savedSignature)) {
       const isSavedSignatureValid = await this.checkSignatureAsync(account, savedSignature);
       if (!isSavedSignatureValid) {
@@ -79,7 +79,7 @@ export class AuthenticationService {
   private async signAndSaveAsync(account: string) {
     const signature = await this.web3Service.sign(AuthenticationService.MESSAGE_TO_SIGN, account);
     this.saveCurrentUser({account, signature});
-    this.saveSignatureForAddrsess(account, signature);
+    this.saveSignatureForAccount(account, signature);
   }
 
   private async checkSignatureAsync(account: string, signature: string): Promise<Boolean> {
