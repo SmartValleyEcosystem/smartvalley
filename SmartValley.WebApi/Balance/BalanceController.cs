@@ -22,12 +22,6 @@ namespace SmartValley.WebApi.Balance
         [HttpGet]
         public async Task<BalanceResponse> Get()
         {
-            return new BalanceResponse
-                   {
-                       Balance = 20,
-                       WasEtherReceived = false
-
-                   };
             var wasEtherReceived = await _etherManagerContractClient.HasReceivedEtherAsync(User.Identity.Name);
             var balance = await _ethereumClient.GetBalanceAsync(User.Identity.Name);
 
