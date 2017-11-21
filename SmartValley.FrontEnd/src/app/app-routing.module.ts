@@ -8,7 +8,7 @@ import {ScoringComponent} from './components/scoring/scoring.component';
 
 
 const appRoutes: Routes = [
-  {path: '', pathMatch: 'full', component: RootComponent},
+  {path: Paths.Root, pathMatch: 'full', component: RootComponent},
   {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent},
   {path: Paths.Application, pathMatch: 'full', component: ApplicationComponent},
   {path: Paths.Scoring, pathMatch: 'full', component: ScoringComponent}

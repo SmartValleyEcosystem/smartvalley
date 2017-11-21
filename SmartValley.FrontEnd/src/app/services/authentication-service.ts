@@ -1,8 +1,6 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import {Web3Service} from './web3-service';
-
-import {User} from './user';
 import {NotificationsService} from 'angular2-notifications';
 import {Router} from '@angular/router';
 import {Paths} from '../paths';
@@ -10,39 +8,39 @@ import {Paths} from '../paths';
 @Injectable()
 export class AuthenticationService {
 
-
-   public accountChanged: EventEmitter<any> = new EventEmitter<any>();
-
   constructor(private web3Service: Web3Service,
               private notificationsService: NotificationsService,
               private router: Router) {
   }
 
+  public static MESSAGE_TO_SIGN = 'Confirm login';
+  public accountChanged: EventEmitter<any> = new EventEmitter<any>();
+
   private readonly userKey = 'userKey';
 
-  private getSignatureByAddress(account: string) {
+  private getSignatureByAccount(account: string): string {
     return localStorage.getItem(account);
   }
 
-  private saveSignatureForAddrsess(account: string, signature: string) {
+  private saveSignatureForAccount(account: string, signature: string) {
     localStorage.setItem(account, signature);
   }
 
-  private removeSignatureByAddress(account: string) {
+  private removeSignatureByAccount(account: string) {
     localStorage.removeItem(account);
   }
 
   public isAuthenticated() {
-    return !isNullOrUndefined(this.getUser());
+    return !isNullOrUndefined(this.getCurrentUser());
   }
 
-  public async authenticateAsync(): Promise<Boolean> {
+  public async authenticateAsync(): Promise<boolean> {
 
     if (!this.web3Service.isMetamaskInstalled) {
       this.router.navigate([Paths.MetaMaskHowTo]);
       return;
     }
-    const accounts = await this.web3Service.getAccountsAsync();
+    const accounts = await this.web3Service.getAccounts();
     const metamaskAccount = accounts[0];
 
     if (metamaskAccount == null) {
@@ -56,7 +54,8 @@ export class AuthenticationService {
       return;
     }
 
-    const user = this.getUser();
+    const user = this.getCurrentUser();
+
     if (!isNullOrUndefined(user)) {
       if (user.account !== metamaskAccount) {
         await this.handleAccountSwitchAsync(metamaskAccount);
@@ -69,8 +68,8 @@ export class AuthenticationService {
     return true;
   }
 
-  private async handleAccountSwitchAsync(account: string) {
-    const savedSignature = this.getSignatureByAddress(account);
+  private async handleAccountSwitchAsync(account: string): Promise<void> {
+    const savedSignature = this.getSignatureByAccount(account);
     if (!isNullOrUndefined(savedSignature)) {
       const isSavedSignatureValid = await this.checkSignatureAsync(account, savedSignature);
       if (!isSavedSignatureValid) {
@@ -81,24 +80,22 @@ export class AuthenticationService {
     }
   }
 
-  private async signAndSaveAsync(account: string) {
-    const signature = await this.web3Service.signAsync(account);
-    this.saveUser(new User(account, signature));
-    this.saveSignatureForAddrsess(account, signature);
+  private async signAndSaveAsync(account: string): Promise<void> {
+    const signature = await this.web3Service.sign(AuthenticationService.MESSAGE_TO_SIGN, account);
+    this.saveCurrentUser({account, signature});
+    this.saveSignatureForAccount(account, signature);
   }
 
-  private async checkSignatureAsync(account: string, signature: string): Promise<Boolean> {
-    const recoveredSignature = await this.web3Service.recoverSignatureAsync(signature);
+  private async checkSignatureAsync(account: string, signature: string): Promise<boolean> {
+    const recoveredSignature = await this.web3Service.recoverSignature(AuthenticationService.MESSAGE_TO_SIGN, signature);
     return account === recoveredSignature;
   }
 
-  public getUser(): User {
+  public getCurrentUser(): User {
     return JSON.parse(localStorage.getItem(this.userKey));
   }
 
-  private saveUser(user: User) {
+  private saveCurrentUser(user: User) {
     localStorage.setItem(this.userKey, JSON.stringify(user));
   }
-
-
 }

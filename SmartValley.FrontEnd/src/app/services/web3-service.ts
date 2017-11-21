@@ -6,10 +6,7 @@ import * as EthJs from 'ethJs';
 @Injectable()
 export class Web3Service {
 
-  public static MESSAGE_TO_SIGN = 'Confirm login';
-
   private readonly rinkebyNetworkId = '4';
-  // TODO next task
   private readonly metamaskProviderName = 'MetamaskInpageProvider';
 
 
@@ -36,25 +33,25 @@ export class Web3Service {
     return EthJs.isAddress(address);
   }
 
-  public async getAccountsAsync(): Promise<Array<string>> {
-    return await this.eth.accounts();
+  public getAccounts(): Promise<Array<string>> {
+    return this.eth.accounts();
   }
 
-  public async signAsync(address: string): Promise<string> {
-    return await this.eth.personal_sign(EthJs.fromUtf8(Web3Service.MESSAGE_TO_SIGN), address);
+  public sign(message: string, address: string): Promise<string> {
+    return this.eth.personal_sign(EthJs.fromUtf8(message), address);
   }
 
-  public async recoverSignatureAsync(signature: string): Promise<string> {
-    return this.eth.personal_ecRecover(EthJs.fromUtf8(Web3Service.MESSAGE_TO_SIGN), signature);
+  public recoverSignature(message: string, signature: string): Promise<string> {
+    return this.eth.personal_ecRecover(EthJs.fromUtf8(message), signature);
   }
 
   public async checkRinkebyNetworkAsync(): Promise<boolean> {
-    const version = await this.getNetworkVersionAsync();
+    const version = await this.getNetworkVersion();
     return version === this.rinkebyNetworkId;
   }
 
-  private async getNetworkVersionAsync(): Promise<any> {
-    return await this.eth.net_version();
+  private getNetworkVersion(): Promise<any> {
+    return this.eth.net_version();
   }
 
 }
