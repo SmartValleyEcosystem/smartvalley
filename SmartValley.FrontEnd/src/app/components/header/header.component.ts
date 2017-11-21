@@ -28,9 +28,9 @@ export class HeaderComponent implements OnInit {
   async updateHeaderAsync() {
     if (this.authenticationService.isAuthenticated()) {
       this.isAuthenticated = true;
-      const response = await this.balanceApiClient.getBalanceAsync();
-      this.currentBalance = response.balance;
-      this.wasEtherReceived = response.wasEtherReceived;
+      const balanceResponse = await this.balanceApiClient.getBalanceAsync();
+      this.currentBalance = balanceResponse.balance;
+      this.wasEtherReceived = balanceResponse.wasEtherReceived;
     } else {
       this.isAuthenticated = false;
     }
@@ -38,6 +38,6 @@ export class HeaderComponent implements OnInit {
 
 
   async receiveEth() {
-    await  this.balanceApiClient.receiveEtherAsync();
+    await this.balanceApiClient.receiveEtherAsync();
   }
 }

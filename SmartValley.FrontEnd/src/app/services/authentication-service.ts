@@ -1,8 +1,6 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import {Web3Service} from './web3-service';
-
-import {User} from './user';
 import {NotificationsService} from 'angular2-notifications';
 import {Router} from '@angular/router';
 import {Paths} from '../paths';
@@ -14,13 +12,15 @@ import {Subscription} from 'rxjs/Subscription';
 @Injectable()
 export class AuthenticationService {
 
+  public static MESSAGE_TO_SIGN = 'Confirm login';
+
   public accountChanged: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private web3Service: Web3Service,
               private notificationsService: NotificationsService,
               private router: Router) {
 
-    if (this.web3Service.isMetamaskInstalled && this.getUser() != null) {
+    if (this.web3Service.isMetamaskInstalled && this.getCurrentUser() != null) {
       this.startBackgroundChecker();
     }
   }
@@ -29,19 +29,18 @@ export class AuthenticationService {
   private backgroundChecker: Subscription;
 
   public isAuthenticated() {
-    return !isNullOrUndefined(this.getUser());
+    return !isNullOrUndefined(this.getCurrentUser());
   }
 
-  public async authenticateAsync(): Promise<Boolean> {
-
+  public async authenticateAsync(): Promise<boolean> {
     if (!this.web3Service.isMetamaskInstalled) {
       this.router.navigate([Paths.MetaMaskHowTo]);
       return;
     }
-    const accounts = await this.web3Service.getAccountsAsync();
-    const metamaskAccount = accounts[0];
+    const accounts = await this.web3Service.getAccounts();
+    const currentAccount = accounts[0];
 
-    if (metamaskAccount == null) {
+    if (currentAccount == null) {
       this.notificationsService.warn('Account unavailable', 'Please unlock metamask');
       return;
     }
@@ -52,65 +51,71 @@ export class AuthenticationService {
       return;
     }
 
-    const user = this.getUser();
-    if (!isNullOrUndefined(user)) {
-      if (user.account !== metamaskAccount) {
-        await this.handleAccountSwitchAsync(metamaskAccount);
-        return true;
+    const shouldSign = await this.shouldSignAccount(currentAccount);
+    if (shouldSign) {
+      try {
+        await this.signAndSaveAsync(currentAccount);
       }
-      return await this.checkSignatureAsync(user.account, user.signature);
+      catch (e) {
+        return false;
+      }
     }
-    await this.signAndSaveAsync(metamaskAccount);
     return true;
   }
 
-  private async handleAccountSwitchAsync(account: string) {
-    const savedSignature = this.getSignatureByAddress(account);
-    if (!isNullOrUndefined(savedSignature)) {
-      const isSavedSignatureValid = await this.checkSignatureAsync(account, savedSignature);
-      if (!isSavedSignatureValid) {
-        await this.signAndSaveAsync(account);
-      }
-    } else {
-      await this.signAndSaveAsync(account);
+  private async shouldSignAccount(currentAccount: string): Promise<boolean> {
+    const user = this.getCurrentUser();
+    if (user == null) {
+      return true;
     }
+
+    if (user.account !== currentAccount) {
+      const savedSignature = this.getSignatureByAccount(currentAccount);
+      user.account = currentAccount;
+      user.signature = savedSignature;
+    }
+    const isValid = await this.checkSignatureAsync(user.account, user.signature);
+    return !isValid;
   }
 
-  private async signAndSaveAsync(account: string) {
-    const signature = await this.web3Service.signAsync(account);
-    this.saveUser(new User(account, signature));
-    this.saveSignatureForAddrsess(account, signature);
+  private async signAndSaveAsync(account: string): Promise<void> {
+    const signature = await this.web3Service.sign(AuthenticationService.MESSAGE_TO_SIGN, account);
+    this.saveCurrentUser({account, signature});
+    this.saveSignatureForAccount(account, signature);
   }
 
-  private async checkSignatureAsync(account: string, signature: string): Promise<Boolean> {
-    const recoveredSignature = await this.web3Service.recoverSignatureAsync(signature);
+  private async checkSignatureAsync(account: string, signature: string): Promise<boolean> {
+    if (isNullOrUndefined(account) || isNullOrUndefined(signature)) {
+      return false;
+    }
+    const recoveredSignature = await this.web3Service.recoverSignature(AuthenticationService.MESSAGE_TO_SIGN, signature);
     return account === recoveredSignature;
   }
 
-  public getUser(): User {
+  public getCurrentUser(): User {
     return JSON.parse(localStorage.getItem(this.userKey));
   }
 
-  private saveUser(user: User) {
+  private saveCurrentUser(user: User) {
     localStorage.setItem(this.userKey, JSON.stringify(user));
     this.accountChanged.emit(user);
     this.startBackgroundChecker();
   }
 
-  private deleteUser() {
+  private deleteCurrentUser() {
     localStorage.removeItem(this.userKey);
     this.accountChanged.emit();
   }
 
-  private getSignatureByAddress(account: string) {
+  private getSignatureByAccount(account: string) {
     return localStorage.getItem(account);
   }
 
-  private saveSignatureForAddrsess(account: string, signature: string) {
+  private saveSignatureForAccount(account: string, signature: string) {
     localStorage.setItem(account, signature);
   }
 
-  private removeSignatureByAddress(account: string) {
+  private removeSignatureByAccount(account: string) {
     localStorage.removeItem(account);
   }
 
@@ -123,7 +128,6 @@ export class AuthenticationService {
     this.backgroundChecker = Observable.interval(5 * 1000)
       .map(async x => this.checkCurrentAuthStateAsync())
       .subscribe();
-
   }
 
   private stopBackgroundChecker() {
@@ -137,31 +141,28 @@ export class AuthenticationService {
     if (!isMetamaskEnabled) {
       this.stopUserSession();
     }
-    const accounts = await this.web3Service.getAccountsAsync();
-    const metamaskAccount = accounts[0];
-    const user = this.getUser();
+    const accounts = await this.web3Service.getAccounts();
+    const currentAccount = accounts[0];
+    const user = this.getCurrentUser();
     if (isNullOrUndefined(user)) {
       this.stopUserSession();
     }
-    if (user.account === metamaskAccount) {
+    if (user.account === currentAccount) {
       return;
     }
-    const savedSignature = this.getSignatureByAddress(metamaskAccount);
-    if (!isNullOrUndefined(savedSignature)) {
-      const isSavedSignatureValid = await this.checkSignatureAsync(metamaskAccount, savedSignature);
-      if (isSavedSignatureValid) {
-        this.saveUser(new User(metamaskAccount, savedSignature));
-      } else {
-        this.stopUserSession();
-      }
+    const savedSignature = this.getSignatureByAccount(currentAccount);
+
+    const isSavedSignatureValid = await this.checkSignatureAsync(currentAccount, savedSignature);
+    if (isSavedSignatureValid) {
+      this.saveCurrentUser({account: currentAccount, signature: savedSignature});
     } else {
       this.stopUserSession();
     }
   }
 
   private stopUserSession() {
-    this.deleteUser()
+    this.deleteCurrentUser()
     this.stopBackgroundChecker();
-    this.router.navigate(['']);
+    this.router.navigate([Paths.Root]);
   }
 }
