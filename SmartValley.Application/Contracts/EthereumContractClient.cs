@@ -1,61 +1,66 @@
 ﻿using System.Threading.Tasks;
 using Nethereum.Contracts;
 using Nethereum.Hex.HexTypes;
-using Nethereum.JsonRpc.IpcClient;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Util;
 using Nethereum.Web3;
 
 namespace SmartValley.Application.Contracts
 {
-    public abstract class EthereumContractClient
+    // ReSharper disable once ClassNeverInstantiated.Global
+    public class EthereumContractClient
     {
         private const int TransactionReceiptPollingIntervalMilliseconds = 1000;
         private const int AdditionalGasPercent = 10;
 
-        private readonly string _contractAbi;
-        private readonly string _contractAddress;
         private readonly string _contractOwner;
         private readonly string _password;
 
         private readonly Web3 _web3;
 
-        protected EthereumContractClient(string rpcAddress, ContractOptions contractOptions)
+        public EthereumContractClient(Web3 web3, NethereumOptions nethereumOptions)
         {
-            _contractAbi = contractOptions.Abi;
-            _contractAddress = contractOptions.Address;
-            _contractOwner = contractOptions.Owner;
-            _password = contractOptions.Password;
-
-            _web3 = InitializeWeb3(rpcAddress);
+            _contractOwner = nethereumOptions.Owner;
+            _password = nethereumOptions.Password;
+            _web3 = web3;
         }
 
-        protected Function GetFunction(string functionName)
+        public Task<TResult> CallFunctionAsync<TResult>(
+            string address,
+            string abi,
+            string functionName,
+            params object[] functionInput)
         {
-            var contract = _web3.Eth.GetContract(_contractAbi, _contractAddress);
-            return contract.GetFunction(functionName);
+            return GetFunction(address, abi, functionName).CallAsync<TResult>(functionInput);
         }
 
-        protected async Task SignAndSendTransactionAsync(string functionName, params object[] functionInput)
+        public async Task SignAndSendTransactionAsync(
+            string contractAddress,
+            string contractAbi,
+            string functionName,
+            params object[] functionInput)
         {
-            var function = GetFunction(functionName);
+            var function = GetFunction(functionName, contractAbi, contractAddress);
             var transactionInput = await CreateTransactionInputAsync(function, functionInput);
             var transactionHash = await _web3.Personal.SignAndSendTransaction.SendRequestAsync(transactionInput, _password);
 
             await WaitForConfirmationAsync(transactionHash);
         }
 
-        protected async Task SendRawTransactionAsync(string signedTransactionData)
-        {
-            var transactionHash = await _web3.Eth.Transactions.SendRawTransaction.SendRequestAsync(signedTransactionData);
-            await WaitForConfirmationAsync(transactionHash);
-        }
-        
-        private async Task WaitForConfirmationAsync(string transactionHash)
+        public async Task WaitForConfirmationAsync(string transactionHash)
         {
             while (await GetReceiptAsync(transactionHash) == null)
                 await Task.Delay(TransactionReceiptPollingIntervalMilliseconds);
         }
+
+        private Function GetFunction(string address, string abi, string functionName)
+        {
+            var contract = _web3.Eth.GetContract(abi, address);
+            return contract.GetFunction(functionName);
+        }
+
+        private Task<TransactionReceipt> GetReceiptAsync(string transactionHash)
+            => _web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync(transactionHash);
 
         private async Task<TransactionInput> CreateTransactionInputAsync(Function function, params object[] functionInput)
         {
@@ -64,18 +69,6 @@ namespace SmartValley.Application.Contracts
             var gasPrice = new HexBigInteger(Web3.Convert.GetEthUnitValue(UnitConversion.EthUnit.Gwei));
 
             return function.CreateTransactionInput(_contractOwner, gas, gasPrice, new HexBigInteger(0), functionInput);
-        }
-
-        private Task<TransactionReceipt> GetReceiptAsync(string transactionHash)
-            => _web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync(transactionHash);
-
-        private static Web3 InitializeWeb3(string rpcAddress)
-        {
-            if (!string.IsNullOrEmpty(rpcAddress))
-                return new Web3(rpcAddress);
-
-            var ipcClient = new IpcClient("./geth.ipc");
-            return new Web3(ipcClient);
         }
     }
 }
