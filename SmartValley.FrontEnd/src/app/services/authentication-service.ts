@@ -4,6 +4,10 @@ import {Web3Service} from './web3-service';
 import {NotificationsService} from 'angular2-notifications';
 import {Router} from '@angular/router';
 import {Paths} from '../paths';
+import {Subscription} from 'rxjs/Subscription';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/interval';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class AuthenticationService {
@@ -11,12 +15,16 @@ export class AuthenticationService {
   constructor(private web3Service: Web3Service,
               private notificationsService: NotificationsService,
               private router: Router) {
+    if (this.web3Service.isMetamaskInstalled && this.getCurrentUser() != null) {
+      this.startBackgroundChecker();
+    }
   }
 
   public static MESSAGE_TO_SIGN = 'Confirm login';
   public accountChanged: EventEmitter<any> = new EventEmitter<any>();
 
   private readonly userKey = 'userKey';
+  private backgroundChecker: Subscription;
 
   private getSignatureByAccount(account: string): string {
     return localStorage.getItem(account);
@@ -84,6 +92,7 @@ export class AuthenticationService {
     const signature = await this.web3Service.sign(AuthenticationService.MESSAGE_TO_SIGN, account);
     this.saveCurrentUser({account, signature});
     this.saveSignatureForAccount(account, signature);
+    this.startBackgroundChecker();
   }
 
   private async checkSignatureAsync(account: string, signature: string): Promise<boolean> {
@@ -101,5 +110,55 @@ export class AuthenticationService {
   private saveCurrentUser(user: User) {
     localStorage.setItem(this.userKey, JSON.stringify(user));
     this.accountChanged.emit(user);
+  }
+
+  private deleteCurrentUser() {
+    localStorage.removeItem(this.userKey);
+    this.accountChanged.emit();
+  }
+
+  private startBackgroundChecker() {
+    if (!isNullOrUndefined(this.backgroundChecker) && !this.backgroundChecker.closed) {
+      return;
+    }
+    this.backgroundChecker = Observable.interval(5 * 1000)
+      .map(async () => this.checkCurrentAuthStateAsync())
+      .subscribe();
+  }
+
+  private stopBackgroundChecker() {
+    if (!isNullOrUndefined(this.backgroundChecker) && !this.backgroundChecker.closed) {
+      this.backgroundChecker.unsubscribe();
+    }
+  }
+
+  private async checkCurrentAuthStateAsync(): Promise<void> {
+    const isMetamaskEnabled = this.web3Service.isMetamaskInstalled;
+    if (!isMetamaskEnabled) {
+      this.stopUserSession();
+    }
+    const accounts = await this.web3Service.getAccounts();
+    const currentAccount = accounts[0];
+    const user = this.getCurrentUser();
+    if (isNullOrUndefined(user)) {
+      this.stopUserSession();
+    }
+    if (user.account === currentAccount) {
+      return;
+    }
+    const savedSignature = this.getSignatureByAccount(currentAccount);
+
+    const isSavedSignatureValid = await this.checkSignatureAsync(currentAccount, savedSignature);
+    if (isSavedSignatureValid) {
+      this.saveCurrentUser({account: currentAccount, signature: savedSignature});
+    } else {
+      this.stopUserSession();
+    }
+  }
+
+  private stopUserSession() {
+    this.deleteCurrentUser()
+    this.stopBackgroundChecker();
+    this.router.navigate([Paths.Root]);
   }
 }

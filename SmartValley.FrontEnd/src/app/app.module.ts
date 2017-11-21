@@ -12,7 +12,6 @@ import {AuthenticationService} from './services/authentication-service';
 import {ApplicationApiClient} from './api/application/application-api.client';
 import {HeaderComponent} from './components/header/header.component';
 import {MaterialModule} from './shared/material.module';
-import {PrimeNgModule} from './shared/prime-ng.module';
 import {BalanceApiClient} from './api/balance/balance-api-client';
 import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
 
@@ -44,7 +43,6 @@ import {ScoringService} from './services/scoring-service';
     HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
-    PrimeNgModule,
     AppRoutingModule,
     ReactiveFormsModule,
     NgbModule.forRoot(),
