@@ -1,5 +1,5 @@
-.sw-card-content{
-  margin: 50px 80px;
+.sw-card > div{
+  margin: 50px 80px 0px 80px;
 }
 
 div.row{

@@ -9,15 +9,6 @@ div.row{
   width: calc(100% + 165px);
 }
 
-.sw-project-card{
-  display: inline-block;
-  margin: 0px;
-  padding: 0px;
-  margin-bottom: 1rem;
-  background: white;
-  border-radius: 5px;
-}
-
 .btn-grp{
   display: inline-block;
   margin: 0;
