@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {AuthenticationService} from '../../services/authentication-service';
-import {Web3Service} from '../../services/web3-service';
 
 @Component({
   selector: 'app-header',
@@ -15,20 +14,26 @@ export class HeaderComponent implements OnInit {
   public isAuthenticated: boolean;
 
   constructor(private balanceApiClient: BalanceApiClient,
-              private authenticationService: AuthenticationService,
-              private web3Service: Web3Service) {
-
+              private authenticationService: AuthenticationService) {
+    this.authenticationService.accountChanged.subscribe(async () => await this.updateHeaderAsync());
   }
 
   async ngOnInit() {
+    this.updateHeaderAsync();
   }
 
-  async updateHeader() {
-
+  async updateHeaderAsync(): Promise<void> {
+    if (this.authenticationService.isAuthenticated()) {
+      this.isAuthenticated = true;
+      const balanceResponse = await this.balanceApiClient.getBalanceAsync();
+      this.currentBalance = balanceResponse.balance;
+      this.wasEtherReceived = balanceResponse.wasEtherReceived;
+    } else {
+      this.isAuthenticated = false;
+    }
   }
-
 
   async receiveEth() {
-    await this.balanceApiClient.receiveEther();
+    await this.balanceApiClient.receiveEtherAsync();
   }
 }

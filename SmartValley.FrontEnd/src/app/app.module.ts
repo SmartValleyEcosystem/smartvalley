@@ -12,7 +12,6 @@ import {AuthenticationService} from './services/authentication-service';
 import {ApplicationApiClient} from './api/application/application-api.client';
 import {HeaderComponent} from './components/header/header.component';
 import {MaterialModule} from './shared/material.module';
-import {PrimeNgModule} from './shared/prime-ng.module';
 import {BalanceApiClient} from './api/balance/balance-api-client';
 import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
 
@@ -22,6 +21,8 @@ import {ScoringComponent} from './components/scoring/scoring.component';  // <--
 import {MatTabsModule} from '@angular/material';
 import {FooterComponent} from './components/footer/footer.component';
 import {SimpleNotificationsModule} from 'angular2-notifications';
+import {EstimateComponent} from './components/estimate/estimate.component';
+import {ScoringService} from './services/scoring-service';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import {SimpleNotificationsModule} from 'angular2-notifications';
     HeaderComponent,
     ApplicationComponent,
     ScoringComponent,
-    FooterComponent
+    FooterComponent,
+    EstimateComponent
   ],
   imports: [
     MatTabsModule,
@@ -41,7 +43,6 @@ import {SimpleNotificationsModule} from 'angular2-notifications';
     HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
-    PrimeNgModule,
     AppRoutingModule,
     ReactiveFormsModule,
     NgbModule.forRoot(),
@@ -56,6 +57,7 @@ import {SimpleNotificationsModule} from 'angular2-notifications';
     BalanceApiClient,
     ApplicationApiClient,
     AuthenticationService,
+    ScoringService,
     Web3Service],
   bootstrap: [AppComponent]
 })
