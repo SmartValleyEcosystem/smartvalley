@@ -156,7 +156,7 @@ export class AuthenticationService {
     }
   }
 
-  private stopUserSession() {
+  public stopUserSession() {
     this.deleteCurrentUser()
     this.stopBackgroundChecker();
     this.router.navigate([Paths.Root]);

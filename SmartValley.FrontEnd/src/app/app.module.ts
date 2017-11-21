@@ -23,6 +23,7 @@ import {FooterComponent} from './components/footer/footer.component';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {EstimateComponent} from './components/estimate/estimate.component';
 import {ScoringService} from './services/scoring-service';
+import {ErrorInterceptor} from './api/error-interceptor';
 
 
 @NgModule({
@@ -52,6 +53,11 @@ import {ScoringService} from './services/scoring-service';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthHeaderInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true
     },
     BalanceApiClient,
