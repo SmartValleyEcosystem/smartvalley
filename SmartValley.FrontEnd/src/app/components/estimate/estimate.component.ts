@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {Scoring} from '../../services/scoring';
 import {ScoringService} from '../../services/scoring-service';
 
@@ -12,13 +12,13 @@ export class EstimateComponent implements OnInit {
 
   public scoring: Scoring;
 
-  constructor(private router: Router,
+  constructor(private route: ActivatedRoute,
               private service: ScoringService) {
-    const id = 0;
-    this.scoring = this.service.getById(id);
   }
 
   ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.scoring = this.service.getById(parseInt(id, 0));
+    console.log(this.scoring);
   }
-
 }

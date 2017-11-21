@@ -38,3 +38,13 @@
 .btn {
   cursor: pointer;
 }
+/*.row-content{*/
+  /*transition: height 1s;*/
+  /*height: 0;*/
+/*}*/
+
+/*.row-content.active{*/
+  /*transition: height 1s;*/
+  /*height: auto;*/
+/*}*/
+

@@ -9,19 +9,19 @@ export class ScoringService {
     this.initTestData();
   }
 
-  getAll() {
+  getAll(): Array<Scoring> {
     return this.scorings;
   }
 
-  getById(id: number) {
-    return this.scorings.filter(x => x.id === id)[0];
+  getById(id: number): Scoring {
+    return this.scorings.filter(x => x.projectId === id)[0];
   }
 
   // тестовые данные
   initTestData() {
     this.scorings = [];
     this.scorings.push(<Scoring>{
-      id: 0,
+      projectId: 0,
       projectName: 'Rega Risk Sharing',
       projectArea: 'Crowdsurance',
       projectCountry: 'Russia',
@@ -32,7 +32,7 @@ export class ScoringService {
     });
 
     this.scorings.push(<Scoring>{
-      id: 1,
+      projectId: 1,
       projectName: 'BitClave Active Search Ecosystem',
       projectArea: 'Rotetechnology',
       projectCountry: 'Russia',
@@ -43,7 +43,7 @@ export class ScoringService {
     });
 
     this.scorings.push(<Scoring>{
-      id: 2,
+      projectId: 2,
       projectName: 'B2Broker',
       projectArea: 'Brokering',
       projectCountry: 'Russia',
@@ -54,7 +54,7 @@ export class ScoringService {
     });
 
     this.scorings.push(<Scoring>{
-      id: 3,
+      projectId: 3,
       projectName: 'B2Broker',
       projectArea: 'Brokering',
       projectCountry: 'Russia',
@@ -65,7 +65,7 @@ export class ScoringService {
     });
 
     this.scorings.push(<Scoring>{
-      id: 4,
+      projectId: 4,
       projectName: 'B2Broker',
       projectArea: 'Brokering',
       projectCountry: 'Russia',
