@@ -38,18 +38,6 @@ div.row{
   padding: 0;
 }
 
-span.high_rate{
-  color: green !important;
-}
-
-span.medium_rate{
-  color: orange !important;
-}
-
-span.low_rate{
-  color: red !important;
-}
-
 .project-card-block{
   position: relative;
   padding: 0px;

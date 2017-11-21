@@ -131,3 +131,15 @@ body {
 .mat-tab-body-wrapper{
   margin-top: 50px;
 }
+
+.high_rate{
+  color: #38a347 !important;
+}
+
+.medium_rate{
+  color: #e8a765 !important;
+}
+
+.low_rate{
+  color: #d24a43 !important;
+}
