@@ -21,6 +21,8 @@ import {ScoringComponent} from './components/scoring/scoring.component';  // <--
 import {MatTabsModule} from '@angular/material';
 import {FooterComponent} from './components/footer/footer.component';
 import {SimpleNotificationsModule} from 'angular2-notifications';
+import {EstimateComponent} from './components/estimate/estimate.component';
+import {ScoringService} from './services/scoring-service';
 
 
 @NgModule({
@@ -32,7 +34,8 @@ import {SimpleNotificationsModule} from 'angular2-notifications';
     HeaderComponent,
     ApplicationComponent,
     ScoringComponent,
-    FooterComponent
+    FooterComponent,
+    EstimateComponent
   ],
   imports: [
     MatTabsModule,
@@ -54,6 +57,7 @@ import {SimpleNotificationsModule} from 'angular2-notifications';
     BalanceApiClient,
     ApplicationApiClient,
     AuthenticationService,
+    ScoringService,
     Web3Service],
   bootstrap: [AppComponent]
 })

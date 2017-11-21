@@ -1,92 +1,130 @@
-<h2>Create new project for scoring</h2>
-<h3>Main information:</h3>
-<form [formGroup]="applicationForm" (ngSubmit)="onSubmit()" novalidate>
-  <div class="form-group">
-    <label class="center-block">Name
-      <input class="form-control" formControlName="name" placeholder="Prover">
-    </label>
-  </div>
-  <div class="form-group">
-    <label class="center-block">Project Area
-      <input class="form-control" formControlName="projectArea" placeholder="Biotechnology">
-    </label>
-  </div>
-  <div class="form-group">
-    <label class="center-block">Problem description
-      <input class="form-control" formControlName="probablyDescription"
-             placeholder="Technology of Authenticity Verification of Video Content">
-    </label>
-  </div>
-  <div class="form-group">
-    <label class="center-block">Solution description
-      <input class="form-control" formControlName="solutionDescription"
-             placeholder="Technology of Authenticity Verification of Video Content">
-    </label>
-  </div>
-  <div class="form-group">
-    <label class="center-block">Current project status
-      <input class="form-control" formControlName="projectStatus" placeholder="We already develop MVP">
-    </label>
-  </div>
-  <div class="form-group">
-    <label class="center-block">White paper link
-      <input class="form-control" formControlName="whitePaperLink" pattern="https?://.+" title="Include http://"
-             placeholder="https://">
-    </label>
-  </div>
-
-  <h3>Team</h3>
-  <div *ngFor="let member of teamMembers;">
-    <div [formGroup]="member">
-      <div class="form-group">
-        <label class="center-block">{{member.value.title}}
-          <input class="form-control" formControlName="fullName" placeholder="Stan Cooper">
-        </label>
-        <label class="center-block">FB link:
-          <input class="form-control" formControlName="facebookLink" placeholder="www.facebook.com/stancooper">
-        </label>
-        <label class="center-block">LinkedIn link:
-          <input class="form-control" formControlName="linkedInLink" placeholder="www.linkedin.com/stancooper">
-        </label>
-      </div>
+<div class="container">
+  <div class="row mx-auto">
+    <div class="col-8 sm-title">
+      <h1>Create new project for scoring</h1>
     </div>
   </div>
+  <form [ngClass]="hidden ? '' : 'hidden'" [formGroup]="applicationForm" novalidate>
+    <div class="sw-card sw-content">
+      <div class="row row-title">
+        <h3 class="col-10 offset-1">Main information</h3>
+      </div>
+      <div class="row">
+        <span class="col-2 offset-1">Name</span>
+        <input class="form-control col-6" formControlName="name" placeholder="Prover">
+      </div>
+      <div class="row">
+        <span class="col-2 offset-1">Project Area</span>
+        <input class="form-control col-6" formControlName="projectArea" placeholder="Biotechnology">
+      </div>
+      <div class="row">
+        <span class="col-2 offset-1">Problem description</span>
+        <textarea style="height: 10em; resize: none;" class="form-control col-6" formControlName="probablyDescription"
+               placeholder="Technology of Authenticity Verification of Video Content">
+        </textarea>
+      </div>
+      <div class="row">
+        <span class="col-2 offset-1">Solution description</span>
+        <textarea style="height: 10em; resize: none;" class="form-control col-6" formControlName="solutionDescription"
+               placeholder="Technology of Authenticity Verification of Video Content">
+        </textarea>
+      </div>
+      <div class="row">
+        <span class="col-2 offset-1">Current project status</span>
+        <textarea style="height: 10em; resize: none;" class="form-control col-6" formControlName="projectStatus"
+               placeholder="We already develop MVP">
+        </textarea>
+      </div>
+      <div class="wp-link row">
+        <span class="col-2 offset-1">White paper link</span>
+        <input class="form-control col-6" formControlName="whitePaperLink"
+               title="Include http://" placeholder="www">
+      </div>
+    </div>
+    <div class="next-button row">
+      <button (click)="changeHidden()" class="col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">Next
+      </button>
+    </div>
+      <div>
+      <!--<div class="hidden">-->
+        <div class="sw-card sw-content">
+          <div class="row row-title">
+            <h3 class="col-10 offset-1">Team</h3>
+          </div>
+          <div class="row-content">
+            <div *ngFor="let member of teamMembers;">
+              <div [formGroup]="member">
+                <div class="row">
+                  <span class="col-1 offset-1">{{member.value.title}}</span>
+                  <input class="form-control col-7" formControlName="whitePaperLink" placeholder="Stan Cooper">
+                </div>
+                <div class="row">
+                  <span class="col-1 offset-1">Facebook</span>
+                  <input class="form-control col-3" formControlName="facebookLink" placeholder="www.facebook.com/stancooper">
+                  <span class="col-1">LinkedIn</span>
+                  <input class="form-control col-3" formControlName="linkedInLink" placeholder="www.linkedin.com/stancooper">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sw-card sw-content">
+          <div class="row row-title">
+            <h3 class="col-10 offset-1">Legal part</h3>
+          </div>
+          <div class="row-content">
+            <div class="row">
+              <span class="col-4 offset-1">In which country is the incorporation made?</span>
+              <input class="form-control col-4" formControlName="country" placeholder="Russian Federation">
+            </div>
+          </div>
+        </div>
+        <div class="sw-card sw-content">
+          <div class="row row-title">
+            <h3 class="col-10 offset-1">Finance</h3>
+          </div>
+          <div class="row-content">
+            <div class="row">
+              <label class="col-10 offset-1">How much money you want to raise?</label>
+            </div>
+            <div class="row">
+              <span class="col-1 offset-1">Soft cap:</span>
+              <input class="form-control col-2" formControlName="softCap">
+              <span class="col-1 offset-1">Hard cap:</span>
+              <input class="form-control col-2" formControlName="hardCap">
 
-  <h3>Legal part</h3>
+            </div>
+            <div class="row">
+              <span class="col-2 offset-1">Financial model link:</span>
+              <input class="form-control col-3" formControlName="financeModelLink">
+            </div>
+            <div class="row">
+              <span class="col-2 offset-1">Attracted investments:</span>
+              <input class="form-control col-3" formControlName="attractedInvestments">
+            </div>
+          </div>
+        </div>
+        <div class="sw-card sw-content">
+          <div class="row row-title">
+            <h3 class="col-10 offset-1">Tech</h3>
+          </div>
+          <div class="row-content">
+            <div class="row">
+              <span class="col-2 offset-1">Whick blockchain you want to use?</span>
+              <input class="form-control col-3" formControlName="blockChainType">
+            </div>
+            <div class="row">
+              <span class="col-2 offset-1">Prototype/MVP link:</span>
+              <input class="form-control col-3" formControlName="mvpLink">
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="submit-button row">
+      <button (click)="onSubmit()" class="col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">Create
+        project
+      </button>
+    </div>
+  </form>
+</div>
 
-  <div class="form-group">
-    <label class="center-block">In which country is the incorporation made?
-      <input class="form-control" formControlName="country" placeholder="Russian Federation">
-    </label>
-  </div>
-
-  <h3>Finance</h3>
-  <label>How much money you want to raise?</label>
-  <div class="form-group">
-    <label class="center-block">Soft cap:
-      <input class="form-control" formControlName="softCap">
-    </label>
-    <label class="center-block">Hard cap:
-      <input class="form-control" formControlName="hardCap">
-    </label>
-    <label class="center-block">Financial model link:
-      <input class="form-control" formControlName="financeModelLink">
-    </label>
-    <label class="center-block">Attracted investments:
-      <input class="form-control" formControlName="attractedInvestments">
-    </label>
-  </div>
-
-  <h3>Tech</h3>
-
-  <div class="form-group">
-    <label class="center-block">Which blockchain you want to use?
-      <input class="form-control" formControlName="blockChainType" placeholder="Ethereum">
-    </label>
-    <label class="center-block">Prototype/MVP link:
-      <input class="form-control" formControlName="mvpLink">
-    </label>
-  </div>
-
-  <input type="submit" value="Create project"/>
-</form>

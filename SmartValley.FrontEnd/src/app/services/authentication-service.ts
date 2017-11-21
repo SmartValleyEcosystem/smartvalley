@@ -4,29 +4,36 @@ import {Web3Service} from './web3-service';
 import {NotificationsService} from 'angular2-notifications';
 import {Router} from '@angular/router';
 import {Paths} from '../paths';
+import {Subscription} from 'rxjs/Subscription';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/map';
-import {Subscription} from 'rxjs/Subscription';
 
 @Injectable()
 export class AuthenticationService {
 
-  public static MESSAGE_TO_SIGN = 'Confirm login';
-
-  public accountChanged: EventEmitter<any> = new EventEmitter<any>();
-
   constructor(private web3Service: Web3Service,
               private notificationsService: NotificationsService,
               private router: Router) {
-
-    if (this.web3Service.isMetamaskInstalled && this.getCurrentUser() != null) {
-      this.startBackgroundChecker();
-    }
   }
+
+  public static MESSAGE_TO_SIGN = 'Confirm login';
+  public accountChanged: EventEmitter<any> = new EventEmitter<any>();
 
   private readonly userKey = 'userKey';
   private backgroundChecker: Subscription;
+
+  private getSignatureByAccount(account: string): string {
+    return localStorage.getItem(account);
+  }
+
+  private saveSignatureForAccount(account: string, signature: string) {
+    localStorage.setItem(account, signature);
+  }
+
+  private removeSignatureByAccount(account: string) {
+    localStorage.removeItem(account);
+  }
 
   public isAuthenticated() {
     return !isNullOrUndefined(this.getCurrentUser());
@@ -44,8 +51,8 @@ export class AuthenticationService {
       this.notificationsService.warn('Account unavailable', 'Please unlock metamask');
       return;
     }
-
     const isRinkeby = await this.web3Service.checkRinkebyNetworkAsync();
+
     if (!isRinkeby) {
       this.notificationsService.warn('Wrong network', 'Please change to Rinkeby');
       return;
@@ -99,7 +106,6 @@ export class AuthenticationService {
   private saveCurrentUser(user: User) {
     localStorage.setItem(this.userKey, JSON.stringify(user));
     this.accountChanged.emit(user);
-    this.startBackgroundChecker();
   }
 
   private deleteCurrentUser() {
@@ -107,23 +113,10 @@ export class AuthenticationService {
     this.accountChanged.emit();
   }
 
-  private getSignatureByAccount(account: string) {
-    return localStorage.getItem(account);
-  }
-
-  private saveSignatureForAccount(account: string, signature: string) {
-    localStorage.setItem(account, signature);
-  }
-
-  private removeSignatureByAccount(account: string) {
-    localStorage.removeItem(account);
-  }
-
   private startBackgroundChecker() {
     if (!isNullOrUndefined(this.backgroundChecker) && !this.backgroundChecker.closed) {
       return;
     }
-    console.log('Starting background checker...');
     this.backgroundChecker = Observable.interval(5 * 1000)
       .map(async () => this.checkCurrentAuthStateAsync())
       .subscribe();

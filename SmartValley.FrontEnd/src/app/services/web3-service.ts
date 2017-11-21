@@ -7,7 +7,6 @@ import * as EthJs from 'ethJs';
 export class Web3Service {
 
   private readonly rinkebyNetworkId = '4';
-  // TODO next task
   private readonly metamaskProviderName = 'MetamaskInpageProvider';
 
 

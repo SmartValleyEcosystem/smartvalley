@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {AuthenticationService} from '../../services/authentication-service';
-import {Web3Service} from '../../services/web3-service';
-import {uptime} from 'os';
 
 @Component({
   selector: 'app-header',
@@ -24,7 +22,7 @@ export class HeaderComponent implements OnInit {
     this.updateHeaderAsync();
   }
 
-  async updateHeaderAsync() {
+  async updateHeaderAsync(): Promise<void> {
     if (this.authenticationService.isAuthenticated()) {
       this.isAuthenticated = true;
       const balanceResponse = await this.balanceApiClient.getBalanceAsync();

@@ -13,7 +13,7 @@ export class BalanceApiClient extends BaseApiClient {
     return this.http.get<BalanceResponse>(this.baseApiUrl + '/balance').toPromise();
   }
 
-  async receiveEtherAsync() {
+  async receiveEtherAsync(): Promise<void> {
     await this.http.post(this.baseApiUrl + '/balance', null).subscribe();
   }
 }
