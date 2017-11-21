@@ -4,7 +4,6 @@ import {Observable} from 'rxjs/Observable';
 import {AuthenticationService} from '../services/authentication-service';
 import {HeadersConstants} from '../constants';
 import {Web3Service} from '../services/web3-service';
-import {User} from '../services/user';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/mergeMap';
 

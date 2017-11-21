@@ -1,8 +1,6 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import {Web3Service} from './web3-service';
-
-import {User} from './user';
 import {NotificationsService} from 'angular2-notifications';
 import {Router} from '@angular/router';
 import {Paths} from '../paths';
@@ -17,6 +15,8 @@ export class AuthenticationService {
               private notificationsService: NotificationsService,
               private router: Router) {
   }
+
+  public static MESSAGE_TO_SIGN = 'Confirm login';
 
   private readonly userKey = 'userKey';
 
@@ -38,7 +38,7 @@ export class AuthenticationService {
       this.router.navigate([Paths.MetaMaskHowTo]);
       return;
     }
-    const accounts = await this.web3Service.getAccountsAsync();
+    const accounts = await this.web3Service.getAccounts();
     const metamaskAccount = accounts[0];
 
     if (metamaskAccount == null) {
@@ -52,7 +52,7 @@ export class AuthenticationService {
       return;
     }
 
-    const user = this.getUser();
+    const user = this.getCurrentUser();
     if (!isNullOrUndefined(user)) {
       if (user.account !== metamaskAccount) {
         await this.handleAccountSwitchAsync(metamaskAccount);
@@ -77,23 +77,21 @@ export class AuthenticationService {
   }
 
   private async signAndSaveAsync(account: string) {
-    const signature = await this.web3Service.signAsync(account);
-    this.saveUser(new User(account, signature));
+    const signature = await this.web3Service.sign(AuthenticationService.MESSAGE_TO_SIGN, account);
+    this.saveCurrentUser({account, signature});
     this.saveSignatureForAddrsess(account, signature);
   }
 
   private async checkSignatureAsync(account: string, signature: string): Promise<Boolean> {
-    const recoveredSignature = await this.web3Service.recoverSignatureAsync(signature);
+    const recoveredSignature = await this.web3Service.recoverSignature(AuthenticationService.MESSAGE_TO_SIGN, signature);
     return account === recoveredSignature;
   }
 
-  public getUser(): User {
+  public getCurrentUser(): User {
     return JSON.parse(localStorage.getItem(this.userKey));
   }
 
-  private saveUser(user: User) {
+  private saveCurrentUser(user: User) {
     localStorage.setItem(this.userKey, JSON.stringify(user));
   }
-
-
 }
