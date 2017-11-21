@@ -16,14 +16,14 @@ div.row{
   text-transform: uppercase;
 }
 
-.list-projects{
+.sw-list-projects{
   margin-top: 50px;
   flex: inherit;
   max-width: none;
   width: calc(100% + 165px);
 }
 
-.project-card{
+.sw-project-card{
   display: inline-block;
   margin: 0px;
   padding: 0px;
@@ -38,32 +38,32 @@ div.row{
   padding: 0;
 }
 
-.project-card-block{
+.sw-project-card-block{
   position: relative;
   padding: 0px;
 }
 
-.project-card-block > div{
+.sw-project-card-block > div{
   padding: 40px;
   vertical-align: top;
 }
 
-.project-header{
+.sw-project-header{
   display: inline-block;
   padding: 0;
 }
-.project-header__country{
+.sw-project-header__country{
   color: rgba(0,0,0,0.5);
 }
-.project-header__title > span{
+.sw-project-header__title > span{
   display: block;
   margin: 5px 0px;
 }
-.project-header__title > span:first-child{
+.sw-project-header__title > span:first-child{
   font-size: 1.5em;
 }
 
-.project-footer{
+.sw-project-footer{
   text-align: right;
   max-width: calc(25% - 8px);
   display: inline-block;
@@ -71,38 +71,42 @@ div.row{
   position: absolute;
   height: 100%;
 }
-.project-rating{
+
+.sw-project-footer > a{
+  float:right;
+}
+
+.sw-project-rating{
   display: inline-block;
 }
-.project-rating > span{
+
+.sw-project-rating > span{
   display: block;
 }
 
-.project-rating > .score{
+.sw-project-rating > .score{
   font-size: 3em;
 }
 
-.project-footer > a{
-  float:right;
+.sw-project-content{
+  display: inline-block;
+  padding: 0;
 }
-.project-desc{
+
+.sw-project-desc{
   margin-bottom: 60px;
   color: white;
   padding: 0;
 }
-.project-content{
-  display: inline-block;
-  padding: 0;
-}
 
-.project-desc h1{
+.sw-project-desc h1{
   letter-spacing: 7px;
   font-size: 50px;
   font-weight: 700;
   margin-bottom: 20px;
   text-transform: uppercase;
 }
-.project-btn{
+.sw-project-btn{
   background-color: rgb(72, 138, 232) !important;
   padding-bottom: 1em;
   padding-top: 1em;

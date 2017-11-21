@@ -18,27 +18,27 @@
     </div>
   </div>
   <div class="row mx-auto">
-    <div class="list-projects">
-      <div class="card_no_shdw col-12 project-card" *ngFor="let project of projects;">
-        <div class="card-block project-card-block">
-          <div class="project-header col-4">
+    <div class="sw-list-projects">
+      <div class="card_no_shdw col-12 sw-project-card" *ngFor="let project of projects;">
+        <div class="card-block sw-project-card-block">
+          <div class="sw-project-header col-4">
             <img style="width: 100px;" src="{{project.projectImgUrl}}"/>
-            <div class="project-header__title">
+            <div class="sw-project-header__title">
               <span>{{project.projectName}}</span>
-              <span class="project-header__country">{{project.projectCountry}}</span>
+              <span class="sw-project-header__country">{{project.projectCountry}}</span>
               <span>{{project.projectArea}}</span>
             </div>
           </div>
-          <div class="project-content col-5">
+          <div class="sw-project-content col-5">
             <p class="card-text">{{project.projectDescription}}</p>
           </div>
-          <div class="project-footer col-3">
-            <div class="project-rating">
+          <div class="sw-project-footer col-3">
+            <div class="sw-project-rating">
               <span>Scoring rating:</span>
               <span class="score {{colorOfProjectRate(project.scoringRating)}}">{{project.scoringRating}}</span>
             </div>
             <div>
-              <a href="#" class="col-8 project-btn btn btn-primary">View report</a>
+              <a href="#" class="col-8 sw-project-btn btn btn-primary">View report</a>
             </div>
           </div>
         </div>
