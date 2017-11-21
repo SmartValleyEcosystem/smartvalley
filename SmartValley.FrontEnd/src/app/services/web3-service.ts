@@ -2,13 +2,11 @@ import {Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import * as EthJs from 'ethJs';
 
-
 @Injectable()
 export class Web3Service {
 
   private readonly rinkebyNetworkId = '4';
   private readonly metamaskProviderName = 'MetamaskInpageProvider';
-
 
   private _eth: EthJs;
 
@@ -29,10 +27,6 @@ export class Web3Service {
     return (!isNullOrUndefined(window['web3']) && window['web3'].currentProvider.constructor.name === this.metamaskProviderName);
   }
 
-  public isAddress(address: string): boolean {
-    return EthJs.isAddress(address);
-  }
-
   public getAccounts(): Promise<Array<string>> {
     return this.eth.accounts();
   }
@@ -50,8 +44,12 @@ export class Web3Service {
     return version === this.rinkebyNetworkId;
   }
 
+  public getContract(abiString: string, address: string) {
+    const abi = JSON.parse(abiString);
+    return this._eth.contract(abi).at(address);
+  }
+
   private getNetworkVersion(): Promise<any> {
     return this.eth.net_version();
   }
-
 }

@@ -5,6 +5,8 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Application} from '../../services/application';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {v4 as uuid} from 'uuid';
+import {ProjectManagerContractClient} from '../../services/project-manager-contract-client';
+import {ContractApiClient} from '../../api/contract/contract-api-client';
 
 @Component({
   selector: 'app-application',
@@ -21,7 +23,9 @@ export class ApplicationComponent {
 
   constructor(private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
-              private apiClient: ApplicationApiClient) {
+              private applicationApiClient: ApplicationApiClient,
+              private contractApiClient: ContractApiClient,
+              private projectManagerContractClient: ProjectManagerContractClient) {
     this.createForm();
   }
 
@@ -52,6 +56,13 @@ export class ApplicationComponent {
     for (const teamMember of this.teamMembers) {
       application.teamMembers.push(teamMember.value);
     }
+
+    const projectManagerContract = await this.contractApiClient.getProjectManagerContractAsync();
+    application.transactionHash = await this.projectManagerContractClient.addProjectAsync(
+      projectManagerContract.address,
+      projectManagerContract.abi,
+      application.projectId,
+      formModel.name);
 
     return application;
   }
@@ -95,6 +106,6 @@ export class ApplicationComponent {
 
   async onSubmit() {
     const application = await this.FillApplication();
-    await this.apiClient.createApplicationAsync(application);
+    await this.applicationApiClient.createApplicationAsync(application);
   }
 }

@@ -37,4 +37,6 @@ export class Application {
   teamMembers: Array<TeamMember>;
 
   authorAddress: string;
+
+  transactionHash: string;
 }

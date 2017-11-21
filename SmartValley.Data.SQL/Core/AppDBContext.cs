@@ -1,8 +1,7 @@
 ﻿using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.Data.SQL.Core
@@ -16,11 +15,15 @@ namespace SmartValley.Data.SQL.Core
         }
 
         IQueryable<Application> IReadOnlyDataContext.Applications => Applications.AsNoTracking();
+
         IQueryable<Project> IReadOnlyDataContext.Projects => Projects.AsNoTracking();
+
         IQueryable<TeamMember> IReadOnlyDataContext.Persons => Persons.AsNoTracking();
 
         public DbSet<Application> Applications { get; set; }
+
         public DbSet<Project> Projects { get; set; }
+
         public DbSet<TeamMember> Persons { get; set; }
 
         public IQueryable<T> GetAll<T>() where T : class
@@ -56,6 +59,13 @@ namespace SmartValley.Data.SQL.Core
 
             context.Database.AutoTransactionsEnabled = false;
             return context;
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Project>()
+                        .HasIndex(p => new {p.ExternalId})
+                        .IsUnique();
         }
     }
 }
