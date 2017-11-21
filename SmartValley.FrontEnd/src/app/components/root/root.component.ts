@@ -4,6 +4,7 @@ import {Web3Service} from '../../services/web3-service';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {Project} from '../../services/project';
+import {NotificationsService} from 'angular2-notifications';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ export class RootComponent implements OnInit {
 
   constructor(private web3Service: Web3Service,
               private authenticationService: AuthenticationService,
+              private notificationsService: NotificationsService,
               private router: Router) {
     // this.authenticationService.userInfoChanged.subscribe(async () => await this.updateUserInfo());
     this.initTestData();
