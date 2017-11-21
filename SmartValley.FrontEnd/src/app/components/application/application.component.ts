@@ -44,8 +44,8 @@ export class ApplicationComponent {
 
     application.projectId = uuid();
 
-    const userInfo = await this.authenticationService.getUserInfo();
-    application.authorAddress = userInfo.ethereumAddress;
+    const user = await this.authenticationService.getCurrentUser();
+    application.authorAddress = user.account;
     application.teamMembers = [];
     for (const teamMember of this.teamMembers) {
       application.teamMembers.push(teamMember.value);
