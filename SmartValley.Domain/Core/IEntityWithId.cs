@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SmartValley.Domain.Core
+﻿namespace SmartValley.Domain.Core
 {
     public interface IEntityWithId
     {

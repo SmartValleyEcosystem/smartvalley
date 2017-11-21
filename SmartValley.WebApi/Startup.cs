@@ -7,7 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Nethereum.JsonRpc.IpcClient;
 using Nethereum.Signer;
+using Nethereum.Web3;
 using SmartValley.Application;
 using SmartValley.Application.Contracts;
 using SmartValley.Data.SQL.Core;
@@ -51,10 +53,14 @@ namespace SmartValley.WebApi
                                        })
                     .AddScheme<EcdsaAuthenticationOptions, EcdsaAuthenticationHandler>(EcdsaAuthenticationOptions.DefaultScheme, options => { });
 
+            services.AddSingleton(provider => InitializeWeb3(provider.GetService<NethereumOptions>().RpcAddress));
             services.AddSingleton<EthereumMessageSigner>();
-            services.AddSingleton<IEtherManagerContractClient, EtherManagerContractClient>();
-            services.AddSingleton<IProjectManagerContractClient, ProjectManagerContractClient>();
             services.AddSingleton<EthereumClient>();
+            services.AddSingleton<EthereumContractClient>();
+            services.AddSingleton<IEtherManagerContractClient, EtherManagerContractClient>(
+                provider => new EtherManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().EtherManagerContract));
+            services.AddSingleton<IProjectManagerContractClient, ProjectManagerContractClient>(
+                provider => new ProjectManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ProjectManagerContract));
 
             services.AddMvc(options =>
                             {
@@ -119,6 +125,15 @@ namespace SmartValley.WebApi
             corsPolicyBuilder.AllowCredentials();
 
             services.AddCors(options => { options.AddPolicy(CorsPolicyName, corsPolicyBuilder.Build()); });
+        }
+
+        private static Web3 InitializeWeb3(string rpcAddress)
+        {
+            if (!string.IsNullOrEmpty(rpcAddress))
+                return new Web3(rpcAddress);
+
+            var ipcClient = new IpcClient("./geth.ipc");
+            return new Web3(ipcClient);
         }
     }
 }

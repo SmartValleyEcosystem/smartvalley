@@ -12,23 +12,22 @@ import {AuthenticationService} from './services/authentication-service';
 import {ApplicationApiClient} from './api/application/application-api.client';
 import {HeaderComponent} from './components/header/header.component';
 import {MaterialModule} from './shared/material.module';
-import {PrimeNgModule} from './shared/prime-ng.module';
 import {BalanceApiClient} from './api/balance/balance-api-client';
 import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
-
 import {ApplicationComponent} from './components/application/application.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import {ProjectManagerContractClient} from './services/project-manager-contract-client';
 import {ScoringComponent} from './components/scoring/scoring.component';  // <-- #1 import module
 import {MatTabsModule} from '@angular/material';
 import {FooterComponent} from './components/footer/footer.component';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {EstimateComponent} from './components/estimate/estimate.component';
 import {ScoringService} from './services/scoring-service';
-
+import {ContractApiClient} from './api/contract/contract-api-client';
+import {ErrorInterceptor} from './api/error-interceptor';
 
 @NgModule({
   declarations: [
-    AppComponent,
     AppComponent,
     MetamaskHowtoComponent,
     RootComponent,
@@ -44,7 +43,6 @@ import {ScoringService} from './services/scoring-service';
     HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
-    PrimeNgModule,
     AppRoutingModule,
     ReactiveFormsModule,
     NgbModule.forRoot(),
@@ -56,11 +54,18 @@ import {ScoringService} from './services/scoring-service';
       useClass: AuthHeaderInterceptor,
       multi: true
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    },
     BalanceApiClient,
     ApplicationApiClient,
+    ContractApiClient,
     AuthenticationService,
     ScoringService,
-    Web3Service],
+    Web3Service,
+    ProjectManagerContractClient],
   bootstrap: [AppComponent]
 })
 export class AppModule {

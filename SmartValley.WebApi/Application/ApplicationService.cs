@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using SmartValley.Application.Contracts;
 using SmartValley.Application.Exceptions;
 using SmartValley.Data.SQL.Repositories;
 using SmartValley.Domain.Entities;
@@ -12,15 +13,18 @@ namespace SmartValley.WebApi.Application
         private readonly ApplicationRepository _applicationRepository;
         private readonly ProjectRepository _projectRepository;
         private readonly TeamMemberRepository _teamRepository;
+        private readonly IProjectManagerContractClient _projectManagerContractClient;
 
         public ApplicationService(
             ApplicationRepository applicationRepository,
             ProjectRepository projectRepository,
-            TeamMemberRepository teamRepository)
+            TeamMemberRepository teamRepository,
+            IProjectManagerContractClient projectManagerContractClient)
         {
             _applicationRepository = applicationRepository;
             _projectRepository = projectRepository;
             _teamRepository = teamRepository;
+            _projectManagerContractClient = projectManagerContractClient;
         }
 
         public async Task CreateApplicationAsync(ApplicationRequest applicationRequest)
@@ -28,7 +32,16 @@ namespace SmartValley.WebApi.Application
             if (applicationRequest == null)
                 throw new ArgumentNullException();
 
-            var project = await AddProjectAsync(applicationRequest);
+            var projectAddress = await _projectManagerContractClient.GetProjectAddressAsync(
+                                             applicationRequest.ProjectId,
+                                             applicationRequest.TransactionHash);
+
+            await CreateProjectAsync(applicationRequest, projectAddress);
+        }
+
+        private async Task CreateProjectAsync(ApplicationRequest applicationRequest, string projectContractAddress)
+        {
+            var project = await AddProjectAsync(applicationRequest, projectContractAddress);
 
             var application = await AddApplicationAsync(applicationRequest, project.Id);
 
@@ -79,17 +92,20 @@ namespace SmartValley.WebApi.Application
             return application;
         }
 
-        private async Task<Project> AddProjectAsync(ApplicationRequest model)
+        private async Task<Project> AddProjectAsync(
+            ApplicationRequest request,
+            string projectContractAddress)
         {
             var project = new Project
                           {
-                              Name = model.Name,
-                              Country = model.Country,
-                              ProjectArea = model.ProjectArea,
-                              ProblemDesc = model.ProbablyDescription,
-                              SolutionDesc = model.SolutionDescription,
-                              AuthorAddress = model.AuthorAddress,
-                              ProjectAddress = "projAddress"
+                              Name = request.Name,
+                              Country = request.Country,
+                              ProjectArea = request.ProjectArea,
+                              ProblemDesc = request.ProbablyDescription,
+                              SolutionDesc = request.SolutionDescription,
+                              AuthorAddress = request.AuthorAddress,
+                              ProjectAddress = projectContractAddress,
+                              ExternalId = Guid.Parse(request.ProjectId)
                           };
 
             await _projectRepository.AddAsync(project);

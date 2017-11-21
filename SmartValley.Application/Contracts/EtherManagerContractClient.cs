@@ -4,22 +4,32 @@ using SmartValley.Application.Exceptions;
 namespace SmartValley.Application.Contracts
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class EtherManagerContractClient : EthereumContractClient, IEtherManagerContractClient
+    public class EtherManagerContractClient : IEtherManagerContractClient
     {
-        public EtherManagerContractClient(NethereumOptions nethereumOptions)
-            : base(nethereumOptions.RpcAddress, nethereumOptions.EtherManagerContract)
+        private readonly EthereumContractClient _contractClient;
+
+        private readonly string _contractAddress;
+        private readonly string _contractAbi;
+
+        public EtherManagerContractClient(
+            EthereumContractClient contractClient,
+            ContractOptions contractOptions)
         {
+            _contractClient = contractClient;
+
+            _contractAddress = contractOptions.Address;
+            _contractAbi = contractOptions.Abi;
         }
 
         public Task<bool> HasReceivedEtherAsync(string address)
-            => GetFunction("receiversMap").CallAsync<bool>(address);
+            => _contractClient.CallFunctionAsync<bool>(_contractAddress, _contractAbi, "receiversMap", address);
 
         public async Task SendEtherToAsync(string address)
         {
             if (await HasReceivedEtherAsync(address))
                 throw new EtherAlreadySentException(address);
 
-            await SignAndSendTransactionAsync("giftEth", address);
+            await _contractClient.SignAndSendTransactionAsync(_contractAddress, _contractAbi, "giftEth", address);
         }
     }
 }
