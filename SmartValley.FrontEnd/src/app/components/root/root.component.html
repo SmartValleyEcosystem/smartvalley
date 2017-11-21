@@ -1,4 +1,49 @@
-<div class="flex-container">
-  <button mat-raised-button (click)="createProject()">Create project</button>
-  <button mat-raised-button class="sm-btn-primary" (click)="navigateToScoring()">Become an expert</button>
+<div class="container">
+  <div class="row mx-auto">
+    <div class="col-8 root-desc">
+      <h1>Smart valley mvp</h1>
+      <h3>
+        Decentralized Scoring
+      </h3>
+    </div>
+  </div>
+  <div class="row mx-auto">
+    <div class="col-6">
+      <p>
+      </p>
+    </div>
+    <div class="col-6 btn-grp text-right">
+        <button mat-raised-button class="sm-btn-primary btn-space" (click)="navigateToScoring()">Become an expert</button>
+        <button mat-raised-button class="sm-btn-primary btn-space" (click)="createProject()">Create project</button>
+    </div>
+  </div>
+  <div class="row mx-auto">
+    <div class="sw-list-projects">
+      <div class="card_no_shdw col-12 sw-project-card" *ngFor="let project of projects;">
+        <div class="card-block sw-project-card-block">
+          <div class="sw-project-header col-4">
+            <img style="width: 100px;" src="{{project.projectImgUrl}}"/>
+            <div class="sw-project-header__title">
+              <span>{{project.projectName}}</span>
+              <span class="sw-project-header__country">{{project.projectCountry}}</span>
+              <span>{{project.projectArea}}</span>
+            </div>
+          </div>
+          <div class="sw-project-content col-5">
+            <p class="card-text">{{project.projectDescription}}</p>
+          </div>
+          <div class="sw-project-footer col-3">
+            <div class="sw-project-rating">
+              <span>Scoring rating:</span>
+              <span class="score {{colorOfProjectRate(project.scoringRating)}}">{{project.scoringRating}}</span>
+            </div>
+            <div>
+              <a href="#" class="col-8 sw-project-btn btn btn-primary">View report</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
