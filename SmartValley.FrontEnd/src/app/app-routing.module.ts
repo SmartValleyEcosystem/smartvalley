@@ -11,8 +11,8 @@ import {EstimateComponent} from './components/estimate/estimate.component';
 const appRoutes: Routes = [
   {path: Paths.Root, pathMatch: 'full', component: RootComponent},
   {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent},
-  {path: Paths.Scoring, pathMatch: 'full', component: ScoringComponent}
-  {path: Paths.Application, pathMatch: 'full', component: ApplicationComponent},
+  {path: Paths.Scoring, pathMatch: 'full', component: ScoringComponent},
+  {path: Paths.Application, pathMatch: 'full', component: ApplicationComponent}
 ];
 
 @NgModule({
