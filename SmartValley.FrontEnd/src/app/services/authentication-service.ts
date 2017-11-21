@@ -35,15 +35,14 @@ export class AuthenticationService {
   }
 
   public async authenticateAsync(): Promise<boolean> {
-
     if (!this.web3Service.isMetamaskInstalled) {
       this.router.navigate([Paths.MetaMaskHowTo]);
       return;
     }
     const accounts = await this.web3Service.getAccounts();
-    const metamaskAccount = accounts[0];
+    const currentAccount = accounts[0];
 
-    if (metamaskAccount == null) {
+    if (currentAccount == null) {
       this.notificationsService.warn('Account unavailable', 'Please unlock metamask');
       return;
     }
@@ -54,30 +53,31 @@ export class AuthenticationService {
       return;
     }
 
-    const user = this.getCurrentUser();
-
-    if (!isNullOrUndefined(user)) {
-      if (user.account !== metamaskAccount) {
-        await this.handleAccountSwitchAsync(metamaskAccount);
-        this.accountChanged.emit(user);
-        return true;
+    const shouldSign = await this.shouldSignAccount(currentAccount);
+    if (shouldSign) {
+      try {
+        await this.signAndSaveAsync(currentAccount);
       }
-      return await this.checkSignatureAsync(user.account, user.signature);
+      catch (e) {
+        return false;
+      }
     }
-    await this.signAndSaveAsync(metamaskAccount);
     return true;
   }
 
-  private async handleAccountSwitchAsync(account: string): Promise<void> {
-    const savedSignature = this.getSignatureByAccount(account);
-    if (!isNullOrUndefined(savedSignature)) {
-      const isSavedSignatureValid = await this.checkSignatureAsync(account, savedSignature);
-      if (!isSavedSignatureValid) {
-        await this.signAndSaveAsync(account);
-      }
-    } else {
-      await this.signAndSaveAsync(account);
+  private async shouldSignAccount(currentAccount: string): Promise<boolean> {
+    const user = this.getCurrentUser();
+    if (user == null) {
+      return true;
     }
+
+    if (user.account !== currentAccount) {
+      const savedSignature = this.getSignatureByAccount(currentAccount);
+      user.account = currentAccount;
+      user.signature = savedSignature;
+    }
+    const isValid = await this.checkSignatureAsync(user.account, user.signature);
+    return !isValid;
   }
 
   private async signAndSaveAsync(account: string): Promise<void> {
@@ -87,6 +87,9 @@ export class AuthenticationService {
   }
 
   private async checkSignatureAsync(account: string, signature: string): Promise<boolean> {
+    if (isNullOrUndefined(account) || isNullOrUndefined(signature)) {
+      return false;
+    }
     const recoveredSignature = await this.web3Service.recoverSignature(AuthenticationService.MESSAGE_TO_SIGN, signature);
     return account === recoveredSignature;
   }
@@ -97,5 +100,6 @@ export class AuthenticationService {
 
   private saveCurrentUser(user: User) {
     localStorage.setItem(this.userKey, JSON.stringify(user));
+    this.accountChanged.emit(user);
   }
 }
