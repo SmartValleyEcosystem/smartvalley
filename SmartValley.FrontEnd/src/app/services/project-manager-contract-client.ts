@@ -16,7 +16,7 @@ export class ProjectManagerContractClient {
     const fromAddress = this.authenticationService.getCurrentUser().account;
 
     return projectContract.addProject(
-      projectId.replace('-', ''),
+      projectId.replace(/-/g, ''),
       name,
       {from: fromAddress});
   }
