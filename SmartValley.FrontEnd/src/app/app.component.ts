@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {Web3Service} from './services/web3-service';
+import {Component} from '@angular/core';
+import {Options} from 'angular2-notifications';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +7,10 @@ import {Web3Service} from './services/web3-service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-
+  notifyOptions: Options = {
+    position: ['top', 'left'],
+    timeOut: 3000,
+    animate: 'fromLeft',
+    showProgressBar: false
+  };
 }

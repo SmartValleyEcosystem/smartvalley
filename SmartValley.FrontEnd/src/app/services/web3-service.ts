@@ -6,25 +6,29 @@ import * as EthJs from 'ethJs';
 @Injectable()
 export class Web3Service {
 
-  constructor() {
-    this.initialize();
-  }
-
   private readonly rinkebyNetworkId = '4';
   // TODO next task
-  // private metamaskProviderName = 'MetamaskInpageProvider';
-  private eth: EthJs;
+  private readonly metamaskProviderName = 'MetamaskInpageProvider';
 
-  private initialize() {
-    this.eth = new EthJs(this.getProvider());
+
+  private _eth: EthJs;
+
+  get eth(): EthJs {
+    if (isNullOrUndefined(this._eth)) {
+      this._eth = new EthJs(this.getProvider());
+    }
+    return this._eth;
   }
 
   private getProvider() {
-    if (!isNullOrUndefined(window['web3']) && window['web3'].currentProvider) {
+    if (this.isMetamaskInstalled) {
       return window['web3'].currentProvider;
     }
   }
 
+  public get isMetamaskInstalled(): boolean {
+    return (!isNullOrUndefined(window['web3']) && window['web3'].currentProvider.constructor.name === this.metamaskProviderName);
+  }
 
   public isAddress(address: string): boolean {
     return EthJs.isAddress(address);
@@ -42,7 +46,7 @@ export class Web3Service {
     return this.eth.personal_ecRecover(EthJs.fromUtf8(message), signature);
   }
 
-  public async isRinkebyNetwork(): Promise<boolean> {
+  public async checkRinkebyNetworkAsync(): Promise<boolean> {
     const version = await this.getNetworkVersion();
     return version === this.rinkebyNetworkId;
   }

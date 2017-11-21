@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication-service';
 import {Web3Service} from '../../services/web3-service';
-import {NotificationService} from '../../services/notification-service';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {Project} from '../../services/project';
@@ -18,7 +17,6 @@ export class RootComponent implements OnInit {
 
   constructor(private web3Service: Web3Service,
               private authenticationService: AuthenticationService,
-              private notificationService: NotificationService,
               private router: Router) {
     // this.authenticationService.userInfoChanged.subscribe(async () => await this.updateUserInfo());
     this.initTestData();
@@ -37,7 +35,7 @@ export class RootComponent implements OnInit {
   }
 
   async createProject() {
-    const isOk = await this.authenticationService.authenticate();
+    const isOk = await this.authenticationService.authenticateAsync();
     if (isOk) {
       await this.router.navigate([Paths.Application]);
     }
