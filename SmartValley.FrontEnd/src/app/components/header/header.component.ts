@@ -16,8 +16,7 @@ export class HeaderComponent implements OnInit {
   public isAuthenticated: boolean;
 
   constructor(private balanceApiClient: BalanceApiClient,
-              private authenticationService: AuthenticationService,
-              private web3Service: Web3Service) {
+              private authenticationService: AuthenticationService) {
     this.authenticationService.accountChanged.subscribe(async () => await this.updateHeaderAsync());
   }
 
@@ -35,7 +34,6 @@ export class HeaderComponent implements OnInit {
       this.isAuthenticated = false;
     }
   }
-
 
   async receiveEth() {
     await this.balanceApiClient.receiveEtherAsync();

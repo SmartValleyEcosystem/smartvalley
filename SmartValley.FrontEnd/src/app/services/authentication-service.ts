@@ -44,8 +44,8 @@ export class AuthenticationService {
       this.notificationsService.warn('Account unavailable', 'Please unlock metamask');
       return;
     }
-    const isRinkeby = await this.web3Service.checkRinkebyNetworkAsync();
 
+    const isRinkeby = await this.web3Service.checkRinkebyNetworkAsync();
     if (!isRinkeby) {
       this.notificationsService.warn('Wrong network', 'Please change to Rinkeby');
       return;
@@ -121,12 +121,11 @@ export class AuthenticationService {
 
   private startBackgroundChecker() {
     if (!isNullOrUndefined(this.backgroundChecker) && !this.backgroundChecker.closed) {
-      console.log('Background checker already started')
       return;
     }
     console.log('Starting background checker...');
     this.backgroundChecker = Observable.interval(5 * 1000)
-      .map(async x => this.checkCurrentAuthStateAsync())
+      .map(async () => this.checkCurrentAuthStateAsync())
       .subscribe();
   }
 

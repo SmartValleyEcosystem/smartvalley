@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication-service';
 import {Web3Service} from '../../services/web3-service';
 import {Router} from '@angular/router';
@@ -11,25 +11,14 @@ import {NotificationsService} from 'angular2-notifications';
   templateUrl: './root.component.html',
   styleUrls: ['./root.component.css']
 })
-export class RootComponent implements OnInit {
+export class RootComponent {
 
-  public userInfo: User;
   public projects: Array<Project>;
 
-  constructor(private web3Service: Web3Service,
-              private authenticationService: AuthenticationService,
-              private notificationsService: NotificationsService,
+  constructor(private authenticationService: AuthenticationService,
               private router: Router) {
-    // this.authenticationService.userInfoChanged.subscribe(async () => await this.updateUserInfo());
+
     this.initTestData();
-  }
-
-  async ngOnInit() {
-  //  await this.updateUserInfo();
-  }
-
-  async updateUserInfo() {
-  //  this.userInfo = await this.authenticationService.getCurrentUser();
   }
 
   async navigateToScoring() {
