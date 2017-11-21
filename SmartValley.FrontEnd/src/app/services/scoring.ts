@@ -1,5 +1,6 @@
 export interface Scoring {
 
+  id: number;
   projectName: string;
   projectImgUrl: string;
   projectCountry: string;
