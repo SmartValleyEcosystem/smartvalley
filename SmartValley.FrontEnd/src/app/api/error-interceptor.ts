@@ -3,8 +3,7 @@ import {
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
-  HttpRequest,
-  HttpResponse
+  HttpRequest
 } from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
@@ -22,9 +21,6 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     return next.handle(request).do((event: HttpEvent<any>) => {
-      if (event instanceof HttpResponse) {
-        console.log(event);
-      }
     }, (err: any) => {
       if (err instanceof HttpErrorResponse) {
         if (err.status === 401 || err.status === 403) {
