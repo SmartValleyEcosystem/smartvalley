@@ -24,7 +24,7 @@
         "../node_modules/primeng/resources/themes/lightness/theme.css",
         "../node_modules/primeng/resources/primeng.css"
       ],
-      "scripts": [],
+      "scripts": ["../node_modules/ethjs/dist/ethjs.js"],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

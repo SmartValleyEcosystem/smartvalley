@@ -6,12 +6,6 @@ import {Web3Service} from './services/web3-service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
-  constructor(private web3Service: Web3Service) {
-  }
-
-  ngOnInit(): void {
-    this.web3Service.initialize();
-  }
 }

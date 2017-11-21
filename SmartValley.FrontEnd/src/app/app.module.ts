@@ -8,7 +8,6 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from './app-routing.module';
 import {Web3Service} from './services/web3-service';
-import {IfAuthenticated} from './routing/IfAuthenticated';
 import {AuthenticationService} from './services/authentication-service';
 import {ApplicationApiClient} from './api/application/application-api.client';
 import {HeaderComponent} from './components/header/header.component';
@@ -18,12 +17,13 @@ import {NotificationService} from './services/notification-service';
 import {NotificationsComponent} from './components/common/notifications/notifications.component';
 import {BalanceApiClient} from './api/balance/balance-api-client';
 import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
-import {IfWeb3Initialized} from './routing/IfWeb3Initialized';
+
 import {ApplicationComponent} from './components/application/application.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {ScoringComponent} from './components/scoring/scoring.component';  // <-- #1 import module
 import {MatTabsModule} from '@angular/material';
 import {FooterComponent} from './components/footer/footer.component';
+
 
 @NgModule({
   declarations: [
@@ -58,9 +58,7 @@ import {FooterComponent} from './components/footer/footer.component';
     ApplicationApiClient,
     AuthenticationService,
     Web3Service,
-    NotificationService,
-    IfAuthenticated,
-    IfWeb3Initialized],
+    NotificationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
