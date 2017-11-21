@@ -15,6 +15,9 @@ export class AuthenticationService {
   constructor(private web3Service: Web3Service,
               private notificationsService: NotificationsService,
               private router: Router) {
+    if (this.web3Service.isMetamaskInstalled && this.getCurrentUser() != null) {
+      this.startBackgroundChecker();
+    }
   }
 
   public static MESSAGE_TO_SIGN = 'Confirm login';
@@ -89,6 +92,7 @@ export class AuthenticationService {
     const signature = await this.web3Service.sign(AuthenticationService.MESSAGE_TO_SIGN, account);
     this.saveCurrentUser({account, signature});
     this.saveSignatureForAccount(account, signature);
+    this.startBackgroundChecker();
   }
 
   private async checkSignatureAsync(account: string, signature: string): Promise<boolean> {
@@ -128,7 +132,7 @@ export class AuthenticationService {
     }
   }
 
-  private async checkCurrentAuthStateAsync() {
+  private async checkCurrentAuthStateAsync(): Promise<void> {
     const isMetamaskEnabled = this.web3Service.isMetamaskInstalled;
     if (!isMetamaskEnabled) {
       this.stopUserSession();
