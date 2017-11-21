@@ -14,8 +14,4 @@ export class ScoringComponent {
   constructor(private service: ScoringService) {
     this.scorings = service.getAll();
   }
-
-  showProject(obj: any) {
-  console.log(obj);
-  }
 }
