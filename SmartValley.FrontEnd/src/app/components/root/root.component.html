@@ -1,4 +1,49 @@
-<div class="flex-container">
-  <button mat-raised-button (click)="createProject()">Create project</button>
-  <button mat-raised-button class="sm-btn-primary" (click)="navigateToScoring()">Become an expert</button>
+<div class="container">
+  <div class="row mx-auto">
+    <div class="col-8 root-desc">
+      <h1>Smart valley mvp</h1>
+      <h3>
+        Decentralized Scoring
+      </h3>
+    </div>
+  </div>
+  <div class="row mx-auto">
+    <div class="col-6">
+      <p>
+      </p>
+    </div>
+    <div class="col-6 btn-grp text-right">
+        <button mat-raised-button class="sm-btn-primary btn-space" (click)="navigateToScoring()">Become an expert</button>
+        <button mat-raised-button class="sm-btn-primary btn-space" (click)="createProject()">Create project</button>
+    </div>
+  </div>
+  <div class="row mx-auto">
+    <div class="list-projects">
+      <div class="card_no_shdw col-12 project-card" *ngFor="let project of projects;">
+        <div class="card-block project-card-block">
+          <div class="project-header col-4">
+            <img style="width: 100px;" src="{{project.projectImgUrl}}"/>
+            <div class="project-header__title">
+              <span>{{project.projectName}}</span>
+              <span class="project-header__country">{{project.projectCountry}}</span>
+              <span>{{project.projectArea}}</span>
+            </div>
+          </div>
+          <div class="project-content col-5">
+            <p class="card-text">{{project.projectDescription}}</p>
+          </div>
+          <div class="project-footer col-3">
+            <div class="project-rating">
+              <span>Scoring rating:</span>
+              <span class="score {{colorOfProjectRate(project.scoringRating)}}">{{project.scoringRating}}</span>
+            </div>
+            <div>
+              <a href="#" class="col-8 project-btn btn btn-primary">View report</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
