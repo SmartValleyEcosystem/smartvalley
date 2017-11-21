@@ -1,93 +1,58 @@
 import {Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
-import 'rxjs/add/observable/timer';
+import * as EthJs from 'ethJs';
+
 
 @Injectable()
 export class Web3Service {
 
-  private rinkebyNetworkId = '4';
-  private metamaskProviderName = 'MetamaskInpageProvider';
+  private readonly rinkebyNetworkId = '4';
+  // TODO next task
+  private readonly metamaskProviderName = 'MetamaskInpageProvider';
 
-  private web3: any;
-  private _isInitialized = false;
 
-  get isInitialized(): boolean {
-    return this._isInitialized;
+  private _eth: EthJs;
+
+  get eth(): EthJs {
+    if (isNullOrUndefined(this._eth)) {
+      this._eth = new EthJs(this.getProvider());
+    }
+    return this._eth;
   }
 
-  public initialize(): void {
-    if (typeof window['web3'] !== 'undefined') {
-      this.web3 = new this.Web3(window['web3'].currentProvider);
-      this._isInitialized = this.isMetaMask();
+  private getProvider() {
+    if (this.isMetamaskInstalled) {
+      return window['web3'].currentProvider;
     }
   }
 
-  public async sign(message: string, from: string): Promise<string> {
-    const signature = await this.getSignature(message, from);
-    const isSignatureCorrect = await this.checkSignature(signature, from, message);
-    if (!isSignatureCorrect) {
-      throw Error('Message signature is incorrect.');
-    }
-
-    return signature;
+  public get isMetamaskInstalled(): boolean {
+    return (!isNullOrUndefined(window['web3']) && window['web3'].currentProvider.constructor.name === this.metamaskProviderName);
   }
 
-  private getSignature(message: string, from: string): Promise<string> {
-    if (!this.isInitialized) {
-      return Promise.reject('Check your metamask please');
-    }
-    return new Promise<string>((resolve, reject) => {
-      this.web3.personal.sign(this.web3.toHex(message), from, (err, result) => {
-        if (!isNullOrUndefined(result)) {
-          resolve(result);
-        } else {
-          reject('Message signing failed: ' + err);
-        }
-      });
-    });
+  public isAddress(address: string): boolean {
+    return EthJs.isAddress(address);
   }
 
   public getAccounts(): Promise<Array<string>> {
-    return new Promise<Array<string>>((resolve, reject) => {
-      this.web3.eth.getAccounts((err, accounts) => {
-        if (!isNullOrUndefined(accounts)) {
-          resolve(accounts);
-        } else {
-          reject('No accounts found: ' + err);
-        }
-      });
-    });
+    return this.eth.accounts();
   }
 
-  public isRinkebyNetwork(): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
-      this.web3.version.getNetwork((err, networkId) => {
-        if (!isNullOrUndefined(networkId)) {
-          resolve(networkId === this.rinkebyNetworkId);
-        } else {
-          reject('Network check failed: ' + err);
-        }
-      });
-    });
+  public sign(message: string, address: string): Promise<string> {
+    return this.eth.personal_sign(EthJs.fromUtf8(message), address);
   }
 
-  public checkSignature(signedMessage: string, account: string, originalMessage: string): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
-      this.web3.personal.ecRecover(this.web3.toHex(originalMessage), signedMessage, (err, result) => {
-        if (!isNullOrUndefined(result)) {
-          resolve(result === account);
-        } else {
-          reject('Message signature check failed: ' + err);
-        }
-      });
-    });
+  public recoverSignature(message: string, signature: string): Promise<string> {
+    return this.eth.personal_ecRecover(EthJs.fromUtf8(message), signature);
   }
 
-  private isMetaMask(): boolean {
-    return this.web3.currentProvider.constructor.name === this.metamaskProviderName;
+  public async checkRinkebyNetworkAsync(): Promise<boolean> {
+    const version = await this.getNetworkVersion();
+    return version === this.rinkebyNetworkId;
   }
 
-  get Web3(): any {
-    return window['Web3'];
+  private getNetworkVersion(): Promise<any> {
+    return this.eth.net_version();
   }
+
 }

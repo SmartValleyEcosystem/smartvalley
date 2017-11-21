@@ -1,62 +1,97 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import {Web3Service} from './web3-service';
-import {NotificationService} from './notification-service';
-import {UserInfo} from './user-info';
+import {NotificationsService} from 'angular2-notifications';
+import {Router} from '@angular/router';
+import {Paths} from '../paths';
 
 @Injectable()
 export class AuthenticationService {
 
-  static MESSAGE_TO_SIGN = 'Confirm login';
 
-  public userInfoChanged: EventEmitter<any> = new EventEmitter<any>();
+  // public userInfoChanged: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private web3Service: Web3Service, private _notificationService: NotificationService) {
+  constructor(private web3Service: Web3Service,
+              private notificationsService: NotificationsService,
+              private router: Router) {
   }
 
-  public getSignatureByAddress(account: string) {
-    return window.localStorage[account];
+  public static MESSAGE_TO_SIGN = 'Confirm login';
+
+  private readonly userKey = 'userKey';
+
+  private getSignatureByAccount(account: string): string {
+    return localStorage.getItem(account);
   }
 
-  public saveSignatureForAddrsess(account: string, signature: string) {
-    window.localStorage[account] = signature;
+  private saveSignatureForAccount(account: string, signature: string) {
+    localStorage.setItem(account, signature);
   }
 
-  public removeSignatureByAddress(account: string) {
-    window.localStorage.removeItem(account);
+  private removeSignatureByAccount(account: string) {
+    localStorage.removeItem(account);
   }
 
-  public async authenticate(): Promise<Boolean> {
-    try {
-      const accounts = await this.web3Service.getAccounts();
-      const signature = await this.web3Service.sign(AuthenticationService.MESSAGE_TO_SIGN, accounts[0]);
-      this.saveSignatureForAddrsess(accounts[0], signature);
-    } catch (e) {
-      this._notificationService.notify('error', 'Failed to authenticate!');
-      return false;
+  public async authenticateAsync(): Promise<boolean> {
+
+    if (!this.web3Service.isMetamaskInstalled) {
+      this.router.navigate([Paths.MetaMaskHowTo]);
+      return;
+    }
+    const accounts = await this.web3Service.getAccounts();
+    const metamaskAccount = accounts[0];
+
+    if (metamaskAccount == null) {
+      this.notificationsService.warn('Account unavailable', 'Please unlock metamask');
+      return;
+    }
+    const isRinkeby = await this.web3Service.checkRinkebyNetworkAsync();
+
+    if (!isRinkeby) {
+      this.notificationsService.warn('Wrong network', 'Please change to Rinkeby');
+      return;
     }
 
-    this._notificationService.notify('success', 'Successfully authenticated!');
-    this.userInfoChanged.emit();
+    const user = this.getCurrentUser();
+    if (!isNullOrUndefined(user)) {
+      if (user.account !== metamaskAccount) {
+        await this.handleAccountSwitchAsync(metamaskAccount);
+        return true;
+      }
+      return await this.checkSignatureAsync(user.account, user.signature);
+    }
+    await this.signAndSaveAsync(metamaskAccount);
     return true;
   }
 
-  public async getUserInfo(): Promise<UserInfo> {
-    const accounts = await this.web3Service.getAccounts();
-    if (accounts.length == 0) {
-      return null;
+  private async handleAccountSwitchAsync(account: string): Promise<void> {
+    const savedSignature = this.getSignatureByAccount(account);
+    if (!isNullOrUndefined(savedSignature)) {
+      const isSavedSignatureValid = await this.checkSignatureAsync(account, savedSignature);
+      if (!isSavedSignatureValid) {
+        await this.signAndSaveAsync(account);
+      }
+    } else {
+      await this.signAndSaveAsync(account);
     }
-    const signature = this.getSignatureByAddress(accounts[0]);
+  }
 
-    if (isNullOrUndefined(signature)) {
-      return null;
-    }
-    const isSignatureValid = await this.web3Service.checkSignature(signature, accounts[0], AuthenticationService.MESSAGE_TO_SIGN);
-    if (!isSignatureValid) {
-      return null;
-    }
-    const userInfo = new UserInfo(accounts[0], signature, false);
-    userInfo.isAuthenticated = true;
-    return userInfo;
+  private async signAndSaveAsync(account: string): Promise<void> {
+    const signature = await this.web3Service.sign(AuthenticationService.MESSAGE_TO_SIGN, account);
+    this.saveCurrentUser({account, signature});
+    this.saveSignatureForAccount(account, signature);
+  }
+
+  private async checkSignatureAsync(account: string, signature: string): Promise<boolean> {
+    const recoveredSignature = await this.web3Service.recoverSignature(AuthenticationService.MESSAGE_TO_SIGN, signature);
+    return account === recoveredSignature;
+  }
+
+  public getCurrentUser(): User {
+    return JSON.parse(localStorage.getItem(this.userKey));
+  }
+
+  private saveCurrentUser(user: User) {
+    localStorage.setItem(this.userKey, JSON.stringify(user));
   }
 }

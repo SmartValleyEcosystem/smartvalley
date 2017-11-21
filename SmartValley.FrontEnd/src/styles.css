@@ -100,6 +100,10 @@ body {
   box-shadow: 0px 3px 14px 2px rgba(219, 219, 219, 1);
 }
 
+.card_no_shdw {
+  margin: 30px;
+}
+
 .sm-btn-primary {
   background: rgb(246, 150, 1);
 }
@@ -125,48 +129,14 @@ body {
   margin-top: 50px;
 }
 
-.sm-title{
-  margin-bottom: 60px;
-  color: white;
-  padding: 0;
+.high_rate{
+  color: #38a347 !important;
 }
-.sm-title h1{
-  letter-spacing: 7px;
-  font-size: 50px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  text-transform: uppercase;
+
+.medium_rate{
+  color: #e8a765 !important;
 }
-.sw-card{
-  position: relative;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  background-color: #fff;
-  border-radius: 0.25rem;
-  padding: 0;
-}
-.sw-card__content{
-  margin: 4em 0em;
-}
-.sw-content{
-  -webkit-box-flex: inherit;
-  -ms-flex: inherit;
-  flex: inherit;
-  margin: 0.2em 0px
-}
-.sm-default-btn{
-  background-color: rgb(72, 138, 232) !important;
-  padding-bottom: 1em;
-  padding-top: 1em;
-  bottom: 40px;
-  right: 40px;
-  position: absolute;
-}
-.container{
-  padding:0;
+
+.low_rate{
+  color: #d24a43 !important;
 }
