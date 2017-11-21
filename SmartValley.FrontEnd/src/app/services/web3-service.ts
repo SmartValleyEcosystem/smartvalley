@@ -10,8 +10,6 @@ export class Web3Service {
     this.initialize();
   }
 
-  public static MESSAGE_TO_SIGN = 'Confirm login';
-
   private readonly rinkebyNetworkId = '4';
   // TODO next task
   // private metamaskProviderName = 'MetamaskInpageProvider';
@@ -32,16 +30,16 @@ export class Web3Service {
     return EthJs.isAddress(address);
   }
 
-  public async getAccounts(): Promise<Array<string>> {
-    return await this.eth.accounts();
+  public getAccounts(): Promise<Array<string>> {
+    return this.eth.accounts();
   }
 
-  public async sign(address: string): Promise<string> {
-    return await this.eth.personal_sign(EthJs.fromUtf8(Web3Service.MESSAGE_TO_SIGN), address);
+  public sign(message: string, address: string): Promise<string> {
+    return this.eth.personal_sign(EthJs.fromUtf8(message), address);
   }
 
-  public async recoverSignature(signature: string): Promise<string> {
-    return this.eth.personal_ecRecover(EthJs.fromUtf8(Web3Service.MESSAGE_TO_SIGN), signature);
+  public recoverSignature(message: string, signature: string): Promise<string> {
+    return this.eth.personal_ecRecover(EthJs.fromUtf8(message), signature);
   }
 
   public async isRinkebyNetwork(): Promise<boolean> {
@@ -49,8 +47,8 @@ export class Web3Service {
     return version === this.rinkebyNetworkId;
   }
 
-  private async getNetworkVersion(): Promise<any> {
-    return await this.eth.net_version();
+  private getNetworkVersion(): Promise<any> {
+    return this.eth.net_version();
   }
 
 }

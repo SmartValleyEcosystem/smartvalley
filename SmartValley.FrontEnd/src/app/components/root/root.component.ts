@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication-service';
 import {Web3Service} from '../../services/web3-service';
 import {NotificationService} from '../../services/notification-service';
-import {User} from '../../services/user';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 
@@ -27,7 +26,7 @@ export class RootComponent implements OnInit {
   }
 
   async updateUserInfo() {
-  //  this.userInfo = await this.authenticationService.getUser();
+  //  this.userInfo = await this.authenticationService.getCurrentUser();
   }
 
   async navigateToScoring() {

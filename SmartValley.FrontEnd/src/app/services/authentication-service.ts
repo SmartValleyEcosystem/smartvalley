@@ -2,7 +2,6 @@ import {EventEmitter, Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import {Web3Service} from './web3-service';
 import {NotificationService} from './notification-service';
-import {User} from './user';
 
 @Injectable()
 export class AuthenticationService {
@@ -12,6 +11,8 @@ export class AuthenticationService {
 
   constructor(private web3Service: Web3Service, private _notificationService: NotificationService) {
   }
+
+  public static MESSAGE_TO_SIGN = 'Confirm login';
 
   private readonly userKey = 'userKey';
 
@@ -28,9 +29,9 @@ export class AuthenticationService {
   }
 
   public async authenticate(): Promise<Boolean> {
-    let user = this.getUser();
+    let user = this.getCurrentUser();
     if (!isNullOrUndefined(user)) {
-      const recoveredSignature = await this.web3Service.recoverSignature(user.signature);
+      const recoveredSignature = await this.web3Service.recoverSignature(AuthenticationService.MESSAGE_TO_SIGN, user.signature);
       if (user.account === recoveredSignature) {
         return true;
       }
@@ -38,19 +39,19 @@ export class AuthenticationService {
 
     const accounts = await this.web3Service.getAccounts();
     const account = accounts[0];
-    const signature = await this.web3Service.sign(account);
+    const signature = await this.web3Service.sign(AuthenticationService.MESSAGE_TO_SIGN, account);
 
-    user = new User(account, signature);
-    this.saveUser(user);
+    user = {account, signature};
+    this.saveCurrent(user);
     this.saveSignatureForAddrsess(account, signature);
     return true;
   }
 
-  public getUser(): User {
+  public getCurrentUser(): User {
     return JSON.parse(localStorage.getItem(this.userKey));
   }
 
-  private saveUser(user: User) {
+  private saveCurrent(user: User) {
     localStorage.setItem(this.userKey, JSON.stringify(user));
   }
 }

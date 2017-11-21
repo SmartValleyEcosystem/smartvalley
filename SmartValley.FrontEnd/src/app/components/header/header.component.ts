@@ -1,12 +1,12 @@
-import {Component, OnInit} from "@angular/core";
-import {BalanceApiClient} from "../../api/balance/balance-api-client";
-import {AuthenticationService} from "../../services/authentication-service";
-import {Web3Service} from "../../services/web3-service";
+import {Component, OnInit} from '@angular/core';
+import {BalanceApiClient} from '../../api/balance/balance-api-client';
+import {AuthenticationService} from '../../services/authentication-service';
+import {Web3Service} from '../../services/web3-service';
 
 @Component({
-  selector: "app-header",
-  templateUrl: "./header.component.html",
-  styleUrls: ["./header.component.css"]
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
 
@@ -29,6 +29,6 @@ export class HeaderComponent implements OnInit {
 
 
   async receiveEth() {
-    await  this.balanceApiClient.receiveEther();
+    await this.balanceApiClient.receiveEther();
   }
 }
