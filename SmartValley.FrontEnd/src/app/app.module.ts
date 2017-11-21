@@ -24,6 +24,8 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {ScoringComponent} from './components/scoring/scoring.component';  // <-- #1 import module
 import {MatTabsModule} from '@angular/material';
 import {FooterComponent} from './components/footer/footer.component';
+import {EstimateComponent} from './components/estimate/estimate.component';
+import {ScoringService} from './services/scoring-service';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import {FooterComponent} from './components/footer/footer.component';
     NotificationsComponent,
     ApplicationComponent,
     ScoringComponent,
-    FooterComponent
+    FooterComponent,
+    EstimateComponent
   ],
   imports: [
     MatTabsModule,
@@ -59,6 +62,7 @@ import {FooterComponent} from './components/footer/footer.component';
     AuthenticationService,
     Web3Service,
     NotificationService,
+    ScoringService,
     IfAuthenticated,
     IfWeb3Initialized],
   bootstrap: [AppComponent]

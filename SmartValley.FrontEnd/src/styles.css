@@ -102,16 +102,12 @@ body {
 
 .sm-btn-primary {
   background: rgb(246, 150, 1);
-  width: 270px;
-  margin: 0px;
-  padding: 15px 50px;
 }
 
 .sm-btn-primary > .mat-button-wrapper {
-  color: white;
   font-weight: 500;
   opacity: 1 !important;
-  color: white;
+  color: black;
   text-align: center;
   padding-bottom: 20px;
   padding-top: 20px;
@@ -127,4 +123,50 @@ body {
 }
 .mat-tab-body-wrapper{
   margin-top: 50px;
+}
+
+.sm-title{
+  margin-bottom: 60px;
+  color: white;
+  padding: 0;
+}
+.sm-title h1{
+  letter-spacing: 7px;
+  font-size: 50px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+.sw-card{
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 0.25rem;
+  padding: 0;
+}
+.sw-card__content{
+  margin: 4em 0em;
+}
+.sw-content{
+  -webkit-box-flex: inherit;
+  -ms-flex: inherit;
+  flex: inherit;
+  margin: 0.2em 0px
+}
+.sm-default-btn{
+  background-color: rgb(72, 138, 232) !important;
+  padding-bottom: 1em;
+  padding-top: 1em;
+  bottom: 40px;
+  right: 40px;
+  position: absolute;
+}
+.container{
+  padding:0;
 }

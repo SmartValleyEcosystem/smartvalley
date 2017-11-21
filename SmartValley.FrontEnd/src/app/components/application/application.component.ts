@@ -15,6 +15,8 @@ export class ApplicationComponent {
 
   applicationForm: FormGroup;
 
+  hidden = false;
+
   teamMembers: Array<FormGroup>;
 
   constructor(private formBuilder: FormBuilder,
@@ -85,6 +87,10 @@ export class ApplicationComponent {
         this.teamMembers.push(group);
       }
     }
+  }
+
+  changeHidden() {
+    this.hidden = true;
   }
 
   async onSubmit() {
