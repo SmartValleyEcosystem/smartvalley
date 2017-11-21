@@ -32,7 +32,7 @@ export class AuthenticationService {
     localStorage.removeItem(account);
   }
 
-  public async authenticateAsync(): Promise<Boolean> {
+  public async authenticateAsync(): Promise<boolean> {
 
     if (!this.web3Service.isMetamaskInstalled) {
       this.router.navigate([Paths.MetaMaskHowTo]);
@@ -64,7 +64,7 @@ export class AuthenticationService {
     return true;
   }
 
-  private async handleAccountSwitchAsync(account: string) {
+  private async handleAccountSwitchAsync(account: string): Promise<void> {
     const savedSignature = this.getSignatureByAccount(account);
     if (!isNullOrUndefined(savedSignature)) {
       const isSavedSignatureValid = await this.checkSignatureAsync(account, savedSignature);
@@ -76,13 +76,13 @@ export class AuthenticationService {
     }
   }
 
-  private async signAndSaveAsync(account: string) {
+  private async signAndSaveAsync(account: string): Promise<void> {
     const signature = await this.web3Service.sign(AuthenticationService.MESSAGE_TO_SIGN, account);
     this.saveCurrentUser({account, signature});
     this.saveSignatureForAccount(account, signature);
   }
 
-  private async checkSignatureAsync(account: string, signature: string): Promise<Boolean> {
+  private async checkSignatureAsync(account: string, signature: string): Promise<boolean> {
     const recoveredSignature = await this.web3Service.recoverSignature(AuthenticationService.MESSAGE_TO_SIGN, signature);
     return account === recoveredSignature;
   }
