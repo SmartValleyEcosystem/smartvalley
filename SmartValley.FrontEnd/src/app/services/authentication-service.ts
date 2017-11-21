@@ -20,7 +20,7 @@ export class AuthenticationService {
 
   private readonly userKey = 'userKey';
 
-  private getSignatureByAccount(account: string) {
+  private getSignatureByAccount(account: string): string {
     return localStorage.getItem(account);
   }
 
