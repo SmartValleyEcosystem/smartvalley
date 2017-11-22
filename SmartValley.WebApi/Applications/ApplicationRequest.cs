@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace SmartValley.WebApi.Application
+namespace SmartValley.WebApi.Applications
 {
     public class ApplicationRequest
     {

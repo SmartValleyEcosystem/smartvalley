@@ -6,7 +6,7 @@ using SmartValley.Application.Exceptions;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 
-namespace SmartValley.WebApi.Application
+namespace SmartValley.WebApi.Applications
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ApplicationService : IApplicationService
@@ -93,11 +93,11 @@ namespace SmartValley.WebApi.Application
             return application;
         }
 
-        private async Task<Domain.Entities.Project> AddProjectAsync(
+        private async Task<Project> AddProjectAsync(
             ApplicationRequest request,
             string projectContractAddress)
         {
-            var project = new Domain.Entities.Project
+            var project = new Project
                           {
                               Name = request.Name,
                               Country = request.Country,

@@ -1,4 +1,4 @@
-﻿namespace SmartValley.WebApi.Project
+﻿namespace SmartValley.WebApi.Projects
 {
     public class ScoredProjectResponse
     {

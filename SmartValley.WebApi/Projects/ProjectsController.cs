@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Domain.Interfaces;
 
-namespace SmartValley.WebApi.Project
+namespace SmartValley.WebApi.Projects
 {
     [Route("api/project")]
-    public class ProjectController : Controller
+    public class ProjectsController : Controller
     {
         private readonly IProjectRepository _projectRepository;
 
-        public ProjectController(IProjectRepository projectRepository)
+        public ProjectsController(IProjectRepository projectRepository)
         {
             _projectRepository = projectRepository;
         }

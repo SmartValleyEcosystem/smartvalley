@@ -15,7 +15,7 @@ using SmartValley.Application.Contracts;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Data.SQL.Repositories;
 using SmartValley.Domain.Interfaces;
-using SmartValley.WebApi.Application;
+using SmartValley.WebApi.Applications;
 using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.ExceptionHandler;
 using SmartValley.WebApi.WebApi;

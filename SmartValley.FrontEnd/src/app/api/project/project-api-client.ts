@@ -10,7 +10,7 @@ export class ProjectApiClient extends BaseApiClient {
   }
 
   async getScoredProjectsAsync(): Promise<ScoredProjectResponse[]> {
-    return await this.http.get<ScoredProjectResponse[]>(this.baseApiUrl + '/project/scored')
+    return await this.http.get<ScoredProjectResponse[]>(this.baseApiUrl + '/projects/scored')
       .toPromise();
   }
 }
