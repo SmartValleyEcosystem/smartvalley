@@ -18,7 +18,9 @@
 .hidden .submit-button, .hidden .wp-link, .hidden .row-content {
   display: none;
 }
-
+.submit-button{
+  margin: 1.5em 0em;
+}
 .next-button {
   display: none;
   margin: 1.5em 0em;
@@ -47,9 +49,6 @@ a {
 
 .sw-card {
   padding: 2em 0em;
-  /*-ms-flex: 0 0 83.333333%;*/
-  /*flex: 0 0 83.333333%;*/
-  /*max-width: 83.333333%;*/
 }
 
 .btn-blue {
