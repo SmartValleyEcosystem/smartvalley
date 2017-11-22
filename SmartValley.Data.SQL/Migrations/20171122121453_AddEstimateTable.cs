@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SmartValley.Data.SQL.Migrations
 {
-    public partial class EstimateTable : Migration
+    public partial class AddEstimateTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,10 +17,10 @@ namespace SmartValley.Data.SQL.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ExpertAddress = table.Column<string>(type: "nvarchar(42)", maxLength: 42, nullable: false),
-                    ExpertType = table.Column<int>(type: "int", nullable: false),
                     ProjectId = table.Column<long>(type: "bigint", nullable: false),
-                    QuestionNumber = table.Column<int>(type: "int", nullable: false),
-                    Score = table.Column<int>(type: "int", nullable: false)
+                    QuestionIndex = table.Column<int>(type: "int", nullable: false),
+                    Score = table.Column<int>(type: "int", nullable: false),
+                    ScoringCategory = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -66,13 +66,13 @@ namespace SmartValley.Data.SQL.Migrations
                         .IsRequired()
                         .HasMaxLength(42);
 
-                    b.Property<int>("ExpertType");
-
                     b.Property<long>("ProjectId");
 
-                    b.Property<int>("QuestionNumber");
+                    b.Property<int>("QuestionIndex");
 
                     b.Property<int>("Score");
+
+                    b.Property<int>("ScoringCategory");
 
                     b.HasKey("Id");
 

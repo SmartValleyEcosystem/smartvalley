@@ -11,14 +11,13 @@ namespace SmartValley.Domain.Entities
 
         public long ProjectId { get; set; }
 
-        public ExpertType ExpertType { get; set; }
+        public ScoringCategory ScoringCategory { get; set; }
 
         [Required]
         [MaxLength(42)]
         public string ExpertAddress { get; set; }
 
-        [Range(1, 13)]
-        public int QuestionNumber { get; set; }
+        public int QuestionIndex { get; set; }
 
         public int Score { get; set; }
 
