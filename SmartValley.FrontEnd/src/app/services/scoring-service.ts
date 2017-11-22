@@ -28,7 +28,8 @@ export class ScoringService {
       scoringRating: 'in progress',
       projectDescription: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
       expertType: 'HR',
-      projectImgUrl: 'https://png.icons8.com/?id=50284&size=280'
+      projectImgUrl: 'https://png.icons8.com/?id=50284&size=280',
+
     });
 
     this.scorings.push(<Scoring>{

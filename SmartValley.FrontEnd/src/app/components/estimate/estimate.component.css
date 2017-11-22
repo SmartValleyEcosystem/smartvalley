@@ -1,5 +1,5 @@
 .row {
-  margin: 2em 0em;
+  margin: 1em 0em;
 }
 
 .row > span {
@@ -38,3 +38,13 @@
 .btn {
   cursor: pointer;
 }
+textarea{
+
+}
+a{
+  text-decoration: none;
+  padding-right: 1em;
+}
+/*.sw-card{*/
+  /*padding-bottom: 3em;*/
+/*}*/
