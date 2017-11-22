@@ -92,11 +92,11 @@ namespace SmartValley.WebApi.Application
             return application;
         }
 
-        private async Task<Project> AddProjectAsync(
+        private async Task<Domain.Entities.Project> AddProjectAsync(
             ApplicationRequest request,
             string projectContractAddress)
         {
-            var project = new Project
+            var project = new Domain.Entities.Project
                           {
                               Name = request.Name,
                               Country = request.Country,
