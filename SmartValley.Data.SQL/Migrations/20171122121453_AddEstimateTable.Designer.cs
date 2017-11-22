@@ -12,8 +12,8 @@ using System;
 namespace SmartValley.Data.SQL.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20171122111157_EstimateTable")]
-    partial class EstimateTable
+    [Migration("20171122121453_AddEstimateTable")]
+    partial class AddEstimateTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,13 +67,13 @@ namespace SmartValley.Data.SQL.Migrations
                         .IsRequired()
                         .HasMaxLength(42);
 
-                    b.Property<int>("ExpertType");
-
                     b.Property<long>("ProjectId");
 
-                    b.Property<int>("QuestionNumber");
+                    b.Property<int>("QuestionIndex");
 
                     b.Property<int>("Score");
+
+                    b.Property<int>("ScoringCategory");
 
                     b.HasKey("Id");
 
