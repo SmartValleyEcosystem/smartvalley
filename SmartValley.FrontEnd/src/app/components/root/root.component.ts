@@ -17,6 +17,7 @@ export class RootComponent {
 
   constructor(private authenticationService: AuthenticationService,
               private router: Router) {
+
     this.initTestData();
   }
 
