@@ -23,6 +23,7 @@ import {FooterComponent} from './components/footer/footer.component';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {EstimateComponent} from './components/estimate/estimate.component';
 import {ScoringService} from './services/scoring-service';
+import {QuestionService} from './services/question-service';
 import {ApplicationService} from './services/application-service';
 import {ContractApiClient} from './api/contract/contract-api-client';
 import {ErrorInterceptor} from './api/error-interceptor';
@@ -65,6 +66,7 @@ import {ErrorInterceptor} from './api/error-interceptor';
     ContractApiClient,
     AuthenticationService,
     ApplicationService,
+    QuestionService,
     ScoringService,
     Web3Service,
     ProjectManagerContractClient],

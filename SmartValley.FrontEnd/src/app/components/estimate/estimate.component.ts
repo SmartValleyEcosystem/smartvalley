@@ -3,6 +3,8 @@ import {ActivatedRoute} from '@angular/router';
 import {Application} from '../../services/application';
 import {ApplicationService} from '../../services/application-service';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
+import {QuestionService} from '../../services/question-service';
+import {Question} from '../../services/question';
 
 @Component({
   selector: 'app-estimate',
@@ -12,11 +14,13 @@ import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 export class EstimateComponent implements OnInit {
 
   public application: Application;
+  public questions: Array<Question>;
   hidden: boolean;
   EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
 
   constructor(private route: ActivatedRoute,
-              private service: ApplicationService) {
+              private applicationService: ApplicationService,
+              private questionService: QuestionService) {
   }
 
   changeHidden() {
@@ -25,7 +29,7 @@ export class EstimateComponent implements OnInit {
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-    this.application = this.service.getById(id);
-    console.log(this.application);
+    this.application = this.applicationService.getById(id);
+    this.questions = this.questionService.getByExpertType(2);
   }
 }

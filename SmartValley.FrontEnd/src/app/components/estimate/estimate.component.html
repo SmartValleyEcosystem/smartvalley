@@ -9,27 +9,27 @@
       <h3 class="col-10 offset-1">Information</h3>
     </div>
     <div class="row">
-      <span class="col-2 offset-1">Project name:</span>
+      <span class="col-3 offset-1">Project name:</span>
       <span class="col-5">{{application.name}}</span>
     </div>
     <div class="row">
-      <span class="col-2 offset-1">Project Area</span>
+      <span class="col-3 offset-1">Project Area</span>
       <span class="col-5">{{application.projectArea}}</span>
     </div>
     <div class="row">
-      <span class="col-2 offset-1">Problem description</span>
+      <span class="col-3 offset-1">Problem description</span>
       <span class="col-5">{{application.probablyDescription}}</span>
     </div>
     <div class="row">
-      <span class="col-2 offset-1">Solution description</span>
+      <span class="col-3 offset-1">Solution description</span>
       <span class="col-5">{{application.solutionDescription}}</span>
     </div>
     <div class="row">
-      <span class="col-2 offset-1">Status</span>
+      <span class="col-3 offset-1">Status</span>
       <span class="col-5">{{application.projectStatus}}</span>
     </div>
     <div class="row">
-      <span class="col-2 offset-1">White paper link</span>
+      <span class="col-3 offset-1">White paper link</span>
       <a href="{{application.whitePaperLink}}" class="col-5">{{application.whitePaperLink}}</a>
     </div>
   </div>
@@ -62,95 +62,29 @@
     </div>
   </div>
   <div class="next-button row">
-    <button (click)="changeHidden()" class="btn-blue col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">Estimate</button>
+    <button (click)="changeHidden()" class="btn-blue col-3 btn btn-primary"
+            style="padding-top: 1em; padding-bottom: 1em;">Estimate
+    </button>
   </div>
-  <div class="sw-card sw-content">
+  <div *ngFor="let question of questions;" class="sw-card sw-content">
     <div class="row row-title">
-      <h3 class="col-10 offset-1">Team Completeness</h3>
+      <h3 class="col-10 offset-1">{{question.name}}</h3>
     </div>
     <div class="row-content">
       <div class="row">
-        <span class="col-4 offset-1" style="word-wrap: break-word;">ifififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififif
-        </span>
-        <span class="col-3" style="word-wrap: break-word;">ifififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififif
-        </span>
+        <span class="col-4 offset-1" style="word-wrap: break-word;">{{question.description}}</span>
       </div>
       <div class="row">
-        <div class="col-1 offset-1">
-          <span style="font-size: 0.8em;">Your score:</span>
-          <input placeholder="Russian Federation">
-        </div>
-        <div class="col-6">
-          <span style="font-size: 0.8em;">Comments</span>
-          <textarea style="height: 10em; resize: none;" placeholder="Technology of Authenticity Verification of Video Content"></textarea>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="sw-card sw-content">
-    <div class="row row-title">
-      <h3 class="col-10 offset-1">Team Experience</h3>
-    </div>
-
-    <div class="row-content">
-      <div class="row">
-        <span class="col-4 offset-1" style="word-wrap: break-word;">ifififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififif
-        </span>
-        <span class="col-3" style="word-wrap: break-word;">ifififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififif
-        </span>
-      </div>
-      <div class="row">
-        <div class="col-1 offset-1">
-          <span style="font-size: 0.8em;">Your score:</span>
-          <input placeholder="Russian Federation">
-        </div>
-        <div class="col-6">
-          <span style="font-size: 0.8em;">Comments</span>
-          <textarea style="height: 10em; resize: none;" placeholder="Technology of Authenticity Verification of Video Content"></textarea>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="sw-card sw-content">
-    <div class="row row-title">
-      <h3 class="col-10 offset-1">Attracted Investments</h3>
-    </div>
-    <div class="row-content">
-      <div class="row">
-        <span class="col-4 offset-1" style="word-wrap: break-word;">ifififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififif
-        </span>
-      </div>
-      <div class="row">
-        <div class="col-1 offset-1">
-          <span style="font-size: 0.8em;">Your score:</span>
-          <input placeholder="Russian Federation">
-        </div>
-        <div class="col-6">
-          <span style="font-size: 0.8em;">Comments</span>
-          <textarea style="height: 10em; resize: none;" placeholder="Technology of Authenticity Verification of Video Content"></textarea>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="sw-card sw-content">
-    <div class="row row-title">
-      <h3 class="col-10 offset-1">Scam</h3>
-    </div>
-    <div class="row-content">
-      <div class="row">
-        <span class="col-4 offset-1" style="word-wrap: break-word;">ifififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififif
-        </span>
-        <span class="col-3" style="word-wrap: break-word;">ifififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififififif
-        </span>
-      </div>
-      <div class="row">
-        <div class="col-1 offset-1">
-          <span style="font-size: 0.8em;">Your score:</span>
-          <input placeholder="Russian Federation">
-        </div>
-        <div class="col-6">
-          <span style="font-size: 0.8em;">Comments</span>
-          <textarea style="height: 10em; resize: none;" placeholder="Technology of Authenticity Verification of Video Content"></textarea>
+        <div class="form-group">
+          <div class="col-1 offset-1">
+            <span style="font-size: 0.85em;">Your score:</span>
+            <input style="margin-top: 1em;" class="form-control" placeholder="6">
+          </div>
+          <div class="col-6">
+            <span style="font-size: 0.85em;">Comments 250 symbols</span>
+            <textarea class="form-control" style="margin-top: 1em; height: 10em; resize: none;"
+                      placeholder="Technology of Authenticity Verification of Video Content"></textarea>
+          </div>
         </div>
       </div>
     </div>
@@ -161,9 +95,12 @@
     </div>
     <div class="row-content">
       <div class="row">
-        <div class="col-6 offset-1">
-          <span style="font-size: 0.8em;">Comments</span>
-          <textarea style="height: 10em; resize: none;" placeholder="Technology of Authenticity Verification of Video Content"></textarea>
+        <div class="form-group">
+          <div class="col-6 offset-1">
+            <span style="font-size: 0.85em;">Comments</span>
+            <textarea class="form-control" style="margin-top: 1em; height: 10em; resize: none;"
+                      placeholder="Technology of Authenticity Verification of Video Content"></textarea>
+          </div>
         </div>
       </div>
     </div>

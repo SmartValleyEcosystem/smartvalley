@@ -11,10 +11,6 @@
   padding-left: 2em;
 }
 
-.row-title {
-  margin: 2em 0em;
-}
-
 .row-primary {
   background-color: rgb(248, 248, 248);
 }
@@ -50,16 +46,30 @@ a {
 }
 
 .sw-card {
-  padding: 3em 0em;
-  -ms-flex: 0 0 83.333333%;
-  flex: 0 0 83.333333%;
-  max-width: 83.333333%;
+  padding: 2em 0em;
+  /*-ms-flex: 0 0 83.333333%;*/
+  /*flex: 0 0 83.333333%;*/
+  /*max-width: 83.333333%;*/
 }
 
-.row-title {
-  margin-top: 1em;
-  margin-bottom: 2em;
+.btn-blue {
+  background: rgb(70, 137, 232);
 }
-.btn-blue{
-  background: rgb(70,137,232);
+
+.form-group {
+  width: 100%;
+}
+
+.form-group > div {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.form-group span {
+  color: rgb(180, 180, 180);
+}
+
+.form-control {
+  padding-left: 1.5em;
+  border-color: rgb(70, 137, 232);
 }

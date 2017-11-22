@@ -3,6 +3,7 @@
 
 body {
   background: rgb(32, 32, 32);
+  font-family: AvenirNextCyr;
 }
 
 .mat-toolbar {
@@ -153,7 +154,7 @@ body {
 }
 .sm-title h1{
   letter-spacing: 7px;
-  font-size: 50px;
+  font-size: 40px;
   font-weight: 700;
   margin-bottom: 20px;
   text-transform: uppercase;
@@ -228,7 +229,7 @@ body {
 }
 
 @font-face {
-  font-family: "AvenirNextCyr-Regular";
+  font-family: "AvenirNextCyr";
   src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Regular.otf") format("otf")
 }
 
