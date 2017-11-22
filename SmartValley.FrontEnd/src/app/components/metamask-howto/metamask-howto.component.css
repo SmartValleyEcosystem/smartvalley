@@ -1,7 +1,11 @@
-.sw-card > div{
-  margin: 50px 80px 0px 80px;
+.sw-card{
+  padding: 50px 80px;
 }
 
-div.row{
-  min-width: 1100px;
+.sw-card h2{
+  margin-bottom: 40px;
+}
+
+div.text-center img{
+  margin-bottom: 20px;
 }

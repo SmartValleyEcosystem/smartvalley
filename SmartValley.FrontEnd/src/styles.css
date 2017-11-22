@@ -171,3 +171,7 @@ body {
   border-radius: 0.25rem;
   padding: 0;
 }
+
+.container{
+  min-width: 1100px;
+}
