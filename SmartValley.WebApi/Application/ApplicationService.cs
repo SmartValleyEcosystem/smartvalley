@@ -3,22 +3,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application.Contracts;
 using SmartValley.Application.Exceptions;
-using SmartValley.Data.SQL.Repositories;
 using SmartValley.Domain.Entities;
+using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.WebApi.Application
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ApplicationService : IApplicationService
     {
-        private readonly ApplicationRepository _applicationRepository;
-        private readonly ProjectRepository _projectRepository;
-        private readonly TeamMemberRepository _teamRepository;
+        private readonly IApplicationRepository _applicationRepository;
+        private readonly IProjectRepository _projectRepository;
+        private readonly ITeamMemberRepository _teamRepository;
         private readonly IProjectManagerContractClient _projectManagerContractClient;
 
         public ApplicationService(
-            ApplicationRepository applicationRepository,
-            ProjectRepository projectRepository,
-            TeamMemberRepository teamRepository,
+            IApplicationRepository applicationRepository,
+            IProjectRepository projectRepository,
+            ITeamMemberRepository teamRepository,
             IProjectManagerContractClient projectManagerContractClient)
         {
             _applicationRepository = applicationRepository;
@@ -33,8 +34,8 @@ namespace SmartValley.WebApi.Application
                 throw new ArgumentNullException();
 
             var projectAddress = await _projectManagerContractClient.GetProjectAddressAsync(
-                                             applicationRequest.ProjectId,
-                                             applicationRequest.TransactionHash);
+                                     applicationRequest.ProjectId,
+                                     applicationRequest.TransactionHash);
 
             await CreateProjectAsync(applicationRequest, projectAddress);
         }

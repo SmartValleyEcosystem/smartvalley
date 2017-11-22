@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.WebApi.Project
 {
     [Route("api/project")]
-    [Authorize]
     public class ProjectController : Controller
     {
         private readonly IProjectRepository _projectRepository;
@@ -20,22 +18,22 @@ namespace SmartValley.WebApi.Project
 
         [HttpGet]
         [Route("scored")]
-        public async Task<IReadOnlyCollection<ScoredProjectSummaryResponse>> GetAllScoredAsync()
+        public async Task<IReadOnlyCollection<ScoredProjectResponse>> GetAllScoredAsync()
         {
             var scoredProjects = await _projectRepository.GetAllScoredAsync();
             return scoredProjects.Select(CreateResponse).ToArray();
         }
 
-        private static ScoredProjectSummaryResponse CreateResponse(Domain.Entities.Project project)
+        private static ScoredProjectResponse CreateResponse(Domain.Entities.Project project)
         {
-            return new ScoredProjectSummaryResponse
+            return new ScoredProjectResponse
                    {
                        Id = project.Id,
                        Name = project.Name,
+                       Address = project.ProjectAddress,
                        Country = project.Country,
-                       ProjectArea = project.ProjectArea,
-                       ProblemDescription = project.ProblemDesc,
-                       SolutionDescription = project.SolutionDesc,
+                       Area = project.ProjectArea,
+                       Description = project.ProblemDesc,
                        Score = project.Score.Value
                    };
         }

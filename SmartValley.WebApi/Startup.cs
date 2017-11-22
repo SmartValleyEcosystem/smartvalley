@@ -14,6 +14,7 @@ using SmartValley.Application;
 using SmartValley.Application.Contracts;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Data.SQL.Repositories;
+using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Application;
 using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.ExceptionHandler;
@@ -74,9 +75,9 @@ namespace SmartValley.WebApi
             services.AddDbContext<AppDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient(x => AppDBContext.CreateEditable(dbOptions));
             services.AddTransient(x => AppDBContext.CreateReadOnly(dbOptions));
-            services.AddTransient<TeamMemberRepository, TeamMemberRepository>();
-            services.AddTransient<ApplicationRepository, ApplicationRepository>();
-            services.AddTransient<ProjectRepository, ProjectRepository>();
+            services.AddTransient<ITeamMemberRepository, TeamMemberRepository>();
+            services.AddTransient<IApplicationRepository, ApplicationRepository>();
+            services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IApplicationService, ApplicationService>();
         }
 

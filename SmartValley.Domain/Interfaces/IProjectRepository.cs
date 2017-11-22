@@ -7,5 +7,7 @@ namespace SmartValley.Domain.Interfaces
     public interface IProjectRepository
     {
         Task<IReadOnlyCollection<Project>> GetAllScoredAsync();
+
+        Task<int> AddAsync(Project project);
     }
 }
