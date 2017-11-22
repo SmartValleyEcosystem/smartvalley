@@ -1,5 +1,5 @@
 .row {
-  margin: 1em 0em;
+  margin: 0.5em 0em;
 }
 
 .row > span {
@@ -25,6 +25,7 @@
 
 .next-button {
   display: none;
+  margin: 1.5em 0em;
 }
 
 .row-content {
@@ -38,13 +39,27 @@
 .btn {
   cursor: pointer;
 }
-textarea{
+
+textarea {
 
 }
-a{
+
+a {
   text-decoration: none;
   padding-right: 1em;
 }
-/*.sw-card{*/
-  /*padding-bottom: 3em;*/
-/*}*/
+
+.sw-card {
+  padding: 3em 0em;
+  -ms-flex: 0 0 83.333333%;
+  flex: 0 0 83.333333%;
+  max-width: 83.333333%;
+}
+
+.row-title {
+  margin-top: 1em;
+  margin-bottom: 2em;
+}
+.btn-blue{
+  background: rgb(70,137,232);
+}
