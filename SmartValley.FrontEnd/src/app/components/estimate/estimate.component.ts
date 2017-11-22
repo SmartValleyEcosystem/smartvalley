@@ -1,7 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {Scoring} from '../../services/scoring';
-import {ScoringService} from '../../services/scoring-service';
+import {ActivatedRoute} from '@angular/router';
+import {Application} from '../../services/application';
+import {ApplicationService} from '../../services/application-service';
+import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
+import {QuestionService} from '../../services/question-service';
+import {Question} from '../../services/question';
 
 @Component({
   selector: 'app-estimate',
@@ -10,15 +13,23 @@ import {ScoringService} from '../../services/scoring-service';
 })
 export class EstimateComponent implements OnInit {
 
-  public scoring: Scoring;
+  public application: Application;
+  public questions: Array<Question>;
+  hidden: boolean;
+  EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
 
-  constructor(private router: Router,
-              private service: ScoringService) {
-    const id = 0;
-    this.scoring = this.service.getById(id);
+  constructor(private route: ActivatedRoute,
+              private applicationService: ApplicationService,
+              private questionService: QuestionService) {
+  }
+
+  changeHidden() {
+    this.hidden = true;
   }
 
   ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.application = this.applicationService.getById(id);
+    this.questions = this.questionService.getByExpertType(2);
   }
-
 }

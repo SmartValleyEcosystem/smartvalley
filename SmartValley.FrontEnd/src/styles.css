@@ -3,6 +3,7 @@
 
 body {
   background: rgb(32, 32, 32);
+  font-family: AvenirNextCyr;
 }
 
 .mat-toolbar {
@@ -153,7 +154,7 @@ body {
 }
 .sm-title h1{
   letter-spacing: 7px;
-  font-size: 50px;
+  font-size: 40px;
   font-weight: 700;
   margin-bottom: 20px;
   text-transform: uppercase;
@@ -172,6 +173,77 @@ body {
   padding: 0;
 }
 
-.container{
-  min-width: 1100px;
+@font-face {
+  font-family: "AvenirNextCyr-Bold";
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Bold.otf") format("otf")
+}
+
+@font-face {
+  font-family: "AvenirNextCyr-BoldItalic";
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-BoldItalic.otf") format("otf")
+}
+
+@font-face {
+  font-family: "AvenirNextCyr-Demi";
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Demi.otf") format("otf")
+}
+
+@font-face {
+  font-family: "AvenirNextCyr-DemiItalic";
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-DemiItalic.otf") format("otf")
+}
+
+@font-face {
+  font-family: "AvenirNextCyr-Heavy";
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Heavy.otf") format("otf")
+}
+
+@font-face {
+  font-family: "AvenirNextCyr-HeavyItalic";
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-HeavyItalic.otf") format("otf")
+}
+
+@font-face {
+  font-family: "AvenirNextCyr-Italic";
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Italic.otf") format("otf")
+}
+
+@font-face {
+  font-family: "AvenirNextCyr-Light";
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Light.otf") format("otf")
+}
+
+@font-face {
+  font-family: "AvenirNextCyr-LightItalic";
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-LightItalic.otf") format("otf")
+}
+
+@font-face {
+  font-family: "AvenirNextCyr-Medium";
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Medium.otf") format("otf")
+}
+
+@font-face {
+  font-family: "AvenirNextCyr-MediumItalic";
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-MediumItalic.otf") format("otf")
+}
+
+@font-face {
+  font-family: "AvenirNextCyr";
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Regular.otf") format("otf")
+}
+
+@font-face {
+  font-family: "AvenirNextCyr-Thin";
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Thin.otf") format("otf")
+}
+
+@font-face {
+  font-family: "AvenirNextCyr-ThinItalic";
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-ThinItalic.otf") format("otf")
+}
+
+@font-face {
+  font-family: "AvenirNextCyr-UltraLight";
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-UltraLightIt.otf") format("otf")
 }

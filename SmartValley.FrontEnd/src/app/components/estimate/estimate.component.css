@@ -1,0 +1,75 @@
+.row {
+  margin: 0.5em 0em;
+}
+
+.row > span {
+
+}
+
+.form-control {
+  padding: 1em;
+  padding-left: 2em;
+}
+
+.row-primary {
+  background-color: rgb(248, 248, 248);
+}
+
+.hidden .submit-button, .hidden .wp-link, .hidden .row-content {
+  display: none;
+}
+
+.next-button {
+  display: none;
+  margin: 1.5em 0em;
+}
+
+.row-content {
+  padding-bottom: 1em;
+}
+
+.hidden .next-button {
+  display: block;
+}
+
+.btn {
+  cursor: pointer;
+}
+
+textarea {
+
+}
+
+a {
+  text-decoration: none;
+  padding-right: 1em;
+}
+
+.sw-card {
+  padding: 2em 0em;
+  /*-ms-flex: 0 0 83.333333%;*/
+  /*flex: 0 0 83.333333%;*/
+  /*max-width: 83.333333%;*/
+}
+
+.btn-blue {
+  background: rgb(70, 137, 232);
+}
+
+.form-group {
+  width: 100%;
+}
+
+.form-group > div {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.form-group span {
+  color: rgb(180, 180, 180);
+}
+
+.form-control {
+  padding-left: 1.5em;
+  border-color: rgb(70, 137, 232);
+}
