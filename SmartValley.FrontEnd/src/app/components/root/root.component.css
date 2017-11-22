@@ -1,35 +1,8 @@
-div.row{
-  min-width: 1100px;
-}
-
-.root-desc{
-  margin-bottom: 30px;
-  color: white;
-  padding: 0;
-}
-
-.root-desc h1{
-  letter-spacing: 7px;
-  font-size: 50px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  text-transform: uppercase;
-}
-
 .sw-list-projects{
   margin-top: 50px;
   flex: inherit;
   max-width: none;
   width: calc(100% + 165px);
-}
-
-.sw-project-card{
-  display: inline-block;
-  margin: 0px;
-  padding: 0px;
-  margin-bottom: 1rem;
-  background: white;
-  border-radius: 5px;
 }
 
 .btn-grp{
