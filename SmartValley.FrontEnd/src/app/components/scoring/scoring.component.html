@@ -53,10 +53,30 @@
       </ngb-tab>
       <ngb-tab title="My projects">
         <ng-template ngbTabContent>
-          <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth
-            master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh
-            dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum
-            iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+          <div class="card col-12 scoring-card" *ngFor="let project of myProjects;">
+            <div class="card-block scoring-card-block">
+              <div class="scoring-header col-4">
+                <img style="width: 100px;" src="{{project.imageUrl}}"/>
+                <div class="scoring-header__title">
+                  <span>{{project.name}}</span>
+                  <span class="scoring-header__country">{{project.country}}</span>
+                  <span>{{project.area}}</span>
+                </div>
+              </div>
+              <div class="scoring-content col-5">
+                <p class="card-text">{{project.description}}</p>
+              </div>
+              <div class="scoring-footer col-3">
+                <div class="scoring-rating">
+                  <span>Scoring rating:</span>
+                  <span class="score">{{project.score}}</span>
+                </div>
+                <div>
+                  <a class="col-8 sm-default-btn btn btn-primary" (click) = "showProject(project.id)">View report</a>
+                </div>
+              </div>
+            </div>
+          </div>
         </ng-template>
       </ngb-tab>
     </ngb-tabset>
