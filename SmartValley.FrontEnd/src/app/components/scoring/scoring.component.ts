@@ -1,6 +1,9 @@
 import {Component} from '@angular/core';
 import {Scoring} from '../../services/scoring';
 import {ScoringService} from '../../services/scoring-service';
+import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
+import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
+import {ProjectForScorringResponse} from '../../api/scoring/project-for-scorring-response';
 
 @Component({
   selector: 'app-scoring',
@@ -11,7 +14,44 @@ export class ScoringComponent {
 
   public scorings: Array<Scoring>;
 
-  constructor(private service: ScoringService) {
-    this.scorings = service.getAll();
+  constructor(private scoringApiClient: ScoringApiClient) {
+    this.getProjectsForCategory(ScoringCategory.Hr);
+  }
+
+  tabChanged($event: any) {
+    let scroringCategory: ScoringCategory = 1;
+    let index: number = $event.index;
+    switch (index) {
+      case 0 :
+        scroringCategory = ScoringCategory.Hr;
+        break;
+      case 1 :
+        scroringCategory = ScoringCategory.Lawyer;
+        break;
+      case 2 :
+        scroringCategory = ScoringCategory.Analyst;
+        break;
+      case 3 :
+        scroringCategory = ScoringCategory.Tech;
+        break;
+    }
+    this.getProjectsForCategory(scroringCategory);
+  }
+
+
+  private async getProjectsForCategory(scroringCategory: ScoringCategory) {
+    this.scorings = [];
+    const projects = await this.scoringApiClient.getProjectForScoringAsync({scroringCategory: scroringCategory});
+    for (const response of projects) {
+      this.scorings.push(<Scoring>{
+        id: response.id,
+        projectName: response.projectName,
+        projectArea: response.projectArea,
+        projectCountry: response.projectCountry,
+        scoringRating: response.scoringRating,
+        projectDescription: response.projectDescription,
+        projectImgUrl: 'https://png.icons8.com/?id=50284&size=280'
+      });
+    }
   }
 }

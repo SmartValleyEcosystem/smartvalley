@@ -9,44 +9,26 @@
       <ngb-tab title="Project for scoring">
         <ng-template ngbTabContent>
           <span class="choose">Choose expertise</span>
-          <mat-tab-group>
+          <mat-tab-group (selectedTabChange)="tabChanged($event)">
             <mat-tab label="HR">
               <div class="card col-12 scoring-card" *ngFor="let scoring of scorings;">
-                <div class="card-block scoring-card-block">
-                  <div class="scoring-header col-4">
-                    <img style="width: 100px;" src="{{scoring.projectImgUrl}}"/>
-                    <div class="scoring-header__title">
-                      <span>{{scoring.projectName}}</span>
-                      <span class="scoring-header__country">{{scoring.projectCountry}}</span>
-                      <span>{{scoring.projectArea}}</span>
-                    </div>
-                  </div>
-                  <div class="scoring-content col-5">
-                    <p class="card-text">{{scoring.projectDescription}}</p>
-                  </div>
-                  <div class="scoring-footer col-3">
-                    <div class="scoring-rating">
-                      <span>Scoring rating:</span>
-                      <span class="score">{{scoring.scoringRating}}</span>
-                    </div>
-                    <div>
-                      <a class="col-8 sm-default-btn btn btn-primary" (click) = "showProject(scoring)">View report</a>
-                    </div>
-                  </div>
-                </div>
+              <app-project-card [project] = scoring></app-project-card>
               </div>
             </mat-tab>
             <mat-tab label="Lawyer">
-              <h1>Some more tab content</h1>
-              <p>...</p>
+              <div class="card col-12 scoring-card" *ngFor="let scoring of scorings;">
+                <app-project-card [project] = scoring></app-project-card>
+              </div>
             </mat-tab>
             <mat-tab label="Analyst">
-              <h1>Some more tab content</h1>
-              <p>...</p>
+              <div class="card col-12 scoring-card" *ngFor="let scoring of scorings;">
+                <app-project-card [project] = scoring></app-project-card>
+              </div>
             </mat-tab>
             <mat-tab label="Technical expert">
-              <h1>Some more tab content</h1>
-              <p>...</p>
+              <div class="card col-12 scoring-card" *ngFor="let scoring of scorings;">
+                <app-project-card [project] = scoring></app-project-card>
+              </div>
             </mat-tab>
           </mat-tab-group>
         </ng-template>

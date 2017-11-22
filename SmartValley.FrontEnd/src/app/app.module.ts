@@ -25,6 +25,8 @@ import {EstimateComponent} from './components/estimate/estimate.component';
 import {ScoringService} from './services/scoring-service';
 import {ContractApiClient} from './api/contract/contract-api-client';
 import {ErrorInterceptor} from './api/error-interceptor';
+import {ScoringApiClient} from './api/scoring/scoring-api-client';
+import {ProjectCardComponent} from './components/common/project-card/project-card.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import {ErrorInterceptor} from './api/error-interceptor';
     ApplicationComponent,
     ScoringComponent,
     FooterComponent,
-    EstimateComponent
+    EstimateComponent,
+    ProjectCardComponent
   ],
   imports: [
     MatTabsModule,
@@ -62,6 +65,7 @@ import {ErrorInterceptor} from './api/error-interceptor';
     BalanceApiClient,
     ApplicationApiClient,
     ContractApiClient,
+    ScoringApiClient,
     AuthenticationService,
     ScoringService,
     Web3Service,

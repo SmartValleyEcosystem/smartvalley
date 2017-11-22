@@ -1,0 +1,22 @@
+<div class="card-block scoring-card-block">
+  <div class="scoring-header col-4">
+    <img style="width: 100px;" src="{{project.projectImgUrl}}"/>
+    <div class="scoring-header__title">
+      <span>{{project.projectName}}</span>
+      <span class="scoring-header__country">{{project.projectCountry}}</span>
+      <span>{{project.projectArea}}</span>
+    </div>
+  </div>
+  <div class="scoring-content col-5">
+    <p class="card-text">{{project.projectDescription}}</p>
+  </div>
+  <div class="scoring-footer col-3">
+    <div class="scoring-rating">
+      <span>Scoring rating:</span>
+      <span class="score">{{project.scoringRating}}</span>
+    </div>
+    <div>
+      <a class="col-8 sm-default-btn btn btn-primary" (click) = "showProject(scoring)">View report</a>
+    </div>
+  </div>
+</div>
