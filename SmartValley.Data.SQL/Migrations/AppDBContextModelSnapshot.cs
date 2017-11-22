@@ -54,6 +54,33 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("Applications");
                 });
 
+            modelBuilder.Entity("SmartValley.Domain.Entities.Estimate", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Comment")
+                        .IsRequired();
+
+                    b.Property<string>("ExpertAddress")
+                        .IsRequired()
+                        .HasMaxLength(42);
+
+                    b.Property<int>("ExpertType");
+
+                    b.Property<long>("ProjectId");
+
+                    b.Property<int>("QuestionNumber");
+
+                    b.Property<int>("Score");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Estimates");
+                });
+
             modelBuilder.Entity("SmartValley.Domain.Entities.Project", b =>
                 {
                     b.Property<long>("Id")
@@ -127,6 +154,14 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Persons");
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.Entities.Estimate", b =>
+                {
+                    b.HasOne("SmartValley.Domain.Entities.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

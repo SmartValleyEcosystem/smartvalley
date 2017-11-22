@@ -12,8 +12,8 @@ using System;
 namespace SmartValley.Data.SQL.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20171122105244_Estimate")]
-    partial class Estimate
+    [Migration("20171122111157_EstimateTable")]
+    partial class EstimateTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,10 +55,39 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("Applications");
                 });
 
+            modelBuilder.Entity("SmartValley.Domain.Entities.Estimate", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Comment")
+                        .IsRequired();
+
+                    b.Property<string>("ExpertAddress")
+                        .IsRequired()
+                        .HasMaxLength(42);
+
+                    b.Property<int>("ExpertType");
+
+                    b.Property<long>("ProjectId");
+
+                    b.Property<int>("QuestionNumber");
+
+                    b.Property<int>("Score");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Estimates");
+                });
+
             modelBuilder.Entity("SmartValley.Domain.Entities.Project", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<byte>("AnalystEstimatesCount");
 
                     b.Property<string>("AuthorAddress")
                         .IsRequired()
@@ -69,6 +98,10 @@ namespace SmartValley.Data.SQL.Migrations
                         .HasMaxLength(30);
 
                     b.Property<Guid>("ExternalId");
+
+                    b.Property<byte>("HrEstimatesCount");
+
+                    b.Property<byte>("LawyerEstimatesCount");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -85,8 +118,12 @@ namespace SmartValley.Data.SQL.Migrations
                         .IsRequired()
                         .HasMaxLength(20);
 
+                    b.Property<double?>("Score");
+
                     b.Property<string>("SolutionDesc")
                         .HasMaxLength(255);
+
+                    b.Property<byte>("TechnicalEstimatesCount");
 
                     b.HasKey("Id");
 
@@ -118,6 +155,14 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Persons");
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.Entities.Estimate", b =>
+                {
+                    b.HasOne("SmartValley.Domain.Entities.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
