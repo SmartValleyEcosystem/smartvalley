@@ -5,6 +5,8 @@ import {ApplicationService} from '../../services/application-service';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {QuestionService} from '../../services/question-service';
 import {Question} from '../../services/question';
+import {Paths} from '../../paths';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-estimate',
@@ -20,11 +22,16 @@ export class EstimateComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private applicationService: ApplicationService,
-              private questionService: QuestionService) {
+              private questionService: QuestionService,
+              private router: Router) {
   }
 
   changeHidden() {
     this.hidden = true;
+  }
+
+  send() {
+    this.router.navigate([Paths.Scoring]);
   }
 
   ngOnInit() {
