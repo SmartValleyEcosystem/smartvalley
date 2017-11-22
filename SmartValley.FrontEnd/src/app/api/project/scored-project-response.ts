@@ -1,8 +1,8 @@
-export interface Project {
-
+export interface ScoredProjectResponse {
+  id: number;
   name: string;
-  imageUrl: string;
   country: string;
+  address: string;
   area: string;
   description: string;
   score: string;

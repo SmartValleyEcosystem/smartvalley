@@ -27,6 +27,7 @@ import {QuestionService} from './services/question-service';
 import {ApplicationService} from './services/application-service';
 import {ContractApiClient} from './api/contract/contract-api-client';
 import {ErrorInterceptor} from './api/error-interceptor';
+import {ProjectApiClient} from './api/project/project-api-client';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import {ErrorInterceptor} from './api/error-interceptor';
     BalanceApiClient,
     ApplicationApiClient,
     ContractApiClient,
+    ProjectApiClient,
     AuthenticationService,
     ApplicationService,
     QuestionService,

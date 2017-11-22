@@ -1,4 +1,4 @@
-﻿namespace SmartValley.WebApi.Contract
+﻿namespace SmartValley.WebApi.Contracts
 {
     public class ContractResponse
     {

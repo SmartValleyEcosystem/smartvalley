@@ -2,15 +2,15 @@
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application.Contracts;
 
-namespace SmartValley.WebApi.Contract
+namespace SmartValley.WebApi.Contracts
 {
-    [Route("api/contract")]
+    [Route("api/contracts")]
     [Authorize]
-    public class ContractController : Controller
+    public class ContractsController : Controller
     {
         private readonly NethereumOptions _nethereumOptions;
 
-        public ContractController(NethereumOptions nethereumOptions)
+        public ContractsController(NethereumOptions nethereumOptions)
         {
             _nethereumOptions = nethereumOptions;
         }
