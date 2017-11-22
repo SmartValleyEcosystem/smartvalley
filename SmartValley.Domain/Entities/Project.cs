@@ -36,5 +36,15 @@ namespace SmartValley.Domain.Entities
 
         [MaxLength(255)]
         public string SolutionDesc { get; set; }
+
+        public byte HrEstimatesCount { get; set; }
+
+        public byte LawyerEstimatesCount { get; set; }
+
+        public byte AnalystEstimatesCount { get; set; }
+
+        public byte TechnicalEstimatesCount { get; set; }
+
+        public double? Score { get; set; }
     }
 }
