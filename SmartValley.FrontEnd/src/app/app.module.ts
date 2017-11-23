@@ -29,6 +29,7 @@ import {ApplicationService} from './services/application-service';
 import {ContractApiClient} from './api/contract/contract-api-client';
 import {ErrorInterceptor} from './api/error-interceptor';
 import {ProjectApiClient} from './api/project/project-api-client';
+import { ReportComponent } from './components/report/report.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import {ProjectApiClient} from './api/project/project-api-client';
     ApplicationComponent,
     ScoringComponent,
     FooterComponent,
-    EstimateComponent
+    EstimateComponent,
+    ReportComponent
   ],
   imports: [
     MatTabsModule,

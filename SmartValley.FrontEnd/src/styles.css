@@ -50,6 +50,10 @@ body {
   padding-left: 0px;
 }
 
+.nav-tabs .nav-item{
+  margin-bottom: -0.5em;
+}
+
 .tab-content {
   position: relative;
   display: -webkit-box;
@@ -61,10 +65,6 @@ body {
   flex-direction: column;
   background-color: #fff;
   border-radius: 0.25rem;
-}
-
-.tab-content > .active {
-  margin: 4em 5em;;
 }
 
 .mat-tab-label-container {
@@ -177,6 +177,9 @@ body {
   background-color: #fff;
   border-radius: 0.25rem;
   padding: 0;
+}
+.tab-content{
+  background-color: transparent;
 }
 
 @font-face {

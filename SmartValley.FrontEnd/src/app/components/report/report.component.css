@@ -1,0 +1,41 @@
+.title{
+  color: white;
+  padding: 0;
+}
+.report-card{
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  padding: 0;
+}
+.report-content{
+  margin: 2em;
+}
+.report-content > div{
+  display: inline-block;
+}
+.rating{
+  float: right;
+}
+.nav-tabs .nav-item:first-child{
+  margin-left: 0px;
+}
+.info{
+  padding:0;
+  margin-left: -60px;
+}
+.info .sw-card{
+  margin-left: 60px;
+  margin-right: -60px;
+}
+.row{
+  padding: 1em 0em;
+}

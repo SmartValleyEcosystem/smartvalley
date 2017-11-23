@@ -10,79 +10,89 @@
     <ngb-tabset class="col-12 scoring-projects">
       <ngb-tab title="Project for scoring">
         <ng-template ngbTabContent>
-          <span class="choose">Choose expertise</span>
-          <mat-tab-group>
-            <mat-tab label="HR">
-              <div class="card col-12 scoring-card" *ngFor="let scoring of scorings;">
-                <div class="card-block scoring-card-block">
-                  <div class="scoring-header col-4">
-                    <img style="width: 100px;" src="{{scoring.projectImgUrl}}"/>
-                    <div class="scoring-header__title">
-                      <span>{{scoring.projectName}}</span>
-                      <span class="scoring-header__country">{{scoring.projectCountry}}</span>
-                      <span>{{scoring.projectArea}}</span>
+          <div style="background-color: white;position: absolute;">
+            <div class="content">
+              <span class="choose">Choose expertise</span>
+              <mat-tab-group>
+                <mat-tab label="HR">
+                  <div class="card col-12 scoring-card" *ngFor="let scoring of scorings;">
+                    <div class="card-block scoring-card-block">
+                      <div class="scoring-header col-4">
+                        <img style="width: 100px;" src="{{scoring.projectImgUrl}}"/>
+                        <div class="scoring-header__title">
+                          <span>{{scoring.projectName}}</span>
+                          <span class="scoring-header__country">{{scoring.projectCountry}}</span>
+                          <span>{{scoring.projectArea}}</span>
+                        </div>
+                      </div>
+                      <div class="scoring-content col-5">
+                        <p class="card-text">{{scoring.projectDescription}}</p>
+                      </div>
+                      <div class="scoring-footer col-3">
+                        <div class="scoring-rating">
+                          <span>Scoring rating:</span>
+                          <span class="score">{{scoring.scoringRating}}</span>
+                        </div>
+                        <a class="col-10 sv-default-btn btn btn-primary"
+                           (click)="showProject(scoring.projectId)">Estimate</a>
+                      </div>
                     </div>
                   </div>
-                  <div class="scoring-content col-5">
-                    <p class="card-text">{{scoring.projectDescription}}</p>
-                  </div>
-                  <div class="scoring-footer col-3">
-                    <div class="scoring-rating">
-                      <span>Scoring rating:</span>
-                      <span class="score">{{scoring.scoringRating}}</span>
-                    </div>
-                    <a class="col-10 sv-default-btn btn btn-primary"
-                       (click)="showProject(scoring.projectId)">Estimate</a>
-                  </div>
-                </div>
-              </div>
-            </mat-tab>
-            <mat-tab label="Lawyer">
-              <h1>Some more tab content</h1>
-              <p>...</p>
-            </mat-tab>
-            <mat-tab label="Analyst">
-              <h1>Some more tab content</h1>
-              <p>...</p>
-            </mat-tab>
-            <mat-tab label="Technical expert">
-              <h1>Some more tab content</h1>
-              <p>...</p>
-            </mat-tab>
-          </mat-tab-group>
+                </mat-tab>
+                <mat-tab label="Lawyer">
+                  <h1>Some more tab content</h1>
+                  <p>...</p>
+                </mat-tab>
+                <mat-tab label="Analyst">
+                  <h1>Some more tab content</h1>
+                  <p>...</p>
+                </mat-tab>
+                <mat-tab label="Technical expert">
+                  <h1>Some more tab content</h1>
+                  <p>...</p>
+                </mat-tab>
+              </mat-tab-group>
+            </div>
+          </div>
         </ng-template>
       </ngb-tab>
       <ngb-tab title="My projects">
         <ng-template ngbTabContent>
-          <div *ngIf="myProjects.length > 0; else withoutProject">
-            <div class="card col-12 scoring-card" *ngFor="let project of myProjects;">
-              <div class="card-block scoring-card-block">
-                <div class="scoring-header col-4">
-                  <img style="width: 100px;" src="{{project.imageUrl}}"/>
-                  <div class="scoring-header__title">
-                    <span>{{project.name}}</span>
-                    <span class="scoring-header__country">{{project.country}}</span>
-                    <span>{{project.area}}</span>
+          <div style="background-color: white;position: absolute;">
+            <div class="content">
+              <div *ngIf="myProjects.length > 0; else withoutProject">
+                <div class="card col-12 scoring-card" *ngFor="let project of myProjects;">
+                  <div class="card-block scoring-card-block">
+                    <div class="scoring-header col-4">
+                      <img style="width: 100px;" src="{{project.imageUrl}}"/>
+                      <div class="scoring-header__title">
+                        <span>{{project.name}}</span>
+                        <span class="scoring-header__country">{{project.country}}</span>
+                        <span>{{project.area}}</span>
+                      </div>
+                    </div>
+                    <div class="scoring-content col-5">
+                      <p class="card-text">{{project.description}}</p>
+                    </div>
+                    <div class="scoring-footer col-3">
+                      <div class="scoring-rating">
+                        <span>Scoring rating:</span>
+                        <span class="score">{{project.score}}</span>
+                      </div>
+                      <a (click)="showReport(project.id)" class="col-10 sv-default-btn btn btn-primary">View report</a>
+                    </div>
                   </div>
-                </div>
-                <div class="scoring-content col-5">
-                  <p class="card-text">{{project.description}}</p>
-                </div>
-                <div class="scoring-footer col-3">
-                  <div class="scoring-rating">
-                    <span>Scoring rating:</span>
-                    <span class="score">{{project.score}}</span>
-                  </div>
-                  <a class="col-10 sv-default-btn btn btn-primary">View report</a>
                 </div>
               </div>
+              <ng-template #withoutProject>
+                <div class="without-project">
+                  <button mat-raised-button class="col-5 sv-default-btn btn-space" (click)="createProject()">Create a
+                    new project for scoring
+                  </button>
+                </div>
+              </ng-template>
             </div>
           </div>
-          <ng-template #withoutProject>
-            <div class="without-project">
-              <button mat-raised-button class="col-5 sv-default-btn btn-space" (click)="createProject()">Create a new project for scoring</button>
-            </div>
-          </ng-template>
         </ng-template>
       </ngb-tab>
     </ngb-tabset>

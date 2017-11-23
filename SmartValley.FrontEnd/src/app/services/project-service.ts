@@ -13,10 +13,15 @@ export class ProjectService {
     return this.projects;
   }
 
+  getById(id: number): Project {
+    return this.projects.filter(x => x.id === id)[0];
+  }
+
   // тестовые данные
   initTestData() {
     this.projects = [];
     this.projects.push(<Project>{
+      id: 0,
       name: 'Team Completeness',
       imageUrl: 'https://png.icons8.com/?id=50284&size=280',
       country: 'Russia',
@@ -25,6 +30,7 @@ export class ProjectService {
       score: 'in progress'
     });
     this.projects.push(<Project>{
+      id: 1,
       name: 'Team Completeness',
       imageUrl: 'https://png.icons8.com/?id=50284&size=280',
       country: 'Russia',
@@ -33,6 +39,7 @@ export class ProjectService {
       score: 'in progress'
     });
     this.projects.push(<Project>{
+      id: 2,
       name: 'Team Completeness',
       imageUrl: 'https://png.icons8.com/?id=50284&size=280',
       country: 'Russia',
@@ -41,6 +48,7 @@ export class ProjectService {
       score: 'in progress'
     });
     this.projects.push(<Project>{
+      id: 3,
       name: 'Team Completeness',
       imageUrl: 'https://png.icons8.com/?id=50284&size=280',
       country: 'Russia',

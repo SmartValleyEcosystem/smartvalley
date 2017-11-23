@@ -26,4 +26,8 @@ export class ScoringComponent {
   showProject(id: number) {
     this.router.navigate([Paths.Scoring + '/' + id]);
   }
+
+  showReport(id: number) {
+    this.router.navigate([Paths.Report + '/' + id]);
+  }
 }
