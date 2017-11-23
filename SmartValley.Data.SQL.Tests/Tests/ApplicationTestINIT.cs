@@ -17,12 +17,13 @@ namespace SmartValley.Data.SQL.Tests.Tests
         private List<Project> _projects;
         private List<TeamMember> _persons;
         private List<Application> _applications;
+
         public ApplicationTestInit()
         {
             _env = new TestEnvironment();
             TestData();
         }
-        
+
         /// <summary>
         /// Инициализация данных
         /// </summary>
@@ -30,20 +31,20 @@ namespace SmartValley.Data.SQL.Tests.Tests
         {
             _projects = new List<Project>
                         {
-                            new Project { Name="Project1", SolutionDesc = "Sol1", ProblemDesc = "Prob1", ProjectArea = "ProjA1", Country = "Russia", ProjectAddress = "PA1", AuthorAddress = "PA1"},
-                            new Project { Name="Project2", SolutionDesc = "Sol2", ProblemDesc = "Prob2", ProjectArea = "ProjA2", Country = "USA", ProjectAddress = "PA2", AuthorAddress = "PA1"}
+                            new Project {Name = "Project1", Description = "Sol1", ProjectArea = "ProjA1", Country = "Russia", ProjectAddress = "PA1", AuthorAddress = "PA1"},
+                            new Project {Name = "Project2", Description = "Sol2", ProjectArea = "ProjA2", Country = "USA", ProjectAddress = "PA2", AuthorAddress = "PA1"}
                         };
 
             _applications = new List<Application>
                             {
-                                new Application { ProjectStatus = "ProjStat1", WhitePaperLink = "www1", CryptoCurrency = "Bitcoin", FinancialModelLink = "Fin1", HardCap = 50000.0m, InvestmentsAreAttracted = true, MVPLink = "mvp1", SoftCap = 50000.0m },
-                                new Application { ProjectStatus = "ProjStat2",  WhitePaperLink = "www2", CryptoCurrency = "Ethereum", FinancialModelLink = "Fin2", HardCap = 20000.0m, InvestmentsAreAttracted = false, MVPLink = "mvp2", SoftCap = 30000.0m }
+                                new Application {ProjectStatus = "ProjStat1", WhitePaperLink = "www1", CryptoCurrency = "Bitcoin", FinancialModelLink = "Fin1", HardCap = 50000.0m, InvestmentsAreAttracted = true, MVPLink = "mvp1", SoftCap = 50000.0m},
+                                new Application {ProjectStatus = "ProjStat2", WhitePaperLink = "www2", CryptoCurrency = "Ethereum", FinancialModelLink = "Fin2", HardCap = 20000.0m, InvestmentsAreAttracted = false, MVPLink = "mvp2", SoftCap = 30000.0m}
                             };
             _persons = new List<TeamMember>
                        {
-                           new TeamMember { ApplicationId = _applications[0].Id, FullName = "Max Payne", PersonType = MemberType.PR, FacebookLink = "FB1", LinkedInLink = "LinkedIN1" },
-                           new TeamMember { ApplicationId = _applications[1].Id, FullName = "Ivan Ivanov", PersonType = MemberType.CFO, FacebookLink = "FB2", LinkedInLink = "LinkedIN2" },
-                           new TeamMember { ApplicationId = _applications[1].Id, FullName = "Vasya Pupkin", PersonType = MemberType.CMO, FacebookLink = "FB2", LinkedInLink = "LinkedIN2" }
+                           new TeamMember {ApplicationId = _applications[0].Id, FullName = "Max Payne", PersonType = MemberType.PR, FacebookLink = "FB1", LinkedInLink = "LinkedIN1"},
+                           new TeamMember {ApplicationId = _applications[1].Id, FullName = "Ivan Ivanov", PersonType = MemberType.CFO, FacebookLink = "FB2", LinkedInLink = "LinkedIN2"},
+                           new TeamMember {ApplicationId = _applications[1].Id, FullName = "Vasya Pupkin", PersonType = MemberType.CMO, FacebookLink = "FB2", LinkedInLink = "LinkedIN2"}
                        };
         }
 

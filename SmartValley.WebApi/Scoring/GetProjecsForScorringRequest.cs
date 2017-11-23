@@ -2,7 +2,7 @@
 
 namespace SmartValley.WebApi.Scoring
 {
-    public class ProjecsForScorringRequest
+    public class GetProjecsForScorringRequest
     {
         public ScoringCategory Category { get; set; }
     }

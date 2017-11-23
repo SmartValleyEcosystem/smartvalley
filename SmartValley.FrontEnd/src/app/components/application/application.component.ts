@@ -36,14 +36,14 @@ export class ApplicationComponent {
     const application = new Application();
     application.attractedInvestments = formModel.attractedInvestments;
     application.blockChainType = formModel.blockChainType;
-    application.country = formModel.projectCountry;
+    application.country = formModel.country;
     application.financeModelLink = formModel.financeModelLink;
     application.hardCap = formModel.hardCap;
     application.mvpLink = formModel.mvpLink;
     application.name = formModel.name;
     application.probablyDescription = formModel.probablyDescription;
-    application.projectArea = formModel.projectArea;
-    application.projectStatus = formModel.projectStatus;
+    application.projectArea = formModel.area;
+    application.projectStatus = formModel.status;
     application.softCap = formModel.softCap;
     application.solutionDescription = formModel.solutionDescription;
     application.whitePaperLink = formModel.whitePaperLink;

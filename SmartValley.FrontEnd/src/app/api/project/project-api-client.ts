@@ -1,7 +1,8 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BaseApiClient} from '../base-api-client';
-import {ScoredProjectResponse} from './scored-project-response';
+import {ProjectResponse} from './project-response';
+import {CollectionResponse} from '../collection-response';
 
 @Injectable()
 export class ProjectApiClient extends BaseApiClient {
@@ -9,8 +10,8 @@ export class ProjectApiClient extends BaseApiClient {
     super();
   }
 
-  async getScoredProjectsAsync(): Promise<ScoredProjectResponse[]> {
-    return await this.http.get<ScoredProjectResponse[]>(this.baseApiUrl + '/project/scored')
+  async getScoredProjectsAsync(): Promise<CollectionResponse<ProjectResponse>> {
+    return await this.http.get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/projects/scored')
       .toPromise();
   }
 }

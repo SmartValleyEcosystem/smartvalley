@@ -13,23 +13,23 @@
           <span class="choose">Choose expertise</span>
           <mat-tab-group (selectedTabChange)="tabChanged($event)">
             <mat-tab label="HR">
-              <div class="card col-12 scoring-card" *ngFor="let scoring of scorings;">
-              <app-project-card [project] = scoring></app-project-card>
+              <div class="card col-12 scoring-card" *ngFor="let project of projectsForScorring;">
+              <app-project-card [project] = "project" [isScoring]="true"></app-project-card>
               </div>
             </mat-tab>
             <mat-tab label="Lawyer">
-              <div class="card col-12 scoring-card" *ngFor="let scoring of scorings;">
-                <app-project-card [project] = scoring></app-project-card>
+              <div class="card col-12 scoring-card" *ngFor="let project of projectsForScorring;">
+                <app-project-card [project] = "project" [isScoring]="true"></app-project-card>
               </div>
             </mat-tab>
             <mat-tab label="Analyst">
-              <div class="card col-12 scoring-card" *ngFor="let scoring of scorings;">
-                <app-project-card [project] = scoring></app-project-card>
+              <div class="card col-12 scoring-card" *ngFor="let project of projectsForScorring;">
+                <app-project-card [project] = "project" [isScoring]="true"></app-project-card>
               </div>
             </mat-tab>
             <mat-tab label="Technical expert">
-              <div class="card col-12 scoring-card" *ngFor="let scoring of scorings;">
-                <app-project-card [project] = scoring></app-project-card>
+              <div class="card col-12 scoring-card" *ngFor="let project of projectsForScorring;">
+                <app-project-card [project] = "project" [isScoring]="true"></app-project-card>
               </div>
             </mat-tab>
           </mat-tab-group>
@@ -39,26 +39,7 @@
         <ng-template ngbTabContent>
           <div *ngIf="myProjects.length > 0; else withoutProject">
             <div class="card col-12 scoring-card" *ngFor="let project of myProjects;">
-              <div class="card-block scoring-card-block">
-                <div class="scoring-header col-4">
-                  <img style="width: 100px;" src="{{project.imageUrl}}"/>
-                  <div class="scoring-header__title">
-                    <span>{{project.name}}</span>
-                    <span class="scoring-header__country">{{project.country}}</span>
-                    <span>{{project.area}}</span>
-                  </div>
-                </div>
-                <div class="scoring-content col-5">
-                  <p class="card-text">{{project.description}}</p>
-                </div>
-                <div class="scoring-footer col-3">
-                  <div class="scoring-rating">
-                    <span>Scoring rating:</span>
-                    <span class="score">{{project.score}}</span>
-                  </div>
-                  <a class="col-10 sv-default-btn btn btn-primary">View report</a>
-                </div>
-              </div>
+              <app-project-card [project] = "project" [isScoring]="false"></app-project-card>
             </div>
           </div>
           <ng-template #withoutProject>

@@ -36,28 +36,18 @@ export class RootComponent {
   }
 
   private async initializeProjectsCollection() {
-    const projectResponses = await this.projectApiClient.getScoredProjectsAsync();
+    const response = await this.projectApiClient.getScoredProjectsAsync();
     this.projects = [];
-    for (const response of projectResponses) {
+    for (const projectResponse of response.items) {
       this.projects.push(<Project>{
-        projectName: response.name,
-        projectArea: response.area,
-        projectCountry: response.country,
-        scoringRating: response.score,
-        projectDescription: response.description,
-        projectImgUrl: 'https://png.icons8.com/?id=50284&size=280'
+        id: projectResponse.id,
+        name: projectResponse.name,
+        area: projectResponse.area,
+        country: projectResponse.country,
+        score: projectResponse.score,
+        description: projectResponse.description,
+        imgUrl: 'https://png.icons8.com/?id=50284&size=280'
       });
     }
-  }
-
-  colorOfProjectRate(rate: string): string {
-    const r = parseInt(rate, 10);
-    if (r > 80) {
-      return 'high_rate';
-    }
-    if (r > 45) {
-      return 'medium_rate';
-    }
-    return 'low_rate';
   }
 }

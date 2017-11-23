@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartValley.WebApi.Projects;
+using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Scoring
 {
@@ -18,18 +20,24 @@ namespace SmartValley.WebApi.Scoring
         }
 
         [HttpGet]
-        public async Task<IEnumerable<ProjectForScorringResponse>> GetProjectForScorring([FromQuery] ProjecsForScorringRequest request)
+        public async Task<CollectionResponse<ProjectResponse>> GetProjectForScorring([FromQuery] GetProjecsForScorringRequest request)
         {
-            var projects = await _scoringService.GetProjectsForScoringByCategory(request.Category);
-            return projects.Select(ProjectForScorringResponse.From);
+            var projects = await _scoringService.GetProjectsForScoringByCategoryAsync(request.Category);
+            return new CollectionResponse<ProjectResponse>
+                   {
+                       Items = projects.Select(ProjectResponse.From).ToArray()
+                   };
         }
 
         [HttpGet]
-        [Route("/myprojects")]
-        public async Task<IEnumerable<MyProjectsResponse>> GetMyProjects()
+        [Route("myprojects")]
+        public async Task<CollectionResponse<ProjectResponse>> GetMyProjects()
         {
-            var projects = await _scoringService.GetProjectsByAddress(User.Identity.Name);
-            return projects.Select(MyProjectsResponse.From);
+            var projects = await _scoringService.GetProjectsByAuthorAddressAsync(User.Identity.Name);
+            return new CollectionResponse<ProjectResponse>
+                   {
+                       Items = projects.Select(ProjectResponse.From).ToArray()
+                   };
         }
     }
 }

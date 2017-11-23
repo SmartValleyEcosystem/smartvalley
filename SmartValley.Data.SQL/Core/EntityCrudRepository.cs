@@ -71,7 +71,7 @@ namespace SmartValley.Data.SQL.Core
 
         public Task<int> UpdateAsync(T entity, params Expression<Func<T, object>>[] properties)
         {
-            return UpdateAsync(new[] { entity }, properties);
+            return UpdateAsync(new[] {entity}, properties);
         }
 
         private Task<int> SaveToDBAsync()
@@ -107,7 +107,7 @@ namespace SmartValley.Data.SQL.Core
 
         public Task<int> RemoveByIdAsync(long id)
         {
-            return RemoveAsync(new T { Id = id });
+            return RemoveAsync(new T {Id = id});
         }
     }
 }

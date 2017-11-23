@@ -6,6 +6,9 @@ namespace SmartValley.Domain.Entities
     public class Application : IEntityWithId
     {
         public long Id { get; set; }
+
+        public virtual Project Project { get; set; }
+
         public long ProjectId { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
@@ -32,6 +35,5 @@ namespace SmartValley.Domain.Entities
         [Url]
         [MaxLength(100)]
         public string WhitePaperLink { get; set; }
-
     }
 }

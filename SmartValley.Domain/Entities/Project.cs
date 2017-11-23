@@ -31,11 +31,8 @@ namespace SmartValley.Domain.Entities
         [MaxLength(20)]
         public string ProjectArea { get; set; }
 
-        [MaxLength(255)]
-        public string ProblemDesc { get; set; }
-
-        [MaxLength(255)]
-        public string SolutionDesc { get; set; }
+        [MaxLength(1000)]
+        public string Description { get; set; }
 
         public byte HrEstimatesCount { get; set; }
 

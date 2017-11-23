@@ -1,9 +1,13 @@
 export interface Project {
 
-  projectName: string;
-  projectImgUrl: string;
-  projectCountry: string;
-  projectArea: string;
-  projectDescription: string;
-  scoringRating: string;
+  id: number;
+  name: string;
+  imgUrl: string;
+  country: string;
+  area: string;
+  description: string;
+  status: string;
+  wpLink: string;
+  score: number;
+  expertType: string;
 }

@@ -20,7 +20,7 @@
   <div class="row mx-auto">
     <div class="sw-list-projects">
       <div class="card_no_shdw col-12 sw-card" style="margin: 0 0 20px 0" *ngFor="let project of projects;">
-        <app-project-card [project] = project></app-project-card>
+        <app-project-card [project] = "project" [isScoring]="false"></app-project-card>
       </div>
     </div>
   </div>

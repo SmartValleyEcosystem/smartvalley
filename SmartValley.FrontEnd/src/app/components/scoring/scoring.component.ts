@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
-import {Scoring} from '../../services/scoring';
+import {Project} from '../../services/project';
 import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
-import {ProjectService} from '../../services/project-service';
 import {Paths} from '../../paths';
+import {AuthenticationService} from '../../services/authentication-service';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -13,11 +14,14 @@ import {Paths} from '../../paths';
 })
 export class ScoringComponent {
 
-  public scorings: Array<Scoring>;
+  public projectsForScorring: Array<Project>;
   public myProjects: Array<Project>;
 
-  constructor(private scoringApiClient: ScoringApiClient) {
+  constructor(private scoringApiClient: ScoringApiClient,
+              private authenticationService: AuthenticationService,
+              private router: Router) {
     this.getProjectsForCategory(ScoringCategory.Hr);
+    this.getMyProjects();
   }
 
   tabChanged($event: any) {
@@ -42,22 +46,41 @@ export class ScoringComponent {
 
 
   private async getProjectsForCategory(scroringCategory: ScoringCategory) {
-    this.scorings = [];
-    const projects = await this.scoringApiClient.getProjectForScoringAsync({scroringCategory: scroringCategory});
-    for (const response of projects) {
-      this.scorings.push(<Scoring>{
-        projectId: response.id,
-        projectName: response.projectName,
-        projectArea: response.projectArea,
-        projectCountry: response.projectCountry,
-        scoringRating: response.scoringRating,
-        projectDescription: response.projectDescription,
-        projectImgUrl: 'https://png.icons8.com/?id=50284&size=280'
+    this.projectsForScorring = [];
+    const projects = await this.scoringApiClient.getProjectForScoringAsync({scoringCategory: scroringCategory});
+    for (const projectResponse of projects.items) {
+      this.projectsForScorring.push(<Project>{
+        id: projectResponse.id,
+        name: projectResponse.name,
+        area: projectResponse.area,
+        country: projectResponse.country,
+        score: projectResponse.score,
+        description: projectResponse.description,
+        imgUrl: 'https://png.icons8.com/?id=50284&size=280'
       });
     }
   }
 
-  showProject(id: number) {
-    this.router.navigate([Paths.Scoring + '/' + id]);
+  private async getMyProjects() {
+    this.myProjects = [];
+    const response = await this.scoringApiClient.getMyProjectsAsync();
+    for (const projectResponse of response.items) {
+      this.myProjects.push(<Project>{
+        id: projectResponse.id,
+        name: projectResponse.name,
+        area: projectResponse.area,
+        country: projectResponse.country,
+        score: projectResponse.score,
+        description: projectResponse.description,
+        imgUrl: 'https://png.icons8.com/?id=50284&size=280'
+      });
+    }
+  }
+
+  async createProject() {
+    const isOk = await this.authenticationService.authenticateAsync();
+    if (isOk) {
+      await this.router.navigate([Paths.Application]);
+    }
   }
 }

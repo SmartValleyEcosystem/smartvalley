@@ -1,23 +1,26 @@
 <div class="card-block scoring-card-block">
   <div class="scoring-header col-4">
-    <img style="width: 100px;" src="{{project.projectImgUrl}}"/>
+    <img style="width: 100px;" src="{{project.imgUrl}}"/>
     <div class="scoring-header__title">
-      <span>{{project.projectName}}</span>
-      <span class="scoring-header__country">{{project.projectCountry}}</span>
-      <span>{{project.projectArea}}</span>
+      <span>{{project.name}}</span>
+      <span class="scoring-header__country">{{project.country}}</span>
+      <span>{{project.area}}</span>
     </div>
   </div>
   <div class="scoring-content col-5">
-    <p class="card-text">{{project.projectDescription}}</p>
+    <p class="card-text">{{project.description}}</p>
   </div>
   <div class="scoring-footer col-3">
     <div class="scoring-rating">
       <span>Scoring rating:</span>
-      <span class="score">{{project.scoringRating}}</span>
+      <span class="score {{colorOfProjectRate(project.score)}}">{{project.score}}</span>
     </div>
-    <div>
+    <div *ngIf="isScoring">
       <a class="col-10 sv-default-btn btn btn-primary"
-         (click)="showProject(scoring.projectId)">Estimate</a>
+         (click)="showProject(project.id)">Estimate</a>
+    </div>
+    <div *ngIf="!isScoring">
+      <a class="col-10 sv-default-btn btn btn-primary">View report</a>
     </div>
   </div>
 </div>

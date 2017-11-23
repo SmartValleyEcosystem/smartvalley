@@ -1,17 +1,34 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Scoring} from '../../../services/scoring';
+import {Project} from '../../../services/project';
+import {Router} from '@angular/router';
+import {Paths} from '../../../paths';
 
 @Component({
   selector: 'app-project-card',
   templateUrl: './project-card.component.html',
   styleUrls: ['./project-card.component.css']
 })
-export class ProjectCardComponent implements OnInit {
-  @Input() public project: Scoring;
+export class ProjectCardComponent {
+  @Input() public project: Project;
+  @Input() public isScoring: boolean;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
-  ngOnInit() {
+  colorOfProjectRate(rate: number): string {
+    if (rate == null) {
+      return '';
+    }
+    if (rate > 80) {
+      return 'high_rate';
+    }
+    if (rate > 45) {
+      return 'medium_rate';
+    }
+    return 'low_rate';
+  }
+
+  showProject(id: number) {
+    this.router.navigate([Paths.Scoring + '/' + id]);
   }
 
 }
