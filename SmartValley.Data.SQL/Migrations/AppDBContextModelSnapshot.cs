@@ -51,6 +51,8 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProjectId");
+
                     b.ToTable("Applications");
                 });
 
@@ -96,6 +98,9 @@ namespace SmartValley.Data.SQL.Migrations
                         .IsRequired()
                         .HasMaxLength(30);
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000);
+
                     b.Property<Guid>("ExternalId");
 
                     b.Property<byte>("HrEstimatesCount");
@@ -106,9 +111,6 @@ namespace SmartValley.Data.SQL.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<string>("ProblemDesc")
-                        .HasMaxLength(255);
-
                     b.Property<string>("ProjectAddress")
                         .IsRequired()
                         .HasMaxLength(42);
@@ -118,9 +120,6 @@ namespace SmartValley.Data.SQL.Migrations
                         .HasMaxLength(20);
 
                     b.Property<double?>("Score");
-
-                    b.Property<string>("SolutionDesc")
-                        .HasMaxLength(255);
 
                     b.Property<byte>("TechnicalEstimatesCount");
 
@@ -154,6 +153,14 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Persons");
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.Entities.Application", b =>
+                {
+                    b.HasOne("SmartValley.Domain.Entities.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.Estimate", b =>

@@ -102,8 +102,7 @@ namespace SmartValley.WebApi.Applications
                               Name = request.Name,
                               Country = request.Country,
                               ProjectArea = request.ProjectArea,
-                              ProblemDesc = request.ProbablyDescription,
-                              SolutionDesc = request.SolutionDescription,
+                              Description = request.Description,
                               AuthorAddress = request.AuthorAddress,
                               ProjectAddress = projectContractAddress,
                               ExternalId = Guid.Parse(request.ProjectId)

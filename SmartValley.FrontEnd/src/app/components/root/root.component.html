@@ -20,28 +20,7 @@
   <div class="row mx-auto">
     <div class="sw-list-projects">
       <div class="card_no_shdw col-12 sw-card" style="margin: 0 0 20px 0" *ngFor="let project of projects;">
-        <div class="card-block sw-project-card-block">
-          <div class="sw-project-header col-4">
-            <img style="width: 100px;" src="{{project.imageUrl}}"/>
-            <div class="sw-project-header__title">
-              <span>{{project.name}}</span>
-              <span class="sw-project-header__country">{{project.country}}</span>
-              <span>{{project.area}}</span>
-            </div>
-          </div>
-          <div class="sw-project-content col-5">
-            <p class="card-text">{{project.description}}</p>
-          </div>
-          <div class="sw-project-footer col-3">
-            <div class="sw-project-rating">
-              <span>Scoring rating:</span>
-              <span class="score {{colorOfProjectRate(project.score)}}">{{project.score}}</span>
-            </div>
-            <div>
-              <a href="#" class="col-8 sw-project-btn btn btn-primary">View report</a>
-            </div>
-          </div>
-        </div>
+        <app-project-card [project] = "project" [isScoring]="false"></app-project-card>
       </div>
     </div>
   </div>
