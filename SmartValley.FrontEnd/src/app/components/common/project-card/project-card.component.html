@@ -16,11 +16,11 @@
       <span class="score {{colorOfProjectRate(project.score)}}">{{project.score}}</span>
     </div>
     <div *ngIf="isScoring">
-      <a class="col-10 sv-default-btn btn btn-primary"
+      <a class="col-8 sv-default-btn btn btn-primary"
          (click)="showProject(project.id)">Estimate</a>
     </div>
     <div *ngIf="!isScoring">
-      <a class="col-10 sv-default-btn btn btn-primary">View report</a>
+      <a (click)="showReport(project.id)" class="col-8 sv-default-btn btn btn-primary">View report</a>
     </div>
   </div>
 </div>

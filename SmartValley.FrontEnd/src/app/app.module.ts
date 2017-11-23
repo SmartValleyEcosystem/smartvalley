@@ -30,6 +30,7 @@ import {ScoringApiClient} from './api/scoring/scoring-api-client';
 import {ProjectCardComponent} from './components/common/project-card/project-card.component';
 import {ProjectApiClient} from './api/project/project-api-client';
 import { ReportComponent } from './components/report/report.component';
+import {ProjectService} from './services/project-service';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,7 @@ import { ReportComponent } from './components/report/report.component';
     ScoringComponent,
     FooterComponent,
     EstimateComponent,
-    ProjectCardComponent
+    ProjectCardComponent,
     ReportComponent
   ],
   imports: [
@@ -74,6 +75,7 @@ import { ReportComponent } from './components/report/report.component';
     AuthenticationService,
     ApplicationService,
     QuestionService,
+    ProjectService,
     Web3Service,
     ProjectManagerContractClient],
   bootstrap: [AppComponent]

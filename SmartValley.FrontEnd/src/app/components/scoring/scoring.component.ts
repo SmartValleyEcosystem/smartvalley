@@ -83,8 +83,4 @@ export class ScoringComponent {
       await this.router.navigate([Paths.Application]);
     }
   }
-
-  showReport(id: number) {
-    this.router.navigate([Paths.Report + '/' + id]);
-  }
 }

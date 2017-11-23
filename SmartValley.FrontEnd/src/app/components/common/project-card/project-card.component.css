@@ -1,0 +1,70 @@
+.scoring-card {
+  display: inline-block;
+  margin: 0px;
+  padding: 0px;
+  margin-bottom: 1rem;
+}
+
+.scoring-rating {
+  display: inline-block;
+}
+
+.scoring-rating > span {
+  display: block;
+}
+
+.scoring-rating > .score {
+  font-size: 3em;
+}
+
+.scoring-footer a.sv-default-btn {
+  float: right;
+  bottom: calc(3em - 16px);
+  position: absolute;
+  right: calc(1.5em + 8px);
+}
+
+.scoring-card-block {
+  position: relative;
+  padding: 0px;
+}
+
+.scoring-card-block > div {
+  vertical-align: top;
+  padding: 2em;
+}
+
+.scoring-content {
+  display: inline-block;
+  padding-right: 2em;
+  padding-left: 2em;
+}
+
+.scoring-header {
+  display: inline-block;
+  left: 1.5em;
+  padding: 1em;
+}
+
+.scoring-header__country {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.scoring-header__title > span {
+  display: block;
+  margin: 5px 0px;
+}
+
+.scoring-header__title > span:first-child {
+  font-size: 1.5em;
+}
+
+.scoring-footer {
+  text-align: right;
+  max-width: calc(25% - 8px);
+  display: inline-block;
+  padding: 0;
+  position: absolute;
+  height: 100%;
+  right: 2.5em;
+}

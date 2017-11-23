@@ -1,63 +1,3 @@
-.scoring-header{
-  display: inline-block;
-  left: 2.5em;
-  padding: 1em;
-}
-.scoring-header__country{
-  color: rgba(0,0,0,0.5);
-}
-.scoring-header__title > span{
-  display: block;
-  margin: 5px 0px;
-}
-.scoring-header__title > span:first-child{
-   font-size: 1.5em;
- }
-.scoring-footer{
-  text-align: right;
-  max-width: calc(25% - 8px);
-  display: inline-block;
-  padding: 0;
-  position: absolute;
-  height: 100%;
-  right: 2.5em;
-  top: 1em;
-}
-.scoring-rating{
-  display: inline-block;
-}
-.scoring-rating > span{
-   display: block;
- }
-.scoring-footer > a{
-  float:right;
-  bottom: 3em;
-  position: absolute;
-  right: 0em;
-}
-.scoring-content{
-  display: inline-block;
-  top: 1em;
-  padding-right: 2em;
-  padding-left: 2em;
-}
-.scoring-card{
-  display: inline-block;
-  margin: 0px;
-  padding: 0px;
-  margin-bottom: 1rem;
-}
-.scoring-card-block{
-  position: relative;
-  padding: 0px;
-}
-.scoring-card-block > div{
-  vertical-align: top;
-  padding: 2em;
- }
-.scoring-rating > .score{
-  font-size: 1.5em;
-}
 .scoring-projects{
   -webkit-box-flex: inherit;
   -ms-flex: inherit;
@@ -79,5 +19,6 @@
   padding: 2em;
 }
 .content{
-  margin: 4em 5em;;
+  margin: 4em;
+  padding: 2em 0em;
 }
