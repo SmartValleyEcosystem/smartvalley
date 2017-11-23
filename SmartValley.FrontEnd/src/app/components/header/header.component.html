@@ -1,22 +1,20 @@
 <mat-toolbar class="sm-header">
   <mat-toolbar-row>
-    <div class="container">
+    <div class="container" style="font-size: 0.7em">
       <div class="row">
         <div class="col-3">
-          <a [routerLink]="['/']">Smart valley</a>
+          <a [routerLink]="['/']"><img src="/assets/img/logo.png" alt="Smart valley"></a>
         </div>
-        <div class="col-2">
+        <div class="col-2" style="margin-top: 24px;">
           <a href="#">White paper</a>
         </div>
-        <div class="col-2">
+        <div class="col-4" style="margin-top: 24px;">
           <div *ngIf="isAuthenticated">
-            <span>Balance: {{currentBalance}} ETH</span>
+            <span style="color: #aaaaaa;">Balance: {{currentBalance}} ETH</span>
           </div>
         </div>
-        <div class="col-5 sm-header__nav">
-          <a *ngIf="!wasEtherReceived" onclick="receiveEth()" href="#">Get Ether</a>
-          <a href="#">Get SVT token</a>
-          <a href="#">SVT token Buyback</a>
+        <div class="col-3 sm-header__nav text-right" style="margin-top: 24px;">
+          <a *ngIf="!wasEtherReceived" (click)="receiveEth()" href="#">Get Ether</a>
         </div>
       </div>
     </div>
