@@ -1,3 +1,113 @@
-<p>
-  extimate works!
-</p>
+<div [ngClass]="hidden ? '' : 'hidden'" class="container">
+  <div class="row mx-auto">
+    <div class="col-8 sm-title">
+      <h1>Estimate the project</h1>
+    </div>
+  </div>
+  <div class="sw-card sw-content">
+    <div class="row row-title">
+      <h3 class="col-10 offset-1">Information</h3>
+    </div>
+    <div class="row">
+      <span class="col-3 offset-1">Project name:</span>
+      <span class="col-5">{{application.name}}</span>
+    </div>
+    <div class="row">
+      <span class="col-3 offset-1">Project Area</span>
+      <span class="col-5">{{application.projectArea}}</span>
+    </div>
+    <div class="row">
+      <span class="col-3 offset-1">Problem description</span>
+      <span class="col-5">{{application.probablyDescription}}</span>
+    </div>
+    <div class="row">
+      <span class="col-3 offset-1">Solution description</span>
+      <span class="col-5">{{application.solutionDescription}}</span>
+    </div>
+    <div class="row">
+      <span class="col-3 offset-1">Status</span>
+      <span class="col-5">{{application.projectStatus}}</span>
+    </div>
+    <div class="row">
+      <span class="col-3 offset-1">White paper link</span>
+      <a href="{{application.whitePaperLink}}" class="col-5">{{application.whitePaperLink}}</a>
+    </div>
+  </div>
+  <div class="sw-card sw-content">
+    <div class="row row-title">
+      <h3 class="col-10 offset-1">Core Team</h3>
+    </div>
+    <div *ngFor="let member of application.teamMembers;">
+      <div class="row">
+        <span class="col-1 offset-1">{{EnumTeamMemberType[member.memberType]}}:</span>
+        <span class="col-2" style="margin-left: 2em;">{{member.fullName}}</span>
+        <span class="col-1 offset-1 social-group">
+        <a href="{{member.facebookLink}}">
+        <i class="fa fa-facebook" aria-hidden="true"></i>
+        </a>
+        <a href="{{member.linkedInLink}}">
+        <i class="fa fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </span>
+      </div>
+    </div>
+  </div>
+  <div class="sw-card sw-content">
+    <div class="row row-title">
+      <h3 class="col-10 offset-1">Finance</h3>
+    </div>
+    <div class="row">
+      <span class="col-4 offset-1">Do your team attract investments?</span>
+      <span class="col-5">Yes...</span>
+    </div>
+  </div>
+  <div class="next-button row">
+    <button (click)="changeHidden()" class="btn-blue col-3 btn btn-primary"
+            style="padding-top: 1em; padding-bottom: 1em;">Estimate
+    </button>
+  </div>
+  <div *ngFor="let question of questions;" class="sw-card sw-content">
+    <div class="row row-title">
+      <h3 class="col-10 offset-1">{{question.name}}</h3>
+    </div>
+    <div class="row-content">
+      <div class="row">
+        <span class="col-4 offset-1" style="word-wrap: break-word;">{{question.description}}</span>
+      </div>
+      <div class="row">
+        <div class="form-group">
+          <div class="col-1 offset-1">
+            <span style="font-size: 0.85em;">Your score:</span>
+            <input style="margin-top: 1em;" class="form-control" placeholder="6">
+          </div>
+          <div class="col-6">
+            <span style="font-size: 0.85em;">Comments 250 symbols</span>
+            <textarea class="form-control" style="margin-top: 1em; height: 10em; resize: none;"
+                      placeholder="Technology of Authenticity Verification of Video Content"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sw-card sw-content">
+    <div class="row row-title">
+      <h3 class="col-10 offset-1">Summary</h3>
+    </div>
+    <div class="row-content">
+      <div class="row">
+        <div class="form-group">
+          <div class="col-6 offset-1">
+            <span style="font-size: 0.85em;">Comments</span>
+            <textarea class="form-control" style="margin-top: 1em; height: 10em; resize: none;"
+                      placeholder="Technology of Authenticity Verification of Video Content"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="submit-button row">
+    <button (click)="send()" class="btn-blue col-3 btn btn-primary"
+            style="padding-top: 1em; padding-bottom: 1em;">Send
+    </button>
+  </div>
+</div>
