@@ -20,7 +20,7 @@ namespace SmartValley.WebApi.Scoring
         }
 
         [HttpGet]
-        public async Task<CollectionResponse<ProjectResponse>> GetProjectForScorring([FromQuery] GetProjecsForScorringRequest request)
+        public async Task<CollectionResponse<ProjectResponse>> GetProjectsForScoringAsync([FromQuery] GetProjectsForScoringRequest request)
         {
             var projects = await _scoringService.GetProjectsForScoringByCategoryAsync(request.Category);
             return new CollectionResponse<ProjectResponse>
@@ -31,7 +31,7 @@ namespace SmartValley.WebApi.Scoring
 
         [HttpGet]
         [Route("myprojects")]
-        public async Task<CollectionResponse<ProjectResponse>> GetMyProjects()
+        public async Task<CollectionResponse<ProjectResponse>> GetMyProjectsAsync()
         {
             var projects = await _scoringService.GetProjectsByAuthorAddressAsync(User.Identity.Name);
             return new CollectionResponse<ProjectResponse>

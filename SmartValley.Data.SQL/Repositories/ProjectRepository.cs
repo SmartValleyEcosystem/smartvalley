@@ -16,7 +16,8 @@ namespace SmartValley.Data.SQL.Repositories
         {
         }
 
-        public async Task<IReadOnlyCollection<Project>> GetAllScoredAsync() => await ReadContext.Projects.Where(project => project.Score.HasValue).ToArrayAsync();
+        public async Task<IReadOnlyCollection<Project>> GetAllScoredAsync()
+            => await ReadContext.Projects.Where(project => project.Score.HasValue).ToArrayAsync();
 
         public async Task<IReadOnlyCollection<Project>> GetAllByAuthorAddressAsync(string address)
         {

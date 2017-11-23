@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using SmartValley.Application.Exceptions;
-using SmartValley.Data.SQL.Repositories;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
+using SmartValley.WebApi.Estimates;
 
 namespace SmartValley.WebApi.Scoring
 {
@@ -18,9 +15,9 @@ namespace SmartValley.WebApi.Scoring
             _projectRepository = projectRepository;
         }
 
-        public Task<IReadOnlyCollection<Project>> GetProjectsForScoringByCategoryAsync(ScoringCategory category)
+        public Task<IReadOnlyCollection<Project>> GetProjectsForScoringByCategoryAsync(Category category)
         {
-            return _projectRepository.GetAllByCategoryAsync(category);
+            return _projectRepository.GetAllByCategoryAsync(category.ToDomain());
         }
 
         public Task<IReadOnlyCollection<Project>> GetProjectsByAuthorAddressAsync(string address)
