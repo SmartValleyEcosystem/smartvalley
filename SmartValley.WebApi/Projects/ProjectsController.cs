@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Domain.Interfaces;
+using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Projects
 {
@@ -18,23 +19,12 @@ namespace SmartValley.WebApi.Projects
 
         [HttpGet]
         [Route("scored")]
-        public async Task<IReadOnlyCollection<ScoredProjectResponse>> GetAllScoredAsync()
+        public async Task<CollectionResponse<ProjectResponse>> GetAllScoredAsync()
         {
             var scoredProjects = await _projectRepository.GetAllScoredAsync();
-            return scoredProjects.Select(CreateResponse).ToArray();
-        }
-
-        private static ScoredProjectResponse CreateResponse(Domain.Entities.Project project)
-        {
-            return new ScoredProjectResponse
+            return new CollectionResponse<ProjectResponse>
                    {
-                       Id = project.Id,
-                       Name = project.Name,
-                       Address = project.ProjectAddress,
-                       Country = project.Country,
-                       Area = project.ProjectArea,
-                       Description = project.ProblemDesc,
-                       Score = project.Score.Value
+                       Items = scoredProjects.Select(ProjectResponse.From).ToArray()
                    };
         }
     }

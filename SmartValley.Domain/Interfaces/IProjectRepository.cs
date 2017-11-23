@@ -6,8 +6,16 @@ namespace SmartValley.Domain.Interfaces
 {
     public interface IProjectRepository
     {
+        Task<Project> GetByIdAsync(long id);
+
         Task<IReadOnlyCollection<Project>> GetAllScoredAsync();
 
         Task<int> AddAsync(Project project);
+
+        Task<int> UpdateWholeAsync(Project project);
+
+        Task<IReadOnlyCollection<Project>> GetAllByAuthorAddressAsync(string address);
+
+        Task<IReadOnlyCollection<Project>> GetAllByCategoryAsync(ScoringCategory category);
     }
 }

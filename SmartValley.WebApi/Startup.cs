@@ -17,7 +17,9 @@ using SmartValley.Data.SQL.Repositories;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Applications;
 using SmartValley.WebApi.Authentication;
+using SmartValley.WebApi.Estimates;
 using SmartValley.WebApi.ExceptionHandler;
+using SmartValley.WebApi.Scoring;
 using SmartValley.WebApi.WebApi;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -78,7 +80,10 @@ namespace SmartValley.WebApi
             services.AddTransient<ITeamMemberRepository, TeamMemberRepository>();
             services.AddTransient<IApplicationRepository, ApplicationRepository>();
             services.AddTransient<IProjectRepository, ProjectRepository>();
+            services.AddTransient<IEstimateRepository, EstimateRepository>();
             services.AddTransient<IApplicationService, ApplicationService>();
+            services.AddTransient<IEstimationService, EstimationService>();
+            services.AddTransient<IScoringService, ScoringService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

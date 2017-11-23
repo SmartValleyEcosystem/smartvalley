@@ -4,6 +4,7 @@
     {
         EtherAlreadySent,
         ServerError,
-        ValidatationError
+        ValidatationError,
+        ProjectAlreadyEstimatedInCategory
     }
 }

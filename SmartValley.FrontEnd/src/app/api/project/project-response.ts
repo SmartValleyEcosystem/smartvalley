@@ -1,9 +1,9 @@
-export interface ScoredProjectResponse {
+export interface ProjectResponse {
   id: number;
   name: string;
   country: string;
   address: string;
   area: string;
   description: string;
-  score: string;
+  score: number;
 }
