@@ -5,14 +5,15 @@ using System.Threading.Tasks;
 using SmartValley.Application.Exceptions;
 using SmartValley.Data.SQL.Repositories;
 using SmartValley.Domain.Entities;
+using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.WebApi.Scoring
 {
     public class ScoringService : IScoringService
     {
-        private readonly ProjectRepository _projectRepository;
+        private readonly IProjectRepository _projectRepository;
 
-        public ScoringService(ProjectRepository projectRepository)
+        public ScoringService(IProjectRepository projectRepository)
         {
             _projectRepository = projectRepository;
         }
@@ -37,6 +38,11 @@ namespace SmartValley.WebApi.Scoring
                     default:
                      throw new AppErrorException(ErrorCode.InvalidScroringCategory);
             }
+        }
+
+        public Task<IEnumerable<Project>> GetProjectsByAddress(string address)
+        {
+            return _projectRepository.GetAllByAuthorAddressAsync(address);
         }
     }
 }

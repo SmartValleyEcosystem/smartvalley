@@ -13,4 +13,8 @@ export class ScoringApiClient extends BaseApiClient {
   async getProjectForScoringAsync(request: ProjecsForScorringRequest): Promise<Array<ProjectForScorringResponse>> {
     return this.http.get<Array<ProjectForScorringResponse>>(this.baseApiUrl + '/scoring?category=' + request.scroringCategory ).toPromise();
   }
+
+  async getMyProjectsAsync(): Promise<Array<ProjectForScorringResponse>> {
+    return this.http.get<Array<ProjectForScorringResponse>>(this.baseApiUrl + '/scoring/myprojects').toPromise();
+  }
 }

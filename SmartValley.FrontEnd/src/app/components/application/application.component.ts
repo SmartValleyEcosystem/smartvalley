@@ -36,7 +36,7 @@ export class ApplicationComponent {
     const application = new Application();
     application.attractedInvestments = formModel.attractedInvestments;
     application.blockChainType = formModel.blockChainType;
-    application.country = formModel.country;
+    application.country = formModel.projectCountry;
     application.financeModelLink = formModel.financeModelLink;
     application.hardCap = formModel.hardCap;
     application.mvpLink = formModel.mvpLink;

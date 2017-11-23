@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {Scoring} from '../../services/scoring';
-import {ScoringService} from '../../services/scoring-service';
 import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
-import {ProjectForScorringResponse} from '../../api/scoring/project-for-scorring-response';
+import {Paths} from '../../paths';
+
 
 @Component({
   selector: 'app-scoring',
@@ -44,7 +44,7 @@ export class ScoringComponent {
     const projects = await this.scoringApiClient.getProjectForScoringAsync({scroringCategory: scroringCategory});
     for (const response of projects) {
       this.scorings.push(<Scoring>{
-        id: response.id,
+        projectId: response.id,
         projectName: response.projectName,
         projectArea: response.projectArea,
         projectCountry: response.projectCountry,
@@ -53,5 +53,9 @@ export class ScoringComponent {
         projectImgUrl: 'https://png.icons8.com/?id=50284&size=280'
       });
     }
+  }
+
+  showProject(id: number) {
+    this.router.navigate([Paths.Scoring + '/' + id]);
   }
 }

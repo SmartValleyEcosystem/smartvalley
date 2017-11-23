@@ -2,15 +2,15 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace SmartValley.WebApi.Application
+namespace SmartValley.WebApi.Applications
 {
-    [Route("api/application")]
+    [Route("api/applications")]
     [Authorize]
-    public class ApplicationController : Controller
+    public class ApplicationsController : Controller
     {
         private readonly IApplicationService _service;
 
-        public ApplicationController(IApplicationService service)
+        public ApplicationsController(IApplicationService service)
         {
             _service = service;
         }

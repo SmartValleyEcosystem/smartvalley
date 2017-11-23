@@ -10,7 +10,7 @@ export class ContractApiClient extends BaseApiClient {
   }
 
   async getProjectManagerContractAsync(): Promise<ProjectManagerContractResponse> {
-    return await this.http.get<ProjectManagerContractResponse>(this.baseApiUrl + '/contract/projectManager')
+    return await this.http.get<ProjectManagerContractResponse>(this.baseApiUrl + '/contracts/projectManager')
       .toPromise();
   }
 }

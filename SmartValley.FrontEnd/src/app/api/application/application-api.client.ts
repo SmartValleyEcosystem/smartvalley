@@ -10,6 +10,6 @@ export class ApplicationApiClient extends BaseApiClient {
   }
 
   async createApplicationAsync(application: Application) {
-    await this.http.post(this.baseApiUrl + '/application', application).subscribe();
+    await this.http.post(this.baseApiUrl + '/applications', application).subscribe();
   }
 }

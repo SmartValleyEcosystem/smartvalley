@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -15,14 +16,13 @@ namespace SmartValley.Data.SQL.Repositories
         {
         }
 
-        public Task<List<Project>> GetAllByCategory(ScoringCategory scoringCategory)
-        {
-          var projects = from estimate in ReadContext.Estimates
-                           join project in ReadContext.Projects on estimate.ProjectId equals project.Id
-                           where estimate.ScoringCategory == scoringCategory
-                           select project;
+        public async Task<IReadOnlyCollection<Project>> GetAllScoredAsync() => await ReadContext.Projects.Where(project => project.Score.HasValue).ToArrayAsync();
 
-            return projects.ToListAsync();
+        public async Task<IEnumerable<Project>> GetAllByAuthorAddressAsync(string address)
+        {
+            return await ReadContext.Projects
+                                    .Where(project => project.AuthorAddress.Equals(address, StringComparison.OrdinalIgnoreCase))
+                                    .ToArrayAsync();
         }
     }
 }

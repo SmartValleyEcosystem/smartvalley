@@ -23,5 +23,13 @@ namespace SmartValley.WebApi.Scoring
             var projects = await _scoringService.GetProjectsForScoringByCategory(request.Category);
             return projects.Select(ProjectForScorringResponse.From);
         }
+
+        [HttpGet]
+        [Route("/myprojects")]
+        public async Task<IEnumerable<MyProjectsResponse>> GetMyProjects()
+        {
+            var projects = await _scoringService.GetProjectsByAddress(User.Identity.Name);
+            return projects.Select(MyProjectsResponse.From);
+        }
     }
 }

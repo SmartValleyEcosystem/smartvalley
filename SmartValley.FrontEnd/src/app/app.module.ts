@@ -23,10 +23,13 @@ import {FooterComponent} from './components/footer/footer.component';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {EstimateComponent} from './components/estimate/estimate.component';
 import {ScoringService} from './services/scoring-service';
+import {QuestionService} from './services/question-service';
+import {ApplicationService} from './services/application-service';
 import {ContractApiClient} from './api/contract/contract-api-client';
 import {ErrorInterceptor} from './api/error-interceptor';
 import {ScoringApiClient} from './api/scoring/scoring-api-client';
 import {ProjectCardComponent} from './components/common/project-card/project-card.component';
+import {ProjectApiClient} from './api/project/project-api-client';
 
 @NgModule({
   declarations: [
@@ -65,8 +68,11 @@ import {ProjectCardComponent} from './components/common/project-card/project-car
     BalanceApiClient,
     ApplicationApiClient,
     ContractApiClient,
+    ProjectApiClient,
     ScoringApiClient,
     AuthenticationService,
+    ApplicationService,
+    QuestionService,
     ScoringService,
     Web3Service,
     ProjectManagerContractClient],
