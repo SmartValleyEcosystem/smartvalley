@@ -54,7 +54,7 @@
       </ngb-tab>
       <ngb-tab title="My projects">
         <ng-template ngbTabContent>
-          <div *ngIf="myProjects.length > 0; else templateName">
+          <div *ngIf="myProjects.length > 0; else withoutProject">
             <div class="card col-12 scoring-card" *ngFor="let project of myProjects;">
               <div class="card-block scoring-card-block">
                 <div class="scoring-header col-4">
@@ -78,7 +78,7 @@
               </div>
             </div>
           </div>
-          <ng-template #templateName>
+          <ng-template #withoutProject>
             <div class="without-project">
               <button mat-raised-button class="col-5 sv-default-btn btn-space" (click)="createProject()">Create a new project for scoring</button>
             </div>
