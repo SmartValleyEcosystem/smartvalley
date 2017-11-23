@@ -31,7 +31,7 @@
  }
 .scoring-footer > a{
   float:right;
-  bottom: 2.5em;
+  bottom: 3em;
   position: absolute;
   right: 0em;
 }
@@ -53,6 +53,7 @@
 }
 .scoring-card-block > div{
   vertical-align: top;
+  padding: 2em;
  }
 .scoring-rating > .score{
   font-size: 1.5em;
