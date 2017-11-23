@@ -12,9 +12,7 @@ export class Application {
 
   projectId: string;
 
-  probablyDescription: string;
-
-  solutionDescription: string;
+  description: string;
 
   projectStatus: string;
 

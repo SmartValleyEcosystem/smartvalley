@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
 using SmartValley.Domain.Entities;
-using Project = SmartValley.Domain.Entities.Project;
+using SmartValley.WebApi.Estimates;
 
 namespace SmartValley.WebApi.Scoring
 {
     public interface IScoringService
     {
-        Task<IReadOnlyCollection<Project>> GetProjectsForScoringByCategoryAsync(ScoringCategory category);
+        Task<IReadOnlyCollection<Project>> GetProjectsForScoringByCategoryAsync(Category category);
         Task<IReadOnlyCollection<Project>> GetProjectsByAuthorAddressAsync(string address);
     }
 }

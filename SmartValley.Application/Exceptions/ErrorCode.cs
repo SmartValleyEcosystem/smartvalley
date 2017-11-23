@@ -5,6 +5,6 @@
         EtherAlreadySent,
         ServerError,
         ValidatationError,
-        InvalidScroringCategory
+        ProjectAlreadyEstimatedInCategory
     }
 }

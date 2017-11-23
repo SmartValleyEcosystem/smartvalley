@@ -19,7 +19,7 @@ namespace SmartValley.WebApi.Applications
         public async Task<IActionResult> Post([FromBody] ApplicationRequest request)
         {
             await _service.CreateApplicationAsync(request);
-            return Ok(request);
+            return Ok("Project created");
         }
     }
 }
