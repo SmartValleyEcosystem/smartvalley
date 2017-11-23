@@ -20,32 +20,32 @@ export class ScoringComponent {
   constructor(private scoringApiClient: ScoringApiClient,
               private authenticationService: AuthenticationService,
               private router: Router) {
-    this.getProjectsForCategory(ScoringCategory.Hr);
-    this.getMyProjects();
+    this.loadProjectsForCategory(ScoringCategory.Hr);
+    this.loadMyProjects();
   }
 
   tabChanged($event: any) {
-    let scroringCategory: ScoringCategory = 1;
+    let scoringCategory: ScoringCategory = 1;
     let index: number = $event.index;
     switch (index) {
       case 0 :
-        scroringCategory = ScoringCategory.Hr;
+        scoringCategory = ScoringCategory.Hr;
         break;
       case 1 :
-        scroringCategory = ScoringCategory.Lawyer;
+        scoringCategory = ScoringCategory.Lawyer;
         break;
       case 2 :
-        scroringCategory = ScoringCategory.Analyst;
+        scoringCategory = ScoringCategory.Analyst;
         break;
       case 3 :
-        scroringCategory = ScoringCategory.Tech;
+        scoringCategory = ScoringCategory.Tech;
         break;
     }
-    this.getProjectsForCategory(scroringCategory);
+    this.loadProjectsForCategory(scoringCategory);
   }
 
 
-  private async getProjectsForCategory(scroringCategory: ScoringCategory) {
+  private async loadProjectsForCategory(scroringCategory: ScoringCategory) {
     this.projectsForScorring = [];
     const projects = await this.scoringApiClient.getProjectForScoringAsync({scoringCategory: scroringCategory});
     for (const projectResponse of projects.items) {
@@ -61,7 +61,7 @@ export class ScoringComponent {
     }
   }
 
-  private async getMyProjects() {
+  private async loadMyProjects() {
     this.myProjects = [];
     const response = await this.scoringApiClient.getMyProjectsAsync();
     for (const projectResponse of response.items) {
