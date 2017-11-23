@@ -6,7 +6,7 @@ using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.WebApi.Projects
 {
-    [Route("api/project")]
+    [Route("api/projects")]
     public class ProjectsController : Controller
     {
         private readonly IProjectRepository _projectRepository;
