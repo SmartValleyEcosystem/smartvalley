@@ -42,8 +42,8 @@ export class ApplicationComponent {
     application.mvpLink = formModel.mvpLink;
     application.name = formModel.name;
     application.probablyDescription = formModel.probablyDescription;
-    application.projectArea = formModel.area;
-    application.projectStatus = formModel.status;
+    application.projectArea = formModel.projectArea;
+    application.projectStatus = formModel.projectStatus;
     application.softCap = formModel.softCap;
     application.solutionDescription = formModel.solutionDescription;
     application.whitePaperLink = formModel.whitePaperLink;
