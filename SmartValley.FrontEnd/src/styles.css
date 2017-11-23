@@ -64,7 +64,7 @@ body {
 }
 
 .tab-content > .active {
-  margin: 45px 60px;
+  margin: 4em 5em;;
 }
 
 .mat-tab-label-container {
@@ -159,6 +159,12 @@ body {
   margin-bottom: 20px;
   text-transform: uppercase;
 }
+.sv-default-btn{
+  padding: 1em 0em;
+  color: white !important;
+  background-color: rgb(70, 137, 232);
+}
+
 .sw-card{
   position: relative;
   display: -webkit-box;

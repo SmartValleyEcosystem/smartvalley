@@ -1,6 +1,7 @@
 .scoring-header{
   display: inline-block;
-  padding: 0;
+  left: 2.5em;
+  padding: 1em;
 }
 .scoring-header__country{
   color: rgba(0,0,0,0.5);
@@ -19,6 +20,8 @@
   padding: 0;
   position: absolute;
   height: 100%;
+  right: 2.5em;
+  top: 1em;
 }
 .scoring-rating{
   display: inline-block;
@@ -28,10 +31,15 @@
  }
 .scoring-footer > a{
   float:right;
+  bottom: 3em;
+  position: absolute;
+  right: 0em;
 }
 .scoring-content{
   display: inline-block;
-  padding: 0;
+  top: 1em;
+  padding-right: 2em;
+  padding-left: 2em;
 }
 .scoring-card{
   display: inline-block;
@@ -44,8 +52,8 @@
   padding: 0px;
 }
 .scoring-card-block > div{
-  padding: 40px;
   vertical-align: top;
+  padding: 2em;
  }
 .scoring-rating > .score{
   font-size: 1.5em;
@@ -60,4 +68,13 @@
    width: calc(100% + 165px);
   padding-right: 15px;
   padding-left: 15px;
+}
+.without-project{
+  height: 45em;
+  position: relative;
+  text-align: center;
+}
+.without-project > button{
+  top: 45%;
+  padding: 2em;
 }
