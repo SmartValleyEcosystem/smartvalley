@@ -24,6 +24,7 @@ import {SimpleNotificationsModule} from 'angular2-notifications';
 import {EstimateComponent} from './components/estimate/estimate.component';
 import {ScoringService} from './services/scoring-service';
 import {QuestionService} from './services/question-service';
+import {ProjectService} from './services/project-service';
 import {ApplicationService} from './services/application-service';
 import {ContractApiClient} from './api/contract/contract-api-client';
 import {ErrorInterceptor} from './api/error-interceptor';
@@ -73,6 +74,7 @@ import {ProjectApiClient} from './api/project/project-api-client';
     AuthenticationService,
     ApplicationService,
     QuestionService,
+    ProjectService,
     ScoringService,
     Web3Service,
     ProjectManagerContractClient],

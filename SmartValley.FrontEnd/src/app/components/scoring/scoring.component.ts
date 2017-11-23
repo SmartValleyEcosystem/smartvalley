@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {Scoring} from '../../services/scoring';
 import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
+import {ProjectService} from '../../services/project-service';
 import {Paths} from '../../paths';
 
 
@@ -13,6 +14,7 @@ import {Paths} from '../../paths';
 export class ScoringComponent {
 
   public scorings: Array<Scoring>;
+  public myProjects: Array<Project>;
 
   constructor(private scoringApiClient: ScoringApiClient) {
     this.getProjectsForCategory(ScoringCategory.Hr);

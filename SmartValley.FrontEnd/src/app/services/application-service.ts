@@ -33,6 +33,11 @@ export class ApplicationService {
         <TeamMember>{ fullName: 'Ivan Ivanov', memberType: EnumTeamMemberType.PR, facebookLink: 'httpFB1', linkedInLink: 'link13'},
         <TeamMember>{ fullName: 'Sidor Sidorov', memberType: EnumTeamMemberType.CTO, facebookLink: 'httpFB2', linkedInLink: 'link14'}
         ],
+      softCap: '10 min. USD',
+      hardCap: '80 min. USD',
+      financeModelLink: 'wwwlink',
+      blockChainType: 'Ethereum',
+      mvpLink: 'mvpLink',
       projectStatus: 'Okay',
       solutionDescription: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
       probablyDescription: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'
@@ -45,6 +50,11 @@ export class ApplicationService {
       country: 'USA',
       projectStatus: 'Okay',
       whitePaperLink: 'http',
+      softCap: '10 min. USD',
+      hardCap: '80 min. USD',
+      financeModelLink: 'wwwlink',
+      blockChainType: 'Ethereum',
+      mvpLink: 'mvpLink',
       solutionDescription: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
       probablyDescription: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'
     });
@@ -55,6 +65,11 @@ export class ApplicationService {
       country: 'China',
       projectStatus: 'Okay',
       whitePaperLink: 'http',
+      softCap: '10 min. USD',
+      hardCap: '80 min. USD',
+      financeModelLink: 'wwwlink',
+      blockChainType: 'Ethereum',
+      mvpLink: 'mvpLink',
       solutionDescription: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
       probablyDescription: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'
     });
@@ -65,6 +80,11 @@ export class ApplicationService {
       country: 'Japan',
       projectStatus: 'Okay',
       whitePaperLink: 'http',
+      softCap: '10 min. USD',
+      hardCap: '80 min. USD',
+      financeModelLink: 'wwwlink',
+      blockChainType: 'Ethereum',
+      mvpLink: 'mvpLink',
       solutionDescription: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
       probablyDescription: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'
     });
@@ -75,6 +95,11 @@ export class ApplicationService {
       country: 'Italy',
       projectStatus: 'Okay',
       whitePaperLink: 'http',
+      softCap: '10 min. USD',
+      hardCap: '80 min. USD',
+      financeModelLink: 'wwwlink',
+      blockChainType: 'Ethereum',
+      mvpLink: 'mvpLink',
       solutionDescription: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
       probablyDescription: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'
     });
