@@ -41,11 +41,10 @@ export class ApplicationComponent {
     application.hardCap = formModel.hardCap;
     application.mvpLink = formModel.mvpLink;
     application.name = formModel.name;
-    application.probablyDescription = formModel.probablyDescription;
+    application.description = formModel.description;
     application.projectArea = formModel.projectArea;
     application.projectStatus = formModel.projectStatus;
     application.softCap = formModel.softCap;
-    application.solutionDescription = formModel.solutionDescription;
     application.whitePaperLink = formModel.whitePaperLink;
 
     application.projectId = uuid();
@@ -72,8 +71,7 @@ export class ApplicationComponent {
       name: ['', Validators.required],
       whitePaperLink: ['', Validators.pattern('https?://.+')],
       projectArea: '',
-      probablyDescription: '',
-      solutionDescription: '',
+      description: '',
       projectStatus: '',
       softCap: 0.0,
       hardCap: 0.0,
