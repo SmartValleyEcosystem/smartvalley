@@ -21,7 +21,7 @@ export class ProjectService {
       imageUrl: 'https://png.icons8.com/?id=50284&size=280',
       country: 'Russia',
       area: 'Bio',
-      description: 'desc1',
+      description: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
       score: 'in progress'
     });
     this.projects.push(<Project>{
@@ -29,7 +29,7 @@ export class ProjectService {
       imageUrl: 'https://png.icons8.com/?id=50284&size=280',
       country: 'Russia',
       area: 'Bio',
-      description: 'desc1',
+      description: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
       score: 'in progress'
     });
     this.projects.push(<Project>{
@@ -37,7 +37,7 @@ export class ProjectService {
       imageUrl: 'https://png.icons8.com/?id=50284&size=280',
       country: 'Russia',
       area: 'Bio',
-      description: 'desc1',
+      description: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
       score: 'in progress'
     });
     this.projects.push(<Project>{
@@ -45,7 +45,7 @@ export class ProjectService {
       imageUrl: 'https://png.icons8.com/?id=50284&size=280',
       country: 'Russia',
       area: 'Bio',
-      description: 'desc1',
+      description: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
       score: 'in progress'
     });
   }
