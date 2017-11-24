@@ -146,6 +146,10 @@ body {
 .low_rate{
   color: #d24a43 !important;
 }
+
+.progress_rate{
+  color: rgb(180, 180, 180) !important;
+}
 .sw-content {
    -webkit-box-flex: inherit;
    -ms-flex: inherit;
