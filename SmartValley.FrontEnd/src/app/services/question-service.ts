@@ -1,5 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Question} from '../services/question';
+
+;
+import {Estimate} from '../services/estimate';
 import {EnumExpertType} from '../services/enumExpertType';
 
 @Injectable()
@@ -10,7 +13,7 @@ export class QuestionService {
     this.initTestData();
   }
 
-  getByExpertType(expertType: EnumExpertType):  Array<Question> {
+  getByExpertType(expertType: EnumExpertType): Array<Question> {
     return this.questions.filter(x => x.expertType === expertType);
   }
 
@@ -20,50 +23,89 @@ export class QuestionService {
     this.questions.push(<Question>{
       name: 'Team Completeness',
       description: 'somedesc1',
-      maxScore: 5,
-      expertType: EnumExpertType.HR
+      expertType: EnumExpertType.HR,
+      estimates: [
+        <Estimate>{score: '5', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+        <Estimate>{score: '4', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+        <Estimate>{score: '6', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+      ]
     });
     this.questions.push(<Question>{
       name: 'Team Experience',
       description: 'somedesc2',
-      maxScore: 5,
-      expertType: EnumExpertType.Technical_expert
+      score: 5,
+      expertType: EnumExpertType.Technical_expert,
+      estimates: [
+        <Estimate>{score: '5', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+        <Estimate>{score: '4', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+        <Estimate>{score: '6', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+      ]
     });
     this.questions.push(<Question>{
       name: 'Attracted Investments',
       description: 'somedesc3',
-      maxScore: 5,
-      expertType: EnumExpertType.Lawyer
+      score: 5,
+      expertType: EnumExpertType.Lawyer,
+      estimates: [
+        <Estimate>{score: '5', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+        <Estimate>{score: '4', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+        <Estimate>{score: '6', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+      ]
     });
     this.questions.push(<Question>{
       name: 'Scam',
       description: 'somedesc4',
-      maxScore: 5,
-      expertType: EnumExpertType.Lawyer
+      score: 5,
+      expertType: EnumExpertType.Lawyer,
+      estimates: [
+        <Estimate>{score: '5', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+        <Estimate>{score: '4', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+        <Estimate>{score: '6', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+      ]
     });
     this.questions.push(<Question>{
       name: 'Team Completeness',
       description: 'somedesc5',
-      maxScore: 5,
-      expertType: EnumExpertType.Analyst
+      score: 5,
+      expertType: EnumExpertType.Analyst,
+      estimates: [
+        <Estimate>{score: '5', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+        <Estimate>{score: '4', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+        <Estimate>{score: '6', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+      ]
     });
     this.questions.push(<Question>{
       name: 'Scam',
       description: 'somedesc6',
-      maxScore: 5,
-      expertType: EnumExpertType.Analyst
+      score: 5,
+      expertType: EnumExpertType.Analyst,
+      estimates: [
+        <Estimate>{score: '5', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+        <Estimate>{score: '4', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+        <Estimate>{score: '6', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+      ]
     });
     this.questions.push(<Question>{
       name: 'Scam',
       description: 'somedesc7',
-      maxScore: 5,
-      expertType: EnumExpertType.Analyst
+      score: 5,
+      expertType: EnumExpertType.Analyst,
+      estimates: [
+        <Estimate>{score: '5', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+        <Estimate>{score: '4', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+        <Estimate>{score: '6', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+      ]
     });
     this.questions.push(<Question>{
       name: 'Attracted Investments',
       description: 'somedesc8',
-      maxScore: 5,
-      expertType: EnumExpertType.Analyst
+      score: 5,
+      expertType: EnumExpertType.Analyst,
+      estimates: [
+        <Estimate>{score: '5', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+        <Estimate>{score: '4', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+        <Estimate>{score: '6', comments: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'},
+      ]
     });
   }
 }

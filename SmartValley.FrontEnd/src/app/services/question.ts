@@ -1,4 +1,5 @@
 import {EnumExpertType} from './enumExpertType';
+import {Estimate} from './estimate';
 
 export interface Question {
   name: string;
@@ -7,4 +8,5 @@ export interface Question {
   maxScore: number;
   comments: string;
   expertType: EnumExpertType;
+  estimates: Array<Estimate>;
 }

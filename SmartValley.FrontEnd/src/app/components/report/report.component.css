@@ -47,6 +47,7 @@
 
 .row {
   padding: 1em 0em;
+  margin-right: 1em;
 }
 
 .description {
@@ -82,5 +83,8 @@
   position: absolute;
   height: 100%;
   right: 2.5em;
+}
+.content{
+  padding-left: 6em !important;
 }
 

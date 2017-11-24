@@ -33,7 +33,7 @@ namespace SmartValley.WebApi.Applications
         [Required]
         public string HardCap { get; set; }
 
-        public bool AttractedInvestnemts { get; set; }
+        public bool AttractedInvestments { get; set; }
 
         public string TransactionHash { get; set; }
 

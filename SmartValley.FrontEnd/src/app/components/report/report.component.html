@@ -27,6 +27,46 @@
   </div>
   <div class="row mx-auto">
     <ngb-tabset class="col-10 info">
+      <ngb-tab title="Experts estimates">
+        <ng-template ngbTabContent>
+          <div class="content sw-card sw-content">
+            <mat-tab-group (selectedTabChange)="tabChanged($event)">
+              <mat-tab label="HR">
+                <div *ngFor="let question of questions;">
+                  <div class="row row-title">
+                    <h3 class="col-10">{{question.name}}</h3>
+                  </div>
+                  <div class="row-content">
+                    <div class="row">
+                      <span class="col-4" style="word-wrap: break-word;">{{question.description}}</span>
+                    </div>
+                  </div>
+                  <div class="row-content">
+                    <div class="row row-title">
+                      <span class="col-3 progress_rate">Expert</span>
+                      <span class="col-1 progress_rate">Score</span>
+                      <span class="col-7 progress_rate" style="word-wrap: break-word;">Comments</span>
+                    </div>
+                  </div>
+                  <div class="row-content" *ngFor="let estimate of question.estimates; let i = index;">
+                    <div class="row row-title">
+                      <span class="col-3">Expert {{i + 1}} score:</span>
+                      <span class="col-1 {{colorOfEstimateScore(estimate.score)}}">{{estimate.score}}</span>
+                      <span class="col-7" style="word-wrap: break-word;">{{estimate.comments}}</span>
+                    </div>
+                  </div>
+                </div>
+              </mat-tab>
+              <mat-tab label="Lawyer">
+              </mat-tab>
+              <mat-tab label="Analyst">
+              </mat-tab>
+              <mat-tab label="Technical expert">
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </ng-template>
+      </ngb-tab>
       <ngb-tab title="Form">
         <ng-template ngbTabContent>
           <div class="sw-card sw-content">
@@ -120,10 +160,6 @@
               <a class="col-5" href="{{application.mvpLink}}">{{application.mvpLink}}</a>
             </div>
           </div>
-        </ng-template>
-      </ngb-tab>
-      <ngb-tab title="Experts estimates">
-        <ng-template ngbTabContent>
         </ng-template>
       </ngb-tab>
     </ngb-tabset>

@@ -31,7 +31,7 @@ namespace SmartValley.WebApi.Applications
 
         public decimal HardCap { get; set; }
 
-        public bool AttractedInvestnemts { get; set; }
+        public bool AttractedInvestments { get; set; }
 
         public IReadOnlyCollection<TeamMemberResponse> TeamMembers { get; set; }
     }

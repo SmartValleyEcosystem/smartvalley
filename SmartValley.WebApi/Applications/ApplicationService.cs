@@ -55,7 +55,7 @@ namespace SmartValley.WebApi.Applications
                                           Country = project.Country,
                                           ProjectArea = project.ProjectArea,
 
-                                          AttractedInvestnemts = application.InvestmentsAreAttracted,
+                                          AttractedInvestments = application.InvestmentsAreAttracted,
                                           BlockChainType = application.CryptoCurrency,
                                           FinanceModelLink = application.FinancialModelLink,
                                           HardCap = application.HardCap,
@@ -118,7 +118,7 @@ namespace SmartValley.WebApi.Applications
                                   HardCap = decimal.Parse(model.HardCap),
                                   CryptoCurrency = model.BlockChainType,
                                   FinancialModelLink = model.FinanceModelLink,
-                                  InvestmentsAreAttracted = model.AttractedInvestnemts,
+                                  InvestmentsAreAttracted = model.AttractedInvestments,
                                   ProjectStatus = model.ProjectStatus,
                                   WhitePaperLink = model.WhitePaperLink,
                                   MVPLink = model.MvpLink
