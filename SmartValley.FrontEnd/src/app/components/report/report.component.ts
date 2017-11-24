@@ -13,24 +13,18 @@ import {ProjectDetailsResponse} from '../../api/project/project-details-response
   templateUrl: './report.component.html',
   styleUrls: ['./report.component.css']
 })
-export class ReportComponent implements OnInit {
+export class ReportComponent {
 
   report: ProjectDetailsResponse;
   EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
 
   constructor(private projectApiClient: ProjectApiClient,
               private route: ActivatedRoute) {
-    const idParam = this.route.snapshot.paramMap.get('id');
-    const id = parseInt(idParam, 0);
-
-    this.loadData(id);
+    this.loadData();
   }
 
-  ngOnInit() {
-  }
-
-  private async loadData(id: number) {
+  private async loadData() {
+    const id = +this.route.snapshot.paramMap.get('id');
     this.report = await this.projectApiClient.getDetailsByIdAsync(id);
-    console.log(this.report);
   }
 }
