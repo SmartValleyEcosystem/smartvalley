@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="report">
   <div class="row mx-auto">
     <div class="col-8 title">
       <h1>Scoring report</h1>
@@ -78,23 +78,23 @@
           <div class="sw-card sw-content">
             <div class="row">
               <span class="col-3 offset-1">Project name:</span>
-              <span class="col-5">{{application.name}}</span>
+              <span class="col-5">{{report.name}}</span>
             </div>
             <div class="row">
               <span class="col-3 offset-1">Project Area</span>
-              <span class="col-5">{{application.projectArea}}</span>
+              <span class="col-5">{{report.area}}</span>
             </div>
             <div class="row">
               <span class="col-3 offset-1">Problem description</span>
-              <span class="col-5">{{application.description}}</span>
+              <span class="col-5">{{report.description}}</span>
             </div>
             <div class="row">
               <span class="col-3 offset-1">Status</span>
-              <span class="col-5">{{application.projectStatus}}</span>
+              <span class="col-5">{{report.status}}</span>
             </div>
             <div class="row">
               <span class="col-3 offset-1">White paper link</span>
-              <a href="{{application.whitePaperLink}}" class="col-5">{{application.whitePaperLink}}</a>
+              <a href="{{report.whitePaperLink}}" class="col-5">{{report.whitePaperLink}}</a>
             </div>
           </div>
 
@@ -102,7 +102,7 @@
             <div class="row row-title">
               <h3 class="col-10 offset-1">Core Team</h3>
             </div>
-            <div *ngFor="let member of application.teamMembers;">
+            <div *ngFor="let member of report.teamMembers;">
               <div class="row">
                 <span class="col-1 offset-1">{{EnumTeamMemberType[member.memberType]}}:</span>
                 <span class="col-2" style="margin-left: 2em;">{{member.fullName}}</span>
@@ -123,7 +123,7 @@
             </div>
             <div class="row">
               <span class="col-3 offset-1">Incorporation:</span>
-              <span class="col-5">{{application.country}}</span>
+              <span class="col-5">{{report.country}}</span>
             </div>
           </div>
           <div class="sw-card sw-content">
@@ -135,22 +135,22 @@
             </div>
             <div class="row">
               <span class="col-3 offset-1">Soft cap:</span>
-              <span class="col-5">{{application.softCap}}</span>
+              <span class="col-5">{{report.softCap}}</span>
             </div>
             <div class="row">
               <span class="col-3 offset-1">Hard cap:</span>
-              <span class="col-5">{{application.hardCap}}</span>
+              <span class="col-5">{{report.hardCap}}</span>
             </div>
             <div class="row">
               <span class="col-3 offset-1">Financial model link:</span>
-              <a href="{{application.financeModelLink}}" class="col-5">{{application.financeModelLink}}</a>
+              <a href="{{report.financeModelLink}}" class="col-5">{{report.financeModelLink}}</a>
             </div>
             <div class="row">
               <span class="col-3 offset-1">Attracted investments:</span>
               <span *ngIf="application.attractedInvestments === true; else noAttract" style="color:green;"
                     class="col-5">{{application.attractedInvestments ? 'Yes' : 'No'}}</span>
               <ng-template #noAttract>
-                <span style="color:red;" class="col-5">{{application.attractedInvestments ? 'Yes' : 'No'}}</span>
+                <span style="color:red;" class="col-5">{{report.attractedInvestments ? 'Yes' : 'No'}}</span>
               </ng-template>
             </div>
           </div>
@@ -164,7 +164,7 @@
             </div>
             <div class="row">
               <span class="col-3 offset-1">Prototype/MVP link:</span>
-              <a class="col-5" href="{{application.mvpLink}}">{{application.mvpLink}}</a>
+              <a class="col-5" href="{{report.mvpLink}}">{{report.mvpLink}}</a>
             </div>
           </div>
           <div style="margin-left: calc(4em - 5px);" class="submit-button row">

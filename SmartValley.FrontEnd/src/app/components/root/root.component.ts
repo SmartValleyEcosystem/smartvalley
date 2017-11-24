@@ -17,7 +17,6 @@ export class RootComponent {
   constructor(private authenticationService: AuthenticationService,
               private router: Router,
               private projectApiClient: ProjectApiClient) {
-
     this.initializeProjectsCollection();
   }
 

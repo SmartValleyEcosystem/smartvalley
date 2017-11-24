@@ -19,6 +19,7 @@ using SmartValley.WebApi.Applications;
 using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.Estimates;
 using SmartValley.WebApi.ExceptionHandler;
+using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.Scoring;
 using SmartValley.WebApi.WebApi;
 using Swashbuckle.AspNetCore.Swagger;
@@ -82,6 +83,7 @@ namespace SmartValley.WebApi
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IEstimateRepository, EstimateRepository>();
             services.AddTransient<IApplicationService, ApplicationService>();
+            services.AddTransient<IProjectService, ProjectService>();
             services.AddTransient<IEstimationService, EstimationService>();
             services.AddTransient<IScoringService, ScoringService>();
         }

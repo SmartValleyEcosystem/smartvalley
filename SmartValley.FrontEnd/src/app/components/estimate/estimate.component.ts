@@ -10,8 +10,9 @@ import {SubmitEstimatesRequest} from '../../api/estimates/submit-estimates-reque
 import {EnumExpertType} from '../../services/enumExpertType';
 import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';
 import {AuthenticationService} from '../../services/authentication-service';
-import {ApplicationApiClient} from '../../api/application/application-api.client';
 import {EstimateRequest} from '../../api/estimates/estimate-request';
+import {ProjectDetailsResponse} from '../../api/project/project-details-response';
+import {ProjectApiClient} from '../../api/project/project-api-client';
 
 @Component({
   selector: 'app-estimate',
@@ -24,11 +25,11 @@ export class EstimateComponent {
   expertType: EnumExpertType;
   projectId: number;
 
-  public application: Application;
+  public projectDetails: ProjectDetailsResponse;
   public questions: Array<Question>;
 
   constructor(private route: ActivatedRoute,
-              private applicationApiClient: ApplicationApiClient,
+              private projectApiClient: ProjectApiClient,
               private questionService: QuestionService,
               private router: Router,
               private estimatesApiClient: EstimatesApiClient,
@@ -75,6 +76,6 @@ export class EstimateComponent {
     this.projectId = +this.route.snapshot.paramMap.get('id');
     this.expertType = EnumExpertType.Lawyer; // TODO
     this.questions = this.questionService.getByExpertType(this.expertType);
-    this.application = await this.applicationApiClient.getByProjectIdAsync(this.projectId);
+    this.projectDetails = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
   }
 }

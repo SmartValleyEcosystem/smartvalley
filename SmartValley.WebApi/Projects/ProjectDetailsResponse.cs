@@ -1,21 +1,22 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿
+using System.Collections.Generic;
+using SmartValley.WebApi.Applications;
 
-namespace SmartValley.WebApi.Applications
+namespace SmartValley.WebApi.Projects
 {
-    public class ApplicationResponse
+    public class ProjectDetailsResponse
     {
         public string Name { get; set; }
 
         public string AuthorAddress { get; set; }
 
-        public string ProjectArea { get; set; }
+        public string Area { get; set; }
 
         public string ProjectId { get; set; }
 
         public string Description { get; set; }
 
-        public string ProjectStatus { get; set; }
+        public string Status { get; set; }
 
         public string WhitePaperLink { get; set; }
 
@@ -32,6 +33,11 @@ namespace SmartValley.WebApi.Applications
         public decimal HardCap { get; set; }
 
         public bool AttractedInvestments { get; set; }
+<<<<<<< HEAD:SmartValley.WebApi/Applications/ApplicationResponse.cs
+=======
+
+        public double? Score { get; set; }
+>>>>>>> master:SmartValley.WebApi/Projects/ProjectDetailsResponse.cs
 
         public IReadOnlyCollection<TeamMemberResponse> TeamMembers { get; set; }
     }

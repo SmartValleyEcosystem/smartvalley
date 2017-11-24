@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Project} from '../../services/project';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
-import {ProjectService} from '../../services/project-service';
-import {Application} from '../../services/application';
 import {ActivatedRoute} from '@angular/router';
+import {ProjectDetailsResponse} from '../../api/project/project-details-response';
+import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ApplicationApiClient} from '../../api/application/application-api.client';
 import {QuestionService} from '../../services/question-service';
 import {Question} from '../../services/question';
@@ -16,12 +15,12 @@ import {Question} from '../../services/question';
 export class ReportComponent {
 
   selectedIndex = 0;
-  project: Project;
   application: Application;
   public questions: Array<Question>;
+  report: ProjectDetailsResponse;
   EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
 
-  constructor(private projectService: ProjectService,
+  constructor(private projectApiClient: ProjectApiClient,
               private applicationApiClient: ApplicationApiClient,
               private questionService: QuestionService,
               private route: ActivatedRoute) {
@@ -65,10 +64,8 @@ export class ReportComponent {
     return 'progress_rate';
   }
 
-  private async loadApplication() {
+  private async loadData() {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.project = this.projectService.getById(id);
-    this.application = await this.applicationApiClient.getByProjectIdAsync(id);
-    console.log(this.application);
+    this.report = await this.projectApiClient.getDetailsByIdAsync(id);
   }
 }
