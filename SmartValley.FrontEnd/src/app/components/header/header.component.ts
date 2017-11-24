@@ -26,13 +26,7 @@ export class HeaderComponent implements OnInit {
     if (this.authenticationService.isAuthenticated()) {
       this.isAuthenticated = true;
       const balanceResponse = await this.balanceApiClient.getBalanceAsync();
-      if (balanceResponse.balance.toString().includes('.')) {
-        const splitedBalance = balanceResponse.balance.toString().split('.');
-        this.currentBalance = parseFloat(balanceResponse.balance.toPrecision(splitedBalance[0].length +
-          (splitedBalance[1].length > 2 ? 2 : splitedBalance[1].length)));
-      } else {
-        this.currentBalance = balanceResponse.balance;
-      }
+      this.currentBalance = parseFloat(balanceResponse.balance.toFixed(3));
       this.wasEtherReceived = balanceResponse.wasEtherReceived;
     } else {
       this.isAuthenticated = false;
