@@ -54,7 +54,7 @@ namespace SmartValley.WebApi.Applications
                                           Country = project.Country,
                                           ProjectArea = project.ProjectArea,
                                           ProjectId = project.ExternalId.ToString(),
-                                          AttractedInvestnemts = application.InvestmentsAreAttracted,
+                                          AttractedInvestments = application.InvestmentsAreAttracted,
                                           BlockChainType = application.CryptoCurrency,
                                           FinanceModelLink = application.FinancialModelLink,
                                           HardCap = application.HardCap,

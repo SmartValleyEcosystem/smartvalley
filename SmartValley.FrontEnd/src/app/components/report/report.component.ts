@@ -15,6 +15,7 @@ import {Question} from '../../services/question';
 })
 export class ReportComponent {
 
+  selectedIndex = 0;
   project: Project;
   application: Application;
   public questions: Array<Question>;
@@ -26,6 +27,10 @@ export class ReportComponent {
               private route: ActivatedRoute) {
     this.questions = this.questionService.getByExpertType(2);
     this.loadApplication();
+  }
+
+  clickMe() {
+    this.selectedIndex = 1;
   }
 
   colorOfProjectRate(rate: number): string {

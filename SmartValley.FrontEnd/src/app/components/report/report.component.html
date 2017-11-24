@@ -38,7 +38,7 @@
                   </div>
                   <div class="row-content">
                     <div class="row">
-                      <span class="col-4" style="word-wrap: break-word;">{{question.description}}</span>
+                      <span class="col-6" style="word-wrap: break-word;">{{question.description}}</span>
                     </div>
                   </div>
                   <div class="row-content">
@@ -64,6 +64,12 @@
               <mat-tab label="Technical expert">
               </mat-tab>
             </mat-tab-group>
+          </div>
+          <div style="margin-left: calc(4em - 5px);" class="submit-button row">
+            <button class="trans-btn col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">
+              <i class="fa fa-arrow-left" aria-hidden="true"></i>
+              Form
+            </button>
           </div>
         </ng-template>
       </ngb-tab>
@@ -141,7 +147,8 @@
             </div>
             <div class="row">
               <span class="col-3 offset-1">Attracted investments:</span>
-              <span *ngIf="application.attractedInvestments === true; else noAttract" style="color:green;" class="col-5">{{application.attractedInvestments ? 'Yes' : 'No'}}</span>
+              <span *ngIf="application.attractedInvestments === true; else noAttract" style="color:green;"
+                    class="col-5">{{application.attractedInvestments ? 'Yes' : 'No'}}</span>
               <ng-template #noAttract>
                 <span style="color:red;" class="col-5">{{application.attractedInvestments ? 'Yes' : 'No'}}</span>
               </ng-template>
@@ -152,13 +159,20 @@
               <h3 class="col-10 offset-1">Tech</h3>
             </div>
             <div class="row">
-            <span class="col-3 offset-1">Blockchain:</span>
-            <span class="col-5">{{application.blockChainType}}</span>
+              <span class="col-3 offset-1">Blockchain:</span>
+              <span class="col-5">{{application.blockChainType}}</span>
             </div>
             <div class="row">
               <span class="col-3 offset-1">Prototype/MVP link:</span>
               <a class="col-5" href="{{application.mvpLink}}">{{application.mvpLink}}</a>
             </div>
+          </div>
+          <div style="margin-left: calc(4em - 5px);" class="submit-button row">
+            <button (click)="clickMe()" class="trans-btn col-3 btn btn-primary"
+                    style="padding-top: 1em; padding-bottom: 1em;">
+              Experts estimates
+              <i class="fa fa-arrow-right" aria-hidden="true"></i>
+            </button>
           </div>
         </ng-template>
       </ngb-tab>

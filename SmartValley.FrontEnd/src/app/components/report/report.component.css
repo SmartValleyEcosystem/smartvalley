@@ -30,6 +30,18 @@
   float: right;
 }
 
+.scoring-container {
+  display: inline-block;
+}
+
+.scoring-container > span {
+  display: block;
+}
+
+.scoring-container > .score {
+  font-size: 3em;
+}
+
 .nav-tabs .nav-item:first-child {
   margin-left: 0px;
 }
@@ -83,8 +95,17 @@
   position: absolute;
   height: 100%;
   right: 2.5em;
+  padding: 1em;
 }
-.content{
+
+.content {
   padding-left: 6em !important;
+}
+.trans-btn{
+  background: transparent;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  color: rgb(70, 137, 232);
+  border-color: rgb(70, 137, 232);;
 }
 
