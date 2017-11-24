@@ -12,7 +12,8 @@ export class ProjectCardComponent {
   @Input() public project: Project;
   @Input() public isScoring: boolean;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+  }
 
   colorOfProjectRate(rate: number): string {
     if (rate == null) {
@@ -34,5 +35,4 @@ export class ProjectCardComponent {
   showReport(id: number) {
     this.router.navigate([Paths.Report + '/' + id]);
   }
-
 }

@@ -4,17 +4,18 @@ import {Question} from '../services/question';
 ;
 import {Estimate} from '../services/estimate';
 import {EnumExpertType} from '../services/enumExpertType';
+import {EnumTeamMemberType} from './enumTeamMemberType';
 
 @Injectable()
 export class QuestionService {
-  public questions: Array<Question>;
+  private questions: { [expertType: number]: Array<Question>; } = {};
 
   constructor() {
-    this.initTestData();
+    this.initializeQuestionsCollection();
   }
 
-  getByExpertType(expertType: EnumExpertType): Array<Question> {
-    return this.questions.filter(x => x.expertType === expertType);
+  public getByExpertType(expertType: EnumExpertType): Array<Question> {
+    return this.questions[expertType];
   }
 
   // тестовые данные

@@ -25,10 +25,7 @@ export class ReportComponent {
               private questionService: QuestionService,
               private route: ActivatedRoute) {
     this.questions = this.questionService.getByExpertType(2);
-    const idParam = this.route.snapshot.paramMap.get('id');
-    const id = parseInt(idParam, 0);
-    this.project = projectService.getById(id);
-    this.loadApplication(id);
+    this.loadApplication();
   }
 
   colorOfProjectRate(rate: number): string {
@@ -63,7 +60,9 @@ export class ReportComponent {
     return 'progress_rate';
   }
 
-  private async loadApplication(id: number) {
+  private async loadApplication() {
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.project = this.projectService.getById(id);
     this.application = await this.applicationApiClient.getByProjectIdAsync(id);
     console.log(this.application);
   }

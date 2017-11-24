@@ -9,4 +9,5 @@ export interface Question {
   comments: string;
   expertType: EnumExpertType;
   estimates: Array<Estimate>;
+  indexInCategory: number;
 }
