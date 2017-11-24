@@ -2,6 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BaseApiClient} from '../base-api-client';
 import {Application} from '../../services/application';
+import {ProjectDetailsResponse} from '../project/project-details-response';
 
 @Injectable()
 export class ApplicationApiClient extends BaseApiClient {
@@ -11,10 +12,5 @@ export class ApplicationApiClient extends BaseApiClient {
 
   async createApplicationAsync(application: Application) {
     await this.http.post(this.baseApiUrl + '/applications', application).subscribe();
-  }
-
-  async getByProjectIdAsync(id: number) {
-    return this.http.get<Application>(this.baseApiUrl + '/applications?projectId=' + id )
-      .toPromise();
   }
 }

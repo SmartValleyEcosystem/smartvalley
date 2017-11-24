@@ -41,39 +41,6 @@ namespace SmartValley.WebApi.Applications
             await CreateProjectAsync(applicationRequest, projectAddress);
         }
 
-        public async Task<ApplicationResponse> GetByProjectIdAsync(long projectId)
-        {
-            var application = await _applicationRepository.GetByProjectIdAsync(projectId);
-            var teamMembers = await _teamRepository.GetAllByApplicationId(application.Id);
-            var project = await _projectRepository.GetByIdAsync(projectId);
-            var applicationResponse = new ApplicationResponse
-                                      {
-                                          Name = project.Name,
-                                          Description = project.Description,
-                                          AuthorAddress = project.AuthorAddress,
-                                          Country = project.Country,
-                                          ProjectArea = project.ProjectArea,
-                                          ProjectId = project.ExternalId.ToString(),
-                                          AttractedInvestnemts = application.InvestmentsAreAttracted,
-                                          BlockChainType = application.CryptoCurrency,
-                                          FinanceModelLink = application.FinancialModelLink,
-                                          HardCap = application.HardCap,
-                                          SoftCap = application.SoftCap,
-                                          MvpLink = application.MVPLink,
-                                          ProjectStatus = application.ProjectStatus,
-                                          WhitePaperLink = application.WhitePaperLink,
-                                          TeamMembers = teamMembers.Select(t => new TeamMemberResponse
-                                                                                {
-                                                                                    FacebookLink = t.FacebookLink,
-                                                                                    LinkedInLink = t.LinkedInLink,
-                                                                                    FullName = t.FullName,
-                                                                                    MemberType = t.Type.FromDomain()
-                                                                                }).ToList()
-                                      };
-
-            return applicationResponse;
-        }
-
         private async Task CreateProjectAsync(ApplicationRequest applicationRequest, string projectContractAddress)
         {
             var project = await AddProjectAsync(applicationRequest, projectContractAddress);
@@ -116,7 +83,7 @@ namespace SmartValley.WebApi.Applications
                                   HardCap = decimal.Parse(model.HardCap),
                                   CryptoCurrency = model.BlockChainType,
                                   FinancialModelLink = model.FinanceModelLink,
-                                  InvestmentsAreAttracted = model.AttractedInvestnemts,
+                                  InvestmentsAreAttracted = model.AttractedInvestments,
                                   ProjectStatus = model.ProjectStatus,
                                   WhitePaperLink = model.WhitePaperLink,
                                   MVPLink = model.MvpLink

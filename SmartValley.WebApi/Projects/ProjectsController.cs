@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Domain.Interfaces;
+using SmartValley.WebApi.Applications;
 using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Projects
@@ -11,10 +12,12 @@ namespace SmartValley.WebApi.Projects
     public class ProjectsController : Controller
     {
         private readonly IProjectRepository _projectRepository;
+        private readonly IProjectService _projectService;
 
-        public ProjectsController(IProjectRepository projectRepository)
+        public ProjectsController(IProjectRepository projectRepository, IProjectService projectService)
         {
             _projectRepository = projectRepository;
+            _projectService = projectService;
         }
 
         [HttpGet]
@@ -26,6 +29,12 @@ namespace SmartValley.WebApi.Projects
                    {
                        Items = scoredProjects.Select(ProjectResponse.From).ToArray()
                    };
+        }
+
+        [HttpGet]
+        public Task<ProjectDetailsResponse> GetByIdAsync(GetByIdRequest request)
+        {
+            return _projectService.GetProjectDetailsByIdAsync(request.ProjectId);
         }
     }
 }

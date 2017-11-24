@@ -1,34 +1,26 @@
 import {Component, OnInit} from '@angular/core';
-import {Project} from '../../services/project';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
-import {ProjectService} from '../../services/project-service';
-import {Application} from '../../services/application';
 import {ActivatedRoute} from '@angular/router';
-import {ApplicationApiClient} from '../../api/application/application-api.client';
+import {ProjectApiClient} from '../../api/project/project-api-client';
+import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 
 @Component({
   selector: 'app-report',
   templateUrl: './report.component.html',
   styleUrls: ['./report.component.css']
 })
-export class ReportComponent implements OnInit {
+export class ReportComponent {
 
-  project: Project;
-  application: Application;
+  report: ProjectDetailsResponse;
   EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
 
-  constructor(private projectService: ProjectService,
-              private applicationApiClient: ApplicationApiClient,
+  constructor(private projectApiClient: ProjectApiClient,
               private route: ActivatedRoute) {
-    this.loadApplication();
+    this.loadData();
   }
 
-  ngOnInit() {
-  }
-
-  private async loadApplication() {
+  private async loadData() {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.project = this.projectService.getById(id);
-    this.application = await this.applicationApiClient.getByProjectIdAsync(id);
+    this.report = await this.projectApiClient.getDetailsByIdAsync(id);
   }
 }
