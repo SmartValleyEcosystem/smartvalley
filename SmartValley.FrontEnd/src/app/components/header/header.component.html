@@ -15,7 +15,7 @@
         </div>
         <div class="col-3 sm-header__nav text-right" style="margin-top: 24px;">
           <a *ngIf="!wasEtherReceived" (click)="receiveEth()" href="#">Get Ether</a>
-          <a href="#">My projects</a>
+          <a (click)="navigateToMyProjects()" href="#">My projects</a>
         </div>
       </div>
     </div>
