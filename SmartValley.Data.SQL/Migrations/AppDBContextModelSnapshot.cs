@@ -148,11 +148,13 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<string>("LinkedInLink")
                         .HasMaxLength(100);
 
-                    b.Property<int>("PersonType");
+                    b.Property<int>("Type");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Persons");
+                    b.HasIndex("ApplicationId");
+
+                    b.ToTable("TeamMembers");
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.Application", b =>
@@ -168,6 +170,14 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasOne("SmartValley.Domain.Entities.Project", "Project")
                         .WithMany()
                         .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.Entities.TeamMember", b =>
+                {
+                    b.HasOne("SmartValley.Domain.Entities.Application", "Application")
+                        .WithMany()
+                        .HasForeignKey("ApplicationId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

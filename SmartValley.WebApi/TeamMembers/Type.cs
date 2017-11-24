@@ -1,6 +1,6 @@
-﻿namespace SmartValley.Domain.Entities
+﻿namespace SmartValley.WebApi.TeamMembers
 {
-    public enum MemberType
+    public enum Type
     {
         CEO,
         CFO,

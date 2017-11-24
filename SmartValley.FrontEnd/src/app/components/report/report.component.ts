@@ -3,8 +3,8 @@ import {Project} from '../../services/project';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {ProjectService} from '../../services/project-service';
 import {Application} from '../../services/application';
-import {ApplicationService} from '../../services/application-service';
 import {ActivatedRoute} from '@angular/router';
+import {ApplicationApiClient} from '../../api/application/application-api.client';
 
 @Component({
   selector: 'app-report',
@@ -18,11 +18,12 @@ export class ReportComponent implements OnInit {
   EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
 
   constructor(private projectService: ProjectService,
-              private applicationService: ApplicationService,
+              private applicationApiClient: ApplicationApiClient,
               private route: ActivatedRoute) {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.project = projectService.getById(parseInt(id, 0));
-    this.application = applicationService.getById(id);
+    const idParam = this.route.snapshot.paramMap.get('id');
+    const id = parseInt(idParam, 0);
+    this.project = projectService.getById(id);
+    this.loadApplication(id);
   }
 
   colorOfProjectRate(rate: number): string {
@@ -41,4 +42,7 @@ export class ReportComponent implements OnInit {
     return 'progress_rate';
   }
 
+  private async loadApplication(id: number) {
+    this.application = await this.applicationApiClient.getByProjectIdAsync(id);
+  }
 }

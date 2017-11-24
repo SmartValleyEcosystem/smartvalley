@@ -7,5 +7,7 @@ namespace SmartValley.Domain.Interfaces
     public interface ITeamMemberRepository
     {
         Task<int> AddRangeAsync(IEnumerable<TeamMember> teamMembers);
+
+        Task<IReadOnlyCollection<TeamMember>> GetAllByApplicationId(long applicationId);
     }
 }

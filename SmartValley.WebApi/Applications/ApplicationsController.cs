@@ -15,10 +15,16 @@ namespace SmartValley.WebApi.Applications
             _service = service;
         }
 
+        [HttpGet]
+        public Task<ApplicationResponse> GetByProjectIdAsync(GetByProjectIdRequest request)
+        {
+            return _service.GetByProjectIdAsync(request.ProjectId);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ApplicationRequest request)
         {
-            await _service.CreateApplicationAsync(request);
+            await _service.CreateAsync(request);
             return Ok("Project created");
         }
     }

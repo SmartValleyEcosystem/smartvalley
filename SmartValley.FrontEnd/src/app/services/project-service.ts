@@ -23,38 +23,50 @@ export class ProjectService {
     this.projects.push(<Project>{
       id: 0,
       name: 'Team Completeness',
-      imageUrl: 'https://png.icons8.com/?id=50284&size=280',
+      imgUrl: 'https://png.icons8.com/?id=50284&size=280',
       country: 'Russia',
       area: 'Bio',
       description: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
-      score: 'in progress'
+      score: 50,
+      status: '',
+      expertType: '',
+      wpLink: ''
     });
     this.projects.push(<Project>{
       id: 1,
       name: 'Team Completeness',
-      imageUrl: 'https://png.icons8.com/?id=50284&size=280',
+      imgUrl: 'https://png.icons8.com/?id=50284&size=280',
       country: 'Russia',
       area: 'Bio',
       description: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
-      score: 'in progress'
+      score: 50,
+      status: '',
+      expertType: '',
+      wpLink: ''
     });
     this.projects.push(<Project>{
       id: 2,
       name: 'Team Completeness',
-      imageUrl: 'https://png.icons8.com/?id=50284&size=280',
+      imgUrl: 'https://png.icons8.com/?id=50284&size=280',
       country: 'Russia',
       area: 'Bio',
       description: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
-      score: 'in progress'
+      score: 50,
+      status: '',
+      expertType: '',
+      wpLink: ''
     });
     this.projects.push(<Project>{
       id: 3,
       name: 'Team Completeness',
-      imageUrl: 'https://png.icons8.com/?id=50284&size=280',
+      imgUrl: 'https://png.icons8.com/?id=50284&size=280',
       country: 'Russia',
       area: 'Bio',
       description: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
-      score: 'in progress'
+      score: 50,
+      status: '',
+      expertType: '',
+      wpLink: ''
     });
   }
 }

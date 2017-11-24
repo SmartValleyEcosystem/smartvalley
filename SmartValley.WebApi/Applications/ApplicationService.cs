@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application.Contracts;
 using SmartValley.Application.Exceptions;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
+using SmartValley.WebApi.TeamMembers;
 
 namespace SmartValley.WebApi.Applications
 {
@@ -28,7 +30,7 @@ namespace SmartValley.WebApi.Applications
             _projectManagerContractClient = projectManagerContractClient;
         }
 
-        public async Task CreateApplicationAsync(ApplicationRequest applicationRequest)
+        public async Task CreateAsync(ApplicationRequest applicationRequest)
         {
             if (applicationRequest == null)
                 throw new ArgumentNullException();
@@ -38,6 +40,40 @@ namespace SmartValley.WebApi.Applications
                                      applicationRequest.TransactionHash);
 
             await CreateProjectAsync(applicationRequest, projectAddress);
+        }
+
+        public async Task<ApplicationResponse> GetByProjectIdAsync(long projectId)
+        {
+            var application = await _applicationRepository.GetByProjectIdAsync(projectId);
+            var teamMembers = await _teamRepository.GetAllByApplicationId(application.Id);
+            var project = await _projectRepository.GetByIdAsync(projectId);
+            var applicationResponse = new ApplicationResponse
+                                      {
+                                          Name = project.Name,
+                                          Description = project.Description,
+                                          AuthorAddress = project.AuthorAddress,
+                                          Country = project.Country,
+                                          ProjectArea = project.ProjectArea,
+
+                                          AttractedInvestnemts = application.InvestmentsAreAttracted,
+                                          BlockChainType = application.CryptoCurrency,
+                                          FinanceModelLink = application.FinancialModelLink,
+                                          HardCap = application.HardCap,
+                                          SoftCap = application.SoftCap,
+                                          MvpLink = application.MVPLink,
+                                          ProjectStatus = application.ProjectStatus,
+                                          WhitePaperLink = application.WhitePaperLink,
+                                          TeamMembers = teamMembers.Select(t => new TeamMemberResponse
+                                                                                {
+                                                                                    FacebookLink = t.FacebookLink,
+                                                                                    LinkedInLink = t.LinkedInLink,
+                                                                                    FullName = t.FullName,
+                                                                                    MemberType = t.Type.FromDomain()
+                                                                                }).ToList()
+                                      };
+           
+
+            return applicationResponse;
         }
 
         private async Task CreateProjectAsync(ApplicationRequest applicationRequest, string projectContractAddress)
@@ -59,15 +95,15 @@ namespace SmartValley.WebApi.Applications
                    {
                        ApplicationId = applicationId,
                        FullName = memberRequest.FullName,
-                       PersonType = ToPersonType(memberRequest.MemberType),
+                       Type = ToMemberType(memberRequest.MemberType),
                        FacebookLink = memberRequest.FacebookLink,
                        LinkedInLink = memberRequest.LinkedInLink
                    };
         }
 
-        private static MemberType ToPersonType(string memberType)
+        private static TeamMemberType ToMemberType(string memberType)
         {
-            if (Enum.TryParse(memberType, out MemberType result))
+            if (Enum.TryParse(memberType, out TeamMemberType result))
                 return result;
 
             throw new AppErrorException(ErrorCode.ValidatationError, $"Unknown team member type: '{memberType}'");
