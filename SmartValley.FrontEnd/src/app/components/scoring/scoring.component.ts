@@ -1,10 +1,11 @@
-import {Component} from '@angular/core';
+import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {Project} from '../../services/project';
 import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
 import {Paths} from '../../paths';
 import {AuthenticationService} from '../../services/authentication-service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -12,16 +13,29 @@ import {Router} from '@angular/router';
   templateUrl: './scoring.component.html',
   styleUrls: ['./scoring.component.css']
 })
-export class ScoringComponent {
+export class ScoringComponent implements AfterViewInit {
 
   public projectsForScorring: Array<Project>;
   public myProjects: Array<Project>;
 
+  @ViewChild('projectsTabSet')
+  private  projectsTabSet: NgbTabset;
+
   constructor(private scoringApiClient: ScoringApiClient,
               private authenticationService: AuthenticationService,
+              private route: ActivatedRoute,
               private router: Router) {
     this.loadProjectsForCategory(ScoringCategory.Hr);
     this.loadMyProjects();
+  }
+
+  ngAfterViewInit(): void {
+    this.route.queryParams.subscribe(params => {
+      const value = params['tab'] || 'none';
+      if (value === 'myProjects') {
+        this.projectsTabSet.select('myProjects');
+      }
+    });
   }
 
   tabChanged($event: any) {

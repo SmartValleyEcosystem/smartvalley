@@ -165,6 +165,10 @@ body {
   background-color: rgb(70, 137, 232);
 }
 
+a{
+  color: rgb(72, 138, 232);
+}
+
 .sw-card{
   position: relative;
   display: -webkit-box;
