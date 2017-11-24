@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {AuthenticationService} from '../../services/authentication-service';
+import {Router} from '@angular/router';
+import {Paths} from '../../paths';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +16,8 @@ export class HeaderComponent implements OnInit {
   public isAuthenticated: boolean;
 
   constructor(private balanceApiClient: BalanceApiClient,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              private router: Router) {
     this.authenticationService.accountChanged.subscribe(async () => await this.updateHeaderAsync());
   }
 
@@ -35,5 +38,12 @@ export class HeaderComponent implements OnInit {
 
   async receiveEth() {
     await this.balanceApiClient.receiveEtherAsync();
+  }
+
+  async navigateToMyProjects() {
+    const isOk = await this.authenticationService.authenticateAsync();
+    if (isOk) {
+      await this.router.navigate([Paths.Scoring], { queryParams: { tab: 'myProjects' }});
+    }
   }
 }

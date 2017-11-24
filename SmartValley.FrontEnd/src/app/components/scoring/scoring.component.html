@@ -7,8 +7,8 @@
     </div>
   </div>
   <div class="row mx-auto">
-    <ngb-tabset class="col-12 scoring-projects">
-      <ngb-tab title="Project for scoring">
+    <ngb-tabset #projectsTabSet class="col-12 scoring-projects">
+      <ngb-tab id="scoring" title="Project for scoring">
         <ng-template ngbTabContent>
           <span class="choose">Choose expertise</span>
           <mat-tab-group (selectedTabChange)="tabChanged($event)">
@@ -35,7 +35,7 @@
           </mat-tab-group>
         </ng-template>
       </ngb-tab>
-      <ngb-tab title="My projects">
+      <ngb-tab id="myProjects" title="My projects">
         <ng-template ngbTabContent>
           <div *ngIf="myProjects.length > 0; else withoutProject">
             <div class="card col-12 scoring-card" *ngFor="let project of myProjects;">
