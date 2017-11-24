@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {ActivatedRoute} from '@angular/router';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
@@ -14,8 +14,6 @@ import {Question} from '../../services/question';
 })
 export class ReportComponent {
 
-  selectedIndex = 0;
-  application: Application;
   public questions: Array<Question>;
   report: ProjectDetailsResponse;
   EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
@@ -25,11 +23,7 @@ export class ReportComponent {
               private questionService: QuestionService,
               private route: ActivatedRoute) {
     this.questions = this.questionService.getByExpertType(2);
-    this.loadApplication();
-  }
-
-  clickMe() {
-    this.selectedIndex = 1;
+    this.loadData();
   }
 
   colorOfProjectRate(rate: number): string {

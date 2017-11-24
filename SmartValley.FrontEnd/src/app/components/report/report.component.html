@@ -12,14 +12,14 @@
         </div>
         <div class="description col-5">
           <div class="main-info__title">
-            <span>{{project.name}}</span>
-            <span>{{project.area}}</span>
+            <span>{{report.name}}</span>
+            <span>{{report.area}}</span>
           </div>
         </div>
         <div class="scoring col-3">
           <div class="scoring-container">
             <span>Scoring rating:</span>
-            <span class="score {{colorOfProjectRate(project.score)}}">{{project.score}}</span>
+            <span class="score {{colorOfProjectRate(report.score)}}">{{report.score}}</span>
           </div>
         </div>
       </div>
@@ -147,8 +147,8 @@
             </div>
             <div class="row">
               <span class="col-3 offset-1">Attracted investments:</span>
-              <span *ngIf="application.attractedInvestments === true; else noAttract" style="color:green;"
-                    class="col-5">{{application.attractedInvestments ? 'Yes' : 'No'}}</span>
+              <span *ngIf="report.attractedInvestments === true; else noAttract" style="color:green;"
+                    class="col-5">{{report.attractedInvestments ? 'Yes' : 'No'}}</span>
               <ng-template #noAttract>
                 <span style="color:red;" class="col-5">{{report.attractedInvestments ? 'Yes' : 'No'}}</span>
               </ng-template>
@@ -160,7 +160,7 @@
             </div>
             <div class="row">
               <span class="col-3 offset-1">Blockchain:</span>
-              <span class="col-5">{{application.blockChainType}}</span>
+              <span class="col-5">{{report.blockChainType}}</span>
             </div>
             <div class="row">
               <span class="col-3 offset-1">Prototype/MVP link:</span>
@@ -168,8 +168,7 @@
             </div>
           </div>
           <div style="margin-left: calc(4em - 5px);" class="submit-button row">
-            <button (click)="clickMe()" class="trans-btn col-3 btn btn-primary"
-                    style="padding-top: 1em; padding-bottom: 1em;">
+            <button class="trans-btn col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">
               Experts estimates
               <i class="fa fa-arrow-right" aria-hidden="true"></i>
             </button>
