@@ -12,4 +12,9 @@ export class ApplicationApiClient extends BaseApiClient {
   async createApplicationAsync(application: Application) {
     await this.http.post(this.baseApiUrl + '/applications', application).subscribe();
   }
+
+  async getByProjectIdAsync(id: number) {
+    return this.http.get<Application>(this.baseApiUrl + '/applications?projectId=' + id )
+      .toPromise();
+  }
 }
