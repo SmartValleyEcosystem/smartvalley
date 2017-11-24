@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {Application} from '../../services/application';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {QuestionService} from '../../services/question-service';
 import {Question} from '../../services/question';
@@ -74,7 +73,7 @@ export class EstimateComponent {
 
   private async loadProjectInfo() {
     this.projectId = +this.route.snapshot.paramMap.get('id');
-    this.expertType = EnumExpertType.Lawyer; // TODO
+    this.expertType = +this.route.snapshot.queryParamMap.get('category');
     this.questions = this.questionService.getByExpertType(this.expertType);
     this.projectDetails = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
   }

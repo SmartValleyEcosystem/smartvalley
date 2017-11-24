@@ -1,11 +1,11 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {Project} from '../../services/project';
 import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
-import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
 import {Paths} from '../../paths';
 import {AuthenticationService} from '../../services/authentication-service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
+import {EnumExpertType} from '../../services/enumExpertType';
 
 
 @Component({
@@ -15,17 +15,17 @@ import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 })
 export class ScoringComponent implements AfterViewInit {
 
-  public projectsForScorring: Array<Project>;
+  public projectsForScoring: Array<Project>;
   public myProjects: Array<Project>;
 
   @ViewChild('projectsTabSet')
-  private  projectsTabSet: NgbTabset;
+  private projectsTabSet: NgbTabset;
 
   constructor(private scoringApiClient: ScoringApiClient,
               private authenticationService: AuthenticationService,
               private route: ActivatedRoute,
               private router: Router) {
-    this.loadProjectsForCategory(ScoringCategory.Hr);
+    this.loadProjectsForCategory(EnumExpertType.HR);
     this.loadMyProjects();
   }
 
@@ -39,38 +39,38 @@ export class ScoringComponent implements AfterViewInit {
   }
 
   tabChanged($event: any) {
-    let scoringCategory: ScoringCategory = 1;
-    let index: number = $event.index;
+    let scoringCategory: EnumExpertType = 1;
+    const index: number = $event.index;
     switch (index) {
       case 0 :
-        scoringCategory = ScoringCategory.Hr;
+        scoringCategory = EnumExpertType.HR;
         break;
       case 1 :
-        scoringCategory = ScoringCategory.Lawyer;
+        scoringCategory = EnumExpertType.Lawyer;
         break;
       case 2 :
-        scoringCategory = ScoringCategory.Analyst;
+        scoringCategory = EnumExpertType.Analyst;
         break;
       case 3 :
-        scoringCategory = ScoringCategory.Tech;
+        scoringCategory = EnumExpertType.TechnicalExpert;
         break;
     }
     this.loadProjectsForCategory(scoringCategory);
   }
 
-
-  private async loadProjectsForCategory(scroringCategory: ScoringCategory) {
-    this.projectsForScorring = [];
-    const projects = await this.scoringApiClient.getProjectForScoringAsync({scoringCategory: scroringCategory});
+  private async loadProjectsForCategory(scoringCategory: EnumExpertType) {
+    this.projectsForScoring = [];
+    const projects = await this.scoringApiClient.getProjectForScoringAsync({scoringCategory: <number>scoringCategory});
     for (const projectResponse of projects.items) {
-      this.projectsForScorring.push(<Project>{
+      this.projectsForScoring.push(<Project>{
         id: projectResponse.id,
         name: projectResponse.name,
         area: projectResponse.area,
         country: projectResponse.country,
         score: projectResponse.score,
         description: projectResponse.description,
-        imgUrl: 'https://png.icons8.com/?id=50284&size=280'
+        imgUrl: 'https://png.icons8.com/?id=50284&size=280',
+        scoringCategory: scoringCategory
       });
     }
   }

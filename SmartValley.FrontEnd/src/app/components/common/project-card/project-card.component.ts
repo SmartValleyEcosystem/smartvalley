@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Project} from '../../../services/project';
 import {Router} from '@angular/router';
 import {Paths} from '../../../paths';
@@ -29,7 +29,9 @@ export class ProjectCardComponent {
   }
 
   showProject(id: number) {
-    this.router.navigate([Paths.Scoring + '/' + id]);
+    this.router.navigate(
+      [Paths.Scoring + '/' + id],
+      {queryParams: {category: this.project.scoringCategory}});
   }
 
   showReport(id: number) {

@@ -65,8 +65,7 @@ export class AuthenticationService {
     if (shouldSign) {
       try {
         await this.signAndSaveAsync(currentAccount);
-      }
-      catch (e) {
+      } catch (e) {
         return false;
       }
     }
@@ -157,7 +156,7 @@ export class AuthenticationService {
   }
 
   public stopUserSession() {
-    this.deleteCurrentUser()
+    this.deleteCurrentUser();
     this.stopBackgroundChecker();
     this.router.navigate([Paths.Root]);
   }

@@ -15,22 +15,22 @@
               <span class="choose">Choose expertise</span>
               <mat-tab-group (selectedTabChange)="tabChanged($event)">
                 <mat-tab label="HR">
-                  <div class="card" *ngFor="let project of projectsForScorring;">
+                  <div class="card" *ngFor="let project of projectsForScoring;">
                     <app-project-card [project]="project" [isScoring]="true"></app-project-card>
                   </div>
                 </mat-tab>
                 <mat-tab label="Lawyer">
-                  <div class="card" *ngFor="let project of projectsForScorring;">
+                  <div class="card" *ngFor="let project of projectsForScoring;">
                     <app-project-card [project]="project" [isScoring]="true"></app-project-card>
                   </div>
                 </mat-tab>
                 <mat-tab label="Analyst">
-                  <div class="card" *ngFor="let project of projectsForScorring;">
+                  <div class="card" *ngFor="let project of projectsForScoring;">
                     <app-project-card [project]="project" [isScoring]="true"></app-project-card>
                   </div>
                 </mat-tab>
                 <mat-tab label="Technical expert">
-                  <div class="card" *ngFor="let project of projectsForScorring;">
+                  <div class="card" *ngFor="let project of projectsForScoring;">
                     <app-project-card [project]="project" [isScoring]="true"></app-project-card>
                   </div>
                 </mat-tab>

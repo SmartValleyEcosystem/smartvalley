@@ -1,5 +1,5 @@
 import {ScoringCategory} from './scoring-category.enum';
 
-export interface ProjecsForScoringRequest {
+export interface ProjectsForScoringRequest {
   scoringCategory: ScoringCategory;
 }

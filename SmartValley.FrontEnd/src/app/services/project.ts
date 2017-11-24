@@ -1,3 +1,5 @@
+import {EnumExpertType} from './enumExpertType';
+
 export interface Project {
 
   id: number;
@@ -10,4 +12,5 @@ export interface Project {
   wpLink: string;
   score: number;
   expertType: string;
+  scoringCategory: EnumExpertType;
 }
