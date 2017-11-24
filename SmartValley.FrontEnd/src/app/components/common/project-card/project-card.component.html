@@ -1,17 +1,17 @@
 <div class="card-block scoring-card-block">
-  <div class="scoring-header col-4">
+  <div class="main-info col-4">
     <img style="width: 100px;" src="{{project.imgUrl}}"/>
-    <div class="scoring-header__title">
+    <div class="main-info__title">
       <span>{{project.name}}</span>
-      <span class="scoring-header__country">{{project.country}}</span>
+      <span class="main-info__country">{{project.country}}</span>
       <span>{{project.area}}</span>
     </div>
   </div>
-  <div class="scoring-content col-5">
+  <div class="description col-5">
     <p class="card-text">{{project.description}}</p>
   </div>
-  <div class="scoring-footer col-3">
-    <div class="scoring-rating">
+  <div class="scoring col-3">
+    <div class="scoring-container">
       <span>Scoring rating:</span>
       <span class="score {{colorOfProjectRate(project.score)}}">{{project.score}}</span>
     </div>
