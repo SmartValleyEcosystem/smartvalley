@@ -32,8 +32,6 @@ export class ProjectCardComponent {
   }
 
   showReport(id: number) {
-    console.log(id);
-
     this.router.navigate([Paths.Report + '/' + id]);
   }
 
