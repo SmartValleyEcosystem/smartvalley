@@ -28,11 +28,6 @@ export class ApplicationService {
       projectArea: 'Area1',
       country: 'Russia',
       whitePaperLink: 'http',
-      teamMembers: [
-        <TeamMember>{ fullName: 'Vasya Pupkin', memberType: EnumTeamMemberType.CEO, facebookLink: 'httpFB', linkedInLink: 'link1'},
-        <TeamMember>{ fullName: 'Ivan Ivanov', memberType: EnumTeamMemberType.PR, facebookLink: 'httpFB1', linkedInLink: 'link13'},
-        <TeamMember>{ fullName: 'Sidor Sidorov', memberType: EnumTeamMemberType.CTO, facebookLink: 'httpFB2', linkedInLink: 'link14'}
-        ],
       softCap: '10 min. USD',
       hardCap: '80 min. USD',
       financeModelLink: 'wwwlink',
@@ -69,6 +64,11 @@ export class ApplicationService {
       hardCap: '80 min. USD',
       financeModelLink: 'wwwlink',
       blockChainType: 'Ethereum',
+      teamMembers: [
+        <TeamMember>{ fullName: 'Vasya Pupkin', memberType: EnumTeamMemberType.CEO, facebookLink: 'httpFB', linkedInLink: 'link1'},
+        <TeamMember>{ fullName: 'Ivan Ivanov', memberType: EnumTeamMemberType.PR, facebookLink: 'httpFB1', linkedInLink: 'link13'},
+        <TeamMember>{ fullName: 'Sidor Sidorov', memberType: EnumTeamMemberType.CTO, facebookLink: 'httpFB2', linkedInLink: 'link14'}
+      ],
       mvpLink: 'mvpLink',
       solutionDescription: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.',
       probablyDescription: 'In literary theory, a text is any object that can be "read", whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing.'

@@ -29,6 +29,8 @@ import {ErrorInterceptor} from './api/error-interceptor';
 import {ScoringApiClient} from './api/scoring/scoring-api-client';
 import {ProjectCardComponent} from './components/common/project-card/project-card.component';
 import {ProjectApiClient} from './api/project/project-api-client';
+import { ReportComponent } from './components/report/report.component';
+import {ProjectService} from './services/project-service';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,8 @@ import {ProjectApiClient} from './api/project/project-api-client';
     ScoringComponent,
     FooterComponent,
     EstimateComponent,
-    ProjectCardComponent
+    ProjectCardComponent,
+    ReportComponent
   ],
   imports: [
     MatTabsModule,
@@ -72,6 +75,7 @@ import {ProjectApiClient} from './api/project/project-api-client';
     AuthenticationService,
     ApplicationService,
     QuestionService,
+    ProjectService,
     Web3Service,
     ProjectManagerContractClient],
   bootstrap: [AppComponent]

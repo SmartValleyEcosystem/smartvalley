@@ -1,0 +1,70 @@
+.scoring-card {
+  display: inline-block;
+  margin: 0px;
+  padding: 0px;
+  margin-bottom: 1rem;
+}
+
+.scoring-container {
+  display: inline-block;
+}
+
+.scoring-container > span {
+  display: block;
+}
+
+.scoring-container > .score {
+  font-size: 3em;
+}
+
+.scoring a.sv-default-btn {
+  float: right;
+  bottom: calc(3em - 16px);
+  position: absolute;
+  right: calc(1.5em + 8px);
+}
+
+.scoring-card-block {
+  position: relative;
+  padding: 0px;
+}
+
+.scoring-card-block > div {
+  vertical-align: top;
+  padding: 2em;
+}
+
+.description {
+  display: inline-block;
+  padding-right: 2em;
+  padding-left: 2em;
+}
+
+.main-info {
+  display: inline-block;
+  left: 1.5em;
+  padding: 1em;
+}
+
+.main-info__country {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.main-info__title > span {
+  display: block;
+  margin: 5px 0px;
+}
+
+.main-info__title > span:first-child {
+  font-size: 1.5em;
+}
+
+.scoring {
+  text-align: right;
+  max-width: calc(25% - 8px);
+  display: inline-block;
+  padding: 0;
+  position: absolute;
+  height: 100%;
+  right: 2.5em;
+}
