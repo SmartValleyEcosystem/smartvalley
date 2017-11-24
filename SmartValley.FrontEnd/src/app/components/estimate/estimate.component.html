@@ -53,7 +53,7 @@
       <h3 class="col-10 offset-1">Finance</h3>
     </div>
     <div class="row">
-      <span class="col-4 offset-1">Do your team attract investments?</span>
+      <span class="col-4 offset-1">Does your team attract investments?</span>
       <span class="col-5">Yes...</span>
     </div>
   </div>
@@ -74,36 +74,24 @@
         <div class="form-group">
           <div class="col-1 offset-1">
             <span style="font-size: 0.85em;">Your score:</span>
-            <input style="margin-top: 1em;" class="form-control" placeholder="6">
+            <input style="margin-top: 1em;" class="form-control" [(ngModel)]="question.score"
+                   placeholder="{{question.maxScore}}">
           </div>
           <div class="col-6">
             <span style="font-size: 0.85em;">Comments 250 symbols</span>
-            <textarea class="form-control" style="margin-top: 1em; height: 10em; resize: none;"
-                      placeholder="Technology of Authenticity Verification of Video Content"></textarea>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="sw-card sw-content">
-    <div class="row row-title">
-      <h3 class="col-10 offset-1">Summary</h3>
-    </div>
-    <div class="row-content">
-      <div class="row">
-        <div class="form-group">
-          <div class="col-6 offset-1">
-            <span style="font-size: 0.85em;">Comments</span>
-            <textarea class="form-control" style="margin-top: 1em; height: 10em; resize: none;"
-                      placeholder="Technology of Authenticity Verification of Video Content"></textarea>
+            <textarea class="form-control"
+                      style="margin-top: 1em; height: 10em; resize: none;"
+                      [(ngModel)]="question.comments"
+                      placeholder="Technology of Authenticity Verification of Video Content">
+            </textarea>
           </div>
         </div>
       </div>
     </div>
   </div>
   <div class="submit-button row">
-    <button (click)="send()" class="btn-blue col-3 btn btn-primary"
-            style="padding-top: 1em; padding-bottom: 1em;">Send
+    <button (click)="send()" class="btn-blue col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">
+      Send
     </button>
   </div>
 </div>

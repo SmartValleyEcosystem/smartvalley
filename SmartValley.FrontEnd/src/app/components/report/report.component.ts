@@ -20,16 +20,15 @@ export class ReportComponent implements OnInit {
   constructor(private projectService: ProjectService,
               private applicationApiClient: ApplicationApiClient,
               private route: ActivatedRoute) {
-    const idParam = this.route.snapshot.paramMap.get('id');
-    const id = parseInt(idParam, 0);
-    this.project = projectService.getById(id);
-    this.loadApplication(id);
+    this.loadApplication();
   }
 
   ngOnInit() {
   }
 
-  private async loadApplication(id: number) {
+  private async loadApplication() {
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.project = this.projectService.getById(id);
     this.application = await this.applicationApiClient.getByProjectIdAsync(id);
   }
 }

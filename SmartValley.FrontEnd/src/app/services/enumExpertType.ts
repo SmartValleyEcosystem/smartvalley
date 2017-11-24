@@ -1,6 +1,6 @@
 export enum EnumExpertType {
-  HR,
-  Lawyer,
-  Analyst,
-  Technical_expert,
+  HR = 1,
+  Analyst = 2,
+  TechnicalExpert = 3,
+  Lawyer = 4,
 }

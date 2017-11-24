@@ -15,7 +15,7 @@ import {MaterialModule} from './shared/material.module';
 import {BalanceApiClient} from './api/balance/balance-api-client';
 import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
 import {ApplicationComponent} from './components/application/application.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ProjectManagerContractClient} from './services/project-manager-contract-client';
 import {ScoringComponent} from './components/scoring/scoring.component';  // <-- #1 import module
 import {MatTabsModule} from '@angular/material';
@@ -28,8 +28,9 @@ import {ErrorInterceptor} from './api/error-interceptor';
 import {ScoringApiClient} from './api/scoring/scoring-api-client';
 import {ProjectCardComponent} from './components/common/project-card/project-card.component';
 import {ProjectApiClient} from './api/project/project-api-client';
-import { ReportComponent } from './components/report/report.component';
+import {ReportComponent} from './components/report/report.component';
 import {ProjectService} from './services/project-service';
+import {EstimatesApiClient} from './api/estimates/estimates-api-client';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import {ProjectService} from './services/project-service';
     MaterialModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    FormsModule,
     NgbModule.forRoot(),
     SimpleNotificationsModule.forRoot()
   ],
@@ -71,6 +73,7 @@ import {ProjectService} from './services/project-service';
     ContractApiClient,
     ProjectApiClient,
     ScoringApiClient,
+    EstimatesApiClient,
     AuthenticationService,
     QuestionService,
     ProjectService,

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application.Contracts;
@@ -54,7 +53,7 @@ namespace SmartValley.WebApi.Applications
                                           AuthorAddress = project.AuthorAddress,
                                           Country = project.Country,
                                           ProjectArea = project.ProjectArea,
-
+                                          ProjectId = project.ExternalId.ToString(),
                                           AttractedInvestnemts = application.InvestmentsAreAttracted,
                                           BlockChainType = application.CryptoCurrency,
                                           FinanceModelLink = application.FinancialModelLink,
@@ -71,7 +70,6 @@ namespace SmartValley.WebApi.Applications
                                                                                     MemberType = t.Type.FromDomain()
                                                                                 }).ToList()
                                       };
-           
 
             return applicationResponse;
         }

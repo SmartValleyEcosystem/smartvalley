@@ -18,7 +18,7 @@ namespace SmartValley.WebApi.Estimates
         public async Task<IActionResult> Post([FromBody] SubmitEstimatesRequest request)
         {
             await _estimationService.SubmitEstimatesAsync(request);
-            return Ok("Estimates submitted");
+            return NoContent();
         }
     }
 }
