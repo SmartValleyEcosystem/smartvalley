@@ -28,4 +28,5 @@
     <ProjectReference Include="..\SmartValley.Data.SQL\SmartValley.Data.SQL.csproj" />
     <ProjectReference Include="..\SmartValley.Domain\SmartValley.Domain.csproj" />
   </ItemGroup>
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
 </Project>

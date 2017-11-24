@@ -7,6 +7,8 @@ import {Question} from '../../services/question';
 import {Paths} from '../../paths';
 import {Router} from '@angular/router';
 import {ApplicationApiClient} from '../../api/application/application-api.client';
+import {ProjectDetailsResponse} from '../../api/project/project-details-response';
+import {ProjectApiClient} from '../../api/project/project-api-client';
 
 @Component({
   selector: 'app-estimate',
@@ -15,13 +17,13 @@ import {ApplicationApiClient} from '../../api/application/application-api.client
 })
 export class EstimateComponent {
 
-  public application: Application;
+  public application: ProjectDetailsResponse;
   public questions: Array<Question>;
   hidden: boolean;
   EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
 
   constructor(private route: ActivatedRoute,
-              private applicationApiClient: ApplicationApiClient,
+              private projectApiClient: ProjectApiClient,
               private questionService: QuestionService,
               private router: Router) {
     this.loadProjectInfo();
@@ -38,6 +40,6 @@ export class EstimateComponent {
   private async loadProjectInfo() {
     const id = this.route.snapshot.paramMap.get('id');
     this.questions = this.questionService.getByExpertType(2);
-    this.application = await this.applicationApiClient.getByProjectIdAsync(parseInt(id));
+    this.application = await this.projectApiClient.getDetailsByIdAsync(parseInt(id));
   }
 }

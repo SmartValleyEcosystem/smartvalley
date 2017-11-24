@@ -5,6 +5,8 @@ import {ProjectService} from '../../services/project-service';
 import {Application} from '../../services/application';
 import {ActivatedRoute} from '@angular/router';
 import {ApplicationApiClient} from '../../api/application/application-api.client';
+import {ProjectApiClient} from '../../api/project/project-api-client';
+import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 
 @Component({
   selector: 'app-report',
@@ -13,23 +15,21 @@ import {ApplicationApiClient} from '../../api/application/application-api.client
 })
 export class ReportComponent implements OnInit {
 
-  project: Project;
-  application: Application;
+  report: ProjectDetailsResponse;
   EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
 
-  constructor(private projectService: ProjectService,
-              private applicationApiClient: ApplicationApiClient,
+  constructor(private projectApiClient: ProjectApiClient,
               private route: ActivatedRoute) {
     const idParam = this.route.snapshot.paramMap.get('id');
     const id = parseInt(idParam, 0);
-    this.project = projectService.getById(id);
-    this.loadApplication(id);
+
+    this.loadData(id);
   }
 
   ngOnInit() {
   }
 
-  private async loadApplication(id: number) {
-    this.application = await this.applicationApiClient.getByProjectIdAsync(id);
+  private async loadData(id: number) {
+    this.report = await this.projectApiClient.getDetailsByIdAsync(id);
   }
 }
