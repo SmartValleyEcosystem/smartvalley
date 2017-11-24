@@ -29,7 +29,6 @@ import {ScoringApiClient} from './api/scoring/scoring-api-client';
 import {ProjectCardComponent} from './components/common/project-card/project-card.component';
 import {ProjectApiClient} from './api/project/project-api-client';
 import {ReportComponent} from './components/report/report.component';
-import {ProjectService} from './services/project-service';
 import {EstimatesApiClient} from './api/estimates/estimates-api-client';
 
 @NgModule({
@@ -76,7 +75,6 @@ import {EstimatesApiClient} from './api/estimates/estimates-api-client';
     EstimatesApiClient,
     AuthenticationService,
     QuestionService,
-    ProjectService,
     Web3Service,
     ProjectManagerContractClient],
   bootstrap: [AppComponent]
