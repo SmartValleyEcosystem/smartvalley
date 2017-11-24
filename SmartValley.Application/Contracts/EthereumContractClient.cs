@@ -40,7 +40,7 @@ namespace SmartValley.Application.Contracts
             string functionName,
             params object[] functionInput)
         {
-            var function = GetFunction(functionName, contractAbi, contractAddress);
+            var function = GetFunction(contractAddress, contractAbi, functionName);
             var transactionInput = await CreateTransactionInputAsync(function, functionInput);
             var transactionHash = await _web3.Personal.SignAndSendTransaction.SendRequestAsync(transactionInput, _password);
 
