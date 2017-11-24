@@ -30,7 +30,7 @@ namespace SmartValley.WebApi.Applications
             _projectManagerContractClient = projectManagerContractClient;
         }
 
-        public async Task CreateApplicationAsync(ApplicationRequest applicationRequest)
+        public async Task CreateAsync(ApplicationRequest applicationRequest)
         {
             if (applicationRequest == null)
                 throw new ArgumentNullException();
@@ -63,19 +63,15 @@ namespace SmartValley.WebApi.Applications
                                           MvpLink = application.MVPLink,
                                           ProjectStatus = application.ProjectStatus,
                                           WhitePaperLink = application.WhitePaperLink,
-                                          TeamMembers = new List<TeamMemberResponse>()
+                                          TeamMembers = teamMembers.Select(t => new TeamMemberResponse
+                                                                                {
+                                                                                    FacebookLink = t.FacebookLink,
+                                                                                    LinkedInLink = t.LinkedInLink,
+                                                                                    FullName = t.FullName,
+                                                                                    MemberType = t.Type.FromDomain()
+                                                                                }).ToList()
                                       };
-
-            foreach (var teamMember in teamMembers)
-            {
-                applicationResponse.TeamMembers.Add(new TeamMemberResponse
-                                                    {
-                                                        FacebookLink = teamMember.FacebookLink,
-                                                        FullName = teamMember.FullName,
-                                                        LinkedInLink = teamMember.LinkedInLink,
-                                                        MemberType = teamMember.Type.FromDomain()
-                                                    });
-            }
+           
 
             return applicationResponse;
         }

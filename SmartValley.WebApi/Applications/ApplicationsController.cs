@@ -24,7 +24,7 @@ namespace SmartValley.WebApi.Applications
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ApplicationRequest request)
         {
-            await _service.CreateApplicationAsync(request);
+            await _service.CreateAsync(request);
             return Ok("Project created");
         }
     }

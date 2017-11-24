@@ -33,6 +33,6 @@ namespace SmartValley.WebApi.Applications
 
         public bool AttractedInvestnemts { get; set; }
 
-        public List<TeamMemberResponse> TeamMembers { get; set; }
+        public IReadOnlyCollection<TeamMemberResponse> TeamMembers { get; set; }
     }
 }

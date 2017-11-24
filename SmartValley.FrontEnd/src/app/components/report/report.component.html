@@ -1,0 +1,129 @@
+<div class="container">
+  <div class="row mx-auto">
+    <div class="col-8 title">
+      <h1>Scoring report</h1>
+    </div>
+  </div>
+  <div class="row mx-auto">
+    <div class="report-card col-10">
+      <div class="report-content">
+        <div class="scoring-header">
+          <img style="width: 100px;" src="https://png.icons8.com/?id=50284&size=280"/>
+        </div>
+        <div class="scoring-content">
+          <div class="scoring-header__title">
+            <span>{{project.name}}</span>
+            <span>{{project.area}}</span>
+          </div>
+        </div>
+        <div class="rating">
+          <span>Scoring rating:</span>
+          <span class="score">{{project.score}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mx-auto">
+    <ngb-tabset class="col-10 info">
+      <ngb-tab title="Form">
+        <ng-template ngbTabContent>
+          <div class="sw-card sw-content">
+            <div class="row">
+              <span class="col-3 offset-1">Project name:</span>
+              <span class="col-5">{{application.name}}</span>
+            </div>
+            <div class="row">
+              <span class="col-3 offset-1">Project Area</span>
+              <span class="col-5">{{application.projectArea}}</span>
+            </div>
+            <div class="row">
+              <span class="col-3 offset-1">Problem description</span>
+              <span class="col-5">{{application.description}}</span>
+            </div>
+            <div class="row">
+              <span class="col-3 offset-1">Status</span>
+              <span class="col-5">{{application.projectStatus}}</span>
+            </div>
+            <div class="row">
+              <span class="col-3 offset-1">White paper link</span>
+              <a href="{{application.whitePaperLink}}" class="col-5">{{application.whitePaperLink}}</a>
+            </div>
+          </div>
+
+          <div class="sw-card sw-content">
+            <div class="row row-title">
+              <h3 class="col-10 offset-1">Core Team</h3>
+            </div>
+            <div *ngFor="let member of application.teamMembers;">
+              <div class="row">
+                <span class="col-1 offset-1">{{EnumTeamMemberType[member.memberType]}}:</span>
+                <span class="col-2" style="margin-left: 2em;">{{member.fullName}}</span>
+                <span class="col-1 offset-1 social-group">
+        <a href="{{member.facebookLink}}">
+        <i class="fa fa-facebook" aria-hidden="true"></i>
+        </a>
+        <a href="{{member.linkedInLink}}">
+        <i class="fa fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </span>
+              </div>
+            </div>
+          </div>
+          <div class="sw-card sw-content">
+            <div class="row row-title">
+              <h3 class="col-10 offset-1">Legal part</h3>
+            </div>
+            <div class="row">
+              <span class="col-3 offset-1">Incorporation:</span>
+              <span class="col-5">{{application.country}}</span>
+            </div>
+          </div>
+          <div class="sw-card sw-content">
+            <div class="row row-title">
+              <h3 class="col-10 offset-1">Finance</h3>
+            </div>
+            <div class="row">
+              <span class="col-3 offset-1">Investments</span>
+            </div>
+            <div class="row">
+              <span class="col-3 offset-1">Soft cap:</span>
+              <span class="col-5">{{application.softCap}}</span>
+            </div>
+            <div class="row">
+              <span class="col-3 offset-1">Hard cap:</span>
+              <span class="col-5">{{application.hardCap}}</span>
+            </div>
+            <div class="row">
+              <span class="col-3 offset-1">Financial model link:</span>
+              <a href="{{application.financeModelLink}}" class="col-5">{{application.financeModelLink}}</a>
+            </div>
+            <div class="row">
+              <span class="col-3 offset-1">Attracted investments:</span>
+              <span *ngIf="application.attractedInvestments === true; else noAttract" style="color:green;" class="col-5">{{application.attractedInvestments ? 'Yes' : 'No'}}</span>
+              <ng-template #noAttract>
+                <span style="color:red;" class="col-5">{{application.attractedInvestments ? 'Yes' : 'No'}}</span>
+              </ng-template>
+            </div>
+          </div>
+          <div class="sw-card sw-content">
+            <div class="row row-title">
+              <h3 class="col-10 offset-1">Tech</h3>
+            </div>
+            <div class="row">
+            <span class="col-3 offset-1">Blockchain:</span>
+            <span class="col-5">{{application.blockChainType}}</span>
+            </div>
+            <div class="row">
+              <span class="col-3 offset-1">Prototype/MVP link:</span>
+              <a class="col-5" href="{{application.mvpLink}}">{{application.mvpLink}}</a>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Experts estimates">
+        <ng-template ngbTabContent>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</div>

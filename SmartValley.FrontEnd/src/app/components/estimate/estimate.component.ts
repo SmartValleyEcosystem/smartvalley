@@ -39,6 +39,5 @@ export class EstimateComponent {
     const id = this.route.snapshot.paramMap.get('id');
     this.questions = this.questionService.getByExpertType(2);
     this.application = await this.applicationApiClient.getByProjectIdAsync(parseInt(id));
-    console.log(this.application);
   }
 }
