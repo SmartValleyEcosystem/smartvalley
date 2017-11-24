@@ -31,5 +31,6 @@ export class ReportComponent implements OnInit {
 
   private async loadData(id: number) {
     this.report = await this.projectApiClient.getDetailsByIdAsync(id);
+    console.log(this.report);
   }
 }

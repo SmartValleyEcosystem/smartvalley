@@ -10,7 +10,6 @@ import {SubmitEstimatesRequest} from '../../api/estimates/submit-estimates-reque
 import {EnumExpertType} from '../../services/enumExpertType';
 import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';
 import {AuthenticationService} from '../../services/authentication-service';
-import {ApplicationApiClient} from '../../api/application/application-api.client';
 import {EstimateRequest} from '../../api/estimates/estimate-request';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {ProjectApiClient} from '../../api/project/project-api-client';
@@ -77,9 +76,6 @@ export class EstimateComponent {
     this.projectId = +this.route.snapshot.paramMap.get('id');
     this.expertType = EnumExpertType.Lawyer; // TODO
     this.questions = this.questionService.getByExpertType(this.expertType);
-    this.application = await this.applicationApiClient.getByProjectIdAsync(this.projectId);
-    const id = this.route.snapshot.paramMap.get('id');
-    this.questions = this.questionService.getByExpertType(2);
-    this.application = await this.projectApiClient.getDetailsByIdAsync(parseInt(id));
+    this.application = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
   }
 }
