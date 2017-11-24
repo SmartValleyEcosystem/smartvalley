@@ -42,9 +42,9 @@ namespace SmartValley.Data.SQL.Tests.Tests
                             };
             _persons = new List<TeamMember>
                        {
-                           new TeamMember {ApplicationId = _applications[0].Id, FullName = "Max Payne", PersonType = MemberType.PR, FacebookLink = "FB1", LinkedInLink = "LinkedIN1"},
-                           new TeamMember {ApplicationId = _applications[1].Id, FullName = "Ivan Ivanov", PersonType = MemberType.CFO, FacebookLink = "FB2", LinkedInLink = "LinkedIN2"},
-                           new TeamMember {ApplicationId = _applications[1].Id, FullName = "Vasya Pupkin", PersonType = MemberType.CMO, FacebookLink = "FB2", LinkedInLink = "LinkedIN2"}
+                           new TeamMember {ApplicationId = _applications[0].Id, FullName = "Max Payne", Type = TeamMemberType.PR, FacebookLink = "FB1", LinkedInLink = "LinkedIN1"},
+                           new TeamMember {ApplicationId = _applications[1].Id, FullName = "Ivan Ivanov", Type = TeamMemberType.CFO, FacebookLink = "FB2", LinkedInLink = "LinkedIN2"},
+                           new TeamMember {ApplicationId = _applications[1].Id, FullName = "Vasya Pupkin", Type = TeamMemberType.CMO, FacebookLink = "FB2", LinkedInLink = "LinkedIN2"}
                        };
         }
 

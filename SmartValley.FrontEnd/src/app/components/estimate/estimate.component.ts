@@ -1,19 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Application} from '../../services/application';
-import {ApplicationService} from '../../services/application-service';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {QuestionService} from '../../services/question-service';
 import {Question} from '../../services/question';
 import {Paths} from '../../paths';
 import {Router} from '@angular/router';
+import {ApplicationApiClient} from '../../api/application/application-api.client';
 
 @Component({
   selector: 'app-estimate',
   templateUrl: './estimate.component.html',
   styleUrls: ['./estimate.component.css']
 })
-export class EstimateComponent implements OnInit {
+export class EstimateComponent {
 
   public application: Application;
   public questions: Array<Question>;
@@ -21,9 +21,10 @@ export class EstimateComponent implements OnInit {
   EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
 
   constructor(private route: ActivatedRoute,
-              private applicationService: ApplicationService,
+              private applicationApiClient: ApplicationApiClient,
               private questionService: QuestionService,
               private router: Router) {
+    this.loadProjectInfo();
   }
 
   changeHidden() {
@@ -34,9 +35,10 @@ export class EstimateComponent implements OnInit {
     this.router.navigate([Paths.Scoring]);
   }
 
-  ngOnInit() {
+  private async loadProjectInfo() {
     const id = this.route.snapshot.paramMap.get('id');
-    this.application = this.applicationService.getById(id);
     this.questions = this.questionService.getByExpertType(2);
+    this.application = await this.applicationApiClient.getByProjectIdAsync(parseInt(id));
+    console.log(this.application);
   }
 }
