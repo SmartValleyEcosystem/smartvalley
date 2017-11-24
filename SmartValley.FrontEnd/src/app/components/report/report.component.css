@@ -1,8 +1,9 @@
-.title{
+.title {
   color: white;
   padding: 0;
 }
-.report-card{
+
+.report-card {
   position: relative;
   display: -ms-flexbox;
   display: flex;
@@ -16,27 +17,70 @@
   border-radius: 0.25rem;
   padding: 0;
 }
-.report-content{
+
+.report-content {
   margin: 2em;
 }
-.report-content > div{
+
+.report-content > div {
   display: inline-block;
 }
-.rating{
+
+.rating {
   float: right;
 }
-.nav-tabs .nav-item:first-child{
+
+.nav-tabs .nav-item:first-child {
   margin-left: 0px;
 }
-.info{
-  padding:0;
+
+.info {
+  padding: 0;
   margin-left: -60px;
 }
-.info .sw-card{
+
+.info .sw-card {
   margin-left: 60px;
   margin-right: -60px;
   padding: 1em;
 }
-.row{
+
+.row {
   padding: 1em 0em;
 }
+
+.description {
+  display: inline-block;
+  padding-right: 2em;
+  padding-left: 2em;
+}
+
+.main-info {
+  display: inline-block;
+  left: 1.5em;
+  padding: 1em;
+}
+
+.main-info__country {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.main-info__title > span {
+  display: block;
+  margin: 5px 0px;
+}
+
+.main-info__title > span:first-child {
+  font-size: 1.5em;
+}
+
+.scoring {
+  text-align: right;
+  max-width: calc(25% - 8px);
+  display: inline-block;
+  padding: 0;
+  position: absolute;
+  height: 100%;
+  right: 2.5em;
+}
+

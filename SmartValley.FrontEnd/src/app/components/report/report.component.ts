@@ -25,7 +25,20 @@ export class ReportComponent implements OnInit {
     this.application = applicationService.getById(id);
   }
 
-  ngOnInit() {
+  colorOfProjectRate(rate: number): string {
+    if (rate == null) {
+      return '';
+    }
+    if (rate > 80) {
+      return 'high_rate';
+    }
+    if (rate > 45) {
+      return 'medium_rate';
+    }
+    if (rate >= 0) {
+      return 'low_rate';
+    }
+    return 'progress_rate';
   }
 
 }

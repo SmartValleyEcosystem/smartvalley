@@ -7,18 +7,20 @@
   <div class="row mx-auto">
     <div class="report-card col-10">
       <div class="report-content">
-        <div class="scoring-header">
+        <div class="main-info col-4">
           <img style="width: 100px;" src="https://png.icons8.com/?id=50284&size=280"/>
         </div>
-        <div class="scoring-content">
-          <div class="scoring-header__title">
+        <div class="description col-5">
+          <div class="main-info__title">
             <span>{{project.name}}</span>
             <span>{{project.area}}</span>
           </div>
         </div>
-        <div class="rating">
-          <span>Scoring rating:</span>
-          <span class="score">{{project.score}}</span>
+        <div class="scoring col-3">
+          <div class="scoring-container">
+            <span>Scoring rating:</span>
+            <span class="score {{colorOfProjectRate(project.score)}}">{{project.score}}</span>
+          </div>
         </div>
       </div>
     </div>
