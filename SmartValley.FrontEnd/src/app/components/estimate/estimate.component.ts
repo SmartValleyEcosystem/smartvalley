@@ -25,7 +25,7 @@ export class EstimateComponent {
   expertType: EnumExpertType;
   projectId: number;
 
-  public application: ProjectDetailsResponse;
+  public projectDetails: ProjectDetailsResponse;
   public questions: Array<Question>;
 
   constructor(private route: ActivatedRoute,
@@ -76,6 +76,6 @@ export class EstimateComponent {
     this.projectId = +this.route.snapshot.paramMap.get('id');
     this.expertType = EnumExpertType.Lawyer; // TODO
     this.questions = this.questionService.getByExpertType(this.expertType);
-    this.application = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
+    this.projectDetails = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
   }
 }

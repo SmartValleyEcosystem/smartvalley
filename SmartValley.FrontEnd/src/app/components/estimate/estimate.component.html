@@ -1,4 +1,4 @@
-<div [ngClass]="hidden ? '' : 'hidden'" class="container" *ngIf="application">
+<div [ngClass]="hidden ? '' : 'hidden'" class="container" *ngIf="projectDetails">
   <div class="row mx-auto">
     <div class="col-8 sm-title">
       <h1>Estimate the project</h1>
@@ -10,30 +10,30 @@
     </div>
     <div class="row">
       <span class="col-3 offset-1">Project name:</span>
-      <span class="col-5">{{application.name}}</span>
+      <span class="col-5">{{projectDetails.name}}</span>
     </div>
     <div class="row">
       <span class="col-3 offset-1">Project Area</span>
-      <span class="col-5">{{application.area}}</span>
+      <span class="col-5">{{projectDetails.area}}</span>
     </div>
     <div class="row">
       <span class="col-3 offset-1">Description</span>
-      <span class="col-5">{{application.description}}</span>
+      <span class="col-5">{{projectDetails.description}}</span>
     </div>
     <div class="row">
       <span class="col-3 offset-1">Status</span>
-      <span class="col-5">{{application.status}}</span>
+      <span class="col-5">{{projectDetails.status}}</span>
     </div>
     <div class="row">
       <span class="col-3 offset-1">White paper link</span>
-      <a href="{{application.whitePaperLink}}" class="col-5">{{application.whitePaperLink}}</a>
+      <a href="{{projectDetails.whitePaperLink}}" class="col-5">{{projectDetails.whitePaperLink}}</a>
     </div>
   </div>
   <div class="sw-card sw-content">
     <div class="row row-title">
       <h3 class="col-10 offset-1">Core Team</h3>
     </div>
-    <div *ngFor="let member of application.teamMembers;">
+    <div *ngFor="let member of projectDetails.teamMembers;">
       <div class="row">
         <span class="col-1 offset-1">{{EnumTeamMemberType[member.memberType]}}:</span>
         <span class="col-2" style="margin-left: 2em;">{{member.fullName}}</span>
