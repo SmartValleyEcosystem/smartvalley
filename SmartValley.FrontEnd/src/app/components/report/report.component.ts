@@ -9,6 +9,7 @@ import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';
 import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
 import {Estimate} from '../../services/estimate';
 import {isNullOrUndefined} from 'util';
+import {ProjectService} from '../../services/project-service';
 
 
 @Component({
@@ -22,11 +23,14 @@ export class ReportComponent {
   report: ProjectDetailsResponse;
   EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
   private projectId: number;
+  private projectService: ProjectService;
 
   constructor(private projectApiClient: ProjectApiClient,
               private estimatesApiClient: EstimatesApiClient,
               private questionService: QuestionService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              projectService: ProjectService) {
+    this.projectService = projectService;
     this.loadInitialData();
   }
 
@@ -57,11 +61,7 @@ export class ReportComponent {
   }
 
   private async loadExpertEstimates(scoringCategory: ScoringCategory) {
-    const estimatesResponse = await this.estimatesApiClient.getByProjectIdAndCategoryAsync({
-      projectId: this.projectId,
-      category: scoringCategory
-    });
-
+    const estimatesResponse = await this.estimatesApiClient.getByProjectIdAndCategoryAsync(this.projectId, scoringCategory);
     const questions = this.questionService.getByExpertType(scoringCategory);
 
     for (const question of questions) {
@@ -76,25 +76,7 @@ export class ReportComponent {
           comments: estimate.comment
         });
       }
-
     }
-
     this.questions = questions;
-  }
-
-  private colorOfProjectRate(rate: number): string {
-    if (rate == null) {
-      return '';
-    }
-    if (rate > 80) {
-      return 'high_rate';
-    }
-    if (rate > 45) {
-      return 'medium_rate';
-    }
-    if (rate >= 0) {
-      return 'low_rate';
-    }
-    return 'progress_rate';
   }
 }

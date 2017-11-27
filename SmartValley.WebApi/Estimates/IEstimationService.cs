@@ -7,6 +7,6 @@ namespace SmartValley.WebApi.Estimates
     public interface IEstimationService
     {
         Task SubmitEstimatesAsync(SubmitEstimatesRequest request);
-        Task<IReadOnlyCollection<Estimate>> GetByProjectIdAndCategory(long projectId, Category category);
+        Task<IReadOnlyCollection<Estimate>> GetAsync(long projectId, Category category);
     }
 }

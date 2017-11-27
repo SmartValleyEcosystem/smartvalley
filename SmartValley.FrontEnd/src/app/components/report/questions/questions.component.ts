@@ -1,5 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Question} from '../../../services/question';
+import {ProjectService} from '../../../services/project-service';
+
 
 @Component({
   selector: 'app-questions',
@@ -8,25 +10,9 @@ import {Question} from '../../../services/question';
 })
 export class QuestionsComponent {
   @Input() questions: Array<Question>
+  projectService: ProjectService;
 
-  constructor() {
+  constructor(projectService: ProjectService) {
+    this.projectService = projectService;
   }
-
-
-  colorOfEstimateScore(rate: number): string {
-    if (rate == null) {
-      return '';
-    }
-    if (rate > 4) {
-      return 'high_rate';
-    }
-    if (rate > 2) {
-      return 'medium_rate';
-    }
-    if (rate >= 0) {
-      return 'low_rate';
-    }
-    return 'progress_rate';
-  }
-
 }

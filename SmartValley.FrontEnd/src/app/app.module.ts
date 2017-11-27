@@ -31,6 +31,7 @@ import {ProjectApiClient} from './api/project/project-api-client';
 import {ReportComponent} from './components/report/report.component';
 import {EstimatesApiClient} from './api/estimates/estimates-api-client';
 import {QuestionsComponent} from './components/report/questions/questions.component';
+import {ProjectService} from './services/project-service';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import {QuestionsComponent} from './components/report/questions/questions.compon
     ScoringApiClient,
     EstimatesApiClient,
     AuthenticationService,
+    ProjectService,
     QuestionService,
     Web3Service,
     ProjectManagerContractClient],

@@ -4,7 +4,7 @@ import {BaseApiClient} from '../base-api-client';
 import {SubmitEstimatesRequest} from './submit-estimates-request';
 import {CollectionResponse} from '../collection-response';
 import {EstimateResponse} from './estimate-response';
-import {GetEstimatesRequest} from './get-estimates-request';
+import {ScoringCategory} from '../scoring/scoring-category.enum';
 
 @Injectable()
 export class EstimatesApiClient extends BaseApiClient {
@@ -16,9 +16,9 @@ export class EstimatesApiClient extends BaseApiClient {
     await this.http.post(this.baseApiUrl + '/estimates', request).toPromise();
   }
 
-  async getByProjectIdAndCategoryAsync(request: GetEstimatesRequest): Promise<CollectionResponse<EstimateResponse>> {
+  async getByProjectIdAndCategoryAsync(projectId: number, category: ScoringCategory): Promise<CollectionResponse<EstimateResponse>> {
     return this.http
-      .get<CollectionResponse<EstimateResponse>>(this.baseApiUrl + '/estimates?projectId=' + request.projectId + '&category=' + request.category)
+      .get<CollectionResponse<EstimateResponse>>(this.baseApiUrl + '/estimates?projectId=' + projectId + '&category=' + category)
       .toPromise();
   }
 }

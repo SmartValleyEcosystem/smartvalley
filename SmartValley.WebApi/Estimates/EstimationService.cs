@@ -41,9 +41,9 @@ namespace SmartValley.WebApi.Estimates
             await UpdateProjectAsync(project, scoringCategory);
         }
 
-        public Task<IReadOnlyCollection<Estimate>> GetByProjectIdAndCategory(long projectId, Category category)
+        public Task<IReadOnlyCollection<Estimate>> GetAsync(long projectId, Category category)
         {
-            return _estimateRepository.GetByProjectIdAndCategoryAsync(projectId, category.ToDomain());
+            return _estimateRepository.GetAsync(projectId, category.ToDomain());
         }
 
         private async Task UpdateProjectAsync(Project project, ScoringCategory scoringCategory)
@@ -58,7 +58,7 @@ namespace SmartValley.WebApi.Estimates
 
         private async Task<double> CalculateProjectScoreAsync(long projectId)
         {
-            var estimates = await _estimateRepository.GetByProjectAsync(projectId);
+            var estimates = await _estimateRepository.GetAsync(projectId);
             return (double) estimates.Sum(e => e.Score) / RequiredEstimatesCountInCategory;
         }
 

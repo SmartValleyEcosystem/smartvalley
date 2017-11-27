@@ -25,7 +25,7 @@ namespace SmartValley.WebApi.Projects
             var project = await _projectRepository.GetByIdAsync(projectId);
             if (project == null)
             {
-                throw new AppErrorException(ErrorCode.ProjectDoesntExist);
+                throw new AppErrorException(ErrorCode.ProjectNotFound);
             }
             var application = await _applicationRepository.GetByProjectIdAsync(projectId);
             var teamMembers = await _teamRepository.GetAllByApplicationId(application.Id);

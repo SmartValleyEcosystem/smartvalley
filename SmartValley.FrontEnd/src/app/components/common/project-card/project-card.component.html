@@ -13,7 +13,7 @@
   <div class="scoring col-3">
     <div class="scoring-container">
       <span>Scoring rating:</span>
-      <span class="score {{colorOfProjectRate(project.score)}}">{{project.score}}</span>
+      <span class="score {{projectService.colorOfProjectRate(project.score)}}">{{project.score}}</span>
     </div>
     <div *ngIf="isScoring">
       <a class="col-8 sv-default-btn btn btn-primary"

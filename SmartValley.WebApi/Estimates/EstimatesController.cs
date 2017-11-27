@@ -20,9 +20,9 @@ namespace SmartValley.WebApi.Estimates
         public Task Post([FromBody] SubmitEstimatesRequest request) => _estimationService.SubmitEstimatesAsync(request);
 
         [HttpGet]
-        public async Task<CollectionResponse<EstimateResponse>> GetEstimatesOfProjectByCategory(GetEstimatesRequest request)
+        public async Task<CollectionResponse<EstimateResponse>> GetEstimatesAsync(GetEstimatesRequest request)
         {
-            var estimates = await _estimationService.GetByProjectIdAndCategory(request.ProjectId, request.Category);
+            var estimates = await _estimationService.GetAsync(request.ProjectId, request.Category);
 
             return new CollectionResponse<EstimateResponse>
                    {
