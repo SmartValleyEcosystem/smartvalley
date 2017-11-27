@@ -17,7 +17,13 @@ export class ApplicationComponent {
 
   applicationForm: FormGroup;
 
-  hidden = false;
+  teamContainer = false;
+
+  legalContainer = false;
+
+  financeContainer = false;
+
+  techContainer = false;
 
   teamMembers: Array<FormGroup>;
 
@@ -99,7 +105,22 @@ export class ApplicationComponent {
   }
 
   changeHidden() {
-    this.hidden = true;
+    if (this.teamContainer === false) {
+      this.teamContainer = true;
+      return;
+    }
+    if (this.legalContainer === false) {
+      this.legalContainer = true;
+      return;
+    }
+    if (this.financeContainer === false) {
+      this.financeContainer = true;
+      return;
+    }
+    if (this.techContainer === false) {
+      this.techContainer = true;
+      return;
+    }
   }
 
   async onSubmit() {

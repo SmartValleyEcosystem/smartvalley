@@ -35,12 +35,12 @@
                title="Include http://" placeholder="www">
       </div>
     </div>
-    <div class="next-button row">
+    <div [ngClass]="!teamContainer ? '' : 'main-btn'" class="row">
       <button (click)="changeHidden()" class="col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">Next
       </button>
     </div>
 
-    <div class="sw-card sw-content">
+    <div [ngClass]="teamContainer ? 'is-active' : ''" class="sw-card sw-content">
       <div class="row row-title">
         <h3 class="col-10 offset-1">Team</h3>
       </div>
@@ -61,7 +61,11 @@
         </div>
       </div>
     </div>
-    <div class="sw-card sw-content">
+    <div [ngClass]="teamContainer && !legalContainer ? '' : 'team-btn'" class="row">
+      <button (click)="changeHidden()" class="col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">Next
+      </button>
+    </div>
+    <div [ngClass]="legalContainer ? 'is-active' : ''" class="sw-card sw-content">
       <div class="row row-title">
         <h3 class="col-10 offset-1">Legal part</h3>
       </div>
@@ -72,7 +76,11 @@
         </div>
       </div>
     </div>
-    <div class="sw-card sw-content">
+    <div [ngClass]="legalContainer && !financeContainer ? '' : 'legal-btn'" class="row">
+      <button (click)="changeHidden()" class="col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">Next
+      </button>
+    </div>
+    <div [ngClass]="financeContainer ? 'is-active' : ''" class="sw-card sw-content">
       <div class="row row-title">
         <h3 class="col-10 offset-1">Finance</h3>
       </div>
@@ -97,7 +105,11 @@
         </div>
       </div>
     </div>
-    <div class="sw-card sw-content">
+    <div [ngClass]="financeContainer && !techContainer ? '' : 'finance-btn'" class="row">
+      <button (click)="changeHidden()" class="col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">Next
+      </button>
+    </div>
+    <div [ngClass]="techContainer ? 'is-active' : ''" class="sw-card sw-content">
       <div class="row row-title">
         <h3 class="col-10 offset-1">Tech</h3>
       </div>
@@ -112,7 +124,7 @@
         </div>
       </div>
     </div>
-    <div class="submit-button row">
+    <div [ngClass]="techContainer ? '' : 'submit-btn'" class="row">
       <button (click)="onSubmit()" class="col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">Create
         project
       </button>
