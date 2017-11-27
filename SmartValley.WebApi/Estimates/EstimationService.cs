@@ -33,7 +33,15 @@ namespace SmartValley.WebApi.Estimates
             {
                 throw new AppErrorException(
                     ErrorCode.ProjectAlreadyEstimatedInCategory,
-                    $"Project already received {RequiredEstimatesCountInCategory} estimates in category '{scoringCategory}'.");
+                    $"Project '{project.Name}' already received {RequiredEstimatesCountInCategory} estimates in category '{scoringCategory}'.");
+            }
+
+            var projectsEstimatedByExpert = await _estimateRepository.GetProjectsEstimatedByExpertAsync(request.ExpertAddress, scoringCategory);
+            if (projectsEstimatedByExpert.Contains(project.Id))
+            {
+                throw new AppErrorException(
+                    ErrorCode.ExpertAlreadyEstimatedProjectInCategory,
+                    $"Project '{project.Name}' has already been estimated in category '{scoringCategory}' by expert '{request.ExpertAddress}'.");
             }
 
             await AddEstimatesAsync(request, scoringCategory);
