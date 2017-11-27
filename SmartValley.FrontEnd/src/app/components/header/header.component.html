@@ -9,12 +9,12 @@
           <a href="#">White paper</a>
         </div>
         <div class="col-4" style="margin-top: 24px;">
-          <div *ngIf="isAuthenticated">
+          <div *ngIf="showBalance">
             <span style="color: #aaaaaa;">Balance: {{currentBalance}} ETH</span>
           </div>
         </div>
         <div class="col-3 sm-header__nav text-right" style="margin-top: 24px;">
-          <a *ngIf="!wasEtherReceived" (click)="receiveEth()" href="#">Get Ether</a>
+          <a *ngIf="showReceiveEtherButton" (click)="receiveEth()" href="#">Get Ether</a>
           <a (click)="navigateToMyProjects()" href="#">My projects</a>
         </div>
       </div>
