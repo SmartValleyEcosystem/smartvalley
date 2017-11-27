@@ -26,11 +26,9 @@ namespace SmartValley.WebApi.Applications
         public string FinanceModelLink { get; set; }
 
         public string MvpLink { get; set; }
-
-        [Required]
+   
         public string SoftCap { get; set; }
-
-        [Required]
+   
         public string HardCap { get; set; }
 
         public bool AttractedInvestments { get; set; }

@@ -23,14 +23,14 @@ namespace SmartValley.Domain.Entities
         [MaxLength(50)]
         public string Name { get; set; }
 
-        [Required]
-        [MaxLength(30)]
+        [MaxLength(100)]
         public string Country { get; set; }
 
         [Required]
-        [MaxLength(20)]
+        [MaxLength(100)]
         public string ProjectArea { get; set; }
 
+        [Required]
         [MaxLength(1000)]
         public string Description { get; set; }
 

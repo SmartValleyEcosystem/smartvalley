@@ -16,15 +16,10 @@ import {ContractApiClient} from '../../api/contract/contract-api-client';
 export class ApplicationComponent {
 
   applicationForm: FormGroup;
-
   isTeamShow = false;
-
   isLegalShow = false;
-
   isFinanceShow = false;
-
   isTechShow = false;
-
   teamMembers: Array<FormGroup>;
 
   constructor(private formBuilder: FormBuilder,
@@ -35,57 +30,20 @@ export class ApplicationComponent {
     this.createForm();
   }
 
-  private async FillApplication(): Promise<Application> {
-
-    const formModel = this.applicationForm.value;
-
-    const application = new Application();
-    application.attractedInvestments = formModel.attractedInvestments;
-    application.blockChainType = formModel.blockChainType;
-    application.country = formModel.country;
-    application.financeModelLink = formModel.financeModelLink;
-    application.hardCap = formModel.hardCap;
-    application.mvpLink = formModel.mvpLink;
-    application.name = formModel.name;
-    application.description = formModel.description;
-    application.projectArea = formModel.projectArea;
-    application.projectStatus = formModel.projectStatus;
-    application.softCap = formModel.softCap;
-    application.whitePaperLink = formModel.whitePaperLink;
-
-    application.projectId = uuid();
-
-    const user = await this.authenticationService.getCurrentUser();
-    application.authorAddress = user.account;
-    application.teamMembers = [];
-    for (const teamMember of this.teamMembers) {
-      application.teamMembers.push(teamMember.value);
-    }
-
-    const projectManagerContract = await this.contractApiClient.getProjectManagerContractAsync();
-    application.transactionHash = await this.projectManagerContractClient.addProjectAsync(
-      projectManagerContract.address,
-      projectManagerContract.abi,
-      application.projectId,
-      formModel.name);
-
-    return application;
-  }
-
   createForm() {
     this.applicationForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      whitePaperLink: ['', Validators.pattern('https?://.+')],
-      projectArea: '',
-      description: '',
-      projectStatus: '',
-      softCap: 0.0,
-      hardCap: 0.0,
-      financeModelLink: ['', Validators.pattern('https?://.+')],
-      country: '',
+      name: ['', [Validators.required, Validators.maxLength(50)]],
+      whitePaperLink: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
+      projectArea: ['', [Validators.required, Validators.maxLength(100)]],
+      description: ['', [Validators.required, Validators.maxLength(1000)]],
+      projectStatus: ['', Validators.maxLength(100)],
+      softCap: ['', Validators.maxLength(40)],
+      hardCap: ['', Validators.maxLength(40)],
+      financeModelLink: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
+      country: ['', Validators.maxLength(100)],
       attractedInvestments: false,
-      blockChainType: '',
-      mvpLink: ['', Validators.pattern('https?://.+')],
+      blockChainType: ['', Validators.maxLength(100)],
+      mvpLink: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
     });
 
     this.teamMembers = [];
@@ -95,9 +53,9 @@ export class ApplicationComponent {
         const group = this.formBuilder.group({
           memberType: EnumTeamMemberType[item],
           title: item,
-          fullName: '',
-          facebookLink: ['', Validators.pattern('https?://.+')],
-          linkedInLink: ['', Validators.pattern('https?://.+')],
+          fullName: ['', Validators.maxLength(100)],
+          facebookLink: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
+          linkedInLink: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
         });
         this.teamMembers.push(group);
       }
@@ -124,7 +82,47 @@ export class ApplicationComponent {
   }
 
   async onSubmit() {
-    const application = await this.FillApplication();
+    const application = await this.fillApplication();
     await this.applicationApiClient.createApplicationAsync(application);
+  }
+
+  private async fillApplication(): Promise<Application> {
+
+    const formModel = this.applicationForm.value;
+
+    const application = {} as Application;
+    application.attractedInvestments = formModel.attractedInvestments;
+    application.blockChainType = formModel.blockChainType;
+    application.country = formModel.country;
+    application.financeModelLink = formModel.financeModelLink;
+    application.hardCap = formModel.hardCap;
+    application.mvpLink = formModel.mvpLink;
+    application.name = formModel.name;
+    application.description = formModel.description;
+    application.projectArea = formModel.projectArea;
+    application.projectStatus = formModel.projectStatus;
+    application.softCap = formModel.softCap;
+    application.whitePaperLink = formModel.whitePaperLink;
+
+    application.projectId = uuid();
+
+    const user = await this.authenticationService.getCurrentUser();
+    application.authorAddress = user.account;
+    application.teamMembers = [];
+    for (const teamMember of this.teamMembers) {
+      const teamMemberValue = teamMember.value;
+      if (teamMemberValue.fullName) {
+        application.teamMembers.push(teamMemberValue);
+      }
+    }
+
+    const projectManagerContract = await this.contractApiClient.getProjectManagerContractAsync();
+    application.transactionHash = await this.projectManagerContractClient.addProjectAsync(
+      projectManagerContract.address,
+      projectManagerContract.abi,
+      application.projectId,
+      formModel.name);
+
+    return application;
   }
 }

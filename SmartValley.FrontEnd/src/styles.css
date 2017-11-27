@@ -199,6 +199,14 @@ a{
   background-color: white;
 }
 
+input.ng-dirty.ng-invalid {
+  border-color: red;
+}
+
+textarea.ng-dirty.ng-invalid {
+  border-color: red;
+}
+
 @font-face {
   font-family: "AvenirNextCyr-Bold";
   src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Bold.otf") format("otf")

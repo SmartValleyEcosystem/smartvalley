@@ -93,7 +93,6 @@
           <input class="form-control col-2" formControlName="softCap">
           <span class="col-1 offset-1">Hard cap:</span>
           <input class="form-control col-2" formControlName="hardCap">
-
         </div>
         <div class="row">
           <span class="col-2 offset-1">Financial model link:</span>
@@ -125,7 +124,7 @@
       </div>
     </div>
     <div [ngClass]="isTechShow ? '' : 'submit-btn'" class="row">
-      <button (click)="onSubmit()" class="col-3 btn btn-primary">Create
+      <button (click)="onSubmit()" [disabled]="applicationForm.invalid" class="col-3 btn btn-primary">Create
         project
       </button>
     </div>
