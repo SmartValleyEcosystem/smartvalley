@@ -134,16 +134,23 @@
           <div class="content sw-card sw-content">
             <mat-tab-group (selectedTabChange)="tabChanged($event)">
               <mat-tab label="HR">
-                <!--{{categoryAverageScore}}-->
+                <span>HR average score: </span>
+                <span class="{{projectService.colorOfEstimateScore(categoryAverageScore)}}">{{categoryAverageScore}}</span>
               <app-questions [questions]="questions"></app-questions>
               </mat-tab>
               <mat-tab label="Lawyer">
+                <span>Lawyer average score: </span>
+                <span class="{{projectService.colorOfEstimateScore(categoryAverageScore)}}">{{categoryAverageScore}}</span>
                 <app-questions [questions]="questions"></app-questions>
               </mat-tab>
               <mat-tab label="Analyst">
+                <span>Analyst average score: </span>
+                <span class="{{projectService.colorOfEstimateScore(categoryAverageScore)}}">{{categoryAverageScore}}</span>
                 <app-questions [questions]="questions"></app-questions>
               </mat-tab>
               <mat-tab label="Technical expert">
+                <span>Technical expert average score: </span>
+                <span class="{{projectService.colorOfEstimateScore(categoryAverageScore)}}">{{categoryAverageScore}}</span>
                 <app-questions [questions]="questions"></app-questions>
               </mat-tab>
             </mat-tab-group>

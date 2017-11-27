@@ -78,8 +78,10 @@ export class ReportComponent {
         });
       }
     }
-    // const allScores = questions.map(x => x.estimates.map(y => y.score));
-    // const allAverageScores = allScores.map(i => i.length > 0 ? i.reduce((a, b) => a + b) / i.length : 0);
-    //this.categoryAverageScore = allAverageScores.reduce((a, b) => a + b) / allAverageScores.length;
+    this.questions = questions;
+
+    const allScores = this.questions.map(x => x.estimates.map(y => y.score));
+    const allAverageScores = allScores.map(i => i.length > 0 ? i.reduce((a, b) => a + b) / i.length : 0);
+    this.categoryAverageScore = allAverageScores.reduce((a, b) => a + b) / allAverageScores.length;
   }
 }
