@@ -6,6 +6,7 @@
         ServerError,
         ValidatationError,
         ProjectAlreadyEstimatedInCategory,
-        ProjectNotFound
+        ProjectNotFound,
+        ExpertAlreadyEstimatedProjectInCategory
     }
 }
