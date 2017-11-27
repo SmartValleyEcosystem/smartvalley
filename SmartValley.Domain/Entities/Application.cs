@@ -12,29 +12,30 @@ namespace SmartValley.Domain.Entities
 
         public long ProjectId { get; set; }
 
-        [Range(1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
-        public decimal SoftCap { get; set; }
 
-        [Range(1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
-        public decimal HardCap { get; set; }
+        [MaxLength(40)]
+        public string SoftCap { get; set; }
+
+        [MaxLength(40)]
+        public string HardCap { get; set; }
 
         [Url]
-        [MaxLength(100)]
+        [MaxLength(400)]
         public string FinancialModelLink { get; set; }
 
         public bool InvestmentsAreAttracted { get; set; }
 
+        [MaxLength(400)]
+        public string MvpLink { get; set; }
+
         [MaxLength(100)]
-        public string MVPLink { get; set; }
+        public string BlockchainType { get; set; }
 
-        [MaxLength(20)]
-        public string CryptoCurrency { get; set; }
-
-        [MaxLength(30)]
+        [MaxLength(100)]
         public string ProjectStatus { get; set; }
 
         [Url]
-        [MaxLength(100)]
+        [MaxLength(400)]
         public string WhitePaperLink { get; set; }
     }
 }

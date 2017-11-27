@@ -79,14 +79,14 @@ namespace SmartValley.WebApi.Applications
             var application = new Domain.Entities.Application
                               {
                                   ProjectId = projectId,
-                                  SoftCap = decimal.Parse(model.SoftCap),
-                                  HardCap = decimal.Parse(model.HardCap),
-                                  CryptoCurrency = model.BlockChainType,
+                                  SoftCap = model.SoftCap,
+                                  HardCap = model.HardCap,
+                                  BlockchainType = model.BlockChainType,
                                   FinancialModelLink = model.FinanceModelLink,
                                   InvestmentsAreAttracted = model.AttractedInvestments,
                                   ProjectStatus = model.ProjectStatus,
                                   WhitePaperLink = model.WhitePaperLink,
-                                  MVPLink = model.MvpLink
+                                  MvpLink = model.MvpLink
                               };
 
             await _applicationRepository.AddAsync(application);

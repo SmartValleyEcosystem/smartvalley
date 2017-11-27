@@ -28,9 +28,9 @@ namespace SmartValley.WebApi.Projects
 
         public string MvpLink { get; set; }
         
-        public decimal SoftCap { get; set; }
+        public string SoftCap { get; set; }
 
-        public decimal HardCap { get; set; }
+        public string HardCap { get; set; }
 
         public bool AttractedInvestments { get; set; }
 

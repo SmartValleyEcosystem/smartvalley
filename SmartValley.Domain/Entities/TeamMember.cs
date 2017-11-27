@@ -12,15 +12,15 @@ namespace SmartValley.Domain.Entities
         public long ApplicationId { get; set; }
 
         [Required]
-        [MaxLength(50)]
+        [MaxLength(100)]
         public string FullName { get; set; }
 
         [Url]
-        [MaxLength(100)]
+        [MaxLength(200)]
         public string FacebookLink { get; set; }
 
         [Url]
-        [MaxLength(100)]
+        [MaxLength(200)]
         public string LinkedInLink { get; set; }
 
         public TeamMemberType Type { get; set; }

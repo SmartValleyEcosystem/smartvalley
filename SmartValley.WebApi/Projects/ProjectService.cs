@@ -39,11 +39,11 @@ namespace SmartValley.WebApi.Projects
                                           Score = project.Score,
 
                                           AttractedInvestments = application.InvestmentsAreAttracted,
-                                          BlockChainType = application.CryptoCurrency,
+                                          BlockChainType = application.BlockchainType,
                                           FinanceModelLink = application.FinancialModelLink,
                                           HardCap = application.HardCap,
                                           SoftCap = application.SoftCap,
-                                          MvpLink = application.MVPLink,
+                                          MvpLink = application.MvpLink,
                                           Status = application.ProjectStatus,
                                           WhitePaperLink = application.WhitePaperLink,
                                           TeamMembers = teamMembers.Select(t => new TeamMemberResponse
