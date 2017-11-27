@@ -25,6 +25,8 @@
 
 .btn {
   cursor: pointer;
+  padding-top: 1em;
+  padding-bottom: 1em;
 }
 
 .is-active .row-content {
@@ -41,5 +43,8 @@
 
 .row-content {
   display: none;
+}
+textarea{
+  height: 10em; resize: none;
 }
 
