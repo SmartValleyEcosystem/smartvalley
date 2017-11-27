@@ -6,6 +6,7 @@ import {AuthenticationService} from '../../services/authentication-service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
+import {ProjectsForScoringRequest} from '../../api/scoring/projecs-for-scoring-request';
 
 
 @Component({
@@ -59,8 +60,12 @@ export class ScoringComponent implements AfterViewInit {
   }
 
   private async loadProjectsForCategory(scoringCategory: ScoringCategory) {
+    const currentAccount = this.authenticationService.getCurrentUser().account;
     this.projectsForScoring = [];
-    const projects = await this.scoringApiClient.getProjectForScoringAsync({scoringCategory: <number>scoringCategory});
+    const projects = await this.scoringApiClient.getProjectForScoringAsync(<ProjectsForScoringRequest>{
+      scoringCategory: <number>scoringCategory,
+      expertAddress: currentAccount
+    });
     for (const projectResponse of projects.items) {
       this.projectsForScoring.push(<Project>{
         id: projectResponse.id,

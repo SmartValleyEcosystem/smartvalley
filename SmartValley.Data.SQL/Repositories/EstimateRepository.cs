@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -19,8 +20,16 @@ namespace SmartValley.Data.SQL.Repositories
             => await ReadContext.Estimates.Where(e => e.ProjectId == projectId).ToArrayAsync();
 
         public async Task<IReadOnlyCollection<Estimate>> GetAsync(long projectId, ScoringCategory category)
+            => await ReadContext.Estimates.Where(e => e.ProjectId == projectId && e.ScoringCategory == category).ToArrayAsync();
+
+        public async Task<IReadOnlyCollection<long>> GetProjectsEstimatedByExpertAsync(string expertAddress, ScoringCategory category)
         {
-            return await ReadContext.Estimates.Where(e => e.ProjectId == projectId && e.ScoringCategory == category).ToArrayAsync();
+            return await ReadContext
+                       .Estimates
+                       .Where(e => e.ExpertAddress.Equals(expertAddress, StringComparison.OrdinalIgnoreCase) && e.ScoringCategory == category)
+                       .Select(e => e.ProjectId)
+                       .Distinct()
+                       .ToArrayAsync();
         }
     }
 }
