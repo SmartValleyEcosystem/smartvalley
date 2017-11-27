@@ -24,6 +24,7 @@ export class ReportComponent {
   EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
   private projectId: number;
   private projectService: ProjectService;
+  public categoryAverageScore: number;
 
   constructor(private projectApiClient: ProjectApiClient,
               private estimatesApiClient: EstimatesApiClient,
@@ -77,6 +78,8 @@ export class ReportComponent {
         });
       }
     }
-    this.questions = questions;
+    // const allScores = questions.map(x => x.estimates.map(y => y.score));
+    // const allAverageScores = allScores.map(i => i.length > 0 ? i.reduce((a, b) => a + b) / i.length : 0);
+    //this.categoryAverageScore = allAverageScores.reduce((a, b) => a + b) / allAverageScores.length;
   }
 }
