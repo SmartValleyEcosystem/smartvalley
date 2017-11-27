@@ -35,12 +35,12 @@
                title="Include http://" placeholder="www">
       </div>
     </div>
-    <div [ngClass]="!teamContainer ? '' : 'main-btn'" class="row">
+    <div [ngClass]="!isTeamShow ? '' : 'main-btn'" class="row">
       <button (click)="showNext()" class="col-3 btn btn-primary">Next
       </button>
     </div>
 
-    <div [ngClass]="teamContainer ? 'is-active' : ''" class="sw-card sw-content">
+    <div [ngClass]="isTeamShow ? 'is-active' : ''" class="sw-card sw-content">
       <div class="row row-title">
         <h3 class="col-10 offset-1">Team</h3>
       </div>
@@ -61,11 +61,11 @@
         </div>
       </div>
     </div>
-    <div [ngClass]="teamContainer && !legalContainer ? '' : 'team-btn'" class="row">
+    <div [ngClass]="isTeamShow && !isLegalShow ? '' : 'team-btn'" class="row">
       <button (click)="showNext()" class="col-3 btn btn-primary">Next
       </button>
     </div>
-    <div [ngClass]="legalContainer ? 'is-active' : ''" class="sw-card sw-content">
+    <div [ngClass]="isLegalShow ? 'is-active' : ''" class="sw-card sw-content">
       <div class="row row-title">
         <h3 class="col-10 offset-1">Legal part</h3>
       </div>
@@ -76,11 +76,11 @@
         </div>
       </div>
     </div>
-    <div [ngClass]="legalContainer && !financeContainer ? '' : 'legal-btn'" class="row">
+    <div [ngClass]="isLegalShow && !isFinanceShow ? '' : 'legal-btn'" class="row">
       <button (click)="showNext()" class="col-3 btn btn-primary">Next
       </button>
     </div>
-    <div [ngClass]="financeContainer ? 'is-active' : ''" class="sw-card sw-content">
+    <div [ngClass]="isFinanceShow ? 'is-active' : ''" class="sw-card sw-content">
       <div class="row row-title">
         <h3 class="col-10 offset-1">Finance</h3>
       </div>
@@ -105,11 +105,11 @@
         </div>
       </div>
     </div>
-    <div [ngClass]="financeContainer && !techContainer ? '' : 'finance-btn'" class="row">
+    <div [ngClass]="isFinanceShow && !isTechShow ? '' : 'finance-btn'" class="row">
       <button (click)="showNext()" class="col-3 btn btn-primary">Next
       </button>
     </div>
-    <div [ngClass]="techContainer ? 'is-active' : ''" class="sw-card sw-content">
+    <div [ngClass]="isTechShow ? 'is-active' : ''" class="sw-card sw-content">
       <div class="row row-title">
         <h3 class="col-10 offset-1">Tech</h3>
       </div>
@@ -124,7 +124,7 @@
         </div>
       </div>
     </div>
-    <div [ngClass]="techContainer ? '' : 'submit-btn'" class="row">
+    <div [ngClass]="isTechShow ? '' : 'submit-btn'" class="row">
       <button (click)="onSubmit()" class="col-3 btn btn-primary">Create
         project
       </button>

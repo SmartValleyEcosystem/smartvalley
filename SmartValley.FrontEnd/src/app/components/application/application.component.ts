@@ -17,13 +17,13 @@ export class ApplicationComponent {
 
   applicationForm: FormGroup;
 
-  teamContainer = false;
+  isTeamShow = false;
 
-  legalContainer = false;
+  isLegalShow = false;
 
-  financeContainer = false;
+  isFinanceShow = false;
 
-  techContainer = false;
+  isTechShow = false;
 
   teamMembers: Array<FormGroup>;
 
@@ -105,20 +105,20 @@ export class ApplicationComponent {
   }
 
   showNext() {
-    if (this.teamContainer === false) {
-      this.teamContainer = true;
+    if (this.isTeamShow === false) {
+      this.isTeamShow = true;
       return;
     }
-    if (this.legalContainer === false) {
-      this.legalContainer = true;
+    if (this.isLegalShow === false) {
+      this.isLegalShow = true;
       return;
     }
-    if (this.financeContainer === false) {
-      this.financeContainer = true;
+    if (this.isFinanceShow === false) {
+      this.isFinanceShow = true;
       return;
     }
-    if (this.techContainer === false) {
-      this.techContainer = true;
+    if (this.isTechShow === false) {
+      this.isTechShow = true;
       return;
     }
   }
