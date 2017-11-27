@@ -19,11 +19,13 @@ namespace SmartValley.Application.Contracts
             _contractAbi = contractOptions.Abi;
         }
 
-        public async Task<string> GetProjectAddressAsync(string projectId, string transactionHash)
+        public async Task<string> GetProjectAddressAsync(string projectIdString, string transactionHash)
         {
             await _contractClient.WaitForConfirmationAsync(transactionHash);
 
-            var projectAddress = await _contractClient.CallFunctionAsync<string>(_contractAddress, _contractAbi, "projectsMap", projectId.Replace("-", ""));
+            var projectId = projectIdString.Replace("-", "").HexToBigInteger(false);
+
+            var projectAddress = await _contractClient.CallFunctionAsync<string>(_contractAddress, _contractAbi, "projectsMap", projectId);
 
             if (IsAddressEmpty(projectAddress))
                 throw new InvalidOperationException("Project id was not found in contract.");
@@ -31,6 +33,6 @@ namespace SmartValley.Application.Contracts
             return projectAddress;
         }
 
-        private static bool IsAddressEmpty(string projectAddress) => string.IsNullOrWhiteSpace(projectAddress.RemoveHexPrefix().Replace("0", ""));
+        private static bool IsAddressEmpty(string projectAddress) => string.IsNullOrWhiteSpace(projectAddress?.RemoveHexPrefix().Replace("0", ""));
     }
 }
