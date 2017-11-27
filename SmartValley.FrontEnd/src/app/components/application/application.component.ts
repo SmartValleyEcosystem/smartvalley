@@ -104,7 +104,7 @@ export class ApplicationComponent {
     }
   }
 
-  changeHidden() {
+  showNext() {
     if (this.teamContainer === false) {
       this.teamContainer = true;
       return;
