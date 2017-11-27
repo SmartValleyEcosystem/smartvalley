@@ -9,6 +9,9 @@ namespace SmartValley.Domain.Interfaces
         Task<int> AddRangeAsync(IEnumerable<Estimate> entities);
 
         Task<IReadOnlyCollection<Estimate>> GetAsync(long projectId);
+
         Task<IReadOnlyCollection<Estimate>> GetAsync(long projectId, ScoringCategory category);
+
+        Task<IReadOnlyCollection<long>> GetProjectsEstimatedByExpertAsync(string expertAddress, ScoringCategory category);
     }
 }

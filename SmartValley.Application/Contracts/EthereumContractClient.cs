@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Nethereum.Contracts;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
@@ -59,8 +60,14 @@ namespace SmartValley.Application.Contracts
             return contract.GetFunction(functionName);
         }
 
-        private Task<TransactionReceipt> GetReceiptAsync(string transactionHash)
-            => _web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync(transactionHash);
+        private async Task<TransactionReceipt> GetReceiptAsync(string transactionHash)
+        {
+            var receipt = await _web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync(transactionHash);
+            if (receipt?.Status != null && receipt.Status.Value != 1)
+                throw new InvalidOperationException($"Transaction '{transactionHash}' failed.");
+
+            return receipt;
+        }
 
         private async Task<TransactionInput> CreateTransactionInputAsync(Function function, params object[] functionInput)
         {
