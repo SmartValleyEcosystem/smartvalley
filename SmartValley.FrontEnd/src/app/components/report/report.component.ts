@@ -53,7 +53,7 @@ export class ReportComponent {
   private async loadInitialData() {
     this.projectId = +this.route.snapshot.paramMap.get('id');
     this.report = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
-    this.loadExpertEstimates(1);
+    this.loadExpertEstimates(ScoringCategory.HR);
   }
 
   private async loadExpertEstimates(scoringCategory: ScoringCategory) {
