@@ -8,7 +8,7 @@
     <div class="report-card col-10">
       <div class="report-content">
         <div class="main-info col-4">
-          <img style="width: 100px;" src="https://png.icons8.com/?id=50284&size=280"/>
+          <img src="https://png.icons8.com/?id=50284&size=280"/>
         </div>
         <div class="description col-5">
           <div class="main-info__title">
@@ -27,32 +27,6 @@
   </div>
   <div class="row mx-auto">
     <ngb-tabset class="col-10 info">
-      <ngb-tab title="Experts estimates">
-        <ng-template ngbTabContent>
-          <div class="content sw-card sw-content">
-            <mat-tab-group (selectedTabChange)="tabChanged($event)">
-              <mat-tab label="HR">
-              <app-questions [questions]="questions"></app-questions>
-              </mat-tab>
-              <mat-tab label="Lawyer">
-                <app-questions [questions]="questions"></app-questions>
-              </mat-tab>
-              <mat-tab label="Analyst">
-                <app-questions [questions]="questions"></app-questions>
-              </mat-tab>
-              <mat-tab label="Technical expert">
-                <app-questions [questions]="questions"></app-questions>
-              </mat-tab>
-            </mat-tab-group>
-          </div>
-          <div style="margin-left: calc(4em - 5px);" class="submit-button row">
-            <button class="trans-btn col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">
-              <i class="fa fa-arrow-left" aria-hidden="true"></i>
-              Form
-            </button>
-          </div>
-        </ng-template>
-      </ngb-tab>
       <ngb-tab title="Form">
         <ng-template ngbTabContent>
           <div class="sw-card sw-content">
@@ -151,6 +125,32 @@
             <button class="trans-btn col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">
               Experts estimates
               <i class="fa fa-arrow-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Experts estimates">
+        <ng-template ngbTabContent>
+          <div class="content sw-card sw-content">
+            <mat-tab-group (selectedTabChange)="tabChanged($event)">
+              <mat-tab label="HR">
+              <app-questions [questions]="questions"></app-questions>
+              </mat-tab>
+              <mat-tab label="Lawyer">
+                <app-questions [questions]="questions"></app-questions>
+              </mat-tab>
+              <mat-tab label="Analyst">
+                <app-questions [questions]="questions"></app-questions>
+              </mat-tab>
+              <mat-tab label="Technical expert">
+                <app-questions [questions]="questions"></app-questions>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+          <div style="margin-left: calc(4em - 5px);" class="submit-button row">
+            <button class="trans-btn col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">
+              <i class="fa fa-arrow-left" aria-hidden="true"></i>
+              Form
             </button>
           </div>
         </ng-template>
