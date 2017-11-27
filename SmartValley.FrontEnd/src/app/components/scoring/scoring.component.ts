@@ -5,7 +5,7 @@ import {Paths} from '../../paths';
 import {AuthenticationService} from '../../services/authentication-service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
-import {EnumExpertType} from '../../services/enumExpertType';
+import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
 
 
 @Component({
@@ -25,7 +25,7 @@ export class ScoringComponent implements AfterViewInit {
               private authenticationService: AuthenticationService,
               private route: ActivatedRoute,
               private router: Router) {
-    this.loadProjectsForCategory(EnumExpertType.HR);
+    this.loadProjectsForCategory(ScoringCategory.HR);
     this.loadMyProjects();
   }
 
@@ -39,26 +39,26 @@ export class ScoringComponent implements AfterViewInit {
   }
 
   tabChanged($event: any) {
-    let scoringCategory: EnumExpertType = 1;
+    let scoringCategory: ScoringCategory = 1;
     const index: number = $event.index;
     switch (index) {
       case 0 :
-        scoringCategory = EnumExpertType.HR;
+        scoringCategory = ScoringCategory.HR;
         break;
       case 1 :
-        scoringCategory = EnumExpertType.Lawyer;
+        scoringCategory = ScoringCategory.Lawyer;
         break;
       case 2 :
-        scoringCategory = EnumExpertType.Analyst;
+        scoringCategory = ScoringCategory.Analyst;
         break;
       case 3 :
-        scoringCategory = EnumExpertType.TechnicalExpert;
+        scoringCategory = ScoringCategory.TechnicalExpert;
         break;
     }
     this.loadProjectsForCategory(scoringCategory);
   }
 
-  private async loadProjectsForCategory(scoringCategory: EnumExpertType) {
+  private async loadProjectsForCategory(scoringCategory: ScoringCategory) {
     this.projectsForScoring = [];
     const projects = await this.scoringApiClient.getProjectForScoringAsync({scoringCategory: <number>scoringCategory});
     for (const projectResponse of projects.items) {

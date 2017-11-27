@@ -1,4 +1,4 @@
-import {EnumExpertType} from './enumExpertType';
+import {ScoringCategory} from '../api/scoring/scoring-category.enum';
 
 export interface Project {
 
@@ -12,5 +12,5 @@ export interface Project {
   wpLink: string;
   score: number;
   expertType: string;
-  scoringCategory: EnumExpertType;
+  scoringCategory: ScoringCategory;
 }

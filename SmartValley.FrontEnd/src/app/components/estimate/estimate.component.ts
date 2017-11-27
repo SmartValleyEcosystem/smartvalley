@@ -6,12 +6,12 @@ import {Question} from '../../services/question';
 import {Paths} from '../../paths';
 import {Router} from '@angular/router';
 import {SubmitEstimatesRequest} from '../../api/estimates/submit-estimates-request';
-import {EnumExpertType} from '../../services/enumExpertType';
 import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';
 import {AuthenticationService} from '../../services/authentication-service';
 import {EstimateRequest} from '../../api/estimates/estimate-request';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {ProjectApiClient} from '../../api/project/project-api-client';
+import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
 
 @Component({
   selector: 'app-estimate',
@@ -21,7 +21,7 @@ import {ProjectApiClient} from '../../api/project/project-api-client';
 export class EstimateComponent {
   hidden: boolean;
   EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
-  expertType: EnumExpertType;
+  expertType: ScoringCategory;
   projectId: number;
 
   public projectDetails: ProjectDetailsResponse;

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using SmartValley.Application.Exceptions;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Applications;
 using SmartValley.WebApi.TeamMembers;
@@ -21,9 +22,13 @@ namespace SmartValley.WebApi.Projects
 
         public async Task<ProjectDetailsResponse> GetProjectDetailsByIdAsync(long projectId)
         {
+            var project = await _projectRepository.GetByIdAsync(projectId);
+            if (project == null)
+            {
+                throw new AppErrorException(ErrorCode.ProjectDoesntExist);
+            }
             var application = await _applicationRepository.GetByProjectIdAsync(projectId);
             var teamMembers = await _teamRepository.GetAllByApplicationId(application.Id);
-            var project = await _projectRepository.GetByIdAsync(projectId);
             var applicationResponse = new ProjectDetailsResponse
                                       {
                                           Name = project.Name,

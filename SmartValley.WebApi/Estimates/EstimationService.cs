@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application.Exceptions;
 using SmartValley.Domain.Entities;
@@ -38,6 +39,11 @@ namespace SmartValley.WebApi.Estimates
             await AddEstimatesAsync(request, scoringCategory);
 
             await UpdateProjectAsync(project, scoringCategory);
+        }
+
+        public Task<IReadOnlyCollection<Estimate>> GetByProjectIdAndCategory(long projectId, Category category)
+        {
+            return _estimateRepository.GetByProjectIdAndCategoryAsync(projectId, category.ToDomain());
         }
 
         private async Task UpdateProjectAsync(Project project, ScoringCategory scoringCategory)

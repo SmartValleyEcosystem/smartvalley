@@ -30,6 +30,7 @@ import {ProjectCardComponent} from './components/common/project-card/project-car
 import {ProjectApiClient} from './api/project/project-api-client';
 import {ReportComponent} from './components/report/report.component';
 import {EstimatesApiClient} from './api/estimates/estimates-api-client';
+import {QuestionsComponent} from './components/report/questions/questions.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import {EstimatesApiClient} from './api/estimates/estimates-api-client';
     FooterComponent,
     EstimateComponent,
     ProjectCardComponent,
-    ReportComponent
+    ReportComponent,
+    QuestionsComponent
   ],
   imports: [
     MatTabsModule,
