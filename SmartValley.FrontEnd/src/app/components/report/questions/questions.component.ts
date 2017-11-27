@@ -6,13 +6,12 @@ import {Question} from '../../../services/question';
   templateUrl: './questions.component.html',
   styleUrls: ['./questions.component.css']
 })
-export class QuestionsComponent implements OnInit {
+export class QuestionsComponent {
   @Input() questions: Array<Question>
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor() {
   }
+
 
   colorOfEstimateScore(rate: number): string {
     if (rate == null) {
