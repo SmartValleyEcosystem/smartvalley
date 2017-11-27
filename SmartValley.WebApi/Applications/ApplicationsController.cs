@@ -16,6 +16,10 @@ namespace SmartValley.WebApi.Applications
         }
 
         [HttpPost]
-        public Task Post([FromBody] ApplicationRequest request) => _service.CreateAsync(request);
+        public async Task<IActionResult> Post([FromBody] ApplicationRequest request)
+        {
+            await _service.CreateAsync(request);
+            return NoContent();
+        }
     }
 }

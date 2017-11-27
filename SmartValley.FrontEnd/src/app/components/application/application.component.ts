@@ -7,6 +7,8 @@ import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {v4 as uuid} from 'uuid';
 import {ProjectManagerContractClient} from '../../services/project-manager-contract-client';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
+import {Router} from '@angular/router';
+import {Paths} from '../../paths';
 
 @Component({
   selector: 'app-application',
@@ -31,7 +33,8 @@ export class ApplicationComponent {
               private authenticationService: AuthenticationService,
               private applicationApiClient: ApplicationApiClient,
               private contractApiClient: ContractApiClient,
-              private projectManagerContractClient: ProjectManagerContractClient) {
+              private projectManagerContractClient: ProjectManagerContractClient,
+              private router: Router) {
     this.createForm();
   }
 
@@ -55,7 +58,7 @@ export class ApplicationComponent {
 
     application.projectId = uuid();
 
-    const user = await this.authenticationService.getCurrentUser();
+    const user = this.authenticationService.getCurrentUser();
     application.authorAddress = user.account;
     application.teamMembers = [];
     for (const teamMember of this.teamMembers) {
@@ -126,5 +129,6 @@ export class ApplicationComponent {
   async onSubmit() {
     const application = await this.FillApplication();
     await this.applicationApiClient.createApplicationAsync(application);
+    await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
   }
 }
