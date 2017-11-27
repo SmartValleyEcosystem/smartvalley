@@ -19,13 +19,13 @@
       </div>
       <div class="row">
         <span class="col-2 offset-1">Description</span>
-        <textarea style="height: 10em; resize: none;" class="form-control col-6" formControlName="description"
+        <textarea class="form-control col-6" formControlName="description"
                placeholder="Technology of Authenticity Verification of Video Content">
         </textarea>
       </div>
       <div class="row">
         <span class="col-2 offset-1">Current project status</span>
-        <textarea style="height: 10em; resize: none;" class="form-control col-6" formControlName="projectStatus"
+        <textarea class="form-control col-6" formControlName="projectStatus"
                placeholder="We already develop MVP">
         </textarea>
       </div>
@@ -35,12 +35,12 @@
                title="Include http://" placeholder="www">
       </div>
     </div>
-    <div class="next-button row">
-      <button (click)="changeHidden()" class="col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">Next
+    <div [ngClass]="!isTeamShow ? '' : 'main-btn'" class="row">
+      <button (click)="showNext()" class="col-3 btn btn-primary">Next
       </button>
     </div>
 
-    <div class="sw-card sw-content">
+    <div [ngClass]="isTeamShow ? 'is-active' : ''" class="sw-card sw-content">
       <div class="row row-title">
         <h3 class="col-10 offset-1">Team</h3>
       </div>
@@ -61,7 +61,11 @@
         </div>
       </div>
     </div>
-    <div class="sw-card sw-content">
+    <div [ngClass]="isTeamShow && !isLegalShow ? '' : 'team-btn'" class="row">
+      <button (click)="showNext()" class="col-3 btn btn-primary">Next
+      </button>
+    </div>
+    <div [ngClass]="isLegalShow ? 'is-active' : ''" class="sw-card sw-content">
       <div class="row row-title">
         <h3 class="col-10 offset-1">Legal part</h3>
       </div>
@@ -72,7 +76,11 @@
         </div>
       </div>
     </div>
-    <div class="sw-card sw-content">
+    <div [ngClass]="isLegalShow && !isFinanceShow ? '' : 'legal-btn'" class="row">
+      <button (click)="showNext()" class="col-3 btn btn-primary">Next
+      </button>
+    </div>
+    <div [ngClass]="isFinanceShow ? 'is-active' : ''" class="sw-card sw-content">
       <div class="row row-title">
         <h3 class="col-10 offset-1">Finance</h3>
       </div>
@@ -97,7 +105,11 @@
         </div>
       </div>
     </div>
-    <div class="sw-card sw-content">
+    <div [ngClass]="isFinanceShow && !isTechShow ? '' : 'finance-btn'" class="row">
+      <button (click)="showNext()" class="col-3 btn btn-primary">Next
+      </button>
+    </div>
+    <div [ngClass]="isTechShow ? 'is-active' : ''" class="sw-card sw-content">
       <div class="row row-title">
         <h3 class="col-10 offset-1">Tech</h3>
       </div>
@@ -112,8 +124,8 @@
         </div>
       </div>
     </div>
-    <div class="submit-button row">
-      <button (click)="onSubmit()" class="col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">Create
+    <div [ngClass]="isTechShow ? '' : 'submit-btn'" class="row">
+      <button (click)="onSubmit()" class="col-3 btn btn-primary">Create
         project
       </button>
     </div>

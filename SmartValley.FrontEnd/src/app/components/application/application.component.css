@@ -19,23 +19,32 @@
   background-color: rgb(248, 248, 248);
 }
 
-.hidden .submit-button, .hidden .wp-link, .hidden .row-content {
-  display: none;
-}
-
-.next-button {
-  display: none;
-}
-
 .row-content {
   padding-bottom: 1em;
 }
 
-.hidden .next-button {
+.btn {
+  cursor: pointer;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+.is-active .row-content {
   display: block;
 }
 
-.btn {
-  cursor: pointer;
+.submit-btn, .finance-btn, .legal-btn, .team-btn {
+  display: none;
+}
+
+.main-btn {
+  display: none;
+}
+
+.row-content {
+  display: none;
+}
+textarea{
+  height: 10em; resize: none;
 }
 
