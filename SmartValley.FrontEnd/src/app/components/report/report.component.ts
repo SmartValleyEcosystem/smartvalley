@@ -3,9 +3,14 @@ import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {ActivatedRoute} from '@angular/router';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {ProjectApiClient} from '../../api/project/project-api-client';
-import {ApplicationApiClient} from '../../api/application/application-api.client';
 import {QuestionService} from '../../services/question-service';
 import {Question} from '../../services/question';
+import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';
+import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
+import {Estimate} from '../../services/estimate';
+import {isNullOrUndefined} from 'util';
+import {ProjectService} from '../../services/project-service';
+
 
 @Component({
   selector: 'app-report',
@@ -17,49 +22,61 @@ export class ReportComponent {
   public questions: Array<Question>;
   report: ProjectDetailsResponse;
   EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
+  private projectId: number;
+  private projectService: ProjectService;
 
   constructor(private projectApiClient: ProjectApiClient,
-              private applicationApiClient: ApplicationApiClient,
+              private estimatesApiClient: EstimatesApiClient,
               private questionService: QuestionService,
-              private route: ActivatedRoute) {
-    this.questions = this.questionService.getByExpertType(2);
-    this.loadData();
+              private route: ActivatedRoute,
+              projectService: ProjectService) {
+    this.projectService = projectService;
+    this.loadInitialData();
   }
 
-  colorOfProjectRate(rate: number): string {
-    if (rate == null) {
-      return '';
+  tabChanged($event: any) {
+    let scoringCategory: ScoringCategory = 1;
+    const index: number = $event.index;
+    switch (index) {
+      case 0 :
+        scoringCategory = ScoringCategory.HR;
+        break;
+      case 1 :
+        scoringCategory = ScoringCategory.Lawyer;
+        break;
+      case 2 :
+        scoringCategory = ScoringCategory.Analyst;
+        break;
+      case 3 :
+        scoringCategory = ScoringCategory.TechnicalExpert;
+        break;
     }
-    if (rate > 80) {
-      return 'high_rate';
-    }
-    if (rate > 45) {
-      return 'medium_rate';
-    }
-    if (rate >= 0) {
-      return 'low_rate';
-    }
-    return 'progress_rate';
+    this.loadExpertEstimates(scoringCategory);
   }
 
-  colorOfEstimateScore(rate: number): string {
-    if (rate == null) {
-      return '';
-    }
-    if (rate > 4) {
-      return 'high_rate';
-    }
-    if (rate > 2) {
-      return 'medium_rate';
-    }
-    if (rate >= 0) {
-      return 'low_rate';
-    }
-    return 'progress_rate';
+  private async loadInitialData() {
+    this.projectId = +this.route.snapshot.paramMap.get('id');
+    this.report = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
+    this.loadExpertEstimates(ScoringCategory.HR);
   }
 
-  private async loadData() {
-    const id = +this.route.snapshot.paramMap.get('id');
-    this.report = await this.projectApiClient.getDetailsByIdAsync(id);
+  private async loadExpertEstimates(scoringCategory: ScoringCategory) {
+    const estimatesResponse = await this.estimatesApiClient.getByProjectIdAndCategoryAsync(this.projectId, scoringCategory);
+    const questions = this.questionService.getByExpertType(scoringCategory);
+
+    for (const question of questions) {
+      question.estimates = [];
+      const estimates = estimatesResponse.items.filter(e => e.questionIndex === question.indexInCategory);
+      for (const estimate of estimates) {
+        if (isNullOrUndefined(estimate)) {
+          continue;
+        }
+        question.estimates.push(<Estimate>{
+          score: estimate.score,
+          comments: estimate.comment
+        });
+      }
+    }
+    this.questions = questions;
   }
 }

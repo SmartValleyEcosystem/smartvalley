@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {Project} from '../../../services/project';
 import {Router} from '@angular/router';
 import {Paths} from '../../../paths';
+import {ProjectService} from '../../../services/project-service';
 
 @Component({
   selector: 'app-project-card',
@@ -11,21 +12,10 @@ import {Paths} from '../../../paths';
 export class ProjectCardComponent {
   @Input() public project: Project;
   @Input() public isScoring: boolean;
+  projectService: ProjectService;
 
-  constructor(private router: Router) {
-  }
-
-  colorOfProjectRate(rate: number): string {
-    if (rate == null) {
-      return '';
-    }
-    if (rate > 80) {
-      return 'high_rate';
-    }
-    if (rate > 45) {
-      return 'medium_rate';
-    }
-    return 'low_rate';
+  constructor(private router: Router, projectService: ProjectService) {
+    this.projectService = projectService;
   }
 
   showProject(id: number) {

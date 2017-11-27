@@ -1,4 +1,4 @@
 export interface Estimate {
-  score: string;
+  score: number;
   comments: string;
 }

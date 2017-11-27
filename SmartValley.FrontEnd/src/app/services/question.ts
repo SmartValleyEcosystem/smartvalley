@@ -1,5 +1,5 @@
-import {EnumExpertType} from './enumExpertType';
 import {Estimate} from './estimate';
+import {ScoringCategory} from '../api/scoring/scoring-category.enum';
 
 export interface Question {
   name: string;
@@ -7,7 +7,7 @@ export interface Question {
   score: number;
   maxScore: number;
   comments: string;
-  expertType: EnumExpertType;
+  expertType: ScoringCategory;
   estimates: Array<Estimate>;
   indexInCategory: number;
 }

@@ -1,6 +1,6 @@
 export enum ScoringCategory {
-  Hr = 1,
+  HR = 1,
   Analyst = 2,
-  Tech = 3,
+  TechnicalExpert = 3,
   Lawyer = 4
 }

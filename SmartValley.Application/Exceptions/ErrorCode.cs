@@ -5,6 +5,7 @@
         EtherAlreadySent,
         ServerError,
         ValidatationError,
-        ProjectAlreadyEstimatedInCategory
+        ProjectAlreadyEstimatedInCategory,
+        ProjectNotFound
     }
 }
