@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartValley.WebApi.Estimates;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.WebApi;
 
@@ -22,7 +22,7 @@ namespace SmartValley.WebApi.Scoring
         [HttpGet]
         public async Task<CollectionResponse<ProjectResponse>> GetProjectsForScoringAsync([FromQuery] GetProjectsForScoringRequest request)
         {
-            var projects = await _scoringService.GetProjectsForScoringByCategoryAsync(request.Category);
+            var projects = await _scoringService.GetProjectsForScoringAsync(request.Category.ToDomain(), request.ExpertAddress);
             return new CollectionResponse<ProjectResponse>
                    {
                        Items = projects.Select(ProjectResponse.From).ToArray()

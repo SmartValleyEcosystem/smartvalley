@@ -11,7 +11,6 @@ namespace SmartValley.Data.SQL.Core
         public AppDBContext(DbContextOptions options)
             : base(options)
         {
-            Database.EnsureCreated();
         }
 
         IQueryable<Application> IReadOnlyDataContext.Applications => Applications.AsNoTracking();

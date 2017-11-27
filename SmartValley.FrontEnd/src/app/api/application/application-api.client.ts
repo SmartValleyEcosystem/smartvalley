@@ -10,7 +10,7 @@ export class ApplicationApiClient extends BaseApiClient {
     super();
   }
 
-  async createApplicationAsync(application: Application) {
-    await this.http.post(this.baseApiUrl + '/applications', application).subscribe();
+  public async createApplicationAsync(application: Application): Promise<void> {
+    await this.http.post(this.baseApiUrl + '/applications', application).toPromise();
   }
 }

@@ -3,7 +3,7 @@ import {BaseApiClient} from '../base-api-client';
 import {ProjectsForScoringRequest} from './projecs-for-scoring-request';
 import {CollectionResponse} from '../collection-response';
 import {ProjectResponse} from '../project/project-response';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 
 @Injectable()
 export class ScoringApiClient extends BaseApiClient {
@@ -12,7 +12,11 @@ export class ScoringApiClient extends BaseApiClient {
   }
 
   async getProjectForScoringAsync(request: ProjectsForScoringRequest): Promise<CollectionResponse<ProjectResponse>> {
-    return this.http.get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/scoring?category=' + request.scoringCategory )
+    const parameters = new HttpParams()
+      .append('category', request.scoringCategory.toString())
+      .append('expertAddress', request.expertAddress);
+
+    return this.http.get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/scoring', {params: parameters})
       .toPromise();
   }
 

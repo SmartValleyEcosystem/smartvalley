@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
-import * as EthJs from 'ethJs';
+import * as EthJs from 'ethjs';
 
 @Injectable()
 export class Web3Service {
