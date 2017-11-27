@@ -82,6 +82,11 @@ export class ReportComponent {
 
     const expertCount = 3;
     const allScores = this.questions.map(x => x.estimates.map(y => y.score));
+    const haveThreeExperts = allScores.map(i => i.length < expertCount);
+    if (haveThreeExperts.some(i => i === true)) {
+      this.categoryAverageScore = -1;
+      return;
+    }
     const allAverageScores = allScores.map(i => i.length > 0 ? i.reduce((a, b) => a + b) / i.length : 0);
     this.categoryAverageScore = allAverageScores.reduce((a, b) => a + b) / expertCount;
   }
