@@ -12,8 +12,8 @@ import {Paths} from '../../paths';
 export class HeaderComponent implements OnInit {
 
   public currentBalance: number;
-  public wasEtherReceived: boolean;
-  public isAuthenticated: boolean;
+  public showReceiveEtherButton: boolean;
+  public showBalance: boolean;
 
   constructor(private balanceApiClient: BalanceApiClient,
               private authenticationService: AuthenticationService,
@@ -27,12 +27,13 @@ export class HeaderComponent implements OnInit {
 
   async updateHeaderAsync(): Promise<void> {
     if (this.authenticationService.isAuthenticated()) {
-      this.isAuthenticated = true;
+      this.showBalance = true;
       const balanceResponse = await this.balanceApiClient.getBalanceAsync();
-      this.currentBalance = parseFloat(balanceResponse.balance.toFixed(3));
-      this.wasEtherReceived = balanceResponse.wasEtherReceived;
+      this.currentBalance = +balanceResponse.balance.toFixed(3);
+      this.showReceiveEtherButton = !balanceResponse.wasEtherReceived;
     } else {
-      this.isAuthenticated = false;
+      this.showBalance = false;
+      this.showReceiveEtherButton = false;
     }
   }
 
