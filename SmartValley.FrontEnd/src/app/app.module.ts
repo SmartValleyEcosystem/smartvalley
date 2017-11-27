@@ -15,7 +15,7 @@ import {MaterialModule} from './shared/material.module';
 import {BalanceApiClient} from './api/balance/balance-api-client';
 import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
 import {ApplicationComponent} from './components/application/application.component';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ReactiveFormsModule, FormsModule, Validators} from '@angular/forms';
 import {ProjectManagerContractClient} from './services/project-manager-contract-client';
 import {ScoringComponent} from './components/scoring/scoring.component';  // <-- #1 import module
 import {MatTabsModule} from '@angular/material';
@@ -54,8 +54,8 @@ import {ProjectService} from './services/project-service';
     BrowserAnimationsModule,
     MaterialModule,
     AppRoutingModule,
-    ReactiveFormsModule,
     FormsModule,
+    ReactiveFormsModule,
     NgbModule.forRoot(),
     SimpleNotificationsModule.forRoot()
   ],
