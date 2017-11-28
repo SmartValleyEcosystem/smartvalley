@@ -44,7 +44,9 @@
 .row-content {
   display: none;
 }
-textarea{
-  height: 10em; resize: none;
+
+textarea {
+  height: 10em;
+  resize: none;
 }
 

@@ -162,6 +162,19 @@ body {
   color: rgb(180, 180, 180) !important;
 }
 
+.mat-checkbox-frame {
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+}
+.mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background{
+  background-color: rgb(72, 138, 232);
+}
+.mat-checkbox-checkmark-path {
+   stroke: white !important;
+ }
+.mat-checkbox:not(.mat-checkbox-disabled).mat-accent .mat-checkbox-ripple .mat-ripple-element {
+  background-color: rgba(72, 138, 232,.26);
+}
 .sw-content {
   -webkit-box-flex: inherit;
   -ms-flex: inherit;
