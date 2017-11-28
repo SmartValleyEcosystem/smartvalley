@@ -10,7 +10,7 @@ import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
 import {Estimate} from '../../services/estimate';
 import {isNullOrUndefined} from 'util';
 import {ProjectService} from '../../services/project-service';
-
+import {BlockiesService} from '../../services/blockies-service';
 
 @Component({
   selector: 'app-report',
@@ -18,18 +18,19 @@ import {ProjectService} from '../../services/project-service';
   styleUrls: ['./report.component.css']
 })
 export class ReportComponent {
-
   public questions: Array<Question>;
   report: ProjectDetailsResponse;
   EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
   private projectId: number;
   private projectService: ProjectService;
   public categoryAverageScore: number;
+  private projectImageUrl: string;
 
   constructor(private projectApiClient: ProjectApiClient,
               private estimatesApiClient: EstimatesApiClient,
               private questionService: QuestionService,
               private route: ActivatedRoute,
+              private blockiesService: BlockiesService,
               projectService: ProjectService) {
     this.projectService = projectService;
     this.loadInitialData();
@@ -58,6 +59,7 @@ export class ReportComponent {
   private async loadInitialData() {
     this.projectId = +this.route.snapshot.paramMap.get('id');
     this.report = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
+    this.projectImageUrl = this.blockiesService.getImageForAddress(this.report.projectAddress);
     this.loadExpertEstimates(ScoringCategory.HR);
   }
 

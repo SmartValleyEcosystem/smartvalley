@@ -19,6 +19,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ProjectManagerContractClient} from './services/project-manager-contract-client';
 import {ScoringComponent} from './components/scoring/scoring.component'; // <-- #1 import module
 import {MatTabsModule} from '@angular/material';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import {FooterComponent} from './components/footer/footer.component';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {EstimateComponent} from './components/estimate/estimate.component';
@@ -33,7 +34,8 @@ import {EstimatesApiClient} from './api/estimates/estimates-api-client';
 import {QuestionsComponent} from './components/report/questions/questions.component';
 import {ProjectService} from './services/project-service';
 import {NgProgressInterceptor, NgProgressModule} from 'ngx-progressbar';
-import { ProjectCreatingModalComponent } from './components/application/project-creating-modal.component';
+import {ProjectCreatingModalComponent} from './components/application/project-creating-modal.component';
+import {BlockiesService} from './services/blockies-service';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,7 @@ import { ProjectCreatingModalComponent } from './components/application/project-
   ],
   entryComponents: [ProjectCreatingModalComponent],
   imports: [
+    MatCheckboxModule,
     MatTabsModule,
     BrowserModule,
     HttpClientModule,
@@ -90,7 +93,8 @@ import { ProjectCreatingModalComponent } from './components/application/project-
     ProjectService,
     QuestionService,
     Web3Service,
-    ProjectManagerContractClient],
+    ProjectManagerContractClient,
+    BlockiesService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

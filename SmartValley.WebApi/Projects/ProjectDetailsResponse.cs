@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SmartValley.WebApi.Applications;
 
 namespace SmartValley.WebApi.Projects
@@ -14,6 +13,8 @@ namespace SmartValley.WebApi.Projects
 
         public string ProjectId { get; set; }
 
+        public string ProjectAddress { get; set; }
+
         public string Description { get; set; }
 
         public string Status { get; set; }
@@ -27,7 +28,7 @@ namespace SmartValley.WebApi.Projects
         public string FinanceModelLink { get; set; }
 
         public string MvpLink { get; set; }
-        
+
         public string SoftCap { get; set; }
 
         public string HardCap { get; set; }
