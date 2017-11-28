@@ -4,6 +4,7 @@ export interface ProjectDetailsResponse {
   name: string;
   area: string;
   projectId: string;
+  projectAddress: string;
   description: string;
   status: string;
   whitePaperLink: string;

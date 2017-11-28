@@ -1,10 +1,8 @@
 import {ScoringCategory} from '../api/scoring/scoring-category.enum';
 
 export interface Project {
-
   id: number;
   name: string;
-  imgUrl: string;
   country: string;
   area: string;
   description: string;
@@ -13,4 +11,5 @@ export interface Project {
   score: number;
   expertType: string;
   scoringCategory: ScoringCategory;
+  address: string;
 }

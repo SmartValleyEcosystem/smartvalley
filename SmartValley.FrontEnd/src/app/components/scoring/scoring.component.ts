@@ -74,8 +74,8 @@ export class ScoringComponent implements AfterViewInit {
         country: projectResponse.country,
         score: projectResponse.score,
         description: projectResponse.description,
-        imgUrl: 'https://png.icons8.com/?id=50284&size=280',
-        scoringCategory: scoringCategory
+        scoringCategory: scoringCategory,
+        address: projectResponse.address
       });
     }
   }
@@ -91,7 +91,7 @@ export class ScoringComponent implements AfterViewInit {
         country: projectResponse.country,
         score: projectResponse.score,
         description: projectResponse.description,
-        imgUrl: 'https://png.icons8.com/?id=50284&size=280'
+        address: projectResponse.address
       });
     }
   }

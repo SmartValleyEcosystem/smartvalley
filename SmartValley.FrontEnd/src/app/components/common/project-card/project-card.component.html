@@ -1,6 +1,6 @@
 <div class="card-block scoring-card-block">
   <div class="main-info col-4">
-    <img style="width: 100px;" src="{{project.imgUrl}}"/>
+    <img style="width: 128px;" src="{{projectImageUrl}}"/>
     <div class="main-info__title">
       <span>{{project.name}}</span>
       <span class="main-info__country">{{project.country}}</span>
@@ -13,7 +13,8 @@
   <div class="scoring col-3">
     <div class="scoring-container">
       <span>Scoring rating:</span>
-      <span class="score {{projectService.colorOfProjectRate(project.score)}}">{{project.score.toFixed(0)}}</span>
+      <span *ngIf="project.score" class="score {{projectService.colorOfProjectRate(project.score)}}">{{project.score.toFixed(0)}}</span>
+      <span *ngIf="!project.score">In progress...</span>
     </div>
     <div *ngIf="isScoring">
       <a class="col-8 sv-default-btn btn btn-primary"

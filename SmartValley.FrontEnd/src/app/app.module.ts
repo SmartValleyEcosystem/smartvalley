@@ -33,6 +33,7 @@ import {ReportComponent} from './components/report/report.component';
 import {EstimatesApiClient} from './api/estimates/estimates-api-client';
 import {QuestionsComponent} from './components/report/questions/questions.component';
 import {ProjectService} from './services/project-service';
+import {BlockiesService} from './services/blockies-service';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import {ProjectService} from './services/project-service';
     ProjectService,
     QuestionService,
     Web3Service,
-    ProjectManagerContractClient],
+    ProjectManagerContractClient,
+    BlockiesService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

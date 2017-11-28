@@ -37,7 +37,7 @@ namespace SmartValley.WebApi.Projects
                                           Country = project.Country,
                                           Area = project.ProjectArea,
                                           Score = project.Score,
-
+                                          ProjectAddress = project.ProjectAddress,
                                           AttractedInvestments = application.InvestmentsAreAttracted,
                                           BlockChainType = application.BlockchainType,
                                           FinanceModelLink = application.FinancialModelLink,
