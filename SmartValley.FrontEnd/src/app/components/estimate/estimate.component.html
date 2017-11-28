@@ -62,35 +62,39 @@
             style="padding-top: 1em; padding-bottom: 1em;">Estimate
     </button>
   </div>
-  <div *ngFor="let question of questions;" class="sw-card sw-content">
-    <div class="row row-title">
-      <h3 class="col-10 offset-1">{{question.name}}</h3>
-    </div>
-    <div class="row-content">
-      <div class="row">
-        <span class="col-4 offset-1" style="word-wrap: break-word;">{{question.description}}</span>
-      </div>
-      <div class="row">
-        <div class="form-group">
-          <div class="col-1 offset-1">
-            <span style="font-size: 0.85em;">Your score:</span>
-            <input style="margin-top: 1em;" class="form-control" [(ngModel)]="question.score"
-                   placeholder="{{question.maxScore}}">
+  <form [formGroup]="estimateForm" novalidate>
+    <div *ngFor="let question of estimateForm.get('questions').controls;" class="sw-card sw-content">
+      <div [formGroup]="question">
+        <div class="row row-title">
+          <h3 class="col-10 offset-1">{{question.value.name}}</h3>
+        </div>
+        <div class="row-content">
+          <div class="row">
+            <span class="col-4 offset-1" style="word-wrap: break-word;">{{question.value.description}}</span>
           </div>
-          <div class="col-6">
-            <span style="font-size: 0.85em;">Comments 250 symbols</span>
-            <textarea class="form-control"
-                      style="margin-top: 1em; height: 10em; resize: none;"
-                      [(ngModel)]="question.comments"
-                      placeholder="Technology of Authenticity Verification of Video Content">
+          <div class="row">
+            <div class="form-group">
+              <div class="col-1 offset-1">
+                <span style="font-size: 0.85em;">Your score:</span>
+                <input style="margin-top: 1em;" class="form-control" formControlName="score"
+                       placeholder="{{question.value.maxScore}}">
+              </div>
+              <div class="col-6">
+                <span style="font-size: 0.85em;">Comments 250 symbols</span>
+                <textarea class="form-control"
+                          style="margin-top: 1em; height: 10em; resize: none;"
+                          formControlName="comments">
             </textarea>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </form>
   <div class="submit-button row">
-    <button (click)="send()" class="btn-blue col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">
+    <button (click)="send()" class="btn-blue col-3 btn btn-primary" [disabled]="estimateForm.invalid"
+            style="padding-top: 1em; padding-bottom: 1em;">
       Send
     </button>
   </div>

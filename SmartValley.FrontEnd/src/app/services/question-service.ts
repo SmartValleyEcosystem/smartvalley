@@ -24,6 +24,7 @@ export class QuestionService {
         'If any role is missing minus 1 for each, minus 2 for CEO.\n' +
         'If specialist doesn\'t have any experience, disregard him.',
         maxScore: 6,
+        minScore: 0,
         indexInCategory: 0,
         estimates: []
       },
@@ -33,6 +34,7 @@ export class QuestionService {
         'If experience less than 2 years - 1, more - 2\n' +
         'Don\'t have experience - 0',
         maxScore: 10,
+        minScore: 0,
         indexInCategory: 1,
         estimates: []
       },
@@ -40,6 +42,7 @@ export class QuestionService {
         name: 'Attracted Investments',
         description: 'If anyone in the team attracted investments before - 3.',
         maxScore: 3,
+        minScore: 0,
         indexInCategory: 2,
         estimates: []
       },
@@ -48,6 +51,7 @@ export class QuestionService {
         description: 'If anyone in the team seen in scam projects - minus 15.\n' +
         'If no one in the team seen in scam projects - 0.',
         maxScore: 0,
+        minScore: -15,
         indexInCategory: 3,
         estimates: []
       }
@@ -61,6 +65,7 @@ export class QuestionService {
         'If incorporation has high risk - 2.\n' +
         'Project doesn\'t has incorporation - 0.',
         maxScore: 10,
+        minScore: 0,
         indexInCategory: 0,
         estimates: []
       },
@@ -70,6 +75,7 @@ export class QuestionService {
         'Security token, but company has SAC license - 5.\n' +
         'Security token = 0.',
         maxScore: 15,
+        minScore: 0,
         indexInCategory: 1,
         estimates: []
       }
@@ -83,6 +89,7 @@ export class QuestionService {
         'If amount involved is disproportionate with the tasks of the project and less than 15 mln USD - 4.\n' +
         'If amount involved is disproportionate with the tasks of the project and more than 15 mln USD - 2.',
         maxScore: 8,
+        minScore: 0,
         indexInCategory: 0,
         estimates: []
       },
@@ -92,6 +99,7 @@ export class QuestionService {
         'Efficient financial model, to make the scaled income grow linear - 6.\n' +
         'No efficient finance model - 0.',
         maxScore: 10,
+        minScore: 0,
         indexInCategory: 1,
         estimates: []
       },
@@ -102,6 +110,7 @@ export class QuestionService {
         'Project doesn\'t have economic advantages, but has other advantages - 4.\n' +
         'Project doesn\'t have advantages - 0.',
         maxScore: 10,
+        minScore: 0,
         indexInCategory: 2,
         estimates: []
       },
@@ -114,6 +123,7 @@ export class QuestionService {
         'Blockchain solved minor problems - 2.\n' +
         'Blockchain is not needed - 0.',
         maxScore: 5,
+        minScore: 0,
         indexInCategory: 0,
         estimates: []
       },
@@ -122,6 +132,7 @@ export class QuestionService {
         description: 'Can be realised on existing blockchain protocols - 6.\n' +
         'Can\'t be realised on existing blockchain protocols - 0.\n',
         maxScore: 6,
+        minScore: 0,
         indexInCategory: 1,
         estimates: []
       },
@@ -131,6 +142,7 @@ export class QuestionService {
         'Chosen blockchain protocol provides a way to realize only main functionality - 3.\n' +
         'Chosen blockchain protocol doesn\'t provide a way to realize main functionality - 0.',
         maxScore: 5,
+        minScore: 0,
         indexInCategory: 2,
         estimates: []
       },
@@ -141,6 +153,7 @@ export class QuestionService {
         'Prototype didn\'t solve state problem and used blockchain - 2.\n' +
         'Prototype didn\'t solve state problem and didn\'t use blockchain - 0.',
         maxScore: 10,
+        minScore: 0,
         indexInCategory: 3,
         estimates: []
       },
