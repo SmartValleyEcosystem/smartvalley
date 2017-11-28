@@ -9,6 +9,9 @@ import {ProjectManagerContractClient} from '../../services/project-manager-contr
 import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
+import {NotificationsService} from 'angular2-notifications';
+import {MatDialog, MatDialogRef} from '@angular/material';
+import {ProjectCreatingModalComponent} from './project-creating-modal.component';
 
 @Component({
   selector: 'app-application',
@@ -23,17 +26,22 @@ export class ApplicationComponent {
   isFinanceShow = false;
   isTechShow = false;
 
+  private isProjectCreating: boolean;
+  private projectModalRef: MatDialogRef<ProjectCreatingModalComponent>;
+
+
   constructor(private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
               private applicationApiClient: ApplicationApiClient,
               private contractApiClient: ContractApiClient,
               private projectManagerContractClient: ProjectManagerContractClient,
-              private router: Router) {
+              private router: Router,
+              private notificationsService: NotificationsService,
+              private projectModal: MatDialog) {
     this.createForm();
   }
 
   createForm() {
-
     const teamMembers = [];
     for (const item in EnumTeamMemberType) {
       if (typeof EnumTeamMemberType[item] === 'number') {
@@ -85,10 +93,38 @@ export class ApplicationComponent {
     }
   }
 
-  async onSubmit() {
-    const application = await this.fillApplication();
+  private async onSubmit() {
+    this.isProjectCreating = true;
+    let application = {} as Application;
+    try {
+      application = await this.fillApplication();
+    }
+    catch (e) {
+      this.notificationsService.error('Error', 'Please try again');
+      this.isProjectCreating = false;
+      return;
+    }
+
+    this.openProjectModal('https://rinkeby.etherscan.io/tx/' + application.transactionHash);
+
     await this.applicationApiClient.createApplicationAsync(application);
+
+    this.closeProjectModal();
+
     await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
+    this.notificationsService.success('Success!', 'Project created');
+  }
+
+  private openProjectModal(txHash: string) {
+    this.projectModalRef = this.projectModal.open(ProjectCreatingModalComponent, {
+      width: '600px',
+      data: txHash,
+      disableClose: true,
+    });
+  }
+
+  private closeProjectModal() {
+    this.projectModal.closeAll();
   }
 
   private async fillApplication(): Promise<Application> {
@@ -121,12 +157,12 @@ export class ApplicationComponent {
     }
 
     const projectManagerContract = await this.contractApiClient.getProjectManagerContractAsync();
+
     application.transactionHash = await this.projectManagerContractClient.addProjectAsync(
       projectManagerContract.address,
       projectManagerContract.abi,
       application.projectId,
       formModel.name);
-
     return application;
   }
 }

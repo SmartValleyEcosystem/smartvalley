@@ -207,6 +207,11 @@ textarea.ng-dirty.ng-invalid {
   border-color: red;
 }
 
+.mat-dialog-container {
+  background: white;
+  color: black ;
+}
+
 @font-face {
   font-family: "AvenirNextCyr-Bold";
   src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Bold.otf") format("otf")

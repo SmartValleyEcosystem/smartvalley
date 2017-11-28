@@ -15,9 +15,9 @@ import {MaterialModule} from './shared/material.module';
 import {BalanceApiClient} from './api/balance/balance-api-client';
 import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
 import {ApplicationComponent} from './components/application/application.component';
-import {ReactiveFormsModule, FormsModule, Validators} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ProjectManagerContractClient} from './services/project-manager-contract-client';
-import {ScoringComponent} from './components/scoring/scoring.component';  // <-- #1 import module
+import {ScoringComponent} from './components/scoring/scoring.component'; // <-- #1 import module
 import {MatTabsModule} from '@angular/material';
 import {FooterComponent} from './components/footer/footer.component';
 import {SimpleNotificationsModule} from 'angular2-notifications';
@@ -32,6 +32,8 @@ import {ReportComponent} from './components/report/report.component';
 import {EstimatesApiClient} from './api/estimates/estimates-api-client';
 import {QuestionsComponent} from './components/report/questions/questions.component';
 import {ProjectService} from './services/project-service';
+import {NgProgressInterceptor, NgProgressModule} from 'ngx-progressbar';
+import { ProjectCreatingModalComponent } from './components/application/project-creating-modal.component';
 
 @NgModule({
   declarations: [
@@ -45,8 +47,10 @@ import {ProjectService} from './services/project-service';
     EstimateComponent,
     ProjectCardComponent,
     ReportComponent,
-    QuestionsComponent
+    QuestionsComponent,
+    ProjectCreatingModalComponent
   ],
+  entryComponents: [ProjectCreatingModalComponent],
   imports: [
     MatTabsModule,
     BrowserModule,
@@ -57,7 +61,8 @@ import {ProjectService} from './services/project-service';
     FormsModule,
     ReactiveFormsModule,
     NgbModule.forRoot(),
-    SimpleNotificationsModule.forRoot()
+    SimpleNotificationsModule.forRoot(),
+    NgProgressModule
   ],
   providers: [
     {
@@ -68,6 +73,11 @@ import {ProjectService} from './services/project-service';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: NgProgressInterceptor,
       multi: true
     },
     BalanceApiClient,
