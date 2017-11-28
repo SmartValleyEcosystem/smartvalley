@@ -6,6 +6,7 @@ export interface Question {
   description: string;
   score: number;
   maxScore: number;
+  minScore: number;
   comments: string;
   expertType: ScoringCategory;
   estimates: Array<Estimate>;

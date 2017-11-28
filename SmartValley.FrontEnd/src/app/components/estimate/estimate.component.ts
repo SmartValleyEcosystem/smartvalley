@@ -1,10 +1,8 @@
 import {Component} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {QuestionService} from '../../services/question-service';
-import {Question} from '../../services/question';
 import {Paths} from '../../paths';
-import {Router} from '@angular/router';
 import {SubmitEstimatesRequest} from '../../api/estimates/submit-estimates-request';
 import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';
 import {AuthenticationService} from '../../services/authentication-service';
@@ -12,6 +10,7 @@ import {EstimateRequest} from '../../api/estimates/estimate-request';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-estimate',
@@ -23,16 +22,16 @@ export class EstimateComponent {
   EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
   expertType: ScoringCategory;
   projectId: number;
-
   public projectDetails: ProjectDetailsResponse;
-  public questions: Array<Question>;
+  estimateForm: FormGroup;
 
   constructor(private route: ActivatedRoute,
               private projectApiClient: ProjectApiClient,
               private questionService: QuestionService,
               private router: Router,
               private estimatesApiClient: EstimatesApiClient,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              private formBuilder: FormBuilder) {
     this.loadProjectInfo();
   }
 
@@ -59,8 +58,9 @@ export class EstimateComponent {
 
   private getEstimates(): Array<EstimateRequest> {
     const estimates: Array<EstimateRequest> = [];
+    const formModel = this.estimateForm.value;
 
-    for (const question of this.questions) {
+    for (const question of formModel.questions) {
       estimates.push(<EstimateRequest>{
         questionIndex: question.indexInCategory,
         score: question.score,
@@ -74,7 +74,23 @@ export class EstimateComponent {
   private async loadProjectInfo() {
     this.projectId = +this.route.snapshot.paramMap.get('id');
     this.expertType = +this.route.snapshot.queryParamMap.get('category');
-    this.questions = this.questionService.getByExpertType(this.expertType);
+
+    const questionsFormGroups = [];
+    const questions = this.questionService.getByExpertType(this.expertType);
+
+    for (const question of questions) {
+      const group = this.formBuilder.group({
+        name: question.name,
+        description: question.description,
+        maxScore: question.maxScore,
+        indexInCategory: question.indexInCategory,
+        score: ['', [Validators.required, Validators.max(question.maxScore), Validators.min(question.minScore)]],
+        comments: ['', [Validators.required, Validators.maxLength(250)]],
+      });
+      questionsFormGroups.push(group);
+    }
+
+    this.estimateForm = this.formBuilder.group({questions: this.formBuilder.array(questionsFormGroups)});
     this.projectDetails = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
   }
 }

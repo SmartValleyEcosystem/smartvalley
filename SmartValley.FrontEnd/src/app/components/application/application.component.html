@@ -45,10 +45,11 @@
         <h3 class="col-10 offset-1">Team</h3>
       </div>
       <div class="row-content">
-        <div *ngFor="let member of teamMembers;">
+        <!--<div *ngFor="let member of teamMembers;">-->
+          <div *ngFor="let member of applicationForm.get('teamMembers').controls">
           <div [formGroup]="member">
             <div class="row">
-              <span class="col-1 offset-1">{{member.value.title}}</span>
+              <span class="col-1 offset-1">{{member.title}}</span>
               <input class="form-control col-7" formControlName="fullName" placeholder="Stan Cooper">
             </div>
             <div class="row">

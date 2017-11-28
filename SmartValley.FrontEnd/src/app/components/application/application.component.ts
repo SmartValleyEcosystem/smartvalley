@@ -22,7 +22,6 @@ export class ApplicationComponent {
   isLegalShow = false;
   isFinanceShow = false;
   isTechShow = false;
-  teamMembers: Array<FormGroup>;
 
   constructor(private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
@@ -34,6 +33,22 @@ export class ApplicationComponent {
   }
 
   createForm() {
+
+    const teamMembers = [];
+    for (const item in EnumTeamMemberType) {
+      if (typeof EnumTeamMemberType[item] === 'number') {
+
+        const group = this.formBuilder.group({
+          memberType: EnumTeamMemberType[item],
+          title: item,
+          fullName: ['', Validators.maxLength(100)],
+          facebookLink: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
+          linkedInLink: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
+        });
+        teamMembers.push(group);
+      }
+    }
+
     this.applicationForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
       whitePaperLink: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
@@ -47,22 +62,8 @@ export class ApplicationComponent {
       attractedInvestments: false,
       blockChainType: ['', Validators.maxLength(100)],
       mvpLink: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
+      teamMembers: this.formBuilder.array(teamMembers)
     });
-
-    this.teamMembers = [];
-    for (const item in EnumTeamMemberType) {
-      if (typeof EnumTeamMemberType[item] === 'number') {
-
-        const group = this.formBuilder.group({
-          memberType: EnumTeamMemberType[item],
-          title: item,
-          fullName: ['', Validators.maxLength(100)],
-          facebookLink: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
-          linkedInLink: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
-        });
-        this.teamMembers.push(group);
-      }
-    }
   }
 
   showNext() {
@@ -113,10 +114,9 @@ export class ApplicationComponent {
     const user = await this.authenticationService.getCurrentUser();
     application.authorAddress = user.account;
     application.teamMembers = [];
-    for (const teamMember of this.teamMembers) {
-      const teamMemberValue = teamMember.value;
-      if (teamMemberValue.fullName) {
-        application.teamMembers.push(teamMemberValue);
+    for (const teamMember of formModel.teamMembers) {
+      if (teamMember.fullName) {
+        application.teamMembers.push(teamMember);
       }
     }
 
