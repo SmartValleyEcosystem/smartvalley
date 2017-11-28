@@ -96,7 +96,6 @@ export class ApplicationComponent {
     const formModel = this.applicationForm.value;
 
     const application = {} as Application;
-    console.log(formModel.attractedInvestments);
     application.attractedInvestments = formModel.attractedInvestments;
     application.blockChainType = formModel.blockChainType;
     application.country = formModel.country;
