@@ -115,6 +115,14 @@ body {
   background: rgb(246, 150, 1);
 }
 
+.btn-link:hover {
+  text-decoration: none;
+}
+
+.btn {
+  cursor: pointer;
+}
+
 .sm-btn-primary > .mat-button-wrapper {
   font-weight: 500;
   opacity: 1 !important;
@@ -209,7 +217,7 @@ a {
 }
 
 input.ng-dirty.ng-invalid, textarea.ng-dirty.ng-invalid {
-  border:1px solid #ced4da;
+  border: 1px solid #ced4da;
   box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
 }
 
