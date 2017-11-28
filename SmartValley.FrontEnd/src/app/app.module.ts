@@ -19,6 +19,7 @@ import {ReactiveFormsModule, FormsModule, Validators} from '@angular/forms';
 import {ProjectManagerContractClient} from './services/project-manager-contract-client';
 import {ScoringComponent} from './components/scoring/scoring.component';  // <-- #1 import module
 import {MatTabsModule} from '@angular/material';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import {FooterComponent} from './components/footer/footer.component';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {EstimateComponent} from './components/estimate/estimate.component';
@@ -48,6 +49,7 @@ import {ProjectService} from './services/project-service';
     QuestionsComponent
   ],
   imports: [
+    MatCheckboxModule,
     MatTabsModule,
     BrowserModule,
     HttpClientModule,
