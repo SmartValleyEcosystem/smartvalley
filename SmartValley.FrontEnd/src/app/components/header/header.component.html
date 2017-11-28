@@ -6,7 +6,7 @@
           <a [routerLink]="['/']"><img src="/assets/img/logo.png" alt="Smart valley"></a>
         </div>
         <div class="col-2" style="margin-top: 24px;">
-          <a href="#">White paper</a>
+          <button class="btn btn-link">White paper</button>
         </div>
         <div class="col-4" style="margin-top: 24px;">
           <div *ngIf="showBalance">
@@ -14,8 +14,8 @@
           </div>
         </div>
         <div class="col-3 sm-header__nav text-right" style="margin-top: 24px;">
-          <a *ngIf="showReceiveEtherButton" (click)="receiveEth()" href="#">Get Ether</a>
-          <a (click)="navigateToMyProjects()" href="#">My projects</a>
+          <button *ngIf="showReceiveEtherButton" (click)="receiveEth()" class="btn btn-link">Get Ether</button>
+          <button (click)="navigateToMyProjects()" class="btn btn-link">My projects</button>
         </div>
       </div>
     </div>
