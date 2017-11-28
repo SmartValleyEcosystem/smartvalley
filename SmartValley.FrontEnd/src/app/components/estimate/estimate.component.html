@@ -63,7 +63,7 @@
     </button>
   </div>
   <form [formGroup]="estimateForm" novalidate>
-    <div *ngFor="let question of estimateForm.get('questions').controls;" class="sw-card sw-content">
+    <div *ngFor="let question of estimateForm.get('questions')['controls'];" class="sw-card sw-content">
       <div [formGroup]="question">
         <div class="row row-title">
           <h3 class="col-10 offset-1">{{question.value.name}}</h3>
