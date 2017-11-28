@@ -84,7 +84,11 @@ export class EstimateComponent {
         description: question.description,
         maxScore: question.maxScore,
         indexInCategory: question.indexInCategory,
-        score: ['', [Validators.required, Validators.max(question.maxScore), Validators.min(question.minScore)]],
+        score: ['', [
+          Validators.required,
+          Validators.max(question.maxScore),
+          Validators.min(question.minScore),
+          Validators.pattern('^\\d+$')]],
         comments: ['', [Validators.required, Validators.maxLength(250)]],
       });
       questionsFormGroups.push(group);
