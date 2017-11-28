@@ -1,6 +1,7 @@
 .title {
   color: white;
   padding: 0;
+  text-transform: uppercase;
 }
 
 .report-card {
@@ -16,6 +17,7 @@
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
   padding: 0;
+  height: 14em;
 }
 
 .report-content {
@@ -66,21 +68,32 @@
   display: inline-block;
   padding-right: 2em;
   padding-left: 2em;
+  position: absolute;
+  left: 30%;
 }
 
 .main-info {
   display: inline-block;
   left: 1.5em;
   padding: 1em;
+  position: absolute;
+  top: calc(25% - 2em + 25px);
+}
+.main-info img {
+  width: 6em;
 }
 
 .main-info__country {
   color: rgba(0, 0, 0, 0.5);
 }
 
+.main-info__title {
+  padding: calc(1em - 5px);
+}
+
 .main-info__title > span {
   display: block;
-  margin: 5px 0px;
+  margin: 0.2em 0em;
 }
 
 .main-info__title > span:first-child {
@@ -101,7 +114,8 @@
 .content {
   padding-left: 6em !important;
 }
-.trans-btn{
+
+.trans-btn {
   background: transparent;
   padding-top: 1em;
   padding-bottom: 1em;
