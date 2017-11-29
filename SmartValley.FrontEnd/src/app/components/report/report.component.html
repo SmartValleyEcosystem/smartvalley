@@ -57,18 +57,18 @@
             <div class="row row-title">
               <h3 class="col-10 offset-1">Core Team</h3>
             </div>
-            <div *ngFor="let member of report.teamMembers;">
+            <div *ngFor="let member of teamMembers;">
               <div class="row">
                 <span class="col-1 offset-1">{{EnumTeamMemberType[member.memberType]}}:</span>
                 <span class="col-2" style="margin-left: 2em;">{{member.fullName}}</span>
                 <span class="col-1 offset-1 social-group">
-        <a href="{{member.facebookLink}}">
-        <i class="fa fa-facebook" aria-hidden="true"></i>
-        </a>
-        <a href="{{member.linkedInLink}}">
-        <i class="fa fa-linkedin" aria-hidden="true"></i>
-        </a>
-      </span>
+                  <a *ngIf="member.facebookLink" href="{{member.facebookLink}}" style="margin-right: 1em;">
+                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                  </a>
+                  <a *ngIf="member.linkedInLink" href="{{member.linkedInLink}}">
+                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                  </a>
+                </span>
               </div>
             </div>
           </div>

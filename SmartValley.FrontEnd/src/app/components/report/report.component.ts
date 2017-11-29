@@ -12,6 +12,7 @@ import {isNullOrUndefined} from 'util';
 import {ProjectService} from '../../services/project-service';
 import {BlockiesService} from '../../services/blockies-service';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
+import {TeamMember} from '../../services/team-member';
 
 @Component({
   selector: 'app-report',
@@ -20,11 +21,13 @@ import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 })
 export class ReportComponent {
   public questions: Array<Question>;
-  report: ProjectDetailsResponse;
-  EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
+  public report: ProjectDetailsResponse;
+  public EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
+  public categoryAverageScore: number;
+  public teamMembers: Array<TeamMember>;
+
   private projectId: number;
   private projectService: ProjectService;
-  public categoryAverageScore: number;
   private projectImageUrl: string;
 
   @ViewChild('tabSet')
@@ -63,8 +66,27 @@ export class ReportComponent {
   private async loadInitialData() {
     this.projectId = +this.route.snapshot.paramMap.get('id');
     this.report = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
+    this.teamMembers = this.getMembersCollection(this.report);
     this.projectImageUrl = this.blockiesService.getImageForAddress(this.report.projectAddress);
     this.loadExpertEstimates(ScoringCategory.HR);
+  }
+
+  private getMembersCollection(report: ProjectDetailsResponse): Array<TeamMember> {
+    const result: TeamMember[] = [];
+    const memberTypeNames = Object.keys(EnumTeamMemberType).filter(key => !isNaN(Number(EnumTeamMemberType[key])));
+
+    for (const memberType of memberTypeNames) {
+      const teamMember = report.teamMembers.find(value => value.memberType === EnumTeamMemberType[memberType])
+        || <TeamMember>{memberType: EnumTeamMemberType[memberType], fullName: '-'};
+
+      result.push(<TeamMember>{
+        memberType: teamMember.memberType,
+        facebookLink: teamMember.facebookLink,
+        linkedInLink: teamMember.linkedInLink,
+        fullName: teamMember.fullName
+      });
+    }
+    return result;
   }
 
   private async loadExpertEstimates(scoringCategory: ScoringCategory) {
