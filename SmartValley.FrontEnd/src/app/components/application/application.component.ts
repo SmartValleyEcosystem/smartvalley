@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild, ElementRef, Inject} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication-service';
 import {ApplicationApiClient} from '../../api/application/application-api.client';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -25,6 +25,8 @@ export class ApplicationComponent {
   isLegalShow = false;
   isFinanceShow = false;
   isTechShow = false;
+
+  @ViewChild('name') private nameRow: ElementRef;
 
   public isProjectCreating: boolean;
   private projectModalRef: MatDialogRef<TransactionAwaitingModalComponent>;
@@ -94,26 +96,42 @@ export class ApplicationComponent {
   }
 
   public async onSubmit() {
-    this.isProjectCreating = true;
-    const application = await this.fillApplication();
+    console.log(this.nameRow.nativeElement.scrollTop);
+    if (!this.applicationForm.invalid) {
+      this.isProjectCreating = true;
+      const application = await this.fillApplication();
 
-    if (application == null) {
-      this.notificationsService.error('Error', 'Please try again');
-      this.isProjectCreating = false;
+      if (application == null) {
+        this.notificationsService.error('Error', 'Please try again');
+        this.isProjectCreating = false;
+        return;
+      }
+
+      this.openProjectModal(
+        'Your project for scoring is creating. Please wait for completion of transaction.',
+        'https://rinkeby.etherscan.io/tx/' + application.transactionHash
+      );
+
+      await this.applicationApiClient.createApplicationAsync(application);
+
+      this.closeProjectModal();
+
+      await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
+      this.notificationsService.success('Success!', 'Project created');
+    }
+    if (this.applicationForm.controls['name'].invalid) {
+      window.scrollTo(0, 430);
+      this.applicationForm.controls['name'].setErrors({'wrongDate': true});
       return;
     }
-
-    this.openProjectModal(
-      'Your project for scoring is creating. Please wait for completion of transaction.',
-      'https://rinkeby.etherscan.io/tx/' + application.transactionHash
-    );
-
-    await this.applicationApiClient.createApplicationAsync(application);
-
-    this.closeProjectModal();
-
-    await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
-    this.notificationsService.success('Success!', 'Project created');
+    if (this.applicationForm.controls['projectArea'].invalid) {
+      window.scrollTo(0, 500);
+      return;
+    }
+    if (this.applicationForm.controls['description'].invalid) {
+      window.scrollTo(0, 600);
+      return;
+    }
   }
 
   private openProjectModal(message: string, etherscanLink: string) {
