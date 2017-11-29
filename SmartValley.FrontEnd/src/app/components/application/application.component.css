@@ -1,14 +1,16 @@
 .row {
-  margin: 2em 0em;
+  margin: 1em 0em;
 }
 
 .row > span {
-
+  padding-top: 0.6em;
+  padding-right: 1.5em;
 }
 
 .form-control {
-  padding: 1em;
+  padding: 0.6em;
   padding-left: 2em;
+  border-color: rgb(70, 137, 232);
 }
 
 .row-title {
@@ -35,6 +37,15 @@
 
 .submit-btn, .finance-btn, .legal-btn, .team-btn {
   display: none;
+}
+
+.sw-members > div{
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+.sw-members > div:nth-child(1), .sw-members > div:nth-child(3), .sw-members > div:nth-child(5){
+  /*background: #f8f8f8;*/
 }
 
 .main-btn {

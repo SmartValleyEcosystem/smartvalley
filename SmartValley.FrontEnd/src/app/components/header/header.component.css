@@ -16,5 +16,9 @@
   text-decoration: none;
 }
 .sm-header__nav > a{
-  padding-left: 1em;
+  padding-left: 1em;}
+
+a, button, span {
+  color: rgb(72, 138, 232);
+  font-size: 0.7em;
 }
