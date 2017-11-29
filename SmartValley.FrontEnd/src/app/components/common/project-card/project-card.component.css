@@ -19,7 +19,7 @@
 
 .scoring a.sv-default-btn {
   float: right;
-  bottom: calc(3em - 16px);
+  bottom: 3em;
   position: absolute;
   right: calc(1.5em + 8px);
 }
@@ -31,7 +31,7 @@
 
 .scoring-card-block > div {
   vertical-align: top;
-  padding: 2em;
+  padding: 3em 2em;
 }
 
 .description {
@@ -43,7 +43,7 @@
 .main-info {
   display: inline-block;
   left: 1.5em;
-  padding: 1em;
+  padding: 2em;
 }
 
 .main-info img {
@@ -71,5 +71,6 @@
   padding: 0;
   position: absolute;
   height: 100%;
-  right: 2.5em;
+  right: 1.5em;
+  color: rgb(180, 180, 180);
 }

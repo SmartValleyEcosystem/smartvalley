@@ -204,6 +204,7 @@ body {
   padding: 1em 0em;
   color: white !important;
   background-color: rgb(70, 137, 232);
+  border-color: rgb(70, 137, 232);
 }
 
 a {

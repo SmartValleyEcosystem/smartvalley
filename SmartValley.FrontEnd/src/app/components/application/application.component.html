@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row mx-auto">
-    <div class="col-8 sm-title">
+    <div class="col-7 sm-title">
       <h1>Create new project for scoring</h1>
     </div>
   </div>
@@ -11,32 +11,32 @@
       </div>
       <div class="row">
         <span class="col-2 offset-1">Name</span>
-        <input class="form-control col-6" formControlName="name" placeholder="Cosmo Dream Incorporated">
+        <input class="form-control col-8" formControlName="name" placeholder="Cosmo Dream Incorporated">
       </div>
       <div class="row">
         <span class="col-2 offset-1">Project Area</span>
-        <input class="form-control col-6" formControlName="projectArea" placeholder="Biotechnology">
+        <input class="form-control col-8" formControlName="projectArea" placeholder="Biotechnology">
       </div>
       <div class="row">
         <span class="col-2 offset-1">Description</span>
-        <textarea class="form-control col-6" formControlName="description"
+        <textarea class="form-control col-8" formControlName="description"
                   placeholder="Technology of Authenticity Verification of Video Content">
         </textarea>
       </div>
       <div class="row">
         <span class="col-2 offset-1">Current project status</span>
-        <textarea class="form-control col-6" formControlName="projectStatus"
+        <textarea class="form-control col-8" formControlName="projectStatus"
                   placeholder="We already develop MVP">
         </textarea>
       </div>
       <div class="wp-link row" style="margin-bottom: 3em;">
         <span class="col-2 offset-1">White paper link</span>
-        <input class="form-control col-6" formControlName="whitePaperLink"
+        <input class="form-control col-8" formControlName="whitePaperLink"
                title="Include http://" placeholder="http://">
       </div>
     </div>
     <div [ngClass]="!isTeamShow ? '' : 'main-btn'" class="row">
-      <button (click)="showNext()" class="col-3 btn btn-primary">Next
+      <button (click)="showNext()" class="col-3 sv-default-btn btn-primary">Next
       </button>
     </div>
 
@@ -49,20 +49,20 @@
           <div [formGroup]="member">
             <div class="row">
               <span class="col-1 offset-1">{{member.value.title}}</span>
-              <input class="form-control col-7" formControlName="fullName">
+              <input class="form-control col-9" formControlName="fullName">
             </div>
             <div class="row">
               <span class="col-1 offset-1" style="font-size: 0.8em; padding-top: 1.2em;">Facebook</span>
-              <input class="form-control col-3" formControlName="facebookLink">
+              <input class="form-control col-4" formControlName="facebookLink">
               <span class="col-1" style="font-size: 0.8em; padding-top: 1.2em;">LinkedIn</span>
-              <input class="form-control col-3" formControlName="linkedInLink">
+              <input class="form-control col-4" formControlName="linkedInLink">
             </div>
           </div>
         </div>
       </div>
     </div>
     <div [ngClass]="isTeamShow && !isLegalShow ? '' : 'team-btn'" class="row">
-      <button (click)="showNext()" class="col-3 btn btn-primary">Next
+      <button (click)="showNext()" class="col-3 sv-default-btn btn-primary">Next
       </button>
     </div>
     <div [ngClass]="isLegalShow ? 'is-active' : ''" class="sw-card sw-content">
@@ -72,12 +72,12 @@
       <div class="row-content">
         <div class="row">
           <span class="col-4 offset-1">In which country is the incorporation made?</span>
-          <input class="form-control col-4" style="margin-bottom: 1em;" formControlName="country" placeholder="Russian Federation">
+          <input class="form-control col-6" style="margin-bottom: 1em;" formControlName="country" placeholder="Russian Federation">
         </div>
       </div>
     </div>
     <div [ngClass]="isLegalShow && !isFinanceShow ? '' : 'legal-btn'" class="row">
-      <button (click)="showNext()" class="col-3 btn btn-primary">Next
+      <button (click)="showNext()" class="col-3 sv-default-btn btn-primary">Next
       </button>
     </div>
     <div [ngClass]="isFinanceShow ? 'is-active' : ''" class="sw-card sw-content">
@@ -90,13 +90,13 @@
         </div>
         <div class="row">
           <span class="col-1 offset-1" style="padding-right: 0;">Soft cap:</span>
-          <input class="form-control col-2" formControlName="softCap">
+          <input class="form-control col-3" formControlName="softCap">
           <span class="col-1 offset-1" style="padding-right: 0;">Hard cap:</span>
-          <input class="form-control col-3" formControlName="hardCap">
+          <input class="form-control col-4" formControlName="hardCap">
         </div>
         <div class="row">
           <span class="col-2 offset-1">Financial model link:</span>
-          <input class="form-control col-6" formControlName="financeModelLink" placeholder="http://">
+          <input class="form-control col-8" formControlName="financeModelLink" placeholder="http://">
         </div>
         <div class="row">
           <mat-checkbox class="col-6 offset-1" labelPosition="before" style="margin-bottom: 1em;" formControlName="attractedInvestments">Attracted investments:  </mat-checkbox>
@@ -104,7 +104,7 @@
       </div>
     </div>
     <div [ngClass]="isFinanceShow && !isTechShow ? '' : 'finance-btn'" class="row">
-      <button (click)="showNext()" class="col-3 btn btn-primary">Next
+      <button (click)="showNext()" class="col-3 sv-default-btn btn-primary">Next
       </button>
     </div>
     <div [ngClass]="isTechShow ? 'is-active' : ''" class="sw-card sw-content">
@@ -114,11 +114,11 @@
       <div class="row-content">
         <div class="row">
           <span class="col-2 offset-1" style="padding-right: 0">Whick blockchain you want to use?</span>
-          <input class="form-control col-6" formControlName="blockChainType">
+          <input class="form-control col-8" formControlName="blockChainType">
         </div>
         <div class="row">
           <span class="col-2 offset-1" style="padding-right: 0">Prototype/MVP link:</span>
-          <input class="form-control col-6" style="margin-bottom: 1em;" formControlName="mvpLink" placeholder="http://">
+          <input class="form-control col-8" style="margin-bottom: 1em;" formControlName="mvpLink" placeholder="http://">
         </div>
       </div>
     </div>

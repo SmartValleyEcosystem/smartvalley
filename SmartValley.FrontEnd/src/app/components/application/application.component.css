@@ -8,8 +8,7 @@
 }
 
 .form-control {
-  padding: 0.6em;
-  padding-left: 2em;
+  padding: 0.6em 1.2em 0.6em 1.2em;
   border-color: rgb(70, 137, 232);
 }
 
