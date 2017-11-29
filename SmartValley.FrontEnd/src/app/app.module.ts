@@ -15,9 +15,9 @@ import {MaterialModule} from './shared/material.module';
 import {BalanceApiClient} from './api/balance/balance-api-client';
 import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
 import {ApplicationComponent} from './components/application/application.component';
-import {ReactiveFormsModule, FormsModule, Validators} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ProjectManagerContractClient} from './services/project-manager-contract-client';
-import {ScoringComponent} from './components/scoring/scoring.component';  // <-- #1 import module
+import {ScoringComponent} from './components/scoring/scoring.component'; // <-- #1 import module
 import {MatTabsModule} from '@angular/material';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {FooterComponent} from './components/footer/footer.component';
@@ -33,6 +33,8 @@ import {ReportComponent} from './components/report/report.component';
 import {EstimatesApiClient} from './api/estimates/estimates-api-client';
 import {QuestionsComponent} from './components/report/questions/questions.component';
 import {ProjectService} from './services/project-service';
+import {NgProgressInterceptor, NgProgressModule} from 'ngx-progressbar';
+import {TransactionAwaitingModalComponent} from './components/common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 import {BlockiesService} from './services/blockies-service';
 
 @NgModule({
@@ -47,8 +49,10 @@ import {BlockiesService} from './services/blockies-service';
     EstimateComponent,
     ProjectCardComponent,
     ReportComponent,
-    QuestionsComponent
+    QuestionsComponent,
+    TransactionAwaitingModalComponent
   ],
+  entryComponents: [TransactionAwaitingModalComponent],
   imports: [
     MatCheckboxModule,
     MatTabsModule,
@@ -60,7 +64,8 @@ import {BlockiesService} from './services/blockies-service';
     FormsModule,
     ReactiveFormsModule,
     NgbModule.forRoot(),
-    SimpleNotificationsModule.forRoot()
+    SimpleNotificationsModule.forRoot(),
+    NgProgressModule
   ],
   providers: [
     {
@@ -71,6 +76,11 @@ import {BlockiesService} from './services/blockies-service';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: NgProgressInterceptor,
       multi: true
     },
     BalanceApiClient,

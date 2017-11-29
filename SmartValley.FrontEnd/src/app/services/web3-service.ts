@@ -46,7 +46,7 @@ export class Web3Service {
 
   public getContract(abiString: string, address: string) {
     const abi = JSON.parse(abiString);
-    return this._eth.contract(abi).at(address);
+    return this.eth.contract(abi).at(address);
   }
 
   private getNetworkVersion(): Promise<any> {
