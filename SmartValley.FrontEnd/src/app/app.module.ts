@@ -34,7 +34,7 @@ import {EstimatesApiClient} from './api/estimates/estimates-api-client';
 import {QuestionsComponent} from './components/report/questions/questions.component';
 import {ProjectService} from './services/project-service';
 import {NgProgressInterceptor, NgProgressModule} from 'ngx-progressbar';
-import {ProjectCreatingModalComponent} from './components/application/project-creating-modal.component';
+import {TransactionAwaitingModalComponent} from './components/common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 import {BlockiesService} from './services/blockies-service';
 
 @NgModule({
@@ -50,9 +50,9 @@ import {BlockiesService} from './services/blockies-service';
     ProjectCardComponent,
     ReportComponent,
     QuestionsComponent,
-    ProjectCreatingModalComponent
+    TransactionAwaitingModalComponent
   ],
-  entryComponents: [ProjectCreatingModalComponent],
+  entryComponents: [TransactionAwaitingModalComponent],
   imports: [
     MatCheckboxModule,
     MatTabsModule,

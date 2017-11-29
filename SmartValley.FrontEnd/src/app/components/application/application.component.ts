@@ -11,7 +11,7 @@ import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {NotificationsService} from 'angular2-notifications';
 import {MatDialog, MatDialogRef} from '@angular/material';
-import {ProjectCreatingModalComponent} from './project-creating-modal.component';
+import {TransactionAwaitingModalComponent} from '../common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 
 @Component({
   selector: 'app-application',
@@ -27,7 +27,7 @@ export class ApplicationComponent {
   isTechShow = false;
 
   private isProjectCreating: boolean;
-  private projectModalRef: MatDialogRef<ProjectCreatingModalComponent>;
+  private projectModalRef: MatDialogRef<TransactionAwaitingModalComponent>;
 
 
   constructor(private formBuilder: FormBuilder,
@@ -95,17 +95,18 @@ export class ApplicationComponent {
 
   private async onSubmit() {
     this.isProjectCreating = true;
-    let application = {} as Application;
-    try {
-      application = await this.fillApplication();
-    }
-    catch (e) {
+    const application = await this.fillApplication();
+
+    if (application == null) {
       this.notificationsService.error('Error', 'Please try again');
       this.isProjectCreating = false;
       return;
     }
 
-    this.openProjectModal('https://rinkeby.etherscan.io/tx/' + application.transactionHash);
+    this.openProjectModal(
+      'Your project for scoring is creating. Please wait for completion of transaction.',
+      'https://rinkeby.etherscan.io/tx/' + application.transactionHash
+    );
 
     await this.applicationApiClient.createApplicationAsync(application);
 
@@ -115,10 +116,13 @@ export class ApplicationComponent {
     this.notificationsService.success('Success!', 'Project created');
   }
 
-  private openProjectModal(txHash: string) {
-    this.projectModalRef = this.projectModal.open(ProjectCreatingModalComponent, {
+  private openProjectModal(message: string, etherscanLink: string) {
+    this.projectModalRef = this.projectModal.open(TransactionAwaitingModalComponent, {
       width: '600px',
-      data: txHash,
+      data: {
+        message: message,
+        etherscanLink: etherscanLink
+      },
       disableClose: true,
     });
   }
@@ -158,11 +162,18 @@ export class ApplicationComponent {
 
     const projectManagerContract = await this.contractApiClient.getProjectManagerContractAsync();
 
-    application.transactionHash = await this.projectManagerContractClient.addProjectAsync(
-      projectManagerContract.address,
-      projectManagerContract.abi,
-      application.projectId,
-      formModel.name);
-    return application;
+    try {
+      application.transactionHash = await this.projectManagerContractClient.addProjectAsync(
+        projectManagerContract.address,
+        projectManagerContract.abi,
+        application.projectId,
+        formModel.name);
+
+      return application;
+
+    }
+    catch (e) {
+      return null;
+    }
   }
 }
