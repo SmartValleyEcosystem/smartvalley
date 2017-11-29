@@ -61,9 +61,7 @@ namespace SmartValley.WebApi.Estimates
             {
                 return -1;
             }
-            var totalScore = estimates.Sum(e => e.Score);
-            var averageScore = totalScore / RequiredEstimatesCountInCategory;
-            return averageScore;
+            return estimates.Sum(e => e.Score) / (double) RequiredEstimatesCountInCategory;
         }
 
         private async Task UpdateProjectAsync(Project project, ScoringCategory scoringCategory)
