@@ -26,7 +26,7 @@ export class ApplicationComponent {
   isFinanceShow = false;
   isTechShow = false;
 
-  private isProjectCreating: boolean;
+  public isProjectCreating: boolean;
   private projectModalRef: MatDialogRef<TransactionAwaitingModalComponent>;
 
 
@@ -93,7 +93,7 @@ export class ApplicationComponent {
     }
   }
 
-  private async onSubmit() {
+  public async onSubmit() {
     this.isProjectCreating = true;
     const application = await this.fillApplication();
 
