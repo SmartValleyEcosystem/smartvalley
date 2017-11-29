@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {ActivatedRoute} from '@angular/router';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
@@ -11,6 +11,7 @@ import {Estimate} from '../../services/estimate';
 import {isNullOrUndefined} from 'util';
 import {ProjectService} from '../../services/project-service';
 import {BlockiesService} from '../../services/blockies-service';
+import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-report',
@@ -25,6 +26,9 @@ export class ReportComponent {
   private projectService: ProjectService;
   public categoryAverageScore: number;
   private projectImageUrl: string;
+
+  @ViewChild('tabSet')
+  private tabSet: NgbTabset;
 
   constructor(private projectApiClient: ProjectApiClient,
               private estimatesApiClient: EstimatesApiClient,
@@ -91,5 +95,13 @@ export class ReportComponent {
     }
     const allAverageScores = allScores.map(i => i.length > 0 ? i.reduce((a, b) => a + b) / i.length : 0);
     this.categoryAverageScore = allAverageScores.reduce((a, b) => a + b) / expertCount;
+  }
+
+  showEstimates() {
+    this.tabSet.select('estimates');
+  }
+
+  showForm() {
+    this.tabSet.select('form');
   }
 }

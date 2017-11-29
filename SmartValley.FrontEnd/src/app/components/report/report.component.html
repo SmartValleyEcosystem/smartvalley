@@ -27,8 +27,8 @@
     </div>
   </div>
   <div class="row mx-auto">
-    <ngb-tabset class="col-10 info">
-      <ngb-tab title="Form">
+    <ngb-tabset #tabSet class="col-10 info">
+      <ngb-tab id="form" title="Form">
         <ng-template ngbTabContent>
           <div class="sw-card sw-content">
             <div class="row">
@@ -123,45 +123,53 @@
             </div>
           </div>
           <div style="margin-left: calc(4em - 5px);" class="submit-button row">
-            <button class="trans-btn col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">
+            <button class="trans-btn col-3 btn btn-primary"
+                    style="padding-top: 1em; padding-bottom: 1em;"
+                    (click)="showEstimates()">
               Experts estimates
               <i class="fa fa-arrow-right" aria-hidden="true"></i>
             </button>
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab title="Experts estimates">
+      <ngb-tab id="estimates" title="Experts estimates">
         <ng-template ngbTabContent>
           <div class="content sw-card sw-content">
             <mat-tab-group (selectedTabChange)="tabChanged($event)">
               <mat-tab label="HR">
                 <span>HR average score: </span>
-                <span *ngIf="categoryAverageScore > -1; else elseBlock" class="{{projectService.colorOfEstimateScore(categoryAverageScore)}}">{{categoryAverageScore.toFixed(2)}}</span>
+                <span *ngIf="categoryAverageScore > -1; else elseBlock"
+                      class="{{projectService.colorOfEstimateScore(categoryAverageScore)}}">{{categoryAverageScore.toFixed(2)}}</span>
                 <ng-template #elseBlock><span>in progress</span></ng-template>
-              <app-questions [questions]="questions"></app-questions>
+                <app-questions [questions]="questions"></app-questions>
               </mat-tab>
               <mat-tab label="Lawyer">
                 <span>Lawyer average score: </span>
-                <span *ngIf="categoryAverageScore > -1; else elseBlock" class="{{projectService.colorOfEstimateScore(categoryAverageScore)}}">{{categoryAverageScore.toFixed(2)}}</span>
+                <span *ngIf="categoryAverageScore > -1; else elseBlock"
+                      class="{{projectService.colorOfEstimateScore(categoryAverageScore)}}">{{categoryAverageScore.toFixed(2)}}</span>
                 <ng-template #elseBlock><span>in progress</span></ng-template>
                 <app-questions [questions]="questions"></app-questions>
               </mat-tab>
               <mat-tab label="Analyst">
                 <span>Analyst average score: </span>
-                <span *ngIf="categoryAverageScore > -1; else elseBlock" class="{{projectService.colorOfEstimateScore(categoryAverageScore)}}">{{categoryAverageScore.toFixed(2)}}</span>
+                <span *ngIf="categoryAverageScore > -1; else elseBlock"
+                      class="{{projectService.colorOfEstimateScore(categoryAverageScore)}}">{{categoryAverageScore.toFixed(2)}}</span>
                 <ng-template #elseBlock><span>in progress</span></ng-template>
                 <app-questions [questions]="questions"></app-questions>
               </mat-tab>
               <mat-tab label="Technical expert">
                 <span>Technical expert average score: </span>
-                <span *ngIf="categoryAverageScore > -1; else elseBlock" class="{{projectService.colorOfEstimateScore(categoryAverageScore)}}">{{categoryAverageScore.toFixed(2)}}</span>
+                <span *ngIf="categoryAverageScore > -1; else elseBlock"
+                      class="{{projectService.colorOfEstimateScore(categoryAverageScore)}}">{{categoryAverageScore.toFixed(2)}}</span>
                 <ng-template #elseBlock><span>in progress</span></ng-template>
                 <app-questions [questions]="questions"></app-questions>
               </mat-tab>
             </mat-tab-group>
           </div>
           <div style="margin-left: calc(4em - 5px);" class="submit-button row">
-            <button class="trans-btn col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">
+            <button class="trans-btn col-3 btn btn-primary"
+                    style="padding-top: 1em; padding-bottom: 1em;"
+                    (click)="showForm()">
               <i class="fa fa-arrow-left" aria-hidden="true"></i>
               Form
             </button>
