@@ -2,6 +2,7 @@ import {BalanceResponse} from './balance-response';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BaseApiClient} from '../base-api-client';
+import {ReceiveEtherResponse} from './receive-ether-response';
 
 @Injectable()
 export class BalanceApiClient extends BaseApiClient {
@@ -13,7 +14,7 @@ export class BalanceApiClient extends BaseApiClient {
     return this.http.get<BalanceResponse>(this.baseApiUrl + '/balance').toPromise();
   }
 
-  async receiveEtherAsync(): Promise<void> {
-    await this.http.post(this.baseApiUrl + '/balance', null).subscribe();
+  async receiveEtherAsync(): Promise<ReceiveEtherResponse> {
+    return this.http.post<ReceiveEtherResponse>(this.baseApiUrl + '/balance', null).toPromise();
   }
 }

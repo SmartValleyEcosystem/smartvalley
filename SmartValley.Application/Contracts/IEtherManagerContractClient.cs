@@ -6,6 +6,6 @@ namespace SmartValley.Application.Contracts
     {
         Task<bool> HasReceivedEtherAsync(string address);
 
-        Task SendEtherToAsync(string address);
+        Task<string> SendEtherToAsync(string address);
     }
 }

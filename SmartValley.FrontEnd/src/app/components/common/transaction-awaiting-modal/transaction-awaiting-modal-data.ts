@@ -1,4 +1,4 @@
 export interface TransactionAwaitingModalData {
   message: string;
-  etherscanLink: string;
+  transactionHash: string;
 }

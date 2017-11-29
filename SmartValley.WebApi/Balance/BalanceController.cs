@@ -33,10 +33,10 @@ namespace SmartValley.WebApi.Balance
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post()
+        public async Task<ReceiveEtherResponse> ReceiveEtherAsync()
         {
-            await _etherManagerContractClient.SendEtherToAsync(User.Identity.Name);
-            return NoContent();
+            var transactionHash = await _etherManagerContractClient.SendEtherToAsync(User.Identity.Name);
+            return new ReceiveEtherResponse{TransactionHash = transactionHash};
         }
     }
 }
