@@ -1,6 +1,10 @@
 @import "~@angular/material/prebuilt-themes/purple-green.css";
 @import "~bootstrap/dist/css/bootstrap.css";
 
+.container {
+  min-width: 800px;
+}
+
 body {
   background: rgb(32, 32, 32);
   font-family: AvenirNextCyr, sans-serif;
