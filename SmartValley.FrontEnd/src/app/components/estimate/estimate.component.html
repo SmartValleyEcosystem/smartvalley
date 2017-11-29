@@ -54,7 +54,11 @@
     </div>
     <div class="row">
       <span class="col-4 offset-1">Does your team attract investments?</span>
-      <span class="col-5">{{projectDetails.attractedInvestments ? 'Yes':'No'}}</span>
+      <span *ngIf="projectDetails.attractedInvestments; else noAttract" style="color:green;"
+            class="col-5">Yes</span>
+      <ng-template #noAttract>
+        <span style="color:red;" class="col-5">No</span>
+      </ng-template>
     </div>
   </div>
   <div class="next-button row">
