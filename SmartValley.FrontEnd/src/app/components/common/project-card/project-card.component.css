@@ -46,6 +46,10 @@
   padding: 1em;
 }
 
+.main-info img {
+  width: 4em;
+}
+
 .main-info__country {
   color: rgba(0, 0, 0, 0.5);
 }
