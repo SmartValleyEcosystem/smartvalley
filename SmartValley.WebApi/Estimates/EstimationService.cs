@@ -54,6 +54,18 @@ namespace SmartValley.WebApi.Estimates
             return _estimateRepository.GetAsync(projectId, category.ToDomain());
         }
 
+        public double CalculateAverageScore(IReadOnlyCollection<Estimate> estimates)
+        {
+            var expertsCount = estimates.GroupBy(e => e.ExpertAddress).Count();
+            if (expertsCount < RequiredEstimatesCountInCategory)
+            {
+                return -1;
+            }
+            var totalScore = estimates.Sum(e => e.Score);
+            var averageScore = totalScore / RequiredEstimatesCountInCategory;
+            return averageScore;
+        }
+
         private async Task UpdateProjectAsync(Project project, ScoringCategory scoringCategory)
         {
             project.IncrementEstimatesCounter(scoringCategory);

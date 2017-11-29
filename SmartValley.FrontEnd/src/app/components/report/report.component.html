@@ -138,29 +138,25 @@
             <mat-tab-group (selectedTabChange)="tabChanged($event)">
               <mat-tab label="HR">
                 <span>HR average score: </span>
-                <span *ngIf="categoryAverageScore > -1; else elseBlock"
-                      class="{{projectService.colorOfEstimateScore(categoryAverageScore)}}">{{categoryAverageScore.toFixed(2)}}</span>
+                <span *ngIf="categoryAverageScore > -1; else elseBlock">{{categoryAverageScore.toFixed(2)}}</span>
                 <ng-template #elseBlock><span>in progress</span></ng-template>
                 <app-questions [questions]="questions"></app-questions>
               </mat-tab>
               <mat-tab label="Lawyer">
                 <span>Lawyer average score: </span>
-                <span *ngIf="categoryAverageScore > -1; else elseBlock"
-                      class="{{projectService.colorOfEstimateScore(categoryAverageScore)}}">{{categoryAverageScore.toFixed(2)}}</span>
+                <span *ngIf="categoryAverageScore > -1; else elseBlock">{{categoryAverageScore.toFixed(2)}}</span>
                 <ng-template #elseBlock><span>in progress</span></ng-template>
                 <app-questions [questions]="questions"></app-questions>
               </mat-tab>
               <mat-tab label="Analyst">
                 <span>Analyst average score: </span>
-                <span *ngIf="categoryAverageScore > -1; else elseBlock"
-                      class="{{projectService.colorOfEstimateScore(categoryAverageScore)}}">{{categoryAverageScore.toFixed(2)}}</span>
+                <span *ngIf="categoryAverageScore > -1; else elseBlock">{{categoryAverageScore.toFixed(2)}}</span>
                 <ng-template #elseBlock><span>in progress</span></ng-template>
                 <app-questions [questions]="questions"></app-questions>
               </mat-tab>
               <mat-tab label="Technical expert">
                 <span>Technical expert average score: </span>
-                <span *ngIf="categoryAverageScore > -1; else elseBlock"
-                      class="{{projectService.colorOfEstimateScore(categoryAverageScore)}}">{{categoryAverageScore.toFixed(2)}}</span>
+                <span *ngIf="categoryAverageScore > -1; else elseBlock">{{categoryAverageScore.toFixed(2)}}</span>
                 <ng-template #elseBlock><span>in progress</span></ng-template>
                 <app-questions [questions]="questions"></app-questions>
               </mat-tab>

@@ -8,5 +8,6 @@ namespace SmartValley.WebApi.Estimates
     {
         Task SubmitEstimatesAsync(SubmitEstimatesRequest request);
         Task<IReadOnlyCollection<Estimate>> GetAsync(long projectId, Category category);
+        double CalculateAverageScore(IReadOnlyCollection<Estimate> estimates);
     }
 }
