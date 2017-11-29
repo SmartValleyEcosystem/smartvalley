@@ -88,7 +88,7 @@ export class EstimateComponent {
           Validators.required,
           Validators.max(question.maxScore),
           Validators.min(question.minScore),
-          Validators.pattern('^\\d+$')]],
+          Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]],
         comments: ['', [Validators.required, Validators.maxLength(250)]],
       });
       questionsFormGroups.push(group);
