@@ -1,10 +1,11 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BaseApiClient} from '../base-api-client';
 import {SubmitEstimatesRequest} from './submit-estimates-request';
 import {CollectionResponse} from '../collection-response';
 import {EstimateResponse} from './estimate-response';
 import {ScoringCategory} from '../scoring/scoring-category.enum';
+import {GetEstimatesResponse} from './get-estimates-response';
 
 @Injectable()
 export class EstimatesApiClient extends BaseApiClient {
@@ -16,9 +17,13 @@ export class EstimatesApiClient extends BaseApiClient {
     await this.http.post(this.baseApiUrl + '/estimates', request).toPromise();
   }
 
-  async getByProjectIdAndCategoryAsync(projectId: number, category: ScoringCategory): Promise<CollectionResponse<EstimateResponse>> {
+  async getByProjectIdAndCategoryAsync(projectId: number, category: ScoringCategory): Promise<GetEstimatesResponse> {
+    const parameters = new HttpParams()
+      .append('projectId', projectId.toString())
+      .append('category', category.toString());
+
     return this.http
-      .get<CollectionResponse<EstimateResponse>>(this.baseApiUrl + '/estimates?projectId=' + projectId + '&category=' + category)
+      .get<GetEstimatesResponse>(this.baseApiUrl + '/estimates', {params: parameters})
       .toPromise();
   }
 }

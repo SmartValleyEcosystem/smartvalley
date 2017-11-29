@@ -14,9 +14,7 @@ export class ProjectService {
     if (rate > 2) {
       return 'medium_rate';
     }
-    if (rate >= 0) {
-      return 'low_rate';
-    }
+    return 'low_rate';
   }
 
   public colorOfProjectRate(rate: number): string {
