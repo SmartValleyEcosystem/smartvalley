@@ -20,8 +20,8 @@ export class QuestionService {
     this.questions[ScoringCategory.HR] = [
       <Question>{
         name: 'Team Completeness',
-        description: 'If all major roles are closed - 6.\n' +
-        'If any role is missing minus 1 for each, minus 2 for CEO.\n' +
+        description: 'If all major roles are closed (CEO, CTO, CFO, CMO, PR) - <strong>6</strong>.\n' +
+        'If any role is missing minus <strong>1</strong> for each, minus <strong>2</strong> for CEO.\n' +
         'If specialist doesn\'t have any experience, disregard him.',
         maxScore: 6,
         minScore: 0,
@@ -30,9 +30,12 @@ export class QuestionService {
       },
       <Question>{
         name: 'Team Experience',
-        description: 'For each role:\n' +
-        'If experience less than 2 years - 1, more - 2\n' +
-        'Don\'t have experience - 0',
+        description: '<div class="row two-col"><div class="col-6">For each role:\n' +
+        'If experience less than 2 years - <strong>1</strong>, more - <strong>2</strong>\n' +
+        'Don\'t have experience - <strong>0</strong></div>' +
+        '<div class="col-6">For each CEO:\n' +
+        'If experience less than 2 years - <strong>2</strong>, more - <strong>4</strong>\n' +
+        'Don\'t have experience - <strong>0</strong></div></div>',
         maxScore: 10,
         minScore: 0,
         indexInCategory: 1,
@@ -40,7 +43,7 @@ export class QuestionService {
       },
       <Question>{
         name: 'Attracted Investments',
-        description: 'If anyone in the team attracted investments before - 3.',
+        description: 'If anyone in the team attracted investments before - <strong>3</strong>.',
         maxScore: 3,
         minScore: 0,
         indexInCategory: 2,
@@ -48,8 +51,8 @@ export class QuestionService {
       },
       <Question>{
         name: 'Scam',
-        description: 'If anyone in the team seen in scam projects - minus 15.\n' +
-        'If no one in the team seen in scam projects - 0.',
+        description: 'If anyone in the team seen in scam projects - minus <strong>15</strong>.\n' +
+        'If no one in the team seen in scam projects - <strong>0</strong>.',
         maxScore: 0,
         minScore: -15,
         indexInCategory: 3,

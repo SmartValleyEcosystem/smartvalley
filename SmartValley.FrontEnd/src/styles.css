@@ -19,6 +19,10 @@ body {
   font-family: 'AvenirNextCyr-Medium', sans-serif;
 }
 
+.mat-tab-group {
+  font-family: 'AvenirNextCyr', sans-serif;
+}
+
 .nav-tabs {
   border-bottom: inherit;
 }
@@ -28,8 +32,8 @@ body {
   opacity: 1 !important;
   color: white;
   text-align: center;
-  padding-bottom: 20px;
-  padding-top: 20px;
+  padding-bottom: 24px;
+  padding-top: 18px;
   font-weight: 500;
 }
 
@@ -186,6 +190,10 @@ body {
   margin: 0.2em 0px
 }
 
+.sw-content > div.row:last-child {
+  margin-bottom: 20px;
+}
+
 .sm-title {
   margin-bottom: 10px;
   color: white;
@@ -193,11 +201,11 @@ body {
 }
 
 .sm-title h1 {
-  letter-spacing: 7px;
+  font-family: 'AvenirNextCyr-Bold', sans-serif;
+  letter-spacing: 8px;
   font-size: 40px;
-  font-weight: 900;
-  margin-bottom: 20px;
   text-transform: uppercase;
+  margin-bottom: 20px;
 }
 
 .sv-default-btn {
