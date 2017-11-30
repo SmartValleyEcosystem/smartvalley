@@ -23,6 +23,20 @@ body {
   font-family: 'AvenirNextCyr', sans-serif;
 }
 
+.mat-checkbox {
+  font-family: 'AvenirNextCyr', sans-serif;
+}
+
+div.mat-checkbox-frame {
+  border-color: rgb(70, 137, 232);
+  border-radius: 0.25rem;
+  border-width: 1px;
+}
+
+label.mat-checkbox-layout > div.mat-checkbox-inner-container {
+  margin-left: 6.2em;
+}
+
 .nav-tabs {
   border-bottom: inherit;
 }
