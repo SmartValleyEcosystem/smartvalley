@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Domain.Interfaces;
@@ -30,9 +31,14 @@ namespace SmartValley.WebApi.Projects
         }
 
         [HttpGet]
-        public Task<ProjectDetailsResponse> GetByIdAsync(GetByIdRequest request)
+        public async Task<IActionResult> GetByIdAsync(GetByIdRequest request)
         {
-            return _projectService.GetProjectDetailsByIdAsync(request.ProjectId);
+            var response = await _projectService.GetProjectDetailsByIdAsync(request.ProjectId);
+
+            if (!response.AuthorAddress.Equals(User.Identity.Name, StringComparison.InvariantCultureIgnoreCase))
+                return Unauthorized();
+
+            return Ok(response);
         }
     }
 }
