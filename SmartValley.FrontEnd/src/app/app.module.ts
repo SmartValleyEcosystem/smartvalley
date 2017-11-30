@@ -36,6 +36,7 @@ import {ProjectService} from './services/project-service';
 import {NgProgressInterceptor, NgProgressModule} from 'ngx-progressbar';
 import {TransactionAwaitingModalComponent} from './components/common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 import {BlockiesService} from './services/blockies-service';
+import {NullableLinkComponent} from './components/common/nullable-link/nullable-link.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import {BlockiesService} from './services/blockies-service';
     ProjectCardComponent,
     ReportComponent,
     QuestionsComponent,
-    TransactionAwaitingModalComponent
+    TransactionAwaitingModalComponent,
+    NullableLinkComponent
   ],
   entryComponents: [TransactionAwaitingModalComponent],
   imports: [
