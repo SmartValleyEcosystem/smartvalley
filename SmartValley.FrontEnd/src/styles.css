@@ -7,16 +7,20 @@
 
 body {
   background: rgb(32, 32, 32);
-  font-family: AvenirNextCyr, sans-serif;
+  font-family: 'AvenirNextCyr', sans-serif;
 }
 
 .mat-toolbar {
   background: transparent !important;
-  font-family: AvenirNextCyr, sans-serif;
+  font-family: 'AvenirNextCyr', sans-serif;
 }
 
 .mat-button-wrapper {
-  font-family: AvenirNextCyr, sans-serif;
+  font-family: 'AvenirNextCyr-Medium', sans-serif;
+}
+
+.mat-tab-group {
+  font-family: 'AvenirNextCyr', sans-serif;
 }
 
 .nav-tabs {
@@ -28,8 +32,8 @@ body {
   opacity: 1 !important;
   color: white;
   text-align: center;
-  padding-bottom: 20px;
-  padding-top: 20px;
+  padding-bottom: 24px;
+  padding-top: 18px;
   font-weight: 500;
 }
 
@@ -186,6 +190,10 @@ body {
   margin: 0.2em 0px
 }
 
+.sw-content > div.row:last-child {
+  margin-bottom: 20px;
+}
+
 .sm-title {
   margin-bottom: 10px;
   color: white;
@@ -193,17 +201,18 @@ body {
 }
 
 .sm-title h1 {
-  letter-spacing: 7px;
+  font-family: 'AvenirNextCyr-Bold', sans-serif;
+  letter-spacing: 8px;
   font-size: 40px;
-  font-weight: 700;
-  margin-bottom: 20px;
   text-transform: uppercase;
+  margin-bottom: 20px;
 }
 
 .sv-default-btn {
   padding: 1em 0em;
   color: white !important;
   background-color: rgb(70, 137, 232);
+  border-color: rgb(70, 137, 232);
 }
 
 a {
@@ -245,75 +254,75 @@ input.ng-dirty.ng-invalid, textarea.ng-dirty.ng-invalid {
 
 @font-face {
   font-family: "AvenirNextCyr-Bold";
-  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Bold.otf") format("otf")
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Bold.otf") format("opentype");
 }
 
 @font-face {
   font-family: "AvenirNextCyr-BoldItalic";
-  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-BoldItalic.otf") format("otf")
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-BoldItalic.otf") format("opentype");
 }
 
 @font-face {
   font-family: "AvenirNextCyr-Demi";
-  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Demi.otf") format("otf")
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Demi.otf") format("opentype");
 }
 
 @font-face {
   font-family: "AvenirNextCyr-DemiItalic";
-  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-DemiItalic.otf") format("otf")
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-DemiItalic.otf") format("opentype");
 }
 
 @font-face {
   font-family: "AvenirNextCyr-Heavy";
-  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Heavy.otf") format("otf")
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Heavy.otf") format("opentype");
 }
 
 @font-face {
   font-family: "AvenirNextCyr-HeavyItalic";
-  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-HeavyItalic.otf") format("otf")
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-HeavyItalic.otf") format("opentype");
 }
 
 @font-face {
   font-family: "AvenirNextCyr-Italic";
-  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Italic.otf") format("otf")
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Italic.otf") format("opentype");
 }
 
 @font-face {
   font-family: "AvenirNextCyr-Light";
-  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Light.otf") format("otf")
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Light.otf") format("opentype");
 }
 
 @font-face {
   font-family: "AvenirNextCyr-LightItalic";
-  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-LightItalic.otf") format("otf")
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-LightItalic.otf") format("opentype");
 }
 
 @font-face {
   font-family: "AvenirNextCyr-Medium";
-  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Medium.otf") format("otf")
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Medium.otf") format("opentype");
 }
 
 @font-face {
   font-family: "AvenirNextCyr-MediumItalic";
-  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-MediumItalic.otf") format("otf")
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-MediumItalic.otf") format("opentype");
 }
 
 @font-face {
   font-family: "AvenirNextCyr";
-  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Regular.otf") format("otf")
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Regular.otf") format("opentype");
 }
 
 @font-face {
   font-family: "AvenirNextCyr-Thin";
-  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Thin.otf") format("otf")
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-Thin.otf") format("opentype");
 }
 
 @font-face {
   font-family: "AvenirNextCyr-ThinItalic";
-  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-ThinItalic.otf") format("otf")
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-ThinItalic.otf") format("opentype");
 }
 
 @font-face {
   font-family: "AvenirNextCyr-UltraLight";
-  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-UltraLightIt.otf") format("otf")
+  src: url("/assets/fonts/Avenir Next/AvenirNextCyr-UltraLightIt.otf") format("opentype");
 }

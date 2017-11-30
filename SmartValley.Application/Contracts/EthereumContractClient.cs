@@ -35,7 +35,7 @@ namespace SmartValley.Application.Contracts
             return GetFunction(address, abi, functionName).CallAsync<TResult>(functionInput);
         }
 
-        public async Task SignAndSendTransactionAsync(
+        public async Task<string> SignAndSendTransactionAsync(
             string contractAddress,
             string contractAbi,
             string functionName,
@@ -43,9 +43,7 @@ namespace SmartValley.Application.Contracts
         {
             var function = GetFunction(contractAddress, contractAbi, functionName);
             var transactionInput = await CreateTransactionInputAsync(function, functionInput);
-            var transactionHash = await _web3.Personal.SignAndSendTransaction.SendRequestAsync(transactionInput, _password);
-
-            await WaitForConfirmationAsync(transactionHash);
+            return await _web3.Personal.SignAndSendTransaction.SendRequestAsync(transactionInput, _password);
         }
 
         public async Task WaitForConfirmationAsync(string transactionHash)

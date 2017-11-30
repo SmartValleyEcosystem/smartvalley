@@ -24,12 +24,14 @@ namespace SmartValley.WebApi.Estimates
         }
 
         [HttpGet]
-        public async Task<CollectionResponse<EstimateResponse>> GetEstimatesAsync(GetEstimatesRequest request)
+        public async Task<GetEstimatesResponse> GetEstimatesAsync(GetEstimatesRequest request)
         {
             var estimates = await _estimationService.GetAsync(request.ProjectId, request.Category);
+            var averageScore = _estimationService.CalculateAverageScore(estimates);
 
-            return new CollectionResponse<EstimateResponse>
+            return new GetEstimatesResponse
                    {
+                       AverageScore = averageScore,
                        Items = estimates.Select(EstimateResponse.From).ToArray()
                    };
         }

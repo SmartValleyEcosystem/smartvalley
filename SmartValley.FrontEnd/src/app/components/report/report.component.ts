@@ -25,10 +25,10 @@ export class ReportComponent {
   public EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
   public categoryAverageScore: number;
   public teamMembers: Array<TeamMember>;
+  public projectService: ProjectService;
+  public projectImageUrl: string;
 
   private projectId: number;
-  private projectService: ProjectService;
-  private projectImageUrl: string;
 
   @ViewChild('tabSet')
   private tabSet: NgbTabset;
@@ -91,6 +91,7 @@ export class ReportComponent {
 
   private async loadExpertEstimates(scoringCategory: ScoringCategory) {
     const estimatesResponse = await this.estimatesApiClient.getByProjectIdAndCategoryAsync(this.projectId, scoringCategory);
+    this.categoryAverageScore = estimatesResponse.averageScore;
     const questions = this.questionService.getByExpertType(scoringCategory);
 
     for (const question of questions) {
@@ -107,16 +108,6 @@ export class ReportComponent {
       }
     }
     this.questions = questions;
-
-    const expertCount = 3;
-    const allScores = this.questions.map(x => x.estimates.map(y => y.score));
-    const haveThreeExperts = allScores.map(i => i.length < expertCount);
-    if (haveThreeExperts.some(i => i === true)) {
-      this.categoryAverageScore = -1;
-      return;
-    }
-    const allAverageScores = allScores.map(i => i.length > 0 ? i.reduce((a, b) => a + b) / i.length : 0);
-    this.categoryAverageScore = allAverageScores.reduce((a, b) => a + b) / expertCount;
   }
 
   showEstimates() {

@@ -11,6 +11,7 @@ import {ProjectDetailsResponse} from '../../api/project/project-details-response
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {TeamMember} from '../../services/team-member';
 
 @Component({
   selector: 'app-estimate',
@@ -18,12 +19,13 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./estimate.component.css']
 })
 export class EstimateComponent {
-  hidden: boolean;
-  EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
-  expertType: ScoringCategory;
-  projectId: number;
+  public hidden: boolean;
+  public EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
+  public expertType: ScoringCategory;
+  public projectId: number;
   public projectDetails: ProjectDetailsResponse;
-  estimateForm: FormGroup;
+  public estimateForm: FormGroup;
+  public teamMembers: Array<TeamMember>;
 
   constructor(private route: ActivatedRoute,
               private projectApiClient: ProjectApiClient,
@@ -96,5 +98,24 @@ export class EstimateComponent {
 
     this.estimateForm = this.formBuilder.group({questions: this.formBuilder.array(questionsFormGroups)});
     this.projectDetails = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
+    this.teamMembers = this.getMembersCollection(this.projectDetails);
+  }
+
+  private getMembersCollection(report: ProjectDetailsResponse): Array<TeamMember> {
+    const result: TeamMember[] = [];
+    const memberTypeNames = Object.keys(EnumTeamMemberType).filter(key => !isNaN(Number(EnumTeamMemberType[key])));
+
+    for (const memberType of memberTypeNames) {
+      const teamMember = report.teamMembers.find(value => value.memberType === EnumTeamMemberType[memberType])
+        || <TeamMember>{memberType: EnumTeamMemberType[memberType], fullName: '-'};
+
+      result.push(<TeamMember>{
+        memberType: teamMember.memberType,
+        facebookLink: teamMember.facebookLink,
+        linkedInLink: teamMember.linkedInLink,
+        fullName: teamMember.fullName
+      });
+    }
+    return result;
   }
 }

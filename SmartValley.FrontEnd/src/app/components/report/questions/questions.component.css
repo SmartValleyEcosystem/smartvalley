@@ -2,3 +2,13 @@
   padding: 1em 0em;
   margin-right: 1em;
 }
+
+.question-text {
+  font-size: 0.8em;
+  white-space: pre-line;
+  word-wrap: break-word;
+}
+
+div.two-col div {
+  padding: 0;
+}

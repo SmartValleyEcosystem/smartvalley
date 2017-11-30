@@ -34,6 +34,7 @@
 
 .scoring-container {
   display: inline-block;
+  color: rgb(180, 180, 180);
 }
 
 .scoring-container > span {
@@ -60,24 +61,42 @@
 }
 
 .row {
-  padding: 1em 0em;
+  padding: 0.8em 0;
   margin-right: 1em;
+}
+
+.sub-row {
+  padding: 0;
+}
+
+
+div.container > .row:nth-child(1), div.container > .row:nth-child(2) {
+  padding: 0;
+  margin-right: 1em;
+}
+
+div.container > .row:nth-child(2) {
+  margin-bottom: 2em;
+}
+
+div.sw-main-info span {
+  padding-left: 0;
 }
 
 .description {
   display: inline-block;
   padding-right: 2em;
-  padding-left: 2em;
+  padding-left: 0.5em;
   position: absolute;
   left: 30%;
 }
 
 .main-info {
   display: inline-block;
-  left: 1.5em;
+  left: 3em;
   padding: 1em;
   position: absolute;
-  top: calc(25% - 2em + 25px);
+  top: calc(25% - 3em + 25px);
 }
 .main-info img {
   width: 6em;

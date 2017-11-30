@@ -2,7 +2,6 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BaseApiClient} from '../base-api-client';
 import {Application} from '../../services/application';
-import {ProjectDetailsResponse} from '../project/project-details-response';
 
 @Injectable()
 export class ApplicationApiClient extends BaseApiClient {

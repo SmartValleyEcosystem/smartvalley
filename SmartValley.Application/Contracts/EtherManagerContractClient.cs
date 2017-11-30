@@ -24,12 +24,12 @@ namespace SmartValley.Application.Contracts
         public Task<bool> HasReceivedEtherAsync(string address)
             => _contractClient.CallFunctionAsync<bool>(_contractAddress, _contractAbi, "receiversMap", address);
 
-        public async Task SendEtherToAsync(string address)
+        public async Task<string> SendEtherToAsync(string address)
         {
             if (await HasReceivedEtherAsync(address))
                 throw new EtherAlreadySentException(address);
 
-            await _contractClient.SignAndSendTransactionAsync(_contractAddress, _contractAbi, "giftEth", address);
+            return await _contractClient.SignAndSendTransactionAsync(_contractAddress, _contractAbi, "giftEth", address);
         }
     }
 }

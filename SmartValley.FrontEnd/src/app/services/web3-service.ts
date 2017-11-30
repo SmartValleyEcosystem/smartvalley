@@ -7,6 +7,7 @@ export class Web3Service {
 
   private readonly rinkebyNetworkId = '4';
   private readonly metamaskProviderName = 'MetamaskInpageProvider';
+  private _transactionReceiptPollingInterval = 1000;
 
   private _eth: EthJs;
 
@@ -47,6 +48,23 @@ export class Web3Service {
   public getContract(abiString: string, address: string) {
     const abi = JSON.parse(abiString);
     return this.eth.contract(abi).at(address);
+  }
+
+  public async waitForConfirmationAsync(transactionHash: string): Promise<void> {
+    let transactionReceipt = await this._eth.getTransactionReceipt(transactionHash);
+    while (!transactionReceipt) {
+      await this.delay(this._transactionReceiptPollingInterval);
+      transactionReceipt = await this._eth.getTransactionReceipt(transactionHash);
+    }
+
+    const status = parseInt(transactionReceipt.status, 16);
+    if (status !== 1) {
+      throw new Error(`Transaction '${transactionHash}' failed.`);
+    }
+  }
+
+  private delay(milliseconds: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
   }
 
   private getNetworkVersion(): Promise<any> {

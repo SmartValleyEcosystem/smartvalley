@@ -12,6 +12,7 @@ import {Paths} from '../../paths';
 import {NotificationsService} from 'angular2-notifications';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {TransactionAwaitingModalComponent} from '../common/transaction-awaiting-modal/transaction-awaiting-modal.component';
+import {TransactionAwaitingModalData} from '../common/transaction-awaiting-modal/transaction-awaiting-modal-data';
 
 @Component({
   selector: 'app-application',
@@ -30,7 +31,6 @@ export class ApplicationComponent {
 
   public isProjectCreating: boolean;
   private projectModalRef: MatDialogRef<TransactionAwaitingModalComponent>;
-
 
   constructor(private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
@@ -107,10 +107,10 @@ export class ApplicationComponent {
         return;
       }
 
-      this.openProjectModal(
-        'Your project for scoring is creating. Please wait for completion of transaction.',
-        'https://rinkeby.etherscan.io/tx/' + application.transactionHash
-      );
+    this.openProjectModal(
+      'Your project for scoring is creating. Please wait for completion of transaction.',
+      application.transactionHash
+    );
 
       await this.applicationApiClient.createApplicationAsync(application);
 
@@ -134,12 +134,12 @@ export class ApplicationComponent {
     }
   }
 
-  private openProjectModal(message: string, etherscanLink: string) {
+  private openProjectModal(message: string, transactionHash: string) {
     this.projectModalRef = this.projectModal.open(TransactionAwaitingModalComponent, {
       width: '600px',
-      data: {
+      data: <TransactionAwaitingModalData>{
         message: message,
-        etherscanLink: etherscanLink
+        transactionHash: transactionHash
       },
       disableClose: true,
     });
@@ -189,8 +189,7 @@ export class ApplicationComponent {
 
       return application;
 
-    }
-    catch (e) {
+    } catch (e) {
       return null;
     }
   }

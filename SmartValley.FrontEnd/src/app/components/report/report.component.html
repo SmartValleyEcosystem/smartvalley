@@ -1,6 +1,6 @@
 <div class="container" *ngIf="report">
   <div class="row mx-auto">
-    <div class="col-8 title">
+    <div class="col-8 sm-title">
       <h1>Scoring report</h1>
     </div>
   </div>
@@ -30,26 +30,26 @@
     <ngb-tabset #tabSet class="col-10 info">
       <ngb-tab id="form" title="Form">
         <ng-template ngbTabContent>
-          <div class="sw-card sw-content">
+          <div class="sw-card sw-content sw-main-info">
             <div class="row">
               <span class="col-3 offset-1">Project name:</span>
-              <span class="col-5">{{report.name}}</span>
+              <span class="col-8">{{report.name}}</span>
             </div>
             <div class="row">
-              <span class="col-3 offset-1">Project Area</span>
-              <span class="col-5">{{report.area}}</span>
+              <span class="col-3 offset-1">Project area:</span>
+              <span class="col-8">{{report.area}}</span>
             </div>
             <div class="row">
-              <span class="col-3 offset-1">Problem description</span>
-              <span class="col-5">{{report.description}}</span>
+              <span class="col-3 offset-1">Description:</span>
+              <span class="col-8">{{report.description}}</span>
             </div>
             <div class="row">
-              <span class="col-3 offset-1">Status</span>
-              <span class="col-5">{{report.status}}</span>
+              <span class="col-3 offset-1">Status:</span>
+              <span class="col-8">{{report.status}}</span>
             </div>
             <div class="row">
-              <span class="col-3 offset-1">White paper link</span>
-              <a href="{{report.whitePaperLink}}" class="col-5">{{report.whitePaperLink}}</a>
+              <span class="col-3 offset-1">White paper link:</span>
+              <a href="{{report.whitePaperLink}}" class="col-8">{{report.whitePaperLink}}</a>
             </div>
           </div>
 
@@ -60,8 +60,8 @@
             <div *ngFor="let member of teamMembers;">
               <div class="row">
                 <span class="col-1 offset-1">{{EnumTeamMemberType[member.memberType]}}:</span>
-                <span class="col-2" style="margin-left: 2em;">{{member.fullName}}</span>
-                <span class="col-1 offset-1 social-group">
+                <span class="col-3" style="margin-left: 2em;">{{member.fullName}}</span>
+                <span class="col-2 offset-1 social-group">
                   <a *ngIf="member.facebookLink" href="{{member.facebookLink}}" style="margin-right: 1em;">
                     <i class="fa fa-facebook" aria-hidden="true"></i>
                   </a>
@@ -85,15 +85,15 @@
             <div class="row row-title">
               <h3 class="col-10 offset-1">Finance</h3>
             </div>
-            <div class="row">
-              <span class="col-3 offset-1">Investments</span>
+            <div class="row" style="padding-bottom: 0;">
+              <span class="col-3 offset-1">Investments:</span>
             </div>
-            <div class="row">
-              <span class="col-3 offset-1">Soft cap:</span>
+            <div class="row sub-row">
+              <span class="col-3 offset-1">soft cap:</span>
               <span class="col-5">{{report.softCap}}</span>
             </div>
-            <div class="row">
-              <span class="col-3 offset-1">Hard cap:</span>
+            <div class="row sub-row">
+              <span class="col-3 offset-1">hard cap:</span>
               <span class="col-5">{{report.hardCap}}</span>
             </div>
             <div class="row">
@@ -102,10 +102,10 @@
             </div>
             <div class="row">
               <span class="col-3 offset-1">Attracted investments:</span>
-              <span *ngIf="report.attractedInvestments === true; else noAttract" style="color:green;"
-                    class="col-5">{{report.attractedInvestments ? 'Yes' : 'No'}}</span>
+              <span *ngIf="report.attractedInvestments; else noAttract" style="color:green;"
+                    class="col-5">Yes</span>
               <ng-template #noAttract>
-                <span style="color:red;" class="col-5">{{report.attractedInvestments ? 'Yes' : 'No'}}</span>
+                <span style="color:red;" class="col-5">No</span>
               </ng-template>
             </div>
           </div>
@@ -138,29 +138,25 @@
             <mat-tab-group (selectedTabChange)="tabChanged($event)">
               <mat-tab label="HR">
                 <span>HR average score: </span>
-                <span *ngIf="categoryAverageScore > -1; else elseBlock"
-                      class="{{projectService.colorOfEstimateScore(categoryAverageScore)}}">{{categoryAverageScore.toFixed(2)}}</span>
+                <span *ngIf="categoryAverageScore > -1; else elseBlock">{{categoryAverageScore.toFixed(2)}}</span>
                 <ng-template #elseBlock><span>in progress</span></ng-template>
                 <app-questions [questions]="questions"></app-questions>
               </mat-tab>
               <mat-tab label="Lawyer">
                 <span>Lawyer average score: </span>
-                <span *ngIf="categoryAverageScore > -1; else elseBlock"
-                      class="{{projectService.colorOfEstimateScore(categoryAverageScore)}}">{{categoryAverageScore.toFixed(2)}}</span>
+                <span *ngIf="categoryAverageScore > -1; else elseBlock">{{categoryAverageScore.toFixed(2)}}</span>
                 <ng-template #elseBlock><span>in progress</span></ng-template>
                 <app-questions [questions]="questions"></app-questions>
               </mat-tab>
               <mat-tab label="Analyst">
                 <span>Analyst average score: </span>
-                <span *ngIf="categoryAverageScore > -1; else elseBlock"
-                      class="{{projectService.colorOfEstimateScore(categoryAverageScore)}}">{{categoryAverageScore.toFixed(2)}}</span>
+                <span *ngIf="categoryAverageScore > -1; else elseBlock">{{categoryAverageScore.toFixed(2)}}</span>
                 <ng-template #elseBlock><span>in progress</span></ng-template>
                 <app-questions [questions]="questions"></app-questions>
               </mat-tab>
               <mat-tab label="Technical expert">
                 <span>Technical expert average score: </span>
-                <span *ngIf="categoryAverageScore > -1; else elseBlock"
-                      class="{{projectService.colorOfEstimateScore(categoryAverageScore)}}">{{categoryAverageScore.toFixed(2)}}</span>
+                <span *ngIf="categoryAverageScore > -1; else elseBlock">{{categoryAverageScore.toFixed(2)}}</span>
                 <ng-template #elseBlock><span>in progress</span></ng-template>
                 <app-questions [questions]="questions"></app-questions>
               </mat-tab>
