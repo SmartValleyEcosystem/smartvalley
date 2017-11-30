@@ -25,10 +25,10 @@ export class ReportComponent {
   public EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
   public categoryAverageScore: number;
   public teamMembers: Array<TeamMember>;
+  public projectService: ProjectService;
+  public projectImageUrl: string;
 
   private projectId: number;
-  private projectService: ProjectService;
-  private projectImageUrl: string;
 
   @ViewChild('tabSet')
   private tabSet: NgbTabset;

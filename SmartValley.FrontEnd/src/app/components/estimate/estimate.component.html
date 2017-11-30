@@ -33,18 +33,18 @@
     <div class="row row-title">
       <h3 class="col-10 offset-1">Core Team</h3>
     </div>
-    <div *ngFor="let member of projectDetails.teamMembers;">
+    <div *ngFor="let member of teamMembers;">
       <div class="row">
         <span class="col-1 offset-1">{{EnumTeamMemberType[member.memberType]}}:</span>
         <span class="col-3" style="margin-left: 2em;">{{member.fullName}}</span>
         <span class="col-2 offset-1 social-group">
-                  <a *ngIf="member.facebookLink" href="{{member.facebookLink}}" style="margin-right: 1em;">
-                    <i class="fa fa-facebook" aria-hidden="true"></i>
-                  </a>
-                  <a *ngIf="member.linkedInLink" href="{{member.linkedInLink}}">
-                    <i class="fa fa-linkedin" aria-hidden="true"></i>
-                  </a>
-                </span>
+          <a *ngIf="member.facebookLink" href="{{member.facebookLink}}" style="margin-right: 1em;">
+            <i class="fa fa-facebook" aria-hidden="true"></i>
+          </a>
+          <a *ngIf="member.linkedInLink" href="{{member.linkedInLink}}">
+            <i class="fa fa-linkedin" aria-hidden="true"></i>
+          </a>
+        </span>
       </div>
     </div>
   </div>
@@ -111,7 +111,8 @@
         </div>
         <div class="row-content">
           <div class="row">
-            <span class="col-6 offset-1" style="word-wrap: break-word; white-space: pre-line; font-size: 0.8em;" [innerHTML] = question.value.description></span>
+            <span class="col-6 offset-1" style="word-wrap: break-word; white-space: pre-line; font-size: 0.8em;"
+                  [innerHTML]=question.value.description></span>
           </div>
           <div class="row">
             <div class="form-group">
