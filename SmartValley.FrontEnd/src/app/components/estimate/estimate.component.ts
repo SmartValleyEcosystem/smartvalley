@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, QueryList, ViewChildren, ElementRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {QuestionService} from '../../services/question-service';
@@ -27,6 +27,8 @@ export class EstimateComponent {
   public estimateForm: FormGroup;
   public teamMembers: Array<TeamMember>;
 
+  @ViewChildren('required') requireds: QueryList<any>;
+
   constructor(private route: ActivatedRoute,
               private projectApiClient: ProjectApiClient,
               private questionService: QuestionService,
@@ -42,8 +44,19 @@ export class EstimateComponent {
   }
 
   async send() {
-    await this.submitAsync();
-    await this.router.navigate([Paths.Scoring]);
+    if (this.estimateForm.invalid) {
+      const invalidElements = this.requireds.filter(i => i.nativeElement.classList.contains('ng-invalid'));
+      if (invalidElements.length > 0) {
+        for (let a = 0; a < invalidElements.length; a++) {
+          this.setInvalid(invalidElements[a]);
+        }
+        this.scrollToElement(invalidElements[0]);
+      }
+
+    } else {
+      await this.submitAsync();
+      await this.router.navigate([Paths.Scoring]);
+    }
   }
 
   private async submitAsync(): Promise<void> {
@@ -56,6 +69,18 @@ export class EstimateComponent {
     };
 
     await this.estimatesApiClient.submitEstimatesAsync(submitEstimatesRequest);
+  }
+
+  private setInvalid(element: ElementRef) {
+    element.nativeElement.classList.add('ng-invalid');
+    element.nativeElement.classList.add('ng-dirty');
+  }
+
+  private scrollToElement(element: ElementRef) {
+    const offsetTop1 = element.nativeElement.offsetTop;
+    const offsetTop3 = element.nativeElement.offsetParent.offsetParent.offsetTop;
+    const offsetTop4 = element.nativeElement.offsetParent.offsetParent.offsetParent.offsetTop;
+    window.scrollTo({left: 0, top: offsetTop1 + offsetTop3 + offsetTop4 , behavior: 'smooth'});
   }
 
   private getEstimates(): Array<EstimateRequest> {

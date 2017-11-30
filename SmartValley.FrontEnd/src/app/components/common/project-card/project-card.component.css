@@ -49,6 +49,7 @@
 .main-info img {
   width: 4em;
   margin-bottom: 1em;
+  border-radius: 1em;
 }
 
 .main-info__country {

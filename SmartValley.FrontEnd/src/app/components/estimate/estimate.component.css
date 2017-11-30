@@ -61,6 +61,23 @@ div.container > .row:nth-child(2) {
 textarea {
 
 }
+input[type='number'] {
+  -moz-appearance:textfield;
+}
+/* Webkit browsers like Safari and Chrome */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.score{
+  max-width: 9%;
+}
+.score input{
+  padding: 1em;
+  text-align: center;
+}
 
 a {
   text-decoration: none;
