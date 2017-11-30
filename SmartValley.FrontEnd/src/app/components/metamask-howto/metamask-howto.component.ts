@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Web3Service} from '../../services/web3-service';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
+import {Ng2DeviceService} from 'ng2-device-detector';
 
 
 @Component({
@@ -11,6 +12,9 @@ import {Paths} from '../../paths';
 })
 export class MetamaskHowtoComponent {
 
-  constructor(private web3Service: Web3Service, private router: Router) {
+  constructor(private deviceService: Ng2DeviceService) {
+    this.browser = deviceService.browser;
   }
+
+  public browser: string;
 }

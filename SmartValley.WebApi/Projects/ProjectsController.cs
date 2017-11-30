@@ -25,7 +25,9 @@ namespace SmartValley.WebApi.Projects
             var scoredProjects = await _projectRepository.GetAllScoredAsync();
             return new CollectionResponse<ProjectResponse>
                    {
-                       Items = scoredProjects.Select(ProjectResponse.From).ToArray()
+                       Items = scoredProjects.Select(ProjectResponse.From)
+                       .OrderByDescending(p=>p.Score)
+                       .ToArray()
                    };
         }
 

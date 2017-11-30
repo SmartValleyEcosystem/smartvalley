@@ -197,15 +197,19 @@ label.mat-checkbox-layout > div.mat-checkbox-inner-container {
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
 }
-.mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background{
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
   background-color: rgb(72, 138, 232);
 }
+
 .mat-checkbox-checkmark-path {
-   stroke: white !important;
- }
-.mat-checkbox:not(.mat-checkbox-disabled).mat-accent .mat-checkbox-ripple .mat-ripple-element {
-  background-color: rgba(72, 138, 232,.26);
+  stroke: white !important;
 }
+
+.mat-checkbox:not(.mat-checkbox-disabled).mat-accent .mat-checkbox-ripple .mat-ripple-element {
+  background-color: rgba(72, 138, 232, .26);
+}
+
 .sw-content {
   -webkit-box-flex: inherit;
   -ms-flex: inherit;
@@ -273,6 +277,12 @@ input.ng-dirty.ng-invalid, textarea.ng-dirty.ng-invalid {
 .mat-dialog-container {
   background: white;
   color: rgb(32, 32, 32);
+}
+
+app-alert-modal .mat-button {
+  background-color: rgb(72, 138, 232);
+  border-color: rgb(72, 138, 232);
+  color: white !important;
 }
 
 @font-face {

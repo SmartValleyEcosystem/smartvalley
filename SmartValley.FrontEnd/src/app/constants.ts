@@ -10,4 +10,6 @@ export class Constants{
   static ReportFormTab = 'form';
   static ReportEstimatesTab = 'estimates';
   static TabQueryParam = 'tab';
+  static Chrome = 'chrome';
+  static Firefox = 'firefox';
 }

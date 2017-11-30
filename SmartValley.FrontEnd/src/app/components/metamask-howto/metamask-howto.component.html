@@ -3,41 +3,71 @@
     <div class="col-9 sm-title">
       <h1>instruction</h1>
       <h3>
-        Our Service using Ethereum blockchain<br>If you want to participate you need to download MetaMask
+        Our Service using Ethereum blockchain<br>If you want to participate you need to download Metamask
       </h3>
-      <p style="margin: 25px 0 0 0;">
-        MetaMask is an Ethereum Browser, like Mist! It allows you all the same functions, features and ease of access
+      <p style="margin: 25px 0 25px 0;">
+        Metamask is an Ethereum Browser, like Mist! It allows you all the same functions, features and ease of access
         from reqular Ethereum Wallets, and it allows you to interact with Dapps and Smart Contracts, and all without the
-        need to download the blockchain or install any software, you can just install it as a Google Chrome Extension!
+        need to download the blockchain or install any software, you can just install it as a Google Chrome Extension or a Firefox Add-on!
       </p>
     </div>
   </div>
   <div class="row mx-auto">
-    <div class="col-12 sw-card">
-      <div>
-        <h2>
-          Part 1 - Installing MetaMask
-        </h2>
-      </div>
-      <div>
-        <h3>Step 1</h3>
-        <p>Click <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn">here</a> to go to the chrome WebStore and get Metamask Plugin</p>
-      </div>
-      <div>
-        <h3>Step 2</h3>
-        <p>Click "Add to Chrome" to install Metamask as Google chrome extensions</p>
-        <div class="text-center">
-          <img src="/assets/img/NoMetaMask1.png"/>
+    <div *ngIf="browser === 'chrome'; else firefoxManual">
+      <div class="col-12 sw-card">
+        <div>
+          <h2>
+            Part 1 - Installing Metamask
+          </h2>
         </div>
-      </div>
-      <div>
-        <h3>Step 3</h3>
-        <p>Click "Add Extension" to confirm and MetaMask will be added</p>
-        <div class="text-center">
-          <img src="/assets/img/NoMetaMask2.png"/>
+        <div>
+          <h3>Step 1</h3>
+          <p>Click <a
+            href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn">here</a> to go to
+            the chrome WebStore and get Metamask Plugin</p>
+        </div>
+        <div>
+          <h3>Step 2</h3>
+          <p>Click "Add to Chrome" to install Metamask as Google chrome extensions</p>
+          <div class="text-center">
+            <img src="/assets/img/NoMetaMask1.png"/>
+          </div>
+        </div>
+        <div>
+          <h3>Step 3</h3>
+          <p>Click "Add Extension" to confirm and Metamask will be added</p>
+          <div class="text-center">
+            <img src="/assets/img/NoMetaMask2.png"/>
+          </div>
         </div>
       </div>
     </div>
+    <ng-template #firefoxManual>
+      <div class="col-12 sw-card">
+        <div>
+          <h2>
+            Part 1 - Installing Metamask
+          </h2>
+        </div>
+        <div>
+          <h3>Step 1</h3>
+          <p>Click <a
+            href="https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/">here</a> to go to
+            the Firefox Add-ons and get Metamask Plugin</p>
+        </div>
+        <div>
+          <h3>Step 2</h3>
+          <p>Click "Add to Firefox" to install Metamask</p>
+          <div class="text-center">
+            <img src="/assets/img/NoMetaMask1_firefox.png"/>
+          </div>
+        </div>
+        <div>
+          <h3>Step 3</h3>
+          <p>Click "Add" to confirm and Metamask will be added</p>
+        </div>
+      </div>
+    </ng-template>
     <div class="col-12 sw-card" style="margin-top: 20px">
       <div>
         <h2>
@@ -46,14 +76,14 @@
       </div>
       <div>
         <h3>Step 1</h3>
-        <p>Click the MetaMask logo</p>
+        <p>Click the Metamask logo</p>
         <div class="text-center">
           <img src="/assets/img/NoMetaMask2a.png"/>
         </div>
       </div>
       <div>
         <h3>Step 2</h3>
-        <p>Read and accept to the MetaMask terms and Conditions</p>
+        <p>Read and accept to the Metamask terms and Conditions</p>
         <div class="text-center">
           <img src="/assets/img/NoMetaMask3.png"/>
         </div>
@@ -82,7 +112,8 @@
       <div>
         <h3>Step 6</h3>
         <p>
-          Metamask will now show you your seed. It is very important that you copy and store those 12 words, without them you cannot restore your wallet.
+          Metamask will now show you your seed. It is very important that you copy and store those 12 words, without
+          them you cannot restore your wallet.
           Click "I've copied it somewhere safe"
         </p>
         <div class="text-center">
@@ -95,7 +126,7 @@
           <img src="/assets/img/NoMetaMask8.png"/>
         </div>
         <h5>Don't forget get an eth!</h5>
-        <p>You need ehter to work with ethereum blockchain</p>
+        <p>You need ether to work with ethereum blockchain</p>
       </div>
     </div>
   </div>

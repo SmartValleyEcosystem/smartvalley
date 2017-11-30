@@ -8,13 +8,22 @@ import {Subscription} from 'rxjs/Subscription';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/map';
+import {Ng2DeviceService} from 'ng2-device-detector';
+import {MatDialog} from '@angular/material';
+import {TransactionAwaitingModalComponent} from '../components/common/transaction-awaiting-modal/transaction-awaiting-modal.component';
+import {TransactionAwaitingModalData} from '../components/common/transaction-awaiting-modal/transaction-awaiting-modal-data';
+import {AlertModalComponent} from '../components/common/alert-modal/alert-modal.component';
+import {AlertModalData} from '../components/common/alert-modal/alert-modal-data';
+import {Constants} from '../constants';
 
 @Injectable()
 export class AuthenticationService {
 
   constructor(private web3Service: Web3Service,
               private notificationsService: NotificationsService,
-              private router: Router) {
+              private router: Router,
+              private deviceService: Ng2DeviceService,
+              private alertModal: MatDialog) {
     if (this.web3Service.isMetamaskInstalled && this.getCurrentUser() != null) {
       this.startBackgroundChecker();
     }
@@ -25,6 +34,7 @@ export class AuthenticationService {
 
   private readonly userKey = 'userKey';
   private backgroundChecker: Subscription;
+  private readonly compatibleBrowsers = [Constants.Chrome, Constants.Firefox];
 
   private getSignatureByAccount(account: string): string {
     return localStorage.getItem(account);
@@ -43,6 +53,19 @@ export class AuthenticationService {
   }
 
   public async authenticateAsync(): Promise<boolean> {
+    if (!this.compatibleBrowsers.includes(this.deviceService.browser)) {
+      this.alertModal.open(AlertModalComponent, {
+        width: '600px',
+        data: <AlertModalData>{
+          message: 'Our MVP works correctly only on PC with Google Chrome / Firefox browser with Metamask extension.' +
+          ' You can\'t install Metamask on your browser.',
+          title: 'Attention!',
+          button: 'Ok'
+        }
+      });
+      return;
+    }
+
     if (!this.web3Service.isMetamaskInstalled) {
       this.router.navigate([Paths.MetaMaskHowTo]);
       return;

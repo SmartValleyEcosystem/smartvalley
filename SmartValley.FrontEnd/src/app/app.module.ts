@@ -37,6 +37,8 @@ import {NgProgressInterceptor, NgProgressModule} from 'ngx-progressbar';
 import {TransactionAwaitingModalComponent} from './components/common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 import {BlockiesService} from './services/blockies-service';
 import {NullableLinkComponent} from './components/common/nullable-link/nullable-link.component';
+import {Ng2DeviceDetectorModule} from 'ng2-device-detector';
+import {AlertModalComponent} from './components/common/alert-modal/alert-modal.component';
 
 @NgModule({
   declarations: [
@@ -52,9 +54,13 @@ import {NullableLinkComponent} from './components/common/nullable-link/nullable-
     ReportComponent,
     QuestionsComponent,
     TransactionAwaitingModalComponent,
-    NullableLinkComponent
+    NullableLinkComponent,
+    AlertModalComponent
   ],
-  entryComponents: [TransactionAwaitingModalComponent],
+  entryComponents: [
+    TransactionAwaitingModalComponent,
+    AlertModalComponent
+  ],
   imports: [
     MatCheckboxModule,
     MatTabsModule,
@@ -67,7 +73,8 @@ import {NullableLinkComponent} from './components/common/nullable-link/nullable-
     ReactiveFormsModule,
     NgbModule.forRoot(),
     SimpleNotificationsModule.forRoot(),
-    NgProgressModule
+    NgProgressModule,
+    Ng2DeviceDetectorModule.forRoot()
   ],
   providers: [
     {
