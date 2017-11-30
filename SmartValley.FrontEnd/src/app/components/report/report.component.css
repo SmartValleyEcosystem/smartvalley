@@ -79,7 +79,7 @@ div.container > .row:nth-child(2) {
   margin-bottom: 2em;
 }
 
-div.sw-main-info span {
+div.sw-main-info span, div.sw-main-info app-nullable-link {
   padding-left: 0;
 }
 
