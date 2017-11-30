@@ -11,16 +11,16 @@
       </div>
       <div #name class="row">
         <span class="col-2 offset-1">Name</span>
-        <input class="form-control col-8" formControlName="name" placeholder="Cosmo Dream Incorporated">
+        <input class="form-control col-8" formControlName="name" placeholder="Cosmo Dream Incorporated" #required>
       </div>
       <div #area class="row">
         <span class="col-2 offset-1">Project Area</span>
-        <input class="form-control col-8" formControlName="projectArea" placeholder="Biotechnology">
+        <input class="form-control col-8" formControlName="projectArea" placeholder="Biotechnology" #required>
       </div>
       <div #description class="row">
         <span class="col-2 offset-1">Description</span>
         <textarea class="form-control col-8" formControlName="description"
-                  placeholder="Technology of Authenticity Verification of Video Content">
+                  placeholder="Technology of Authenticity Verification of Video Content" #required>
         </textarea>
       </div>
       <div class="row">
@@ -36,7 +36,7 @@
       </div>
     </div>
     <div [ngClass]="!isTeamShow ? '' : 'main-btn'" class="row">
-      <button (click)="showNext()" class="col-3 sv-default-btn btn-primary">Next
+      <button (click)="showNext()" class="col-3 btn btn-primary">Next
       </button>
     </div>
 
@@ -62,7 +62,7 @@
       </div>
     </div>
     <div [ngClass]="isTeamShow && !isLegalShow ? '' : 'team-btn'" class="row">
-      <button (click)="showNext()" class="col-3 sv-default-btn btn-primary">Next
+      <button (click)="showNext()" class="col-3 btn btn-primary">Next
       </button>
     </div>
     <div [ngClass]="isLegalShow ? 'is-active' : ''" class="sw-card sw-content">
@@ -77,7 +77,7 @@
       </div>
     </div>
     <div [ngClass]="isLegalShow && !isFinanceShow ? '' : 'legal-btn'" class="row">
-      <button (click)="showNext()" class="col-3 sv-default-btn btn-primary">Next
+      <button (click)="showNext()" class="col-3 btn btn-primary">Next
       </button>
     </div>
     <div [ngClass]="isFinanceShow ? 'is-active' : ''" class="sw-card sw-content">
@@ -106,7 +106,7 @@
       </div>
     </div>
     <div [ngClass]="isFinanceShow && !isTechShow ? '' : 'finance-btn'" class="row">
-      <button (click)="showNext()" class="col-3 sv-default-btn btn-primary">Next
+      <button (click)="showNext()" class="col-3 btn btn-primary">Next
       </button>
     </div>
     <div [ngClass]="isTechShow ? 'is-active' : ''" class="sw-card sw-content">

@@ -56,7 +56,7 @@ label.mat-checkbox-layout > div.mat-checkbox-inner-container {
 }
 
 .nav-tabs .nav-link.active {
-  color: black;
+  color: rgb(32, 32, 32);
   background: white;
 }
 
@@ -157,7 +157,7 @@ label.mat-checkbox-layout > div.mat-checkbox-inner-container {
 .sm-btn-primary > .mat-button-wrapper {
   font-weight: 500;
   opacity: 1 !important;
-  color: black;
+  color: rgb(32, 32, 32);
   text-align: center;
   padding-bottom: 20px;
   padding-top: 20px;
@@ -272,7 +272,7 @@ input.ng-dirty.ng-invalid, textarea.ng-dirty.ng-invalid {
 
 .mat-dialog-container {
   background: white;
-  color: black;
+  color: rgb(32, 32, 32);
 }
 
 @font-face {

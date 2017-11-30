@@ -1,4 +1,4 @@
-import {Component, ViewChild, ElementRef} from '@angular/core';
+import {Component, ViewChild, ElementRef, ViewChildren, QueryList} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication-service';
 import {ApplicationApiClient} from '../../api/application/application-api.client';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -31,6 +31,7 @@ export class ApplicationComponent {
   @ViewChild('name') public nameRow: ElementRef;
   @ViewChild('area') public areaRow: ElementRef;
   @ViewChild('description') public descriptionRow: ElementRef;
+  @ViewChildren('required') requireds: QueryList<any>;
 
 
   public isProjectCreating: boolean;
@@ -142,6 +143,14 @@ export class ApplicationComponent {
     element.nativeElement.children[1].classList.add('ng-invalid');
     element.nativeElement.children[1].classList.add('ng-dirty');
     element.nativeElement.children[1].classList.remove('ng-valid');
+    const invalidElements = this.requireds.filter(i => i.nativeElement.classList.contains('ng-invalid'));
+    if (invalidElements.length > 0) {
+      for (let a = 0; a < invalidElements.length; a++) {
+        invalidElements[a].nativeElement.classList.add('ng-invalid');
+        invalidElements[a].nativeElement.classList.add('ng-dirty');
+        // invalidElements[a].nativeElement.children[1].classList.remove('ng-valid');
+      }
+    }
   }
 
   private openProjectModal(message: string, transactionHash: string) {
