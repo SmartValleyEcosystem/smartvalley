@@ -98,7 +98,7 @@ export class ApplicationComponent {
     }
   }
 
-  public async onSubmit() {
+  private async submitIfFormValid() {
     if (!this.applicationForm.invalid) {
       this.isProjectCreating = true;
       const application = await this.fillApplication();
@@ -121,25 +121,23 @@ export class ApplicationComponent {
       await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
       this.notificationsService.success('Success!', 'Project created');
     }
+  }
+
+  public async onSubmit() {
+    await this.submitIfFormValid();
     if (this.applicationForm.controls['name'].invalid) {
-      window.scrollTo({left: 0, top: this.getBodyOffsetTop(this.nameRow), behavior: 'smooth'});
-      return;
-    }
-    if (this.applicationForm.controls['projectArea'].invalid) {
-      window.scrollTo({left: 0, top: this.getBodyOffsetTop(this.areaRow), behavior: 'smooth'});
-      return;
-    }
-    if (this.applicationForm.controls['description'].invalid) {
-      window.scrollTo({left: 0, top: this.getBodyOffsetTop(this.descriptionRow), behavior: 'smooth'});
-      return;
+      this.scrollToElement(this.nameRow);
+    } else if (this.applicationForm.controls['projectArea'].invalid) {
+      this.scrollToElement(this.areaRow);
+    } else if (this.applicationForm.controls['description'].invalid) {
+      this.scrollToElement(this.descriptionRow);
     }
   }
 
-  private getBodyOffsetTop(element: ElementRef): number {
-
+  private scrollToElement(element: ElementRef) {
     const containerOffset = element.nativeElement.offsetTop;
     const fieldOffset = element.nativeElement.offsetParent.offsetTop;
-    return containerOffset + fieldOffset - 15;
+    window.scrollTo({left: 0, top: containerOffset + fieldOffset - 15, behavior: 'smooth'});
   }
 
   private openProjectModal(message: string, transactionHash: string) {
