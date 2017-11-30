@@ -27,7 +27,7 @@
     </div>
   </div>
   <div class="row mx-auto">
-    <ngb-tabset #tabSet class="col-12 info">
+    <ngb-tabset #reportTabSet (tabChange)="onMainTabChanged($event)" class="col-12 info">
       <ngb-tab id="form" title="Form">
         <ng-template ngbTabContent>
           <div class="sw-card sw-content sw-main-info">
@@ -135,7 +135,7 @@
       <ngb-tab id="estimates" title="Experts estimates">
         <ng-template ngbTabContent>
           <div class="content sw-card sw-content">
-            <mat-tab-group (selectedTabChange)="tabChanged($event)">
+            <mat-tab-group (selectedTabChange)="onExpertiseTabChanged($event)">
               <mat-tab label="HR">
                 <span>HR average score: </span>
                 <span *ngIf="categoryAverageScore > -1; else elseBlock">{{categoryAverageScore.toFixed(2)}}</span>

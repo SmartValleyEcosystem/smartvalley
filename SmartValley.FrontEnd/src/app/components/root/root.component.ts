@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {Project} from '../../services/project';
 import {ProjectApiClient} from '../../api/project/project-api-client';
+import {Constants} from '../../constants';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +24,7 @@ export class RootComponent {
   async navigateToScoring() {
     const isOk = await this.authenticationService.authenticateAsync();
     if (isOk) {
-      await this.router.navigate([Paths.Scoring]);
+      await this.router.navigate([Paths.Scoring], {queryParams: {tab: Constants.ScoringProjectsForScoringTab}});
     }
   }
 
