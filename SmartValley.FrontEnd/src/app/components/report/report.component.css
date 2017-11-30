@@ -100,6 +100,7 @@ div.sw-main-info span {
 }
 .main-info img {
   width: 6em;
+  border-radius: 50%;
 }
 
 .main-info__country {
