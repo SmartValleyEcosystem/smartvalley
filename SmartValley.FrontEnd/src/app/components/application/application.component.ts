@@ -138,6 +138,9 @@ export class ApplicationComponent {
     const containerOffset = element.nativeElement.offsetTop;
     const fieldOffset = element.nativeElement.offsetParent.offsetTop;
     window.scrollTo({left: 0, top: containerOffset + fieldOffset - 15, behavior: 'smooth'});
+    element.nativeElement.children[1].classList.add('ng-invalid');
+    element.nativeElement.children[1].classList.add('ng-dirty');
+    element.nativeElement.children[1].classList.remove('ng-valid');
   }
 
   private openProjectModal(message: string, transactionHash: string) {
