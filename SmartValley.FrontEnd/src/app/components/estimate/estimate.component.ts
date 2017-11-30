@@ -1,4 +1,4 @@
-import {Component, Renderer2, QueryList, ViewChildren, ElementRef} from '@angular/core';
+import {Component, QueryList, ViewChildren, ElementRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {QuestionService} from '../../services/question-service';
@@ -10,7 +10,7 @@ import {EstimateRequest} from '../../api/estimates/estimate-request';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TeamMember} from '../../services/team-member';
 
 @Component({
@@ -35,8 +35,7 @@ export class EstimateComponent {
               private router: Router,
               private estimatesApiClient: EstimatesApiClient,
               private authenticationService: AuthenticationService,
-              private formBuilder: FormBuilder,
-              private renderer: Renderer2) {
+              private formBuilder: FormBuilder) {
     this.loadProjectInfo();
   }
 
@@ -76,6 +75,7 @@ export class EstimateComponent {
     element.nativeElement.classList.add('ng-invalid');
     element.nativeElement.classList.add('ng-dirty');
   }
+
   private scrollToElement(element: ElementRef) {
     const offsetTop1 = element.nativeElement.offsetTop;
     const offsetTop2 = element.nativeElement.offsetParent.offsetTop;
