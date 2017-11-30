@@ -33,7 +33,6 @@ export class ReportComponent implements AfterViewChecked {
 
   @ViewChild('reportTabSet')
   private tabSet: NgbTabset;
-  private readonly tabQueryParam = 'tab';
   private selectedTab: string;
 
   constructor(private projectApiClient: ProjectApiClient,
@@ -46,7 +45,7 @@ export class ReportComponent implements AfterViewChecked {
               private router: Router) {
     this.loadInitialData();
     this.activatedRoute.queryParams.subscribe(params => {
-      const value = params[this.tabQueryParam] || 'none';
+      const value = params[Constants.TabQueryParam] || 'none';
       this.selectedTab = value;
     });
   }
@@ -87,7 +86,7 @@ export class ReportComponent implements AfterViewChecked {
 
   onMainTabChanged($event: any) {
     const queryParams = Object.assign({}, this.activatedRoute.snapshot.queryParams);
-    queryParams[this.tabQueryParam] = $event.nextId;
+    queryParams[Constants.TabQueryParam] = $event.nextId;
     this.router.navigate([Paths.Report + '/' + this.projectId], {queryParams: queryParams, replaceUrl: true});
   }
 
