@@ -118,7 +118,7 @@
             <div class="form-group">
               <div class="score col-1 offset-1">
                 <span style="font-size: 0.85em;">Your score:</span>
-                <input style="margin-top: 1em;" class="form-control" formControlName="score"
+                <input type="number" style="margin-top: 1em;" class="form-control" formControlName="score"
                        placeholder="{{question.value.maxScore}}">
               </div>
               <div class="col-6">
@@ -135,7 +135,7 @@
     </div>
   </form>
   <div class="submit-button row">
-    <button (click)="send()" class="btn-blue col-3 btn btn-primary" [disabled]="estimateForm.invalid"
+    <button (click)="send()" class="btn-blue col-3 btn btn-primary"
             style="padding-top: 1em; padding-bottom: 1em;">
       Send
     </button>

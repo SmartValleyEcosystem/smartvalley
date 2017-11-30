@@ -10,7 +10,7 @@ import {EstimateRequest} from '../../api/estimates/estimate-request';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {TeamMember} from '../../services/team-member';
 
 @Component({
@@ -61,6 +61,9 @@ export class EstimateComponent {
   private getEstimates(): Array<EstimateRequest> {
     const estimates: Array<EstimateRequest> = [];
     const formModel = this.estimateForm.value;
+    const scores = (<FormArray>this.estimateForm.controls['questions']).controls.map(i => (<FormGroup>i).controls['score']).filter(i => (<FormControl>i).invalid);
+    const comments = (<FormArray>this.estimateForm.controls['questions']).controls.map(i => (<FormGroup>i).controls['comments']).filter(i => (<FormControl>i).invalid);
+    const invalids = scores.concat(comments);
 
     for (const question of formModel.questions) {
       estimates.push(<EstimateRequest>{
