@@ -5,7 +5,7 @@
     </div>
   </div>
   <div class="row mx-auto">
-    <div class="report-card col-10">
+    <div class="report-card col-12">
       <div class="report-content">
         <div class="main-info col-4">
           <img src="{{projectImageUrl}}" style="width: 128px;"/>
@@ -27,7 +27,7 @@
     </div>
   </div>
   <div class="row mx-auto">
-    <ngb-tabset #reportTabSet class="col-10 info" (tabChange)="onMainTabChanged($event)">
+    <ngb-tabset #reportTabSet (tabChange)="onMainTabChanged($event)" class="col-12 info">
       <ngb-tab id="form" title="Form">
         <ng-template ngbTabContent>
           <div class="sw-card sw-content sw-main-info">
@@ -49,7 +49,7 @@
             </div>
             <div class="row">
               <span class="col-3 offset-1">White paper link:</span>
-              <a href="{{report.whitePaperLink}}" class="col-8">{{report.whitePaperLink}}</a>
+              <app-nullable-link [href]="report.whitePaperLink" class="col-8"></app-nullable-link>
             </div>
           </div>
 
@@ -98,7 +98,7 @@
             </div>
             <div class="row">
               <span class="col-3 offset-1">Financial model link:</span>
-              <a href="{{report.financeModelLink}}" class="col-5">{{report.financeModelLink}}</a>
+              <app-nullable-link [href]="report.financeModelLink" class="col-5"></app-nullable-link>
             </div>
             <div class="row">
               <span class="col-3 offset-1">Attracted investments:</span>
@@ -119,7 +119,7 @@
             </div>
             <div class="row">
               <span class="col-3 offset-1">Prototype/MVP link:</span>
-              <a class="col-5" href="{{report.mvpLink}}">{{report.mvpLink}}</a>
+              <app-nullable-link [href]="report.mvpLink" class="col-5"></app-nullable-link>
             </div>
           </div>
           <div style="margin-left: calc(4em - 5px);" class="submit-button row">

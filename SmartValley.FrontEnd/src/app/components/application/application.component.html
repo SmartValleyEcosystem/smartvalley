@@ -9,15 +9,15 @@
       <div class="row row-title">
         <h3 class="col-10 offset-1">Main information</h3>
       </div>
-      <div class="row">
+      <div #name class="row">
         <span class="col-2 offset-1">Name</span>
         <input class="form-control col-8" formControlName="name" placeholder="Cosmo Dream Incorporated">
       </div>
-      <div class="row">
+      <div #area class="row">
         <span class="col-2 offset-1">Project Area</span>
         <input class="form-control col-8" formControlName="projectArea" placeholder="Biotechnology">
       </div>
-      <div class="row">
+      <div #description class="row">
         <span class="col-2 offset-1">Description</span>
         <textarea class="form-control col-8" formControlName="description"
                   placeholder="Technology of Authenticity Verification of Video Content">
@@ -95,11 +95,13 @@
           <input class="form-control col-4" formControlName="hardCap">
         </div>
         <div class="row">
-          <span class="col-2 offset-1">Financial model link:</span>
-          <input class="form-control col-8" formControlName="financeModelLink" placeholder="http://">
+          <span class="col-3 offset-1">Financial model link:</span>
+          <input class="form-control col-7" formControlName="financeModelLink" placeholder="http://">
         </div>
         <div class="row">
-          <mat-checkbox class="col-6 offset-1" labelPosition="before" style="margin-bottom: 1em;" formControlName="attractedInvestments">Attracted investments:  </mat-checkbox>
+          <mat-checkbox class="col-6 offset-1" labelPosition="before" style="margin-bottom: 1em;"
+                        formControlName="attractedInvestments">Attracted investments:
+          </mat-checkbox>
         </div>
       </div>
     </div>
@@ -113,17 +115,17 @@
       </div>
       <div class="row-content">
         <div class="row">
-          <span class="col-2 offset-1" style="padding-right: 0">Whick blockchain you want to use?</span>
-          <input class="form-control col-8" formControlName="blockChainType">
+          <span class="col-3 offset-1" style="padding-right: 0">Whick blockchain you want to use?</span>
+          <input class="form-control col-7" formControlName="blockChainType">
         </div>
         <div class="row">
-          <span class="col-2 offset-1" style="padding-right: 0">Prototype/MVP link:</span>
-          <input class="form-control col-8" style="margin-bottom: 1em;" formControlName="mvpLink" placeholder="http://">
+          <span class="col-3 offset-1" style="padding-right: 0">Prototype/MVP link:</span>
+          <input class="form-control col-7" style="margin-bottom: 1em;" formControlName="mvpLink" placeholder="http://">
         </div>
       </div>
     </div>
     <div [ngClass]="isTechShow ? '' : 'submit-btn'" class="row">
-      <button (click)="onSubmit()" [disabled]="applicationForm.invalid || isProjectCreating" class="col-3 btn btn-primary">Create
+      <button (click)="onSubmit()"[disabled]="isProjectCreating" class="col-3 btn btn-primary">Create
         project
       </button>
     </div>
