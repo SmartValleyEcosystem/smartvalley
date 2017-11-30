@@ -54,6 +54,7 @@ export class AuthenticationService {
       this.notificationsService.warn('Account unavailable', 'Please unlock metamask');
       return;
     }
+
     const isRinkeby = await this.web3Service.checkRinkebyNetworkAsync();
 
     if (!isRinkeby) {
@@ -61,34 +62,30 @@ export class AuthenticationService {
       return;
     }
 
-    const shouldSign = await this.shouldSignAccount(currentAccount);
+    let signature = this.getSignatureByAccount(currentAccount);
+    const shouldSign = await this.shouldSignAccount(currentAccount, signature);
     if (shouldSign) {
       try {
-        await this.signAndSaveAsync(currentAccount);
+        signature = await this.web3Service.sign(AuthenticationService.MESSAGE_TO_SIGN, currentAccount);
       } catch (e) {
         return false;
       }
     }
+    this.startUserSession(currentAccount, signature);
     return true;
   }
 
-  private async shouldSignAccount(currentAccount: string): Promise<boolean> {
-    const user = this.getCurrentUser();
-    if (user == null) {
-      return true;
-    }
+  private async shouldSignAccount(currentAccount: string, savedSignature: string): Promise<boolean> {
+    let user = this.getCurrentUser();
 
-    if (user.account !== currentAccount) {
-      const savedSignature = this.getSignatureByAccount(currentAccount);
-      user.account = currentAccount;
-      user.signature = savedSignature;
+    if (user == null || user.account !== currentAccount) {
+      user = {account: currentAccount, signature: savedSignature};
     }
     const isValid = await this.checkSignatureAsync(user.account, user.signature);
     return !isValid;
   }
 
-  private async signAndSaveAsync(account: string): Promise<void> {
-    const signature = await this.web3Service.sign(AuthenticationService.MESSAGE_TO_SIGN, account);
+  private startUserSession(account: string, signature: string) {
     this.saveCurrentUser({account, signature});
     this.saveSignatureForAccount(account, signature);
     this.startBackgroundChecker();
@@ -98,8 +95,12 @@ export class AuthenticationService {
     if (isNullOrUndefined(account) || isNullOrUndefined(signature)) {
       return false;
     }
-    const recoveredSignature = await this.web3Service.recoverSignature(AuthenticationService.MESSAGE_TO_SIGN, signature);
-    return account === recoveredSignature;
+    try {
+      const recoveredSignature = await this.web3Service.recoverSignature(AuthenticationService.MESSAGE_TO_SIGN, signature);
+      return account === recoveredSignature;
+    } catch (e) {
+      return false;
+    }
   }
 
   public getCurrentUser(): User {
@@ -132,10 +133,6 @@ export class AuthenticationService {
   }
 
   private async checkCurrentAuthStateAsync(): Promise<void> {
-    const isMetamaskEnabled = this.web3Service.isMetamaskInstalled;
-    if (!isMetamaskEnabled) {
-      this.stopUserSession();
-    }
     const accounts = await this.web3Service.getAccounts();
     const currentAccount = accounts[0];
     const user = this.getCurrentUser();
