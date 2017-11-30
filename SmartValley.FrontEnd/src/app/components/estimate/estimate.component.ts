@@ -81,7 +81,7 @@ export class EstimateComponent {
     const offsetTop2 = element.nativeElement.offsetParent.offsetTop;
     const offsetTop3 = element.nativeElement.offsetParent.offsetParent.offsetTop;
     const offsetTop4 = element.nativeElement.offsetParent.offsetParent.offsetParent.offsetTop;
-    window.scrollTo({left: 0, top: offsetTop1 + offsetTop2 + offsetTop3 + offsetTop4 - 250, behavior: 'smooth'});
+    window.scrollTo({left: 0, top: offsetTop1 + offsetTop2 + offsetTop3 + offsetTop4 - offsetTop2, behavior: 'smooth'});
   }
 
   private getEstimates(): Array<EstimateRequest> {
