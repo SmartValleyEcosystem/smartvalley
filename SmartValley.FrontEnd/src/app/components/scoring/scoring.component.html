@@ -44,7 +44,7 @@
           <div class="white-card">
             <div class="content">
               <div *ngIf="myProjects.length > 0; else withoutProject">
-                <div class="card col-12 scoring-card" *ngFor="let project of myProjects;">
+                <div class="card" *ngFor="let project of myProjects;">
                   <app-project-card [project]="project" [isScoring]="false"></app-project-card>
                 </div>
               </div>
