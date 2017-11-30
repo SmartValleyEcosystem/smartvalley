@@ -19,31 +19,33 @@ export class QuestionService {
   private initializeQuestionsCollection() {
     this.questions[ScoringCategory.HR] = [
       <Question>{
-        name: 'Team Completeness',
-        description: 'If all major roles are closed (CEO, CTO, CFO, CMO, PR) - <strong>6</strong>.\n' +
-        'If any role is missing minus <strong>1</strong> for each, minus <strong>2</strong> for CEO.\n' +
-        'If specialist doesn\'t have any experience, disregard him.',
+        name: 'Team completeness',
+        description: 'In case all major roles are filled in - <strong>6</strong>\n' +
+        'In case any position is missing, minus <strong>1</strong> point for each, minus <strong>2</strong> points for CEO\n' +
+        'In case specialist doesn\'t have any experience, disregard him\n' +
+        '\nMinimum: <strong>0</strong> points, Maximum: <strong>6</strong> points',
         maxScore: 6,
         minScore: 0,
         indexInCategory: 0,
         estimates: []
       },
       <Question>{
-        name: 'Team Experience',
-        description: '<div class="row two-col"><div class="col-6">For each role:\n' +
-        'If experience less than 2 years - <strong>1</strong>, more - <strong>2</strong>\n' +
-        'Don\'t have experience - <strong>0</strong></div>' +
-        '<div class="col-6">For each CEO:\n' +
-        'If experience less than 2 years - <strong>2</strong>, more - <strong>4</strong>\n' +
-        'Don\'t have experience - <strong>0</strong></div></div>',
+        name: 'Team experience',
+        description: 'Team experience ( for each position)\n' +
+        'Specialist is experience:\n' +
+        '<span>Less than 2 years - <strong>1</strong> point</span>\n' +
+        '<span>More than 2 years - <strong>2</strong> points</span>\n' +
+        '<span>No experience - <strong>0</strong> points</span>\n' +
+        '\nMinimum: <strong>0</strong> points, Maximum: <strong>10</strong> points\n',
         maxScore: 10,
         minScore: 0,
         indexInCategory: 1,
         estimates: []
       },
       <Question>{
-        name: 'Attracted Investments',
-        description: 'If anyone in the team attracted investments before - <strong>3</strong>.',
+        name: 'Attracted investments',
+        description: 'In case anyone in the team attracted investments before - <strong>3</strong> points\n' +
+        '\nMinimum: <strong>0</strong> points, Maximum: <strong>3</strong> points',
         maxScore: 3,
         minScore: 0,
         indexInCategory: 2,
@@ -51,8 +53,9 @@ export class QuestionService {
       },
       <Question>{
         name: 'Scam',
-        description: 'If anyone in the team seen in scam projects - minus <strong>15</strong>.\n' +
-        'If no one in the team seen in scam projects - <strong>0</strong>.',
+        description: 'In case anyone in the team was notice detected in scam projects - minus <strong>15</strong> points\n' +
+        'In case no one in the team was notice detected in scam projects - <strong>0</strong> points\n' +
+        '\nMinumum: <strong>-15</strong> points, Maximum: <strong>0</strong> points',
         maxScore: 0,
         minScore: -15,
         indexInCategory: 3,
@@ -62,21 +65,23 @@ export class QuestionService {
 
     this.questions[ScoringCategory.Lawyer] = [
       <Question>{
-        name: 'Incorporation Risk',
-        description: 'If incorporation has minimal risk - 10.\n' +
-        'If incorporation has medium risk - 6.\n' +
-        'If incorporation has high risk - 2.\n' +
-        'Project doesn\'t has incorporation - 0.',
+        name: 'Incorporation risk',
+        description: 'In case incorporation has minimal risk - <strong>10</strong> points\n' +
+        'In case incorporation has medium risk - <strong>6</strong> points\n' +
+        'In case incorporation has high risk - <strong>2</strong> points\n' +
+        'Project has no incorporation - <strong>0</strong> points\n' +
+        '\nMinimum: <strong>0</strong> points, Maximum: <strong>10</strong> points',
         maxScore: 10,
         minScore: 0,
         indexInCategory: 0,
         estimates: []
       },
       <Question>{
-        name: 'Token Structure',
-        description: 'Utility token - 15.\n' +
-        'Security token, but company has SAC license - 5.\n' +
-        'Security token = 0.',
+        name: 'Token structure',
+        description: 'In case of Utility token - <strong>15</strong> points\n' +
+        'In case of Security token, but company has SEC license - <strong>5</strong> points\n' +
+        'In case of Security token - <strong>0</strong> points\n' +
+        '\nMinimum: <strong>0</strong> points, Maximum: <strong>15</strong> points',
         maxScore: 15,
         minScore: 0,
         indexInCategory: 1,
@@ -86,32 +91,35 @@ export class QuestionService {
 
     this.questions[ScoringCategory.Analyst] = [
       <Question>{
-        name: 'Involved Amount',
-        description: 'If amount involved is commensurate with the tasks of the project and less than 15 mln USD - 8.\n' +
-        'If amount involved is commensurate with the tasks of the project and more than 15 mln USD - 6.\n' +
-        'If amount involved is disproportionate with the tasks of the project and less than 15 mln USD - 4.\n' +
-        'If amount involved is disproportionate with the tasks of the project and more than 15 mln USD - 2.',
+        name: 'Amount involved',
+        description: 'In case amount involved is commensurate with the project\'s goals and is less than 15 mln. USD - <strong>8</strong> points\n' +
+        'In case amount involved is commensurate with the project\'s goals and is more than 15 mln. USD - <strong>6</strong> points\n' +
+        'In case amount involved is disproportionate with the project\'s goals and is less than 15 mln. USD - <strong>4</strong> points\n' +
+        'In case amount involved is disproportionate with the project\'s goals and more than 15 mln. USD - <strong>2</strong> points\n' +
+        '\nMinimum: <strong>2</strong> points, Maximum: <strong>8</strong> points',
         maxScore: 8,
         minScore: 0,
         indexInCategory: 0,
         estimates: []
       },
       <Question>{
-        name: 'Financial Model',
-        description: 'Efficient financial model, to make the scaled income grow not linear - 10.\n' +
-        'Efficient financial model, to make the scaled income grow linear - 6.\n' +
-        'No efficient finance model - 0.',
+        name: 'Financial model analysts',
+        description: 'Efficient financial model with exponential scaled income growth - <strong>10</strong> points\n' +
+        'Efficient financial model with linear scaled income growth - <strong>6</strong> points\n' +
+        'No efficient finance model - <strong>0</strong> points\n' +
+        '\nMinimum: <strong>0</strong> points, Maximum: <strong>10</strong> points',
         maxScore: 10,
         minScore: 0,
         indexInCategory: 1,
         estimates: []
       },
       <Question>{
-        name: 'Idea',
-        description: 'Project has economic advantages and doesn\'t have competitors - 10.\n' +
-        'Project has economic advantages - 7.\n' +
-        'Project doesn\'t have economic advantages, but has other advantages - 4.\n' +
-        'Project doesn\'t have advantages - 0.',
+        name: 'Idea and it\'s implementation analysts in terms of business',
+        description: 'Project has economic advantages and doesn\'t have competitors - <strong>10</strong> points\n' +
+        'Project has economic advantages - <strong>7</strong> points\n' +
+        'Project has no economic advantages, but has other advantages - <strong>4</strong> points\n' +
+        'Project has no advantages - <strong>0</strong> points\n' +
+        '\nMinimum: <strong>0</strong> points, Maximum: <strong>10</strong> points',
         maxScore: 10,
         minScore: 0,
         indexInCategory: 2,
@@ -121,40 +129,44 @@ export class QuestionService {
 
     this.questions[ScoringCategory.TechnicalExpert] = [
       <Question>{
-        name: 'Blockchain Usage',
-        description: 'Blockchain is required - 5.\n' +
-        'Blockchain solved minor problems - 2.\n' +
-        'Blockchain is not needed - 0.',
+        name: 'Blockchain use effectiveness',
+        description: 'Blockchain is required - <strong>5</strong> points\n' +
+        'Blockchain solves minor problems - <strong>2</strong> points\n' +
+        'Blockchain is not required - <strong>0</strong> points\n' +
+        '\nMinimum: <strong>0</strong> points, Maximum: <strong>5</strong> points',
         maxScore: 5,
         minScore: 0,
         indexInCategory: 0,
         estimates: []
       },
       <Question>{
-        name: 'Blockchain Opportunity',
-        description: 'Can be realised on existing blockchain protocols - 6.\n' +
-        'Can\'t be realised on existing blockchain protocols - 0.\n',
+        name: 'Implementation opportunity on existing blockchains',
+        description: 'Can be realised on existing blockchain protocols - <strong>6</strong> points\n' +
+        'Can\'t be realised on existing blockchain protocols - <strong>0</strong> points\n' +
+        '\nMinimum: <strong>0</strong> points, Maximum: <strong>6</strong> points',
         maxScore: 6,
         minScore: 0,
         indexInCategory: 1,
         estimates: []
       },
       <Question>{
-        name: 'Chosen Blockchain',
-        description: 'Chosen blockchain protocol provides a way to realize all functionality - 5.\n' +
-        'Chosen blockchain protocol provides a way to realize only main functionality - 3.\n' +
-        'Chosen blockchain protocol doesn\'t provide a way to realize main functionality - 0.',
+        name: 'Blockchain selection',
+        description: 'Correct blockchain selected, protocol provides a way to realize all functionality - <strong>5</strong> points\n' +
+        'Correct blockchain selected, protocol provides a way to realize only main functionality - <strong>3</strong> points\n' +
+        'Uncorrect blockchain selected - <strong>0</strong> points\n' +
+        '\nMinimum: <strong>0</strong> points, Maximum <strong>5</strong> points',
         maxScore: 5,
         minScore: 0,
         indexInCategory: 2,
         estimates: []
       },
       <Question>{
-        name: 'Prototype/MVP',
-        description: 'Prototype solved state problem and used blockchain - 10.\n' +
-        'Prototype solved state problem but didn\'t use blockchain - 6.\n' +
-        'Prototype didn\'t solve state problem and used blockchain - 2.\n' +
-        'Prototype didn\'t solve state problem and didn\'t use blockchain - 0.',
+        name: 'Prototype/MVP analysis',
+        description: 'Prototype solves stated problem by means of blockchain - <strong>10</strong> points\n' +
+        'Prototype solves stated problem without blockchain use - <strong>6</strong> points\n' +
+        'Prototype does not solve stated problem, however blockchain is used - <strong>2</strong> points\n' +
+        'Prototype does not solve stated problem - <strong>0</strong> points\n' +
+        '\nMinimum: <strong>0</strong> points, Maximum <strong>10</strong> points',
         maxScore: 10,
         minScore: 0,
         indexInCategory: 3,
