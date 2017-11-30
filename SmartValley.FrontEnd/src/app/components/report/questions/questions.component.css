@@ -4,11 +4,15 @@
 }
 
 .question-text {
-  font-size: 0.8em;
+  font-size: 0.9em;
   white-space: pre-line;
   word-wrap: break-word;
 }
 
 div.two-col div {
   padding: 0;
+}
+
+/deep/ .sub-list {
+  margin-left: 1em !important;
 }

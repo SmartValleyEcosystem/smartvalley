@@ -111,7 +111,7 @@ export class ApplicationComponent {
       }
 
       this.openProjectModal(
-        'Your project for scoring is creating. Please wait for completion of transaction.',
+        'Your project for scoring is being created. Please wait for completion of transaction.',
         application.transactionHash
       );
 

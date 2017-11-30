@@ -20,8 +20,8 @@ export class QuestionService {
     this.questions[ScoringCategory.HR] = [
       <Question>{
         name: 'Team completeness',
-        description: 'In case all major roles are filled in - <strong>6</strong>\n' +
-        'In case any position is missing, minus <strong>1</strong> point for each, minus <strong>2</strong> points for CEO\n' +
+        description: 'In case all major roles are filled in - <strong>6</strong> points\n' +
+        'In case any position is missing, minus <strong>1</strong> point for each specialist, minus <strong>2</strong> points for CEO\n' +
         'In case specialist doesn\'t have any experience, disregard him\n' +
         '\nMinimum: <strong>0</strong> points, Maximum: <strong>6</strong> points',
         maxScore: 6,
@@ -31,11 +31,11 @@ export class QuestionService {
       },
       <Question>{
         name: 'Team experience',
-        description: 'Team experience ( for each position)\n' +
-        'Specialist is experience:\n' +
-        '<span>Less than 2 years - <strong>1</strong> point</span>\n' +
-        '<span>More than 2 years - <strong>2</strong> points</span>\n' +
-        '<span>No experience - <strong>0</strong> points</span>\n' +
+        description: 'Team experience (for each position)\n' +
+        'Specialist\'s experience:\n' +
+        '<span class="sub-list">Less than 2 years - <strong>1</strong> point</span>\n' +
+        '<span class="sub-list">More than 2 years - <strong>2</strong> points</span>\n' +
+        '<span class="sub-list">No experience - <strong>0</strong> points</span>\n' +
         '\nMinimum: <strong>0</strong> points, Maximum: <strong>10</strong> points\n',
         maxScore: 10,
         minScore: 0,
@@ -53,8 +53,8 @@ export class QuestionService {
       },
       <Question>{
         name: 'Scam',
-        description: 'In case anyone in the team was notice detected in scam projects - minus <strong>15</strong> points\n' +
-        'In case no one in the team was notice detected in scam projects - <strong>0</strong> points\n' +
+        description: 'In case anyone in the team was noticed in scam projects - minus <strong>15</strong> points\n' +
+        'In case no one in the team was noticed in scam projects - <strong>0</strong> points\n' +
         '\nMinumum: <strong>-15</strong> points, Maximum: <strong>0</strong> points',
         maxScore: 0,
         minScore: -15,
@@ -103,7 +103,7 @@ export class QuestionService {
         estimates: []
       },
       <Question>{
-        name: 'Financial model analysts',
+        name: 'Financial model analysis',
         description: 'Efficient financial model with exponential scaled income growth - <strong>10</strong> points\n' +
         'Efficient financial model with linear scaled income growth - <strong>6</strong> points\n' +
         'No efficient finance model - <strong>0</strong> points\n' +
@@ -114,7 +114,7 @@ export class QuestionService {
         estimates: []
       },
       <Question>{
-        name: 'Idea and it\'s implementation analysts in terms of business',
+        name: 'Idea and it\'s implementation analysis in terms of business',
         description: 'Project has economic advantages and doesn\'t have competitors - <strong>10</strong> points\n' +
         'Project has economic advantages - <strong>7</strong> points\n' +
         'Project has no economic advantages, but has other advantages - <strong>4</strong> points\n' +
@@ -140,7 +140,7 @@ export class QuestionService {
         estimates: []
       },
       <Question>{
-        name: 'Implementation opportunity on existing blockchains',
+        name: 'Implementation on existing blockchains',
         description: 'Can be realised on existing blockchain protocols - <strong>6</strong> points\n' +
         'Can\'t be realised on existing blockchain protocols - <strong>0</strong> points\n' +
         '\nMinimum: <strong>0</strong> points, Maximum: <strong>6</strong> points',
