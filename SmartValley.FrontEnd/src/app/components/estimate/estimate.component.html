@@ -26,7 +26,7 @@
     </div>
     <div class="row">
       <span class="col-2 offset-1">White paper link:</span>
-      <a href="{{projectDetails.whitePaperLink}}" class="col-8">{{projectDetails.whitePaperLink}}</a>
+      <app-nullable-link [href]="projectDetails.whitePaperLink" class="col-8"></app-nullable-link>
     </div>
   </div>
   <div class="sw-card sw-content">
@@ -74,7 +74,7 @@
     </div>
     <div class="row">
       <span class="col-3 offset-1">Financial model link:</span>
-      <a href="{{projectDetails.financeModelLink}}" class="col-5">{{projectDetails.financeModelLink}}</a>
+      <app-nullable-link [href]="projectDetails.financeModelLink" class="col-5"></app-nullable-link>
     </div>
     <div class="row">
       <span class="col-3 offset-1">Attracted investments:</span>
@@ -95,7 +95,7 @@
     </div>
     <div class="row">
       <span class="col-3 offset-1">Prototype/MVP link:</span>
-      <a class="col-5" href="{{projectDetails.mvpLink}}">{{projectDetails.mvpLink}}</a>
+      <app-nullable-link [href]="projectDetails.mvpLink" class="col-5"></app-nullable-link>
     </div>
   </div>
   <div class="next-button row">

@@ -110,7 +110,7 @@ export class EstimateComponent {
 
     for (const memberType of memberTypeNames) {
       const teamMember = report.teamMembers.find(value => value.memberType === EnumTeamMemberType[memberType])
-        || <TeamMember>{memberType: EnumTeamMemberType[memberType], fullName: '-'};
+        || <TeamMember>{memberType: EnumTeamMemberType[memberType], fullName: '\u2014'};
 
       result.push(<TeamMember>{
         memberType: teamMember.memberType,

@@ -7,7 +7,6 @@ using SmartValley.WebApi.WebApi;
 namespace SmartValley.WebApi.Estimates
 {
     [Route("api/estimates")]
-    [Authorize]
     public class EstimatesController : Controller
     {
         private readonly IEstimationService _estimationService;
@@ -17,6 +16,7 @@ namespace SmartValley.WebApi.Estimates
             _estimationService = estimationService;
         }
 
+        [Authorize]
         public async Task<IActionResult> Post([FromBody] SubmitEstimatesRequest request)
         {
             await _estimationService.SubmitEstimatesAsync(request);
