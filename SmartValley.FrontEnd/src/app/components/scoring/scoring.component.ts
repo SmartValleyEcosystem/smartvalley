@@ -22,6 +22,7 @@ export class ScoringComponent implements AfterViewInit {
 
   @ViewChild('projectsTabSet')
   private projectsTabSet: NgbTabset;
+  private knownTabs = [Constants.ScoringMyProjectsTab, Constants.ScoringProjectsForScoringTab];
 
   constructor(private scoringApiClient: ScoringApiClient,
               private authenticationService: AuthenticationService,
@@ -33,13 +34,9 @@ export class ScoringComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
-      const value = params[Constants.TabQueryParam] || 'none';
-      switch (value) {
-        case Constants.ScoringMyProjectsTab:
-          this.projectsTabSet.select(Constants.ScoringMyProjectsTab);
-          break;
-        case Constants.ScoringProjectsForScoringTab:
-          this.projectsTabSet.select(Constants.ScoringProjectsForScoringTab);
+      const tab = params[Constants.TabQueryParam];
+      if (this.knownTabs.includes(tab)) {
+        this.projectsTabSet.select(tab);
       }
     });
   }
