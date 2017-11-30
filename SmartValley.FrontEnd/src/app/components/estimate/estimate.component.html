@@ -118,12 +118,12 @@
             <div class="form-group">
               <div class="score col-1 offset-1">
                 <span style="font-size: 0.85em;">Your score:</span>
-                <input type="number" style="margin-top: 1em;" class="form-control" formControlName="score"
+                <input #required type="number" style="margin-top: 1em;" class="form-control" formControlName="score"
                        placeholder="{{question.value.maxScore}}">
               </div>
               <div class="col-6">
                 <span style="font-size: 0.85em;">Comments 250 symbols</span>
-                <textarea class="form-control"
+                <textarea #required class="form-control"
                           style="margin-top: 1em; height: 10em; resize: none;"
                           formControlName="comments">
             </textarea>

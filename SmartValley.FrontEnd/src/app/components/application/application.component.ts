@@ -1,4 +1,4 @@
-import {Component, ViewChild, ElementRef, Inject} from '@angular/core';
+import {Component, ViewChild, ElementRef} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication-service';
 import {ApplicationApiClient} from '../../api/application/application-api.client';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';

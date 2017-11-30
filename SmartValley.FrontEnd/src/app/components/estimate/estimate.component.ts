@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Renderer2, QueryList, ViewChildren, ElementRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {QuestionService} from '../../services/question-service';
@@ -27,13 +27,16 @@ export class EstimateComponent {
   public estimateForm: FormGroup;
   public teamMembers: Array<TeamMember>;
 
+  @ViewChildren('required') requireds: QueryList<any>;
+
   constructor(private route: ActivatedRoute,
               private projectApiClient: ProjectApiClient,
               private questionService: QuestionService,
               private router: Router,
               private estimatesApiClient: EstimatesApiClient,
               private authenticationService: AuthenticationService,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private renderer: Renderer2) {
     this.loadProjectInfo();
   }
 
@@ -42,8 +45,19 @@ export class EstimateComponent {
   }
 
   async send() {
-    await this.submitAsync();
-    await this.router.navigate([Paths.Scoring]);
+    if (this.estimateForm.invalid) {
+      const inp = this.requireds.filter(i => i.nativeElement.classList.contains('ng-invalid'));
+      if (inp.length > 0) {
+        for (let a = 0; a < inp.length; a++) {
+          this.setInvalid(inp[a]);
+        }
+        this.scrollToElement(inp[0]);
+      }
+
+    } else {
+      await this.submitAsync();
+      await this.router.navigate([Paths.Scoring]);
+    }
   }
 
   private async submitAsync(): Promise<void> {
@@ -58,12 +72,21 @@ export class EstimateComponent {
     await this.estimatesApiClient.submitEstimatesAsync(submitEstimatesRequest);
   }
 
+  private setInvalid(element: ElementRef) {
+    element.nativeElement.classList.add('ng-invalid');
+    element.nativeElement.classList.add('ng-dirty');
+  }
+  private scrollToElement(element: ElementRef) {
+    const offsetTop1 = element.nativeElement.offsetTop;
+    const offsetTop2 = element.nativeElement.offsetParent.offsetTop;
+    const offsetTop3 = element.nativeElement.offsetParent.offsetParent.offsetTop;
+    const offsetTop4 = element.nativeElement.offsetParent.offsetParent.offsetParent.offsetTop;
+    window.scrollTo({left: 0, top: offsetTop1 + offsetTop2 + offsetTop3 + offsetTop4 - 250, behavior: 'smooth'});
+  }
+
   private getEstimates(): Array<EstimateRequest> {
     const estimates: Array<EstimateRequest> = [];
     const formModel = this.estimateForm.value;
-    const scores = (<FormArray>this.estimateForm.controls['questions']).controls.map(i => (<FormGroup>i).controls['score']).filter(i => (<FormControl>i).invalid);
-    const comments = (<FormArray>this.estimateForm.controls['questions']).controls.map(i => (<FormGroup>i).controls['comments']).filter(i => (<FormControl>i).invalid);
-    const invalids = scores.concat(comments);
 
     for (const question of formModel.questions) {
       estimates.push(<EstimateRequest>{
