@@ -27,7 +27,10 @@ export class ApplicationComponent {
   isFinanceShow = false;
   isTechShow = false;
 
-  @ViewChild('name') private nameRow: ElementRef;
+  @ViewChild('name') public nameRow: ElementRef;
+  @ViewChild('area') public areaRow: ElementRef;
+  @ViewChild('description') public descriptionRow: ElementRef;
+
 
   public isProjectCreating: boolean;
   private projectModalRef: MatDialogRef<TransactionAwaitingModalComponent>;
@@ -107,10 +110,10 @@ export class ApplicationComponent {
         return;
       }
 
-    this.openProjectModal(
-      'Your project for scoring is creating. Please wait for completion of transaction.',
-      application.transactionHash
-    );
+      this.openProjectModal(
+        'Your project for scoring is creating. Please wait for completion of transaction.',
+        application.transactionHash
+      );
 
       await this.applicationApiClient.createApplicationAsync(application);
 
@@ -120,18 +123,26 @@ export class ApplicationComponent {
       this.notificationsService.success('Success!', 'Project created');
     }
     if (this.applicationForm.controls['name'].invalid) {
-      window.scrollTo(0, 400);
+
+      window.scrollTo({left: 0, top: this.getBodyOffsetTop(this.nameRow), behavior: 'smooth'});
       this.applicationForm.controls['name'].setErrors({'wrongDate': true});
       return;
     }
     if (this.applicationForm.controls['projectArea'].invalid) {
-      window.scrollTo(0, 470);
+      window.scrollTo({left: 0, top: this.getBodyOffsetTop(this.areaRow), behavior: 'smooth'});
       return;
     }
     if (this.applicationForm.controls['description'].invalid) {
-      window.scrollTo(0, 550);
+      window.scrollTo({left: 0, top: this.getBodyOffsetTop(this.descriptionRow), behavior: 'smooth'});
       return;
     }
+  }
+
+  private getBodyOffsetTop(element: ElementRef): number {
+
+    const containerOffset = element.nativeElement.offsetTop;
+    const fieldOffset = element.nativeElement.offsetParent.offsetTop;
+    return containerOffset + fieldOffset - 15;
   }
 
   private openProjectModal(message: string, transactionHash: string) {
