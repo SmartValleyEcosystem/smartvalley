@@ -99,7 +99,6 @@ export class ApplicationComponent {
   }
 
   public async onSubmit() {
-    console.log(this.nameRow.nativeElement.scrollTop);
     if (!this.applicationForm.invalid) {
       this.isProjectCreating = true;
       const application = await this.fillApplication();

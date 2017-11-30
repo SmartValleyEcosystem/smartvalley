@@ -125,7 +125,7 @@
       </div>
     </div>
     <div [ngClass]="isTechShow ? '' : 'submit-btn'" class="row">
-      <button (click)="onSubmit()" class="col-3 btn btn-primary">Create
+      <button (click)="onSubmit()"[disabled]="isProjectCreating" class="col-3 btn btn-primary">Create
         project
       </button>
     </div>
