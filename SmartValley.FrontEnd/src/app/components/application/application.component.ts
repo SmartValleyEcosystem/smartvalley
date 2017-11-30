@@ -122,9 +122,7 @@ export class ApplicationComponent {
       this.notificationsService.success('Success!', 'Project created');
     }
     if (this.applicationForm.controls['name'].invalid) {
-
       window.scrollTo({left: 0, top: this.getBodyOffsetTop(this.nameRow), behavior: 'smooth'});
-      this.applicationForm.controls['name'].setErrors({'wrongDate': true});
       return;
     }
     if (this.applicationForm.controls['projectArea'].invalid) {
