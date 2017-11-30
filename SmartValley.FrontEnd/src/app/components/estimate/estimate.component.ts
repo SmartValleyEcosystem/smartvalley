@@ -45,12 +45,12 @@ export class EstimateComponent {
 
   async send() {
     if (this.estimateForm.invalid) {
-      const inp = this.requireds.filter(i => i.nativeElement.classList.contains('ng-invalid'));
-      if (inp.length > 0) {
-        for (let a = 0; a < inp.length; a++) {
-          this.setInvalid(inp[a]);
+      const invalidElements = this.requireds.filter(i => i.nativeElement.classList.contains('ng-invalid'));
+      if (invalidElements.length > 0) {
+        for (let a = 0; a < invalidElements.length; a++) {
+          this.setInvalid(invalidElements[a]);
         }
-        this.scrollToElement(inp[0]);
+        this.scrollToElement(invalidElements[0]);
       }
 
     } else {
