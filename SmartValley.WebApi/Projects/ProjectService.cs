@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application.Exceptions;
+using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Applications;
 using SmartValley.WebApi.TeamMembers;
@@ -13,20 +14,22 @@ namespace SmartValley.WebApi.Projects
         private readonly IProjectRepository _projectRepository;
         private readonly ITeamMemberRepository _teamRepository;
 
-        public ProjectService(IApplicationRepository applicationRepository, IProjectRepository projectRepository, ITeamMemberRepository teamRepository)
+        public ProjectService(
+            IApplicationRepository applicationRepository,
+            IProjectRepository projectRepository,
+            ITeamMemberRepository teamRepository)
         {
             _applicationRepository = applicationRepository;
             _projectRepository = projectRepository;
             _teamRepository = teamRepository;
         }
 
+        public Task<Project> GetProjectByIdAsync(long projectId)
+            => GetProjectAsync(projectId);
+
         public async Task<ProjectDetailsResponse> GetProjectDetailsByIdAsync(long projectId)
         {
-            var project = await _projectRepository.GetByIdAsync(projectId);
-            if (project == null)
-            {
-                throw new AppErrorException(ErrorCode.ProjectNotFound);
-            }
+            var project = await GetProjectAsync(projectId);
             var application = await _applicationRepository.GetByProjectIdAsync(projectId);
             var teamMembers = await _teamRepository.GetAllByApplicationId(application.Id);
             var applicationResponse = new ProjectDetailsResponse
@@ -56,6 +59,16 @@ namespace SmartValley.WebApi.Projects
                                       };
 
             return applicationResponse;
+        }
+
+        private async Task<Project> GetProjectAsync(long projectId)
+        {
+            var project = await _projectRepository.GetByIdAsync(projectId);
+
+            if (project == null)
+                throw new AppErrorException(ErrorCode.ProjectNotFound);
+
+            return project;
         }
     }
 }
