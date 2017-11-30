@@ -120,16 +120,16 @@ export class ApplicationComponent {
       this.notificationsService.success('Success!', 'Project created');
     }
     if (this.applicationForm.controls['name'].invalid) {
-      window.scrollTo(0, 430);
+      window.scrollTo(0, 400);
       this.applicationForm.controls['name'].setErrors({'wrongDate': true});
       return;
     }
     if (this.applicationForm.controls['projectArea'].invalid) {
-      window.scrollTo(0, 500);
+      window.scrollTo(0, 470);
       return;
     }
     if (this.applicationForm.controls['description'].invalid) {
-      window.scrollTo(0, 600);
+      window.scrollTo(0, 550);
       return;
     }
   }
