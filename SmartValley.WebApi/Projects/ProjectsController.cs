@@ -35,7 +35,7 @@ namespace SmartValley.WebApi.Projects
         {
             var response = await _projectService.GetProjectDetailsByIdAsync(request.ProjectId);
 
-            if (!response.AuthorAddress.Equals(User.Identity.Name, StringComparison.InvariantCultureIgnoreCase))
+            if (response.Score == null && !response.AuthorAddress.Equals(User.Identity.Name, StringComparison.InvariantCultureIgnoreCase))
                 return Unauthorized();
 
             return Ok(response);
