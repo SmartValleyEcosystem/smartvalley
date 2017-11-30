@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild, ElementRef, Inject} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication-service';
 import {ApplicationApiClient} from '../../api/application/application-api.client';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -26,6 +26,11 @@ export class ApplicationComponent {
   isLegalShow = false;
   isFinanceShow = false;
   isTechShow = false;
+
+  @ViewChild('name') public nameRow: ElementRef;
+  @ViewChild('area') public areaRow: ElementRef;
+  @ViewChild('description') public descriptionRow: ElementRef;
+
 
   public isProjectCreating: boolean;
   private projectModalRef: MatDialogRef<TransactionAwaitingModalComponent>;
@@ -93,27 +98,46 @@ export class ApplicationComponent {
     }
   }
 
-  public async onSubmit() {
-    this.isProjectCreating = true;
-    const application = await this.fillApplication();
+  private async submitIfFormValid() {
+    if (!this.applicationForm.invalid) {
+      this.isProjectCreating = true;
+      const application = await this.fillApplication();
 
-    if (application == null) {
-      this.notificationsService.error('Error', 'Please try again');
-      this.isProjectCreating = false;
-      return;
+      if (application == null) {
+        this.notificationsService.error('Error', 'Please try again');
+        this.isProjectCreating = false;
+        return;
+      }
+
+      this.openProjectModal(
+        'Your project for scoring is creating. Please wait for completion of transaction.',
+        application.transactionHash
+      );
+
+      await this.applicationApiClient.createApplicationAsync(application);
+
+      this.closeProjectModal();
+
+      await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
+      this.notificationsService.success('Success!', 'Project created');
     }
+  }
 
-    this.openProjectModal(
-      'Your project for scoring is creating. Please wait for completion of transaction.',
-      application.transactionHash
-    );
+  public async onSubmit() {
+    await this.submitIfFormValid();
+    if (this.applicationForm.controls['name'].invalid) {
+      this.scrollToElement(this.nameRow);
+    } else if (this.applicationForm.controls['projectArea'].invalid) {
+      this.scrollToElement(this.areaRow);
+    } else if (this.applicationForm.controls['description'].invalid) {
+      this.scrollToElement(this.descriptionRow);
+    }
+  }
 
-    await this.applicationApiClient.createApplicationAsync(application);
-
-    this.closeProjectModal();
-
-    await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
-    this.notificationsService.success('Success!', 'Project created');
+  private scrollToElement(element: ElementRef) {
+    const containerOffset = element.nativeElement.offsetTop;
+    const fieldOffset = element.nativeElement.offsetParent.offsetTop;
+    window.scrollTo({left: 0, top: containerOffset + fieldOffset - 15, behavior: 'smooth'});
   }
 
   private openProjectModal(message: string, transactionHash: string) {
