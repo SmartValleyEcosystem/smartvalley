@@ -27,6 +27,10 @@ body {
   font-family: 'AvenirNextCyr', sans-serif;
 }
 
+strong {
+  font-family: 'AvenirNextCyr-Bold', sans-serif;
+}
+
 div.mat-checkbox-frame {
   border-color: rgb(70, 137, 232);
   border-radius: 0.25rem;
