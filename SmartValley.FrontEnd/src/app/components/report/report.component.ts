@@ -34,6 +34,7 @@ export class ReportComponent implements AfterViewChecked {
   @ViewChild('reportTabSet')
   private tabSet: NgbTabset;
   private selectedTab: string;
+  private knownTabs = [Constants.ReportFormTab, Constants.ReportEstimatesTab];
 
   constructor(private projectApiClient: ProjectApiClient,
               private estimatesApiClient: EstimatesApiClient,
@@ -45,21 +46,13 @@ export class ReportComponent implements AfterViewChecked {
               private router: Router) {
     this.loadInitialData();
     this.activatedRoute.queryParams.subscribe(params => {
-      const value = params[Constants.TabQueryParam] || 'none';
-      this.selectedTab = value;
+      this.selectedTab = params[Constants.TabQueryParam];
     });
   }
 
   ngAfterViewChecked(): void {
-    if (this.tabSet) {
-      switch (this.selectedTab) {
-        case Constants.ReportFormTab:
-          this.showForm();
-          break;
-        case Constants.ReportEstimatesTab:
-          this.showEstimates();
-          break;
-      }
+    if (this.tabSet && this.knownTabs.includes(this.selectedTab)) {
+      this.tabSet.select(this.selectedTab);
     }
   }
 
