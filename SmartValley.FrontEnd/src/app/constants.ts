@@ -8,6 +8,6 @@ export class Constants{
   static ScoringMyProjectsTab = 'myprojects';
   static ScoringProjectsForScoringTab = 'forscoring';
   static ReportFormTab = 'form';
-  static ReposrtEstimatesTab = 'estimates';
+  static ReportEstimatesTab = 'estimates';
   static TabQueryParam = 'tab';
 }

@@ -57,8 +57,9 @@ export class ReportComponent implements AfterViewChecked {
         case Constants.ReportFormTab:
           this.showForm();
           break;
-        case Constants.ReposrtEstimatesTab:
+        case Constants.ReportEstimatesTab:
           this.showEstimates();
+          break;
       }
     }
   }
