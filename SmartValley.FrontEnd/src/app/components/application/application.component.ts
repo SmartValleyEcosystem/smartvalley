@@ -13,6 +13,7 @@ import {NotificationsService} from 'angular2-notifications';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {TransactionAwaitingModalComponent} from '../common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 import {TransactionAwaitingModalData} from '../common/transaction-awaiting-modal/transaction-awaiting-modal-data';
+import {Constants} from '../../constants';
 
 @Component({
   selector: 'app-application',
@@ -112,7 +113,7 @@ export class ApplicationComponent {
 
     this.closeProjectModal();
 
-    await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
+    await this.router.navigate([Paths.Scoring], {queryParams: {tab: Constants.ScoringMyProjectsTab}});
     this.notificationsService.success('Success!', 'Project created');
   }
 

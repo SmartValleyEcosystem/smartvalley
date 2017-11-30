@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {Paths} from '../../../paths';
 import {ProjectService} from '../../../services/project-service';
 import {BlockiesService} from '../../../services/blockies-service';
+import {Constants} from '../../../constants';
 
 @Component({
   selector: 'app-project-card',
@@ -33,6 +34,6 @@ export class ProjectCardComponent implements OnInit {
   }
 
   showReport(id: number) {
-    this.router.navigate([Paths.Report + '/' + id]);
+    this.router.navigate([Paths.Report + '/' + id], {queryParams: {tab: Constants.ReportFormTab}});
   }
 }

@@ -7,13 +7,13 @@
     </div>
   </div>
   <div class="row mx-auto">
-    <ngb-tabset #projectsTabSet class="col-12 scoring-projects">
-      <ngb-tab id="scoring" title="Project for scoring">
+    <ngb-tabset #projectsTabSet (tabChange)="onMainTabChanged($event)" class="col-12 scoring-projects">
+      <ngb-tab id="forscoring" title="Project for scoring">
         <ng-template ngbTabContent>
           <div class="white-card">
             <div class="content">
               <span class="choose">Choose expertise</span>
-              <mat-tab-group (selectedTabChange)="tabChanged($event)">
+              <mat-tab-group (selectedTabChange)="onExpertiseTabChanged($event)">
                 <mat-tab label="HR">
                   <div class="card" *ngFor="let project of projectsForScoring;">
                     <app-project-card [project]="project" [isScoring]="true"></app-project-card>
@@ -39,7 +39,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab id="myProjects" title="My projects">
+      <ngb-tab id="myprojects" title="My projects">
         <ng-template ngbTabContent>
           <div class="white-card">
             <div class="content">
@@ -48,7 +48,7 @@
                   <app-project-card [project]="project" [isScoring]="false"></app-project-card>
                 </div>
               </div>
-                <button (click)="createProject()" class="btn-blue col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">Create project</button>
+                <button *ngIf="myProjects.length > 0" (click)="createProject()" class="btn-blue col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">Create project</button>
             </div>
           </div>
           <ng-template #withoutProject>

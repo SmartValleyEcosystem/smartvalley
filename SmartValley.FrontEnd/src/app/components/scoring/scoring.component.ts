@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
 import {ProjectsForScoringRequest} from '../../api/scoring/projecs-for-scoring-request';
+import {Constants} from '../../constants';
 
 
 @Component({
@@ -24,22 +25,26 @@ export class ScoringComponent implements AfterViewInit {
 
   constructor(private scoringApiClient: ScoringApiClient,
               private authenticationService: AuthenticationService,
-              private route: ActivatedRoute,
+              private activatedRoute: ActivatedRoute,
               private router: Router) {
     this.loadProjectsForCategory(ScoringCategory.HR);
     this.loadMyProjects();
   }
 
   ngAfterViewInit(): void {
-    this.route.queryParams.subscribe(params => {
-      const value = params['tab'] || 'none';
-      if (value === 'myProjects') {
-        this.projectsTabSet.select('myProjects');
+    this.activatedRoute.queryParams.subscribe(params => {
+      const value = params[Constants.TabQueryParam] || 'none';
+      switch (value) {
+        case Constants.ScoringMyProjectsTab:
+          this.projectsTabSet.select(Constants.ScoringMyProjectsTab);
+          break;
+        case Constants.ScoringProjectsForScoringTab:
+          this.projectsTabSet.select(Constants.ScoringProjectsForScoringTab);
       }
     });
   }
 
-  tabChanged($event: any) {
+  onExpertiseTabChanged($event: any) {
     let scoringCategory: ScoringCategory = 1;
     const index: number = $event.index;
     switch (index) {
@@ -57,6 +62,12 @@ export class ScoringComponent implements AfterViewInit {
         break;
     }
     this.loadProjectsForCategory(scoringCategory);
+  }
+
+  onMainTabChanged($event: any) {
+    const queryParams = Object.assign({}, this.activatedRoute.snapshot.queryParams);
+    queryParams[Constants.TabQueryParam] = $event.nextId;
+    this.router.navigate([Paths.Scoring], {queryParams: queryParams, replaceUrl: true});
   }
 
   private async loadProjectsForCategory(scoringCategory: ScoringCategory) {

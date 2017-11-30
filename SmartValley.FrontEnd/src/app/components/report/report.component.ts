@@ -1,6 +1,6 @@
-import {Component, ViewChild} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, ViewChild} from '@angular/core';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {QuestionService} from '../../services/question-service';
@@ -13,37 +13,58 @@ import {ProjectService} from '../../services/project-service';
 import {BlockiesService} from '../../services/blockies-service';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 import {TeamMember} from '../../services/team-member';
+import {Paths} from '../../paths';
+import {Constants} from '../../constants';
 
 @Component({
   selector: 'app-report',
   templateUrl: './report.component.html',
   styleUrls: ['./report.component.css']
 })
-export class ReportComponent {
+export class ReportComponent implements AfterViewChecked {
   public questions: Array<Question>;
   public report: ProjectDetailsResponse;
   public EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
   public categoryAverageScore: number;
   public teamMembers: Array<TeamMember>;
-  public projectService: ProjectService;
   public projectImageUrl: string;
 
   private projectId: number;
 
-  @ViewChild('tabSet')
+  @ViewChild('reportTabSet')
   private tabSet: NgbTabset;
+  private readonly tabQueryParam = 'tab';
+  private selectedTab: string;
 
   constructor(private projectApiClient: ProjectApiClient,
               private estimatesApiClient: EstimatesApiClient,
               private questionService: QuestionService,
               private route: ActivatedRoute,
               private blockiesService: BlockiesService,
-              projectService: ProjectService) {
-    this.projectService = projectService;
+              public projectService: ProjectService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router) {
     this.loadInitialData();
+    this.activatedRoute.queryParams.subscribe(params => {
+      const value = params[this.tabQueryParam] || 'none';
+      this.selectedTab = value;
+    });
   }
 
-  tabChanged($event: any) {
+  ngAfterViewChecked(): void {
+    if (this.tabSet) {
+      switch (this.selectedTab) {
+        case Constants.ReportFormTab:
+          this.showForm();
+          break;
+        case Constants.ReposrtEstimatesTab:
+          this.showEstimates();
+      }
+    }
+  }
+
+
+  onExpertiseTabChanged($event: any) {
     let scoringCategory: ScoringCategory = 1;
     const index: number = $event.index;
     switch (index) {
@@ -61,6 +82,12 @@ export class ReportComponent {
         break;
     }
     this.loadExpertEstimates(scoringCategory);
+  }
+
+  onMainTabChanged($event: any) {
+    const queryParams = Object.assign({}, this.activatedRoute.snapshot.queryParams);
+    queryParams[this.tabQueryParam] = $event.nextId;
+    this.router.navigate([Paths.Report + '/' + this.projectId], {queryParams: queryParams, replaceUrl: true});
   }
 
   private async loadInitialData() {

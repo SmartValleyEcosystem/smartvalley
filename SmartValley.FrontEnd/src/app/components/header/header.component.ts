@@ -8,6 +8,7 @@ import {TransactionAwaitingModalComponent} from '../common/transaction-awaiting-
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {TransactionAwaitingModalData} from '../common/transaction-awaiting-modal/transaction-awaiting-modal-data';
 import {NotificationsService} from 'angular2-notifications';
+import {Constants} from '../../constants';
 
 @Component({
   selector: 'app-header',
@@ -84,7 +85,7 @@ export class HeaderComponent implements OnInit {
   async navigateToMyProjects() {
     const isOk = await this.authenticationService.authenticateAsync();
     if (isOk) {
-      await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
+      await this.router.navigate([Paths.Scoring], {queryParams: {tab: Constants.ScoringMyProjectsTab}});
     }
   }
 }
