@@ -149,6 +149,11 @@ label.mat-checkbox-layout > div.mat-checkbox-inner-container {
   cursor: pointer;
 }
 
+.btn.btn-primary {
+  background-color: rgb(72, 138, 232);
+  border-color: rgb(72, 138, 232);
+}
+
 .sm-btn-primary > .mat-button-wrapper {
   font-weight: 500;
   opacity: 1 !important;
