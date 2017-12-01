@@ -39,6 +39,7 @@ import {BlockiesService} from './services/blockies-service';
 import {NullableLinkComponent} from './components/common/nullable-link/nullable-link.component';
 import {Ng2DeviceDetectorModule} from 'ng2-device-detector';
 import {AlertModalComponent} from './components/common/alert-modal/alert-modal.component';
+import {GetEtherModalComponent} from './components/common/get-ether-modal/get-ether-modal.component';
 
 @NgModule({
   declarations: [
@@ -55,11 +56,13 @@ import {AlertModalComponent} from './components/common/alert-modal/alert-modal.c
     QuestionsComponent,
     TransactionAwaitingModalComponent,
     NullableLinkComponent,
-    AlertModalComponent
+    AlertModalComponent,
+    GetEtherModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
-    AlertModalComponent
+    AlertModalComponent,
+    GetEtherModalComponent
   ],
   imports: [
     MatCheckboxModule,

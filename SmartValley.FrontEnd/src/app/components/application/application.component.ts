@@ -13,7 +13,9 @@ import {NotificationsService} from 'angular2-notifications';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {TransactionAwaitingModalComponent} from '../common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 import {TransactionAwaitingModalData} from '../common/transaction-awaiting-modal/transaction-awaiting-modal-data';
-import {Constants} from '../../constants';
+import {GetEtherModalComponent} from '../common/get-ether-modal/get-ether-modal.component';
+import {BalanceApiClient} from '../../api/balance/balance-api-client';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-application',
@@ -36,8 +38,10 @@ export class ApplicationComponent {
 
   public isProjectCreating: boolean;
   private projectModalRef: MatDialogRef<TransactionAwaitingModalComponent>;
+  private dialogRef: MatDialogRef<GetEtherModalComponent>;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private balanceApiClient: BalanceApiClient,
+              private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
               private applicationApiClient: ApplicationApiClient,
               private contractApiClient: ContractApiClient,
@@ -123,10 +127,6 @@ export class ApplicationComponent {
       await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
       this.notificationsService.success('Success!', 'Project created');
     }
-  }
-
-  public async onSubmit() {
-    await this.submitIfFormValid();
     if (this.applicationForm.controls['name'].invalid) {
       this.scrollToElement(this.nameRow);
     } else if (this.applicationForm.controls['projectArea'].invalid) {
@@ -134,6 +134,37 @@ export class ApplicationComponent {
     } else if (this.applicationForm.controls['description'].invalid) {
       this.scrollToElement(this.descriptionRow);
     }
+  }
+
+  public async onSubmit() {
+
+    // Если пользователь не авторизован - выкидываем
+    if (!await this.hasAuth()) {
+      return;
+    }
+    // Если баланс пуст и пользователь новый
+    if (!await this.checkBalance()) {
+      // Показываем окно "Отсыпь эфирчика"
+      await this.showGetEtherModal();
+      // Ожидаем пока папка отсыпет эфирчика
+      const subscribe = Observable.interval(100)
+        .map(async () => {
+          if (this.dialogRef.componentInstance.wasEtherReceived) {
+            // Дождались, проверяем валидность формы
+            this.submitIfFormValid();
+            // Больше не ждем эфирчика
+            subscribe.unsubscribe();
+          }
+        }).subscribe();
+    } else {
+      this.submitIfFormValid();
+    }
+  }
+
+  private async checkBalance(): Promise<boolean> {
+    const balanceResponse = await
+      this.balanceApiClient.getBalanceAsync();
+    return balanceResponse.balance > 0 && balanceResponse.wasEtherReceived;
   }
 
   private scrollToElement(element: ElementRef) {
@@ -151,6 +182,17 @@ export class ApplicationComponent {
         // invalidElements[a].nativeElement.children[1].classList.remove('ng-valid');
       }
     }
+  }
+
+  private async showGetEtherModal() {
+    this.dialogRef = this.projectModal.open(GetEtherModalComponent, {
+      width: '600px',
+      disableClose: true,
+    });
+  }
+
+  private hasAuth(): Promise<boolean> {
+    return this.authenticationService.authenticateAsync();
   }
 
   private openProjectModal(message: string, transactionHash: string) {
