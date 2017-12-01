@@ -19,7 +19,6 @@ export class MetamaskHowtoComponent {
   public browser: string;
 
   async navigateToMainPage() {
-
-    await this.router.navigate([Paths.Root]);
+    window.location.assign(Paths.Root);
   }
 }
