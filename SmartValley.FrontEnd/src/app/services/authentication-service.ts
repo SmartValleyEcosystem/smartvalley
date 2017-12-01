@@ -29,7 +29,7 @@ export class AuthenticationService {
     }
   }
 
-  public static MESSAGE_TO_SIGN = 'Confirm login';
+  public static MESSAGE_TO_SIGN = 'Confirm login.\nPlease press the \'Sign\' button below.';
   public accountChanged: EventEmitter<any> = new EventEmitter<any>();
 
   private readonly userKey = 'userKey';
