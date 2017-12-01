@@ -21,6 +21,11 @@ export class QuestionService {
     return categoryQuestions.map(q => q.maxScore).reduce((previous, current) => previous + current);
   }
 
+  public getMinScoreForCategory(category: ScoringCategory): number {
+    const categoryQuestions = this.questions[category];
+    return categoryQuestions.map(q => q.minScore).reduce((previous, current) => previous + current);
+  }
+
   private initializeQuestionsCollection() {
     this.questions[ScoringCategory.HR] = [
       <Question>{

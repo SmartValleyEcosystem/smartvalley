@@ -26,21 +26,17 @@ export class ProjectService {
 
   public colorOfCategoryScore(score: number, category: ScoringCategory) {
     const maxScore = this.questionService.getMaxScoreForCategory(category);
-    const percent = (score / maxScore) * 100;
-    return this.getColorByPercent(percent);
+    const minScore = this.questionService.getMinScoreForCategory(category);
+
+    return this.getColorInRange(score, minScore, maxScore);
   }
 
-  public colorOfEstimateScore(score: number, maxScore: number): string {
-    if (score <= 0) {
-      return 'low_rate';
-    }
-
+  public colorOfEstimateScore(score: number, minScore: number, maxScore: number): string {
     if (isNullOrUndefined(score)) {
       return 'progress_rate';
     }
 
-    const percent = (score / maxScore) * 100;
-    return this.getColorByPercent(percent);
+    return this.getColorInRange(score, minScore, maxScore);
   }
 
   public colorOfProjectRate(score: number): string {
@@ -48,6 +44,11 @@ export class ProjectService {
       return '';
     }
     return this.getColorByPercent(score);
+  }
+
+  private getColorInRange(score: number, minScore: number, maxScore: number): string {
+    const percent = ((score - minScore) / (maxScore - minScore)) * 100;
+    return this.getColorByPercent(percent);
   }
 
   private getColorByPercent(percent: number): string {
