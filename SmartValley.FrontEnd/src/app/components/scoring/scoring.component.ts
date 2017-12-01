@@ -28,6 +28,11 @@ export class ScoringComponent implements AfterViewInit {
               private authenticationService: AuthenticationService,
               private activatedRoute: ActivatedRoute,
               private router: Router) {
+    this.loadData();
+    this.authenticationService.accountChanged.subscribe(() => this.loadData());
+  }
+
+  private loadData() {
     this.loadProjectsForCategory(ScoringCategory.HR);
     this.loadMyProjects();
   }

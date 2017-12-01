@@ -10,8 +10,6 @@ import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/map';
 import {Ng2DeviceService} from 'ng2-device-detector';
 import {MatDialog} from '@angular/material';
-import {TransactionAwaitingModalComponent} from '../components/common/transaction-awaiting-modal/transaction-awaiting-modal.component';
-import {TransactionAwaitingModalData} from '../components/common/transaction-awaiting-modal/transaction-awaiting-modal-data';
 import {AlertModalComponent} from '../components/common/alert-modal/alert-modal.component';
 import {AlertModalData} from '../components/common/alert-modal/alert-modal-data';
 import {Constants} from '../constants';
@@ -42,10 +40,6 @@ export class AuthenticationService {
 
   private saveSignatureForAccount(account: string, signature: string) {
     localStorage.setItem(account, signature);
-  }
-
-  private removeSignatureByAccount(account: string) {
-    localStorage.removeItem(account);
   }
 
   public isAuthenticated() {
@@ -144,7 +138,7 @@ export class AuthenticationService {
     if (!isNullOrUndefined(this.backgroundChecker) && !this.backgroundChecker.closed) {
       return;
     }
-    this.backgroundChecker = Observable.interval(5 * 1000)
+    this.backgroundChecker = Observable.interval(3 * 1000)
       .map(async () => this.checkCurrentAuthStateAsync())
       .subscribe();
   }
