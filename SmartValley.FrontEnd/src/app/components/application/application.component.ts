@@ -15,7 +15,6 @@ import {TransactionAwaitingModalComponent} from '../common/transaction-awaiting-
 import {TransactionAwaitingModalData} from '../common/transaction-awaiting-modal/transaction-awaiting-modal-data';
 import {GetEtherModalComponent} from '../common/get-ether-modal/get-ether-modal.component';
 import {BalanceApiClient} from '../../api/balance/balance-api-client';
-import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-application',
@@ -38,7 +37,6 @@ export class ApplicationComponent {
 
   public isProjectCreating: boolean;
   private projectModalRef: MatDialogRef<TransactionAwaitingModalComponent>;
-  private dialogRef: MatDialogRef<GetEtherModalComponent>;
 
   constructor(private balanceApiClient: BalanceApiClient,
               private formBuilder: FormBuilder,
@@ -145,19 +143,16 @@ export class ApplicationComponent {
     // Если баланс пуст и пользователь новый
     if (!await this.checkBalance()) {
       // Показываем окно "Отсыпь эфирчика"
-      await this.showGetEtherModal();
+      const etherDialog = this.showGetEtherModal();
       // Ожидаем пока папка отсыпет эфирчика
-      const subscribe = Observable.interval(100)
-        .map(async () => {
-          if (this.dialogRef.componentInstance.wasEtherReceived) {
-            // Дождались, проверяем валидность формы
-            this.submitIfFormValid();
-            // Больше не ждем эфирчика
-            subscribe.unsubscribe();
-          }
-        }).subscribe();
+      etherDialog.afterClosed().subscribe(async () => {
+        if (await this.checkBalance()) {
+          // Дождались, проверяем валидность формы
+          await this.submitIfFormValid();
+        }
+      });
     } else {
-      this.submitIfFormValid();
+      await this.submitIfFormValid();
     }
   }
 
@@ -184,8 +179,8 @@ export class ApplicationComponent {
     }
   }
 
-  private async showGetEtherModal() {
-    this.dialogRef = this.projectModal.open(GetEtherModalComponent, {
+  private showGetEtherModal(): MatDialogRef<GetEtherModalComponent> {
+    return this.projectModal.open(GetEtherModalComponent, {
       width: '600px',
       disableClose: true,
     });

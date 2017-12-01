@@ -5,8 +5,8 @@ import {Web3Service} from '../../../services/web3-service';
 import {NotificationsService} from 'angular2-notifications';
 import {AuthenticationService} from '../../../services/authentication-service';
 import {BalanceApiClient} from '../../../api/balance/balance-api-client';
-import {TransactionAwaitingModalComponent} from '../../common/transaction-awaiting-modal/transaction-awaiting-modal.component';
-import {TransactionAwaitingModalData} from '../../common/transaction-awaiting-modal/transaction-awaiting-modal-data';
+import {TransactionAwaitingModalComponent} from '../transaction-awaiting-modal/transaction-awaiting-modal.component';
+import {TransactionAwaitingModalData} from '../transaction-awaiting-modal/transaction-awaiting-modal-data';
 
 @Component({
   selector: 'app-get-ether-modal',
@@ -16,7 +16,6 @@ import {TransactionAwaitingModalData} from '../../common/transaction-awaiting-mo
 export class GetEtherModalComponent {
 
   private projectModalRef: MatDialogRef<TransactionAwaitingModalComponent>;
-  public wasEtherReceived: boolean;
 
   constructor(private balanceApiClient: BalanceApiClient,
               private authenticationService: AuthenticationService,
@@ -38,7 +37,6 @@ export class GetEtherModalComponent {
         await this.web3Service.waitForConfirmationAsync(transactionHash);
 
         this.notificationsService.success('Ether transfer completed.');
-        this.wasEtherReceived = true;
       } catch (e) {
         this.notificationsService.error('Ether transfer failed. Please try again later.');
       }
