@@ -13,7 +13,6 @@ import {NotificationsService} from 'angular2-notifications';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {TransactionAwaitingModalComponent} from '../common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 import {TransactionAwaitingModalData} from '../common/transaction-awaiting-modal/transaction-awaiting-modal-data';
-import {GetEtherModalComponent} from '../common/get-ether-modal/get-ether-modal.component';
 import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {DialogService} from '../../services/dialog-service';
 
@@ -138,19 +137,13 @@ export class ApplicationComponent {
   }
 
   public async onSubmit() {
-
-    // Если пользователь не авторизован - выкидываем
-    if (!await this.hasAuth()) {
+    if (!await this.authenticationService.authenticateAsync()) {
       return;
     }
-    // Если баланс пуст и пользователь новый
-    if (!await this.checkBalance()) {
-      // Показываем окно "Отсыпь эфирчика"
+    if (!await this.checkBalanceAsync()) {
       const etherDialog = this.dialogService.showGetEtherModal();
-      // Ожидаем пока папка отсыпет эфирчика
       etherDialog.afterClosed().subscribe(async () => {
-        if (await this.checkBalance()) {
-          // Дождались, проверяем валидность формы
+        if (await this.checkBalanceAsync()) {
           await this.submitIfFormValid();
         }
       });
@@ -159,7 +152,7 @@ export class ApplicationComponent {
     }
   }
 
-  private async checkBalance(): Promise<boolean> {
+  private async checkBalanceAsync(): Promise<boolean> {
     const balanceResponse = await
       this.balanceApiClient.getBalanceAsync();
     return balanceResponse.balance > 0 && balanceResponse.wasEtherReceived;
@@ -180,10 +173,6 @@ export class ApplicationComponent {
         // invalidElements[a].nativeElement.children[1].classList.remove('ng-valid');
       }
     }
-  }
-
-  private hasAuth(): Promise<boolean> {
-    return this.authenticationService.authenticateAsync();
   }
 
   private openProjectModal(message: string, transactionHash: string) {
