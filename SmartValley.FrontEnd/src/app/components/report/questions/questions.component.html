@@ -17,7 +17,7 @@
   <div class="row-content" *ngFor="let estimate of question.estimates; let i = index;">
     <div class="row row-title">
       <span class="col-3">Expert {{i + 1}} score:</span>
-      <span class="col-1 {{projectService.colorOfEstimateScore(estimate.score)}}">{{estimate.score}}</span>
+      <span class="col-1 {{projectService.colorOfEstimateScore(estimate.score, question.maxScore)}}">{{estimate.score}}</span>
       <span class="col-7" style="word-wrap: break-word;">{{estimate.comments}}</span>
     </div>
   </div>

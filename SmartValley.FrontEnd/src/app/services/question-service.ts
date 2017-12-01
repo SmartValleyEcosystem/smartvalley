@@ -12,8 +12,13 @@ export class QuestionService {
     this.initializeQuestionsCollection();
   }
 
-  public getByExpertType(expertType: ScoringCategory): Array<Question> {
-    return this.questions[expertType];
+  public getByCategory(category: ScoringCategory): Array<Question> {
+    return this.questions[category];
+  }
+
+  public getMaxScoreForCategory(category: ScoringCategory): number {
+    const categoryQuestions = this.questions[category];
+    return categoryQuestions.map(q => q.maxScore).reduce((previous, current) => previous + current);
   }
 
   private initializeQuestionsCollection() {

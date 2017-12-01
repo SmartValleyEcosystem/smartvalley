@@ -1,33 +1,62 @@
 import {Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
+import {QuestionService} from './question-service';
+import {ScoringCategory} from '../api/scoring/scoring-category.enum';
 
 @Injectable()
 export class ProjectService {
-
-  public colorOfEstimateScore(rate: number): string {
-    if (isNullOrUndefined(rate)) {
-      return 'progress_rate';
-    }
-    if (rate > 4) {
-      return 'high_rate';
-    }
-    if (rate > 2) {
-      return 'medium_rate';
-    }
-    return 'low_rate';
+  constructor(private questionService: QuestionService) {
   }
 
-  public colorOfProjectRate(rate: number): string {
-    if (rate == null) {
+  public colorOfHrScore(score: number) {
+    return this.colorOfCategoryScore(score, ScoringCategory.HR);
+  }
+
+  public colorOfTechnicalScore(score: number) {
+    return this.colorOfCategoryScore(score, ScoringCategory.TechnicalExpert);
+  }
+
+  public colorOfLawyerScore(score: number) {
+    return this.colorOfCategoryScore(score, ScoringCategory.Lawyer);
+  }
+
+  public colorOfAnalystScore(score: number) {
+    return this.colorOfCategoryScore(score, ScoringCategory.Analyst);
+  }
+
+  public colorOfCategoryScore(score: number, category: ScoringCategory) {
+    const maxScore = this.questionService.getMaxScoreForCategory(category);
+    const percent = (score / maxScore) * 100;
+    return this.getColorByPercent(percent);
+  }
+
+  public colorOfEstimateScore(score: number, maxScore: number): string {
+    if (score <= 0) {
+      return 'low_rate';
+    }
+
+    if (isNullOrUndefined(score)) {
+      return 'progress_rate';
+    }
+
+    const percent = (score / maxScore) * 100;
+    return this.getColorByPercent(percent);
+  }
+
+  public colorOfProjectRate(score: number): string {
+    if (score == null) {
       return '';
     }
-    if (rate > 80) {
+    return this.getColorByPercent(score);
+  }
+
+  private getColorByPercent(percent: number): string {
+    if (percent > 80) {
       return 'high_rate';
     }
-    if (rate > 45) {
+    if (percent > 45) {
       return 'medium_rate';
     }
     return 'low_rate';
   }
 }
-

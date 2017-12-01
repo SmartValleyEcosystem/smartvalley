@@ -9,8 +9,8 @@ import {ProjectService} from '../../../services/project-service';
   styleUrls: ['./questions.component.css']
 })
 export class QuestionsComponent {
-  @Input() questions: Array<Question>
-  projectService: ProjectService;
+  @Input() public questions: Array<Question>;
+  public projectService: ProjectService;
 
   constructor(projectService: ProjectService) {
     this.projectService = projectService;

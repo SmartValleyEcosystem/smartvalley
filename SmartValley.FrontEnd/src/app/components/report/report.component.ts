@@ -112,7 +112,7 @@ export class ReportComponent implements AfterViewChecked {
   private async loadExpertEstimates(scoringCategory: ScoringCategory) {
     const estimatesResponse = await this.estimatesApiClient.getByProjectIdAndCategoryAsync(this.projectId, scoringCategory);
     this.categoryAverageScore = estimatesResponse.averageScore;
-    const questions = this.questionService.getByExpertType(scoringCategory);
+    const questions = this.questionService.getByCategory(scoringCategory);
 
     for (const question of questions) {
       question.estimates = [];
