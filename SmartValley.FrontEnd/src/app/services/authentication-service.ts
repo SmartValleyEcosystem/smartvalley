@@ -20,7 +20,6 @@ import {MetamaskManualModalComponent} from '../components/common/metamask-manual
 export class AuthenticationService {
 
   constructor(private web3Service: Web3Service,
-              private notificationsService: NotificationsService,
               private router: Router,
               private deviceService: Ng2DeviceService,
               private alertModal: MatDialog,
