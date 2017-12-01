@@ -1,11 +1,26 @@
-.sw-card{
+.sw-card {
   padding: 50px 80px;
 }
 
-.sw-card h2{
+.sw-card h2 {
   margin-bottom: 40px;
 }
 
-div.text-center img{
+div.text-center img {
   margin-bottom: 20px;
+}
+
+.btn-row {
+  padding: .8em 0;
+  margin-left: 0em;
+}
+
+.trans-btn {
+  background: transparent;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  color: rgb(70, 137, 232);
+  border-color: rgb(70, 137, 232);
+  padding-top: 1em;
+  padding-bottom: 1em;
 }
