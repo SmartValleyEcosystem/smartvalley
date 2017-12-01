@@ -105,35 +105,36 @@ export class ApplicationComponent {
   }
 
   private async submitIfFormValid() {
-    if (!this.applicationForm.invalid) {
-      this.isProjectCreating = true;
-      const application = await this.fillApplication();
-
-      if (application == null) {
-        this.notificationsService.error('Error', 'Please try again');
-        this.isProjectCreating = false;
-        return;
+    if (this.applicationForm.invalid) {
+      if (this.applicationForm.controls['name'].invalid) {
+        this.scrollToElement(this.nameRow);
+      } else if (this.applicationForm.controls['projectArea'].invalid) {
+        this.scrollToElement(this.areaRow);
+      } else if (this.applicationForm.controls['description'].invalid) {
+        this.scrollToElement(this.descriptionRow);
       }
-
-      this.openProjectModal(
-        'Your project for scoring is being created. Please wait for completion of transaction.',
-        application.transactionHash
-      );
-
-      await this.applicationApiClient.createApplicationAsync(application);
-
-      this.closeProjectModal();
-
-      await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
-      this.notificationsService.success('Success!', 'Project created');
+      return;
     }
-    if (this.applicationForm.controls['name'].invalid) {
-      this.scrollToElement(this.nameRow);
-    } else if (this.applicationForm.controls['projectArea'].invalid) {
-      this.scrollToElement(this.areaRow);
-    } else if (this.applicationForm.controls['description'].invalid) {
-      this.scrollToElement(this.descriptionRow);
+    this.isProjectCreating = true;
+    const application = await this.fillApplication();
+
+    if (application == null) {
+      this.notificationsService.error('Error', 'Please try again');
+      this.isProjectCreating = false;
+      return;
     }
+
+    this.openProjectModal(
+      'Your project for scoring is being created. Please wait for completion of transaction.',
+      application.transactionHash
+    );
+
+    await this.applicationApiClient.createApplicationAsync(application);
+
+    this.closeProjectModal();
+
+    await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
+    this.notificationsService.success('Success!', 'Project created');
   }
 
   public async onSubmit() {
