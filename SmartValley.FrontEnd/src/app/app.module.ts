@@ -36,9 +36,11 @@ import {ProjectService} from './services/project-service';
 import {NgProgressInterceptor, NgProgressModule} from 'ngx-progressbar';
 import {TransactionAwaitingModalComponent} from './components/common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 import {BlockiesService} from './services/blockies-service';
+import {DialogService} from './services/dialog-service';
 import {NullableLinkComponent} from './components/common/nullable-link/nullable-link.component';
 import {Ng2DeviceDetectorModule} from 'ng2-device-detector';
 import {AlertModalComponent} from './components/common/alert-modal/alert-modal.component';
+import {GetEtherModalComponent} from './components/common/get-ether-modal/get-ether-modal.component';
 
 @NgModule({
   declarations: [
@@ -55,11 +57,13 @@ import {AlertModalComponent} from './components/common/alert-modal/alert-modal.c
     QuestionsComponent,
     TransactionAwaitingModalComponent,
     NullableLinkComponent,
-    AlertModalComponent
+    AlertModalComponent,
+    GetEtherModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
-    AlertModalComponent
+    AlertModalComponent,
+    GetEtherModalComponent
   ],
   imports: [
     MatCheckboxModule,
@@ -102,6 +106,7 @@ import {AlertModalComponent} from './components/common/alert-modal/alert-modal.c
     ProjectService,
     QuestionService,
     Web3Service,
+    DialogService,
     ProjectManagerContractClient,
     BlockiesService],
   bootstrap: [AppComponent]

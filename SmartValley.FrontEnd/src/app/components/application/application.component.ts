@@ -13,7 +13,8 @@ import {NotificationsService} from 'angular2-notifications';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {TransactionAwaitingModalComponent} from '../common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 import {TransactionAwaitingModalData} from '../common/transaction-awaiting-modal/transaction-awaiting-modal-data';
-import {Constants} from '../../constants';
+import {BalanceApiClient} from '../../api/balance/balance-api-client';
+import {DialogService} from '../../services/dialog-service';
 
 @Component({
   selector: 'app-application',
@@ -37,14 +38,16 @@ export class ApplicationComponent {
   public isProjectCreating: boolean;
   private projectModalRef: MatDialogRef<TransactionAwaitingModalComponent>;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private balanceApiClient: BalanceApiClient,
+              private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
               private applicationApiClient: ApplicationApiClient,
               private contractApiClient: ContractApiClient,
               private projectManagerContractClient: ProjectManagerContractClient,
               private router: Router,
               private notificationsService: NotificationsService,
-              private projectModal: MatDialog) {
+              private projectModal: MatDialog,
+              private dialogService: DialogService) {
     this.createForm();
   }
 
@@ -101,39 +104,58 @@ export class ApplicationComponent {
   }
 
   private async submitIfFormValid() {
-    if (!this.applicationForm.invalid) {
-      this.isProjectCreating = true;
-      const application = await this.fillApplication();
-
-      if (application == null) {
-        this.notificationsService.error('Error', 'Please try again');
-        this.isProjectCreating = false;
-        return;
+    if (this.applicationForm.invalid) {
+      if (this.applicationForm.controls['name'].invalid) {
+        this.scrollToElement(this.nameRow);
+      } else if (this.applicationForm.controls['projectArea'].invalid) {
+        this.scrollToElement(this.areaRow);
+      } else if (this.applicationForm.controls['description'].invalid) {
+        this.scrollToElement(this.descriptionRow);
       }
-
-      this.openProjectModal(
-        'Your project for scoring is being created. Please wait for completion of transaction.',
-        application.transactionHash
-      );
-
-      await this.applicationApiClient.createApplicationAsync(application);
-
-      this.closeProjectModal();
-
-      await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
-      this.notificationsService.success('Success!', 'Project created');
+      return;
     }
+    this.isProjectCreating = true;
+    const application = await this.fillApplication();
+
+    if (application == null) {
+      this.notificationsService.error('Error', 'Please try again');
+      this.isProjectCreating = false;
+      return;
+    }
+
+    this.openProjectModal(
+      'Your project for scoring is being created. Please wait for completion of transaction.',
+      application.transactionHash
+    );
+
+    await this.applicationApiClient.createApplicationAsync(application);
+
+    this.closeProjectModal();
+
+    await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
+    this.notificationsService.success('Success!', 'Project created');
   }
 
   public async onSubmit() {
-    await this.submitIfFormValid();
-    if (this.applicationForm.controls['name'].invalid) {
-      this.scrollToElement(this.nameRow);
-    } else if (this.applicationForm.controls['projectArea'].invalid) {
-      this.scrollToElement(this.areaRow);
-    } else if (this.applicationForm.controls['description'].invalid) {
-      this.scrollToElement(this.descriptionRow);
+    if (!await this.authenticationService.authenticateAsync()) {
+      return;
     }
+    if (!await this.checkBalanceAsync()) {
+      const etherDialog = this.dialogService.showGetEtherModal();
+      etherDialog.afterClosed().subscribe(async () => {
+        if (await this.checkBalanceAsync()) {
+          await this.submitIfFormValid();
+        }
+      });
+    } else {
+      await this.submitIfFormValid();
+    }
+  }
+
+  private async checkBalanceAsync(): Promise<boolean> {
+    const balanceResponse = await
+      this.balanceApiClient.getBalanceAsync();
+    return balanceResponse.balance > 0 && balanceResponse.wasEtherReceived;
   }
 
   private scrollToElement(element: ElementRef) {
