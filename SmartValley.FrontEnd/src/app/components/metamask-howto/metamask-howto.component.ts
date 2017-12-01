@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {Web3Service} from '../../services/web3-service';
+import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {Ng2DeviceService} from 'ng2-device-detector';
@@ -12,9 +11,15 @@ import {Ng2DeviceService} from 'ng2-device-detector';
 })
 export class MetamaskHowtoComponent {
 
-  constructor(private deviceService: Ng2DeviceService) {
+  constructor(private router: Router,
+              private deviceService: Ng2DeviceService) {
     this.browser = deviceService.browser;
   }
 
   public browser: string;
+
+  async navigateToMainPage() {
+
+    await this.router.navigate([Paths.Root]);
+  }
 }

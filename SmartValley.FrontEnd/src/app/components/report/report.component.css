@@ -140,6 +140,8 @@ div.sw-main-info span, div.sw-main-info app-nullable-link {
   padding-top: 1em;
   padding-bottom: 1em;
   color: rgb(70, 137, 232);
-  border-color: rgb(70, 137, 232);;
+  border-color: rgb(70, 137, 232);
+  padding-top: 1em;
+  padding-bottom: 1em;
 }
 
