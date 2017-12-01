@@ -15,6 +15,7 @@ import {TransactionAwaitingModalComponent} from '../common/transaction-awaiting-
 import {TransactionAwaitingModalData} from '../common/transaction-awaiting-modal/transaction-awaiting-modal-data';
 import {GetEtherModalComponent} from '../common/get-ether-modal/get-ether-modal.component';
 import {BalanceApiClient} from '../../api/balance/balance-api-client';
+import {DialogService} from '../../services/dialog-service';
 
 @Component({
   selector: 'app-application',
@@ -46,7 +47,8 @@ export class ApplicationComponent {
               private projectManagerContractClient: ProjectManagerContractClient,
               private router: Router,
               private notificationsService: NotificationsService,
-              private projectModal: MatDialog) {
+              private projectModal: MatDialog,
+              private dialogService: DialogService) {
     this.createForm();
   }
 
@@ -143,7 +145,7 @@ export class ApplicationComponent {
     // Если баланс пуст и пользователь новый
     if (!await this.checkBalance()) {
       // Показываем окно "Отсыпь эфирчика"
-      const etherDialog = this.showGetEtherModal();
+      const etherDialog = this.dialogService.showGetEtherModal();
       // Ожидаем пока папка отсыпет эфирчика
       etherDialog.afterClosed().subscribe(async () => {
         if (await this.checkBalance()) {
@@ -177,13 +179,6 @@ export class ApplicationComponent {
         // invalidElements[a].nativeElement.children[1].classList.remove('ng-valid');
       }
     }
-  }
-
-  private showGetEtherModal(): MatDialogRef<GetEtherModalComponent> {
-    return this.projectModal.open(GetEtherModalComponent, {
-      width: '600px',
-      disableClose: true,
-    });
   }
 
   private hasAuth(): Promise<boolean> {
