@@ -1,4 +1,6 @@
-﻿using IcoLab.Common.Web.WebApi;
+﻿using System.Collections.Generic;
+using System.IO;
+using IcoLab.Common.Web.WebApi;
 using IcoLab.Web.Common.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
@@ -103,17 +105,19 @@ namespace SmartValley.WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "SmartValley API V1"); });
             }
-
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
             app.UseAuthentication();
-
-            app.UseMvc(routes =>
-                       {
-                           routes.MapSpaFallbackRoute(
-                               name: "spa-fallback",
-                               defaults: new {controller = "Home", action = "Index"});
-                       });
+            app.Use(async (context, next) =>
+                    {
+                        await next();
+                        if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
+                        {
+                            context.Request.Path = "/index.html";
+                            await next();
+                        }
+                    })
+               .UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new List<string> { "index.html" } })
+               .UseStaticFiles()
+               .UseMvc();
         }
 
         private void ConfigureCorsPolicy(IServiceCollection services)
