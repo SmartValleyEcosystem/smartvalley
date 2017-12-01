@@ -13,32 +13,30 @@
     </div>
   </div>
   <div class="row mx-auto">
-    <div *ngIf="browser === 'chrome'; else firefoxManual">
-      <div class="col-12 sw-card">
-        <div>
-          <h2>
-            Part 1 - Installing Metamask
-          </h2>
+    <div class="col-12 sw-card" *ngIf="browser === 'chrome'; else firefoxManual">
+      <div>
+        <h2>
+          Part 1 - Installing Metamask
+        </h2>
+      </div>
+      <div>
+        <h3>Step 1</h3>
+        <p>Click <a
+          href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn">here</a> to go to
+          the chrome WebStore and get Metamask Plugin</p>
+      </div>
+      <div>
+        <h3>Step 2</h3>
+        <p>Click "Add to Chrome" to install Metamask as Google chrome extensions</p>
+        <div class="text-center">
+          <img src="/assets/img/NoMetaMask1.png"/>
         </div>
-        <div>
-          <h3>Step 1</h3>
-          <p>Click <a
-            href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn">here</a> to go to
-            the chrome WebStore and get Metamask Plugin</p>
-        </div>
-        <div>
-          <h3>Step 2</h3>
-          <p>Click "Add to Chrome" to install Metamask as Google chrome extensions</p>
-          <div class="text-center">
-            <img src="/assets/img/NoMetaMask1.png"/>
-          </div>
-        </div>
-        <div>
-          <h3>Step 3</h3>
-          <p>Click "Add Extension" to confirm and Metamask will be added</p>
-          <div class="text-center">
-            <img src="/assets/img/NoMetaMask2.png"/>
-          </div>
+      </div>
+      <div>
+        <h3>Step 3</h3>
+        <p>Click "Add Extension" to confirm and Metamask will be added</p>
+        <div class="text-center">
+          <img src="/assets/img/NoMetaMask2.png"/>
         </div>
       </div>
     </div>
