@@ -22,7 +22,7 @@ namespace SmartValley.WebApi.Scoring
         [HttpGet]
         public async Task<CollectionResponse<ProjectResponse>> GetProjectsForScoringAsync([FromQuery] GetProjectsForScoringRequest request)
         {
-            var projects = await _scoringService.GetProjectsForScoringAsync(request.ExpertiseAreaApi.ToDomain(), request.ExpertAddress);
+            var projects = await _scoringService.GetProjectsForScoringAsync(request.ExpertiseArea.ToDomain(), User.Identity.Name);
             return new CollectionResponse<ProjectResponse>
                    {
                        Items = projects.Select(ProjectResponse.From).ToArray()
