@@ -36,10 +36,12 @@ import {ProjectService} from './services/project-service';
 import {NgProgressInterceptor, NgProgressModule} from 'ngx-progressbar';
 import {TransactionAwaitingModalComponent} from './components/common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 import {BlockiesService} from './services/blockies-service';
+import {DialogService} from './services/dialog-service';
 import {NullableLinkComponent} from './components/common/nullable-link/nullable-link.component';
 import {Ng2DeviceDetectorModule} from 'ng2-device-detector';
 import {AlertModalComponent} from './components/common/alert-modal/alert-modal.component';
-import { MetamaskManualModalComponent } from './components/common/metamask-manual-modal/metamask-manual-modal.component';
+import {MetamaskManualModalComponent} from './components/common/metamask-manual-modal/metamask-manual-modal.component';
+import {GetEtherModalComponent} from './components/common/get-ether-modal/get-ether-modal.component';
 
 @NgModule({
   declarations: [
@@ -57,12 +59,14 @@ import { MetamaskManualModalComponent } from './components/common/metamask-manua
     TransactionAwaitingModalComponent,
     NullableLinkComponent,
     AlertModalComponent,
-    MetamaskManualModalComponent
+    MetamaskManualModalComponent,
+    GetEtherModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
     AlertModalComponent,
     MetamaskManualModalComponent,
+    GetEtherModalComponent
   ],
   imports: [
     MatCheckboxModule,
@@ -105,6 +109,7 @@ import { MetamaskManualModalComponent } from './components/common/metamask-manua
     ProjectService,
     QuestionService,
     Web3Service,
+    DialogService,
     ProjectManagerContractClient,
     BlockiesService],
   bootstrap: [AppComponent]
