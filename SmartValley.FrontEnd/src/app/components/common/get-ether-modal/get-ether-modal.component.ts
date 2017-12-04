@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
-import {DialogService} from '../../../services/dialog-service';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {BalanceApiClient} from '../../../api/balance/balance-api-client';
+import {MatDialog} from '@angular/material';
 
 @Component({
   selector: 'app-get-ether-modal',
@@ -8,10 +9,12 @@ import {DialogService} from '../../../services/dialog-service';
 })
 export class GetEtherModalComponent {
 
-  constructor(private dialogService: DialogService) {
+  @Output() onClickReceive: EventEmitter<any> = new EventEmitter();;
+  constructor(private projectModal: MatDialog) {
   }
 
   public async receiveEth() {
-    await this.dialogService.showReceiveEthDialog();
+    this.onClickReceive.emit();
+    this.projectModal.closeAll();
   }
 }

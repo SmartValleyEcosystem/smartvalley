@@ -123,14 +123,7 @@ export class ApplicationComponent {
       return;
     }
 
-    this.openProjectModal(
-      'Your project for scoring is being created. Please wait for completion of transaction.',
-      application.transactionHash
-    );
-
-    await this.applicationApiClient.createApplicationAsync(application);
-
-    this.closeProjectModal();
+    await this.dialogService.showCreateApplicationDialog(application);
 
     await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
     this.notificationsService.success('Success!', 'Project created');
@@ -142,7 +135,8 @@ export class ApplicationComponent {
     }
     if (!await this.checkBalanceAsync()) {
       const etherDialog = this.dialogService.showGetEtherModal();
-      etherDialog.afterClosed().subscribe(async () => {
+      etherDialog.onClickReceive.subscribe(async () => {
+        await this.dialogService.showReceiveEthDialog();
         if (await this.checkBalanceAsync()) {
           await this.submitIfFormValid();
         }
@@ -173,21 +167,6 @@ export class ApplicationComponent {
         // invalidElements[a].nativeElement.children[1].classList.remove('ng-valid');
       }
     }
-  }
-
-  private openProjectModal(message: string, transactionHash: string) {
-    this.projectModalRef = this.projectModal.open(TransactionAwaitingModalComponent, {
-      width: '600px',
-      data: <TransactionAwaitingModalData>{
-        message: message,
-        transactionHash: transactionHash
-      },
-      disableClose: true,
-    });
-  }
-
-  private closeProjectModal() {
-    this.projectModal.closeAll();
   }
 
   private async fillApplication(): Promise<Application> {

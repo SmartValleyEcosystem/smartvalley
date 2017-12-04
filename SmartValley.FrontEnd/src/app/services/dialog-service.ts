@@ -6,22 +6,36 @@ import {Web3Service} from './web3-service';
 import {NotificationsService} from 'angular2-notifications';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {GetEtherModalComponent} from '../components/common/get-ether-modal/get-ether-modal.component';
+import {Application} from './application';
+import {ApplicationApiClient} from '../api/application/application-api.client';
 
 
 @Injectable()
 export class DialogService {
-  constructor(private balanceApiClient: BalanceApiClient,
+  constructor(private applicationApiClient: ApplicationApiClient,
+              private balanceApiClient: BalanceApiClient,
               private web3Service: Web3Service,
               private projectModal: MatDialog,
               private notificationsService: NotificationsService) {
   }
 
-
-  public showGetEtherModal(): MatDialogRef<GetEtherModalComponent> {
+  public showGetEtherModal(): GetEtherModalComponent {
     return this.projectModal.open(GetEtherModalComponent, {
       width: '600px',
       disableClose: true,
-    });
+    }).componentInstance;
+  }
+
+  public async showCreateApplicationDialog(application: Application) {
+
+    this.openProjectModal(
+      'Your project for scoring is being created. Please wait for completion of transaction.',
+      application.transactionHash
+    );
+
+    await this.applicationApiClient.createApplicationAsync(application);
+
+    this.projectModal.closeAll();
   }
 
   public async showReceiveEthDialog() {
