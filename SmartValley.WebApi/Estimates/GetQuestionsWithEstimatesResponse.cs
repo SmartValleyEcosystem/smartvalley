@@ -2,10 +2,10 @@
 
 namespace SmartValley.WebApi.Estimates
 {
-    public class GetEstimatesResponse
+    public class GetQuestionsWithEstimatesResponse
     {
         public double AverageScore { get; set; }
 
-        public IReadOnlyCollection<EstimateResponse> Items { get; set; }
+        public IReadOnlyCollection<QuestionWithEstimatesResponse> Questions { get; set; }
     }
 }

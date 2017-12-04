@@ -70,6 +70,7 @@ import {GetEtherModalComponent} from './components/common/get-ether-modal/get-et
   ],
   imports: [
     MatCheckboxModule,
+
     MatTabsModule,
     BrowserModule,
     HttpClientModule,

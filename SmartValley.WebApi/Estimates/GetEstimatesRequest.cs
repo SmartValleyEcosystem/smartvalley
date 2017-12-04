@@ -4,6 +4,6 @@
     {
         public long ProjectId { get; set; }
 
-        public Category Category { get; set; }
+        public ExpertiseAreaApi ExpertiseArea { get; set; }
     }
 }

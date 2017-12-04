@@ -25,33 +25,33 @@ namespace SmartValley.WebApi.Estimates
 
         public async Task SubmitEstimatesAsync(SubmitEstimatesRequest request)
         {
-            var scoringCategory = request.Category.ToDomain();
+            var expertiseArea = request.ExpertiseArea.ToDomain();
             var project = await _projectRepository.GetByIdAsync(request.ProjectId);
 
-            var currentCounterVaule = project.GetEstimatesCounterValue(scoringCategory);
+            var currentCounterVaule = project.GetEstimatesCounterValue(expertiseArea);
             if (currentCounterVaule == RequiredEstimatesCountInCategory)
             {
                 throw new AppErrorException(
                     ErrorCode.ProjectAlreadyEstimatedInCategory,
-                    $"Project '{project.Name}' already received {RequiredEstimatesCountInCategory} estimates in category '{scoringCategory}'.");
+                    $"Project '{project.Name}' already received {RequiredEstimatesCountInCategory} estimates in category '{expertiseArea}'.");
             }
 
-            var projectsEstimatedByExpert = await _estimateRepository.GetProjectsEstimatedByExpertAsync(request.ExpertAddress, scoringCategory);
+            var projectsEstimatedByExpert = await _estimateRepository.GetProjectsEstimatedByExpertAsync(request.ExpertAddress, expertiseArea);
             if (projectsEstimatedByExpert.Contains(project.Id))
             {
                 throw new AppErrorException(
                     ErrorCode.ExpertAlreadyEstimatedProjectInCategory,
-                    $"Project '{project.Name}' has already been estimated in category '{scoringCategory}' by expert '{request.ExpertAddress}'.");
+                    $"Project '{project.Name}' has already been estimated in category '{expertiseArea}' by expert '{request.ExpertAddress}'.");
             }
 
-            await AddEstimatesAsync(request, scoringCategory);
+            await AddEstimatesAsync(request, expertiseArea);
 
-            await UpdateProjectAsync(project, scoringCategory);
+            await UpdateProjectAsync(project, expertiseArea);
         }
 
-        public Task<IReadOnlyCollection<Estimate>> GetAsync(long projectId, Category category)
+        public Task<IReadOnlyCollection<Estimate>> GetAsync(long projectId, ExpertiseAreaApi expertiseAreaApi)
         {
-            return _estimateRepository.GetAsync(projectId, category.ToDomain());
+            return _estimateRepository.GetAsync(projectId, expertiseAreaApi.ToDomain());
         }
 
         public double CalculateAverageScore(IReadOnlyCollection<Estimate> estimates)
@@ -64,9 +64,9 @@ namespace SmartValley.WebApi.Estimates
             return estimates.Sum(e => e.Score) / (double) RequiredEstimatesCountInCategory;
         }
 
-        private async Task UpdateProjectAsync(Project project, ScoringCategory scoringCategory)
+        private async Task UpdateProjectAsync(Project project, ExpertiseArea expertiseArea)
         {
-            project.IncrementEstimatesCounter(scoringCategory);
+            project.IncrementEstimatesCounter(expertiseArea);
 
             if (project.IsReadyForScoring(RequiredEstimatesCountInCategory))
                 project.Score = await CalculateProjectScoreAsync(project.Id);
@@ -80,11 +80,11 @@ namespace SmartValley.WebApi.Estimates
             return (double) estimates.Sum(e => e.Score) / RequiredEstimatesCountInCategory;
         }
 
-        private Task AddEstimatesAsync(SubmitEstimatesRequest request, ScoringCategory scoringCategory)
+        private Task AddEstimatesAsync(SubmitEstimatesRequest request, ExpertiseArea expertiseArea)
         {
             var estimates = request
                 .Estimates
-                .Select(e => CreateEstimate(e, request.ProjectId, request.ExpertAddress, scoringCategory))
+                .Select(e => CreateEstimate(e, request.ProjectId, request.ExpertAddress, expertiseArea))
                 .ToArray();
 
             return _estimateRepository.AddRangeAsync(estimates);
@@ -94,13 +94,13 @@ namespace SmartValley.WebApi.Estimates
             EstimateRequest estimateRequest,
             long projectId,
             string expertAddress,
-            ScoringCategory category)
+            ExpertiseArea category)
         {
             return new Estimate
                    {
                        ProjectId = projectId,
                        ExpertAddress = expertAddress,
-                       QuestionIndex = estimateRequest.QuestionIndex,
+                       QuestionIndex = estimateRequest.QuestionId,
                        Score = estimateRequest.Score,
                        ScoringCategory = category,
                        Comment = estimateRequest.Comment

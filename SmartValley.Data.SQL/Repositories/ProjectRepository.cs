@@ -26,20 +26,20 @@ namespace SmartValley.Data.SQL.Repositories
                                     .ToArrayAsync();
         }
 
-        public async Task<IReadOnlyCollection<Project>> GetAllByCategoryAsync(ScoringCategory category)
+        public async Task<IReadOnlyCollection<Project>> GetAllByCategoryAsync(ExpertiseArea category)
         {
             var projects = ReadContext.Projects;
             switch (category)
             {
-                case ScoringCategory.Unknown:
+                case ExpertiseArea.Unknown:
                     return new List<Project>();
-                case ScoringCategory.Hr:
+                case ExpertiseArea.Hr:
                     return await projects.Where(p => p.HrEstimatesCount < 3).ToArrayAsync();
-                case ScoringCategory.Analyst:
+                case ExpertiseArea.Analyst:
                     return await projects.Where(p => p.AnalystEstimatesCount < 3).ToArrayAsync();
-                case ScoringCategory.Tech:
+                case ExpertiseArea.Tech:
                     return await projects.Where(p => p.TechnicalEstimatesCount < 3).ToArrayAsync();
-                case ScoringCategory.Lawyer:
+                case ExpertiseArea.Lawyer:
                     return await projects.Where(p => p.LawyerEstimatesCount < 3).ToArrayAsync();
                 default:
                     return await projects.ToArrayAsync();

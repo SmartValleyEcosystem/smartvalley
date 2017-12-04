@@ -5,20 +5,20 @@ namespace SmartValley.WebApi.Estimates
 {
     public static class ScoringCategoryTranslator
     {
-        public static ScoringCategory ToDomain(this Category requestCategory)
+        public static ExpertiseArea ToDomain(this ExpertiseAreaApi requestExpertiseAreaApi)
         {
-            switch (requestCategory)
+            switch (requestExpertiseAreaApi)
             {
-                case Category.Hr:
-                    return ScoringCategory.Hr;
-                case Category.Analyst:
-                    return ScoringCategory.Analyst;
-                case Category.Tech:
-                    return ScoringCategory.Tech;
-                case Category.Lawyer:
-                    return ScoringCategory.Lawyer;
+                case ExpertiseAreaApi.Hr:
+                    return ExpertiseArea.Hr;
+                case ExpertiseAreaApi.Analyst:
+                    return ExpertiseArea.Analyst;
+                case ExpertiseAreaApi.Tech:
+                    return ExpertiseArea.Tech;
+                case ExpertiseAreaApi.Lawyer:
+                    return ExpertiseArea.Lawyer;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(requestCategory), requestCategory, null);
+                    throw new ArgumentOutOfRangeException(nameof(requestExpertiseAreaApi), requestExpertiseAreaApi, null);
             }
         }
     }

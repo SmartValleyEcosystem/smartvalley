@@ -5,7 +5,7 @@ namespace SmartValley.WebApi.Scoring
 {
     public class GetProjectsForScoringRequest
     {
-        public Category Category { get; set; }
+        public ExpertiseAreaApi ExpertiseAreaApi { get; set; }
 
         [Required]
         public string ExpertAddress { get; set; }

@@ -3,7 +3,7 @@
     // ReSharper disable once ClassNeverInstantiated.Global
     public class EstimateRequest
     {
-        public int QuestionIndex { get; set; }
+        public int QuestionId { get; set; }
 
         public int Score { get; set; }
 

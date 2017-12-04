@@ -19,7 +19,7 @@ namespace SmartValley.WebApi.Scoring
             _estimateRepository = estimateRepository;
         }
 
-        public async Task<IReadOnlyCollection<Project>> GetProjectsForScoringAsync(ScoringCategory category, string expertAddress)
+        public async Task<IReadOnlyCollection<Project>> GetProjectsForScoringAsync(ExpertiseArea category, string expertAddress)
         {
             var projectsEstimatedByExpert = await _estimateRepository.GetProjectsEstimatedByExpertAsync(expertAddress, category);
             var notScoredProjects = await _projectRepository.GetAllByCategoryAsync(category);
