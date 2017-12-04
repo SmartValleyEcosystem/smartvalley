@@ -13,15 +13,17 @@ import {MatDialog} from '@angular/material';
 import {AlertModalComponent} from '../components/common/alert-modal/alert-modal.component';
 import {AlertModalData} from '../components/common/alert-modal/alert-modal-data';
 import {Constants} from '../constants';
+import {MetamaskManualModalData} from '../components/common/metamask-manual-modal/metamask-manual-modal-data';
+import {MetamaskManualModalComponent} from '../components/common/metamask-manual-modal/metamask-manual-modal.component';
 
 @Injectable()
 export class AuthenticationService {
 
   constructor(private web3Service: Web3Service,
-              private notificationsService: NotificationsService,
               private router: Router,
               private deviceService: Ng2DeviceService,
-              private alertModal: MatDialog) {
+              private alertModal: MatDialog,
+              private metamaskManualModel: MatDialog) {
     if (this.web3Service.isMetamaskInstalled && this.getCurrentUser() != null) {
       this.startBackgroundChecker();
     }
@@ -48,15 +50,7 @@ export class AuthenticationService {
 
   public async authenticateAsync(): Promise<boolean> {
     if (!this.compatibleBrowsers.includes(this.deviceService.browser)) {
-      this.alertModal.open(AlertModalComponent, {
-        width: '600px',
-        data: <AlertModalData>{
-          message: 'Our MVP works correctly only on PC with Google Chrome / Firefox browser with Metamask extension.' +
-          ' You can\'t install Metamask on your browser.',
-          title: 'Attention!',
-          button: 'Ok'
-        }
-      });
+      this.showIncompatibleBrowserAlert();
       return;
     }
 
@@ -68,14 +62,14 @@ export class AuthenticationService {
     const currentAccount = accounts[0];
 
     if (currentAccount == null) {
-      this.notificationsService.warn('Account unavailable', 'Please unlock metamask');
+      this.showUnlockAccountAlert();
       return;
     }
 
     const isRinkeby = await this.web3Service.checkRinkebyNetworkAsync();
 
     if (!isRinkeby) {
-      this.notificationsService.warn('Wrong network', 'Please change to Rinkeby');
+      this.showRinkebyAlert();
       return;
     }
 
@@ -173,5 +167,41 @@ export class AuthenticationService {
     this.deleteCurrentUser();
     this.stopBackgroundChecker();
     this.router.navigate([Paths.Root]);
+  }
+
+  private showIncompatibleBrowserAlert() {
+    this.alertModal.open(AlertModalComponent, {
+      width: '600px',
+      data: <AlertModalData>{
+        title: 'Attention!',
+        message: 'Our MVP works correctly only on PC with Google Chrome / Firefox browser with Metamask extension.' +
+        ' You can\'t install Metamask on your browser.',
+        button: 'Ok'
+      }
+    });
+  }
+
+  private showUnlockAccountAlert() {
+    this.metamaskManualModel.open(MetamaskManualModalComponent, {
+      width: '500px',
+      data: <MetamaskManualModalData>{
+        title: 'Metamask is locked',
+        message: 'Please click extension\'s logo in the top right corner of your browser, enter password and press \'UNLOCK\'.',
+        button: 'Ok',
+        imgUrl: '/assets/img/unlock_metamask.png'
+      }
+    });
+  }
+
+  private showRinkebyAlert() {
+    this.metamaskManualModel.open(MetamaskManualModalComponent, {
+      width: '500px',
+      data: <MetamaskManualModalData>{
+        title: 'Wrong network',
+        message: 'Please click extension\'s logo in the top right corner of your browser and change network to \'Rinkeby Test Network\'.',
+        button: 'Ok',
+        imgUrl: '/assets/img/change_network.png'
+      }
+    });
   }
 }

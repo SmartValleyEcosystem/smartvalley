@@ -279,7 +279,7 @@ input.ng-dirty.ng-invalid, textarea.ng-dirty.ng-invalid {
   color: rgb(32, 32, 32);
 }
 
-app-alert-modal .mat-button {
+mat-dialog-actions .mat-button {
   background-color: rgb(72, 138, 232);
   border-color: rgb(72, 138, 232);
   color: white !important;
