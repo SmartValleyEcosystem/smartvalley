@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, ViewChild} from '@angular/core';
 import {Project} from '../../services/project';
 import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {Paths} from '../../paths';
@@ -8,28 +8,29 @@ import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
 import {ProjectsForScoringRequest} from '../../api/scoring/projecs-for-scoring-request';
 import {Constants} from '../../constants';
-
+import {isNullOrUndefined} from 'util';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-scoring',
   templateUrl: './scoring.component.html',
   styleUrls: ['./scoring.component.css']
 })
-export class ScoringComponent implements AfterViewInit {
-
+export class ScoringComponent implements AfterViewInit, OnDestroy {
   public projectsForScoring: Array<Project>;
   public myProjects: Array<Project>;
 
   @ViewChild('projectsTabSet')
   private projectsTabSet: NgbTabset;
   private knownTabs = [Constants.ScoringMyProjectsTab, Constants.ScoringProjectsForScoringTab];
+  private accountChangedSubscription: Subscription;
 
   constructor(private scoringApiClient: ScoringApiClient,
               private authenticationService: AuthenticationService,
               private activatedRoute: ActivatedRoute,
               private router: Router) {
     this.loadData();
-    this.authenticationService.accountChanged.subscribe(() => this.loadData());
+    this.accountChangedSubscription = this.authenticationService.accountChanged.subscribe(() => this.loadData());
   }
 
   private loadData() {
@@ -73,11 +74,9 @@ export class ScoringComponent implements AfterViewInit {
   }
 
   private async loadProjectsForCategory(scoringCategory: ScoringCategory) {
-    const currentAccount = this.authenticationService.getCurrentUser().account;
     this.projectsForScoring = [];
     const projects = await this.scoringApiClient.getProjectForScoringAsync(<ProjectsForScoringRequest>{
-      scoringCategory: <number>scoringCategory,
-      expertAddress: currentAccount
+      scoringCategory: <number>scoringCategory
     });
     for (const projectResponse of projects.items) {
       this.projectsForScoring.push(<Project>{
@@ -113,6 +112,12 @@ export class ScoringComponent implements AfterViewInit {
     const isOk = await this.authenticationService.authenticateAsync();
     if (isOk) {
       await this.router.navigate([Paths.Application]);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (!isNullOrUndefined(this.accountChangedSubscription) && !this.accountChangedSubscription.closed) {
+      this.accountChangedSubscription.unsubscribe();
     }
   }
 }
