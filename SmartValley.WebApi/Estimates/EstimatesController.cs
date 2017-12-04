@@ -69,7 +69,7 @@ namespace SmartValley.WebApi.Estimates
 
         [HttpGet]
         [Route("questions")]
-        public async Task<CollectionResponse<QuestionResponse>> GetQuestionsAsync(QuestionRequest request)
+        public async Task<CollectionResponse<QuestionResponse>> GetQuestionsAsync()
         {
             return new CollectionResponse<QuestionResponse>
                    {
