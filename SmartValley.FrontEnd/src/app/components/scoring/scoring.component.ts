@@ -5,7 +5,7 @@ import {Paths} from '../../paths';
 import {AuthenticationService} from '../../services/authentication-service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
-import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
+import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 import {ProjectsForScoringRequest} from '../../api/scoring/projecs-for-scoring-request';
 import {Constants} from '../../constants';
 import {isNullOrUndefined} from 'util';
@@ -34,7 +34,7 @@ export class ScoringComponent implements AfterViewInit, OnDestroy {
   }
 
   private loadData() {
-    this.loadProjectsForCategory(ScoringCategory.HR);
+    this.loadProjectsForCategory(ExpertiseArea.HR);
     this.loadMyProjects();
   }
 
@@ -48,23 +48,23 @@ export class ScoringComponent implements AfterViewInit, OnDestroy {
   }
 
   onExpertiseTabChanged($event: any) {
-    let scoringCategory: ScoringCategory = 1;
+    let expertiseArea: ExpertiseArea = 1;
     const index: number = $event.index;
     switch (index) {
       case 0 :
-        scoringCategory = ScoringCategory.HR;
+        expertiseArea = ExpertiseArea.HR;
         break;
       case 1 :
-        scoringCategory = ScoringCategory.Lawyer;
+        expertiseArea = ExpertiseArea.Lawyer;
         break;
       case 2 :
-        scoringCategory = ScoringCategory.Analyst;
+        expertiseArea = ExpertiseArea.Analyst;
         break;
       case 3 :
-        scoringCategory = ScoringCategory.TechnicalExpert;
+        expertiseArea = ExpertiseArea.TechnicalExpert;
         break;
     }
-    this.loadProjectsForCategory(scoringCategory);
+    this.loadProjectsForCategory(expertiseArea);
   }
 
   onMainTabChanged($event: any) {
@@ -73,10 +73,10 @@ export class ScoringComponent implements AfterViewInit, OnDestroy {
     this.router.navigate([Paths.Scoring], {queryParams: queryParams, replaceUrl: true});
   }
 
-  private async loadProjectsForCategory(scoringCategory: ScoringCategory) {
+  private async loadProjectsForCategory(expertiseArea: ExpertiseArea) {
     this.projectsForScoring = [];
     const projects = await this.scoringApiClient.getProjectForScoringAsync(<ProjectsForScoringRequest>{
-      scoringCategory: <number>scoringCategory
+      expertiseArea: <number>expertiseArea
     });
     for (const projectResponse of projects.items) {
       this.projectsForScoring.push(<Project>{
@@ -86,7 +86,7 @@ export class ScoringComponent implements AfterViewInit, OnDestroy {
         country: projectResponse.country,
         score: projectResponse.score,
         description: projectResponse.description,
-        scoringCategory: scoringCategory,
+        expertiseArea: expertiseArea,
         address: projectResponse.address
       });
     }

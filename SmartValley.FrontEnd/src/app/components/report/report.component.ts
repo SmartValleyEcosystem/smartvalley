@@ -6,7 +6,7 @@ import {ProjectApiClient} from '../../api/project/project-api-client';
 import {QuestionService} from '../../services/question-service';
 import {Question} from '../../services/question';
 import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';
-import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
+import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 import {Estimate} from '../../services/estimate';
 import {isNullOrUndefined} from 'util';
 import {ProjectService} from '../../services/project-service';
@@ -58,23 +58,23 @@ export class ReportComponent implements AfterViewChecked {
 
 
   onExpertiseTabChanged($event: any) {
-    let scoringCategory: ScoringCategory = 1;
+    let expertiseArea: ExpertiseArea = 1;
     const index: number = $event.index;
     switch (index) {
       case 0 :
-        scoringCategory = ScoringCategory.HR;
+        expertiseArea = ExpertiseArea.HR;
         break;
       case 1 :
-        scoringCategory = ScoringCategory.Lawyer;
+        expertiseArea = ExpertiseArea.Lawyer;
         break;
       case 2 :
-        scoringCategory = ScoringCategory.Analyst;
+        expertiseArea = ExpertiseArea.Analyst;
         break;
       case 3 :
-        scoringCategory = ScoringCategory.TechnicalExpert;
+        expertiseArea = ExpertiseArea.TechnicalExpert;
         break;
     }
-    this.loadExpertEstimates(scoringCategory);
+    this.loadExpertEstimates(expertiseArea);
   }
 
   onMainTabChanged($event: any) {
@@ -88,7 +88,7 @@ export class ReportComponent implements AfterViewChecked {
     this.report = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
     this.teamMembers = this.getMembersCollection(this.report);
     this.projectImageUrl = this.blockiesService.getImageForAddress(this.report.projectAddress);
-    this.loadExpertEstimates(ScoringCategory.HR);
+    this.loadExpertEstimates(ExpertiseArea.HR);
   }
 
   private getMembersCollection(report: ProjectDetailsResponse): Array<TeamMember> {
@@ -109,10 +109,10 @@ export class ReportComponent implements AfterViewChecked {
     return result;
   }
 
-  private async loadExpertEstimates(scoringCategory: ScoringCategory) {
-    const estimatesResponse = await this.estimatesApiClient.getByProjectIdAndCategoryAsync(this.projectId, scoringCategory);
+  private async loadExpertEstimates(expertiseArea: ExpertiseArea) {
+    const estimatesResponse = await this.estimatesApiClient.getByProjectIdAndCategoryAsync(this.projectId, expertiseArea);
     this.categoryAverageScore = estimatesResponse.averageScore;
-    const questions = this.questionService.getByCategory(scoringCategory);
+    const questions = this.questionService.getByCategory(expertiseArea);
 
     for (const question of questions) {
       question.estimates = [];

@@ -9,7 +9,7 @@ import {AuthenticationService} from '../../services/authentication-service';
 import {EstimateRequest} from '../../api/estimates/estimate-request';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {ProjectApiClient} from '../../api/project/project-api-client';
-import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
+import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TeamMember} from '../../services/team-member';
 
@@ -21,7 +21,7 @@ import {TeamMember} from '../../services/team-member';
 export class EstimateComponent {
   public hidden: boolean;
   public EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
-  public expertType: ScoringCategory;
+  public expertType: ExpertiseArea;
   public projectId: number;
   public projectDetails: ProjectDetailsResponse;
   public estimateForm: FormGroup;
