@@ -5,7 +5,7 @@ import {QuestionResponse} from '../api/estimates/question-response';
 
 @Injectable()
 export class QuestionService {
-  private questions: { [expertType: number]: Array<QuestionResponse>; } = {};
+  private questions: { [expertiseArea: number]: Array<QuestionResponse>; } = {};
 
   constructor(private estimatesClient: EstimatesApiClient) {
   }
