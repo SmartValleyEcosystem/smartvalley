@@ -42,6 +42,8 @@ import {Ng2DeviceDetectorModule} from 'ng2-device-detector';
 import {AlertModalComponent} from './components/common/alert-modal/alert-modal.component';
 import {MetamaskManualModalComponent} from './components/common/metamask-manual-modal/metamask-manual-modal.component';
 import {GetEtherModalComponent} from './components/common/get-ether-modal/get-ether-modal.component';
+import {Angulartics2GoogleAnalytics} from 'angulartics2/ga';
+import {Angulartics2Module} from 'angulartics2';
 
 @NgModule({
   declarations: [
@@ -81,7 +83,8 @@ import {GetEtherModalComponent} from './components/common/get-ether-modal/get-et
     NgbModule.forRoot(),
     SimpleNotificationsModule.forRoot(),
     NgProgressModule,
-    Ng2DeviceDetectorModule.forRoot()
+    Ng2DeviceDetectorModule.forRoot(),
+    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics])
   ],
   providers: [
     {

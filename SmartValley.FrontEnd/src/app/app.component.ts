@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {Options} from 'angular2-notifications';
+import {Angulartics2GoogleAnalytics} from 'angulartics2/ga';
 
 @Component({
   selector: 'app-root',
@@ -13,4 +14,7 @@ export class AppComponent {
     animate: 'fromLeft',
     showProgressBar: false
   };
+
+  constructor(angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) {
+  }
 }

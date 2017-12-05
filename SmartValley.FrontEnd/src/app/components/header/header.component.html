@@ -14,7 +14,14 @@
           </div>
         </div>
         <div class="col-3 sm-header__nav text-right" style="margin-top: 24px;">
-          <button *ngIf="showReceiveEtherButton" (click)="receiveEth()" class="btn btn-link">Get Ether</button>
+          <button *ngIf="showReceiveEtherButton"
+                  (click)="receiveEth()"
+                  class="btn btn-link"
+                  angulartics2On="click"
+                  angularticsAction="GetEtherClick"
+                  angularticsCategory="UserActions">
+            Get Ether
+          </button>
           <button (click)="navigateToMyProjects()" class="btn btn-link">My projects</button>
         </div>
       </div>
