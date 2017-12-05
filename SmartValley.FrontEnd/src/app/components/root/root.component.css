@@ -94,3 +94,12 @@
 .mat-tab-label-container{
   margin-left: 5em;
 }
+
+.sv-description {
+  padding-left: 0;
+  color: white;
+}
+
+.sv-description > h2 {
+  margin: 0;
+}

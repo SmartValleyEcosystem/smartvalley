@@ -3,9 +3,6 @@ import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {AuthenticationService} from '../../services/authentication-service';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
-import {Web3Service} from '../../services/web3-service';
-import {MatDialog} from '@angular/material';
-import {NotificationsService} from 'angular2-notifications';
 import {Constants} from '../../constants';
 import {DialogService} from '../../services/dialog-service';
 
@@ -23,9 +20,6 @@ export class HeaderComponent implements OnInit {
   constructor(private balanceApiClient: BalanceApiClient,
               private authenticationService: AuthenticationService,
               private router: Router,
-              private web3Service: Web3Service,
-              private projectModal: MatDialog,
-              private notificationsService: NotificationsService,
               private dialogService: DialogService) {
     this.authenticationService.accountChanged.subscribe(async () => await this.updateHeaderAsync());
   }

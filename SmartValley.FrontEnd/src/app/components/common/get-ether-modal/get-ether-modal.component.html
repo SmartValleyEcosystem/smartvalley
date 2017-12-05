@@ -1,10 +1,11 @@
 <div>
-  <h2 mat-mat-title>You need ETH for create project</h2>
+  <h2 mat-mat-title>You have not enought ETH</h2>
   <hr>
-  <mat-dialog-content class="dialog">
-    <br>
-    <button mat-raised-button class="col-5 sv-default-btn btn-space" (click)="receiveEth()">Get Ether</button>
-    <br>
+  <mat-dialog-content>
+    We are ethereum blockchain users that is why you will need ETH to conduct transactions.
   </mat-dialog-content>
   <hr>
+  <mat-dialog-actions class="d-flex justify-content-center">
+    <button mat-raised-button class="col-5 sv-default-btn btn-space" (click)="receiveEth()">Get Ether</button>
+  </mat-dialog-actions>
 </div>
