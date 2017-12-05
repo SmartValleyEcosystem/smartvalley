@@ -19,10 +19,10 @@ namespace SmartValley.Data.SQL.Repositories
         public async Task<IReadOnlyCollection<Estimate>> GetAsync(long projectId)
             => await ReadContext.Estimates.Where(e => e.ProjectId == projectId).ToArrayAsync();
 
-        public async Task<IReadOnlyCollection<Estimate>> GetAsync(long projectId, ScoringCategory category)
+        public async Task<IReadOnlyCollection<Estimate>> GetAsync(long projectId, ExpertiseArea category)
             => await ReadContext.Estimates.Where(e => e.ProjectId == projectId && e.ScoringCategory == category).ToArrayAsync();
 
-        public async Task<IReadOnlyCollection<long>> GetProjectsEstimatedByExpertAsync(string expertAddress, ScoringCategory category)
+        public async Task<IReadOnlyCollection<long>> GetProjectsEstimatedByExpertAsync(string expertAddress, ExpertiseArea category)
         {
             return await ReadContext
                        .Estimates

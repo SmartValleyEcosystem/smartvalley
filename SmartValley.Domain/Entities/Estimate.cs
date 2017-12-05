@@ -9,7 +9,7 @@ namespace SmartValley.Domain.Entities
 
         public long ProjectId { get; set; }
 
-        public ScoringCategory ScoringCategory { get; set; }
+        public ExpertiseArea ScoringCategory { get; set; }
 
         [Required]
         [MaxLength(42)]

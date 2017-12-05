@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.WebApi.Projects;
+using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Estimates
 {
@@ -34,16 +36,74 @@ namespace SmartValley.WebApi.Estimates
             if (project.Score == null && !project.AuthorAddress.Equals(User.Identity.Name, StringComparison.InvariantCultureIgnoreCase))
                 return Unauthorized();
 
-            var estimates = await _estimationService.GetAsync(request.ProjectId, request.Category);
+            var estimates = await _estimationService.GetAsync(request.ProjectId, request.ExpertiseArea);
             var averageScore = _estimationService.CalculateAverageScore(estimates);
 
-            var response = new GetEstimatesResponse
+            var response = new GetQuestionsWithEstimatesResponse
                            {
                                AverageScore = averageScore,
-                               Items = estimates.Select(EstimateResponse.From).ToArray()
+                               Questions = new List<QuestionWithEstimatesResponse>
+                                           {
+                                               new QuestionWithEstimatesResponse
+                                               {
+                                                   QuestionId = 1,
+                                                   Estimates = new List<EstimateResponse>
+                                                               {
+                                                                   new EstimateResponse
+                                                                   {
+                                                                       Score = 5,
+                                                                       Comment = "test"
+                                                                   },
+                                                                   new EstimateResponse
+                                                                   {
+                                                                       Score = 3,
+                                                                       Comment = "test2"
+                                                                   }
+                                                               }
+                                               }
+                                           }
                            };
 
             return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("questions")]
+        public async Task<CollectionResponse<QuestionResponse>> GetQuestionsAsync()
+        {
+            return new CollectionResponse<QuestionResponse>
+                   {
+                       Items = new List<QuestionResponse>
+                               {
+                                   new QuestionResponse
+                                   {
+                                       Id = 1,
+                                       Name = "name1",
+                                       Description = "desc1",
+                                       ExpertiseArea = ExpertiseAreaApi.Lawyer,
+                                       MinScore = 0,
+                                       MaxScore = 10
+                                   },
+                                   new QuestionResponse
+                                   {
+                                       Id = 2,
+                                       Name = "name2",
+                                       Description = "desc2",
+                                       ExpertiseArea = ExpertiseAreaApi.Lawyer,
+                                       MinScore = 0,
+                                       MaxScore = 10
+                                   },
+                                   new QuestionResponse
+                                   {
+                                       Id = 3,
+                                       Name = "name3",
+                                       Description = "desc3",
+                                       ExpertiseArea = ExpertiseAreaApi.Analyst,
+                                       MinScore = 0,
+                                       MaxScore = 10
+                                   }
+                               }
+                   };
         }
     }
 }
