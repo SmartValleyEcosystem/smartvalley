@@ -14,7 +14,6 @@ import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 import {TeamMember} from '../../services/team-member';
 import {Paths} from '../../paths';
 import {Constants} from '../../constants';
-import {QuestionWithEstimatesResponse} from '../../api/estimates/question-with-estimates-response';
 
 @Component({
   selector: 'app-report',
@@ -25,7 +24,7 @@ export class ReportComponent implements AfterViewChecked {
   public questions: Array<Question>;
   public report: ProjectDetailsResponse;
   public EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
-  public categoryAverageScore: number;
+  public expertiseAreaAverageScore: number;
   public teamMembers: Array<TeamMember>;
   public projectImageUrl: string;
 
@@ -111,8 +110,8 @@ export class ReportComponent implements AfterViewChecked {
 
   private async loadExpertEstimates(expertiseArea: ExpertiseArea) {
     const estimatesResponse = await this.estimatesApiClient.getByProjectIdAndExpertiseAreaAsync(this.projectId, expertiseArea);
-    const fullQuestions = await this.questionService.getByCategory(expertiseArea);
-    this.categoryAverageScore = estimatesResponse.averageScore;
+    const fullQuestions = await this.questionService.getByExpertiseArea(expertiseArea);
+    this.expertiseAreaAverageScore = estimatesResponse.averageScore;
     this.questions = estimatesResponse.questions.map(i =>
       <Question>{
         name: fullQuestions.filter(j => j.id === i.questionId)[0].name,

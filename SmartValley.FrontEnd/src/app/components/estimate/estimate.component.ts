@@ -21,7 +21,7 @@ import {TeamMember} from '../../services/team-member';
 export class EstimateComponent {
   public hidden: boolean;
   public EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
-  public expertType: ExpertiseArea;
+  public expertiseArea: ExpertiseArea;
   public projectId: number;
   public projectDetails: ProjectDetailsResponse;
   public estimateForm: FormGroup;
@@ -63,7 +63,7 @@ export class EstimateComponent {
     const estimates = this.getEstimates();
     const submitEstimatesRequest = <SubmitEstimatesRequest>{
       projectId: this.projectId,
-      expertiseArea: this.expertType,
+      expertiseArea: this.expertiseArea,
       expertAddress: this.authenticationService.getCurrentUser().account,
       estimates: estimates
     };
@@ -100,10 +100,10 @@ export class EstimateComponent {
 
   private async loadProjectInfo() {
     this.projectId = +this.route.snapshot.paramMap.get('id');
-    this.expertType = +this.route.snapshot.queryParamMap.get('category');
+    this.expertiseArea = +this.route.snapshot.queryParamMap.get('category');
 
     const questionsFormGroups = [];
-    const questions = await this.questionService.getByCategory(this.expertType);
+    const questions = await this.questionService.getByExpertiseArea(this.expertiseArea);
 
     for (const question of questions) {
       const group = this.formBuilder.group({

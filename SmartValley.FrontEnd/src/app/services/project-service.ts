@@ -9,24 +9,24 @@ export class ProjectService {
   }
 
   public colorOfHrScore(score: number) {
-    return this.colorOfCategoryScore(score, ExpertiseArea.HR);
+    return this.colorOfExpertiseAreaScore(score, ExpertiseArea.HR);
   }
 
   public colorOfTechnicalScore(score: number) {
-    return this.colorOfCategoryScore(score, ExpertiseArea.TechnicalExpert);
+    return this.colorOfExpertiseAreaScore(score, ExpertiseArea.TechnicalExpert);
   }
 
   public colorOfLawyerScore(score: number) {
-    return this.colorOfCategoryScore(score, ExpertiseArea.Lawyer);
+    return this.colorOfExpertiseAreaScore(score, ExpertiseArea.Lawyer);
   }
 
   public colorOfAnalystScore(score: number) {
-    return this.colorOfCategoryScore(score, ExpertiseArea.Analyst);
+    return this.colorOfExpertiseAreaScore(score, ExpertiseArea.Analyst);
   }
 
-  public async colorOfCategoryScore(score: number, category: ExpertiseArea) {
-    const maxScore = await this.questionService.getMaxScoreForCategory(category);
-    const minScore = await this.questionService.getMinScoreForCategory(category);
+  public colorOfExpertiseAreaScore(score: number, expertiseArea: ExpertiseArea) {
+    const maxScore = this.questionService.getMaxScoreForExpertiseArea(expertiseArea);
+    const minScore = this.questionService.getMinScoreForExpertiseArea(expertiseArea);
 
     return this.getColorInRange(score, minScore, maxScore);
   }
