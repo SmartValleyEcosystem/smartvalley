@@ -27,7 +27,7 @@ export class QuestionService extends BaseApiClient {
     return categoryQuestions.map(q => q.minScore).reduce((previous, current) => previous + current);
   }
 
-  public async initializeQuestionsCollection(): Promise<void> {
+  public async initializeQestionsCollectionAsync(): Promise<void> {
     const allQuestions = await this.http.get<CollectionResponse<QuestionResponse>>(this.baseApiUrl + '/estimates/questions').toPromise();
     for (const item in ExpertiseArea) {
       if (Number(item)) {

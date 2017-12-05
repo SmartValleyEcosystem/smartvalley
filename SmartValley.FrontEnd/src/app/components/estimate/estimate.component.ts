@@ -103,7 +103,7 @@ export class EstimateComponent {
     this.expertiseArea = +this.route.snapshot.queryParamMap.get('category');
 
     const questionsFormGroups = [];
-    const questions = await this.questionService.getByExpertiseArea(this.expertiseArea);
+    const questions = this.questionService.getByExpertiseArea(this.expertiseArea);
 
     for (const question of questions) {
       const group = this.formBuilder.group({
