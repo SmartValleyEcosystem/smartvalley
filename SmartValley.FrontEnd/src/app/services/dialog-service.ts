@@ -4,11 +4,10 @@ import {TransactionAwaitingModalComponent} from '../components/common/transactio
 import {BalanceApiClient} from '../api/balance/balance-api-client';
 import {Web3Service} from './web3-service';
 import {NotificationsService} from 'angular2-notifications';
-import {MatDialog, MatDialogRef} from '@angular/material';
+import {MatDialog} from '@angular/material';
 import {GetEtherModalComponent} from '../components/common/get-ether-modal/get-ether-modal.component';
 import {Application} from './application';
 import {ApplicationApiClient} from '../api/application/application-api.client';
-
 
 @Injectable()
 export class DialogService {

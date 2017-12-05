@@ -1,4 +1,4 @@
-import {ScoringCategory} from '../api/scoring/scoring-category.enum';
+import {ExpertiseArea} from '../api/scoring/expertise-area.enum';
 
 export interface Project {
   id: number;
@@ -10,6 +10,6 @@ export interface Project {
   wpLink: string;
   score: number;
   expertType: string;
-  scoringCategory: ScoringCategory;
+  expertiseArea: ExpertiseArea;
   address: string;
 }

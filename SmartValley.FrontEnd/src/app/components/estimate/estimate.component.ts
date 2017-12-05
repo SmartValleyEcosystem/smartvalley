@@ -9,7 +9,7 @@ import {AuthenticationService} from '../../services/authentication-service';
 import {EstimateRequest} from '../../api/estimates/estimate-request';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {ProjectApiClient} from '../../api/project/project-api-client';
-import {ScoringCategory} from '../../api/scoring/scoring-category.enum';
+import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TeamMember} from '../../services/team-member';
 
@@ -21,7 +21,7 @@ import {TeamMember} from '../../services/team-member';
 export class EstimateComponent {
   public hidden: boolean;
   public EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
-  public expertType: ScoringCategory;
+  public expertiseArea: ExpertiseArea;
   public projectId: number;
   public projectDetails: ProjectDetailsResponse;
   public estimateForm: FormGroup;
@@ -63,7 +63,7 @@ export class EstimateComponent {
     const estimates = this.getEstimates();
     const submitEstimatesRequest = <SubmitEstimatesRequest>{
       projectId: this.projectId,
-      category: this.expertType,
+      expertiseArea: this.expertiseArea,
       expertAddress: this.authenticationService.getCurrentUser().account,
       estimates: estimates
     };
@@ -100,17 +100,16 @@ export class EstimateComponent {
 
   private async loadProjectInfo() {
     this.projectId = +this.route.snapshot.paramMap.get('id');
-    this.expertType = +this.route.snapshot.queryParamMap.get('category');
+    this.expertiseArea = +this.route.snapshot.queryParamMap.get('category');
 
     const questionsFormGroups = [];
-    const questions = this.questionService.getByCategory(this.expertType);
+    const questions = this.questionService.getByExpertiseArea(this.expertiseArea);
 
     for (const question of questions) {
       const group = this.formBuilder.group({
         name: question.name,
         description: question.description,
         maxScore: question.maxScore,
-        indexInCategory: question.indexInCategory,
         score: ['', [
           Validators.required,
           Validators.max(question.maxScore),

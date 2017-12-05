@@ -1,5 +1,5 @@
-import {ScoringCategory} from './scoring-category.enum';
+import {ExpertiseArea} from './expertise-area.enum';
 
 export interface ProjectsForScoringRequest {
-  scoringCategory: ScoringCategory;
+  expertiseArea: ExpertiseArea;
 }

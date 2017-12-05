@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import {QuestionService} from './question-service';
-import {ScoringCategory} from '../api/scoring/scoring-category.enum';
+import {ExpertiseArea} from '../api/scoring/expertise-area.enum';
 
 @Injectable()
 export class ProjectService {
@@ -9,24 +9,24 @@ export class ProjectService {
   }
 
   public colorOfHrScore(score: number) {
-    return this.colorOfCategoryScore(score, ScoringCategory.HR);
+    return this.colorOfExpertiseAreaScore(score, ExpertiseArea.HR);
   }
 
   public colorOfTechnicalScore(score: number) {
-    return this.colorOfCategoryScore(score, ScoringCategory.TechnicalExpert);
+    return this.colorOfExpertiseAreaScore(score, ExpertiseArea.TechnicalExpert);
   }
 
   public colorOfLawyerScore(score: number) {
-    return this.colorOfCategoryScore(score, ScoringCategory.Lawyer);
+    return this.colorOfExpertiseAreaScore(score, ExpertiseArea.Lawyer);
   }
 
   public colorOfAnalystScore(score: number) {
-    return this.colorOfCategoryScore(score, ScoringCategory.Analyst);
+    return this.colorOfExpertiseAreaScore(score, ExpertiseArea.Analyst);
   }
 
-  public colorOfCategoryScore(score: number, category: ScoringCategory) {
-    const maxScore = this.questionService.getMaxScoreForCategory(category);
-    const minScore = this.questionService.getMinScoreForCategory(category);
+  public colorOfExpertiseAreaScore(score: number, expertiseArea: ExpertiseArea) {
+    const maxScore = this.questionService.getMaxScoreForExpertiseArea(expertiseArea);
+    const minScore = this.questionService.getMinScoreForExpertiseArea(expertiseArea);
 
     return this.getColorInRange(score, minScore, maxScore);
   }

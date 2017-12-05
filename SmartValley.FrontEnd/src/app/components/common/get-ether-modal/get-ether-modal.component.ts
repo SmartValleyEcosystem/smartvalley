@@ -9,7 +9,7 @@ import {MatDialog} from '@angular/material';
 })
 export class GetEtherModalComponent {
 
-  @Output() onClickReceive: EventEmitter<any> = new EventEmitter();;
+  @Output() onClickReceive: EventEmitter<any> = new EventEmitter();
   constructor(private projectModal: MatDialog) {
   }
 

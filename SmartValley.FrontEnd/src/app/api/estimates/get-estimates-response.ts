@@ -1,6 +1,5 @@
-import {EstimateResponse} from './estimate-response';
-
+import {QuestionWithEstimatesResponse} from './question-with-estimates-response';
 export interface GetEstimatesResponse {
   averageScore: number;
-  items: Array<EstimateResponse>;
+  questions: Array<QuestionWithEstimatesResponse>;
 }
