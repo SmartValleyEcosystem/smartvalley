@@ -31,7 +31,7 @@ export class QuestionService extends BaseApiClient {
     const allQuestions = await this.http.get<CollectionResponse<QuestionResponse>>(this.baseApiUrl + '/estimates/questions').toPromise();
     for (const item in ExpertiseArea) {
       if (Number(item)) {
-        this.questions[item] = allQuestions.items;
+        this.questions[item] = allQuestions.items.filter(i => i.expertiseArea === parseInt(item, 0));
       }
     }
   }
