@@ -19,10 +19,10 @@ namespace SmartValley.WebApi.Scoring
             _estimateRepository = estimateRepository;
         }
 
-        public async Task<IReadOnlyCollection<Project>> GetProjectsForScoringAsync(ExpertiseArea category, string expertAddress)
+        public async Task<IReadOnlyCollection<Project>> GetProjectsForScoringAsync(ExpertiseArea expertiseArea, string expertAddress)
         {
-            var projectsEstimatedByExpert = await _estimateRepository.GetProjectsEstimatedByExpertAsync(expertAddress, category);
-            var notScoredProjects = await _projectRepository.GetAllByCategoryAsync(category);
+            var projectsEstimatedByExpert = await _estimateRepository.GetProjectsEstimatedByExpertAsync(expertAddress, expertiseArea);
+            var notScoredProjects = await _projectRepository.GetAllByExpertiseAreaAsync(expertiseArea);
 
             return notScoredProjects.Where(p => !projectsEstimatedByExpert.Contains(p.Id)).ToArray();
         }

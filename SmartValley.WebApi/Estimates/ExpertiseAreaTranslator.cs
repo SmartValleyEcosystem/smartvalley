@@ -5,20 +5,20 @@ namespace SmartValley.WebApi.Estimates
 {
     public static class ExpertiseAreaTranslator
     {
-        public static ExpertiseArea ToDomain(this ExpertiseAreaApi requestExpertiseAreaApi)
+        public static Domain.Entities.ExpertiseArea ToDomain(this ExpertiseArea requestExpertiseArea)
         {
-            switch (requestExpertiseAreaApi)
+            switch (requestExpertiseArea)
             {
-                case ExpertiseAreaApi.Hr:
-                    return ExpertiseArea.Hr;
-                case ExpertiseAreaApi.Analyst:
-                    return ExpertiseArea.Analyst;
-                case ExpertiseAreaApi.Tech:
-                    return ExpertiseArea.Tech;
-                case ExpertiseAreaApi.Lawyer:
-                    return ExpertiseArea.Lawyer;
+                case ExpertiseArea.Hr:
+                    return Domain.Entities.ExpertiseArea.Hr;
+                case ExpertiseArea.Analyst:
+                    return Domain.Entities.ExpertiseArea.Analyst;
+                case ExpertiseArea.Tech:
+                    return Domain.Entities.ExpertiseArea.Tech;
+                case ExpertiseArea.Lawyer:
+                    return Domain.Entities.ExpertiseArea.Lawyer;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(requestExpertiseAreaApi), requestExpertiseAreaApi, null);
+                    throw new ArgumentOutOfRangeException(nameof(requestExpertiseArea), requestExpertiseArea, null);
             }
         }
     }

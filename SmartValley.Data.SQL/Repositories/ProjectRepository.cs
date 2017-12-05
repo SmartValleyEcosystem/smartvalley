@@ -26,10 +26,10 @@ namespace SmartValley.Data.SQL.Repositories
                                     .ToArrayAsync();
         }
 
-        public async Task<IReadOnlyCollection<Project>> GetAllByCategoryAsync(ExpertiseArea category)
+        public async Task<IReadOnlyCollection<Project>> GetAllByExpertiseAreaAsync(ExpertiseArea expertiseArea)
         {
             var projects = ReadContext.Projects;
-            switch (category)
+            switch (expertiseArea)
             {
                 case ExpertiseArea.Unknown:
                     return new List<Project>();

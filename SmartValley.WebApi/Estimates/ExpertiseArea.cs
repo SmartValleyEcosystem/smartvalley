@@ -1,6 +1,6 @@
 ﻿namespace SmartValley.WebApi.Estimates
 {
-    public enum ExpertiseAreaApi
+    public enum ExpertiseArea
     {
         Hr = 1,
         Analyst = 2,

@@ -8,7 +8,7 @@
 
         public string Description { get; set; }
 
-        public ExpertiseAreaApi ExpertiseArea { get; set; }
+        public ExpertiseArea ExpertiseArea { get; set; }
 
         public int MinScore { get; set; }
 

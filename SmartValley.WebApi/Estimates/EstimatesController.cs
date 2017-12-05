@@ -80,7 +80,7 @@ namespace SmartValley.WebApi.Estimates
                                        Id = 1,
                                        Name = "name1",
                                        Description = "desc1",
-                                       ExpertiseArea = ExpertiseAreaApi.Hr,
+                                       ExpertiseArea = ExpertiseArea.Lawyer,
                                        MinScore = 0,
                                        MaxScore = 10
                                    },
@@ -89,7 +89,7 @@ namespace SmartValley.WebApi.Estimates
                                        Id = 2,
                                        Name = "name2",
                                        Description = "desc2",
-                                       ExpertiseArea = ExpertiseAreaApi.Lawyer,
+                                       ExpertiseArea = ExpertiseArea.Lawyer,
                                        MinScore = 0,
                                        MaxScore = 10
                                    },
@@ -98,7 +98,7 @@ namespace SmartValley.WebApi.Estimates
                                        Id = 3,
                                        Name = "name3",
                                        Description = "desc3",
-                                       ExpertiseArea = ExpertiseAreaApi.Analyst,
+                                       ExpertiseArea = ExpertiseArea.Analyst,
                                        MinScore = 0,
                                        MaxScore = 10
                                    }
