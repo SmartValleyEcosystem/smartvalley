@@ -100,7 +100,7 @@ export class EstimateComponent {
 
   private async loadProjectInfo() {
     this.projectId = +this.route.snapshot.paramMap.get('id');
-    this.expertiseArea = +this.route.snapshot.queryParamMap.get('category');
+    this.expertiseArea = +this.route.snapshot.queryParamMap.get('expertiseArea');
 
     const questionsFormGroups = [];
     const questions = this.questionService.getByExpertiseArea(this.expertiseArea);

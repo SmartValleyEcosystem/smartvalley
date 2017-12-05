@@ -116,7 +116,9 @@ export class ReportComponent implements AfterViewChecked {
       <Question>{
         name: fullQuestions.filter(j => j.id === i.questionId)[0].name,
         description: fullQuestions.filter(j => j.id === i.questionId)[0].description,
-        estimates: i.estimates.map(j => <Estimate>{score: j.score, comments: j.comment})
+        estimates: i.estimates.map(j => <Estimate>{score: j.score, comments: j.comment}),
+        minScore: fullQuestions.filter(j => j.id === i.questionId)[0].minScore,
+        maxScore: fullQuestions.filter(j => j.id === i.questionId)[0].maxScore,
       });
   }
 
