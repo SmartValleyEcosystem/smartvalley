@@ -110,7 +110,7 @@ export class ReportComponent implements AfterViewChecked {
   }
 
   private async loadExpertEstimates(expertiseArea: ExpertiseArea) {
-    const estimatesResponse = await this.estimatesApiClient.getByProjectIdAndCategoryAsync(this.projectId, expertiseArea);
+    const estimatesResponse = await this.estimatesApiClient.getByProjectIdAndExpertiseAreaAsync(this.projectId, expertiseArea);
     const fullQuestions = await this.questionService.getByCategory(expertiseArea);
     this.categoryAverageScore = estimatesResponse.averageScore;
     this.questions = estimatesResponse.questions.map(i =>
