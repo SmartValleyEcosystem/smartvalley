@@ -25,7 +25,7 @@ export class QuestionService {
   }
 
   public async initializeQestionsCollectionAsync(): Promise<void> {
-    const allQuestions = await this.estimatesClient.getQuestions();
+    const allQuestions = await this.estimatesClient.getQuestionsAsync();
     for (const item in ExpertiseArea) {
       if (Number(item)) {
         this.questions[item] = allQuestions.items.filter(i => i.expertiseArea === parseInt(item, 0));

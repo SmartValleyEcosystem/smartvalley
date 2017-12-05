@@ -28,7 +28,7 @@ export class EstimatesApiClient extends BaseApiClient {
       .toPromise();
   }
 
-  async getQuestions(): Promise<CollectionResponse<QuestionResponse>> {
+  async getQuestionsAsync(): Promise<CollectionResponse<QuestionResponse>> {
     return await this.http.get<CollectionResponse<QuestionResponse>>(this.baseApiUrl + '/estimates/questions').toPromise();
   }
 }
