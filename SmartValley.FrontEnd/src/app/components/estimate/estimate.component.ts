@@ -63,7 +63,7 @@ export class EstimateComponent {
     const estimates = this.getEstimates();
     const submitEstimatesRequest = <SubmitEstimatesRequest>{
       projectId: this.projectId,
-      category: this.expertType,
+      expertiseArea: this.expertType,
       expertAddress: this.authenticationService.getCurrentUser().account,
       estimates: estimates
     };

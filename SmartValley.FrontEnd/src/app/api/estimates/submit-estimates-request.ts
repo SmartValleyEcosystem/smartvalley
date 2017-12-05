@@ -5,7 +5,7 @@ export interface SubmitEstimatesRequest {
 
   expertAddress: string;
 
-  category: number;
+  expertiseArea: number;
 
   estimates: Array<EstimateRequest>;
 }
