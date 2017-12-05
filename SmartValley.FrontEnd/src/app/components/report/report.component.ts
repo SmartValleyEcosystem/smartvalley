@@ -1,20 +1,20 @@
-import {AfterViewChecked, AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewChecked, Component, ViewChild} from '@angular/core';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {QuestionService} from '../../services/question-service';
 import {Question} from '../../services/question';
+import {Estimate} from '../../services/estimate';
 import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';
 import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
-import {Estimate} from '../../services/estimate';
-import {isNullOrUndefined} from 'util';
 import {ProjectService} from '../../services/project-service';
 import {BlockiesService} from '../../services/blockies-service';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 import {TeamMember} from '../../services/team-member';
 import {Paths} from '../../paths';
 import {Constants} from '../../constants';
+import {QuestionWithEstimatesResponse} from '../../api/estimates/question-with-estimates-response';
 
 @Component({
   selector: 'app-report',
@@ -111,23 +111,14 @@ export class ReportComponent implements AfterViewChecked {
 
   private async loadExpertEstimates(expertiseArea: ExpertiseArea) {
     const estimatesResponse = await this.estimatesApiClient.getByProjectIdAndCategoryAsync(this.projectId, expertiseArea);
+    const fullQuestions = await this.questionService.getByCategory(expertiseArea);
     this.categoryAverageScore = estimatesResponse.averageScore;
-    const questions = this.questionService.getByCategory(expertiseArea);
-
-    for (const question of questions) {
-      question.estimates = [];
-      const estimates = estimatesResponse.items.filter(e => e.questionIndex === question.indexInCategory);
-      for (const estimate of estimates) {
-        if (isNullOrUndefined(estimate)) {
-          continue;
-        }
-        question.estimates.push(<Estimate>{
-          score: estimate.score,
-          comments: estimate.comment
-        });
-      }
-    }
-    this.questions = questions;
+    this.questions = estimatesResponse.questions.map(i =>
+      <Question>{
+        name: fullQuestions.filter(j => j.id === i.questionId)[0].name,
+        description: fullQuestions.filter(j => j.id === i.questionId)[0].description,
+        estimates: i.estimates.map(j => <Estimate>{score: j.score, comments: j.comment})
+      });
   }
 
   showEstimates() {

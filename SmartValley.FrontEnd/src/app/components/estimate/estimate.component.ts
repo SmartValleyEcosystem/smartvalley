@@ -103,14 +103,13 @@ export class EstimateComponent {
     this.expertType = +this.route.snapshot.queryParamMap.get('category');
 
     const questionsFormGroups = [];
-    const questions = this.questionService.getByCategory(this.expertType);
+    const questions = await this.questionService.getByCategory(this.expertType);
 
     for (const question of questions) {
       const group = this.formBuilder.group({
         name: question.name,
         description: question.description,
         maxScore: question.maxScore,
-        indexInCategory: question.indexInCategory,
         score: ['', [
           Validators.required,
           Validators.max(question.maxScore),

@@ -13,7 +13,7 @@ export class ScoringApiClient extends BaseApiClient {
 
   async getProjectForScoringAsync(request: ProjectsForScoringRequest): Promise<CollectionResponse<ProjectResponse>> {
     const parameters = new HttpParams()
-      .append('category', request.expertiseArea.toString());
+      .append('expertiseArea', request.expertiseArea.toString());
 
     return this.http.get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/scoring', {params: parameters})
       .toPromise();

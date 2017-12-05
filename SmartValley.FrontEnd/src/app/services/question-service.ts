@@ -3,36 +3,49 @@ import {Question} from './question';
 import {ExpertiseArea} from '../api/scoring/expertise-area.enum';
 import {HttpClient} from '@angular/common/http';
 import {BaseApiClient} from '../api/base-api-client';
+import {GetQuestionsResponse} from '../services/get-questions-response';
+import {isObject} from 'rxjs/util/isObject';
+import {QuestionResponse} from '../api/estimates/question-response';
+import {Estimate} from './estimate';
 
 
 @Injectable()
 export class QuestionService extends BaseApiClient {
-  private questions: { [expertType: number]: Array<Question>; } = {};
+  private questions: { [expertType: number]: Array<QuestionResponse>; } = {};
 
   constructor(private http: HttpClient) {
     super();
-    this.initializeQuestionsCollection();
   }
 
-  public getByCategory(category: ExpertiseArea): Array<Question> {
+  public async getByCategory(category: ExpertiseArea): Promise<Array<QuestionResponse>> {
+    await this.checkAndFill();
     return this.questions[category];
   }
 
-  public getMaxScoreForCategory(category: ExpertiseArea): number {
+  private async checkAndFill() {
+    if (isObject(this.questions)) {
+      await this.initializeQuestionsCollection();
+    }
+  }
+
+
+  public async getMaxScoreForCategory(category: ExpertiseArea): Promise<number> {
+    await this.checkAndFill();
     const categoryQuestions = this.questions[category];
     return categoryQuestions.map(q => q.maxScore).reduce((previous, current) => previous + current);
   }
 
-  public getMinScoreForCategory(category: ExpertiseArea): number {
+  public async getMinScoreForCategory(category: ExpertiseArea): Promise<number> {
+    await this.checkAndFill();
     const categoryQuestions = this.questions[category];
     return categoryQuestions.map(q => q.minScore).reduce((previous, current) => previous + current);
   }
 
   private async initializeQuestionsCollection() {
-    const allQuestions = await this.http.get<Array<Question>>(this.baseApiUrl + '/questions').toPromise();
+    const allQuestions = await this.http.get<GetQuestionsResponse>(this.baseApiUrl + '/estimates/questions').toPromise();
     for (const item in ExpertiseArea) {
-      if (isNaN(Number(item))) {
-        this.questions[item] = allQuestions.filter(v => v.expertType === parseInt(item, 0));
+      if (Number(item)) {
+        this.questions[item] = allQuestions.items;
       }
     }
   }

@@ -80,7 +80,7 @@ namespace SmartValley.WebApi.Estimates
                                        Id = 1,
                                        Name = "name1",
                                        Description = "desc1",
-                                       ExpertiseArea = ExpertiseAreaApi.Lawyer,
+                                       ExpertiseArea = ExpertiseAreaApi.Hr,
                                        MinScore = 0,
                                        MaxScore = 10
                                    },

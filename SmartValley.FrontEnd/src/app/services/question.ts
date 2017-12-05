@@ -8,7 +8,6 @@ export interface Question {
   maxScore: number;
   minScore: number;
   comments: string;
-  expertType: ExpertiseArea;
+  expertiseArea: ExpertiseArea;
   estimates: Array<Estimate>;
-  indexInCategory: number;
 }

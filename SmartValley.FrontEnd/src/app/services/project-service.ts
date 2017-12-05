@@ -24,9 +24,9 @@ export class ProjectService {
     return this.colorOfCategoryScore(score, ExpertiseArea.Analyst);
   }
 
-  public colorOfCategoryScore(score: number, category: ExpertiseArea) {
-    const maxScore = this.questionService.getMaxScoreForCategory(category);
-    const minScore = this.questionService.getMinScoreForCategory(category);
+  public async colorOfCategoryScore(score: number, category: ExpertiseArea) {
+    const maxScore = await this.questionService.getMaxScoreForCategory(category);
+    const minScore = await this.questionService.getMinScoreForCategory(category);
 
     return this.getColorInRange(score, minScore, maxScore);
   }

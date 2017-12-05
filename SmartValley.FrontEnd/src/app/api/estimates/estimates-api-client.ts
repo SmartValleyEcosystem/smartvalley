@@ -20,7 +20,7 @@ export class EstimatesApiClient extends BaseApiClient {
   async getByProjectIdAndCategoryAsync(projectId: number, category: ExpertiseArea): Promise<GetEstimatesResponse> {
     const parameters = new HttpParams()
       .append('projectId', projectId.toString())
-      .append('category', category.toString());
+      .append('ExpertiseArea', category.toString());
 
     return this.http
       .get<GetEstimatesResponse>(this.baseApiUrl + '/estimates', {params: parameters})
