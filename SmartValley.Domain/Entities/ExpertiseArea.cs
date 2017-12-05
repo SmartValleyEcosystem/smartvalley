@@ -1,6 +1,6 @@
 ﻿namespace SmartValley.Domain.Entities
 {
-    public enum ScoringCategory
+    public enum ExpertiseArea
     {
         Unknown = 0,
         Hr = 1,

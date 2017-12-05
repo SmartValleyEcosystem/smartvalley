@@ -16,6 +16,6 @@ namespace SmartValley.Domain.Interfaces
 
         Task<IReadOnlyCollection<Project>> GetAllByAuthorAddressAsync(string address);
 
-        Task<IReadOnlyCollection<Project>> GetAllByCategoryAsync(ScoringCategory category);
+        Task<IReadOnlyCollection<Project>> GetAllByExpertiseAreaAsync(ExpertiseArea expertiseArea);
     }
 }

@@ -44,41 +44,41 @@ namespace SmartValley.Domain.Entities
 
         public double? Score { get; set; }
 
-        public void IncrementEstimatesCounter(ScoringCategory scoringCategory)
+        public void IncrementEstimatesCounter(ExpertiseArea expertiseArea)
         {
-            switch (scoringCategory)
+            switch (expertiseArea)
             {
-                case ScoringCategory.Hr:
+                case ExpertiseArea.Hr:
                     HrEstimatesCount++;
                     break;
-                case ScoringCategory.Analyst:
+                case ExpertiseArea.Analyst:
                     AnalystEstimatesCount++;
                     break;
-                case ScoringCategory.Tech:
+                case ExpertiseArea.Tech:
                     TechnicalEstimatesCount++;
                     break;
-                case ScoringCategory.Lawyer:
+                case ExpertiseArea.Lawyer:
                     LawyerEstimatesCount++;
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(scoringCategory), scoringCategory, null);
+                    throw new ArgumentOutOfRangeException(nameof(expertiseArea), expertiseArea, null);
             }
         }
 
-        public byte GetEstimatesCounterValue(ScoringCategory scoringCategory)
+        public byte GetEstimatesCounterValue(ExpertiseArea expertiseArea)
         {
-            switch (scoringCategory)
+            switch (expertiseArea)
             {
-                case ScoringCategory.Hr:
+                case ExpertiseArea.Hr:
                     return HrEstimatesCount;
-                case ScoringCategory.Analyst:
+                case ExpertiseArea.Analyst:
                     return AnalystEstimatesCount;
-                case ScoringCategory.Tech:
+                case ExpertiseArea.Tech:
                     return TechnicalEstimatesCount;
-                case ScoringCategory.Lawyer:
+                case ExpertiseArea.Lawyer:
                     return LawyerEstimatesCount;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(scoringCategory), scoringCategory, null);
+                    throw new ArgumentOutOfRangeException(nameof(expertiseArea), expertiseArea, null);
             }
         }
 

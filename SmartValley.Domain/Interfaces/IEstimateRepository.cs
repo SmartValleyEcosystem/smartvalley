@@ -10,8 +10,8 @@ namespace SmartValley.Domain.Interfaces
 
         Task<IReadOnlyCollection<Estimate>> GetAsync(long projectId);
 
-        Task<IReadOnlyCollection<Estimate>> GetAsync(long projectId, ScoringCategory category);
+        Task<IReadOnlyCollection<Estimate>> GetAsync(long projectId, ExpertiseArea expertiseArea);
 
-        Task<IReadOnlyCollection<long>> GetProjectsEstimatedByExpertAsync(string expertAddress, ScoringCategory category);
+        Task<IReadOnlyCollection<long>> GetProjectsEstimatedByExpertAsync(string expertAddress, ExpertiseArea expertiseArea);
     }
 }
