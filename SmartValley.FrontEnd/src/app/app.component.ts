@@ -15,8 +15,11 @@ export class AppComponent implements OnInit {
     animate: 'fromLeft',
     showProgressBar: false
   };
-  constructor(private questionService: QuestionService) {
+
+  constructor(angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
+              private questionService: QuestionService) {
   }
+
   async ngOnInit() {
     await this.questionService.initializeQestionsCollectionAsync();
   }
