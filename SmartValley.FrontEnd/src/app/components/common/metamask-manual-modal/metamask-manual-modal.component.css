@@ -4,3 +4,13 @@ img {
   margin: 0 auto;
   padding-top: 1em;
 }
+
+mat-dialog-actions {
+  padding-top: 0;
+  padding-bottom: 1em;
+}
+
+.sv-default-btn {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
