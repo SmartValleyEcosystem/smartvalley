@@ -186,7 +186,7 @@ export class AuthenticationService {
       width: '500px',
       data: <MetamaskManualModalData>{
         title: 'Metamask is locked',
-        message: 'Please click extension\'s logo in the top right corner of your browser, enter password and press \'UNLOCK\'.',
+        message: 'Please click Metamask extension\'s logo in the top right corner of your browser, enter password and press \'UNLOCK\'.',
         button: 'Ok',
         imgUrl: '/assets/img/unlock_metamask.png'
       }
@@ -198,7 +198,7 @@ export class AuthenticationService {
       width: '500px',
       data: <MetamaskManualModalData>{
         title: 'Wrong network',
-        message: 'Please click extension\'s logo in the top right corner of your browser and change network to \'Rinkeby Test Network\'.',
+        message: 'Please click Metamask extension\'s logo in the top right corner of your browser and change network to \'Rinkeby Test Network\'.',
         button: 'Ok',
         imgUrl: '/assets/img/change_network.png'
       }
