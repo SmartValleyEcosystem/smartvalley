@@ -13,14 +13,17 @@ namespace SmartValley.WebApi.Estimates
         private const byte RequiredEstimatesCountInExpertiseArea = 3;
 
         private readonly IEstimateRepository _estimateRepository;
+        private readonly IQuestionRepository _questionRepository;
         private readonly IProjectRepository _projectRepository;
 
         public EstimationService(
             IEstimateRepository estimateRepository,
-            IProjectRepository projectRepository)
+            IProjectRepository projectRepository,
+            IQuestionRepository questionRepository)
         {
             _estimateRepository = estimateRepository;
             _projectRepository = projectRepository;
+            _questionRepository = questionRepository;
         }
 
         public async Task SubmitEstimatesAsync(SubmitEstimatesRequest request)
@@ -44,14 +47,14 @@ namespace SmartValley.WebApi.Estimates
                     $"Project '{project.Name}' has already been estimated in area '{expertiseArea}' by expert '{request.ExpertAddress}'.");
             }
 
-            await AddEstimatesAsync(request, expertiseArea);
+            await AddEstimatesAsync(request);
 
             await UpdateProjectAsync(project, expertiseArea);
         }
 
-        public Task<IReadOnlyCollection<Estimate>> GetAsync(long projectId, ExpertiseArea expertiseArea)
+        public Task<Dictionary<long, IReadOnlyCollection<Estimate>>> GetQuestionWithEstimatesAsync(long projectId, ExpertiseArea expertiseArea)
         {
-            return _estimateRepository.GetAsync(projectId, expertiseArea.ToDomain());
+            return _questionRepository.GetQuestionWithEstimatesAsync(projectId, expertiseArea.ToDomain());
         }
 
         public double CalculateAverageScore(IReadOnlyCollection<Estimate> estimates)
@@ -80,11 +83,11 @@ namespace SmartValley.WebApi.Estimates
             return (double) estimates.Sum(e => e.Score) / RequiredEstimatesCountInExpertiseArea;
         }
 
-        private Task AddEstimatesAsync(SubmitEstimatesRequest request, Domain.Entities.ExpertiseArea expertiseArea)
+        private Task AddEstimatesAsync(SubmitEstimatesRequest request)
         {
             var estimates = request
                 .Estimates
-                .Select(e => CreateEstimate(e, request.ProjectId, request.ExpertAddress, expertiseArea))
+                .Select(e => CreateEstimate(e, request.ProjectId, request.ExpertAddress))
                 .ToArray();
 
             return _estimateRepository.AddRangeAsync(estimates);
@@ -93,16 +96,14 @@ namespace SmartValley.WebApi.Estimates
         private static Estimate CreateEstimate(
             EstimateRequest estimateRequest,
             long projectId,
-            string expertAddress,
-            Domain.Entities.ExpertiseArea expertiseArea)
+            string expertAddress)
         {
             return new Estimate
                    {
                        ProjectId = projectId,
                        ExpertAddress = expertAddress,
-                       QuestionIndex = estimateRequest.QuestionId,
+                       QuestionId = estimateRequest.QuestionId,
                        Score = estimateRequest.Score,
-                       ScoringCategory = expertiseArea,
                        Comment = estimateRequest.Comment
                    };
         }

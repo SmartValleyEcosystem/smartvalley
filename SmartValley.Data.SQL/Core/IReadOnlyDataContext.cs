@@ -10,6 +10,7 @@ namespace SmartValley.Data.SQL.Core
         IQueryable<Project> Projects { get; }
         IQueryable<Estimate> Estimates { get; }
         IQueryable<TeamMember> TeamMembers { get; }
+        IQueryable<Question> Questions { get; }
         IQueryable<T> GetAll<T>() where T : class;
     }
 }

@@ -70,17 +70,19 @@ namespace SmartValley.Data.SQL.Migrations
                         .IsRequired()
                         .HasMaxLength(42);
 
+                    b.Property<int>("ExpertiseArea");
+
                     b.Property<long>("ProjectId");
 
-                    b.Property<int>("QuestionIndex");
+                    b.Property<long>("QuestionId");
 
                     b.Property<int>("Score");
-
-                    b.Property<int>("ScoringCategory");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProjectId");
+
+                    b.HasIndex("QuestionId");
 
                     b.ToTable("Estimates");
                 });
@@ -133,6 +135,30 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("Projects");
                 });
 
+            modelBuilder.Entity("SmartValley.Domain.Entities.Question", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500);
+
+                    b.Property<int>("ExpertiseArea");
+
+                    b.Property<int>("MaxScore");
+
+                    b.Property<int>("MinScore");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Questions");
+                });
+
             modelBuilder.Entity("SmartValley.Domain.Entities.TeamMember", b =>
                 {
                     b.Property<long>("Id")
@@ -172,6 +198,11 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasOne("SmartValley.Domain.Entities.Project", "Project")
                         .WithMany()
                         .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SmartValley.Domain.Entities.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

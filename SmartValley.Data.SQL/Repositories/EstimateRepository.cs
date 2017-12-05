@@ -20,14 +20,20 @@ namespace SmartValley.Data.SQL.Repositories
             => await ReadContext.Estimates.Where(e => e.ProjectId == projectId).ToArrayAsync();
 
         public async Task<IReadOnlyCollection<Estimate>> GetAsync(long projectId, ExpertiseArea expertiseArea)
-            => await ReadContext.Estimates.Where(e => e.ProjectId == projectId && e.ScoringCategory == expertiseArea).ToArrayAsync();
+        {
+            return await (from estimate in ReadContext.Estimates
+                          join question in ReadContext.Questions on estimate.QuestionId equals question.Id
+                          where estimate.ProjectId == projectId && question.ExpertiseArea == expertiseArea
+                          select estimate)
+                       .ToArrayAsync();
+        }
 
         public async Task<IReadOnlyCollection<long>> GetProjectsEstimatedByExpertAsync(string expertAddress, ExpertiseArea expertiseArea)
         {
-            return await ReadContext
-                       .Estimates
-                       .Where(e => e.ExpertAddress.Equals(expertAddress, StringComparison.OrdinalIgnoreCase) && e.ScoringCategory == expertiseArea)
-                       .Select(e => e.ProjectId)
+            return await (from estimate in ReadContext.Estimates
+                          join question in ReadContext.Questions on estimate.QuestionId equals question.Id
+                          where estimate.ExpertAddress.Equals(expertAddress, StringComparison.OrdinalIgnoreCase) && question.ExpertiseArea == expertiseArea
+                          select estimate.ProjectId)
                        .Distinct()
                        .ToArrayAsync();
         }

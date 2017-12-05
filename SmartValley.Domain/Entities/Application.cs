@@ -8,7 +8,7 @@ namespace SmartValley.Domain.Entities
     {
         public long Id { get; set; }
 
-        public virtual Project Project { get; set; }
+        public Project Project { get; set; }
 
         public long ProjectId { get; set; }
 

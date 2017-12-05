@@ -21,5 +21,22 @@ namespace SmartValley.WebApi.Estimates
                     throw new ArgumentOutOfRangeException(nameof(requestExpertiseArea), requestExpertiseArea, null);
             }
         }
+
+        public static ExpertiseArea FromDomain(this Domain.Entities.ExpertiseArea expertiseArea)
+        {
+            switch (expertiseArea)
+            {
+                case Domain.Entities.ExpertiseArea.Hr:
+                    return ExpertiseArea.Hr;
+                case Domain.Entities.ExpertiseArea.Analyst:
+                    return ExpertiseArea.Analyst;
+                case Domain.Entities.ExpertiseArea.Tech:
+                    return ExpertiseArea.Tech;
+                case Domain.Entities.ExpertiseArea.Lawyer:
+                    return ExpertiseArea.Lawyer;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(expertiseArea), expertiseArea, null);
+            }
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace SmartValley.Data.SQL.Core
             EditContext = editContext;
         }
 
-        public Task<List<T>> GetAllAsync() => ReadContext.GetAll<T>().ToListAsync();
+        public async Task<IReadOnlyCollection<T>> GetAllAsync() => await ReadContext.GetAll<T>().ToArrayAsync();
 
         public Task<T> GetByIdAsync(long id)
         {

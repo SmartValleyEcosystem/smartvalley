@@ -21,6 +21,8 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<TeamMember> IReadOnlyDataContext.TeamMembers => TeamMembers.AsNoTracking();
 
+        IQueryable<Question> IReadOnlyDataContext.Questions => Questions.AsNoTracking();
+
         public DbSet<Application> Applications { get; set; }
 
         public DbSet<Project> Projects { get; set; }
@@ -28,6 +30,8 @@ namespace SmartValley.Data.SQL.Core
         public DbSet<Estimate> Estimates { get; set; }
 
         public DbSet<TeamMember> TeamMembers { get; set; }
+
+        public DbSet<Question> Questions { get; set; }
 
         public IQueryable<T> GetAll<T>() where T : class
         {

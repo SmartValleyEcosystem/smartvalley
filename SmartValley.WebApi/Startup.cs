@@ -88,6 +88,7 @@ namespace SmartValley.WebApi
             services.AddTransient<IProjectService, ProjectService>();
             services.AddTransient<IEstimationService, EstimationService>();
             services.AddTransient<IScoringService, ScoringService>();
+            services.AddTransient<IQuestionRepository, QuestionRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

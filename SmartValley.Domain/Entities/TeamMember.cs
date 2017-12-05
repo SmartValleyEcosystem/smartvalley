@@ -7,7 +7,7 @@ namespace SmartValley.Domain.Entities
     {
         public long Id { get; set; }
 
-        public virtual Application Application { get; set; }
+        public Application Application { get; set; }
 
         public long ApplicationId { get; set; }
 
