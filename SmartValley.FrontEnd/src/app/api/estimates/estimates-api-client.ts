@@ -6,6 +6,7 @@ import {CollectionResponse} from '../collection-response';
 import {EstimateResponse} from './estimate-response';
 import {ExpertiseArea} from '../scoring/expertise-area.enum';
 import {GetEstimatesResponse} from './get-estimates-response';
+import {QuestionResponse} from './question-response';
 
 @Injectable()
 export class EstimatesApiClient extends BaseApiClient {
@@ -25,5 +26,9 @@ export class EstimatesApiClient extends BaseApiClient {
     return this.http
       .get<GetEstimatesResponse>(this.baseApiUrl + '/estimates', {params: parameters})
       .toPromise();
+  }
+
+  async getQuestions(): Promise<CollectionResponse<QuestionResponse>> {
+    return await this.http.get<CollectionResponse<QuestionResponse>>(this.baseApiUrl + '/estimates/questions').toPromise();
   }
 }

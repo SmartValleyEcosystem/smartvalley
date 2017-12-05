@@ -28,7 +28,7 @@ export class ProjectCardComponent implements OnInit {
   }
 
   showProject(id: number) {
-    this.router.navigate([Paths.Scoring + '/' + id], {queryParams: {category: this.project.expertiseArea}});
+    this.router.navigate([Paths.Scoring + '/' + id], {queryParams: {expertiseArea: this.project.expertiseArea}});
   }
 
   showReport(id: number) {
