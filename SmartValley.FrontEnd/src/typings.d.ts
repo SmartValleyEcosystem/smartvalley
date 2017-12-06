@@ -26,5 +26,8 @@ declare class EthJs {
   personal_ecRecover(message: string, signature: string): Promise<string>;
 }
 
-declare function isNullOrEmpty(str: string);
+declare var System: System;
+interface System {
+  import(request: string): Promise<any>;
+}
 
