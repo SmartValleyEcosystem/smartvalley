@@ -2,12 +2,14 @@ import {Injectable} from '@angular/core';
 import {ExpertiseArea} from '../api/scoring/expertise-area.enum';
 import {EstimatesApiClient} from '../api/estimates/estimates-api-client';
 import {QuestionResponse} from '../api/estimates/question-response';
+import {TranslateService} from '@ngx-translate/core';
 
 @Injectable()
 export class QuestionService {
   private questions: { [expertiseArea: number]: Array<QuestionResponse>; } = {};
 
-  constructor(private estimatesClient: EstimatesApiClient) {
+  constructor(private estimatesClient: EstimatesApiClient,
+              private translate: TranslateService) {
   }
 
   public getByExpertiseArea(expertiseArea: ExpertiseArea): Array<QuestionResponse> {
@@ -26,6 +28,16 @@ export class QuestionService {
 
   public async initializeQestionsCollectionAsync(): Promise<void> {
     const allQuestions = await this.estimatesClient.getQuestionsAsync();
+    for (const question of allQuestions.items) {
+      this.translate.get('QuestionsNames.' + question.id, {value: 'world'}).subscribe((res: string) => {
+        console.log(res);
+        question.name = res;
+      });
+      this.translate.get('QuestionsDescriptions.' + question.id, {value: 'world'}).subscribe((res: string) => {
+        console.log(res);
+        question.description = res;
+      });
+    }
     for (const item in ExpertiseArea) {
       if (Number(item)) {
         this.questions[item] = allQuestions.items.filter(i => i.expertiseArea === parseInt(item, 0));

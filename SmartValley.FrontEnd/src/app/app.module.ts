@@ -4,7 +4,7 @@ import {AppComponent} from './app.component';
 import {MetamaskHowtoComponent} from './components/metamask-howto/metamask-howto.component';
 import {RootComponent} from './components/root/root.component';
 import {BrowserModule} from '@angular/platform-browser';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from './app-routing.module';
 import {Web3Service} from './services/web3-service';
@@ -44,6 +44,12 @@ import {MetamaskManualModalComponent} from './components/common/metamask-manual-
 import {GetEtherModalComponent} from './components/common/get-ether-modal/get-ether-modal.component';
 import {Angulartics2GoogleAnalytics} from 'angulartics2/ga';
 import {Angulartics2Module} from 'angulartics2';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -72,7 +78,6 @@ import {Angulartics2Module} from 'angulartics2';
   ],
   imports: [
     MatCheckboxModule,
-
     MatTabsModule,
     BrowserModule,
     HttpClientModule,
@@ -85,7 +90,14 @@ import {Angulartics2Module} from 'angulartics2';
     SimpleNotificationsModule.forRoot(),
     NgProgressModule,
     Ng2DeviceDetectorModule.forRoot(),
-    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics])
+    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
     {

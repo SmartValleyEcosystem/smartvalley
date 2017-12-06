@@ -1,0 +1,13 @@
+{
+  "Header": {
+    "Balance": "Баланс"
+  },
+  "QuestionsNames": {
+    "1": "Вопрос1",
+    "2": ""
+  },
+  "QuestionsDescriptions": {
+    "1": "ОписаниеВопроса1",
+    "2": ""
+  }
+}
