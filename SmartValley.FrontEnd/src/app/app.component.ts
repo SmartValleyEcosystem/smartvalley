@@ -25,7 +25,6 @@ export class AppComponent implements OnInit {
   constructor(angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
               private questionService: QuestionService,
               translate: TranslateService) {
-    // the lang to use, if the lang isn't available, it will use the current loader to get them
     translate.use('en');
   }
 
