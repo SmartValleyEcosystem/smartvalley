@@ -44,13 +44,12 @@ import {MetamaskManualModalComponent} from './components/common/metamask-manual-
 import {GetEtherModalComponent} from './components/common/get-ether-modal/get-ether-modal.component';
 import {Angulartics2GoogleAnalytics} from 'angulartics2/ga';
 import {Angulartics2Module} from 'angulartics2';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {MultiTranslateHttpLoader} from './services/i18n/multi-translate-http-loader';
+import {MultiTranslateLoader} from './services/i18n/multi-translate-http-loader';
 
 
-export function MultiHttpLoaderFactory(http: HttpClient) {
-  return new MultiTranslateHttpLoader(http, [
+export function multiTranslateLoaderFactory(http: HttpClient) {
+  return new MultiTranslateLoader(http, [
     {prefix: 'questions-', suffix: '.json'},
     {prefix: 'header-', suffix: '.json'}
   ]);
@@ -99,8 +98,7 @@ export function MultiHttpLoaderFactory(http: HttpClient) {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: MultiHttpLoaderFactory,
-        deps: [HttpClient]
+        useFactory: multiTranslateLoaderFactory
       }
     })
   ],
