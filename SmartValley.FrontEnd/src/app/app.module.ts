@@ -4,7 +4,7 @@ import {AppComponent} from './app.component';
 import {MetamaskHowtoComponent} from './components/metamask-howto/metamask-howto.component';
 import {RootComponent} from './components/root/root.component';
 import {BrowserModule} from '@angular/platform-browser';
-import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from './app-routing.module';
 import {Web3Service} from './services/web3-service';
@@ -48,8 +48,8 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {MultiTranslateLoader} from './services/i18n/multi-translate-http-loader';
 
 
-export function multiTranslateLoaderFactory(http: HttpClient) {
-  return new MultiTranslateLoader(http, [
+export function multiTranslateLoaderFactory() {
+  return new MultiTranslateLoader([
     {prefix: 'questions-', suffix: '.json'},
     {prefix: 'header-', suffix: '.json'}
   ]);

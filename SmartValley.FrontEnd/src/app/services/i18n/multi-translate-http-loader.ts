@@ -1,12 +1,10 @@
-import {HttpClient} from '@angular/common/http';
 import {TranslateLoader} from '@ngx-translate/core';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/forkJoin';
 
 export class MultiTranslateLoader implements TranslateLoader {
 
-  constructor(private http: HttpClient,
-              public resources: { prefix: string, suffix: string }[]) {
+  constructor(public resources: { prefix: string, suffix: string }[]) {
   }
 
   /**
