@@ -6,12 +6,7 @@ export class MultiTranslateLoader implements TranslateLoader {
 
   constructor(public resources: { prefix: string, suffix: string }[]) {
   }
-
-  /**
-   * Gets the translations from the server
-   * @param lang
-   * @returns {any}
-   */
+  
   public getTranslation(lang: string): any {
 
     return Observable.forkJoin(this.resources.map(config => {
