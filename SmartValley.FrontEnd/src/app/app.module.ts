@@ -45,7 +45,7 @@ import {GetEtherModalComponent} from './components/common/get-ether-modal/get-et
 import {Angulartics2GoogleAnalytics} from 'angulartics2/ga';
 import {Angulartics2Module} from 'angulartics2';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {MultiTranslateLoader} from './services/i18n/multi-translate-http-loader';
+import {MultiTranslateLoader} from './services/i18n/multi-translate-loader';
 
 
 export function multiTranslateLoaderFactory() {
