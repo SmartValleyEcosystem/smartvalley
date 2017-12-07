@@ -13,6 +13,7 @@ namespace SmartValley.Application.Contracts
     {
         private const int TransactionReceiptPollingIntervalMilliseconds = 1000;
         private const int AdditionalGasPercent = 10;
+        private const int GasPriceMultiplier = 21;
 
         private readonly string _contractOwner;
         private readonly string _password;
@@ -71,7 +72,7 @@ namespace SmartValley.Application.Contracts
         {
             var estimatedGasHex = await function.EstimateGasAsync(functionInput);
             var gas = new HexBigInteger(estimatedGasHex.Value * (100 + AdditionalGasPercent) / 100);
-            var gasPrice = new HexBigInteger(Web3.Convert.GetEthUnitValue(UnitConversion.EthUnit.Gwei));
+            var gasPrice = new HexBigInteger(Web3.Convert.GetEthUnitValue(UnitConversion.EthUnit.Gwei) * GasPriceMultiplier);
 
             return function.CreateTransactionInput(_contractOwner, gas, gasPrice, new HexBigInteger(0), functionInput);
         }
