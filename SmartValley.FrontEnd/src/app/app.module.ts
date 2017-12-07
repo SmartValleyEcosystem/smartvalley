@@ -44,6 +44,8 @@ import {MetamaskManualModalComponent} from './components/common/metamask-manual-
 import {GetEtherModalComponent} from './components/common/get-ether-modal/get-ether-modal.component';
 import {Angulartics2GoogleAnalytics} from 'angulartics2/ga';
 import {Angulartics2Module} from 'angulartics2';
+import {ProjectContractClient} from './services/project-contract-client';
+import {EtherReceivingService} from './services/ether-receiving-service';
 
 @NgModule({
   declarations: [
@@ -72,7 +74,6 @@ import {Angulartics2Module} from 'angulartics2';
   ],
   imports: [
     MatCheckboxModule,
-
     MatTabsModule,
     BrowserModule,
     HttpClientModule,
@@ -114,7 +115,9 @@ import {Angulartics2Module} from 'angulartics2';
     QuestionService,
     Web3Service,
     DialogService,
+    EtherReceivingService,
     ProjectManagerContractClient,
+    ProjectContractClient,
     BlockiesService],
   bootstrap: [AppComponent]
 })

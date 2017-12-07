@@ -1,5 +1,5 @@
 export interface EstimateRequest {
-  questionIndex: number;
+  questionId: number;
 
   score: number;
 

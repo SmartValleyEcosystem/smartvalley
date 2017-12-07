@@ -4,7 +4,7 @@ import {AuthenticationService} from '../../services/authentication-service';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {Constants} from '../../constants';
-import {DialogService} from '../../services/dialog-service';
+import {EtherReceivingService} from '../../services/ether-receiving-service';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
   constructor(private balanceApiClient: BalanceApiClient,
               private authenticationService: AuthenticationService,
               private router: Router,
-              private dialogService: DialogService) {
+              private etherReceivingService: EtherReceivingService) {
     this.authenticationService.accountChanged.subscribe(async () => await this.updateHeaderAsync());
   }
 
@@ -41,7 +41,7 @@ export class HeaderComponent implements OnInit {
   }
 
   async receiveEth() {
-    await this.dialogService.showReceiveEthDialog();
+    await this.etherReceivingService.receiveAsync();
     await this.updateHeaderAsync();
   }
 

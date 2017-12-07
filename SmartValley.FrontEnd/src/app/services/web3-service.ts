@@ -63,6 +63,10 @@ export class Web3Service {
     }
   }
 
+  public async getHash(value: string): Promise<string> {
+    return await this.eth.web3_sha3(EthJs.fromUtf8(value));
+  }
+
   private delay(milliseconds: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
   }

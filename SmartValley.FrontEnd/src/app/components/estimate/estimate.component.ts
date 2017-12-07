@@ -12,6 +12,9 @@ import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TeamMember} from '../../services/team-member';
+import {ProjectContractClient} from '../../services/project-contract-client';
+import {ContractApiClient} from '../../api/contract/contract-api-client';
+import {DialogService} from '../../services/dialog-service';
 
 @Component({
   selector: 'app-estimate',
@@ -35,7 +38,10 @@ export class EstimateComponent {
               private router: Router,
               private estimatesApiClient: EstimatesApiClient,
               private authenticationService: AuthenticationService,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private projectContractClient: ProjectContractClient,
+              private contractApiClient: ContractApiClient,
+              private dialogService: DialogService) {
     this.loadProjectInfo();
   }
 
@@ -61,14 +67,34 @@ export class EstimateComponent {
 
   private async submitAsync(): Promise<void> {
     const estimates = this.getEstimates();
+
+    const projectContract = await this.contractApiClient.getProjectContractAsync();
+    const transactionHash = await this.submitToContractAsync(projectContract.abi, estimates);
+
     const submitEstimatesRequest = <SubmitEstimatesRequest>{
+      transactionHash: transactionHash,
       projectId: this.projectId,
       expertiseArea: this.expertiseArea,
       expertAddress: this.authenticationService.getCurrentUser().account,
       estimates: estimates
     };
 
+    const transactionDialog = this.dialogService.showTransactionDialog(
+      'Your estimates are being processed. Please wait for completion of transaction.',
+      transactionHash
+    );
+
     await this.estimatesApiClient.submitEstimatesAsync(submitEstimatesRequest);
+
+    transactionDialog.close();
+  }
+
+  private submitToContractAsync(abi: string, estimates: Array<EstimateRequest>): Promise<string> {
+    return this.projectContractClient.submitEstimatesAsync(
+      this.projectDetails.projectAddress,
+      abi,
+      this.expertiseArea,
+      estimates);
   }
 
   private setInvalid(element: ElementRef) {
@@ -80,7 +106,7 @@ export class EstimateComponent {
     const offsetTop1 = element.nativeElement.offsetTop;
     const offsetTop3 = element.nativeElement.offsetParent.offsetParent.offsetTop;
     const offsetTop4 = element.nativeElement.offsetParent.offsetParent.offsetParent.offsetTop;
-    window.scrollTo({left: 0, top: offsetTop1 + offsetTop3 + offsetTop4 , behavior: 'smooth'});
+    window.scrollTo({left: 0, top: offsetTop1 + offsetTop3 + offsetTop4, behavior: 'smooth'});
   }
 
   private getEstimates(): Array<EstimateRequest> {
@@ -89,7 +115,7 @@ export class EstimateComponent {
 
     for (const question of formModel.questions) {
       estimates.push(<EstimateRequest>{
-        questionIndex: question.indexInCategory,
+        questionId: question.questionId,
         score: question.score,
         comment: question.comments
       });
@@ -107,6 +133,7 @@ export class EstimateComponent {
 
     for (const question of questions) {
       const group = this.formBuilder.group({
+        questionId: question.id,
         name: question.name,
         description: question.description,
         maxScore: question.maxScore,

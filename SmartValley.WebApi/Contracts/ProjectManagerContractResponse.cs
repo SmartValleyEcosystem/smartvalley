@@ -1,6 +1,6 @@
 ﻿namespace SmartValley.WebApi.Contracts
 {
-    public class ContractResponse
+    public class ProjectManagerContractResponse
     {
         public string Address { get; set; }
 

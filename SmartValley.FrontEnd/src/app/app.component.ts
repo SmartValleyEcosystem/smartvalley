@@ -21,6 +21,6 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.questionService.initializeQestionsCollectionAsync();
+    await this.questionService.initializeAsync();
   }
 }
