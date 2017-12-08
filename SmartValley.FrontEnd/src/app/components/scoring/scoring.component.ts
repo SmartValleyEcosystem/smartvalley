@@ -2,7 +2,7 @@ import {AfterViewInit, Component, OnDestroy, ViewChild} from '@angular/core';
 import {Project} from '../../services/project';
 import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {Paths} from '../../paths';
-import {AuthenticationService} from '../../services/authentication-service';
+import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';

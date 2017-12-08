@@ -8,7 +8,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from './app-routing.module';
 import {Web3Service} from './services/web3-service';
-import {AuthenticationService} from './services/authentication-service';
+import {AuthenticationService} from './services/authentication/authentication-service';
 import {ApplicationApiClient} from './api/application/application-api.client';
 import {HeaderComponent} from './components/header/header.component';
 import {MaterialModule} from './shared/material.module';
@@ -45,7 +45,7 @@ import {GetEtherModalComponent} from './components/common/get-ether-modal/get-et
 import {Angulartics2GoogleAnalytics} from 'angulartics2/ga';
 import {Angulartics2Module} from 'angulartics2';
 import {ProjectContractClient} from './services/project-contract-client';
-import {EtherReceivingService} from './services/ether-receiving-service';
+import {EtherReceivingService} from './services/ether-receiving/ether-receiving-service';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {multiTranslateLoaderFactory} from './services/translate/multi-translate-loader-factory';
 

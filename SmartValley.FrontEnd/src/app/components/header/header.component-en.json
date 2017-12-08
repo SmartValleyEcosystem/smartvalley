@@ -1,5 +1,7 @@
 {
   "Header": {
-    "Balance": "Balance"
+    "Balance": "Balance",
+    "MyProjects": "My projects",
+    "GetEther": "Get Ether"
   }
 }

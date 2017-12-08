@@ -9,7 +9,7 @@ export class QuestionService {
   private questions: { [expertiseArea: number]: Array<QuestionResponse>; } = {};
 
   constructor(private estimatesClient: EstimatesApiClient,
-              private translate: TranslateService) {
+              private translateService: TranslateService) {
   }
 
   public getByExpertiseArea(expertiseArea: ExpertiseArea): Array<QuestionResponse> {
@@ -28,6 +28,10 @@ export class QuestionService {
 
   public async initializeAsync(): Promise<void> {
     const allQuestions = await this.estimatesClient.getQuestionsAsync();
+    for (const question of allQuestions.items) {
+      question.name = this.translateService.instant('QuestionsNames.' + question.id);
+      question.description = this.translateService.instant('QuestionsDescriptions.' + question.id);
+    }
     for (const item in ExpertiseArea) {
       if (Number(item)) {
         this.questions[item] = allQuestions.items.filter(i => i.expertiseArea === parseInt(item, 0));

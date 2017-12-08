@@ -1,5 +1,5 @@
 import {Component, ViewChild, ElementRef, ViewChildren, QueryList} from '@angular/core';
-import {AuthenticationService} from '../../services/authentication-service';
+import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {ApplicationApiClient} from '../../api/application/application-api.client';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Application} from '../../services/application';
@@ -14,7 +14,8 @@ import {MatDialog, MatDialogRef} from '@angular/material';
 import {TransactionAwaitingModalComponent} from '../common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {DialogService} from '../../services/dialog-service';
-import {EtherReceivingService} from '../../services/ether-receiving-service';
+import {EtherReceivingService} from '../../services/ether-receiving/ether-receiving-service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-application',
@@ -45,7 +46,8 @@ export class ApplicationComponent {
               private notificationsService: NotificationsService,
               private dialogService: DialogService,
               private etherReceivingService: EtherReceivingService,
-              private applicationApiClient: ApplicationApiClient) {
+              private applicationApiClient: ApplicationApiClient,
+              private translateService: TranslateService) {
     this.createForm();
   }
 
@@ -116,13 +118,13 @@ export class ApplicationComponent {
     const application = await this.fillApplication();
 
     if (application == null) {
-      this.notificationsService.error('Error', 'Please try again');
+      this.notificationsService.error(this.translateService.instant('Common.Error'), this.translateService.instant('Common.TryAgain'));
       this.isProjectCreating = false;
       return;
     }
 
     const transactionDialog = this.dialogService.showTransactionDialog(
-      'Your project for scoring is being created. Please wait for completion of transaction.',
+      this.translateService.instant('Application.Dialog'),
       application.transactionHash
     );
 
@@ -131,7 +133,7 @@ export class ApplicationComponent {
     transactionDialog.close();
 
     await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
-    this.notificationsService.success('Success!', 'Project created');
+    this.notificationsService.success(this.translateService.instant('Common.Success'), this.translateService.instant('Application.ProjectCreated'));
   }
 
   public async onSubmit() {

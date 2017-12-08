@@ -1,31 +1,31 @@
 import {Injectable} from '@angular/core';
-import {DialogService} from './dialog-service';
-import {BalanceApiClient} from '../api/balance/balance-api-client';
+import {DialogService} from '../dialog-service';
+import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {NotificationsService} from 'angular2-notifications';
-import {Web3Service} from './web3-service';
+import {Web3Service} from '../web3-service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Injectable()
 export class EtherReceivingService {
   constructor(private dialogService: DialogService,
               private balanceApiClient: BalanceApiClient,
               private notificationsService: NotificationsService,
-              private web3Service: Web3Service) {
+              private web3Service: Web3Service,
+              private translateService: TranslateService) {
   }
 
   public async receiveAsync(): Promise<void> {
     const transactionHash = (await this.balanceApiClient.receiveEtherAsync()).transactionHash;
-
     const transactionDialog = this.dialogService.showTransactionDialog(
-      'Ether transfer is in progress. Please wait for completion of transaction.',
+      this.translateService.instant('EtherReceiving.Dialog'),
       transactionHash
     );
 
     try {
       await this.web3Service.waitForConfirmationAsync(transactionHash);
-
-      this.notificationsService.success('Ether transfer completed.');
+      this.notificationsService.success(this.translateService.instant('EtherReceiving.Success'));
     } catch (e) {
-      this.notificationsService.error('Ether transfer failed. Please try again later.');
+      this.notificationsService.error(this.translateService.instant('EtherReceiving.Error'));
     }
 
     transactionDialog.close();

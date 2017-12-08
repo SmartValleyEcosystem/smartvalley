@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AuthenticationService} from './authentication-service';
+import {AuthenticationService} from './authentication/authentication-service';
 import {Web3Service} from './web3-service';
 
 @Injectable()

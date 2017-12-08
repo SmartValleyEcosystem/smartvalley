@@ -7,42 +7,44 @@
   <form [formGroup]="applicationForm" novalidate>
     <div class="sw-card sw-content">
       <div class="row row-title">
-        <h3 class="col-10 offset-1">Basic information</h3>
+        <h3 class="col-10 offset-1">{{ 'Application.BasicInformation' | translate }}</h3>
       </div>
       <div #name class="row">
-        <span class="col-2 offset-1">Name</span>
-        <input class="form-control col-8" formControlName="name" placeholder="Cosmo Dream Incorporated" #required>
+        <span class="col-2 offset-1">{{ 'Application.Name' | translate }}</span>
+        <input class="form-control col-8" formControlName="name"
+               placeholder="{{ 'Application.NamePlaceholder' | translate }}" #required>
       </div>
       <div #area class="row">
-        <span class="col-2 offset-1">Project Area</span>
-        <input class="form-control col-8" formControlName="projectArea" placeholder="Biotechnology" #required>
+        <span class="col-2 offset-1">{{ 'Application.ProjectArea' | translate }}</span>
+        <input class="form-control col-8" formControlName="projectArea"
+               placeholder="{{ 'Application.ProjectAreaPlaceholder' | translate }}" #required>
       </div>
       <div #description class="row">
-        <span class="col-2 offset-1">Description</span>
+        <span class="col-2 offset-1">{{ 'Application.Description' | translate }}</span>
         <textarea class="form-control col-8" formControlName="description"
-                  placeholder="Technology of Authenticity Verification of Video Content" #required>
+                  placeholder="{{ 'Application.DescriptionPlaceholder' | translate }}" #required>
         </textarea>
       </div>
       <div class="row">
-        <span class="col-2 offset-1">Current project status</span>
+        <span class="col-2 offset-1">{{ 'Application.Status' | translate }}</span>
         <textarea class="form-control col-8" formControlName="projectStatus"
-                  placeholder="We already develop MVP">
+                  placeholder="{{ 'Application.StatusPlaceholder' | translate }}">
         </textarea>
       </div>
       <div class="wp-link row" style="margin-bottom: 3em;">
-        <span class="col-2 offset-1">White paper link</span>
+        <span class="col-2 offset-1">{{ 'Application.WhitePaperLink' | translate }}</span>
         <input class="form-control col-8" formControlName="whitePaperLink"
                title="Include http://" placeholder="http://">
       </div>
     </div>
     <div [ngClass]="!isTeamShow ? '' : 'main-btn'" class="row">
-      <button (click)="showNext()" class="col-3 btn btn-primary">Next
+      <button (click)="showNext()" class="col-3 btn btn-primary">{{ 'Application.Next' | translate }}
       </button>
     </div>
 
     <div [ngClass]="isTeamShow ? 'is-active' : ''" class="sw-card sw-content">
       <div class="row row-title">
-        <h3 class="col-10 offset-1">Team</h3>
+        <h3 class="col-10 offset-1">{{ 'Application.Team' | translate }}</h3>
       </div>
       <div class="row-content sw-members">
         <div *ngFor="let member of applicationForm.get('teamMembers')['controls']">
@@ -62,71 +64,72 @@
       </div>
     </div>
     <div [ngClass]="isTeamShow && !isLegalShow ? '' : 'team-btn'" class="row">
-      <button (click)="showNext()" class="col-3 btn btn-primary">Next
+      <button (click)="showNext()" class="col-3 btn btn-primary">{{ 'Application.Next' | translate }}
       </button>
     </div>
     <div [ngClass]="isLegalShow ? 'is-active' : ''" class="sw-card sw-content">
       <div class="row row-title">
-        <h3 class="col-10 offset-1">Legal part</h3>
+        <h3 class="col-10 offset-1">{{ 'Application.LegalPart' | translate }}</h3>
       </div>
       <div class="row-content">
         <div class="row">
-          <span class="col-4 offset-1">In which country is the incorporation made?</span>
-          <input class="form-control col-6" style="margin-bottom: 1em;" formControlName="country" placeholder="Russian Federation">
+          <span class="col-4 offset-1">{{ 'Application.Incorporation' | translate }}</span>
+          <input class="form-control col-6" style="margin-bottom: 1em;" formControlName="country"
+                 placeholder="{{ 'Application.IncorporationPlaceholder' | translate }}">
         </div>
       </div>
     </div>
     <div [ngClass]="isLegalShow && !isFinanceShow ? '' : 'legal-btn'" class="row">
-      <button (click)="showNext()" class="col-3 btn btn-primary">Next
+      <button (click)="showNext()" class="col-3 btn btn-primary">{{ 'Application.Next' | translate }}
       </button>
     </div>
     <div [ngClass]="isFinanceShow ? 'is-active' : ''" class="sw-card sw-content">
       <div class="row row-title">
-        <h3 class="col-10 offset-1">Finance</h3>
+        <h3 class="col-10 offset-1">{{ 'Application.Finance' | translate }}</h3>
       </div>
       <div class="row-content">
         <div class="row">
-          <label class="col-10 offset-1">How much money do you expect to raise?</label>
+          <label class="col-10 offset-1">{{ 'Application.Money' | translate }}</label>
         </div>
         <div class="row">
-          <span class="col-1 offset-1" style="padding-right: 0;">Soft cap:</span>
+          <span class="col-1 offset-1" style="padding-right: 0;">{{ 'Application.SoftCap' | translate }}</span>
           <input class="form-control col-3" formControlName="softCap">
-          <span class="col-1 offset-1" style="padding-right: 0;">Hard cap:</span>
+          <span class="col-1 offset-1" style="padding-right: 0;">{{ 'Application.HardCap' | translate }}</span>
           <input class="form-control col-4" formControlName="hardCap">
         </div>
         <div class="row">
-          <span class="col-3 offset-1">Financial model link:</span>
+          <span class="col-3 offset-1">{{ 'Application.FinancialModelLink' | translate }}</span>
           <input class="form-control col-7" formControlName="financeModelLink" placeholder="http://">
         </div>
         <div class="row">
           <mat-checkbox class="col-6 offset-1" labelPosition="before" style="margin-bottom: 1em;"
-                        formControlName="attractedInvestments">Attracted investments:
+                        formControlName="attractedInvestments">{{ 'Application.AttractedInvestments' | translate }}
           </mat-checkbox>
         </div>
       </div>
     </div>
     <div [ngClass]="isFinanceShow && !isTechShow ? '' : 'finance-btn'" class="row">
-      <button (click)="showNext()" class="col-3 btn btn-primary">Next
+      <button (click)="showNext()" class="col-3 btn btn-primary">{{ 'Application.Next' | translate }}
       </button>
     </div>
     <div [ngClass]="isTechShow ? 'is-active' : ''" class="sw-card sw-content">
       <div class="row row-title">
-        <h3 class="col-10 offset-1">Tech</h3>
+        <h3 class="col-10 offset-1">{{ 'Application.Tech' | translate }}</h3>
       </div>
       <div class="row-content">
         <div class="row">
-          <span class="col-3 offset-1" style="padding-right: 0">Whick blockchain you want to use?</span>
+          <span class="col-3 offset-1" style="padding-right: 0">{{ 'Application.Blockchain' | translate }}</span>
           <input class="form-control col-7" formControlName="blockChainType">
         </div>
         <div class="row">
-          <span class="col-3 offset-1" style="padding-right: 0">Prototype/MVP link:</span>
+          <span class="col-3 offset-1" style="padding-right: 0">{{ 'Application.MvpLink' | translate }}</span>
           <input class="form-control col-7" style="margin-bottom: 1em;" formControlName="mvpLink" placeholder="http://">
         </div>
       </div>
     </div>
     <div [ngClass]="isTechShow ? '' : 'submit-btn'" class="row">
-      <button (click)="onSubmit()"[disabled]="isProjectCreating" class="col-3 btn btn-primary">
-        Submit
+      <button (click)="onSubmit()" [disabled]="isProjectCreating" class="col-3 btn btn-primary">
+        {{ 'Application.Submit' | translate }}
       </button>
     </div>
   </form>
