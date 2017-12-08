@@ -1,0 +1,33 @@
+{
+  "Estimate": {
+    "Title": "Estimate the project",
+    "BasicInformation": "Basic information",
+    "Name": "Project name",
+    "ProjectArea": "Project area",
+    "Description": "Description",
+    "Status": "Status",
+    "WhitePaperLink": "White paper link",
+    "Team": "Core Team",
+    "Ceo": "CEO",
+    "Cfo": "CFO",
+    "Cmo": "CMO",
+    "Cto": "CTO",
+    "Pr": "PR",
+    "LegalPart": "Legal part",
+    "Incorporation": "Incorporation",
+    "Finance": "Finance",
+    "Investments": "Investments",
+    "SoftCap": "soft cap",
+    "HardCap": "hard cap",
+    "FinancialModelLink": "Financial model link",
+    "AttractedInvestments": "Attracted investments",
+    "Tech": "Tech",
+    "Blockchain": "Blockchain",
+    "MvpLink": "Prototype/MVP link",
+    "YourScore": "Your score",
+    "YourComment": "Comments 250 symbols",
+    "Send": "Send",
+    "Estimate": "Estimate",
+    "Dialog": "Your estimates are being processed. Please wait for completion of transaction."
+  }
+}
