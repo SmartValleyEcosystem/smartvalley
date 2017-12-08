@@ -14,6 +14,7 @@ import {MatDialog, MatDialogRef} from '@angular/material';
 import {TransactionAwaitingModalComponent} from '../common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {DialogService} from '../../services/dialog-service';
+import {EtherReceivingService} from '../../services/ether-receiving-service';
 
 @Component({
   selector: 'app-application',
@@ -33,20 +34,18 @@ export class ApplicationComponent {
   @ViewChild('description') public descriptionRow: ElementRef;
   @ViewChildren('required') requireds: QueryList<any>;
 
-
   public isProjectCreating: boolean;
-  private projectModalRef: MatDialogRef<TransactionAwaitingModalComponent>;
 
   constructor(private balanceApiClient: BalanceApiClient,
               private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
-              private applicationApiClient: ApplicationApiClient,
               private contractApiClient: ContractApiClient,
               private projectManagerContractClient: ProjectManagerContractClient,
               private router: Router,
               private notificationsService: NotificationsService,
-              private projectModal: MatDialog,
-              private dialogService: DialogService) {
+              private dialogService: DialogService,
+              private etherReceivingService: EtherReceivingService,
+              private applicationApiClient: ApplicationApiClient) {
     this.createForm();
   }
 
@@ -122,7 +121,14 @@ export class ApplicationComponent {
       return;
     }
 
-    await this.dialogService.showCreateApplicationDialog(application);
+    const transactionDialog = this.dialogService.showTransactionDialog(
+      'Your project for scoring is being created. Please wait for completion of transaction.',
+      application.transactionHash
+    );
+
+    await this.applicationApiClient.createApplicationAsync(application);
+
+    transactionDialog.close();
 
     await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
     this.notificationsService.success('Success!', 'Project created');
@@ -133,9 +139,9 @@ export class ApplicationComponent {
       return;
     }
     if (!await this.checkBalanceAsync()) {
-      const etherDialog = this.dialogService.showGetEtherModal();
+      const etherDialog = this.dialogService.showGetEtherDialog();
       etherDialog.onClickReceive.subscribe(async () => {
-        await this.dialogService.showReceiveEthDialog();
+        await this.etherReceivingService.receiveAsync();
         if (await this.checkBalanceAsync()) {
           await this.submitIfFormValid();
         }
@@ -163,7 +169,6 @@ export class ApplicationComponent {
       for (let a = 0; a < invalidElements.length; a++) {
         invalidElements[a].nativeElement.classList.add('ng-invalid');
         invalidElements[a].nativeElement.classList.add('ng-dirty');
-        // invalidElements[a].nativeElement.children[1].classList.remove('ng-valid');
       }
     }
   }

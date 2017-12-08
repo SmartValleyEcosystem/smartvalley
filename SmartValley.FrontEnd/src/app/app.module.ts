@@ -44,12 +44,10 @@ import {MetamaskManualModalComponent} from './components/common/metamask-manual-
 import {GetEtherModalComponent} from './components/common/get-ether-modal/get-ether-modal.component';
 import {Angulartics2GoogleAnalytics} from 'angulartics2/ga';
 import {Angulartics2Module} from 'angulartics2';
+import {ProjectContractClient} from './services/project-contract-client';
+import {EtherReceivingService} from './services/ether-receiving-service';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {multiTranslateLoaderFactory} from './services/translate/multi-translate-loader-factory';
-
-
-
-
 
 @NgModule({
   declarations: [
@@ -125,7 +123,9 @@ import {multiTranslateLoaderFactory} from './services/translate/multi-translate-
     QuestionService,
     Web3Service,
     DialogService,
+    EtherReceivingService,
     ProjectManagerContractClient,
+    ProjectContractClient,
     BlockiesService],
   bootstrap: [AppComponent]
 })

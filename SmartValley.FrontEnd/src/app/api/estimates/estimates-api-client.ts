@@ -3,7 +3,6 @@ import {Injectable} from '@angular/core';
 import {BaseApiClient} from '../base-api-client';
 import {SubmitEstimatesRequest} from './submit-estimates-request';
 import {CollectionResponse} from '../collection-response';
-import {EstimateResponse} from './estimate-response';
 import {ExpertiseArea} from '../scoring/expertise-area.enum';
 import {GetEstimatesResponse} from './get-estimates-response';
 import {QuestionResponse} from './question-response';

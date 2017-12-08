@@ -52,10 +52,10 @@ export class ProjectService {
   }
 
   private getColorByPercent(percent: number): string {
-    if (percent > 80) {
+    if (percent > 67) {
       return 'high_rate';
     }
-    if (percent > 45) {
+    if (percent > 33) {
       return 'medium_rate';
     }
     return 'low_rate';

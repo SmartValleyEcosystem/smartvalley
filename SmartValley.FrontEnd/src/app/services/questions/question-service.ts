@@ -26,7 +26,7 @@ export class QuestionService {
     return categoryQuestions.map(q => q.minScore).reduce((previous, current) => previous + current);
   }
 
-  public async initializeQestionsCollectionAsync(): Promise<void> {
+  public async initializeAsync(): Promise<void> {
     const allQuestions = await this.estimatesClient.getQuestionsAsync();
     for (const item in ExpertiseArea) {
       if (Number(item)) {
