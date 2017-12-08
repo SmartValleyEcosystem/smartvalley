@@ -1,7 +1,7 @@
 import {Component, QueryList, ViewChildren, ElementRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
-import {QuestionService} from '../../services/question-service';
+import {QuestionService} from '../../services/questions/question-service';
 import {Paths} from '../../paths';
 import {SubmitEstimatesRequest} from '../../api/estimates/submit-estimates-request';
 import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';

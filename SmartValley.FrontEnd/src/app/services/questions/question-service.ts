@@ -1,13 +1,15 @@
 import {Injectable} from '@angular/core';
-import {ExpertiseArea} from '../api/scoring/expertise-area.enum';
-import {EstimatesApiClient} from '../api/estimates/estimates-api-client';
-import {QuestionResponse} from '../api/estimates/question-response';
+import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
+import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';
+import {QuestionResponse} from '../../api/estimates/question-response';
+import {TranslateService} from '@ngx-translate/core';
 
 @Injectable()
 export class QuestionService {
   private questions: { [expertiseArea: number]: Array<QuestionResponse>; } = {};
 
-  constructor(private estimatesClient: EstimatesApiClient) {
+  constructor(private estimatesClient: EstimatesApiClient,
+              private translate: TranslateService) {
   }
 
   public getByExpertiseArea(expertiseArea: ExpertiseArea): Array<QuestionResponse> {

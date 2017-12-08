@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
-import {QuestionService} from './question-service';
+import {QuestionService} from './questions/question-service';
 import {ExpertiseArea} from '../api/scoring/expertise-area.enum';
 
 @Injectable()

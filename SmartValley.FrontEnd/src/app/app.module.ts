@@ -23,7 +23,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {FooterComponent} from './components/footer/footer.component';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {EstimateComponent} from './components/estimate/estimate.component';
-import {QuestionService} from './services/question-service';
+import {QuestionService} from './services/questions/question-service';
 import {ContractApiClient} from './api/contract/contract-api-client';
 import {ErrorInterceptor} from './api/error-interceptor';
 import {ScoringApiClient} from './api/scoring/scoring-api-client';
@@ -46,6 +46,8 @@ import {Angulartics2GoogleAnalytics} from 'angulartics2/ga';
 import {Angulartics2Module} from 'angulartics2';
 import {ProjectContractClient} from './services/project-contract-client';
 import {EtherReceivingService} from './services/ether-receiving-service';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {multiTranslateLoaderFactory} from './services/translate/multi-translate-loader-factory';
 
 @NgModule({
   declarations: [
@@ -86,7 +88,13 @@ import {EtherReceivingService} from './services/ether-receiving-service';
     SimpleNotificationsModule.forRoot(),
     NgProgressModule,
     Ng2DeviceDetectorModule.forRoot(),
-    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics])
+    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: multiTranslateLoaderFactory
+      }
+    })
   ],
   providers: [
     {
