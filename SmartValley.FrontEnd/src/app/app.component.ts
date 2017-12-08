@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Options} from 'angular2-notifications';
 import {Angulartics2GoogleAnalytics} from 'angulartics2/ga';
-import {QuestionService} from './services/question-service';
+import {QuestionService} from './services/questions/question-service';
 import {TranslateService} from '@ngx-translate/core';
 import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
@@ -18,9 +18,6 @@ export class AppComponent implements OnInit {
     animate: 'fromLeft',
     showProgressBar: false
   };
-
-  lang = new Subject<string>();
-  lang$: Observable<string>;
 
   constructor(angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
               private questionService: QuestionService,

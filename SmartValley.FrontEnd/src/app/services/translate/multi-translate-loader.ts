@@ -6,11 +6,11 @@ export class MultiTranslateLoader implements TranslateLoader {
 
   constructor(public resources: { prefix: string, suffix: string }[]) {
   }
-  
+
   public getTranslation(lang: string): any {
 
     return Observable.forkJoin(this.resources.map(config => {
-      return System.import('../../../assets/i18n/' + config.prefix + lang + '.json');
+      return System.import('../../../app/' + config.prefix + lang + '.json');
     })).map(response => {
       return response.reduce((a, b) => {
         return Object.assign(a, b);

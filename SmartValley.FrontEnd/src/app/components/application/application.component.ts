@@ -12,7 +12,6 @@ import {Paths} from '../../paths';
 import {NotificationsService} from 'angular2-notifications';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {TransactionAwaitingModalComponent} from '../common/transaction-awaiting-modal/transaction-awaiting-modal.component';
-import {TransactionAwaitingModalData} from '../common/transaction-awaiting-modal/transaction-awaiting-modal-data';
 import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {DialogService} from '../../services/dialog-service';
 

@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Question} from '../../../services/question';
+import {Question} from '../../../services/questions/question';
 import {ProjectService} from '../../../services/project-service';
 
 

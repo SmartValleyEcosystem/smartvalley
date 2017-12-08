@@ -23,7 +23,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {FooterComponent} from './components/footer/footer.component';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {EstimateComponent} from './components/estimate/estimate.component';
-import {QuestionService} from './services/question-service';
+import {QuestionService} from './services/questions/question-service';
 import {ContractApiClient} from './api/contract/contract-api-client';
 import {ErrorInterceptor} from './api/error-interceptor';
 import {ScoringApiClient} from './api/scoring/scoring-api-client';
@@ -45,15 +45,11 @@ import {GetEtherModalComponent} from './components/common/get-ether-modal/get-et
 import {Angulartics2GoogleAnalytics} from 'angulartics2/ga';
 import {Angulartics2Module} from 'angulartics2';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {MultiTranslateLoader} from './services/i18n/multi-translate-loader';
+import {multiTranslateLoaderFactory} from './services/translate/multi-translate-loader-factory';
 
 
-export function multiTranslateLoaderFactory() {
-  return new MultiTranslateLoader([
-    {prefix: 'questions-', suffix: '.json'},
-    {prefix: 'header-', suffix: '.json'}
-  ]);
-}
+
+
 
 @NgModule({
   declarations: [

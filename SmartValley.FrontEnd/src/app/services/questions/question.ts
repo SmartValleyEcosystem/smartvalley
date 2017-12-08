@@ -1,5 +1,5 @@
-import {Estimate} from './estimate';
-import {ExpertiseArea} from '../api/scoring/expertise-area.enum';
+import {Estimate} from '../estimate';
+import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 
 export interface Question {
   name: string;
