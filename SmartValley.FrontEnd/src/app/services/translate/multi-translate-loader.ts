@@ -4,13 +4,12 @@ import 'rxjs/add/observable/forkJoin';
 
 export class MultiTranslateLoader implements TranslateLoader {
 
-  constructor(public resources: { prefix: string, suffix: string }[]) {
+  constructor(private resources: Array<string>) {
   }
 
   public getTranslation(lang: string): any {
-
-    return Observable.forkJoin(this.resources.map(config => {
-      return System.import('../../../app/' + config.prefix + lang + '.json');
+    return Observable.forkJoin(this.resources.map(filePath => {
+      return System.import(`../../../app/${filePath}-${lang}.json`);
     })).map(response => {
       return response.reduce((a, b) => {
         return Object.assign(a, b);
