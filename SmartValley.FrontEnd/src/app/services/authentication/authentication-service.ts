@@ -1,29 +1,30 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
-import {Web3Service} from './web3-service';
+import {Web3Service} from '../web3-service';
 import {NotificationsService} from 'angular2-notifications';
 import {Router} from '@angular/router';
-import {Paths} from '../paths';
+import {Paths} from '../../paths';
 import {Subscription} from 'rxjs/Subscription';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/map';
 import {Ng2DeviceService} from 'ng2-device-detector';
 import {MatDialog} from '@angular/material';
-import {AlertModalComponent} from '../components/common/alert-modal/alert-modal.component';
-import {AlertModalData} from '../components/common/alert-modal/alert-modal-data';
-import {Constants} from '../constants';
-import {MetamaskManualModalData} from '../components/common/metamask-manual-modal/metamask-manual-modal-data';
-import {MetamaskManualModalComponent} from '../components/common/metamask-manual-modal/metamask-manual-modal.component';
+import {AlertModalComponent} from '../../components/common/alert-modal/alert-modal.component';
+import {AlertModalData} from '../../components/common/alert-modal/alert-modal-data';
+import {Constants} from '../../constants';
+import {MetamaskManualModalData} from '../../components/common/metamask-manual-modal/metamask-manual-modal-data';
+import {MetamaskManualModalComponent} from '../../components/common/metamask-manual-modal/metamask-manual-modal.component';
+import {TranslateService} from '@ngx-translate/core';
 
 @Injectable()
 export class AuthenticationService {
-
   constructor(private web3Service: Web3Service,
               private router: Router,
               private deviceService: Ng2DeviceService,
               private alertModal: MatDialog,
-              private metamaskManualModel: MatDialog) {
+              private metamaskManualModel: MatDialog,
+              private translateService: TranslateService) {
     if (this.web3Service.isMetamaskInstalled && this.getCurrentUser() != null) {
       this.startBackgroundChecker();
     }
@@ -173,10 +174,9 @@ export class AuthenticationService {
     this.alertModal.open(AlertModalComponent, {
       width: '600px',
       data: <AlertModalData>{
-        title: 'Attention!',
-        message: 'Our MVP works correctly only on PC with Google Chrome / Firefox browser with Metamask extension.' +
-        ' You can\'t install Metamask on your browser.',
-        button: 'Ok'
+        title: this.translateService.instant('Authentication.IncompatibleBrowserTitle'),
+        message: this.translateService.instant('Authentication.IncompatibleBrowserMessage'),
+        button: this.translateService.instant('Authentication.IncompatibleBrowserButton')
       }
     });
   }
@@ -185,9 +185,9 @@ export class AuthenticationService {
     this.metamaskManualModel.open(MetamaskManualModalComponent, {
       width: '500px',
       data: <MetamaskManualModalData>{
-        title: 'Metamask is locked',
-        message: 'Please click Metamask extension\'s logo in the top right corner of your browser, enter password and press \'UNLOCK\'.',
-        button: 'Ok',
+        title: this.translateService.instant('Authentication.UnlockMetamaskTitle'),
+        message: this.translateService.instant('Authentication.UnlockMetamaskMessage'),
+        button: this.translateService.instant('Authentication.UnlockMetamaskButton'),
         imgUrl: '/assets/img/unlock_metamask.png'
       }
     });
@@ -197,9 +197,9 @@ export class AuthenticationService {
     this.metamaskManualModel.open(MetamaskManualModalComponent, {
       width: '500px',
       data: <MetamaskManualModalData>{
-        title: 'Wrong network',
-        message: 'Please click Metamask extension\'s logo in the top right corner of your browser and change network to \'Rinkeby Test Network\'.',
-        button: 'Ok',
+        title: this.translateService.instant('Authentication.WrongNetworkTitle'),
+        message: this.translateService.instant('Authentication.WrongNetworkMessage'),
+        button: this.translateService.instant('Authentication.WrongNetworkButton'),
         imgUrl: '/assets/img/change_network.png'
       }
     });

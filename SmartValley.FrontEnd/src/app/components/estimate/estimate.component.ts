@@ -5,7 +5,7 @@ import {QuestionService} from '../../services/questions/question-service';
 import {Paths} from '../../paths';
 import {SubmitEstimatesRequest} from '../../api/estimates/submit-estimates-request';
 import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';
-import {AuthenticationService} from '../../services/authentication-service';
+import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {EstimateRequest} from '../../api/estimates/estimate-request';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {ProjectApiClient} from '../../api/project/project-api-client';
@@ -15,6 +15,7 @@ import {TeamMember} from '../../services/team-member';
 import {ProjectContractClient} from '../../services/project-contract-client';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {DialogService} from '../../services/dialog-service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-estimate',
@@ -41,7 +42,8 @@ export class EstimateComponent {
               private formBuilder: FormBuilder,
               private projectContractClient: ProjectContractClient,
               private contractApiClient: ContractApiClient,
-              private dialogService: DialogService) {
+              private dialogService: DialogService,
+              private translateService: TranslateService) {
     this.loadProjectInfo();
   }
 
@@ -80,7 +82,7 @@ export class EstimateComponent {
     };
 
     const transactionDialog = this.dialogService.showTransactionDialog(
-      'Your estimates are being processed. Please wait for completion of transaction.',
+      this.translateService.instant('Estimate.Dialog'),
       transactionHash
     );
 

@@ -1,7 +1,7 @@
 <div class="container" *ngIf="report">
   <div class="row mx-auto">
     <div class="col-8 sm-title">
-      <h1>Scoring report</h1>
+      <h1>{{ 'Report.Title' | translate }}</h1>
     </div>
   </div>
   <div class="row mx-auto">
@@ -18,9 +18,9 @@
         </div>
         <div class="scoring col-3">
           <div class="scoring-container">
-            <span>Scoring rating:</span>
+            <span>{{ 'Report.ScoringRating' | translate }}</span>
             <span *ngIf="report.score" class="score {{projectService.colorOfProjectRate(report.score)}}">{{report.score.toFixed(0)}}</span>
-            <span *ngIf="!report.score">In progress...</span>
+            <span *ngIf="!report.score">{{ 'Report.InProgress' | translate }}</span>
           </div>
         </div>
       </div>
@@ -28,34 +28,34 @@
   </div>
   <div class="row mx-auto">
     <ngb-tabset #reportTabSet (tabChange)="onMainTabChanged($event)" class="col-12 info">
-      <ngb-tab id="form" title="Form">
+      <ngb-tab id="form" title="{{ 'Report.Form' | translate }}">
         <ng-template ngbTabContent>
           <div class="sw-card sw-content sw-main-info">
             <div class="row">
-              <span class="col-3 offset-1">Project name:</span>
+              <span class="col-3 offset-1">{{ 'Report.Name' | translate }}:</span>
               <span class="col-8">{{report.name}}</span>
             </div>
             <div class="row">
-              <span class="col-3 offset-1">Project area:</span>
+              <span class="col-3 offset-1">{{ 'Report.ProjectArea' | translate }}:</span>
               <span class="col-8">{{report.area}}</span>
             </div>
             <div class="row">
-              <span class="col-3 offset-1">Description:</span>
+              <span class="col-3 offset-1">{{ 'Report.Description' | translate }}:</span>
               <span class="col-8">{{report.description}}</span>
             </div>
             <div class="row">
-              <span class="col-3 offset-1">Status:</span>
+              <span class="col-3 offset-1">{{ 'Report.Status' | translate }}:</span>
               <span class="col-8">{{report.status}}</span>
             </div>
             <div class="row">
-              <span class="col-3 offset-1">White paper link:</span>
+              <span class="col-3 offset-1">{{ 'Report.WhitePaperLink' | translate }}:</span>
               <app-nullable-link [href]="report.whitePaperLink" class="col-8"></app-nullable-link>
             </div>
           </div>
 
           <div class="sw-card sw-content">
             <div class="row row-title">
-              <h3 class="col-10 offset-1">Core Team</h3>
+              <h3 class="col-10 offset-1">{{ 'Report.Team' | translate }}</h3>
             </div>
             <div *ngFor="let member of teamMembers;">
               <div class="row">
@@ -74,51 +74,51 @@
           </div>
           <div class="sw-card sw-content">
             <div class="row row-title">
-              <h3 class="col-10 offset-1">Legal part</h3>
+              <h3 class="col-10 offset-1">{{ 'Report.LegalPart' | translate }}</h3>
             </div>
             <div class="row">
-              <span class="col-3 offset-1">Incorporation:</span>
+              <span class="col-3 offset-1">{{ 'Report.Incorporation' | translate }}:</span>
               <span class="col-5">{{report.country}}</span>
             </div>
           </div>
           <div class="sw-card sw-content">
             <div class="row row-title">
-              <h3 class="col-10 offset-1">Finance</h3>
+              <h3 class="col-10 offset-1">{{ 'Report.Finance' | translate }}</h3>
             </div>
             <div class="row" style="padding-bottom: 0;">
-              <span class="col-3 offset-1">Investments:</span>
+              <span class="col-3 offset-1">{{ 'Report.Investments' | translate }}:</span>
             </div>
             <div class="row sub-row">
-              <span class="col-3 offset-1">soft cap:</span>
+              <span class="col-3 offset-1">{{ 'Report.SoftCap' | translate }}:</span>
               <span class="col-5">{{report.softCap}}</span>
             </div>
             <div class="row sub-row">
-              <span class="col-3 offset-1">hard cap:</span>
+              <span class="col-3 offset-1">{{ 'Report.HardCap' | translate }}:</span>
               <span class="col-5">{{report.hardCap}}</span>
             </div>
             <div class="row">
-              <span class="col-3 offset-1">Financial model link:</span>
+              <span class="col-3 offset-1">{{ 'Report.FinancialModelLink' | translate }}:</span>
               <app-nullable-link [href]="report.financeModelLink" class="col-5"></app-nullable-link>
             </div>
             <div class="row">
-              <span class="col-3 offset-1">Attracted investments:</span>
+              <span class="col-3 offset-1">{{ 'Report.AttractedInvestments' | translate }}:</span>
               <span *ngIf="report.attractedInvestments; else noAttract" style="color:green;"
-                    class="col-5">Yes</span>
+                    class="col-5">{{ 'Common.Yes' | translate }}</span>
               <ng-template #noAttract>
-                <span style="color:red;" class="col-5">No</span>
+                <span style="color:red;" class="col-5">{{ 'Common.No' | translate }}</span>
               </ng-template>
             </div>
           </div>
           <div class="sw-card sw-content">
             <div class="row row-title">
-              <h3 class="col-10 offset-1">Tech</h3>
+              <h3 class="col-10 offset-1">{{ 'Report.Tech' | translate }}</h3>
             </div>
             <div class="row">
-              <span class="col-3 offset-1">Blockchain:</span>
+              <span class="col-3 offset-1">{{ 'Report.Blockchain' | translate }}:</span>
               <span class="col-5">{{report.blockChainType}}</span>
             </div>
             <div class="row">
-              <span class="col-3 offset-1">Prototype/MVP link:</span>
+              <span class="col-3 offset-1">{{ 'Report.MvpLink' | translate }}:</span>
               <app-nullable-link [href]="report.mvpLink" class="col-5"></app-nullable-link>
             </div>
           </div>
@@ -126,38 +126,42 @@
             <button class="trans-btn col-3 btn btn-primary"
                     style="padding-top: 1em; padding-bottom: 1em;"
                     (click)="showEstimates()">
-              Experts estimates
+              {{ 'Report.ExpertEstimates' | translate }}
               <i class="fa fa-arrow-right" aria-hidden="true"></i>
             </button>
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab id="estimates" title="Experts estimates">
+      <ngb-tab id="estimates" title="{{ 'Report.ExpertEstimates' | translate }}">
         <ng-template ngbTabContent>
           <div class="content sw-card sw-content">
             <mat-tab-group (selectedTabChange)="onExpertiseTabChanged($event)">
-              <mat-tab label="HR">
-                <span>HR average score: </span>
-                <span *ngIf="expertiseAreaAverageScore > -1; else elseBlock" class="{{projectService.colorOfHrScore(expertiseAreaAverageScore)}}">{{expertiseAreaAverageScore.toFixed(2)}}</span>
-                <ng-template #elseBlock><span>in progress</span></ng-template>
+              <mat-tab label="{{ 'Common.Hr' | translate }}">
+                <span>{{ 'Report.HrAvg' | translate }}:</span>
+                <span *ngIf="expertiseAreaAverageScore > -1; else elseBlock"
+                      class="{{projectService.colorOfHrScore(expertiseAreaAverageScore)}}">{{expertiseAreaAverageScore.toFixed(2)}}</span>
+                <ng-template #elseBlock><span>{{ 'Report.InProgressLower' | translate }}</span></ng-template>
                 <app-questions [questions]="questions"></app-questions>
               </mat-tab>
-              <mat-tab label="Lawyer">
-                <span>Lawyer average score: </span>
-                <span *ngIf="expertiseAreaAverageScore > -1; else elseBlock" class="{{projectService.colorOfLawyerScore(expertiseAreaAverageScore)}}">{{expertiseAreaAverageScore.toFixed(2)}}</span>
-                <ng-template #elseBlock><span>in progress</span></ng-template>
+              <mat-tab label="{{ 'Common.Lawyer' | translate }}">
+                <span>{{ 'Report.LawyerAvg' | translate }}:</span>
+                <span *ngIf="expertiseAreaAverageScore > -1; else elseBlock"
+                      class="{{projectService.colorOfLawyerScore(expertiseAreaAverageScore)}}">{{expertiseAreaAverageScore.toFixed(2)}}</span>
+                <ng-template #elseBlock><span>{{ 'Report.InProgressLower' | translate }}</span></ng-template>
                 <app-questions [questions]="questions"></app-questions>
               </mat-tab>
-              <mat-tab label="Analyst">
-                <span>Analyst average score: </span>
-                <span *ngIf="expertiseAreaAverageScore > -1; else elseBlock" class="{{projectService.colorOfAnalystScore(expertiseAreaAverageScore)}}">{{expertiseAreaAverageScore.toFixed(2)}}</span>
-                <ng-template #elseBlock><span>in progress</span></ng-template>
+              <mat-tab label="{{ 'Common.Analyst' | translate }}">
+                <span>{{ 'Report.AnalystAvg' | translate }}:</span>
+                <span *ngIf="expertiseAreaAverageScore > -1; else elseBlock"
+                      class="{{projectService.colorOfAnalystScore(expertiseAreaAverageScore)}}">{{expertiseAreaAverageScore.toFixed(2)}}</span>
+                <ng-template #elseBlock><span>{{ 'Report.InProgressLower' | translate }}</span></ng-template>
                 <app-questions [questions]="questions"></app-questions>
               </mat-tab>
-              <mat-tab label="Technical expert">
-                <span>Technical expert average score: </span>
-                <span *ngIf="expertiseAreaAverageScore > -1; else elseBlock" class="{{projectService.colorOfTechnicalScore(expertiseAreaAverageScore)}}">{{expertiseAreaAverageScore.toFixed(2)}}</span>
-                <ng-template #elseBlock><span>in progress</span></ng-template>
+              <mat-tab label="{{ 'Common.TechnicalExpert' | translate }}">
+                <span>{{ 'Report.TechnicalExpertAvg' | translate }}:</span>
+                <span *ngIf="expertiseAreaAverageScore > -1; else elseBlock"
+                      class="{{projectService.colorOfTechnicalScore(expertiseAreaAverageScore)}}">{{expertiseAreaAverageScore.toFixed(2)}}</span>
+                <ng-template #elseBlock><span>{{ 'Report.InProgressLower' | translate }}</span></ng-template>
                 <app-questions [questions]="questions"></app-questions>
               </mat-tab>
             </mat-tab-group>
@@ -166,7 +170,7 @@
             <button class="trans-btn col-3 btn btn-primary"
                     (click)="showForm()">
               <i class="fa fa-arrow-left" aria-hidden="true"></i>
-              Form
+              {{ 'Report.Form' | translate }}
             </button>
           </div>
         </ng-template>

@@ -70,8 +70,6 @@ namespace SmartValley.Data.SQL.Migrations
                         .IsRequired()
                         .HasMaxLength(42);
 
-                    b.Property<int>("ExpertiseArea");
-
                     b.Property<long>("ProjectId");
 
                     b.Property<long>("QuestionId");
@@ -140,19 +138,11 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(500);
-
                     b.Property<int>("ExpertiseArea");
 
                     b.Property<int>("MaxScore");
 
                     b.Property<int>("MinScore");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100);
 
                     b.HasKey("Id");
 

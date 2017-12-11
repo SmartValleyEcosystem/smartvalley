@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {BalanceApiClient} from '../../api/balance/balance-api-client';
-import {AuthenticationService} from '../../services/authentication-service';
+import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {Constants} from '../../constants';
-import {EtherReceivingService} from '../../services/ether-receiving-service';
+import {EtherReceivingService} from '../../services/ether-receiving/ether-receiving-service';
 
 @Component({
   selector: 'app-header',

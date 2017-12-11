@@ -1,37 +1,37 @@
 <div [ngClass]="hidden ? '' : 'hidden'" class="container" *ngIf="projectDetails">
   <div class="row mx-auto">
     <div class="col-8 sm-title">
-      <h1>Estimate the project</h1>
+      <h1>{{ 'Estimate.Title' | translate }}</h1>
     </div>
   </div>
   <div class="sw-card sw-content">
     <div class="row row-title">
-      <h3 class="col-10 offset-1">Basic Information</h3>
+      <h3 class="col-10 offset-1">{{ 'Estimate.BasicInformation' | translate }}</h3>
     </div>
     <div class="row">
-      <span class="col-2 offset-1">Project name:</span>
+      <span class="col-2 offset-1">{{ 'Estimate.Name' | translate }}:</span>
       <span class="col-8">{{projectDetails.name}}</span>
     </div>
     <div class="row">
-      <span class="col-2 offset-1">Project area:</span>
+      <span class="col-2 offset-1">{{ 'Estimate.ProjectArea' | translate }}:</span>
       <span class="col-8">{{projectDetails.area}}</span>
     </div>
     <div class="row">
-      <span class="col-2 offset-1">Description:</span>
+      <span class="col-2 offset-1">{{ 'Estimate.Description' | translate }}:</span>
       <span class="col-8">{{projectDetails.description}}</span>
     </div>
     <div class="row">
-      <span class="col-2 offset-1">Status:</span>
+      <span class="col-2 offset-1">{{ 'Estimate.Status' | translate }}:</span>
       <span class="col-8">{{projectDetails.status}}</span>
     </div>
     <div class="row">
-      <span class="col-2 offset-1">White paper link:</span>
+      <span class="col-2 offset-1">{{ 'Estimate.WhitePaperLink' | translate }}:</span>
       <app-nullable-link [href]="projectDetails.whitePaperLink" class="col-8"></app-nullable-link>
     </div>
   </div>
   <div class="sw-card sw-content">
     <div class="row row-title">
-      <h3 class="col-10 offset-1">Core Team</h3>
+      <h3 class="col-10 offset-1">{{ 'Estimate.Team' | translate }}:</h3>
     </div>
     <div *ngFor="let member of teamMembers;">
       <div class="row">
@@ -50,57 +50,57 @@
   </div>
   <div class="sw-card sw-content">
     <div class="row row-title">
-      <h3 class="col-10 offset-1">Legal part</h3>
+      <h3 class="col-10 offset-1">{{ 'Estimate.LegalPart' | translate }}</h3>
     </div>
     <div class="row">
-      <span class="col-3 offset-1">Incorporation:</span>
+      <span class="col-3 offset-1">{{ 'Estimate.Incorporation' | translate }}:</span>
       <span class="col-5">{{projectDetails.country}}</span>
     </div>
   </div>
   <div class="sw-card sw-content">
     <div class="row row-title">
-      <h3 class="col-10 offset-1">Finance</h3>
+      <h3 class="col-10 offset-1">{{ 'Estimate.Finance' | translate }}</h3>
     </div>
     <div class="row" style="padding-bottom: 0;">
-      <span class="col-3 offset-1">Investments:</span>
+      <span class="col-3 offset-1">{{ 'Estimate.Investments' | translate }}:</span>
     </div>
     <div class="row sub-row">
       <span class="col-3 offset-1">soft cap:</span>
-      <span class="col-5">{{projectDetails.softCap}}</span>
+      <span class="col-5">{{ 'Estimate.SoftCap' | translate }}:</span>
     </div>
     <div class="row sub-row">
       <span class="col-3 offset-1">hard cap:</span>
-      <span class="col-5">{{projectDetails.hardCap}}</span>
+      <span class="col-5">{{ 'Estimate.HardCap' | translate }}:</span>
     </div>
     <div class="row">
-      <span class="col-3 offset-1">Financial model link:</span>
+      <span class="col-3 offset-1">{{ 'Estimate.FinancialModelLink' | translate }}:</span>
       <app-nullable-link [href]="projectDetails.financeModelLink" class="col-5"></app-nullable-link>
     </div>
     <div class="row">
-      <span class="col-3 offset-1">Attracted investments:</span>
+      <span class="col-3 offset-1">{{ 'Estimate.AttractedInvestments' | translate }}:</span>
       <span *ngIf="projectDetails.attractedInvestments; else noAttract" style="color:green;"
-            class="col-5">Yes</span>
+            class="col-5">{{ 'Common.Yes' | translate }}</span>
       <ng-template #noAttract>
-        <span style="color:red;" class="col-5">No</span>
+        <span style="color:red;" class="col-5">{{ 'Common.No' | translate }}</span>
       </ng-template>
     </div>
   </div>
   <div class="sw-card sw-content">
     <div class="row row-title">
-      <h3 class="col-10 offset-1">Tech</h3>
+      <h3 class="col-10 offset-1">{{ 'Estimate.Tech' | translate }}</h3>
     </div>
     <div class="row">
-      <span class="col-3 offset-1">Blockchain:</span>
+      <span class="col-3 offset-1">{{ 'Estimate.Blockchain' | translate }}:</span>
       <span class="col-5">{{projectDetails.blockChainType}}</span>
     </div>
     <div class="row">
-      <span class="col-3 offset-1">Prototype/MVP link:</span>
+      <span class="col-3 offset-1">{{ 'Estimate.MvpLink' | translate }}:</span>
       <app-nullable-link [href]="projectDetails.mvpLink" class="col-5"></app-nullable-link>
     </div>
   </div>
   <div class="next-button row">
     <button (click)="changeHidden()" class="btn-blue col-3 btn btn-primary"
-            style="padding-top: 1em; padding-bottom: 1em;">Estimate
+            style="padding-top: 1em; padding-bottom: 1em;">{{ 'Estimate.Estimate' | translate }}
     </button>
   </div>
   <form [formGroup]="estimateForm" novalidate>
@@ -117,12 +117,12 @@
           <div class="row">
             <div class="form-group">
               <div class="score col-1 offset-1">
-                <span style="font-size: 0.85em;">Your score:</span>
+                <span style="font-size: 0.85em;">{{ 'Estimate.YourScore' | translate }}</span>
                 <input #required type="number" style="margin-top: 1em;" class="form-control" formControlName="score"
                        placeholder="{{question.value.maxScore}}">
               </div>
               <div class="col-6">
-                <span style="font-size: 0.85em;">Comments 250 symbols</span>
+                <span style="font-size: 0.85em;">{{ 'Estimate.YourComment' | translate }}</span>
                 <textarea #required class="form-control"
                           style="margin-top: 1em; height: 10em; resize: none;"
                           formControlName="comments">
@@ -137,7 +137,7 @@
   <div class="submit-button row">
     <button (click)="send()" class="btn-blue col-3 btn btn-primary"
             style="padding-top: 1em; padding-bottom: 1em;">
-      Send
+      {{ 'Estimate.Send' | translate }}
     </button>
   </div>
 </div>

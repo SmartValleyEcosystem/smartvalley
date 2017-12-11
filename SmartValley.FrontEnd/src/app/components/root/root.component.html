@@ -1,16 +1,16 @@
 <div class="container">
   <div class="row mx-auto">
     <div class="col-8 sm-title">
-      <h1>Smart valley mvp</h1>
+      <h1>{{ 'Common.Title' | translate }}</h1>
     </div>
   </div>
   <div class="row mx-auto">
     <div class="col-6 sv-description d-flex align-items-end">
-      <h2 class="">Scored Projects:</h2>
+      <h2 class="">{{ 'Root.ScoredProjects' | translate }}</h2>
     </div>
     <div class="col-6 btn-grp text-right">
-        <button mat-raised-button class="col-5 sm-btn-primary btn-space" (click)="navigateToScoring()">Become an expert</button>
-        <button mat-raised-button class="col-5 sm-btn-primary btn-space" (click)="createProject()">Apply project for scoring</button>
+        <button mat-raised-button class="col-5 sm-btn-primary btn-space" (click)="navigateToScoring()">{{ 'Root.BecomeAnExpert' | translate }}</button>
+        <button mat-raised-button class="col-5 sm-btn-primary btn-space" (click)="createProject()">{{ 'Root.ApplyProject' | translate }}</button>
     </div>
   </div>
   <div class="row mx-auto">

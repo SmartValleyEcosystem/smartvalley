@@ -12,16 +12,16 @@
   </div>
   <div class="scoring col-3">
     <div class="scoring-container">
-      <span>Scoring rating:</span>
+      <span>{{ 'ProjectCard.ScoringRating' | translate }}</span>
       <span *ngIf="project.score" class="score {{projectService.colorOfProjectRate(project.score)}}">{{project.score.toFixed(0)}}</span>
-      <span *ngIf="!project.score">In progress...</span>
+      <span *ngIf="!project.score">{{ 'ProjectCard.InProgress' | translate }}</span>
     </div>
     <div *ngIf="isScoring">
       <a class="col-8 sv-default-btn btn btn-primary"
-         (click)="showProject(project.id)">Estimate</a>
+         (click)="showProject(project.id)">{{ 'ProjectCard.Estimate' | translate }}</a>
     </div>
     <div *ngIf="!isScoring">
-      <a (click)="showReport(project.id)" class="col-8 sv-default-btn btn btn-primary">View report</a>
+      <a (click)="showReport(project.id)" class="col-8 sv-default-btn btn btn-primary">{{ 'ProjectCard.ViewReport' | translate }}</a>
     </div>
   </div>
 </div>

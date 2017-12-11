@@ -1,7 +1,7 @@
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {AuthenticationService} from '../services/authentication-service';
+import {AuthenticationService} from '../services/authentication/authentication-service';
 import {HeadersConstants} from '../constants';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/mergeMap';

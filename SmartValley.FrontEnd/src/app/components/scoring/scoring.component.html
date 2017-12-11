@@ -1,35 +1,35 @@
 <div class="container">
   <div class="row mx-auto">
     <div class="col-8 sm-title">
-      <h1>Smart valley mvp</h1>
+      <h1>{{ 'Common.Title' | translate }}</h1>
       <p>
       </p>
     </div>
   </div>
   <div class="row mx-auto">
     <ngb-tabset #projectsTabSet (tabChange)="onMainTabChanged($event)" class="col-12 scoring-projects">
-      <ngb-tab id="forscoring" title="Projects for scoring">
+      <ngb-tab id="forscoring" title="{{ 'Scoring.ProjectsForScoring' | translate }}">
         <ng-template ngbTabContent>
           <div class="white-card">
             <div class="content">
-              <span class="choose">Choose expertise</span>
+              <span class="choose">{{ 'Scoring.ChooseExpertise' | translate }}</span>
               <mat-tab-group (selectedTabChange)="onExpertiseTabChanged($event)">
-                <mat-tab label="HR">
+                <mat-tab label="{{ 'Common.Hr' | translate }}">
                   <div class="card" *ngFor="let project of projectsForScoring;">
                     <app-project-card [project]="project" [isScoring]="true"></app-project-card>
                   </div>
                 </mat-tab>
-                <mat-tab label="Lawyer">
+                <mat-tab label="{{ 'Common.Lawyer' | translate }}">
                   <div class="card" *ngFor="let project of projectsForScoring;">
                     <app-project-card [project]="project" [isScoring]="true"></app-project-card>
                   </div>
                 </mat-tab>
-                <mat-tab label="Analyst">
+                <mat-tab label="{{ 'Common.Analyst' | translate }}">
                   <div class="card" *ngFor="let project of projectsForScoring;">
                     <app-project-card [project]="project" [isScoring]="true"></app-project-card>
                   </div>
                 </mat-tab>
-                <mat-tab label="Technical expert">
+                <mat-tab label="{{ 'Common.TechnicalExpert' | translate }}">
                   <div class="card" *ngFor="let project of projectsForScoring;">
                     <app-project-card [project]="project" [isScoring]="true"></app-project-card>
                   </div>
@@ -39,7 +39,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab id="myprojects" title="My projects">
+      <ngb-tab id="myprojects" title="{{ 'Scoring.MyProjects' | translate }}">
         <ng-template ngbTabContent>
           <div class="white-card">
             <div class="content">
@@ -48,13 +48,12 @@
                   <app-project-card [project]="project" [isScoring]="false"></app-project-card>
                 </div>
               </div>
-                <button *ngIf="myProjects.length > 0" (click)="createProject()" class="btn-blue col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">Create project</button>
+                <button *ngIf="myProjects.length > 0" (click)="createProject()" class="btn-blue col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">{{ 'Scoring.CreateProject' | translate }}</button>
             </div>
           </div>
           <ng-template #withoutProject>
             <div class="without-project">
-              <button mat-raised-button class="col-5 sv-default-btn btn-space" (click)="createProject()">Create a
-                new project for scoring
+              <button mat-raised-button class="col-5 sv-default-btn btn-space" (click)="createProject()">{{ 'Scoring.CreateProjectForScoring' | translate }}
               </button>
             </div>
           </ng-template>

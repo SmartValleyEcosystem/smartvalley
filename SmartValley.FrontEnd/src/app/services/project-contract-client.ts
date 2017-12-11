@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Web3Service} from './web3-service';
-import {AuthenticationService} from './authentication-service';
+import {AuthenticationService} from './authentication/authentication-service';
 import {ExpertiseArea} from '../api/scoring/expertise-area.enum';
 import {EstimateRequest} from '../api/estimates/estimate-request';
 

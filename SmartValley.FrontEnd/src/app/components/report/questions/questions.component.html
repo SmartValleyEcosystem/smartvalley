@@ -9,14 +9,14 @@
   </div>
   <div class="row-content">
     <div class="row row-title">
-      <span class="col-3 progress_rate">Expert</span>
-      <span class="col-1 progress_rate">Score</span>
-      <span class="col-7 progress_rate" style="word-wrap: break-word;">Comments</span>
+      <span class="col-3 progress_rate">{{ 'Questions.Expert' | translate }}</span>
+      <span class="col-1 progress_rate">{{ 'Questions.Score' | translate }}</span>
+      <span class="col-7 progress_rate" style="word-wrap: break-word;">{{ 'Questions.Comments' | translate }}</span>
     </div>
   </div>
   <div class="row-content" *ngFor="let estimate of question.estimates; let i = index;">
     <div class="row row-title">
-      <span class="col-3">Expert {{i + 1}} score:</span>
+      <span class="col-3">{{ 'Questions.Expert' | translate }} {{i + 1}} {{ 'Questions.ScoreLower' | translate }}:</span>
       <span class="col-1 {{projectService.colorOfEstimateScore(estimate.score, question.minScore, question.maxScore)}}">{{estimate.score}}</span>
       <span class="col-7" style="word-wrap: break-word;">{{estimate.comments}}</span>
     </div>

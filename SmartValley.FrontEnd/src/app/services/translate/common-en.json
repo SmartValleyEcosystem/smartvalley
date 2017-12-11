@@ -1,0 +1,15 @@
+{
+  "Common": {
+    "Title": "Smart valley mvp",
+    "Hr": "HR",
+    "Lawyer": "Lawyer",
+    "Analyst": "Analyst",
+    "TechnicalExpert": "Technical expert",
+    "Yes": "Yes",
+    "No": "No",
+    "ServerError": "Server error",
+    "Error": "Error",
+    "TryAgain": "Please try again later",
+    "Success": "Success"
+  }
+}
