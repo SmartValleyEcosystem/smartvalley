@@ -19,4 +19,9 @@ export class ContractApiClient extends BaseApiClient {
     return await this.http.get<ProjectContractResponse>(this.baseApiUrl + '/contracts/project')
       .toPromise();
   }
+
+  async getTokenContractAsync(): Promise<ProjectManagerContractResponse> {
+    return await this.http.get<ProjectManagerContractResponse>(this.baseApiUrl + '/contracts/token')
+      .toPromise();
+  }
 }

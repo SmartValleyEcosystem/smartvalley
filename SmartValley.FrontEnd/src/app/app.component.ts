@@ -5,6 +5,8 @@ import {QuestionService} from './services/questions/question-service';
 import {TranslateService} from '@ngx-translate/core';
 import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
+import {ContractApiClient} from './api/contract/contract-api-client';
+import {TokenClient} from './api/token/token-client';
 
 @Component({
   selector: 'app-root',
@@ -21,11 +23,13 @@ export class AppComponent implements OnInit {
 
   constructor(angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
               private questionService: QuestionService,
+              private tokenClient: TokenClient,
               translate: TranslateService) {
     translate.use('en');
   }
 
   async ngOnInit() {
     await this.questionService.initializeAsync();
+    await this.tokenClient.loadContractInformationAsync();
   }
 }
