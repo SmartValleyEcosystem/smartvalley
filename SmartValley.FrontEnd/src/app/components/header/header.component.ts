@@ -38,7 +38,6 @@ export class HeaderComponent implements OnInit {
       this.currentBalance = +balanceResponse.balance.toFixed(3);
       const address = this.authenticationService.getCurrentUser().account;
       this.currentTokens = await this.tokenClient.getTokenBalanceFromAddress(address);
-      console.log(this.currentTokens);
       this.showReceiveEtherButton = !balanceResponse.wasEtherReceived;
     } else {
       this.showBalance = false;

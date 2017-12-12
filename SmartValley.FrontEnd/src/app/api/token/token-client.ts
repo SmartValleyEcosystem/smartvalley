@@ -4,6 +4,8 @@ import {HttpClient} from '@angular/common/http';
 import {Web3Service} from '../../services/web3-service';
 import {ContractApiClient} from '../contract/contract-api-client';
 
+const unit = require('ethjs-unit');
+
 
 @Injectable()
 export class TokenClient extends BaseApiClient {
@@ -27,7 +29,7 @@ export class TokenClient extends BaseApiClient {
     const token = this.web3.getContract(this.AbiOfContract, this.contractAddress);
 // suppose you want to call a function named myFunction of myContract
     const result = await token.balanceOf(accountAddress);
-    const balance = result[0].words[0].toString();
-    return parseInt(balance, 0);
+    const number = unit.fromWei(result[0].toString(10), 'ether');
+    return number;
   }
 }
