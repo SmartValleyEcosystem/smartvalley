@@ -12,6 +12,7 @@ export class TokenService {
 
   private contractAbi: string;
   private contractAddress: string;
+  private isInitialized: boolean;
 
   constructor(private http: HttpClient,
               private web3: Web3Service,
@@ -19,7 +20,7 @@ export class TokenService {
   }
 
   private async checkContractAsync(): Promise<void> {
-    if (isNullOrUndefined(this.contractAbi) || isNullOrUndefined(this.contractAddress)) {
+    if (!this.isInitialized) {
       await this.initilizeAsync();
     }
   }
@@ -28,6 +29,7 @@ export class TokenService {
     const tokenContract = await this.contractClient.getTokenContractAsync();
     this.contractAbi = tokenContract.abi;
     this.contractAddress = tokenContract.address;
+    this.isInitialized = true;
   }
 
   async getBalanceAsync(accountAddress: string): Promise<number> {
