@@ -1,4 +1,4 @@
-import {AfterViewChecked, Component, ViewChild} from '@angular/core';
+import {AfterViewChecked, Component, OnInit, ViewChild} from '@angular/core';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
@@ -20,7 +20,7 @@ import {Constants} from '../../constants';
   templateUrl: './report.component.html',
   styleUrls: ['./report.component.css']
 })
-export class ReportComponent implements AfterViewChecked {
+export class ReportComponent implements AfterViewChecked, OnInit {
   public questions: Array<Question>;
   public report: ProjectDetailsResponse;
   public EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
@@ -43,7 +43,10 @@ export class ReportComponent implements AfterViewChecked {
               public projectService: ProjectService,
               private activatedRoute: ActivatedRoute,
               private router: Router) {
-    this.loadInitialData();
+  }
+
+  async ngOnInit() {
+    await this.loadInitialData();
     this.activatedRoute.queryParams.subscribe(params => {
       this.selectedTab = params[Constants.TabQueryParam];
     });
