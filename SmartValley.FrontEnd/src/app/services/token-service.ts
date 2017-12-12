@@ -22,12 +22,17 @@ export class TokenService {
     this.isInitialized = true;
   }
 
+  private extractValueFromContractResult(result: Array<any>): number {
+    return +result[0].toString(10);
+  }
+
   async getBalanceAsync(accountAddress: string): Promise<number> {
     if (!this.isInitialized) {
       await this.initilizeAsync();
     }
     const token = this.web3.getContract(this.contractAbi, this.contractAddress);
-    const balance = await token.balanceOf(accountAddress);
-    return this.web3.fromWei(balance[0].toString(10),'ether');
+    const balance = this.extractValueFromContractResult(await token.balanceOf(accountAddress));
+    const decimals = this.extractValueFromContractResult(await token.decimals());
+    return this.web3.fromWei(balance, decimals);
   }
 }

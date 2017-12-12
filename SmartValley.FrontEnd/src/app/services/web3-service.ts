@@ -36,7 +36,11 @@ export class Web3Service {
     return this.eth.personal_sign(EthJs.fromUtf8(message), address);
   }
 
-  public fromWei(weiNumber: string, unit: string): number {
+  public fromWei(weiNumber: number, unit: string | number): number {
+    if (typeof unit === 'number') {
+      return +weiNumber * Math.pow(10, -unit);
+    }
+
     return EthJs.fromWei(weiNumber, unit);
   }
 
