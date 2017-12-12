@@ -16,11 +16,11 @@ namespace SmartValley.WebApi.Contracts
         }
 
         [Route("projectManager")]
-        public ProjectManagerContractResponse GetProjectManagerContract()
+        public ContractResponse GetProjectManagerContract()
         {
             var projectManagerContractOptions = _nethereumOptions.ProjectManagerContract;
-            return new ProjectManagerContractResponse
-                   {
+            return new ContractResponse
+            {
                        Address = projectManagerContractOptions.Address,
                        Abi = projectManagerContractOptions.Abi,
                    };
@@ -36,11 +36,11 @@ namespace SmartValley.WebApi.Contracts
         }
 
         [Route("token")]
-        public ProjectManagerContractResponse GetTokenContractAbi()
+        public ContractResponse GetTokenContractAbi()
         {
             var tokenContractOptions = _nethereumOptions.TokenContract;
-            return new ProjectManagerContractResponse
-                   {
+            return new ContractResponse
+            {
                        Address = tokenContractOptions.Address,
                        Abi = tokenContractOptions.Abi,
                    };
