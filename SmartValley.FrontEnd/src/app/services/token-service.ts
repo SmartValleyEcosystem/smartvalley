@@ -25,8 +25,7 @@ export class TokenService {
 
   async getBalanceAsync(accountAddress: string): Promise<number> {
     const token = this.web3.getContract(this.contractAbi, this.contractAddress);
-    const result = await token.balanceOf(accountAddress);
-    const number = unit.fromWei(result[0].toString(10), 'ether');
-    return number;
+    const balance = await token.balanceOf(accountAddress);
+    return unit.fromWei(balance[0].toString(10), 'ether');
   }
 }
