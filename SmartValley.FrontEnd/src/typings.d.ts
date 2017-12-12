@@ -6,14 +6,15 @@ interface NodeModule {
 }
 
 
-
-declare var ethJs : EthJs;
+declare var ethJs: EthJs;
 
 declare class EthJs {
 
   constructor(provider: any);
 
   static fromUtf8(str: string): string;
+
+  static fromWei(wei: string, unit: string): number
 
   static isAddress(address: string): boolean;
 
@@ -27,6 +28,7 @@ declare class EthJs {
 }
 
 declare var System: System;
+
 interface System {
   import(request: string): Promise<any>;
 }
