@@ -31,7 +31,7 @@ export class MinterContractClient {
     this.isInitialized = true;
   }
 
-  private extractValueFromContractBoolResult(result: Array<any>): boolean {
+  private extractBoolValue(result: Array<any>): boolean {
     return result[0];
   }
 
@@ -63,6 +63,6 @@ export class MinterContractClient {
       await this.initilizeAsync();
     }
     const token = this.web3.getContract(this.minterContractAbi, this.minterContractAddress);
-    return this.extractValueFromContractBoolResult(await token.canGetTokens(accountAddress));
+    return this.extractBoolValue(await token.canGetTokens(accountAddress));
   }
 }

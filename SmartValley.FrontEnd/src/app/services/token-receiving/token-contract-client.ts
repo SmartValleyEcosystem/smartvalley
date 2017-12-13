@@ -31,7 +31,7 @@ export class TokenContractClient {
     this.isInitialized = true;
   }
 
-  private extractValueFromContractNumberResult(result: Array<any>): number {
+  private extractNumberValue(result: Array<any>): number {
     return +result[0].toString(10);
   }
 
@@ -40,8 +40,8 @@ export class TokenContractClient {
       await this.initilizeAsync();
     }
     const token = this.web3.getContract(this.tokenContractAbi, this.tokenContractAddress);
-    const balance = this.extractValueFromContractNumberResult(await token.balanceOf(accountAddress));
-    const decimals = this.extractValueFromContractNumberResult(await token.decimals());
+    const balance = this.extractNumberValue(await token.balanceOf(accountAddress));
+    const decimals = this.extractNumberValue(await token.decimals());
     return this.web3.fromWei(balance, decimals);
   }
 }
