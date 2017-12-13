@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
-import {TokenService} from '../../services/token-receiving/token-receiving-service';
+import {TokenReceivingService} from '../../services/token-receiving/token-receiving-service';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {Constants} from '../../constants';
@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit {
   constructor(private balanceApiClient: BalanceApiClient,
               private authenticationService: AuthenticationService,
               private router: Router,
-              private tokenService: TokenService,
+              private tokenService: TokenReceivingService,
               private etherReceivingService: EtherReceivingService) {
     this.authenticationService.accountChanged.subscribe(async () => await this.updateHeaderAsync());
   }

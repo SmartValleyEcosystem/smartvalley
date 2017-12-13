@@ -3,7 +3,7 @@ import {TokenContractClient} from './token-contract-client';
 import {MinterContractClient} from './minter-contract-client';
 
 @Injectable()
-export class TokenService {
+export class TokenReceivingService {
 
   constructor(private tokenContractClient: TokenContractClient,
               private minterContractClient: MinterContractClient) {

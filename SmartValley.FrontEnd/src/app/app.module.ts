@@ -26,7 +26,7 @@ import {EstimateComponent} from './components/estimate/estimate.component';
 import {QuestionService} from './services/questions/question-service';
 import {ContractApiClient} from './api/contract/contract-api-client';
 import {ErrorInterceptor} from './api/error-interceptor';
-import {TokenService} from './services/token-receiving/token-receiving-service';
+import {TokenReceivingService} from './services/token-receiving/token-receiving-service';
 import {TokenContractClient} from './services/token-receiving/token-contract-client';
 import {MinterContractClient} from './services/token-receiving/minter-contract-client';
 import {ScoringApiClient} from './api/scoring/scoring-api-client';
@@ -45,6 +45,7 @@ import {Ng2DeviceDetectorModule} from 'ng2-device-detector';
 import {AlertModalComponent} from './components/common/alert-modal/alert-modal.component';
 import {MetamaskManualModalComponent} from './components/common/metamask-manual-modal/metamask-manual-modal.component';
 import {GetEtherModalComponent} from './components/common/get-ether-modal/get-ether-modal.component';
+import {GetSVTModalComponent} from './components/common/get-token-modal/get-token-modal.component';
 import {Angulartics2GoogleAnalytics} from 'angulartics2/ga';
 import {Angulartics2Module} from 'angulartics2';
 import {ProjectContractClient} from './services/project-contract-client';
@@ -69,13 +70,15 @@ import {multiTranslateLoaderFactory} from './services/translate/multi-translate-
     NullableLinkComponent,
     AlertModalComponent,
     MetamaskManualModalComponent,
-    GetEtherModalComponent
+    GetEtherModalComponent,
+    GetSVTModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
     AlertModalComponent,
     MetamaskManualModalComponent,
-    GetEtherModalComponent
+    GetEtherModalComponent,
+    GetSVTModalComponent
   ],
   imports: [
     MatCheckboxModule,
@@ -124,7 +127,7 @@ import {multiTranslateLoaderFactory} from './services/translate/multi-translate-
     ScoringApiClient,
     EstimatesApiClient,
     AuthenticationService,
-    TokenService,
+    TokenReceivingService,
     ProjectService,
     QuestionService,
     Web3Service,
