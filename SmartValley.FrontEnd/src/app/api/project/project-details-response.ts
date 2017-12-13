@@ -3,7 +3,6 @@ import {TeamMemberResponse} from '../application/team-member-response';
 export interface ProjectDetailsResponse {
   name: string;
   area: string;
-  projectId: string;
   projectAddress: string;
   description: string;
   status: string;
