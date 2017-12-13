@@ -1,6 +1,6 @@
 {
   "GetEtherModal": {
     "Content": "We are ethereum blockchain users that is why you will need ETH to conduct transactions.",
-    "GetEther": "Get Ether"
+    "GetButton": "Get Ether"
   }
 }
