@@ -41,11 +41,8 @@ export class TokenService {
   public async receiveAsync(): Promise<void> {
     const minterContract = await this.contractClient.getMinterContractAsync();
     const accountAddress = this.authenticationService.getCurrentUser().account;
-    const transactionHash = await this.web3.eth.sendTransaction({
-      to: minterContract.address,
-      from: accountAddress,
-      data: '0xaa6ca808'
-    });
+    const token = this.web3.getContract(minterContract.abi, minterContract.address);
+    const transactionHash = await token.getTokens({from: accountAddress});
 
     const transactionDialog = this.dialogService.showTransactionDialog(
       this.translateService.instant('TokenReceiving.Dialog'),
