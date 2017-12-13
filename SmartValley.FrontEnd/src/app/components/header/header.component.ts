@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
-import {TokenService} from '../../services/token-service';
+import {TokenService} from '../../services/token-receiving/token-receiving-service';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {Constants} from '../../constants';
@@ -17,6 +17,7 @@ export class HeaderComponent implements OnInit {
   public currentBalance: number;
   public currentTokens: number;
   public showReceiveEtherButton: boolean;
+  public showReceiveSVTButton: boolean;
   public showBalance: boolean;
 
   constructor(private balanceApiClient: BalanceApiClient,
@@ -39,14 +40,21 @@ export class HeaderComponent implements OnInit {
       const address = this.authenticationService.getCurrentUser().account;
       this.currentTokens = await this.tokenService.getBalanceAsync(address);
       this.showReceiveEtherButton = !balanceResponse.wasEtherReceived;
+      this.showReceiveSVTButton = await this.tokenService.canGetTokensAsync(address);
     } else {
       this.showBalance = false;
       this.showReceiveEtherButton = false;
+      this.showReceiveSVTButton = false;
     }
   }
 
   async receiveEth() {
     await this.etherReceivingService.receiveAsync();
+    await this.updateHeaderAsync();
+  }
+
+  async receiveSVT() {
+    await this.tokenService.receiveAsync();
     await this.updateHeaderAsync();
   }
 

@@ -22,6 +22,15 @@
                   angularticsCategory="UserActions">
             {{ 'Header.GetEther' | translate }}
           </button>
+
+          <button *ngIf="showReceiveSVTButton"
+                  (click)="receiveSVT()"
+                  class="btn btn-link"
+                  angulartics2On="click"
+                  angularticsAction="GetSVTClick"
+                  angularticsCategory="UserActions">
+            {{ 'Header.GetSVT' | translate }}
+          </button>
           <button (click)="navigateToMyProjects()" class="btn btn-link">{{ 'Header.MyProjects' | translate }}</button>
         </div>
       </div>

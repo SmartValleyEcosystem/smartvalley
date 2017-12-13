@@ -10,6 +10,8 @@
 
         public ContractOptions TokenContract { get; set; }
 
+        public ContractOptions MinterContract { get; set; }
+
         public ContractOptions EtherManagerContract { get; set; }
 
         public ContractOptions ProjectManagerContract { get; set; }

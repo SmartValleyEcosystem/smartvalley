@@ -38,7 +38,7 @@ export class Web3Service {
 
   public fromWei(weiNumber: number, unit: string | number): number {
     if (typeof unit === 'number') {
-      return +weiNumber * Math.pow(10, -unit);
+      return weiNumber * Math.pow(10, -unit);
     }
 
     return EthJs.fromWei(weiNumber, unit);
