@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {Web3Service} from '../web3-service';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {AuthenticationService} from '../authentication/authentication-service';
@@ -10,12 +9,15 @@ import {NotificationsService} from 'angular2-notifications';
 @Injectable()
 export class TokenService {
 
-  private contractAbi: string;
-  private contractAddress: string;
+  private tokenContractAbi: string;
+  private tokenContractAddress: string;
+
+  private minterContractAbi: string;
+  private minterContractAddress: string;
+
   private isInitialized: boolean;
 
   constructor(private dialogService: DialogService,
-              private http: HttpClient,
               private web3: Web3Service,
               private notificationsService: NotificationsService,
               private authenticationService: AuthenticationService,
@@ -24,9 +26,15 @@ export class TokenService {
   }
 
   private async initilizeAsync(): Promise<void> {
+
+    const minterContract = await this.contractClient.getMinterContractAsync();
+    this.minterContractAbi = minterContract.abi;
+    this.minterContractAddress = minterContract.address;
+
     const tokenContract = await this.contractClient.getTokenContractAsync();
-    this.contractAbi = tokenContract.abi;
-    this.contractAddress = tokenContract.address;
+    this.tokenContractAbi = tokenContract.abi;
+    this.tokenContractAddress = tokenContract.address;
+
     this.isInitialized = true;
   }
 
@@ -39,9 +47,8 @@ export class TokenService {
   }
 
   public async receiveAsync(): Promise<void> {
-    const minterContract = await this.contractClient.getMinterContractAsync();
     const accountAddress = this.authenticationService.getCurrentUser().account;
-    const token = this.web3.getContract(minterContract.abi, minterContract.address);
+    const token = this.web3.getContract(this.minterContractAbi, this.minterContractAddress);
     const transactionHash = await token.getTokens({from: accountAddress});
 
     const transactionDialog = this.dialogService.showTransactionDialog(
@@ -60,8 +67,7 @@ export class TokenService {
   }
 
   async canGetTokensAsync(accountAddress: string): Promise<boolean> {
-    const minterContract = await this.contractClient.getMinterContractAsync();
-    const token = this.web3.getContract(minterContract.abi, minterContract.address);
+    const token = this.web3.getContract(this.minterContractAbi, this.minterContractAddress);
     return this.extractValueFromContractBoolResult(await token.canGetTokens(accountAddress));
   }
 
@@ -69,7 +75,7 @@ export class TokenService {
     if (!this.isInitialized) {
       await this.initilizeAsync();
     }
-    const token = this.web3.getContract(this.contractAbi, this.contractAddress);
+    const token = this.web3.getContract(this.tokenContractAbi, this.tokenContractAddress);
     const balance = this.extractValueFromContractNumberResult(await token.balanceOf(accountAddress));
     const decimals = this.extractValueFromContractNumberResult(await token.decimals());
     return this.web3.fromWei(balance, decimals);
