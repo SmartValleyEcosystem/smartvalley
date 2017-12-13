@@ -45,5 +45,16 @@ namespace SmartValley.WebApi.Contracts
                        Abi = tokenContractOptions.Abi,
                    };
         }
+
+        [Route("minter")]
+        public ContractResponse GetMinterContractAbi()
+        {
+            var tokenContractOptions = _nethereumOptions.MinterContract;
+            return new ContractResponse
+                   {
+                       Address = tokenContractOptions.Address,
+                       Abi = tokenContractOptions.Abi,
+                   };
+        }
     }
 }

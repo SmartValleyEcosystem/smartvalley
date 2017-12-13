@@ -2,6 +2,7 @@
   "Header": {
     "Balance": "Balance",
     "MyProjects": "My projects",
-    "GetEther": "Get Ether"
+    "GetEther": "Get Ether",
+    "GetSVT": "Get SVT"
   }
 }

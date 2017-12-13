@@ -5,6 +5,7 @@ export function multiTranslateLoaderFactory() {
     'services/questions/questions',
     'services/authentication/authentication-service',
     'services/ether-receiving/ether-receiving-service',
+    'services/token-receiving/token-receiving-service',
     'services/translate/common',
     'components/header/header.component',
     'components/application/application.component',

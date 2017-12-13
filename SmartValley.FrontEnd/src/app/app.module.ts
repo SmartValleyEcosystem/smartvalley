@@ -26,7 +26,7 @@ import {EstimateComponent} from './components/estimate/estimate.component';
 import {QuestionService} from './services/questions/question-service';
 import {ContractApiClient} from './api/contract/contract-api-client';
 import {ErrorInterceptor} from './api/error-interceptor';
-import {TokenService} from './services/token-service';
+import {TokenService} from './services/token-receiving/token-receiving-service';
 import {ScoringApiClient} from './api/scoring/scoring-api-client';
 import {ProjectCardComponent} from './components/common/project-card/project-card.component';
 import {ProjectApiClient} from './api/project/project-api-client';
