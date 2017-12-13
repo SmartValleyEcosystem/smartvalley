@@ -32,7 +32,7 @@ export class MinterContractClient {
   }
 
   private extractValueFromContractBoolResult(result: Array<any>): boolean {
-    return result[0].toString(10);
+    return result[0];
   }
 
   public async receiveAsync(): Promise<void> {
