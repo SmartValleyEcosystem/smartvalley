@@ -15,7 +15,6 @@ import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {DialogService} from '../../services/dialog-service';
 import {EtherReceivingService} from '../../services/ether-receiving/ether-receiving-service';
 import {TranslateService} from '@ngx-translate/core';
-import {TokenReceivingService} from '../../services/token-receiving/token-receiving-service';
 import {BalanceService} from '../../services/balance/balance.service';
 import {TokenContractClient} from '../../services/token-receiving/token-contract-client';
 
