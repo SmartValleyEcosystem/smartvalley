@@ -1,23 +1,18 @@
 import {Injectable} from '@angular/core';
 import {TokenContractClient} from './token-contract-client';
 import {MinterContractClient} from './minter-contract-client';
+import {BalanceService} from '../balance/balance.service';
 
 @Injectable()
 export class TokenReceivingService {
 
   constructor(private tokenContractClient: TokenContractClient,
-              private minterContractClient: MinterContractClient) {
+              private minterContractClient: MinterContractClient,
+              private balanceService: BalanceService) {
   }
 
   public async receiveAsync(): Promise<void> {
     await this.minterContractClient.receiveAsync();
-  }
-
-  async canGetTokensAsync(accountAddress: string): Promise<boolean> {
-    return await this.minterContractClient.canGetTokensAsync(accountAddress);
-  }
-
-  async getBalanceAsync(accountAddress: string): Promise<number> {
-    return await this.tokenContractClient.getBalanceAsync(accountAddress);
+    await this.balanceService.updateBalanceAsync();
   }
 }

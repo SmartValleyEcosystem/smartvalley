@@ -16,7 +16,7 @@ export class MinterContractClient extends BaseContractClient {
   private isInitialized: boolean;
 
   constructor(private dialogService: DialogService,
-              private web3: Web3Service,
+              private web3Service: Web3Service,
               private notificationsService: NotificationsService,
               private authenticationService: AuthenticationService,
               private contractClient: ContractApiClient,
@@ -38,7 +38,7 @@ export class MinterContractClient extends BaseContractClient {
       await this.initilizeAsync();
     }
     const accountAddress = this.authenticationService.getCurrentUser().account;
-    const token = this.web3.getContract(this.minterContractAbi, this.minterContractAddress);
+    const token = this.web3Service.getContract(this.minterContractAbi, this.minterContractAddress);
     const transactionHash = await token.getTokens({from: accountAddress});
 
     const transactionDialog = this.dialogService.showTransactionDialog(
@@ -47,7 +47,7 @@ export class MinterContractClient extends BaseContractClient {
     );
 
     try {
-      await this.web3.waitForConfirmationAsync(transactionHash);
+      await this.web3Service.waitForConfirmationAsync(transactionHash);
       this.notificationsService.success(this.translateService.instant('TokenReceiving.Success'));
     } catch (e) {
       this.notificationsService.error(this.translateService.instant('TokenReceiving.Error'));
@@ -60,7 +60,7 @@ export class MinterContractClient extends BaseContractClient {
     if (!this.isInitialized) {
       await this.initilizeAsync();
     }
-    const token = this.web3.getContract(this.minterContractAbi, this.minterContractAddress);
+    const token = this.web3Service.getContract(this.minterContractAbi, this.minterContractAddress);
     return this.extractBoolValue(await token.canGetTokens(accountAddress));
   }
 }

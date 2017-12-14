@@ -51,6 +51,7 @@ import {EtherReceivingService} from './services/ether-receiving/ether-receiving-
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {multiTranslateLoaderFactory} from './services/translate/multi-translate-loader-factory';
 import { ReceiptModalComponent } from './components/common/receipt-modal/receipt-modal.component';
+import {BalanceService} from './services/balance/balance.service';
 
 @NgModule({
   declarations: [
@@ -132,7 +133,9 @@ import { ReceiptModalComponent } from './components/common/receipt-modal/receipt
     EtherReceivingService,
     ProjectManagerContractClient,
     ProjectContractClient,
-    BlockiesService],
+    BlockiesService,
+    BalanceService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

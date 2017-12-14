@@ -15,6 +15,8 @@ import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {DialogService} from '../../services/dialog-service';
 import {EtherReceivingService} from '../../services/ether-receiving/ether-receiving-service';
 import {TranslateService} from '@ngx-translate/core';
+import {TokenReceivingService} from '../../services/token-receiving/token-receiving-service';
+import {BalanceService} from '../../services/balance/balance.service';
 
 @Component({
   selector: 'app-application',
@@ -48,6 +50,7 @@ export class ApplicationComponent {
               private applicationApiClient: ApplicationApiClient,
               private translateService: TranslateService,
               private tokenService: TokenReceivingService) {
+              private balanceService: BalanceService) {
     this.createForm();
   }
 
@@ -130,10 +133,15 @@ export class ApplicationComponent {
 
     await this.applicationApiClient.createApplicationAsync(application);
 
+    await this.balanceService.updateBalanceAsync();
+
     transactionDialog.close();
 
     await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
-    this.notificationsService.success(this.translateService.instant('Common.Success'), this.translateService.instant('Application.ProjectCreated'));
+    this.notificationsService.success(
+      this.translateService.instant('Common.Success'),
+      this.translateService.instant('Application.ProjectCreated')
+    );
   }
 
   public async onSubmit() {
