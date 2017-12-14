@@ -1,5 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
-import {MatDialog} from '@angular/material';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-get-token-modal',
@@ -8,12 +7,6 @@ import {MatDialog} from '@angular/material';
 })
 export class GetSVTModalComponent {
 
-  @Output() onClickReceive: EventEmitter<any> = new EventEmitter();
-  constructor(private projectModal: MatDialog) {
-  }
-
-  public async receiveEth() {
-    this.onClickReceive.emit();
-    this.projectModal.closeAll();
+  constructor() {
   }
 }

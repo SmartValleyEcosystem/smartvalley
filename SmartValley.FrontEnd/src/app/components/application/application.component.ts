@@ -136,44 +136,34 @@ export class ApplicationComponent {
     this.notificationsService.success(this.translateService.instant('Common.Success'), this.translateService.instant('Application.ProjectCreated'));
   }
 
-  private async submitIfHaveSVT() {
-    if (!await this.checkSVTBalanceAsync()) {
-      const etherDialog = this.dialogService.showGetTokenDialog();
-      etherDialog.onClickReceive.subscribe(async () => {
-        await this.tokenService.receiveAsync();
-        if (await this.checkSVTBalanceAsync()) {
-          await this.submitIfFormValid();
-        }
-      });
-    } else {
-      await this.submitIfFormValid();
-    }
-  }
-
   public async onSubmit() {
-    if (!await this.authenticationService.authenticateAsync()) {
-      return;
-    }
-    if (!await this.checkETHBalanceAsync()) {
-      const etherDialog = this.dialogService.showGetEtherDialog();
-      etherDialog.onClickReceive.subscribe(async () => {
+    const userHasETH = await this.userHasETH();
+    if (!userHasETH) {
+      if (await this.dialogService.showGetEtherDialog()) {
         await this.etherReceivingService.receiveAsync();
-        if (await this.checkETHBalanceAsync()) {
-          await this.submitIfHaveSVT();
-        }
-      });
-    } else {
-      await this.submitIfHaveSVT();
+      }
+      else return;
     }
+
+    const userHasSVT = await this.userHasSVT();
+    if (!userHasSVT) {
+      if (await this.dialogService.showGetTokenDialog()) {
+        await this.tokenService.receiveAsync();
+      }
+      else return;
+    }
+    
+    await this.submitIfFormValid();
   }
 
-  private async checkETHBalanceAsync(): Promise<boolean> {
+
+  private async userHasETH(): Promise<boolean> {
     const balanceResponse = await
       this.balanceApiClient.getBalanceAsync();
     return balanceResponse.balance > 0 && balanceResponse.wasEtherReceived;
   }
 
-  private async checkSVTBalanceAsync(): Promise<boolean> {
+  private async userHasSVT(): Promise<boolean> {
     const accountAddress = (await this.authenticationService.getCurrentUser()).account;
     const tokenBalance = await this.tokenService.getBalanceAsync(accountAddress);
     return tokenBalance >= 120;
