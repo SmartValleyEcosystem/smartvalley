@@ -17,6 +17,7 @@ import {EtherReceivingService} from '../../services/ether-receiving/ether-receiv
 import {TranslateService} from '@ngx-translate/core';
 import {TokenReceivingService} from '../../services/token-receiving/token-receiving-service';
 import {BalanceService} from '../../services/balance/balance.service';
+import {TokenContractClient} from '../../services/token-receiving/token-contract-client';
 
 @Component({
   selector: 'app-application',
@@ -49,8 +50,9 @@ export class ApplicationComponent {
               private etherReceivingService: EtherReceivingService,
               private applicationApiClient: ApplicationApiClient,
               private translateService: TranslateService,
-              private tokenService: TokenReceivingService) {
-              private balanceService: BalanceService) {
+              private tokenService: TokenReceivingService,
+              private balanceService: BalanceService,
+              private tokenClient: TokenContractClient) {
     this.createForm();
   }
 
@@ -175,7 +177,7 @@ export class ApplicationComponent {
 
   private async hasUserSvt(): Promise<boolean> {
     const accountAddress = (await this.authenticationService.getCurrentUser()).account;
-    const tokenBalance = await this.tokenService.getBalanceAsync(accountAddress);
+    const tokenBalance = await this.tokenClient.getBalanceAsync(accountAddress);
     const projectCreationCost = await this.projectManagerContractClient.getProjectCreationCostAsync();
     return tokenBalance >= projectCreationCost;
   }
