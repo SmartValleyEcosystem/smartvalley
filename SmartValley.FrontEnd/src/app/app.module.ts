@@ -17,6 +17,7 @@ import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
 import {ApplicationComponent} from './components/application/application.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ProjectManagerContractClient} from './services/project-manager-contract-client';
+import {ConverterHelper} from './services/converter-helper';
 import {ScoringComponent} from './components/scoring/scoring.component'; // <-- #1 import module
 import {MatTabsModule} from '@angular/material';
 import {MatCheckboxModule} from '@angular/material/checkbox';

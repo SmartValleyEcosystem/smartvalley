@@ -2,10 +2,11 @@ import {Injectable} from '@angular/core';
 import {AuthenticationService} from './authentication/authentication-service';
 import {Web3Service} from './web3-service';
 import {ContractApiClient} from '../api/contract/contract-api-client';
-import {BaseContractClient} from './token-receiving/base-contract-client';
+import {ConverterHelper} from './converter-helper';
+import {TokenContractClient} from './token-receiving/token-contract-client';
 
 @Injectable()
-export class ProjectManagerContractClient extends BaseContractClient {
+export class ProjectManagerContractClient {
 
   private projectManagerContractAbi: string;
   private projectManagerAddress: string;
@@ -14,8 +15,8 @@ export class ProjectManagerContractClient extends BaseContractClient {
 
   constructor(private authenticationService: AuthenticationService,
               private web3Service: Web3Service,
-              private contractClient: ContractApiClient) {
-    super();
+              private contractClient: ContractApiClient,
+              private tokenClient: TokenContractClient) {
   }
 
   private async initilizeAsync(): Promise<void> {
@@ -46,7 +47,7 @@ export class ProjectManagerContractClient extends BaseContractClient {
     }
 
     const projectNamanger = this.web3Service.getContract(this.projectManagerContractAbi, this.projectManagerAddress);
-    const cost = this.extractNumberValue(await projectNamanger.projectCreationCostWEI());
-    return this.web3Service.fromWei(cost, 'ether');
+    const cost = ConverterHelper.extractNumberValue(await projectNamanger.projectCreationCostWEI());
+    return this.web3Service.fromWei(cost, await this.tokenClient.getTokenDecimalsAsync());
   }
 }

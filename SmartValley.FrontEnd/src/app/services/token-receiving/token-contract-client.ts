@@ -3,12 +3,11 @@ import {Web3Service} from '../web3-service';
 import {AuthenticationService} from '../authentication/authentication-service';
 import {DialogService} from '../dialog-service';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
-import {BaseContractClient} from './base-contract-client';
-import {TranslateService} from '@ngx-translate/core';
+import {ConverterHelper} from '../converter-helper';
 import {NotificationsService} from 'angular2-notifications';
 
 @Injectable()
-export class TokenContractClient extends BaseContractClient {
+export class TokenContractClient {
 
   private tokenContractAbi: string;
   private tokenContractAddress: string;
@@ -19,9 +18,7 @@ export class TokenContractClient extends BaseContractClient {
               private web3: Web3Service,
               private notificationsService: NotificationsService,
               private authenticationService: AuthenticationService,
-              private contractClient: ContractApiClient,
-              private translateService: TranslateService) {
-    super();
+              private contractClient: ContractApiClient) {
   }
 
   private async initilizeAsync(): Promise<void> {
@@ -38,8 +35,16 @@ export class TokenContractClient extends BaseContractClient {
       await this.initilizeAsync();
     }
     const token = this.web3.getContract(this.tokenContractAbi, this.tokenContractAddress);
-    const balance = this.extractNumberValue(await token.balanceOf(accountAddress));
-    const decimals = this.extractNumberValue(await token.decimals());
+    const balance = ConverterHelper.extractNumberValue(await token.balanceOf(accountAddress));
+    const decimals = ConverterHelper.extractNumberValue(await token.decimals());
     return this.web3.fromWei(balance, decimals);
+  }
+
+  async getTokenDecimalsAsync(): Promise<number> {
+    if (!this.isInitialized) {
+      await this.initilizeAsync();
+    }
+    const token = this.web3.getContract(this.tokenContractAbi, this.tokenContractAddress);
+    return ConverterHelper.extractNumberValue(await token.decimals());
   }
 }
