@@ -98,6 +98,10 @@ export class AuthenticationService {
   }
 
   private startUserSession(account: string, signature: string) {
+    const user = this.getCurrentUser();
+    if (user != null && user.account === account && user.signature === signature) {
+      return;
+    }
     this.saveCurrentUser({account, signature});
     this.saveSignatureForAccount(account, signature);
     this.startBackgroundChecker();

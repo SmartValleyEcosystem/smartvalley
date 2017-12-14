@@ -26,7 +26,7 @@ import {EstimateComponent} from './components/estimate/estimate.component';
 import {QuestionService} from './services/questions/question-service';
 import {ContractApiClient} from './api/contract/contract-api-client';
 import {ErrorInterceptor} from './api/error-interceptor';
-import {TokenService} from './services/token-receiving/token-receiving-service';
+import {TokenReceivingService} from './services/token-receiving/token-receiving-service';
 import {TokenContractClient} from './services/token-receiving/token-contract-client';
 import {MinterContractClient} from './services/token-receiving/minter-contract-client';
 import {ScoringApiClient} from './api/scoring/scoring-api-client';
@@ -51,6 +51,7 @@ import {ProjectContractClient} from './services/project-contract-client';
 import {EtherReceivingService} from './services/ether-receiving/ether-receiving-service';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {multiTranslateLoaderFactory} from './services/translate/multi-translate-loader-factory';
+import {BalanceService} from './services/balance/balance.service';
 
 @NgModule({
   declarations: [
@@ -124,7 +125,7 @@ import {multiTranslateLoaderFactory} from './services/translate/multi-translate-
     ScoringApiClient,
     EstimatesApiClient,
     AuthenticationService,
-    TokenService,
+    TokenReceivingService,
     ProjectService,
     QuestionService,
     Web3Service,
@@ -132,7 +133,9 @@ import {multiTranslateLoaderFactory} from './services/translate/multi-translate-
     EtherReceivingService,
     ProjectManagerContractClient,
     ProjectContractClient,
-    BlockiesService],
+    BlockiesService,
+    BalanceService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

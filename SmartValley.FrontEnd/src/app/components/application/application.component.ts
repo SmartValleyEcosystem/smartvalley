@@ -10,12 +10,12 @@ import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {NotificationsService} from 'angular2-notifications';
-import {MatDialog, MatDialogRef} from '@angular/material';
-import {TransactionAwaitingModalComponent} from '../common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {DialogService} from '../../services/dialog-service';
 import {EtherReceivingService} from '../../services/ether-receiving/ether-receiving-service';
 import {TranslateService} from '@ngx-translate/core';
+import {TokenReceivingService} from '../../services/token-receiving/token-receiving-service';
+import {BalanceService} from '../../services/balance/balance.service';
 
 @Component({
   selector: 'app-application',
@@ -47,7 +47,8 @@ export class ApplicationComponent {
               private dialogService: DialogService,
               private etherReceivingService: EtherReceivingService,
               private applicationApiClient: ApplicationApiClient,
-              private translateService: TranslateService) {
+              private translateService: TranslateService,
+              private balanceService: BalanceService) {
     this.createForm();
   }
 
@@ -130,10 +131,15 @@ export class ApplicationComponent {
 
     await this.applicationApiClient.createApplicationAsync(application);
 
+    await this.balanceService.updateBalanceAsync();
+
     transactionDialog.close();
 
     await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
-    this.notificationsService.success(this.translateService.instant('Common.Success'), this.translateService.instant('Application.ProjectCreated'));
+    this.notificationsService.success(
+      this.translateService.instant('Common.Success'),
+      this.translateService.instant('Application.ProjectCreated')
+    );
   }
 
   public async onSubmit() {

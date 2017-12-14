@@ -4,6 +4,7 @@ import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {NotificationsService} from 'angular2-notifications';
 import {Web3Service} from '../web3-service';
 import {TranslateService} from '@ngx-translate/core';
+import {BalanceService} from '../balance/balance.service';
 
 @Injectable()
 export class EtherReceivingService {
@@ -11,7 +12,8 @@ export class EtherReceivingService {
               private balanceApiClient: BalanceApiClient,
               private notificationsService: NotificationsService,
               private web3Service: Web3Service,
-              private translateService: TranslateService) {
+              private translateService: TranslateService,
+              private balanceService: BalanceService) {
   }
 
   public async receiveAsync(): Promise<void> {
@@ -28,6 +30,7 @@ export class EtherReceivingService {
       this.notificationsService.error(this.translateService.instant('EtherReceiving.Error'));
     }
 
+    await this.balanceService.updateBalanceAsync();
     transactionDialog.close();
   }
 }
