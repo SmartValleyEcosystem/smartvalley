@@ -1,9 +1,14 @@
 import {Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import * as EthJs from 'ethjs';
+import {NgProgress} from 'ngx-progressbar';
 
 @Injectable()
 export class Web3Service {
+
+
+  constructor(private progress: NgProgress) {
+  }
 
   private readonly rinkebyNetworkId = '4';
   private readonly metamaskProviderName = 'MetamaskInpageProvider';
@@ -59,12 +64,16 @@ export class Web3Service {
   }
 
   public async waitForConfirmationAsync(transactionHash: string): Promise<void> {
+    if (!this.progress.isStarted()) {
+      this.progress.start();
+    }
+
     let transactionReceipt = await this._eth.getTransactionReceipt(transactionHash);
     while (!transactionReceipt) {
       await this.delay(this._transactionReceiptPollingInterval);
       transactionReceipt = await this._eth.getTransactionReceipt(transactionHash);
     }
-
+    this.progress.done();
     const status = parseInt(transactionReceipt.status, 16);
     if (status !== 1) {
       throw new Error(`Transaction '${transactionHash}' failed.`);

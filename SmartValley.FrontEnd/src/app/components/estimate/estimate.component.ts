@@ -16,6 +16,8 @@ import {ProjectContractClient} from '../../services/project-contract-client';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {DialogService} from '../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
+import {BalanceService} from '../../services/balance/balance.service';
+import {Web3Service} from '../../services/web3-service';
 
 @Component({
   selector: 'app-estimate',
@@ -43,7 +45,9 @@ export class EstimateComponent {
               private projectContractClient: ProjectContractClient,
               private contractApiClient: ContractApiClient,
               private dialogService: DialogService,
-              private translateService: TranslateService) {
+              private translateService: TranslateService,
+              private balanceService: BalanceService,
+              private web3Service: Web3Service) {
     this.loadProjectInfo();
   }
 
@@ -87,6 +91,10 @@ export class EstimateComponent {
     );
 
     await this.estimatesApiClient.submitEstimatesAsync(submitEstimatesRequest);
+
+    await this.web3Service.waitForConfirmationAsync(transactionHash);
+
+    await this.balanceService.updateBalanceAsync();
 
     transactionDialog.close();
   }
