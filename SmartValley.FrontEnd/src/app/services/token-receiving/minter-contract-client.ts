@@ -3,11 +3,12 @@ import {Web3Service} from '../web3-service';
 import {AuthenticationService} from '../authentication/authentication-service';
 import {DialogService} from '../dialog-service';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
+import {BaseContractClient} from './base-contract-client';
 import {TranslateService} from '@ngx-translate/core';
 import {NotificationsService} from 'angular2-notifications';
 
 @Injectable()
-export class MinterContractClient {
+export class MinterContractClient extends BaseContractClient {
 
   private minterContractAbi: string;
   private minterContractAddress: string;
@@ -20,6 +21,7 @@ export class MinterContractClient {
               private authenticationService: AuthenticationService,
               private contractClient: ContractApiClient,
               private translateService: TranslateService) {
+    super();
   }
 
   private async initilizeAsync(): Promise<void> {
@@ -29,10 +31,6 @@ export class MinterContractClient {
     this.minterContractAddress = minterContract.address;
 
     this.isInitialized = true;
-  }
-
-  private extractBoolValue(result: Array<any>): boolean {
-    return result[0];
   }
 
   public async receiveAsync(): Promise<void> {

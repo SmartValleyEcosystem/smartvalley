@@ -168,7 +168,8 @@ export class ApplicationComponent {
   private async hasUserSvt(): Promise<boolean> {
     const accountAddress = (await this.authenticationService.getCurrentUser()).account;
     const tokenBalance = await this.tokenService.getBalanceAsync(accountAddress);
-    return tokenBalance >= 120;
+    const projectCreationCost = await this.projectManagerContractClient.getProjectCreationCostAsync();
+    return tokenBalance >= projectCreationCost;
   }
 
   private scrollToElement(element: ElementRef) {

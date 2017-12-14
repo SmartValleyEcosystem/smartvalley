@@ -3,11 +3,12 @@ import {Web3Service} from '../web3-service';
 import {AuthenticationService} from '../authentication/authentication-service';
 import {DialogService} from '../dialog-service';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
+import {BaseContractClient} from './base-contract-client';
 import {TranslateService} from '@ngx-translate/core';
 import {NotificationsService} from 'angular2-notifications';
 
 @Injectable()
-export class TokenContractClient {
+export class TokenContractClient extends BaseContractClient {
 
   private tokenContractAbi: string;
   private tokenContractAddress: string;
@@ -20,6 +21,7 @@ export class TokenContractClient {
               private authenticationService: AuthenticationService,
               private contractClient: ContractApiClient,
               private translateService: TranslateService) {
+    super();
   }
 
   private async initilizeAsync(): Promise<void> {
@@ -29,10 +31,6 @@ export class TokenContractClient {
     this.tokenContractAddress = tokenContract.address;
 
     this.isInitialized = true;
-  }
-
-  private extractNumberValue(result: Array<any>): number {
-    return +result[0].toString(10);
   }
 
   async getBalanceAsync(accountAddress: string): Promise<number> {
