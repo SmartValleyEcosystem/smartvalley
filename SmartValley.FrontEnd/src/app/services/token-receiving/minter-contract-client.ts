@@ -3,6 +3,7 @@ import {Web3Service} from '../web3-service';
 import {AuthenticationService} from '../authentication/authentication-service';
 import {DialogService} from '../dialog-service';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
+import {ConverterHelper} from '../converter-helper';
 import {TranslateService} from '@ngx-translate/core';
 import {NotificationsService} from 'angular2-notifications';
 
@@ -29,10 +30,6 @@ export class MinterContractClient {
     this.minterContractAddress = minterContract.address;
 
     this.isInitialized = true;
-  }
-
-  private extractBoolValue(result: Array<any>): boolean {
-    return result[0];
   }
 
   public async receiveAsync(): Promise<void> {
@@ -63,6 +60,6 @@ export class MinterContractClient {
       await this.initilizeAsync();
     }
     const token = this.web3Service.getContract(this.minterContractAbi, this.minterContractAddress);
-    return this.extractBoolValue(await token.canGetTokens(accountAddress));
+    return ConverterHelper.extractBoolValue(await token.canGetTokens(accountAddress));
   }
 }

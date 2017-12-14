@@ -17,6 +17,7 @@ import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
 import {ApplicationComponent} from './components/application/application.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ProjectManagerContractClient} from './services/project-manager-contract-client';
+import {ConverterHelper} from './services/converter-helper';
 import {ScoringComponent} from './components/scoring/scoring.component'; // <-- #1 import module
 import {MatTabsModule} from '@angular/material';
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -44,13 +45,13 @@ import {NullableLinkComponent} from './components/common/nullable-link/nullable-
 import {Ng2DeviceDetectorModule} from 'ng2-device-detector';
 import {AlertModalComponent} from './components/common/alert-modal/alert-modal.component';
 import {MetamaskManualModalComponent} from './components/common/metamask-manual-modal/metamask-manual-modal.component';
-import {GetEtherModalComponent} from './components/common/get-ether-modal/get-ether-modal.component';
 import {Angulartics2GoogleAnalytics} from 'angulartics2/ga';
 import {Angulartics2Module} from 'angulartics2';
 import {ProjectContractClient} from './services/project-contract-client';
 import {EtherReceivingService} from './services/ether-receiving/ether-receiving-service';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {multiTranslateLoaderFactory} from './services/translate/multi-translate-loader-factory';
+import { ReceiptModalComponent } from './components/common/receipt-modal/receipt-modal.component';
 import {BalanceService} from './services/balance/balance.service';
 
 @NgModule({
@@ -70,13 +71,13 @@ import {BalanceService} from './services/balance/balance.service';
     NullableLinkComponent,
     AlertModalComponent,
     MetamaskManualModalComponent,
-    GetEtherModalComponent
+    ReceiptModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
     AlertModalComponent,
     MetamaskManualModalComponent,
-    GetEtherModalComponent
+    ReceiptModalComponent
   ],
   imports: [
     MatCheckboxModule,

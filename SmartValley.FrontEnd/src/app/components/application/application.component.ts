@@ -7,6 +7,7 @@ import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {v4 as uuid} from 'uuid';
 import {ProjectManagerContractClient} from '../../services/project-manager-contract-client';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
+import {TokenReceivingService} from '../../services/token-receiving/token-receiving-service';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {NotificationsService} from 'angular2-notifications';
@@ -14,8 +15,8 @@ import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {DialogService} from '../../services/dialog-service';
 import {EtherReceivingService} from '../../services/ether-receiving/ether-receiving-service';
 import {TranslateService} from '@ngx-translate/core';
-import {TokenReceivingService} from '../../services/token-receiving/token-receiving-service';
 import {BalanceService} from '../../services/balance/balance.service';
+import {TokenContractClient} from '../../services/token-receiving/token-contract-client';
 
 @Component({
   selector: 'app-application',
@@ -48,7 +49,9 @@ export class ApplicationComponent {
               private etherReceivingService: EtherReceivingService,
               private applicationApiClient: ApplicationApiClient,
               private translateService: TranslateService,
-              private balanceService: BalanceService) {
+              private tokenService: TokenReceivingService,
+              private balanceService: BalanceService,
+              private tokenClient: TokenContractClient) {
     this.createForm();
   }
 
@@ -143,26 +146,39 @@ export class ApplicationComponent {
   }
 
   public async onSubmit() {
-    if (!await this.authenticationService.authenticateAsync()) {
-      return;
-    }
-    if (!await this.checkBalanceAsync()) {
-      const etherDialog = this.dialogService.showGetEtherDialog();
-      etherDialog.onClickReceive.subscribe(async () => {
+    const userHasETH = await this.hasUserEth();
+    if (!userHasETH) {
+      if (await this.dialogService.showGetEtherDialog()) {
         await this.etherReceivingService.receiveAsync();
-        if (await this.checkBalanceAsync()) {
-          await this.submitIfFormValid();
-        }
-      });
-    } else {
-      await this.submitIfFormValid();
+      } else {
+        return;
+      }
     }
+
+    const userHasSVT = await this.hasUserSvt();
+    if (!userHasSVT) {
+      if (await this.dialogService.showGetTokenDialog()) {
+        await this.tokenService.receiveAsync();
+      } else {
+        return;
+      }
+    }
+
+    await this.submitIfFormValid();
   }
 
-  private async checkBalanceAsync(): Promise<boolean> {
+
+  private async hasUserEth(): Promise<boolean> {
     const balanceResponse = await
       this.balanceApiClient.getBalanceAsync();
     return balanceResponse.balance > 0 && balanceResponse.wasEtherReceived;
+  }
+
+  private async hasUserSvt(): Promise<boolean> {
+    const accountAddress = (await this.authenticationService.getCurrentUser()).account;
+    const tokenBalance = await this.tokenClient.getBalanceAsync(accountAddress);
+    const projectCreationCost = await this.projectManagerContractClient.getProjectCreationCostAsync();
+    return tokenBalance >= projectCreationCost;
   }
 
   private scrollToElement(element: ElementRef) {
