@@ -137,33 +137,35 @@ export class ApplicationComponent {
   }
 
   public async onSubmit() {
-    const userHasETH = await this.userHasETH();
+    const userHasETH = await this.hasUserEth();
     if (!userHasETH) {
       if (await this.dialogService.showGetEtherDialog()) {
         await this.etherReceivingService.receiveAsync();
+      } else {
+        return;
       }
-      else return;
     }
 
-    const userHasSVT = await this.userHasSVT();
+    const userHasSVT = await this.hasUserSvt();
     if (!userHasSVT) {
       if (await this.dialogService.showGetTokenDialog()) {
         await this.tokenService.receiveAsync();
+      } else {
+        return;
       }
-      else return;
     }
-    
+
     await this.submitIfFormValid();
   }
 
 
-  private async userHasETH(): Promise<boolean> {
+  private async hasUserEth(): Promise<boolean> {
     const balanceResponse = await
       this.balanceApiClient.getBalanceAsync();
     return balanceResponse.balance > 0 && balanceResponse.wasEtherReceived;
   }
 
-  private async userHasSVT(): Promise<boolean> {
+  private async hasUserSvt(): Promise<boolean> {
     const accountAddress = (await this.authenticationService.getCurrentUser()).account;
     const tokenBalance = await this.tokenService.getBalanceAsync(accountAddress);
     return tokenBalance >= 120;

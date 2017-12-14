@@ -44,14 +44,13 @@ import {NullableLinkComponent} from './components/common/nullable-link/nullable-
 import {Ng2DeviceDetectorModule} from 'ng2-device-detector';
 import {AlertModalComponent} from './components/common/alert-modal/alert-modal.component';
 import {MetamaskManualModalComponent} from './components/common/metamask-manual-modal/metamask-manual-modal.component';
-import {GetEtherModalComponent} from './components/common/get-ether-modal/get-ether-modal.component';
-import {GetSVTModalComponent} from './components/common/get-token-modal/get-token-modal.component';
 import {Angulartics2GoogleAnalytics} from 'angulartics2/ga';
 import {Angulartics2Module} from 'angulartics2';
 import {ProjectContractClient} from './services/project-contract-client';
 import {EtherReceivingService} from './services/ether-receiving/ether-receiving-service';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {multiTranslateLoaderFactory} from './services/translate/multi-translate-loader-factory';
+import { ReceiptModalComponent } from './components/common/receipt-modal/receipt-modal.component';
 
 @NgModule({
   declarations: [
@@ -70,15 +69,13 @@ import {multiTranslateLoaderFactory} from './services/translate/multi-translate-
     NullableLinkComponent,
     AlertModalComponent,
     MetamaskManualModalComponent,
-    GetEtherModalComponent,
-    GetSVTModalComponent
+    ReceiptModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
     AlertModalComponent,
     MetamaskManualModalComponent,
-    GetEtherModalComponent,
-    GetSVTModalComponent
+    ReceiptModalComponent
   ],
   imports: [
     MatCheckboxModule,
