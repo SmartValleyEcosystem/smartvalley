@@ -14,6 +14,8 @@ import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 import {TeamMember} from '../../services/team-member';
 import {Paths} from '../../paths';
 import {Constants} from '../../constants';
+import {isNullOrUndefined} from 'util';
+import {isEmpty} from 'rxjs/operator/isEmpty';
 
 @Component({
   selector: 'app-report',
@@ -88,9 +90,21 @@ export class ReportComponent implements AfterViewChecked, OnInit {
   private async loadInitialData() {
     this.projectId = +this.route.snapshot.paramMap.get('id');
     this.report = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
+    this.fillEmptyFields();
     this.teamMembers = this.getMembersCollection(this.report);
     this.projectImageUrl = this.blockiesService.getImageForAddress(this.report.projectAddress);
     this.loadExpertEstimates(ExpertiseArea.HR);
+  }
+
+  private fillEmptyFields() {
+    const fields = Object.entries(this.report);
+    const keys = Object.keys(this.report);
+    for (const key of keys) {
+      const value = fields.filter(i => i[0] === key)[0][1].toString();
+      if (isNullOrUndefined(value) || value === '') {
+        this.report[key] = '\u2014';
+      }
+    }
   }
 
   private getMembersCollection(report: ProjectDetailsResponse): Array<TeamMember> {
