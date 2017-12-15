@@ -8,6 +8,14 @@
 body {
   background: rgb(32, 32, 32);
   font-family: 'AvenirNextCyr', sans-serif;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1s, visibility 0s linear 0.3s;
+}
+.body-visible{
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
 }
 
 .mat-toolbar {
