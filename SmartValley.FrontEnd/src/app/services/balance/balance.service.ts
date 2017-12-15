@@ -34,7 +34,7 @@ export class BalanceService {
     this.balance = {
       ethBalance: +balanceResponse.balance.toFixed(3),
       wasEtherReceived: balanceResponse.wasEtherReceived,
-      svtBalance: svtBalance,
+      svtBalance: +svtBalance.toFixed(3),
       canReceiveSvt: canReceiveSvt
     };
     this.balanceChanged.emit(this.balance);
