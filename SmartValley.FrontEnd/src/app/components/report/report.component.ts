@@ -15,7 +15,6 @@ import {TeamMember} from '../../services/team-member';
 import {Paths} from '../../paths';
 import {Constants} from '../../constants';
 import {isNullOrUndefined} from 'util';
-import {isEmpty} from 'rxjs/operator/isEmpty';
 
 @Component({
   selector: 'app-report',
