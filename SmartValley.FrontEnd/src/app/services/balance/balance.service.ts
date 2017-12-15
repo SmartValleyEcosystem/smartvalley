@@ -19,6 +19,8 @@ export class BalanceService {
 
   public balanceChanged: EventEmitter<Balance> = new EventEmitter<Balance>();
 
+  public balance: Balance;
+
   public async updateBalanceAsync(): Promise<void> {
     if (!this.authenticationService.isAuthenticated()) {
       this.balanceChanged.emit(null);
@@ -29,13 +31,13 @@ export class BalanceService {
     const svtBalance = await this.getSvtBalanceAsync(address);
     const canReceiveSvt = await this.canGetTokensAsync(address);
 
-    const balance = {
+    this.balance = {
       ethBalance: +balanceResponse.balance.toFixed(3),
       wasEtherReceived: balanceResponse.wasEtherReceived,
       svtBalance: svtBalance,
       canReceiveSvt: canReceiveSvt
     };
-    this.balanceChanged.emit(balance);
+    this.balanceChanged.emit(this.balance);
   }
 
   public async hasUserEth(): Promise<boolean> {

@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppComponent} from './app.component';
 import {MetamaskHowtoComponent} from './components/metamask-howto/metamask-howto.component';
-import {RootComponent} from './components/root/root.component';
+import {LandingComponent} from './components/landing/landing.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -17,7 +17,6 @@ import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
 import {ApplicationComponent} from './components/application/application.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ProjectManagerContractClient} from './services/project-manager-contract-client';
-import {ConverterHelper} from './services/converter-helper';
 import {ScoringComponent} from './components/scoring/scoring.component'; // <-- #1 import module
 import {MatTabsModule} from '@angular/material';
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -51,14 +50,18 @@ import {ProjectContractClient} from './services/project-contract-client';
 import {EtherReceivingService} from './services/ether-receiving/ether-receiving-service';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {multiTranslateLoaderFactory} from './services/translate/multi-translate-loader-factory';
-import { ReceiptModalComponent } from './components/common/receipt-modal/receipt-modal.component';
+import {ReceiptModalComponent} from './components/common/receipt-modal/receipt-modal.component';
 import {BalanceService} from './services/balance/balance.service';
+import {InitializationComponent} from './components/initialization/initialization.component';
+import {InitializationService} from './services/initialization/initialization.service';
+import {InitializationGuard} from './services/initialization/initialization.guard';
+import {RootComponent} from './components/root/root.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MetamaskHowtoComponent,
-    RootComponent,
+    LandingComponent,
     HeaderComponent,
     ApplicationComponent,
     ScoringComponent,
@@ -71,7 +74,9 @@ import {BalanceService} from './services/balance/balance.service';
     NullableLinkComponent,
     AlertModalComponent,
     MetamaskManualModalComponent,
-    ReceiptModalComponent
+    ReceiptModalComponent,
+    InitializationComponent,
+    RootComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -135,7 +140,9 @@ import {BalanceService} from './services/balance/balance.service';
     ProjectManagerContractClient,
     ProjectContractClient,
     BlockiesService,
-    BalanceService
+    BalanceService,
+    InitializationService,
+    InitializationGuard
   ],
   bootstrap: [AppComponent]
 })

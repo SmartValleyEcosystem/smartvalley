@@ -13,8 +13,6 @@ export class MinterContractClient {
   private minterContractAbi: string;
   private minterContractAddress: string;
 
-  private isInitialized: boolean;
-
   constructor(private dialogService: DialogService,
               private web3Service: Web3Service,
               private notificationsService: NotificationsService,
@@ -23,19 +21,13 @@ export class MinterContractClient {
               private translateService: TranslateService) {
   }
 
-  private async initilizeAsync(): Promise<void> {
-
+  public async initializeAsync(): Promise<void> {
     const minterContract = await this.contractClient.getMinterContractAsync();
     this.minterContractAbi = minterContract.abi;
     this.minterContractAddress = minterContract.address;
-
-    this.isInitialized = true;
   }
 
   public async receiveAsync(): Promise<void> {
-    if (!this.isInitialized) {
-      await this.initilizeAsync();
-    }
     const accountAddress = this.authenticationService.getCurrentUser().account;
     const token = this.web3Service.getContract(this.minterContractAbi, this.minterContractAddress);
     const transactionHash = await token.getTokens({from: accountAddress});
@@ -56,9 +48,6 @@ export class MinterContractClient {
   }
 
   async canGetTokensAsync(accountAddress: string): Promise<boolean> {
-    if (!this.isInitialized) {
-      await this.initilizeAsync();
-    }
     const token = this.web3Service.getContract(this.minterContractAbi, this.minterContractAddress);
     return ConverterHelper.extractBoolValue(await token.canGetTokens(accountAddress));
   }

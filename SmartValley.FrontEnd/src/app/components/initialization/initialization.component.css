@@ -1,0 +1,11 @@
+.loading-logo {
+  text-align: center;
+  top: 50%;
+  margin-top: 30vh;
+}
+
+.loading-logo img {
+  vertical-align: top;
+  display: inline-block;
+  height: 5em;
+}

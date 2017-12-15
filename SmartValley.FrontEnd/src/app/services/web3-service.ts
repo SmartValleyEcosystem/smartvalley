@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import * as EthJs from 'ethjs';
 import {NgProgress} from 'ngx-progressbar';
+import {PromiseUtils} from '../utils/promise-utils';
 
 @Injectable()
 export class Web3Service {
@@ -70,7 +71,7 @@ export class Web3Service {
 
     let transactionReceipt = await this._eth.getTransactionReceipt(transactionHash);
     while (!transactionReceipt) {
-      await this.delay(this._transactionReceiptPollingInterval);
+      await PromiseUtils.delay(this._transactionReceiptPollingInterval);
       transactionReceipt = await this._eth.getTransactionReceipt(transactionHash);
     }
     this.progress.done();
@@ -84,9 +85,7 @@ export class Web3Service {
     return await this.eth.web3_sha3(EthJs.fromUtf8(value));
   }
 
-  private delay(milliseconds: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, milliseconds));
-  }
+
 
   private getNetworkVersion(): Promise<any> {
     return this.eth.net_version();

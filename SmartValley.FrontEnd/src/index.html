@@ -7,6 +7,7 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="./assets/img/favicon.ico">
+
   <!-- Google Analytics -->
   <script>
     window.ga = window.ga || function () {
@@ -14,16 +15,16 @@
     };
     ga.l = +new Date;
     ga('create', 'UA-110235313-3', 'auto');
-
-    document.addEventListener("DOMContentLoaded", function(event) {
-      var body = document.getElementsByTagName('body')[0];
-      body.className += "body-visible";   //add the class
-    });
   </script>
   <script async src='https://www.google-analytics.com/analytics.js'></script>
   <!-- End Google Analytics -->
 </head>
 <body>
-<app-root></app-root>
+<app-root>
+  <div style="text-align: center;  top: 50%;  margin-top: 30vh;">
+    <img style="display: inline-block; height: 5em;  vertical-align: top; padding-right: 5.5em" src="/assets/img/big-logo.svg"
+         alt="Smart valley">
+  </div>
+</app-root>
 </body>
 </html>

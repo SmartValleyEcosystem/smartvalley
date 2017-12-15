@@ -14,7 +14,7 @@ import {Balance} from '../../services/balance/balance';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
   public currentBalance: number;
   public currentTokens: number;
@@ -29,14 +29,11 @@ export class HeaderComponent implements OnInit {
               private etherReceivingService: EtherReceivingService,
               private tokenReceivingService: TokenReceivingService) {
 
-    this.balanceService.balanceChanged.subscribe(async (balance: Balance) => await this.updateHeaderAsync(balance));
+    this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateHeader(balance));
+    this.updateHeader(this.balanceService.balance);
   }
 
-  async ngOnInit() {
-    await this.balanceService.updateBalanceAsync();
-  }
-
-  async updateHeaderAsync(balance: Balance): Promise<void> {
+  private updateHeader(balance: Balance): void {
     if (balance != null) {
       this.showBalance = true;
       this.currentBalance = balance.ethBalance;

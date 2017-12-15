@@ -9,7 +9,7 @@ export function multiTranslateLoaderFactory() {
     'services/translate/common',
     'components/header/header.component',
     'components/application/application.component',
-    'components/root/root.component',
+    'components/landing/landing.component',
     'components/scoring/scoring.component',
     'components/estimate/estimate.component',
     'components/report/report.component',

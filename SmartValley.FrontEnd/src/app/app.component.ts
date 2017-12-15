@@ -9,7 +9,7 @@ import {TranslateService} from '@ngx-translate/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   notifyOptions: Options = {
     position: ['top', 'left'],
     timeOut: 3000,
@@ -18,12 +18,7 @@ export class AppComponent implements OnInit {
   };
 
   constructor(angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
-              private questionService: QuestionService,
               translate: TranslateService) {
     translate.use('en');
-  }
-
-  async ngOnInit() {
-    await this.questionService.initializeAsync();
   }
 }

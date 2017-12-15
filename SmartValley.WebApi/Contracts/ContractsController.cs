@@ -5,7 +5,6 @@ using SmartValley.Application.Contracts;
 namespace SmartValley.WebApi.Contracts
 {
     [Route("api/contracts")]
-    [Authorize]
     public class ContractsController : Controller
     {
         private readonly NethereumOptions _nethereumOptions;
