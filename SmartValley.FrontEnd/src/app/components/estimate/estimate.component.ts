@@ -127,7 +127,7 @@ export class EstimateComponent {
       estimates.push(<EstimateRequest>{
         questionId: question.questionId,
         score: question.score,
-        comment: question.comments
+        comment: question.comments.replace(/\s+$/, '')
       });
     }
 
