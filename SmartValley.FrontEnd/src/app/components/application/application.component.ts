@@ -146,7 +146,7 @@ export class ApplicationComponent {
   }
 
   public async onSubmit() {
-    const userHasETH = await this.hasUserEth();
+    const userHasETH = await this.balanceService.hasUserEth();
     if (!userHasETH) {
       if (await this.dialogService.showGetEtherDialog()) {
         await this.etherReceivingService.receiveAsync();
@@ -155,7 +155,7 @@ export class ApplicationComponent {
       }
     }
 
-    const userHasSVT = await this.hasUserSvt();
+    const userHasSVT = await this.balanceService.hasUserSvt();
     if (!userHasSVT) {
       if (await this.dialogService.showGetTokenDialog()) {
         await this.tokenService.receiveAsync();
@@ -165,20 +165,6 @@ export class ApplicationComponent {
     }
 
     await this.submitIfFormValid();
-  }
-
-
-  private async hasUserEth(): Promise<boolean> {
-    const balanceResponse = await
-      this.balanceApiClient.getBalanceAsync();
-    return balanceResponse.balance > 0 && balanceResponse.wasEtherReceived;
-  }
-
-  private async hasUserSvt(): Promise<boolean> {
-    const accountAddress = (await this.authenticationService.getCurrentUser()).account;
-    const tokenBalance = await this.tokenClient.getBalanceAsync(accountAddress);
-    const projectCreationCost = await this.projectManagerContractClient.getProjectCreationCostAsync();
-    return tokenBalance >= projectCreationCost;
   }
 
   private scrollToElement(element: ElementRef) {

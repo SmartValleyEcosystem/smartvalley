@@ -18,6 +18,8 @@ import {DialogService} from '../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
 import {BalanceService} from '../../services/balance/balance.service';
 import {Web3Service} from '../../services/web3-service';
+import {BalanceApiClient} from '../../api/balance/balance-api-client';
+import {EtherReceivingService} from '../../services/ether-receiving/ether-receiving-service';
 
 @Component({
   selector: 'app-estimate',
@@ -47,7 +49,8 @@ export class EstimateComponent {
               private dialogService: DialogService,
               private translateService: TranslateService,
               private balanceService: BalanceService,
-              private web3Service: Web3Service) {
+              private web3Service: Web3Service,
+              private etherReceivingService: EtherReceivingService) {
     this.loadProjectInfo();
   }
 
@@ -56,6 +59,16 @@ export class EstimateComponent {
   }
 
   async send() {
+
+    const userHasETH = await this.balanceService.hasUserEth();
+    if (!userHasETH) {
+      if (await this.dialogService.showGetEtherDialog()) {
+        await this.etherReceivingService.receiveAsync();
+      } else {
+        return;
+      }
+    }
+
     if (this.estimateForm.invalid) {
       const invalidElements = this.requireds.filter(i => i.nativeElement.classList.contains('ng-invalid'));
       if (invalidElements.length > 0) {

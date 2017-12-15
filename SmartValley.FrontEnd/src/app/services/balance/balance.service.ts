@@ -4,6 +4,7 @@ import {Balance} from './balance';
 import {AuthenticationService} from '../authentication/authentication-service';
 import {TokenContractClient} from '../token-receiving/token-contract-client';
 import {MinterContractClient} from '../token-receiving/minter-contract-client';
+import {ProjectManagerContractClient} from '../project-manager-contract-client';
 
 @Injectable()
 export class BalanceService {
@@ -11,7 +12,8 @@ export class BalanceService {
   constructor(private balanceApiClient: BalanceApiClient,
               private authenticationService: AuthenticationService,
               private tokenContractClient: TokenContractClient,
-              private minterContractClient: MinterContractClient) {
+              private minterContractClient: MinterContractClient,
+              private projectManagerContractClinet: ProjectManagerContractClient) {
     this.authenticationService.accountChanged.subscribe(async () => await this.updateBalanceAsync());
   }
 
@@ -34,6 +36,19 @@ export class BalanceService {
       canReceiveSvt: canReceiveSvt
     };
     this.balanceChanged.emit(balance);
+  }
+
+  public async hasUserEth(): Promise<boolean> {
+    const balanceResponse = await
+      this.balanceApiClient.getBalanceAsync();
+    return balanceResponse.balance > 0 && balanceResponse.wasEtherReceived;
+  }
+
+  public async hasUserSvt(): Promise<boolean> {
+    const accountAddress = (await this.authenticationService.getCurrentUser()).account;
+    const tokenBalance = await this.tokenContractClient.getBalanceAsync(accountAddress);
+    const projectCreationCost = await this.projectManagerContractClinet.getProjectCreationCostAsync();
+    return tokenBalance >= projectCreationCost;
   }
 
   private async canGetTokensAsync(accountAddress: string): Promise<boolean> {
