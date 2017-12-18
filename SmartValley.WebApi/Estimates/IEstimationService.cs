@@ -7,7 +7,7 @@ namespace SmartValley.WebApi.Estimates
     public interface IEstimationService
     {
         Task SubmitEstimatesAsync(SubmitEstimatesRequest request);
-        Task<Dictionary<long, IReadOnlyCollection<Estimate>>> GetQuestionWithEstimatesAsync(long projectId, ExpertiseArea expertiseArea);
-        double CalculateAverageScore(IReadOnlyCollection<Estimate> estimates);
+
+        Task<Dictionary<long, IReadOnlyCollection<Estimate>>> GetQuestionsWithEstimatesAsync(long projectId, string projectAddress, Domain.Entities.ExpertiseArea expertiseArea);
     }
 }

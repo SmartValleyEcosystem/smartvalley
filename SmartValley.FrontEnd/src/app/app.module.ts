@@ -46,7 +46,7 @@ import {AlertModalComponent} from './components/common/alert-modal/alert-modal.c
 import {MetamaskManualModalComponent} from './components/common/metamask-manual-modal/metamask-manual-modal.component';
 import {Angulartics2GoogleAnalytics} from 'angulartics2/ga';
 import {Angulartics2Module} from 'angulartics2';
-import {ProjectContractClient} from './services/project-contract-client';
+import {ScoringContractClient} from './services/scoring-contract-client';
 import {EtherReceivingService} from './services/ether-receiving/ether-receiving-service';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {multiTranslateLoaderFactory} from './services/translate/multi-translate-loader-factory';
@@ -138,7 +138,7 @@ import {RootComponent} from './components/root/root.component';
     DialogService,
     EtherReceivingService,
     ProjectManagerContractClient,
-    ProjectContractClient,
+    ScoringContractClient,
     BlockiesService,
     BalanceService,
     InitializationService,

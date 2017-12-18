@@ -8,6 +8,6 @@ namespace SmartValley.Domain.Interfaces
     {
         Task<int> AddRangeAsync(IEnumerable<TeamMember> teamMembers);
 
-        Task<IReadOnlyCollection<TeamMember>> GetAllByApplicationId(long applicationId);
+        Task<IReadOnlyCollection<TeamMember>> GetAllByApplicationIdAsync(long applicationId);
     }
 }

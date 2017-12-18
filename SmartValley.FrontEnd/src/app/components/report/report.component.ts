@@ -125,14 +125,14 @@ export class ReportComponent implements AfterViewChecked, OnInit {
   }
 
   private async loadExpertEstimates(expertiseArea: ExpertiseArea) {
-    const estimatesResponse = await this.estimatesApiClient.getByProjectIdAndExpertiseAreaAsync(this.projectId, expertiseArea);
+    const estimatesResponse = await this.estimatesApiClient.getAsync(this.projectId, expertiseArea);
     const fullQuestions = this.questionService.getByExpertiseArea(expertiseArea);
     this.expertiseAreaAverageScore = estimatesResponse.averageScore;
     this.questions = estimatesResponse.questions.map(i =>
       <Question>{
         name: fullQuestions.filter(j => j.id === i.questionId)[0].name,
         description: fullQuestions.filter(j => j.id === i.questionId)[0].description,
-        estimates: i.estimates.map(j => <Estimate>{score: j.score, comments: j.comment}),
+        estimates: i.estimates.map(j => <Estimate>{questionId: i.questionId, score: j.score, comments: j.comment}),
         minScore: fullQuestions.filter(j => j.id === i.questionId)[0].minScore,
         maxScore: fullQuestions.filter(j => j.id === i.questionId)[0].maxScore,
       });

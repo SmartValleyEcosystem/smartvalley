@@ -8,7 +8,7 @@ namespace SmartValley.WebApi.Estimates
 
         public string Comment { get; set; }
 
-        public static EstimateResponse From(Estimate estimate)
+        public static EstimateResponse Create(Estimate estimate)
         {
             return new EstimateResponse
                    {

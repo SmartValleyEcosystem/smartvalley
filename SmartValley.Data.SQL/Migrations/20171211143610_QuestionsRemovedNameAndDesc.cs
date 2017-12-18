@@ -15,10 +15,6 @@ namespace SmartValley.Data.SQL.Migrations
             migrationBuilder.DropColumn(
                 name: "Name",
                 table: "Questions");
-
-            migrationBuilder.DropColumn(
-                name: "ExpertiseArea",
-                table: "Estimates");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -36,12 +32,6 @@ namespace SmartValley.Data.SQL.Migrations
                 maxLength: 100,
                 nullable: false,
                 defaultValue: "");
-
-            migrationBuilder.AddColumn<int>(
-                name: "ExpertiseArea",
-                table: "Estimates",
-                nullable: false,
-                defaultValue: 0);
         }
     }
 }

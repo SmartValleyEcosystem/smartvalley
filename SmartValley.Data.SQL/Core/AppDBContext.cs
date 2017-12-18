@@ -16,8 +16,10 @@ namespace SmartValley.Data.SQL.Core
         IQueryable<Application> IReadOnlyDataContext.Applications => Applications.AsNoTracking();
 
         IQueryable<Project> IReadOnlyDataContext.Projects => Projects.AsNoTracking();
+        
+        IQueryable<ScoredProject> IReadOnlyDataContext.ScoredProjects => ScoredProjects.AsNoTracking();
 
-        IQueryable<Estimate> IReadOnlyDataContext.Estimates => Estimates.AsNoTracking();
+        IQueryable<EstimateComment> IReadOnlyDataContext.Estimates => Estimates.AsNoTracking();
 
         IQueryable<TeamMember> IReadOnlyDataContext.TeamMembers => TeamMembers.AsNoTracking();
 
@@ -26,8 +28,10 @@ namespace SmartValley.Data.SQL.Core
         public DbSet<Application> Applications { get; set; }
 
         public DbSet<Project> Projects { get; set; }
+        
+        public DbSet<ScoredProject> ScoredProjects { get; set; }
 
-        public DbSet<Estimate> Estimates { get; set; }
+        public DbSet<EstimateComment> Estimates { get; set; }
 
         public DbSet<TeamMember> TeamMembers { get; set; }
 

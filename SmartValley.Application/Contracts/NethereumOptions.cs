@@ -15,5 +15,9 @@
         public ContractOptions EtherManagerContract { get; set; }
 
         public ContractOptions ProjectManagerContract { get; set; }
+
+        public ContractOptions ProjectContract { get; set; }
+
+        public ContractOptions ScoringContract { get; set; }
     }
 }

@@ -29,8 +29,8 @@ export class MinterContractClient {
 
   public async receiveAsync(): Promise<void> {
     const accountAddress = this.authenticationService.getCurrentUser().account;
-    const token = this.web3Service.getContract(this.minterContractAbi, this.minterContractAddress);
-    const transactionHash = await token.getTokens({from: accountAddress});
+    const minter = this.web3Service.getContract(this.minterContractAbi, this.minterContractAddress);
+    const transactionHash = await minter.getTokens({from: accountAddress});
 
     const transactionDialog = this.dialogService.showTransactionDialog(
       this.translateService.instant('TokenReceiving.Dialog'),

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using SmartValley.Domain.Core;
+﻿using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
 {

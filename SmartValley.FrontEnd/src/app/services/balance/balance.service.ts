@@ -30,7 +30,6 @@ export class BalanceService {
     const address = this.authenticationService.getCurrentUser().account;
     const svtBalance = await this.getSvtBalanceAsync(address);
     const canReceiveSvt = await this.canGetTokensAsync(address);
-
     this.balance = {
       ethBalance: +balanceResponse.balance.toFixed(3),
       wasEtherReceived: balanceResponse.wasEtherReceived,

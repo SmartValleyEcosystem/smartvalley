@@ -10,8 +10,6 @@ namespace SmartValley.WebApi.Estimates
 
         public string ExpertAddress { get; set; }
 
-        public ExpertiseArea ExpertiseArea { get; set; }
-
-        public IReadOnlyCollection<EstimateRequest> Estimates { get; set; }
+        public IReadOnlyCollection<EstimateCommentRequest> EstimateComments { get; set; }
     }
 }

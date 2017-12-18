@@ -7,7 +7,5 @@ namespace SmartValley.Domain.Interfaces
     public interface IQuestionRepository
     {
         Task<IReadOnlyCollection<Question>> GetAllAsync();
-
-        Task<Dictionary<long, IReadOnlyCollection<Estimate>>> GetQuestionWithEstimatesAsync(long projectId, ExpertiseArea expertiseArea);
     }
 }

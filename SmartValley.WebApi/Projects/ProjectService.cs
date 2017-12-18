@@ -31,7 +31,7 @@ namespace SmartValley.WebApi.Projects
         {
             var project = await GetProjectAsync(projectId);
             var application = await _applicationRepository.GetByProjectIdAsync(projectId);
-            var teamMembers = await _teamRepository.GetAllByApplicationId(application.Id);
+            var teamMembers = await _teamRepository.GetAllByApplicationIdAsync(application.Id);
             var applicationResponse = new ProjectDetailsResponse
                                       {
                                           Name = project.Name,

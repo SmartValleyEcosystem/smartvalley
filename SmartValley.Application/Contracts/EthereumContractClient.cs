@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Nethereum.Contracts;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
@@ -11,7 +10,6 @@ namespace SmartValley.Application.Contracts
     // ReSharper disable once ClassNeverInstantiated.Global
     public class EthereumContractClient
     {
-        private const int TransactionReceiptPollingIntervalMilliseconds = 1000;
         private const int AdditionalGasPercent = 10;
         private const int GasPriceMultiplier = 21;
 
@@ -36,6 +34,19 @@ namespace SmartValley.Application.Contracts
             return GetFunction(address, abi, functionName).CallAsync<TResult>(functionInput);
         }
 
+        public Task<TResult> CallFunctionDeserializingToObjectAsync<TResult>(
+            string address,
+            string abi,
+            string functionName,
+            params object[] functionInput) where TResult : new()
+        {
+            return GetFunction(address, abi, functionName).CallDeserializingToObjectAsync<TResult>(
+                null,
+                new HexBigInteger(9000000),
+                null,
+                functionInput);
+        }
+
         public async Task<string> SignAndSendTransactionAsync(
             string contractAddress,
             string contractAbi,
@@ -47,25 +58,10 @@ namespace SmartValley.Application.Contracts
             return await _web3.Personal.SignAndSendTransaction.SendRequestAsync(transactionInput, _password);
         }
 
-        public async Task WaitForConfirmationAsync(string transactionHash)
-        {
-            while (await GetReceiptAsync(transactionHash) == null)
-                await Task.Delay(TransactionReceiptPollingIntervalMilliseconds);
-        }
-
         private Function GetFunction(string address, string abi, string functionName)
         {
             var contract = _web3.Eth.GetContract(abi, address);
             return contract.GetFunction(functionName);
-        }
-
-        private async Task<TransactionReceipt> GetReceiptAsync(string transactionHash)
-        {
-            var receipt = await _web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync(transactionHash);
-            if (receipt?.Status != null && receipt.Status.Value != 1)
-                throw new InvalidOperationException($"Transaction '{transactionHash}' failed.");
-
-            return receipt;
         }
 
         private async Task<TransactionInput> CreateTransactionInputAsync(Function function, params object[] functionInput)

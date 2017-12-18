@@ -6,19 +6,18 @@ import {Paths} from '../../paths';
 import {SubmitEstimatesRequest} from '../../api/estimates/submit-estimates-request';
 import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
-import {EstimateRequest} from '../../api/estimates/estimate-request';
+import {EstimateCommentRequest} from '../../api/estimates/estimate-comment-request';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TeamMember} from '../../services/team-member';
-import {ProjectContractClient} from '../../services/project-contract-client';
+import {ScoringContractClient} from '../../services/scoring-contract-client';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {DialogService} from '../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
+import {Estimate} from '../../services/estimate';
 import {BalanceService} from '../../services/balance/balance.service';
-import {Web3Service} from '../../services/web3-service';
-import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {EtherReceivingService} from '../../services/ether-receiving/ether-receiving-service';
 
 @Component({
@@ -44,12 +43,11 @@ export class EstimateComponent {
               private estimatesApiClient: EstimatesApiClient,
               private authenticationService: AuthenticationService,
               private formBuilder: FormBuilder,
-              private projectContractClient: ProjectContractClient,
+              private scoringContractClient: ScoringContractClient,
               private contractApiClient: ContractApiClient,
               private dialogService: DialogService,
               private translateService: TranslateService,
               private balanceService: BalanceService,
-              private web3Service: Web3Service,
               private etherReceivingService: EtherReceivingService) {
     this.loadProjectInfo();
   }
@@ -87,35 +85,37 @@ export class EstimateComponent {
   private async submitAsync(): Promise<void> {
     const estimates = this.getEstimates();
 
-    const projectContract = await this.contractApiClient.getProjectContractAsync();
-    const transactionHash = await this.submitToContractAsync(projectContract.abi, estimates);
-
-    const submitEstimatesRequest = <SubmitEstimatesRequest>{
-      transactionHash: transactionHash,
-      projectId: this.projectId,
-      expertiseArea: this.expertiseArea,
-      expertAddress: this.authenticationService.getCurrentUser().account,
-      estimates: estimates
-    };
+    const transactionHash = await this.submitToContractAsync(estimates);
 
     const transactionDialog = this.dialogService.showTransactionDialog(
       this.translateService.instant('Estimate.Dialog'),
       transactionHash
     );
-
-    await this.estimatesApiClient.submitEstimatesAsync(submitEstimatesRequest);
-
-    await this.web3Service.waitForConfirmationAsync(transactionHash);
+    await this.submitToBackendAsync(transactionHash, estimates);
 
     await this.balanceService.updateBalanceAsync();
 
     transactionDialog.close();
   }
 
-  private submitToContractAsync(abi: string, estimates: Array<EstimateRequest>): Promise<string> {
-    return this.projectContractClient.submitEstimatesAsync(
+  private submitToBackendAsync(transactionHash: string, estimates: Array<Estimate>) {
+    const submitEstimatesRequest = <SubmitEstimatesRequest>{
+      transactionHash: transactionHash,
+      projectId: this.projectId,
+      expertAddress: this.authenticationService.getCurrentUser().account,
+      estimateComments: estimates.map(e => <EstimateCommentRequest>{
+        questionId: e.questionId,
+        score: e.score,
+        comment: e.comments
+      })
+    };
+
+    return this.estimatesApiClient.submitEstimatesAsync(submitEstimatesRequest);
+  }
+
+  private submitToContractAsync(estimates: Array<Estimate>): Promise<string> {
+    return this.scoringContractClient.submitEstimatesAsync(
       this.projectDetails.projectAddress,
-      abi,
       this.expertiseArea,
       estimates);
   }
@@ -132,15 +132,15 @@ export class EstimateComponent {
     window.scrollTo({left: 0, top: offsetTop1 + offsetTop3 + offsetTop4, behavior: 'smooth'});
   }
 
-  private getEstimates(): Array<EstimateRequest> {
-    const estimates: Array<EstimateRequest> = [];
+  private getEstimates(): Array<Estimate> {
+    const estimates: Array<Estimate> = [];
     const formModel = this.estimateForm.value;
 
     for (const question of formModel.questions) {
-      estimates.push(<EstimateRequest>{
+      estimates.push(<Estimate>{
         questionId: question.questionId,
         score: question.score,
-        comment: question.comments.replace(/\s+$/, '')
+        comments: question.comments.replace(/\s+$/, '')
       });
     }
 

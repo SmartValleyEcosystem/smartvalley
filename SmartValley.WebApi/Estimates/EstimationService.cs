@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using SmartValley.Application.Exceptions;
+using SmartValley.Application;
+using SmartValley.Application.Contracts.Project;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 
@@ -10,101 +11,95 @@ namespace SmartValley.WebApi.Estimates
     // ReSharper disable once ClassNeverInstantiated.Global
     public class EstimationService : IEstimationService
     {
-        private const byte RequiredEstimatesCountInExpertiseArea = 3;
-
-        private readonly IEstimateRepository _estimateRepository;
-        private readonly IQuestionRepository _questionRepository;
+        private readonly IEstimateCommentRepository _estimateCommentRepository;
+        private readonly EthereumClient _ethereumClient;
+        private readonly IProjectContractClient _projectContractClient;
         private readonly IProjectRepository _projectRepository;
 
         public EstimationService(
-            IEstimateRepository estimateRepository,
-            IProjectRepository projectRepository,
-            IQuestionRepository questionRepository)
+            IEstimateCommentRepository estimateCommentRepository,
+            EthereumClient ethereumClient,
+            IProjectContractClient projectContractClient,
+            IProjectRepository projectRepository)
         {
-            _estimateRepository = estimateRepository;
+            _estimateCommentRepository = estimateCommentRepository;
+            _ethereumClient = ethereumClient;
+            _projectContractClient = projectContractClient;
             _projectRepository = projectRepository;
-            _questionRepository = questionRepository;
         }
 
         public async Task SubmitEstimatesAsync(SubmitEstimatesRequest request)
         {
-            var expertiseArea = request.ExpertiseArea.ToDomain();
+            await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
+
+            await AddEstimateCommentsAsync(request);
+
             var project = await _projectRepository.GetByIdAsync(request.ProjectId);
+            var scoringStatistics = await _projectContractClient.GetScoringStatisticsAsync(project.ProjectAddress);
 
-            var currentCounterVaule = project.GetEstimatesCounterValue(expertiseArea);
-            if (currentCounterVaule == RequiredEstimatesCountInExpertiseArea)
-            {
-                throw new AppErrorException(
-                    ErrorCode.ProjectAlreadyEstimatedInExpertiseArea,
-                    $"Project '{project.Name}' already received {RequiredEstimatesCountInExpertiseArea} estimates in area '{expertiseArea}'.");
-            }
-
-            var projectsEstimatedByExpert = await _estimateRepository.GetProjectsEstimatedByExpertAsync(request.ExpertAddress, expertiseArea);
-            if (projectsEstimatedByExpert.Contains(project.Id))
-            {
-                throw new AppErrorException(
-                    ErrorCode.ExpertAlreadyEstimatedProjectInExpertiseArea,
-                    $"Project '{project.Name}' has already been estimated in area '{expertiseArea}' by expert '{request.ExpertAddress}'.");
-            }
-
-            await AddEstimatesAsync(request);
-
-            await UpdateProjectAsync(project, expertiseArea);
+            await UpdateProjectAsync(project, scoringStatistics);
         }
 
-        public Task<Dictionary<long, IReadOnlyCollection<Estimate>>> GetQuestionWithEstimatesAsync(long projectId, ExpertiseArea expertiseArea)
+        public async Task<Dictionary<long, IReadOnlyCollection<Estimate>>> GetQuestionsWithEstimatesAsync(
+            long projectId,
+            string projectAddress,
+            Domain.Entities.ExpertiseArea expertiseArea)
         {
-            return _questionRepository.GetQuestionWithEstimatesAsync(projectId, expertiseArea.ToDomain());
+            var estimateScores = await _projectContractClient.GetEstimatesAsync(projectAddress);
+            var estimateComments = await _estimateCommentRepository.GetAsync(projectId, expertiseArea);
+
+            return (from comment in estimateComments
+                    join score in estimateScores
+                        on new {comment.QuestionId, comment.ExpertAddress} equals new {score.QuestionId, score.ExpertAddress}
+                    select CreateEstimate(projectId, score, comment))
+                .GroupBy(e => e.QuestionId)
+                .ToDictionary(g => g.Key, g => (IReadOnlyCollection<Estimate>) g.ToArray());
         }
 
-        public double CalculateAverageScore(IReadOnlyCollection<Estimate> estimates)
+        private static Estimate CreateEstimate(long projectId, EstimateScore score, EstimateComment comment)
         {
-            var expertsCount = estimates.GroupBy(e => e.ExpertAddress).Count();
-            if (expertsCount < RequiredEstimatesCountInExpertiseArea)
-            {
-                return -1;
-            }
-            return estimates.Sum(e => e.Score) / (double) RequiredEstimatesCountInExpertiseArea;
+            return new Estimate
+                   {
+                       QuestionId = score.QuestionId,
+                       Comment = comment.Comment,
+                       ExpertAddress = score.ExpertAddress,
+                       Score = score.Score,
+                       ProjectId = projectId
+                   };
         }
 
-        private async Task UpdateProjectAsync(Project project, Domain.Entities.ExpertiseArea expertiseArea)
+        private async Task UpdateProjectAsync(Project project, ProjectScoringStatistics scoringStatistics)
         {
-            project.IncrementEstimatesCounter(expertiseArea);
-
-            if (project.IsReadyForScoring(RequiredEstimatesCountInExpertiseArea))
-                project.Score = await CalculateProjectScoreAsync(project.Id);
+            project.Score = scoringStatistics.Score;
+            project.IsScoredByHr = scoringStatistics.IsScoredByHr;
+            project.IsScoredByAnalyst = scoringStatistics.IsScoredByAnalyst;
+            project.IsScoredByTechnical = scoringStatistics.IsScoredByTech;
+            project.IsScoredByLawyer = scoringStatistics.IsScoredByLawyer;
 
             await _projectRepository.UpdateWholeAsync(project);
         }
 
-        private async Task<double> CalculateProjectScoreAsync(long projectId)
-        {
-            var estimates = await _estimateRepository.GetAsync(projectId);
-            return (double) estimates.Sum(e => e.Score) / RequiredEstimatesCountInExpertiseArea;
-        }
-
-        private Task AddEstimatesAsync(SubmitEstimatesRequest request)
+        private Task AddEstimateCommentsAsync(SubmitEstimatesRequest request)
         {
             var estimates = request
-                .Estimates
-                .Select(e => CreateEstimate(e, request.ProjectId, request.ExpertAddress))
+                .EstimateComments
+                .Select(e => CreateEstimateComment(e, request.ProjectId, request.ExpertAddress))
                 .ToArray();
 
-            return _estimateRepository.AddRangeAsync(estimates);
+            return _estimateCommentRepository.AddRangeAsync(estimates);
         }
 
-        private static Estimate CreateEstimate(
-            EstimateRequest estimateRequest,
+        private static EstimateComment CreateEstimateComment(
+            EstimateCommentRequest estimateComment,
             long projectId,
             string expertAddress)
         {
-            return new Estimate
+            return new EstimateComment
                    {
                        ProjectId = projectId,
                        ExpertAddress = expertAddress,
-                       QuestionId = estimateRequest.QuestionId,
-                       Score = estimateRequest.Score,
-                       Comment = estimateRequest.Comment
+                       QuestionId = estimateComment.QuestionId,
+                       Comment = estimateComment.Comment
                    };
         }
     }

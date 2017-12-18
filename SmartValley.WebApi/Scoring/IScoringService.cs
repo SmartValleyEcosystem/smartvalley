@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SmartValley.Domain.Entities;
-using SmartValley.WebApi.Estimates;
-using ExpertiseArea = SmartValley.Domain.Entities.ExpertiseArea;
 
 namespace SmartValley.WebApi.Scoring
 {

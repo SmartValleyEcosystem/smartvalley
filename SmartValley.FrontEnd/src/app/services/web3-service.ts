@@ -6,8 +6,6 @@ import {PromiseUtils} from '../utils/promise-utils';
 
 @Injectable()
 export class Web3Service {
-
-
   constructor(private progress: NgProgress) {
   }
 

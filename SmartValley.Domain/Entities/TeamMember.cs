@@ -7,8 +7,6 @@ namespace SmartValley.Domain.Entities
     {
         public long Id { get; set; }
 
-        public Application Application { get; set; }
-
         public long ApplicationId { get; set; }
 
         [Required]
@@ -24,5 +22,7 @@ namespace SmartValley.Domain.Entities
         public string LinkedInLink { get; set; }
 
         public TeamMemberType Type { get; set; }
+        
+        public Application Application { get; set; }
     }
 }

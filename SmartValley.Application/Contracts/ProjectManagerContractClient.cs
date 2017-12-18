@@ -8,7 +8,6 @@ namespace SmartValley.Application.Contracts
     public class ProjectManagerContractClient : IProjectManagerContractClient
     {
         private readonly EthereumContractClient _contractClient;
-
         private readonly string _contractAddress;
         private readonly string _contractAbi;
 
@@ -19,10 +18,8 @@ namespace SmartValley.Application.Contracts
             _contractAbi = contractOptions.Abi;
         }
 
-        public async Task<string> GetProjectAddressAsync(string projectIdString, string transactionHash)
+        public async Task<string> GetProjectAddressAsync(string projectIdString)
         {
-            await _contractClient.WaitForConfirmationAsync(transactionHash);
-
             var projectId = projectIdString.Replace("-", "").HexToBigInteger(false);
 
             var projectAddress = await _contractClient.CallFunctionAsync<string>(_contractAddress, _contractAbi, "projectsMap", projectId);

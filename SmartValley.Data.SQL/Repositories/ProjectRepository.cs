@@ -21,28 +21,39 @@ namespace SmartValley.Data.SQL.Repositories
 
         public async Task<IReadOnlyCollection<Project>> GetAllByAuthorAddressAsync(string address)
         {
-            return await ReadContext.Projects
-                                    .Where(project => project.AuthorAddress.Equals(address, StringComparison.OrdinalIgnoreCase))
-                                    .ToArrayAsync();
+            return await ReadContext
+                       .Projects
+                       .Where(project => project.AuthorAddress.Equals(address, StringComparison.OrdinalIgnoreCase))
+                       .ToArrayAsync();
         }
 
-        public async Task<IReadOnlyCollection<Project>> GetAllByExpertiseAreaAsync(ExpertiseArea expertiseArea)
+        public async Task<IReadOnlyCollection<Project>> GetForScoringAsync(string expertAddress, ExpertiseArea expertiseArea)
+        {
+            var scoredProjects = ReadContext
+                .ScoredProjects
+                .Where(p => p.ExpertAddress == expertAddress && p.ExpertiseArea == expertiseArea)
+                .Select(p => p.ProjectId);
+
+            return await GetExpertiseArea(expertiseArea)
+                       .Where(p => !scoredProjects.Contains(p.Id))
+                       .ToArrayAsync();
+        }
+
+        private IQueryable<Project> GetExpertiseArea(ExpertiseArea expertiseArea)
         {
             var projects = ReadContext.Projects;
             switch (expertiseArea)
             {
-                case ExpertiseArea.Unknown:
-                    return new List<Project>();
                 case ExpertiseArea.Hr:
-                    return await projects.Where(p => p.HrEstimatesCount < 3).ToArrayAsync();
+                    return projects.Where(p => !p.IsScoredByHr);
                 case ExpertiseArea.Analyst:
-                    return await projects.Where(p => p.AnalystEstimatesCount < 3).ToArrayAsync();
+                    return projects.Where(p => !p.IsScoredByAnalyst);
                 case ExpertiseArea.Tech:
-                    return await projects.Where(p => p.TechnicalEstimatesCount < 3).ToArrayAsync();
+                    return projects.Where(p => !p.IsScoredByTechnical);
                 case ExpertiseArea.Lawyer:
-                    return await projects.Where(p => p.LawyerEstimatesCount < 3).ToArrayAsync();
+                    return projects.Where(p => !p.IsScoredByLawyer);
                 default:
-                    return await projects.ToArrayAsync();
+                    return projects;
             }
         }
     }

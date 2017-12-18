@@ -4,7 +4,7 @@ import {MinterContractClient} from '../token-receiving/minter-contract-client';
 import {TokenContractClient} from '../token-receiving/token-contract-client';
 import {PromiseUtils} from '../../utils/promise-utils';
 import {BalanceService} from '../balance/balance.service';
-import {AuthenticationService} from '../authentication/authentication-service';
+import {ScoringContractClient} from '../scoring-contract-client';
 
 @Injectable()
 export class InitializationService {
@@ -12,8 +12,8 @@ export class InitializationService {
   constructor(private questionService: QuestionService,
               private minterContractClient: MinterContractClient,
               private tokenContractClient: TokenContractClient,
-              private balanceService: BalanceService,
-              private authenticationService: AuthenticationService) {
+              private scoringContractClient: ScoringContractClient,
+              private balanceService: BalanceService) {
   }
 
   public isAppInitialized: boolean;
@@ -32,6 +32,7 @@ export class InitializationService {
       this.questionService.initializeAsync(),
       this.minterContractClient.initializeAsync(),
       this.tokenContractClient.initializeAsync(),
+      this.scoringContractClient.initializeAsync(),
       this.balanceService.updateBalanceAsync()
     ]);
   }
@@ -39,5 +40,4 @@ export class InitializationService {
   private async waitAsync(): Promise<void> {
     await PromiseUtils.delay(1 * 1000);
   }
-
 }

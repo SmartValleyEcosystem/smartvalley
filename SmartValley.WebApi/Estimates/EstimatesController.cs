@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartValley.Application.Contracts.Project;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Projects;
@@ -17,12 +18,18 @@ namespace SmartValley.WebApi.Estimates
         private readonly IEstimationService _estimationService;
         private readonly IProjectService _projectService;
         private readonly IQuestionRepository _questionRepository;
+        private readonly IProjectContractClient _projectContractClient;
 
-        public EstimatesController(IEstimationService estimationService, IProjectService projectService, IQuestionRepository questionRepository)
+        public EstimatesController(
+            IEstimationService estimationService,
+            IProjectService projectService,
+            IQuestionRepository questionRepository,
+            IProjectContractClient projectContractClient)
         {
             _estimationService = estimationService;
             _projectService = projectService;
             _questionRepository = questionRepository;
+            _projectContractClient = projectContractClient;
         }
 
         [Authorize]
@@ -36,26 +43,42 @@ namespace SmartValley.WebApi.Estimates
         public async Task<IActionResult> GetEstimatesAsync(GetEstimatesRequest request)
         {
             var project = await _projectService.GetProjectByIdAsync(request.ProjectId);
-
-            if (project.Score == null && !project.AuthorAddress.Equals(User.Identity.Name, StringComparison.InvariantCultureIgnoreCase))
+            var scoringStatistics = await _projectContractClient.GetScoringStatisticsAsync(project.ProjectAddress);
+            if (scoringStatistics.Score == null && !project.AuthorAddress.Equals(User.Identity.Name, StringComparison.InvariantCultureIgnoreCase))
                 return Unauthorized();
 
-            var questionsWithEstimates = await _estimationService.GetQuestionWithEstimatesAsync(request.ProjectId, request.ExpertiseArea);
+            var expertiseArea = request.ExpertiseArea.ToDomain();
+            var isScoredInArea = scoringStatistics.IsScoredInArea(expertiseArea);
+            var questionsWithEstimates = await _estimationService.GetQuestionsWithEstimatesAsync(request.ProjectId, project.ProjectAddress, expertiseArea);
 
-            var averageScore = _estimationService.CalculateAverageScore(questionsWithEstimates.Values.SelectMany(s => s).ToArray());
-
-            var response = new GetQuestionsWithEstimatesResponse
-                           {
-                               AverageScore = averageScore,
-                               Questions = questionsWithEstimates.Select(q => new QuestionWithEstimatesResponse
-                                                                              {
-                                                                                  QuestionId = q.Key,
-                                                                                  Estimates = q.Value.Select(EstimateResponse.From).ToArray()
-                                                                              })
-                                                                 .ToArray()
-                           };
-
+            var response = CreateGetQuestionsWithEstimatesResponse(isScoredInArea, questionsWithEstimates);
             return Ok(response);
+        }
+
+        private static GetQuestionsWithEstimatesResponse CreateGetQuestionsWithEstimatesResponse(
+            bool isProjectScoredInArea,
+            Dictionary<long, IReadOnlyCollection<Estimate>> questionsWithEstimates)
+        {
+            var averageScore = isProjectScoredInArea
+                                   ? questionsWithEstimates.Values.SelectMany(s => s).Average(e => e.Score)
+                                   : 0;
+
+            return new GetQuestionsWithEstimatesResponse
+                   {
+                       AverageScore = averageScore,
+                       Questions = questionsWithEstimates
+                           .Select(q => CreateQuestionWithEstimatesResponse(q.Key, q.Value))
+                           .ToArray()
+                   };
+        }
+
+        private static QuestionWithEstimatesResponse CreateQuestionWithEstimatesResponse(long questionId, IReadOnlyCollection<Estimate> estimates)
+        {
+            return new QuestionWithEstimatesResponse
+                   {
+                       QuestionId = questionId,
+                       Estimates = estimates.Select(EstimateResponse.Create).ToArray()
+                   };
         }
 
         [HttpGet]

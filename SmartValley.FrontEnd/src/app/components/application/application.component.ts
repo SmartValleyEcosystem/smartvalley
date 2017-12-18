@@ -11,7 +11,6 @@ import {TokenReceivingService} from '../../services/token-receiving/token-receiv
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {NotificationsService} from 'angular2-notifications';
-import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {DialogService} from '../../services/dialog-service';
 import {EtherReceivingService} from '../../services/ether-receiving/ether-receiving-service';
 import {TranslateService} from '@ngx-translate/core';
@@ -38,8 +37,7 @@ export class ApplicationComponent {
 
   public isProjectCreating: boolean;
 
-  constructor(private balanceApiClient: BalanceApiClient,
-              private formBuilder: FormBuilder,
+  constructor(private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
               private contractApiClient: ContractApiClient,
               private projectManagerContractClient: ProjectManagerContractClient,
@@ -50,8 +48,7 @@ export class ApplicationComponent {
               private applicationApiClient: ApplicationApiClient,
               private translateService: TranslateService,
               private tokenService: TokenReceivingService,
-              private balanceService: BalanceService,
-              private tokenClient: TokenContractClient) {
+              private balanceService: BalanceService) {
     this.createForm();
   }
 

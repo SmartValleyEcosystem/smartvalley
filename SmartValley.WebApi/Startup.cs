@@ -14,6 +14,7 @@ using Nethereum.Signer;
 using Nethereum.Web3;
 using SmartValley.Application;
 using SmartValley.Application.Contracts;
+using SmartValley.Application.Contracts.Project;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Data.SQL.Repositories;
 using SmartValley.Domain.Interfaces;
@@ -63,6 +64,8 @@ namespace SmartValley.WebApi
             services.AddSingleton<EthereumMessageSigner>();
             services.AddSingleton<EthereumClient>();
             services.AddSingleton<EthereumContractClient>();
+            services.AddSingleton<IProjectContractClient, ProjectContractClient>(
+                provider => new ProjectContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ProjectContract));
             services.AddSingleton<IEtherManagerContractClient, EtherManagerContractClient>(
                 provider => new EtherManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().EtherManagerContract));
             services.AddSingleton<IProjectManagerContractClient, ProjectManagerContractClient>(
@@ -83,7 +86,7 @@ namespace SmartValley.WebApi
             services.AddTransient<ITeamMemberRepository, TeamMemberRepository>();
             services.AddTransient<IApplicationRepository, ApplicationRepository>();
             services.AddTransient<IProjectRepository, ProjectRepository>();
-            services.AddTransient<IEstimateRepository, EstimateRepository>();
+            services.AddTransient<IEstimateCommentRepository, EstimateCommentRepository>();
             services.AddTransient<IApplicationService, ApplicationService>();
             services.AddTransient<IProjectService, ProjectService>();
             services.AddTransient<IEstimationService, EstimationService>();

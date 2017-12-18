@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
@@ -8,10 +7,7 @@ namespace SmartValley.Domain.Entities
     {
         public long Id { get; set; }
 
-        public Project Project { get; set; }
-
         public long ProjectId { get; set; }
-
 
         [MaxLength(40)]
         public string SoftCap { get; set; }
@@ -37,5 +33,7 @@ namespace SmartValley.Domain.Entities
         [Url]
         [MaxLength(400)]
         public string WhitePaperLink { get; set; }
+        
+        public Project Project { get; set; }
     }
 }

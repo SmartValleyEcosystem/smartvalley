@@ -34,60 +34,14 @@ namespace SmartValley.Domain.Entities
         [MaxLength(1000)]
         public string Description { get; set; }
 
-        public byte HrEstimatesCount { get; set; }
+        public bool IsScoredByHr { get; set; }
 
-        public byte LawyerEstimatesCount { get; set; }
+        public bool IsScoredByLawyer { get; set; }
 
-        public byte AnalystEstimatesCount { get; set; }
+        public bool IsScoredByAnalyst { get; set; }
 
-        public byte TechnicalEstimatesCount { get; set; }
+        public bool IsScoredByTechnical { get; set; }
 
         public double? Score { get; set; }
-
-        public void IncrementEstimatesCounter(ExpertiseArea expertiseArea)
-        {
-            switch (expertiseArea)
-            {
-                case ExpertiseArea.Hr:
-                    HrEstimatesCount++;
-                    break;
-                case ExpertiseArea.Analyst:
-                    AnalystEstimatesCount++;
-                    break;
-                case ExpertiseArea.Tech:
-                    TechnicalEstimatesCount++;
-                    break;
-                case ExpertiseArea.Lawyer:
-                    LawyerEstimatesCount++;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(expertiseArea), expertiseArea, null);
-            }
-        }
-
-        public byte GetEstimatesCounterValue(ExpertiseArea expertiseArea)
-        {
-            switch (expertiseArea)
-            {
-                case ExpertiseArea.Hr:
-                    return HrEstimatesCount;
-                case ExpertiseArea.Analyst:
-                    return AnalystEstimatesCount;
-                case ExpertiseArea.Tech:
-                    return TechnicalEstimatesCount;
-                case ExpertiseArea.Lawyer:
-                    return LawyerEstimatesCount;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(expertiseArea), expertiseArea, null);
-            }
-        }
-
-        public bool IsReadyForScoring(byte requiredEstimatesCount)
-        {
-            return HrEstimatesCount == requiredEstimatesCount
-                   && LawyerEstimatesCount == requiredEstimatesCount
-                   && AnalystEstimatesCount == requiredEstimatesCount
-                   && TechnicalEstimatesCount == requiredEstimatesCount;
-        }
     }
 }

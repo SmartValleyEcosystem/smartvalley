@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {TokenReceivingService} from '../../services/token-receiving/token-receiving-service';
 import {Router} from '@angular/router';
@@ -22,8 +21,7 @@ export class HeaderComponent {
   public showReceiveSVTButton: boolean;
   public showBalance: boolean;
 
-  constructor(private balanceApiClient: BalanceApiClient,
-              private router: Router,
+  constructor(private router: Router,
               private balanceService: BalanceService,
               private authenticationService: AuthenticationService,
               private etherReceivingService: EtherReceivingService,
@@ -49,7 +47,6 @@ export class HeaderComponent {
 
   async receiveEth() {
     await this.etherReceivingService.receiveAsync();
-
   }
 
   async receiveSVT() {

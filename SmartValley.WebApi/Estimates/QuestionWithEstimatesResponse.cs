@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Estimates
 {

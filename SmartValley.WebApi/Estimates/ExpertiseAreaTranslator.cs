@@ -1,5 +1,4 @@
 ﻿using System;
-using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Estimates
 {

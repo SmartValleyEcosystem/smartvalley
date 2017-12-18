@@ -4,7 +4,7 @@ export class HeadersConstants {
   static XSignedText = 'X-Signed-Text';
 }
 
-export class Constants{
+export class Constants {
   static ScoringMyProjectsTab = 'myprojects';
   static ScoringProjectsForScoringTab = 'forscoring';
   static ReportFormTab = 'form';

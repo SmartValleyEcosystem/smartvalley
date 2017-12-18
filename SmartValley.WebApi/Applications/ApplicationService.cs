@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using SmartValley.Application;
 using SmartValley.Application.Contracts;
 using SmartValley.Application.Exceptions;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
-using SmartValley.WebApi.TeamMembers;
 
 namespace SmartValley.WebApi.Applications
 {
@@ -16,17 +16,20 @@ namespace SmartValley.WebApi.Applications
         private readonly IProjectRepository _projectRepository;
         private readonly ITeamMemberRepository _teamRepository;
         private readonly IProjectManagerContractClient _projectManagerContractClient;
+        private readonly EthereumClient _ethereumClient;
 
         public ApplicationService(
             IApplicationRepository applicationRepository,
             IProjectRepository projectRepository,
             ITeamMemberRepository teamRepository,
-            IProjectManagerContractClient projectManagerContractClient)
+            IProjectManagerContractClient projectManagerContractClient,
+            EthereumClient ethereumClient)
         {
             _applicationRepository = applicationRepository;
             _projectRepository = projectRepository;
             _teamRepository = teamRepository;
             _projectManagerContractClient = projectManagerContractClient;
+            _ethereumClient = ethereumClient;
         }
 
         public async Task CreateAsync(ApplicationRequest applicationRequest)
@@ -34,9 +37,9 @@ namespace SmartValley.WebApi.Applications
             if (applicationRequest == null)
                 throw new ArgumentNullException();
 
-            var projectAddress = await _projectManagerContractClient.GetProjectAddressAsync(
-                                     applicationRequest.ProjectId,
-                                     applicationRequest.TransactionHash);
+            await _ethereumClient.WaitForConfirmationAsync(applicationRequest.TransactionHash);
+
+            var projectAddress = await _projectManagerContractClient.GetProjectAddressAsync(applicationRequest.ProjectId);
 
             await CreateProjectAsync(applicationRequest, projectAddress);
         }

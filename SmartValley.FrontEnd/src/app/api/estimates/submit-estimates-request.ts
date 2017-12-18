@@ -1,4 +1,4 @@
-import {EstimateRequest} from './estimate-request';
+import {EstimateCommentRequest} from './estimate-comment-request';
 
 export interface SubmitEstimatesRequest {
   transactionHash: string;
@@ -7,7 +7,5 @@ export interface SubmitEstimatesRequest {
 
   expertAddress: string;
 
-  expertiseArea: number;
-
-  estimates: Array<EstimateRequest>;
+  estimateComments: Array<EstimateCommentRequest>;
 }

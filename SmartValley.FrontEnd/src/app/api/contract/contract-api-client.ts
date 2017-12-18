@@ -2,7 +2,6 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BaseApiClient} from '../base-api-client';
 import {ContractResponse} from './contract-response';
-import {ProjectContractResponse} from './project-contract-response';
 
 @Injectable()
 export class ContractApiClient extends BaseApiClient {
@@ -15,8 +14,8 @@ export class ContractApiClient extends BaseApiClient {
       .toPromise();
   }
 
-  async getProjectContractAsync(): Promise<ProjectContractResponse> {
-    return await this.http.get<ProjectContractResponse>(this.baseApiUrl + '/contracts/project')
+  async getScoringContractAsync(): Promise<ContractResponse> {
+    return await this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/scoring')
       .toPromise();
   }
 

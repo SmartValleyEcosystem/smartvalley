@@ -41,11 +41,11 @@ namespace SmartValley.WebApi.Authentication
             try
             {
                 if (!IsSignedMessageValid(ethereumAddess, signedText, signature))
-                    return AuthenticateResult.Fail($"Signed message is invalid");
+                    return AuthenticateResult.Fail("Signed message is invalid");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return AuthenticateResult.Fail($"Signed message is invalid");
+                return AuthenticateResult.Fail("Signed message is invalid");
             }
 
             var ticket = new AuthenticationTicket(new ClaimsPrincipal(new User(ethereumAddess, true)), EcdsaAuthenticationOptions.DefaultScheme);
