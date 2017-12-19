@@ -96,12 +96,9 @@ export class ReportComponent implements AfterViewChecked, OnInit {
   }
 
   private fillEmptyFields() {
-    const fields = Object.entries(this.report);
-    const keys = Object.keys(this.report);
-    for (const key of keys) {
-      const value = fields.filter(i => i[0] === key)[0][1].toString();
-      if (isNullOrUndefined(value) || value === '') {
-        this.report[key] = '\u2014';
+    for (const pair of Object.entries(this.report)) {
+      if (pair[1] === '') {
+        this.report[pair[0]] = '\u2014';
       }
     }
   }

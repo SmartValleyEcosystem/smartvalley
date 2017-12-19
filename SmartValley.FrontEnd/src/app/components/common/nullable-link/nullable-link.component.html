@@ -1,4 +1,4 @@
 <div>
-  <a *ngIf="href; else elseBlock" href="{{href}}">{{href}}</a>
+  <a *ngIf="href && href !== '\u2014'; else elseBlock" href="{{href}}">{{href}}</a>
   <ng-template #elseBlock>&mdash;</ng-template>
 </div>
