@@ -149,26 +149,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("Questions");
                 });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.ScoredProject", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ExpertAddress")
-                        .IsRequired()
-                        .HasMaxLength(42);
-
-                    b.Property<int>("ExpertiseArea");
-
-                    b.Property<long>("ProjectId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("ScoredProjects");
-                });
-
             modelBuilder.Entity("SmartValley.Domain.Entities.TeamMember", b =>
                 {
                     b.Property<long>("Id")
@@ -213,14 +193,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasOne("SmartValley.Domain.Entities.Question", "Question")
                         .WithMany()
                         .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SmartValley.Domain.Entities.ScoredProject", b =>
-                {
-                    b.HasOne("SmartValley.Domain.Entities.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

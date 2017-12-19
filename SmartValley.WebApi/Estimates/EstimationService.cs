@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application;
 using SmartValley.Application.Contracts.Project;
+using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 

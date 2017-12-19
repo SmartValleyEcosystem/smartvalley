@@ -29,17 +29,19 @@ namespace SmartValley.Data.SQL.Repositories
 
         public async Task<IReadOnlyCollection<Project>> GetForScoringAsync(string expertAddress, ExpertiseArea expertiseArea)
         {
-            var scoredProjects = ReadContext
-                .ScoredProjects
-                .Where(p => p.ExpertAddress == expertAddress && p.ExpertiseArea == expertiseArea)
-                .Select(p => p.ProjectId);
+            var scoredProjects = (from question in ReadContext.Questions
+                                  join estimateComment in ReadContext.Estimates on question.Id equals estimateComment.QuestionId
+                                  where estimateComment.ExpertAddress.Equals(expertAddress, StringComparison.OrdinalIgnoreCase)
+                                        && question.ExpertiseArea == expertiseArea
+                                  select estimateComment.ProjectId)
+                .Distinct();
 
-            return await GetExpertiseArea(expertiseArea)
+            return await GetByExpertiseArea(expertiseArea)
                        .Where(p => !scoredProjects.Contains(p.Id))
                        .ToArrayAsync();
         }
 
-        private IQueryable<Project> GetExpertiseArea(ExpertiseArea expertiseArea)
+        private IQueryable<Project> GetByExpertiseArea(ExpertiseArea expertiseArea)
         {
             var projects = ReadContext.Projects;
             switch (expertiseArea)

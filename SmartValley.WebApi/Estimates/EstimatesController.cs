@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application.Contracts.Project;
+using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Projects;
