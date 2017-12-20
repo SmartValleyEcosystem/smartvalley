@@ -61,7 +61,7 @@ namespace SmartValley.WebApi.Estimates
             Dictionary<long, IReadOnlyCollection<Estimate>> questionsWithEstimates)
         {
             var averageScore = isProjectScoredInArea
-                                   ? questionsWithEstimates.Values.SelectMany(s => s).Average(e => e.Score)
+                                   ? questionsWithEstimates.Values.SelectMany(s => s.Select(i => i.Score)).Sum() / 3
                                    : (double?) null;
 
             return new GetQuestionsWithEstimatesResponse
