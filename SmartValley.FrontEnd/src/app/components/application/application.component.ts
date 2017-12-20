@@ -52,7 +52,83 @@ export class ApplicationComponent {
     this.createForm();
   }
 
-  createForm() {
+  public showNext() {
+    if (this.isTeamShow === false) {
+      this.isTeamShow = true;
+      return;
+    }
+    if (this.isLegalShow === false) {
+      this.isLegalShow = true;
+      return;
+    }
+    if (this.isFinanceShow === false) {
+      this.isFinanceShow = true;
+      return;
+    }
+    if (this.isTechShow === false) {
+      this.isTechShow = true;
+      return;
+    }
+  }
+
+  public async onSubmitAsync() {
+    if (!this.validateForm()) {
+      return;
+    }
+
+    this.isProjectCreating = true;
+
+    const userHasETH = await this.balanceService.hasUserEth();
+    if (!userHasETH) {
+      if (await this.dialogService.showGetEtherDialog()) {
+        await this.etherReceivingService.receiveAsync();
+      } else {
+        this.isProjectCreating = false;
+        return;
+      }
+    }
+
+    const userHasSVT = await this.balanceService.hasUserSvt();
+    if (!userHasSVT) {
+      if (await this.dialogService.showGetTokenDialog()) {
+        await this.tokenService.receiveAsync();
+      } else {
+        this.isProjectCreating = false;
+        return;
+      }
+    }
+
+    await this.submitApplicationAsync();
+  }
+
+  private async submitApplicationAsync(): Promise<void> {
+    const application = await this.fillApplication();
+
+    if (application == null) {
+      this.notificationsService.error(this.translateService.instant('Common.Error'), this.translateService.instant('Common.TryAgain'));
+      this.isProjectCreating = false;
+      return;
+    }
+
+    const transactionDialog = this.dialogService.showTransactionDialog(
+      this.translateService.instant('Application.Dialog'),
+      application.transactionHash
+    );
+
+    await this.applicationApiClient.createApplicationAsync(application);
+
+    await this.balanceService.updateBalanceAsync();
+
+    transactionDialog.close();
+
+    await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
+    this.notificationsService.success(
+      this.translateService.instant('Common.Success'),
+      this.translateService.instant('Application.ProjectCreated')
+    );
+  }
+
+  private createForm() {
     const teamMembers = [];
     for (const item in EnumTeamMemberType) {
       if (typeof EnumTeamMemberType[item] === 'number') {
@@ -83,101 +159,6 @@ export class ApplicationComponent {
       mvpLink: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
       teamMembers: this.formBuilder.array(teamMembers)
     });
-  }
-
-  showNext() {
-    if (this.isTeamShow === false) {
-      this.isTeamShow = true;
-      return;
-    }
-    if (this.isLegalShow === false) {
-      this.isLegalShow = true;
-      return;
-    }
-    if (this.isFinanceShow === false) {
-      this.isFinanceShow = true;
-      return;
-    }
-    if (this.isTechShow === false) {
-      this.isTechShow = true;
-      return;
-    }
-  }
-
-  private async submitIfFormValid() {
-    if (this.applicationForm.invalid) {
-      if (this.applicationForm.controls['name'].invalid) {
-        this.scrollToElement(this.nameRow);
-      } else if (this.applicationForm.controls['projectArea'].invalid) {
-        this.scrollToElement(this.areaRow);
-      } else if (this.applicationForm.controls['description'].invalid) {
-        this.scrollToElement(this.descriptionRow);
-      }
-      return;
-    }
-    this.isProjectCreating = true;
-    const application = await this.fillApplication();
-
-    if (application == null) {
-      this.notificationsService.error(this.translateService.instant('Common.Error'), this.translateService.instant('Common.TryAgain'));
-      this.isProjectCreating = false;
-      return;
-    }
-
-    const transactionDialog = this.dialogService.showTransactionDialog(
-      this.translateService.instant('Application.Dialog'),
-      application.transactionHash
-    );
-
-    await this.applicationApiClient.createApplicationAsync(application);
-
-    await this.balanceService.updateBalanceAsync();
-
-    transactionDialog.close();
-
-    await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
-    this.notificationsService.success(
-      this.translateService.instant('Common.Success'),
-      this.translateService.instant('Application.ProjectCreated')
-    );
-  }
-
-  public async onSubmit() {
-    const userHasETH = await this.balanceService.hasUserEth();
-    if (!userHasETH) {
-      if (await this.dialogService.showGetEtherDialog()) {
-        await this.etherReceivingService.receiveAsync();
-      } else {
-        return;
-      }
-    }
-
-    const userHasSVT = await this.balanceService.hasUserSvt();
-    if (!userHasSVT) {
-      if (await this.dialogService.showGetTokenDialog()) {
-        await this.tokenService.receiveAsync();
-      } else {
-        return;
-      }
-    }
-
-    await this.submitIfFormValid();
-  }
-
-  private scrollToElement(element: ElementRef) {
-    const containerOffset = element.nativeElement.offsetTop;
-    const fieldOffset = element.nativeElement.offsetParent.offsetTop;
-    window.scrollTo({left: 0, top: containerOffset + fieldOffset - 15, behavior: 'smooth'});
-    element.nativeElement.children[1].classList.add('ng-invalid');
-    element.nativeElement.children[1].classList.add('ng-dirty');
-    element.nativeElement.children[1].classList.remove('ng-valid');
-    const invalidElements = this.requireds.filter(i => i.nativeElement.classList.contains('ng-invalid'));
-    if (invalidElements.length > 0) {
-      for (let a = 0; a < invalidElements.length; a++) {
-        invalidElements[a].nativeElement.classList.add('ng-invalid');
-        invalidElements[a].nativeElement.classList.add('ng-dirty');
-      }
-    }
   }
 
   private async fillApplication(): Promise<Application> {
@@ -222,6 +203,36 @@ export class ApplicationComponent {
 
     } catch (e) {
       return null;
+    }
+  }
+
+  private validateForm(): boolean {
+    if (this.applicationForm.invalid) {
+      if (this.applicationForm.controls['name'].invalid) {
+        this.scrollToElement(this.nameRow);
+      } else if (this.applicationForm.controls['projectArea'].invalid) {
+        this.scrollToElement(this.areaRow);
+      } else if (this.applicationForm.controls['description'].invalid) {
+        this.scrollToElement(this.descriptionRow);
+      }
+      return false;
+    }
+    return true;
+  }
+
+  private scrollToElement(element: ElementRef) {
+    const containerOffset = element.nativeElement.offsetTop;
+    const fieldOffset = element.nativeElement.offsetParent.offsetTop;
+    window.scrollTo({left: 0, top: containerOffset + fieldOffset - 15, behavior: 'smooth'});
+    element.nativeElement.children[1].classList.add('ng-invalid');
+    element.nativeElement.children[1].classList.add('ng-dirty');
+    element.nativeElement.children[1].classList.remove('ng-valid');
+    const invalidElements = this.requireds.filter(i => i.nativeElement.classList.contains('ng-invalid'));
+    if (invalidElements.length > 0) {
+      for (let a = 0; a < invalidElements.length; a++) {
+        invalidElements[a].nativeElement.classList.add('ng-invalid');
+        invalidElements[a].nativeElement.classList.add('ng-dirty');
+      }
     }
   }
 }

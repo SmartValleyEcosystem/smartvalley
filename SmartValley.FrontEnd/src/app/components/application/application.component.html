@@ -128,7 +128,7 @@
       </div>
     </div>
     <div [ngClass]="isTechShow ? '' : 'submit-btn'" class="row">
-      <button (click)="onSubmit()" [disabled]="isProjectCreating" class="col-3 btn btn-primary">
+      <button (click)="onSubmitAsync()" [disabled]="isProjectCreating" class="col-3 btn btn-primary">
         {{ 'Application.Submit' | translate }}
       </button>
     </div>
