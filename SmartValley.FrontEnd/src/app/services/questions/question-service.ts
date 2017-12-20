@@ -29,8 +29,8 @@ export class QuestionService {
   public async initializeAsync(): Promise<void> {
     const allQuestions = await this.estimatesClient.getQuestionsAsync();
     for (const question of allQuestions.items) {
-      question.name = this.translateService.instant('QuestionsNames.' + question.id);
-      question.description = this.translateService.instant('QuestionsDescriptions.' + question.id);
+      question.name = await this.translateService.get('QuestionsNames.' + question.id).toPromise();
+      question.description = await this.translateService.get('QuestionsDescriptions.' + question.id).toPromise();
     }
     for (const item in ExpertiseArea) {
       if (Number(item)) {
