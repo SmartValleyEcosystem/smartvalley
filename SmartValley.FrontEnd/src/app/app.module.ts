@@ -56,6 +56,7 @@ import {InitializationComponent} from './components/initialization/initializatio
 import {InitializationService} from './services/initialization/initialization.service';
 import {InitializationGuard} from './services/initialization/initialization.guard';
 import {RootComponent} from './components/root/root.component';
+import { LinkModalComponent } from './components/common/link-modal/link-modal.component';
 
 @NgModule({
   declarations: [
@@ -76,13 +77,15 @@ import {RootComponent} from './components/root/root.component';
     MetamaskManualModalComponent,
     ReceiptModalComponent,
     InitializationComponent,
-    RootComponent
+    RootComponent,
+    LinkModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
     AlertModalComponent,
     MetamaskManualModalComponent,
-    ReceiptModalComponent
+    ReceiptModalComponent,
+    LinkModalComponent
   ],
   imports: [
     MatCheckboxModule,

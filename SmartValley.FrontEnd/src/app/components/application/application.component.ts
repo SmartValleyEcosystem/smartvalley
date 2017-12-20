@@ -144,19 +144,34 @@ export class ApplicationComponent {
 
   public async onSubmit() {
     const userHasETH = await this.balanceService.hasUserEth();
+    const wasEtherReceived = await this.balanceService.wasEtherReceived();
     if (!userHasETH) {
-      if (await this.dialogService.showGetEtherDialog()) {
-        await this.etherReceivingService.receiveAsync();
+      if (!wasEtherReceived) {
+        if (await this.dialogService.showGetEtherDialog()) {
+          await this.etherReceivingService.receiveAsync();
+        } else {
+          return;
+        }
       } else {
+        await this.dialogService.showRinkeByDialog();
         return;
       }
     }
 
     const userHasSVT = await this.balanceService.hasUserSvt();
     if (!userHasSVT) {
-      if (await this.dialogService.showGetTokenDialog()) {
-        await this.tokenService.receiveAsync();
+      const userAddress = await this.authenticationService.getCurrentUser().account;
+      const getReceiveDateForAddress = await this.balanceService.getReceiveDateForAddressAsync(userAddress);
+      const threeDays = new Date(getReceiveDateForAddress * 1000);
+      threeDays.setUTCHours(72);
+      if (threeDays.getTime() <= Date.now()) {
+        if (await this.dialogService.showGetTokenDialog()) {
+          await this.tokenService.receiveAsync();
+        } else {
+          return;
+        }
       } else {
+        await this.dialogService.showSVTDialog(threeDays.toLocaleDateString());
         return;
       }
     }

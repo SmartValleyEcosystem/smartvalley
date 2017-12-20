@@ -1,0 +1,13 @@
+<div>
+  <h2 mat-mat-title>
+    {{ data.title }}
+  </h2>
+  <hr>
+  <mat-dialog-content *ngIf="data.link">
+    {{ data.content }} <a [href]="data.link">{{data.link}}</a>
+  </mat-dialog-content>
+  <mat-dialog-content *ngIf="data.time">
+    {{ data.content }} {{data.time}}
+  </mat-dialog-content>
+  <hr>
+</div>

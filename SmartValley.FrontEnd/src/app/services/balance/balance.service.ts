@@ -9,6 +9,10 @@ import {ProjectManagerContractClient} from '../project-manager-contract-client';
 @Injectable()
 export class BalanceService {
 
+  public balanceChanged: EventEmitter<Balance> = new EventEmitter<Balance>();
+
+  public balance: Balance;
+
   constructor(private balanceApiClient: BalanceApiClient,
               private authenticationService: AuthenticationService,
               private tokenContractClient: TokenContractClient,
@@ -16,10 +20,6 @@ export class BalanceService {
               private projectManagerContractClinet: ProjectManagerContractClient) {
     this.authenticationService.accountChanged.subscribe(async () => await this.updateBalanceAsync());
   }
-
-  public balanceChanged: EventEmitter<Balance> = new EventEmitter<Balance>();
-
-  public balance: Balance;
 
   public async updateBalanceAsync(): Promise<void> {
     if (!this.authenticationService.isAuthenticated()) {
@@ -42,7 +42,13 @@ export class BalanceService {
   public async hasUserEth(): Promise<boolean> {
     const balanceResponse = await
       this.balanceApiClient.getBalanceAsync();
-    return balanceResponse.balance > 0 && balanceResponse.wasEtherReceived;
+    return balanceResponse.balance > 0.1;
+  }
+
+  public async wasEtherReceived(): Promise<boolean> {
+    const balanceResponse = await
+      this.balanceApiClient.getBalanceAsync();
+    return balanceResponse.wasEtherReceived;
   }
 
   public async hasUserSvt(): Promise<boolean> {
@@ -58,5 +64,9 @@ export class BalanceService {
 
   private async getSvtBalanceAsync(accountAddress: string): Promise<number> {
     return await this.tokenContractClient.getBalanceAsync(accountAddress);
+  }
+
+  public async getReceiveDateForAddressAsync(accountAddress: string): Promise<number> {
+    return await this.minterContractClient.getReceiveDateForAddressAsync(accountAddress);
   }
 }
