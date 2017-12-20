@@ -30,13 +30,18 @@ namespace SmartValley.Application.Contracts.Project
         {
             var dto = await _contractClient.CallFunctionDeserializingToObjectAsync<ScoringStatisticsDto>(projectAddress, _abi, "getScoringInformation");
             return new ProjectScoringStatistics
-                   {
-                       Score = dto.IsScored ? dto.Score : (int?) null,
-                       IsScoredByHr = dto.IsScoredByHr,
-                       IsScoredByAnalyst = dto.IsScoredByAnalyst,
-                       IsScoredByTech = dto.IsScoredByTech,
-                       IsScoredByLawyer = dto.IsScoredByLawyer,
-                   };
+            {
+                Score = dto.IsScored ? dto.Score : (int?)null,
+                IsScoredByHr = dto.IsScoredByHr,
+                IsScoredByAnalyst = dto.IsScoredByAnalyst,
+                IsScoredByTech = dto.IsScoredByTech,
+                IsScoredByLawyer = dto.IsScoredByLawyer,
+            };
+        }
+
+        public Task<uint> GetRequiredSubmissionsInAreaCountAsync(string projectAddress)
+        {
+            return _contractClient.CallFunctionAsync<uint>(projectAddress, _abi, "REQUIRED_SUBMISSIONS_IN_AREA");
         }
     }
 }

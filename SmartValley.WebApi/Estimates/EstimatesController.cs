@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartValley.Application.Contracts;
 using SmartValley.Application.Contracts.Project;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
@@ -52,16 +53,17 @@ namespace SmartValley.WebApi.Estimates
             var isScoredInArea = scoringStatistics.IsScoredInArea(expertiseArea);
             var questionsWithEstimates = await _estimationService.GetQuestionsWithEstimatesAsync(request.ProjectId, project.ProjectAddress, expertiseArea);
 
-            var response = CreateGetQuestionsWithEstimatesResponse(isScoredInArea, questionsWithEstimates);
+            var response = await CreateGetQuestionsWithEstimatesResponse(isScoredInArea, questionsWithEstimates, project.ProjectAddress);
             return Ok(response);
         }
 
-        private static GetQuestionsWithEstimatesResponse CreateGetQuestionsWithEstimatesResponse(
+        private async Task<GetQuestionsWithEstimatesResponse> CreateGetQuestionsWithEstimatesResponse(
             bool isProjectScoredInArea,
-            Dictionary<long, IReadOnlyCollection<Estimate>> questionsWithEstimates)
+            Dictionary<long, IReadOnlyCollection<Estimate>> questionsWithEstimates, string projectAddress)
         {
+            var requiredSubmissionsInArea = await _projectContractClient.GetRequiredSubmissionsInAreaCountAsync(projectAddress);
             var averageScore = isProjectScoredInArea
-                                   ? questionsWithEstimates.Values.SelectMany(s => s.Select(i => i.Score)).Sum() / 3
+                                   ? questionsWithEstimates.Values.Sum(i=>i.Sum(j=>j.Score)) / requiredSubmissionsInArea
                                    : (double?) null;
 
             return new GetQuestionsWithEstimatesResponse
