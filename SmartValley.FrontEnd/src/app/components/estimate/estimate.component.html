@@ -135,7 +135,7 @@
     </div>
   </form>
   <div class="submit-button row">
-    <button (click)="send()" class="btn-blue col-3 btn btn-primary"
+    <button (click)="sendEstimateAsync()" [disabled]="isEstimateSending" class="btn-blue col-3 btn btn-primary"
             style="padding-top: 1em; padding-bottom: 1em;">
       {{ 'Estimate.Send' | translate }}
     </button>

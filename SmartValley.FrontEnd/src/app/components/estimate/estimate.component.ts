@@ -33,8 +33,10 @@ export class EstimateComponent {
   public projectDetails: ProjectDetailsResponse;
   public estimateForm: FormGroup;
   public teamMembers: Array<TeamMember>;
+  public isEstimateSending: boolean;
 
   @ViewChildren('required') requireds: QueryList<any>;
+
 
   constructor(private route: ActivatedRoute,
               private projectApiClient: ProjectApiClient,
@@ -56,17 +58,29 @@ export class EstimateComponent {
     this.hidden = true;
   }
 
-  async send() {
+  public async sendEstimateAsync(): Promise<void> {
+    if (!this.validateForm()) {
+      return;
+    }
+
+    this.isEstimateSending = true;
 
     const userHasETH = await this.balanceService.hasUserEth();
     if (!userHasETH) {
       if (await this.dialogService.showGetEtherDialog()) {
         await this.etherReceivingService.receiveAsync();
       } else {
+        this.isEstimateSending = false;
         return;
       }
     }
+    const isSuccessed = await this.submitAsync();
+    if (isSuccessed) {
+      await this.router.navigate([Paths.Scoring]);
+    }
+  }
 
+  private validateForm(): boolean {
     if (this.estimateForm.invalid) {
       const invalidElements = this.requireds.filter(i => i.nativeElement.classList.contains('ng-invalid'));
       if (invalidElements.length > 0) {
@@ -75,17 +89,19 @@ export class EstimateComponent {
         }
         this.scrollToElement(invalidElements[0]);
       }
-
-    } else {
-      await this.submitAsync();
-      await this.router.navigate([Paths.Scoring]);
+      return false;
     }
+    return true;
   }
 
-  private async submitAsync(): Promise<void> {
+  private async submitAsync(): Promise<boolean> {
     const estimates = this.getEstimates();
 
     const transactionHash = await this.submitToContractAsync(estimates);
+    if (transactionHash == null) {
+      this.isEstimateSending = false;
+      return false;
+    }
 
     const transactionDialog = this.dialogService.showTransactionDialog(
       this.translateService.instant('Estimate.Dialog'),
@@ -96,6 +112,7 @@ export class EstimateComponent {
     await this.balanceService.updateBalanceAsync();
 
     transactionDialog.close();
+    return true;
   }
 
   private submitToBackendAsync(transactionHash: string, estimates: Array<Estimate>) {
@@ -113,11 +130,16 @@ export class EstimateComponent {
     return this.estimatesApiClient.submitEstimatesAsync(submitEstimatesRequest);
   }
 
-  private submitToContractAsync(estimates: Array<Estimate>): Promise<string> {
-    return this.scoringContractClient.submitEstimatesAsync(
-      this.projectDetails.projectAddress,
-      this.expertiseArea,
-      estimates);
+  private async submitToContractAsync(estimates: Array<Estimate>): Promise<string> {
+    try {
+      const txHash = await this.scoringContractClient.submitEstimatesAsync(
+        this.projectDetails.projectAddress,
+        this.expertiseArea,
+        estimates);
+      return txHash;
+    } catch (e) {
+      return null;
+    }
   }
 
   private setInvalid(element: ElementRef) {
