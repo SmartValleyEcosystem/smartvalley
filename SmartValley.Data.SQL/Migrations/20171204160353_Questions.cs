@@ -36,7 +36,7 @@ namespace SmartValley.Data.SQL.Migrations
                                     ('Team completeness','In case all major roles are filled in - <strong>6</strong> points<br/>In case any position is missing, minus <strong>1</strong> point for each specialist, minus <strong>2</strong> points for CEO<br/>In case specialist doesn''t have any experience, disregard him<br/> <br/>Minimum: <strong>0</strong> points, Maximum: <strong>6</strong> points', 1, 0, 6,0),
                                     ('Team experience', 'Team experience (for each position)<br/> Specialist''s experience:<br/> <span class=""sub-list"">Less than 2 years - <strong>1</strong> point</span><br/> <span class=""sub-list"">More than 2 years - <strong>2</strong> points</span><br/> <span class=""sub-list"">No experience - <strong>0</strong> points</span><br/> <br/>Minimum: <strong>0</strong> points, Maximum: <strong>10</strong> points<br/>', 1, 0, 10,1),
                                     ('Attracted investments','In case anyone in the team attracted investments before - <strong>3</strong> points<br/><br/>Minimum: <strong>0</strong> points, Maximum: <strong>3</strong> points', 1, 0, 3,2),
-                                    ('Scam','In case anyone in the team was noticed in scam projects - minus <strong>15</strong> points<br/>In case no one in the team was noticed in scam projects - <strong>0</strong> points<br/><br/>Minumum: <strong>-15</strong> points, Maximum: <strong>0</strong> points', 1, 0, -15,3),
+                                    ('Scam','In case anyone in the team was noticed in scam projects - minus <strong>15</strong> points<br/>In case no one in the team was noticed in scam projects - <strong>0</strong> points<br/><br/>Minumum: <strong>-15</strong> points, Maximum: <strong>0</strong> points', 1, -15, 0, 3),
 
                                     ('Incorporation risk','In case incorporation has minimal risk - <strong>10</strong> points<br/>In case incorporation has medium risk - <strong>6</strong> points<br/>In case incorporation has high risk - <strong>2</strong> points<br/>Project has no incorporation - <strong>0</strong> points<br/><br/>Minimum: <strong>0</strong> points, Maximum: <strong>10</strong> points', 4, 0, 10,0),
                                     ('Token structure','In case of Utility token - <strong>15</strong> points<br/>In case of Security token, but company has SEC license - <strong>5</strong> points<br/>In case of Security token - <strong>0</strong> points<br/><br/>Minimum: <strong>0</strong> points, Maximum: <strong>15</strong> points', 4, 0, 15,1),
@@ -93,7 +93,6 @@ namespace SmartValley.Data.SQL.Migrations
             migrationBuilder.DropColumn(
                 name: "ScoringCategory",
                 table: "Estimates");
-           
 
             migrationBuilder.CreateIndex(
                 name: "IX_Estimates_QuestionId",
