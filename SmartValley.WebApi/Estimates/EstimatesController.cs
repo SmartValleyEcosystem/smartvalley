@@ -63,25 +63,25 @@ namespace SmartValley.WebApi.Estimates
         {
             var requiredSubmissionsInArea = await _projectContractClient.GetRequiredSubmissionsInAreaCountAsync(projectAddress);
             var averageScore = isProjectScoredInArea
-                                   ? questionsWithEstimates.Values.Sum(i=>i.Sum(j=>j.Score)) / requiredSubmissionsInArea
-                                   : (double?) null;
+                                   ? questionsWithEstimates.Values.SelectMany(i => i).Sum(i => i.Score) / requiredSubmissionsInArea
+                                   : (double?)null;
 
             return new GetQuestionsWithEstimatesResponse
-                   {
-                       AverageScore = averageScore,
-                       Questions = questionsWithEstimates
+            {
+                AverageScore = averageScore,
+                Questions = questionsWithEstimates
                            .Select(q => CreateQuestionWithEstimatesResponse(q.Key, q.Value))
                            .ToArray()
-                   };
+            };
         }
 
         private static QuestionWithEstimatesResponse CreateQuestionWithEstimatesResponse(long questionId, IReadOnlyCollection<Estimate> estimates)
         {
             return new QuestionWithEstimatesResponse
-                   {
-                       QuestionId = questionId,
-                       Estimates = estimates.Select(EstimateResponse.Create).ToArray()
-                   };
+            {
+                QuestionId = questionId,
+                Estimates = estimates.Select(EstimateResponse.Create).ToArray()
+            };
         }
 
         [HttpGet]
@@ -90,9 +90,9 @@ namespace SmartValley.WebApi.Estimates
         {
             var questions = await _questionRepository.GetAllAsync();
             return new CollectionResponse<QuestionResponse>
-                   {
-                       Items = questions.Select(QuestionResponse.From).ToArray()
-                   };
+            {
+                Items = questions.Select(QuestionResponse.From).ToArray()
+            };
         }
     }
 }
