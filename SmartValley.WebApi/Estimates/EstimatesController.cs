@@ -61,7 +61,7 @@ namespace SmartValley.WebApi.Estimates
             bool isProjectScoredInArea,
             Dictionary<long, IReadOnlyCollection<Estimate>> questionsWithEstimates, string projectAddress)
         {
-            var requiredSubmissionsInArea = await _projectContractClient.GetRequiredSubmissionsInAreaCountAsync(projectAddress);
+            var requiredSubmissionsInArea = (double)await _projectContractClient.GetRequiredSubmissionsInAreaCountAsync(projectAddress);
             var averageScore = isProjectScoredInArea
                                    ? questionsWithEstimates.Values.SelectMany(i => i).Sum(i => i.Score) / requiredSubmissionsInArea
                                    : (double?)null;
