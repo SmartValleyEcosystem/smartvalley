@@ -52,40 +52,7 @@ export class ApplicationComponent {
     this.createForm();
   }
 
-  createForm() {
-    const teamMembers = [];
-    for (const item in EnumTeamMemberType) {
-      if (typeof EnumTeamMemberType[item] === 'number') {
-
-        const group = this.formBuilder.group({
-          memberType: EnumTeamMemberType[item],
-          title: item,
-          fullName: ['', Validators.maxLength(100)],
-          facebookLink: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
-          linkedInLink: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
-        });
-        teamMembers.push(group);
-      }
-    }
-
-    this.applicationForm = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.maxLength(50)]],
-      whitePaperLink: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
-      projectArea: ['', [Validators.required, Validators.maxLength(100)]],
-      description: ['', [Validators.required, Validators.maxLength(1000)]],
-      projectStatus: ['', Validators.maxLength(100)],
-      softCap: ['', Validators.maxLength(40)],
-      hardCap: ['', Validators.maxLength(40)],
-      financeModelLink: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
-      country: ['', Validators.maxLength(100)],
-      attractedInvestments: false,
-      blockChainType: ['', Validators.maxLength(100)],
-      mvpLink: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
-      teamMembers: this.formBuilder.array(teamMembers)
-    });
-  }
-
-  showNext() {
+  public showNext() {
     if (this.isTeamShow === false) {
       this.isTeamShow = true;
       return;
@@ -104,18 +71,37 @@ export class ApplicationComponent {
     }
   }
 
-  private async submitIfFormValid() {
-    if (this.applicationForm.invalid) {
-      if (this.applicationForm.controls['name'].invalid) {
-        this.scrollToElement(this.nameRow);
-      } else if (this.applicationForm.controls['projectArea'].invalid) {
-        this.scrollToElement(this.areaRow);
-      } else if (this.applicationForm.controls['description'].invalid) {
-        this.scrollToElement(this.descriptionRow);
-      }
+  public async onSubmitAsync() {
+    if (!this.validateForm()) {
       return;
     }
+
     this.isProjectCreating = true;
+
+    const userHasETH = await this.balanceService.hasUserEth();
+    if (!userHasETH) {
+      if (await this.dialogService.showGetEtherDialog()) {
+        await this.etherReceivingService.receiveAsync();
+      } else {
+        this.isProjectCreating = false;
+        return;
+      }
+    }
+
+    const userHasSVT = await this.balanceService.hasUserSvt();
+    if (!userHasSVT) {
+      if (await this.dialogService.showGetTokenDialog()) {
+        await this.tokenService.receiveAsync();
+      } else {
+        this.isProjectCreating = false;
+        return;
+      }
+    }
+
+    await this.submitApplicationAsync();
+  }
+
+  private async submitApplicationAsync(): Promise<void> {
     const application = await this.fillApplication();
 
     if (application == null) {
@@ -177,23 +163,21 @@ export class ApplicationComponent {
       }
     //}
 
-    await this.submitIfFormValid();
-  }
-
-  private scrollToElement(element: ElementRef) {
-    const containerOffset = element.nativeElement.offsetTop;
-    const fieldOffset = element.nativeElement.offsetParent.offsetTop;
-    window.scrollTo({left: 0, top: containerOffset + fieldOffset - 15, behavior: 'smooth'});
-    element.nativeElement.children[1].classList.add('ng-invalid');
-    element.nativeElement.children[1].classList.add('ng-dirty');
-    element.nativeElement.children[1].classList.remove('ng-valid');
-    const invalidElements = this.requireds.filter(i => i.nativeElement.classList.contains('ng-invalid'));
-    if (invalidElements.length > 0) {
-      for (let a = 0; a < invalidElements.length; a++) {
-        invalidElements[a].nativeElement.classList.add('ng-invalid');
-        invalidElements[a].nativeElement.classList.add('ng-dirty');
-      }
-    }
+    this.applicationForm = this.formBuilder.group({
+      name: ['', [Validators.required, Validators.maxLength(50)]],
+      whitePaperLink: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
+      projectArea: ['', [Validators.required, Validators.maxLength(100)]],
+      description: ['', [Validators.required, Validators.maxLength(1000)]],
+      projectStatus: ['', Validators.maxLength(100)],
+      softCap: ['', Validators.maxLength(40)],
+      hardCap: ['', Validators.maxLength(40)],
+      financeModelLink: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
+      country: ['', Validators.maxLength(100)],
+      attractedInvestments: false,
+      blockChainType: ['', Validators.maxLength(100)],
+      mvpLink: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
+      teamMembers: this.formBuilder.array(teamMembers)
+    });
   }
 
   private async fillApplication(): Promise<Application> {
@@ -238,6 +222,36 @@ export class ApplicationComponent {
 
     } catch (e) {
       return null;
+    }
+  }
+
+  private validateForm(): boolean {
+    if (this.applicationForm.invalid) {
+      if (this.applicationForm.controls['name'].invalid) {
+        this.scrollToElement(this.nameRow);
+      } else if (this.applicationForm.controls['projectArea'].invalid) {
+        this.scrollToElement(this.areaRow);
+      } else if (this.applicationForm.controls['description'].invalid) {
+        this.scrollToElement(this.descriptionRow);
+      }
+      return false;
+    }
+    return true;
+  }
+
+  private scrollToElement(element: ElementRef) {
+    const containerOffset = element.nativeElement.offsetTop;
+    const fieldOffset = element.nativeElement.offsetParent.offsetTop;
+    window.scrollTo({left: 0, top: containerOffset + fieldOffset - 15, behavior: 'smooth'});
+    element.nativeElement.children[1].classList.add('ng-invalid');
+    element.nativeElement.children[1].classList.add('ng-dirty');
+    element.nativeElement.children[1].classList.remove('ng-valid');
+    const invalidElements = this.requireds.filter(i => i.nativeElement.classList.contains('ng-invalid'));
+    if (invalidElements.length > 0) {
+      for (let a = 0; a < invalidElements.length; a++) {
+        invalidElements[a].nativeElement.classList.add('ng-invalid');
+        invalidElements[a].nativeElement.classList.add('ng-dirty');
+      }
     }
   }
 }
