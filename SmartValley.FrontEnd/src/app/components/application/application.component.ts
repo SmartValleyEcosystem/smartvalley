@@ -55,7 +55,6 @@ export class ApplicationComponent implements OnInit {
     await this.checkEthAndSVTAsync();
   }
 
-
   private async checkEthAndSVTAsync() {
     const userHasETH = await this.balanceService.hasUserEth();
     if (!userHasETH) {
@@ -176,7 +175,6 @@ export class ApplicationComponent implements OnInit {
       teamMembers: this.formBuilder.array(teamMembers)
     });
   }
-
 
   private async fillApplication(): Promise<Application> {
 
