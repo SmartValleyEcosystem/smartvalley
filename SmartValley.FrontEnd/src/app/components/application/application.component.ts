@@ -146,22 +146,39 @@ export class ApplicationComponent {
 
     //const userHasSVT = await this.balanceService.hasUserSvt();
     //if (!userHasSVT) {
-      const userAddress = await this.authenticationService.getCurrentUser().account;
-      const getReceiveDateForAddress = await this.balanceService.getReceiveDateForAddressAsync(userAddress);
-      const daysToReceive = await this.balanceService.getDaysToReceiveTokensAsync();
-      const dateToReceive = new Date(getReceiveDateForAddress * 1000);
-      dateToReceive.setDate(dateToReceive.getDate() + daysToReceive);
-      if (dateToReceive.getTime() <= Date.now()) {
-        if (await this.dialogService.showGetTokenDialog()) {
-          await this.tokenService.receiveAsync();
-        } else {
-          return;
-        }
+    const userAddress = await this.authenticationService.getCurrentUser().account;
+    const getReceiveDateForAddress = await this.balanceService.getReceiveDateForAddressAsync(userAddress);
+    const daysToReceive = await this.balanceService.getDaysToReceiveTokensAsync();
+    const dateToReceive = new Date(getReceiveDateForAddress * 1000);
+    dateToReceive.setDate(dateToReceive.getDate() + daysToReceive);
+    if (dateToReceive.getTime() <= Date.now()) {
+      if (await this.dialogService.showGetTokenDialog()) {
+        await this.tokenService.receiveAsync();
       } else {
-        await this.dialogService.showSVTDialog(dateToReceive.toLocaleDateString());
         return;
       }
+    } else {
+      await this.dialogService.showSVTDialog(dateToReceive.toLocaleDateString());
+      return;
+    }
     //}
+  }
+
+  createForm() {
+    const teamMembers = [];
+    for (const item in EnumTeamMemberType) {
+      if (typeof EnumTeamMemberType[item] === 'number') {
+
+        const group = this.formBuilder.group({
+          memberType: EnumTeamMemberType[item],
+          title: item,
+          fullName: ['', Validators.maxLength(100)],
+          facebookLink: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
+          linkedInLink: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
+        });
+        teamMembers.push(group);
+      }
+    }
 
     this.applicationForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
@@ -179,6 +196,7 @@ export class ApplicationComponent {
       teamMembers: this.formBuilder.array(teamMembers)
     });
   }
+
 
   private async fillApplication(): Promise<Application> {
 
