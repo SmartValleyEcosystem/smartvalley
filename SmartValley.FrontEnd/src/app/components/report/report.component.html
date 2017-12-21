@@ -135,7 +135,7 @@
       <ngb-tab id="estimates" title="{{ 'Report.ExpertEstimates' | translate }}">
         <ng-template ngbTabContent>
           <div class="content sw-card sw-content">
-            <mat-tab-group (selectedTabChange)="onExpertiseTabChanged($event)">
+            <mat-tab-group [selectedIndex]="selectedExpertiseTabIndex" (selectedIndexChange)="onExpertiseTabIndexChanged($event)">
               <mat-tab label="{{ 'Common.Hr' | translate }}">
                 <span>{{ 'Report.HrAvg' | translate }}:</span>
                 <span *ngIf="expertiseAreaAverageScore != null; else elseBlock"

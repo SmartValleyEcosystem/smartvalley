@@ -13,7 +13,6 @@ import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TeamMember} from '../../services/team-member';
 import {ScoringContractClient} from '../../services/scoring-contract-client';
-import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {DialogService} from '../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
 import {Estimate} from '../../services/estimate';
@@ -35,8 +34,7 @@ export class EstimateComponent {
   public teamMembers: Array<TeamMember>;
   public isEstimateSending: boolean;
 
-  @ViewChildren('required') requireds: QueryList<any>;
-
+  @ViewChildren('required') requiredFields: QueryList<any>;
 
   constructor(private route: ActivatedRoute,
               private projectApiClient: ProjectApiClient,
@@ -46,7 +44,6 @@ export class EstimateComponent {
               private authenticationService: AuthenticationService,
               private formBuilder: FormBuilder,
               private scoringContractClient: ScoringContractClient,
-              private contractApiClient: ContractApiClient,
               private dialogService: DialogService,
               private translateService: TranslateService,
               private balanceService: BalanceService,
@@ -74,15 +71,15 @@ export class EstimateComponent {
         return;
       }
     }
-    const isSuccessed = await this.submitAsync();
-    if (isSuccessed) {
+    const isSucceeded = await this.submitAsync();
+    if (isSucceeded) {
       await this.router.navigate([Paths.Scoring]);
     }
   }
 
   private validateForm(): boolean {
     if (this.estimateForm.invalid) {
-      const invalidElements = this.requireds.filter(i => i.nativeElement.classList.contains('ng-invalid'));
+      const invalidElements = this.requiredFields.filter(i => i.nativeElement.classList.contains('ng-invalid'));
       if (invalidElements.length > 0) {
         for (let a = 0; a < invalidElements.length; a++) {
           this.setInvalid(invalidElements[a]);
@@ -132,11 +129,10 @@ export class EstimateComponent {
 
   private async submitToContractAsync(estimates: Array<Estimate>): Promise<string> {
     try {
-      const txHash = await this.scoringContractClient.submitEstimatesAsync(
+      return await this.scoringContractClient.submitEstimatesAsync(
         this.projectDetails.projectAddress,
         this.expertiseArea,
         estimates);
-      return txHash;
     } catch (e) {
       return null;
     }

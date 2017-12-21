@@ -16,7 +16,7 @@ export class ProjectApiClient extends BaseApiClient {
       .toPromise();
   }
 
-  async getDetailsByIdAsync(id: number) {
+  async getDetailsByIdAsync(id: number): Promise<ProjectDetailsResponse> {
     return this.http.get<ProjectDetailsResponse>(this.baseApiUrl + '/projects?projectId=' + id)
       .toPromise();
   }

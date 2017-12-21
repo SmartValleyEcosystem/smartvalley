@@ -14,7 +14,8 @@ import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 import {TeamMember} from '../../services/team-member';
 import {Paths} from '../../paths';
 import {Constants} from '../../constants';
-import {isNullOrUndefined} from 'util';
+import {QuestionResponse} from '../../api/estimates/question-response';
+import {QuestionWithEstimatesResponse} from '../../api/estimates/question-with-estimates-response';
 
 @Component({
   selector: 'app-report',
@@ -30,10 +31,10 @@ export class ReportComponent implements AfterViewChecked, OnInit {
   public projectImageUrl: string;
 
   private projectId: number;
-
   @ViewChild('reportTabSet')
-  private tabSet: NgbTabset;
-  private selectedTab: string;
+  private reportTabSet: NgbTabset;
+  private selectedReportTab: string;
+  private selectedExpertiseTabIndex: number;
   private knownTabs = [Constants.ReportFormTab, Constants.ReportEstimatesTab];
 
   constructor(private projectApiClient: ProjectApiClient,
@@ -46,53 +47,45 @@ export class ReportComponent implements AfterViewChecked, OnInit {
               private router: Router) {
   }
 
-  async ngOnInit() {
+  public async ngOnInit() {
     await this.loadInitialData();
     this.activatedRoute.queryParams.subscribe(params => {
-      this.selectedTab = params[Constants.TabQueryParam];
+      this.selectedReportTab = params[Constants.TabQueryParam];
     });
   }
 
-  ngAfterViewChecked(): void {
-    if (this.tabSet && this.knownTabs.includes(this.selectedTab)) {
-      this.tabSet.select(this.selectedTab);
+  public ngAfterViewChecked(): void {
+    if (this.reportTabSet && this.knownTabs.includes(this.selectedReportTab)) {
+      this.reportTabSet.select(this.selectedReportTab);
     }
   }
 
-
-  onExpertiseTabChanged($event: any) {
-    let expertiseArea: ExpertiseArea = 1;
-    const index: number = $event.index;
-    switch (index) {
-      case 0 :
-        expertiseArea = ExpertiseArea.HR;
-        break;
-      case 1 :
-        expertiseArea = ExpertiseArea.Lawyer;
-        break;
-      case 2 :
-        expertiseArea = ExpertiseArea.Analyst;
-        break;
-      case 3 :
-        expertiseArea = ExpertiseArea.TechnicalExpert;
-        break;
-    }
-    this.loadExpertEstimates(expertiseArea);
-  }
-
-  onMainTabChanged($event: any) {
+  public async onMainTabChanged($event: any) {
     const queryParams = Object.assign({}, this.activatedRoute.snapshot.queryParams);
     queryParams[Constants.TabQueryParam] = $event.nextId;
-    this.router.navigate([Paths.Report + '/' + this.projectId], {queryParams: queryParams, replaceUrl: true});
+    await this.router.navigate([Paths.Report + '/' + this.projectId], {queryParams: queryParams, replaceUrl: true});
   }
 
-  private async loadInitialData() {
+  public async onExpertiseTabIndexChanged(index: number) {
+    this.selectedExpertiseTabIndex = index;
+    await this.reloadExpertEstimatesAsync();
+  }
+
+  public showEstimates() {
+    this.reportTabSet.select('estimates');
+  }
+
+  public showForm() {
+    this.reportTabSet.select('form');
+  }
+
+  private async loadInitialData(): Promise<void> {
     this.projectId = +this.route.snapshot.paramMap.get('id');
     this.report = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
     this.fillEmptyFields();
     this.teamMembers = this.getMembersCollection(this.report);
     this.projectImageUrl = this.blockiesService.getImageForAddress(this.report.projectAddress);
-    this.loadExpertEstimates(ExpertiseArea.HR);
+    await this.reloadExpertEstimatesAsync();
   }
 
   private fillEmptyFields() {
@@ -121,25 +114,42 @@ export class ReportComponent implements AfterViewChecked, OnInit {
     return result;
   }
 
-  private async loadExpertEstimates(expertiseArea: ExpertiseArea) {
+  private async reloadExpertEstimatesAsync(): Promise<void> {
+    const expertiseArea = this.getExpertiseAreaByIndex(this.selectedExpertiseTabIndex);
     const estimatesResponse = await this.estimatesApiClient.getAsync(this.projectId, expertiseArea);
-    const fullQuestions = this.questionService.getByExpertiseArea(expertiseArea);
+    const questionsInArea = this.questionService.getByExpertiseArea(expertiseArea);
+
     this.expertiseAreaAverageScore = estimatesResponse.averageScore;
-    this.questions = estimatesResponse.questions.map(i =>
-      <Question>{
-        name: fullQuestions.filter(j => j.id === i.questionId)[0].name,
-        description: fullQuestions.filter(j => j.id === i.questionId)[0].description,
-        estimates: i.estimates.map(j => <Estimate>{questionId: i.questionId, score: j.score, comments: j.comment}),
-        minScore: fullQuestions.filter(j => j.id === i.questionId)[0].minScore,
-        maxScore: fullQuestions.filter(j => j.id === i.questionId)[0].maxScore,
-      });
+    this.questions = estimatesResponse.questions.map(q => this.createQuestion(questionsInArea, q));
   }
 
-  showEstimates() {
-    this.tabSet.select('estimates');
+  private createQuestion(questionsInArea: Array<QuestionResponse>, questionWithEstimates: QuestionWithEstimatesResponse): Question {
+    const questionId = questionWithEstimates.questionId;
+    const question = questionsInArea.filter(j => j.id === questionId)[0];
+
+    return <Question>{
+      name: question.name,
+      description: question.description,
+      minScore: question.minScore,
+      maxScore: question.maxScore,
+      estimates: questionWithEstimates.estimates.map(j => <Estimate>{
+        questionId: questionId,
+        score: j.score,
+        comments: j.comment
+      })
+    };
   }
 
-  showForm() {
-    this.tabSet.select('form');
+  private getExpertiseAreaByIndex(index: number): ExpertiseArea {
+    switch (index) {
+      case 1 :
+        return ExpertiseArea.Lawyer;
+      case 2 :
+        return ExpertiseArea.Analyst;
+      case 3 :
+        return ExpertiseArea.TechnicalExpert;
+      default:
+        return ExpertiseArea.HR;
+    }
   }
 }

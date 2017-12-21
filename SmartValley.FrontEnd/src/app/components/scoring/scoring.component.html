@@ -13,7 +13,7 @@
           <div class="white-card">
             <div class="content">
               <span class="choose">{{ 'Scoring.ChooseExpertise' | translate }}</span>
-              <mat-tab-group (selectedTabChange)="onExpertiseTabChanged($event)">
+              <mat-tab-group [selectedIndex]="selectedExpertiseTabIndex" (selectedIndexChange)="onExpertiseTabIndexChanged($event)">
                 <mat-tab label="{{ 'Common.Hr' | translate }}">
                   <div class="card" *ngFor="let project of projectsForScoring;">
                     <app-project-card [project]="project" [isScoring]="true"></app-project-card>
@@ -48,12 +48,12 @@
                   <app-project-card [project]="project" [isScoring]="false"></app-project-card>
                 </div>
               </div>
-                <button *ngIf="myProjects.length > 0" (click)="createProject()" class="btn-blue col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">{{ 'Scoring.CreateProject' | translate }}</button>
+                <button *ngIf="myProjects.length > 0" (click)="navigateToApplicationPageAsync()" class="btn-blue col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">{{ 'Scoring.CreateProject' | translate }}</button>
             </div>
           </div>
           <ng-template #withoutProject>
             <div class="without-project">
-              <button mat-raised-button class="col-5 sv-default-btn btn-space" (click)="createProject()">{{ 'Scoring.CreateProjectForScoring' | translate }}
+              <button mat-raised-button class="col-5 sv-default-btn btn-space" (click)="navigateToApplicationPageAsync()">{{ 'Scoring.CreateProjectForScoring' | translate }}
               </button>
             </div>
           </ng-template>

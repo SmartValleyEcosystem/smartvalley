@@ -10,6 +10,7 @@ import {ProjectsForScoringRequest} from '../../api/scoring/projecs-for-scoring-r
 import {Constants} from '../../constants';
 import {isNullOrUndefined} from 'util';
 import {Subscription} from 'rxjs/Subscription';
+import {ProjectResponse} from '../../api/project/project-response';
 
 @Component({
   selector: 'app-scoring',
@@ -19,6 +20,7 @@ import {Subscription} from 'rxjs/Subscription';
 export class ScoringComponent implements AfterViewInit, OnDestroy {
   public projectsForScoring: Array<Project>;
   public myProjects: Array<Project>;
+  public selectedExpertiseTabIndex: number;
 
   @ViewChild('projectsTabSet')
   private projectsTabSet: NgbTabset;
@@ -34,11 +36,11 @@ export class ScoringComponent implements AfterViewInit, OnDestroy {
   }
 
   private loadData() {
-    this.loadProjectsForCategory(ExpertiseArea.HR);
-    this.loadMyProjects();
+    this.reloadProjectsForScoringAsync();
+    this.loadMyProjectsAsync();
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
       const tab = params[Constants.TabQueryParam];
       if (this.knownTabs.includes(tab)) {
@@ -47,77 +49,66 @@ export class ScoringComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  onExpertiseTabChanged($event: any) {
-    let expertiseArea: ExpertiseArea = 1;
-    const index: number = $event.index;
-    switch (index) {
-      case 0 :
-        expertiseArea = ExpertiseArea.HR;
-        break;
-      case 1 :
-        expertiseArea = ExpertiseArea.Lawyer;
-        break;
-      case 2 :
-        expertiseArea = ExpertiseArea.Analyst;
-        break;
-      case 3 :
-        expertiseArea = ExpertiseArea.TechnicalExpert;
-        break;
-    }
-    this.loadProjectsForCategory(expertiseArea);
+  public async onExpertiseTabIndexChanged(index: number) {
+    this.selectedExpertiseTabIndex = index;
+    await this.reloadProjectsForScoringAsync();
   }
 
-  onMainTabChanged($event: any) {
+  public async onMainTabChanged($event: any) {
     const queryParams = Object.assign({}, this.activatedRoute.snapshot.queryParams);
     queryParams[Constants.TabQueryParam] = $event.nextId;
-    this.router.navigate([Paths.Scoring], {queryParams: queryParams, replaceUrl: true});
+    await this.router.navigate([Paths.Scoring], {queryParams: queryParams, replaceUrl: true});
   }
 
-  private async loadProjectsForCategory(expertiseArea: ExpertiseArea) {
-    this.projectsForScoring = [];
-    const projects = await this.scoringApiClient.getProjectForScoringAsync(<ProjectsForScoringRequest>{
-      expertiseArea: <number>expertiseArea
-    });
-    for (const projectResponse of projects.items) {
-      this.projectsForScoring.push(<Project>{
-        id: projectResponse.id,
-        name: projectResponse.name,
-        area: projectResponse.area,
-        country: projectResponse.country,
-        score: projectResponse.score,
-        description: projectResponse.description,
-        expertiseArea: expertiseArea,
-        address: projectResponse.address
-      });
-    }
-  }
-
-  private async loadMyProjects() {
-    this.myProjects = [];
-    const response = await this.scoringApiClient.getMyProjectsAsync();
-    for (const projectResponse of response.items) {
-      this.myProjects.push(<Project>{
-        id: projectResponse.id,
-        name: projectResponse.name,
-        area: projectResponse.area,
-        country: projectResponse.country,
-        score: projectResponse.score,
-        description: projectResponse.description,
-        address: projectResponse.address
-      });
-    }
-  }
-
-  async createProject() {
+  public async navigateToApplicationPageAsync(): Promise<void> {
     const isOk = await this.authenticationService.authenticateAsync();
     if (isOk) {
       await this.router.navigate([Paths.Application]);
     }
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (!isNullOrUndefined(this.accountChangedSubscription) && !this.accountChangedSubscription.closed) {
       this.accountChangedSubscription.unsubscribe();
+    }
+  }
+
+  private async reloadProjectsForScoringAsync(): Promise<void> {
+    const expertiseArea = this.getExpertiseAreaByIndex(this.selectedExpertiseTabIndex);
+    const response = await this.scoringApiClient.getProjectForScoringAsync(<ProjectsForScoringRequest>{
+      expertiseArea: <number>expertiseArea
+    });
+    this.projectsForScoring = response.items.map(p => this.createProject(p, expertiseArea));
+  }
+
+  private async loadMyProjectsAsync(): Promise<void> {
+    const response = await this.scoringApiClient.getMyProjectsAsync();
+    this.myProjects = response.items.map(p => this.createProject(p));
+  }
+
+  private createProject(response: ProjectResponse, expertiseArea: ExpertiseArea = ExpertiseArea.HR): Project {
+    return <Project>{
+      id: response.id,
+      name: response.name,
+      area: response.area,
+      country: response.country,
+      score: response.score,
+      description: response.description,
+      address: response.address,
+      expertiseArea: expertiseArea
+    };
+  }
+
+  private getExpertiseAreaByIndex(index: number): ExpertiseArea {
+    switch (index) {
+      case 1 :
+        return ExpertiseArea.Lawyer;
+      case 2 :
+        return ExpertiseArea.Analyst;
+      case 3 :
+        return ExpertiseArea.TechnicalExpert;
+      default:
+        return ExpertiseArea.HR;
     }
   }
 }
