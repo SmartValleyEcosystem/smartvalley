@@ -77,12 +77,9 @@ export class ApplicationComponent implements OnInit {
       if (dateToReceive.getTime() <= Date.now()) {
         if (await this.dialogService.showGetTokenDialog()) {
           await this.tokenService.receiveAsync();
-        } else {
-          return;
         }
       } else {
         await this.dialogService.showSVTDialog(dateToReceive.toLocaleDateString());
-        return;
       }
     }
   }
