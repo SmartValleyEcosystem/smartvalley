@@ -1,18 +1,25 @@
-<div>
+<div *ngIf="data.canReceive; else notReceive">
   <h2 mat-mat-title>
-    {{ data.title }}
+    {{ 'GetEtherModal.Title' | translate }}
   </h2>
   <hr>
-  <mat-dialog-content *ngIf="data.canReceive; else link_content">
-    {{ data.content }}
+  <mat-dialog-content>
+    {{ 'GetEtherModal.Content' | translate }}
   </mat-dialog-content>
-  <ng-template #link_content>
-    {{ data.content }} <a [href]="data.link">{{data.link}}</a>
-  </ng-template>
   <hr>
-  <mat-dialog-actions *ngIf="data.canReceive" class="d-flex justify-content-center">
+  <mat-dialog-actions class="d-flex justify-content-center">
     <button mat-button [mat-dialog-close]="true" mat-raised-button class="col-5 sv-default-btn btn-space">
-      {{ data.buttonText }}
+      {{ 'GetEtherModal.GetButton' | translate }}
     </button>
   </mat-dialog-actions>
 </div>
+<ng-template #notReceive>
+  <h2 mat-mat-title>
+    {{ 'RinkeByModal.Title' | translate }}
+  </h2>
+  <hr>
+  <mat-dialog-content>
+    {{ 'RinkeByModal.Content' | translate }} <a href="https://faucet.rinkeby.io/">https://faucet.rinkeby.io/</a>
+  </mat-dialog-content>
+  <hr>
+</ng-template>

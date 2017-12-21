@@ -1,8 +1,7 @@
 {
   "RinkeByModal": {
     "Title": "You have already received ETH",
-    "Content": "To receive the ETH, click on the link:",
-    "Link": "https://faucet.rinkeby.io/"
+    "Content": "To receive the ETH, click on the link:"
   },
   "GetEtherModal": {
     "Title": "You have not enough ETH",

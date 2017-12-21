@@ -2,14 +2,12 @@ import {Injectable} from '@angular/core';
 import {TransactionAwaitingModalData} from '../components/common/transaction-awaiting-modal/transaction-awaiting-modal-data';
 import {TransactionAwaitingModalComponent} from '../components/common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 import {MatDialog} from '@angular/material';
-import {TranslateService} from '@ngx-translate/core';
 import {ReceiveEtherModalComponent} from '../components/common/receive-ether-modal/receive-ether-modal.component';
 import {ReceiveSvtModalComponent} from '../components/common/receive-svt-modal/receive-svt-modal.component';
 
 @Injectable()
 export class DialogService {
-  constructor(private projectModal: MatDialog,
-              private translateService: TranslateService) {
+  constructor(private projectModal: MatDialog) {
   }
 
   public showGetEtherDialog(): Promise<boolean> {
@@ -17,10 +15,7 @@ export class DialogService {
       width: '600px',
       disableClose: false,
       data: {
-        carReceive: true,
-        title: this.translateService.instant('GetEtherModal.Title'),
-        content: this.translateService.instant('GetEtherModal.Content'),
-        buttonText: this.translateService.instant('GetEtherModal.GetButton')
+        canReceive: true
       }
     }).afterClosed().toPromise<boolean>();
   }
@@ -30,10 +25,7 @@ export class DialogService {
       width: '600px',
       disableClose: false,
       data: {
-        carReceive: false,
-        title: this.translateService.instant('RinkeByModal.Title'),
-        content: this.translateService.instant('RinkeByModal.Content'),
-        link: this.translateService.instant('RinkeByModal.Link')
+        canReceive: false
       }
     }).afterClosed().toPromise<boolean>();
   }
@@ -44,8 +36,6 @@ export class DialogService {
       disableClose: false,
       data: {
         canReceive: false,
-        title: this.translateService.instant('CanNotReceiveSVTModal.Title'),
-        content: this.translateService.instant('CanNotReceiveSVTModal.Content'),
         date: date
       }
     }).afterClosed().toPromise<boolean>();
@@ -56,10 +46,7 @@ export class DialogService {
       width: '600px',
       disableClose: false,
       data: {
-        canReceive: true,
-        title: this.translateService.instant('CanReceiveSVTModal.Title'),
-        content: this.translateService.instant('CanReceiveSVTModal.Content'),
-        buttonText: this.translateService.instant('CanReceiveSVTModal.GetButton')
+        canReceive: true
       }
     }).afterClosed().toPromise<boolean>();
   }
