@@ -42,7 +42,12 @@ export class BalanceService {
   public async hasUserEth(): Promise<boolean> {
     const balanceResponse = await
       this.balanceApiClient.getBalanceAsync();
-    return balanceResponse.balance > 0 && balanceResponse.wasEtherReceived;
+    return balanceResponse.balance > 0.1;
+  }
+
+  public async wasEtherReceived(): Promise<boolean> {
+    const balanceResponse = await this.balanceApiClient.getBalanceAsync();
+    return balanceResponse.wasEtherReceived;
   }
 
   public async hasUserSvt(): Promise<boolean> {
@@ -58,5 +63,14 @@ export class BalanceService {
 
   private async getSvtBalanceAsync(accountAddress: string): Promise<number> {
     return await this.tokenContractClient.getBalanceAsync(accountAddress);
+  }
+
+  public async getDateToReceiveTokensAsync(): Promise<Date> {
+    const accountAddress = (await this.authenticationService.getCurrentUser()).account;
+    const getReceiveDateForAddress = await this.minterContractClient.getReceiveDateForAddressAsync(accountAddress);
+    const daysToReceive = await this.minterContractClient.getReceivingIntervalInDaysAsync();
+    const dateToReceive = new Date(getReceiveDateForAddress * 1000);
+    dateToReceive.setDate(dateToReceive.getDate() + daysToReceive);
+    return dateToReceive;
   }
 }

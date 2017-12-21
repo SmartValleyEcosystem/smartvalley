@@ -1,0 +1,25 @@
+<div *ngIf="data.canReceive; else notReceive">
+  <h2 mat-mat-title>
+    {{ 'CanReceiveSVTModal.Title' | translate }}
+  </h2>
+  <hr>
+  <mat-dialog-content>
+    {{ 'CanReceiveSVTModal.Content' | translate }}
+  </mat-dialog-content>
+  <hr>
+  <mat-dialog-actions class="d-flex justify-content-center">
+    <button mat-button [mat-dialog-close]="true" mat-raised-button class="col-5 sv-default-btn btn-space">
+      {{ 'CanReceiveSVTModal.GetButton' | translate }}
+    </button>
+  </mat-dialog-actions>
+</div>
+<ng-template #notReceive>
+  <h2 mat-mat-title>
+    {{ 'CanNotReceiveSVTModal.Title' | translate }}
+  </h2>
+  <hr>
+  <mat-dialog-content>
+    {{ 'CanNotReceiveSVTModal.Content' | translate }} {{data.date}}
+  </mat-dialog-content>
+  <hr>
+</ng-template>

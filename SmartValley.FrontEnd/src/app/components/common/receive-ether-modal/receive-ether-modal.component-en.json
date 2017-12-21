@@ -1,10 +1,8 @@
 {
-  "GetSVTModal": {
-    "Title": "You have not enough SVT",
-    "Content": "You need SVT to create a project.",
-    "GetButton": "Get SVT"
+  "RinkeByModal": {
+    "Title": "You have already received ETH",
+    "Content": "To receive the ETH, click on the link:"
   },
-
   "GetEtherModal": {
     "Title": "You have not enough ETH",
     "Content": "We are ethereum blockchain users that is why you will need ETH to conduct transactions.",

@@ -1,4 +1,4 @@
-import {Component, ViewChild, ElementRef, ViewChildren, QueryList} from '@angular/core';
+import {Component, ViewChild, ElementRef, ViewChildren, QueryList, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {ApplicationApiClient} from '../../api/application/application-api.client';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -15,14 +15,13 @@ import {DialogService} from '../../services/dialog-service';
 import {EtherReceivingService} from '../../services/ether-receiving/ether-receiving-service';
 import {TranslateService} from '@ngx-translate/core';
 import {BalanceService} from '../../services/balance/balance.service';
-import {TokenContractClient} from '../../services/token-receiving/token-contract-client';
 
 @Component({
   selector: 'app-application',
   templateUrl: './application.component.html',
   styleUrls: ['./application.component.css']
 })
-export class ApplicationComponent {
+export class ApplicationComponent implements OnInit {
 
   applicationForm: FormGroup;
   isTeamShow = false;
@@ -52,6 +51,39 @@ export class ApplicationComponent {
     this.createForm();
   }
 
+  async ngOnInit() {
+    await this.checkEthAndSVTAsync();
+  }
+
+  private async checkEthAndSVTAsync() {
+    const userHasETH = await this.balanceService.hasUserEth();
+    if (!userHasETH) {
+      const wasEtherReceived = await this.balanceService.wasEtherReceived();
+      if (!wasEtherReceived) {
+        if (await this.dialogService.showGetEtherDialog()) {
+          await this.etherReceivingService.receiveAsync();
+        } else {
+          return;
+        }
+      } else {
+        await this.dialogService.showRinkeByDialog();
+        return;
+      }
+    }
+
+    const userHasSVT = await this.balanceService.hasUserSvt();
+    if (!userHasSVT) {
+      const dateToReceive = await this.balanceService.getDateToReceiveTokensAsync();
+      if (dateToReceive.getTime() <= Date.now()) {
+        if (await this.dialogService.showGetTokenDialog()) {
+          await this.tokenService.receiveAsync();
+        }
+      } else {
+        await this.dialogService.showSVTDialog(dateToReceive.toLocaleDateString());
+      }
+    }
+  }
+
   public showNext() {
     if (this.isTeamShow === false) {
       this.isTeamShow = true;
@@ -76,27 +108,7 @@ export class ApplicationComponent {
       return;
     }
 
-    this.isProjectCreating = true;
-
-    const userHasETH = await this.balanceService.hasUserEth();
-    if (!userHasETH) {
-      if (await this.dialogService.showGetEtherDialog()) {
-        await this.etherReceivingService.receiveAsync();
-      } else {
-        this.isProjectCreating = false;
-        return;
-      }
-    }
-
-    const userHasSVT = await this.balanceService.hasUserSvt();
-    if (!userHasSVT) {
-      if (await this.dialogService.showGetTokenDialog()) {
-        await this.tokenService.receiveAsync();
-      } else {
-        this.isProjectCreating = false;
-        return;
-      }
-    }
+    await this.checkEthAndSVTAsync();
 
     await this.submitApplicationAsync();
   }

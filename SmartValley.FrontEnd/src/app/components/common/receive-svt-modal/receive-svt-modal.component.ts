@@ -2,12 +2,13 @@ import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material';
 
 @Component({
-  selector: 'app-receipt-modal',
-  templateUrl: './receipt-modal.component.html',
-  styleUrls: ['./receipt-modal.component.css']
+  selector: 'app-receive-svt-modal',
+  templateUrl: './receive-svt-modal.component.html',
+  styleUrls: ['./receive-svt-modal.component.css']
 })
-export class ReceiptModalComponent {
+export class ReceiveSvtModalComponent {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
   }
+
 }

@@ -2,35 +2,51 @@ import {Injectable} from '@angular/core';
 import {TransactionAwaitingModalData} from '../components/common/transaction-awaiting-modal/transaction-awaiting-modal-data';
 import {TransactionAwaitingModalComponent} from '../components/common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 import {MatDialog} from '@angular/material';
-import {ReceiptModalComponent} from '../components/common/receipt-modal/receipt-modal.component';
-import {TranslateService} from '@ngx-translate/core';
+import {ReceiveEtherModalComponent} from '../components/common/receive-ether-modal/receive-ether-modal.component';
+import {ReceiveSvtModalComponent} from '../components/common/receive-svt-modal/receive-svt-modal.component';
 
 @Injectable()
 export class DialogService {
-  constructor(private projectModal: MatDialog,
-              private translateService: TranslateService) {
+  constructor(private projectModal: MatDialog) {
   }
 
   public showGetEtherDialog(): Promise<boolean> {
-    return this.projectModal.open(ReceiptModalComponent, {
+    return this.projectModal.open(ReceiveEtherModalComponent, {
       width: '600px',
       disableClose: false,
       data: {
-        title: this.translateService.instant('GetEtherModal.Title'),
-        content: this.translateService.instant('GetEtherModal.Content'),
-        buttonText: this.translateService.instant('GetEtherModal.GetButton')
+        canReceive: true
+      }
+    }).afterClosed().toPromise<boolean>();
+  }
+
+  public async showRinkeByDialog(): Promise<boolean> {
+    return this.projectModal.open(ReceiveEtherModalComponent, {
+      width: '600px',
+      disableClose: false,
+      data: {
+        canReceive: false
+      }
+    }).afterClosed().toPromise<boolean>();
+  }
+
+  public async showSVTDialog(date: string): Promise<boolean> {
+    return this.projectModal.open(ReceiveSvtModalComponent, {
+      width: '600px',
+      disableClose: false,
+      data: {
+        canReceive: false,
+        date: date
       }
     }).afterClosed().toPromise<boolean>();
   }
 
   public async showGetTokenDialog(): Promise<boolean> {
-    return this.projectModal.open(ReceiptModalComponent, {
+    return this.projectModal.open(ReceiveSvtModalComponent, {
       width: '600px',
       disableClose: false,
       data: {
-        title: this.translateService.instant('GetSVTModal.Title'),
-        content: this.translateService.instant('GetSVTModal.Content'),
-        buttonText: this.translateService.instant('GetSVTModal.GetButton')
+        canReceive: true
       }
     }).afterClosed().toPromise<boolean>();
   }

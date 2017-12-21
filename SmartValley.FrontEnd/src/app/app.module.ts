@@ -50,12 +50,13 @@ import {ScoringContractClient} from './services/scoring-contract-client';
 import {EtherReceivingService} from './services/ether-receiving/ether-receiving-service';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {multiTranslateLoaderFactory} from './services/translate/multi-translate-loader-factory';
-import {ReceiptModalComponent} from './components/common/receipt-modal/receipt-modal.component';
 import {BalanceService} from './services/balance/balance.service';
 import {InitializationComponent} from './components/initialization/initialization.component';
 import {InitializationService} from './services/initialization/initialization.service';
 import {InitializationGuard} from './services/initialization/initialization.guard';
 import {RootComponent} from './components/root/root.component';
+import {ReceiveEtherModalComponent} from './components/common/receive-ether-modal/receive-ether-modal.component';
+import {ReceiveSvtModalComponent} from './components/common/receive-svt-modal/receive-svt-modal.component';
 
 @NgModule({
   declarations: [
@@ -74,15 +75,17 @@ import {RootComponent} from './components/root/root.component';
     NullableLinkComponent,
     AlertModalComponent,
     MetamaskManualModalComponent,
-    ReceiptModalComponent,
     InitializationComponent,
-    RootComponent
+    RootComponent,
+    ReceiveEtherModalComponent,
+    ReceiveSvtModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
     AlertModalComponent,
     MetamaskManualModalComponent,
-    ReceiptModalComponent
+    ReceiveEtherModalComponent,
+    ReceiveSvtModalComponent
   ],
   imports: [
     MatCheckboxModule,

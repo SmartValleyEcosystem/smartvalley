@@ -17,6 +17,7 @@ export function multiTranslateLoaderFactory() {
     'components/footer/footer.component',
     'components/common/project-card/project-card.component',
     'components/common/transaction-awaiting-modal/transaction-awaiting-modal.component',
-    'components/common/receipt-modal/receipt-modal.component'
+    'components/common/receive-svt-modal/receive-svt-modal.component',
+    'components/common/receive-ether-modal/receive-ether-modal.component'
   ]);
 }
