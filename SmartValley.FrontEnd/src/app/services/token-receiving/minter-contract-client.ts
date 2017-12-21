@@ -52,7 +52,7 @@ export class MinterContractClient {
     return ConverterHelper.extractBoolValue(await token.canGetTokens(accountAddress));
   }
 
-  async getDaysInvervalBetweenReceiveAsync(): Promise<number> {
+  async getReceivingIntervalInDaysAsync(): Promise<number> {
     const token = this.web3Service.getContract(this.minterContractAbi, this.minterContractAddress);
     return ConverterHelper.extractNumberValue(await token.DAYS_INTERVAL_BETWEEN_RECEIVE());
   }

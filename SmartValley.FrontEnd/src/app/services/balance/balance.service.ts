@@ -46,8 +46,7 @@ export class BalanceService {
   }
 
   public async wasEtherReceived(): Promise<boolean> {
-    const balanceResponse = await
-      this.balanceApiClient.getBalanceAsync();
+    const balanceResponse = await this.balanceApiClient.getBalanceAsync();
     return balanceResponse.wasEtherReceived;
   }
 
@@ -69,7 +68,7 @@ export class BalanceService {
   public async getDateToReceiveTokensAsync(): Promise<Date> {
     const accountAddress = (await this.authenticationService.getCurrentUser()).account;
     const getReceiveDateForAddress = await this.minterContractClient.getReceiveDateForAddressAsync(accountAddress);
-    const daysToReceive =  await this.minterContractClient.getDaysInvervalBetweenReceiveAsync();
+    const daysToReceive = await this.minterContractClient.getReceivingIntervalInDaysAsync();
     const dateToReceive = new Date(getReceiveDateForAddress * 1000);
     dateToReceive.setDate(dateToReceive.getDate() + daysToReceive);
     return dateToReceive;

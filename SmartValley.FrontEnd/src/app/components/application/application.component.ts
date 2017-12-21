@@ -144,7 +144,7 @@ export class ApplicationComponent implements OnInit {
     );
   }
 
-  createForm() {
+  private createForm() {
     const teamMembers = [];
     for (const item in EnumTeamMemberType) {
       if (typeof EnumTeamMemberType[item] === 'number') {
