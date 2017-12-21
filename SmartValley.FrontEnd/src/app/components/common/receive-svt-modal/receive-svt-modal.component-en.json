@@ -1,0 +1,11 @@
+{
+  "CanReceiveSVTModal": {
+    "Title": "You have not enough SVT",
+    "Content": "You need SVT to create a project.",
+    "GetButton": "Get SVT"
+  },
+  "CanNotReceiveSVTModal": {
+    "Title": "You already receive SVT",
+    "Content": "You can receive SVT at "
+  }
+}

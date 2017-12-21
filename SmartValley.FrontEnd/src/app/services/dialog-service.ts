@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {TransactionAwaitingModalData} from '../components/common/transaction-awaiting-modal/transaction-awaiting-modal-data';
 import {TransactionAwaitingModalComponent} from '../components/common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 import {MatDialog} from '@angular/material';
-import {ReceiptModalComponent} from '../components/common/receipt-modal/receipt-modal.component';
-import {LinkModalComponent} from '../components/common/link-modal/link-modal.component';
 import {TranslateService} from '@ngx-translate/core';
+import {ReceiveEtherModalComponent} from '../components/common/receive-ether-modal/receive-ether-modal.component';
+import {ReceiveSvtModalComponent} from '../components/common/receive-svt-modal/receive-svt-modal.component';
 
 @Injectable()
 export class DialogService {
@@ -13,10 +13,11 @@ export class DialogService {
   }
 
   public showGetEtherDialog(): Promise<boolean> {
-    return this.projectModal.open(ReceiptModalComponent, {
+    return this.projectModal.open(ReceiveEtherModalComponent, {
       width: '600px',
       disableClose: false,
       data: {
+        carReceive: true,
         title: this.translateService.instant('GetEtherModal.Title'),
         content: this.translateService.instant('GetEtherModal.Content'),
         buttonText: this.translateService.instant('GetEtherModal.GetButton')
@@ -25,37 +26,40 @@ export class DialogService {
   }
 
   public async showRinkeByDialog(): Promise<boolean> {
-    return this.projectModal.open(LinkModalComponent, {
+    return this.projectModal.open(ReceiveEtherModalComponent, {
       width: '600px',
       disableClose: false,
       data: {
-        title: this.translateService.instant('LinkETHModal.Title'),
-        content: this.translateService.instant('LinkETHModal.Content'),
-        link: this.translateService.instant('LinkETHModal.Link')
+        carReceive: false,
+        title: this.translateService.instant('RinkeByModal.Title'),
+        content: this.translateService.instant('RinkeByModal.Content'),
+        link: this.translateService.instant('RinkeByModal.Link')
       }
     }).afterClosed().toPromise<boolean>();
   }
 
-  public async showSVTDialog(time: string): Promise<boolean> {
-    return this.projectModal.open(LinkModalComponent, {
+  public async showSVTDialog(date: string): Promise<boolean> {
+    return this.projectModal.open(ReceiveSvtModalComponent, {
       width: '600px',
       disableClose: false,
       data: {
-        title: this.translateService.instant('SVTModal.Title'),
-        content: this.translateService.instant('SVTModal.Content'),
-        time: time
+        carReceive: false,
+        title: this.translateService.instant('CanNotReceiveSVTModal.Title'),
+        content: this.translateService.instant('CanNotReceiveSVTModal.Content'),
+        date: date
       }
     }).afterClosed().toPromise<boolean>();
   }
 
   public async showGetTokenDialog(): Promise<boolean> {
-    return this.projectModal.open(ReceiptModalComponent, {
+    return this.projectModal.open(ReceiveSvtModalComponent, {
       width: '600px',
       disableClose: false,
       data: {
-        title: this.translateService.instant('GetSVTModal.Title'),
-        content: this.translateService.instant('GetSVTModal.Content'),
-        buttonText: this.translateService.instant('GetSVTModal.GetButton')
+        carReceive: true,
+        title: this.translateService.instant('CanReceiveSVTModal.Title'),
+        content: this.translateService.instant('CanReceiveSVTModal.Content'),
+        buttonText: this.translateService.instant('CanReceiveSVTModal.GetButton')
       }
     }).afterClosed().toPromise<boolean>();
   }
