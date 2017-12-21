@@ -58,8 +58,8 @@ export class ApplicationComponent implements OnInit {
 
   private async checkEthAndSVTAsync() {
     const userHasETH = await this.balanceService.hasUserEth();
-    const wasEtherReceived = await this.balanceService.wasEtherReceived();
     if (!userHasETH) {
+      const wasEtherReceived = await this.balanceService.wasEtherReceived();
       if (!wasEtherReceived) {
         if (await this.dialogService.showGetEtherDialog()) {
           await this.etherReceivingService.receiveAsync();
@@ -75,7 +75,7 @@ export class ApplicationComponent implements OnInit {
     const userHasSVT = await this.balanceService.hasUserSvt();
     if (!userHasSVT) {
       const userAddress = await this.authenticationService.getCurrentUser().account;
-      const getReceiveDateForAddress = await this.balanceService.getReceiveDateForAddressAsync(userAddress);
+      const getReceiveDateForAddress = await this.balanceService.getReceiveDateForCurrentUserAsync();
       const daysToReceive = await this.balanceService.getDaysToReceiveTokensAsync();
       const dateToReceive = new Date(getReceiveDateForAddress * 1000);
       dateToReceive.setDate(dateToReceive.getDate() + daysToReceive);

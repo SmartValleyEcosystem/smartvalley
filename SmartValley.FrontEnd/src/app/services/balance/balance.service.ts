@@ -70,7 +70,8 @@ export class BalanceService {
     return await this.minterContractClient.getDaysInvervalBetweenReceiveAsync();
   }
 
-  public async getReceiveDateForAddressAsync(accountAddress: string): Promise<number> {
+  public async getReceiveDateForCurrentUserAsync(): Promise<number> {
+    const accountAddress = (await this.authenticationService.getCurrentUser()).account;
     return await this.minterContractClient.getReceiveDateForAddressAsync(accountAddress);
   }
 }
