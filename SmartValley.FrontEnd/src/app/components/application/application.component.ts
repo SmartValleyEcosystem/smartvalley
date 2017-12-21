@@ -15,7 +15,6 @@ import {DialogService} from '../../services/dialog-service';
 import {EtherReceivingService} from '../../services/ether-receiving/ether-receiving-service';
 import {TranslateService} from '@ngx-translate/core';
 import {BalanceService} from '../../services/balance/balance.service';
-import {TokenContractClient} from '../../services/token-receiving/token-contract-client';
 
 @Component({
   selector: 'app-application',
@@ -79,10 +78,17 @@ export class ApplicationComponent {
     this.isProjectCreating = true;
 
     const userHasETH = await this.balanceService.hasUserEth();
+    const wasEtherReceived = await this.balanceService.wasEtherReceived();
     if (!userHasETH) {
-      if (await this.dialogService.showGetEtherDialog()) {
-        await this.etherReceivingService.receiveAsync();
+      if (!wasEtherReceived) {
+        if (await this.dialogService.showGetEtherDialog()) {
+          await this.etherReceivingService.receiveAsync();
+        } else {
+          this.isProjectCreating = false;
+          return;
+        }
       } else {
+        await this.dialogService.showRinkeByDialog();
         this.isProjectCreating = false;
         return;
       }
@@ -90,9 +96,20 @@ export class ApplicationComponent {
 
     const userHasSVT = await this.balanceService.hasUserSvt();
     if (!userHasSVT) {
-      if (await this.dialogService.showGetTokenDialog()) {
-        await this.tokenService.receiveAsync();
+      const userAddress = await this.authenticationService.getCurrentUser().account;
+      const getReceiveDateForAddress = await this.balanceService.getReceiveDateForAddressAsync(userAddress);
+      const daysToReceive = await this.balanceService.getDaysToReceiveTokensAsync();
+      const dateToReceive = new Date(getReceiveDateForAddress * 1000);
+      dateToReceive.setDate(dateToReceive.getDate() + daysToReceive);
+      if (dateToReceive.getTime() <= Date.now()) {
+        if (await this.dialogService.showGetTokenDialog()) {
+          await this.tokenService.receiveAsync();
+        } else {
+          this.isProjectCreating = false;
+          return;
+        }
       } else {
+        await this.dialogService.showSVTDialog(dateToReceive.toLocaleDateString());
         this.isProjectCreating = false;
         return;
       }
@@ -126,42 +143,6 @@ export class ApplicationComponent {
       this.translateService.instant('Common.Success'),
       this.translateService.instant('Application.ProjectCreated')
     );
-  }
-
-  public async onSubmit() {
-    const userHasETH = await this.balanceService.hasUserEth();
-    const wasEtherReceived = await this.balanceService.wasEtherReceived();
-    if (!userHasETH) {
-      if (!wasEtherReceived) {
-        if (await this.dialogService.showGetEtherDialog()) {
-          await this.etherReceivingService.receiveAsync();
-        } else {
-          return;
-        }
-      } else {
-        await this.dialogService.showRinkeByDialog();
-        return;
-      }
-    }
-
-    //const userHasSVT = await this.balanceService.hasUserSvt();
-    //if (!userHasSVT) {
-    const userAddress = await this.authenticationService.getCurrentUser().account;
-    const getReceiveDateForAddress = await this.balanceService.getReceiveDateForAddressAsync(userAddress);
-    const daysToReceive = await this.balanceService.getDaysToReceiveTokensAsync();
-    const dateToReceive = new Date(getReceiveDateForAddress * 1000);
-    dateToReceive.setDate(dateToReceive.getDate() + daysToReceive);
-    if (dateToReceive.getTime() <= Date.now()) {
-      if (await this.dialogService.showGetTokenDialog()) {
-        await this.tokenService.receiveAsync();
-      } else {
-        return;
-      }
-    } else {
-      await this.dialogService.showSVTDialog(dateToReceive.toLocaleDateString());
-      return;
-    }
-    //}
   }
 
   createForm() {
