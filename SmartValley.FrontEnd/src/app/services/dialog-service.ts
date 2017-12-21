@@ -43,7 +43,7 @@ export class DialogService {
       width: '600px',
       disableClose: false,
       data: {
-        carReceive: false,
+        canReceive: false,
         title: this.translateService.instant('CanNotReceiveSVTModal.Title'),
         content: this.translateService.instant('CanNotReceiveSVTModal.Content'),
         date: date
@@ -56,7 +56,7 @@ export class DialogService {
       width: '600px',
       disableClose: false,
       data: {
-        carReceive: true,
+        canReceive: true,
         title: this.translateService.instant('CanReceiveSVTModal.Title'),
         content: this.translateService.instant('CanReceiveSVTModal.Content'),
         buttonText: this.translateService.instant('CanReceiveSVTModal.GetButton')

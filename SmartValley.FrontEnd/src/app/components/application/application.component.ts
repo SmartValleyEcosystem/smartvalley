@@ -74,11 +74,7 @@ export class ApplicationComponent implements OnInit {
 
     const userHasSVT = await this.balanceService.hasUserSvt();
     if (!userHasSVT) {
-      const userAddress = await this.authenticationService.getCurrentUser().account;
-      const getReceiveDateForAddress = await this.balanceService.getReceiveDateForCurrentUserAsync();
-      const daysToReceive = await this.balanceService.getDaysToReceiveTokensAsync();
-      const dateToReceive = new Date(getReceiveDateForAddress * 1000);
-      dateToReceive.setDate(dateToReceive.getDate() + daysToReceive);
+      const dateToReceive = await this.balanceService.getDateToReceiveTokensAsync();
       if (dateToReceive.getTime() <= Date.now()) {
         if (await this.dialogService.showGetTokenDialog()) {
           await this.tokenService.receiveAsync();

@@ -66,12 +66,12 @@ export class BalanceService {
     return await this.tokenContractClient.getBalanceAsync(accountAddress);
   }
 
-  public async getDaysToReceiveTokensAsync(): Promise<number> {
-    return await this.minterContractClient.getDaysInvervalBetweenReceiveAsync();
-  }
-
-  public async getReceiveDateForCurrentUserAsync(): Promise<number> {
+  public async getDateToReceiveTokensAsync(): Promise<Date> {
     const accountAddress = (await this.authenticationService.getCurrentUser()).account;
-    return await this.minterContractClient.getReceiveDateForAddressAsync(accountAddress);
+    const getReceiveDateForAddress = await this.minterContractClient.getReceiveDateForAddressAsync(accountAddress);
+    const daysToReceive =  await this.minterContractClient.getDaysInvervalBetweenReceiveAsync();
+    const dateToReceive = new Date(getReceiveDateForAddress * 1000);
+    dateToReceive.setDate(dateToReceive.getDate() + daysToReceive);
+    return dateToReceive;
   }
 }
