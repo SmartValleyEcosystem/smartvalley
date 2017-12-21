@@ -66,6 +66,10 @@ export class BalanceService {
     return await this.tokenContractClient.getBalanceAsync(accountAddress);
   }
 
+  public async getDaysToReceiveTokensAsync(): Promise<number> {
+    return await this.minterContractClient.getDaysInvervalBetweenReceiveAsync();
+  }
+
   public async getReceiveDateForAddressAsync(accountAddress: string): Promise<number> {
     return await this.minterContractClient.getReceiveDateForAddressAsync(accountAddress);
   }

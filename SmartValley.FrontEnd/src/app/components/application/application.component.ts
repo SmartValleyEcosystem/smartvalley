@@ -158,23 +158,24 @@ export class ApplicationComponent {
       }
     }
 
-    const userHasSVT = await this.balanceService.hasUserSvt();
-    if (!userHasSVT) {
+    //const userHasSVT = await this.balanceService.hasUserSvt();
+    //if (!userHasSVT) {
       const userAddress = await this.authenticationService.getCurrentUser().account;
       const getReceiveDateForAddress = await this.balanceService.getReceiveDateForAddressAsync(userAddress);
-      const threeDays = new Date(getReceiveDateForAddress * 1000);
-      threeDays.setUTCHours(72);
-      if (threeDays.getTime() <= Date.now()) {
+      const daysToReceive = await this.balanceService.getDaysToReceiveTokensAsync();
+      const dateToReceive = new Date(getReceiveDateForAddress * 1000);
+      dateToReceive.setDate(dateToReceive.getDate() + daysToReceive);
+      if (dateToReceive.getTime() <= Date.now()) {
         if (await this.dialogService.showGetTokenDialog()) {
           await this.tokenService.receiveAsync();
         } else {
           return;
         }
       } else {
-        await this.dialogService.showSVTDialog(threeDays.toLocaleDateString());
+        await this.dialogService.showSVTDialog(dateToReceive.toLocaleDateString());
         return;
       }
-    }
+    //}
 
     await this.submitIfFormValid();
   }
