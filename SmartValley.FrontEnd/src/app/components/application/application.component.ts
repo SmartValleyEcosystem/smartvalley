@@ -115,7 +115,7 @@ export class ApplicationComponent implements OnInit {
     if (!this.validateForm()) {
       return;
     }
-    
+
     await this.checkEthAndSVTAsync();
 
     await this.submitApplicationAsync();

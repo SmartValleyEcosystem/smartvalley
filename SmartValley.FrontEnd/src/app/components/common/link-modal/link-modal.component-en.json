@@ -1,7 +1,7 @@
 {
   "LinkETHModal": {
     "Title": "You already receive ETH",
-    "Content": "To receive the broadcast, click on the link:",
+    "Content": "To receive the ETH, click on the link:",
     "Link": "https://faucet.rinkeby.io/"
   },
   "SVTModal": {
