@@ -9,10 +9,6 @@ import {ProjectManagerContractClient} from '../project-manager-contract-client';
 @Injectable()
 export class BalanceService {
 
-  public balanceChanged: EventEmitter<Balance> = new EventEmitter<Balance>();
-
-  public balance: Balance;
-
   constructor(private balanceApiClient: BalanceApiClient,
               private authenticationService: AuthenticationService,
               private tokenContractClient: TokenContractClient,
@@ -20,6 +16,10 @@ export class BalanceService {
               private projectManagerContractClinet: ProjectManagerContractClient) {
     this.authenticationService.accountChanged.subscribe(async () => await this.updateBalanceAsync());
   }
+
+  public balanceChanged: EventEmitter<Balance> = new EventEmitter<Balance>();
+
+  public balance: Balance;
 
   public async updateBalanceAsync(): Promise<void> {
     if (!this.authenticationService.isAuthenticated()) {
