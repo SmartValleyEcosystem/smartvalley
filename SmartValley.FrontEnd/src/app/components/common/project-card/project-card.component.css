@@ -13,7 +13,11 @@
   display: block;
 }
 
-.scoring-container > .score {
+.scoring-container > .score-panel {
+  display: block;
+}
+
+.scoring-container > .score-panel > .score {
   font-size: 3em;
 }
 

@@ -37,11 +37,15 @@
   color: rgb(180, 180, 180);
 }
 
+.scoring-container > .score-panel {
+  display: block;
+}
+
 .scoring-container > span {
   display: block;
 }
 
-.scoring-container > .score {
+.scoring-container > .score-panel > .score {
   font-size: 3em;
 }
 

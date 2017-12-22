@@ -32,6 +32,7 @@
     "AnalystAvg": "Analyst average score",
     "TechnicalExpertAvg": "Technical expert average score",
     "Form": "About",
-    "Submit": "Submit"
+    "Submit": "Submit",
+    "OutOf": "out of"
   }
 }

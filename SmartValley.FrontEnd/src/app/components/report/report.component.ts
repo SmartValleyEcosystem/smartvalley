@@ -27,6 +27,7 @@ export class ReportComponent implements AfterViewChecked, OnInit {
   public report: ProjectDetailsResponse;
   public EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
   public expertiseAreaAverageScore: number;
+  public expertiseMaxScore: number;
   public teamMembers: Array<TeamMember>;
   public projectImageUrl: string;
 
@@ -120,6 +121,7 @@ export class ReportComponent implements AfterViewChecked, OnInit {
     const questionsInArea = this.questionService.getByExpertiseArea(expertiseArea);
 
     this.expertiseAreaAverageScore = estimatesResponse.averageScore;
+    this.expertiseMaxScore = this.questionService.getMaxScoreForExpertiseArea(expertiseArea);
     this.questions = estimatesResponse.questions.map(q => this.createQuestion(questionsInArea, q));
   }
 
