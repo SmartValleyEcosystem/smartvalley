@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {QuestionService} from '../questions/question-service';
-import {MinterContractClient} from '../token-receiving/minter-contract-client';
-import {TokenContractClient} from '../token-receiving/token-contract-client';
+import {MinterContractClient} from '../contract-clients/minter-contract-client';
+import {TokenContractClient} from '../contract-clients/token-contract-client';
 import {PromiseUtils} from '../../utils/promise-utils';
 import {BalanceService} from '../balance/balance.service';
-import {ScoringContractClient} from '../scoring-contract-client';
+import {ScoringContractClient} from '../contract-clients/scoring-contract-client';
+import {ProjectManagerContractClient} from '../contract-clients/project-manager-contract-client';
 
 @Injectable()
 export class InitializationService {
@@ -13,6 +14,7 @@ export class InitializationService {
               private minterContractClient: MinterContractClient,
               private tokenContractClient: TokenContractClient,
               private scoringContractClient: ScoringContractClient,
+              private projectManagerContractClient: ProjectManagerContractClient,
               private balanceService: BalanceService) {
   }
 
@@ -33,6 +35,7 @@ export class InitializationService {
       this.minterContractClient.initializeAsync(),
       this.tokenContractClient.initializeAsync(),
       this.scoringContractClient.initializeAsync(),
+      this.projectManagerContractClient.initializeAsync(),
       this.balanceService.updateBalanceAsync()
     ]);
   }

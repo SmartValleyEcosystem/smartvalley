@@ -1,0 +1,7 @@
+{
+  "Balance": {
+    "Success": "Transfer completed.",
+    "Error": "Transfer failed. Please try again later.",
+    "TransactionDialog": "Transfer is in progress. Please wait for completion of transaction."
+  }
+}

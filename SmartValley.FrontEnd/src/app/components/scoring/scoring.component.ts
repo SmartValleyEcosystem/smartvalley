@@ -18,8 +18,8 @@ import {ProjectResponse} from '../../api/project/project-response';
   styleUrls: ['./scoring.component.css']
 })
 export class ScoringComponent implements AfterViewInit, OnDestroy {
-  public projectsForScoring: Array<Project>;
-  public myProjects: Array<Project>;
+  public projectsForScoring: Array<Project> = [];
+  public myProjects: Array<Project> = [];
   public selectedExpertiseTabIndex: number;
 
   @ViewChild('projectsTabSet')

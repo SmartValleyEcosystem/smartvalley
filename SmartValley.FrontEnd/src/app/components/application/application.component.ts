@@ -5,14 +5,12 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Application} from '../../services/application';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {v4 as uuid} from 'uuid';
-import {ProjectManagerContractClient} from '../../services/project-manager-contract-client';
+import {ProjectManagerContractClient} from '../../services/contract-clients/project-manager-contract-client';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
-import {TokenReceivingService} from '../../services/token-receiving/token-receiving-service';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {NotificationsService} from 'angular2-notifications';
 import {DialogService} from '../../services/dialog-service';
-import {EtherReceivingService} from '../../services/ether-receiving/ether-receiving-service';
 import {TranslateService} from '@ngx-translate/core';
 import {BalanceService} from '../../services/balance/balance.service';
 
@@ -21,7 +19,7 @@ import {BalanceService} from '../../services/balance/balance.service';
   templateUrl: './application.component.html',
   styleUrls: ['./application.component.css']
 })
-export class ApplicationComponent implements OnInit {
+export class ApplicationComponent {
 
   applicationForm: FormGroup;
   isTeamShow = false;
@@ -43,46 +41,12 @@ export class ApplicationComponent implements OnInit {
               private router: Router,
               private notificationsService: NotificationsService,
               private dialogService: DialogService,
-              private etherReceivingService: EtherReceivingService,
               private applicationApiClient: ApplicationApiClient,
               private translateService: TranslateService,
-              private tokenService: TokenReceivingService,
               private balanceService: BalanceService) {
     this.createForm();
   }
 
-  async ngOnInit() {
-    await this.checkEthAndSVTAsync();
-  }
-
-  private async checkEthAndSVTAsync() {
-    const userHasETH = await this.balanceService.hasUserEth();
-    if (!userHasETH) {
-      const wasEtherReceived = await this.balanceService.wasEtherReceived();
-      if (!wasEtherReceived) {
-        if (await this.dialogService.showGetEtherDialog()) {
-          await this.etherReceivingService.receiveAsync();
-        } else {
-          return;
-        }
-      } else {
-        await this.dialogService.showRinkeByDialog();
-        return;
-      }
-    }
-
-    const userHasSVT = await this.balanceService.hasUserSvt();
-    if (!userHasSVT) {
-      const dateToReceive = await this.balanceService.getDateToReceiveTokensAsync();
-      if (dateToReceive.getTime() <= Date.now()) {
-        if (await this.dialogService.showGetTokenDialog()) {
-          await this.tokenService.receiveAsync();
-        }
-      } else {
-        await this.dialogService.showSVTDialog(dateToReceive.toLocaleDateString());
-      }
-    }
-  }
 
   public showNext() {
     if (this.isTeamShow === false) {
@@ -107,9 +71,6 @@ export class ApplicationComponent implements OnInit {
     if (!this.validateForm()) {
       return;
     }
-
-    await this.checkEthAndSVTAsync();
-
     await this.submitApplicationAsync();
   }
 

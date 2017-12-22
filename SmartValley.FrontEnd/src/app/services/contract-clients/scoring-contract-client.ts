@@ -1,19 +1,21 @@
 import {Injectable} from '@angular/core';
-import {Web3Service} from './web3-service';
-import {AuthenticationService} from './authentication/authentication-service';
-import {ExpertiseArea} from '../api/scoring/expertise-area.enum';
-import {Estimate} from './estimate';
-import {ContractApiClient} from '../api/contract/contract-api-client';
+import {Web3Service} from '../web3-service';
+import {AuthenticationService} from '../authentication/authentication-service';
+import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
+import {Estimate} from '../estimate';
+import {ContractApiClient} from '../../api/contract/contract-api-client';
+import {ContractClient} from './contract-client';
 
 @Injectable()
-export class ScoringContractClient {
-  private abi: string;
-  private address: string;
+export class ScoringContractClient implements ContractClient {
 
   constructor(private authenticationService: AuthenticationService,
               private web3Service: Web3Service,
               private contractApiClient: ContractApiClient) {
   }
+
+  public abi: string;
+  public address: string;
 
   public async initializeAsync(): Promise<void> {
     const contract = await this.contractApiClient.getScoringContractAsync();

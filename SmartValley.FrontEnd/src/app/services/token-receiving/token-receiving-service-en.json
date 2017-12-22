@@ -1,7 +1,0 @@
-{
-  "TokenReceiving": {
-    "Dialog": "Token transfer is in progress. Please wait for completion of transaction.",
-    "Success": "Token transfer completed.",
-    "Error": "Token transfer failed. Please try again later."
-  }
-}

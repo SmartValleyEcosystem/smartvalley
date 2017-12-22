@@ -16,8 +16,8 @@ import {BalanceApiClient} from './api/balance/balance-api-client';
 import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
 import {ApplicationComponent} from './components/application/application.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {ProjectManagerContractClient} from './services/project-manager-contract-client';
-import {ScoringComponent} from './components/scoring/scoring.component'; // <-- #1 import module
+import {ProjectManagerContractClient} from './services/contract-clients/project-manager-contract-client';
+import {ScoringComponent} from './components/scoring/scoring.component';
 import {MatTabsModule} from '@angular/material';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {FooterComponent} from './components/footer/footer.component';
@@ -26,9 +26,8 @@ import {EstimateComponent} from './components/estimate/estimate.component';
 import {QuestionService} from './services/questions/question-service';
 import {ContractApiClient} from './api/contract/contract-api-client';
 import {ErrorInterceptor} from './api/error-interceptor';
-import {TokenReceivingService} from './services/token-receiving/token-receiving-service';
-import {TokenContractClient} from './services/token-receiving/token-contract-client';
-import {MinterContractClient} from './services/token-receiving/minter-contract-client';
+import {TokenContractClient} from './services/contract-clients/token-contract-client';
+import {MinterContractClient} from './services/contract-clients/minter-contract-client';
 import {ScoringApiClient} from './api/scoring/scoring-api-client';
 import {ProjectCardComponent} from './components/common/project-card/project-card.component';
 import {ProjectApiClient} from './api/project/project-api-client';
@@ -46,8 +45,7 @@ import {AlertModalComponent} from './components/common/alert-modal/alert-modal.c
 import {MetamaskManualModalComponent} from './components/common/metamask-manual-modal/metamask-manual-modal.component';
 import {Angulartics2GoogleAnalytics} from 'angulartics2/ga';
 import {Angulartics2Module} from 'angulartics2';
-import {ScoringContractClient} from './services/scoring-contract-client';
-import {EtherReceivingService} from './services/ether-receiving/ether-receiving-service';
+import {ScoringContractClient} from './services/contract-clients/scoring-contract-client';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {multiTranslateLoaderFactory} from './services/translate/multi-translate-loader-factory';
 import {BalanceService} from './services/balance/balance.service';
@@ -57,6 +55,8 @@ import {InitializationGuard} from './services/initialization/initialization.guar
 import {RootComponent} from './components/root/root.component';
 import {ReceiveEtherModalComponent} from './components/common/receive-ether-modal/receive-ether-modal.component';
 import {ReceiveSvtModalComponent} from './components/common/receive-svt-modal/receive-svt-modal.component';
+import {ShouldHaveEthAndSvtGuard} from './services/balance/should-have-eth-and-svt.guard';
+import {ShouldHaveEthGuard} from './services/balance/should-have-eth.guard';
 
 @NgModule({
   declarations: [
@@ -134,18 +134,18 @@ import {ReceiveSvtModalComponent} from './components/common/receive-svt-modal/re
     ScoringApiClient,
     EstimatesApiClient,
     AuthenticationService,
-    TokenReceivingService,
     ProjectService,
     QuestionService,
     Web3Service,
     DialogService,
-    EtherReceivingService,
     ProjectManagerContractClient,
     ScoringContractClient,
     BlockiesService,
     BalanceService,
     InitializationService,
-    InitializationGuard
+    InitializationGuard,
+    ShouldHaveEthAndSvtGuard,
+    ShouldHaveEthGuard
   ],
   bootstrap: [AppComponent]
 })

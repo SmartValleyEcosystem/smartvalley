@@ -12,12 +12,11 @@ import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TeamMember} from '../../services/team-member';
-import {ScoringContractClient} from '../../services/scoring-contract-client';
+import {ScoringContractClient} from '../../services/contract-clients/scoring-contract-client';
 import {DialogService} from '../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
 import {Estimate} from '../../services/estimate';
 import {BalanceService} from '../../services/balance/balance.service';
-import {EtherReceivingService} from '../../services/ether-receiving/ether-receiving-service';
 
 @Component({
   selector: 'app-estimate',
@@ -46,8 +45,7 @@ export class EstimateComponent {
               private scoringContractClient: ScoringContractClient,
               private dialogService: DialogService,
               private translateService: TranslateService,
-              private balanceService: BalanceService,
-              private etherReceivingService: EtherReceivingService) {
+              private balanceService: BalanceService) {
     this.loadProjectInfo();
   }
 
@@ -62,15 +60,6 @@ export class EstimateComponent {
 
     this.isEstimateSending = true;
 
-    const userHasETH = await this.balanceService.hasUserEth();
-    if (!userHasETH) {
-      if (await this.dialogService.showGetEtherDialog()) {
-        await this.etherReceivingService.receiveAsync();
-      } else {
-        this.isEstimateSending = false;
-        return;
-      }
-    }
     const isSucceeded = await this.submitAsync();
     if (isSucceeded) {
       await this.router.navigate([Paths.Scoring]);

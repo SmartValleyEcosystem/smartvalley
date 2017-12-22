@@ -17,7 +17,8 @@ export class DialogService {
       data: {
         canReceive: true
       }
-    }).afterClosed().toPromise<boolean>();
+    }).afterClosed()
+      .toPromise<boolean>();
   }
 
   public async showRinkeByDialog(): Promise<boolean> {
@@ -27,10 +28,11 @@ export class DialogService {
       data: {
         canReceive: false
       }
-    }).afterClosed().toPromise<boolean>();
+    }).afterClosed()
+      .toPromise<boolean>();
   }
 
-  public async showSVTDialog(date: string): Promise<boolean> {
+  public async showSvtDialog(date: string): Promise<boolean> {
     return this.projectModal.open(ReceiveSvtModalComponent, {
       width: '600px',
       disableClose: false,
@@ -38,7 +40,8 @@ export class DialogService {
         canReceive: false,
         date: date
       }
-    }).afterClosed().toPromise<boolean>();
+    }).afterClosed()
+      .toPromise<boolean>();
   }
 
   public async showGetTokenDialog(): Promise<boolean> {
@@ -48,7 +51,8 @@ export class DialogService {
       data: {
         canReceive: true
       }
-    }).afterClosed().toPromise<boolean>();
+    }).afterClosed()
+      .toPromise<boolean>();
   }
 
   public showTransactionDialog(message: string, transactionHash: string) {

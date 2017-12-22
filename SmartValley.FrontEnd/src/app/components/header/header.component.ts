@@ -1,10 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
-import {TokenReceivingService} from '../../services/token-receiving/token-receiving-service';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {Constants} from '../../constants';
-import {EtherReceivingService} from '../../services/ether-receiving/ether-receiving-service';
 import {BalanceService} from '../../services/balance/balance.service';
 import {Balance} from '../../services/balance/balance';
 
@@ -23,9 +21,7 @@ export class HeaderComponent {
 
   constructor(private router: Router,
               private balanceService: BalanceService,
-              private authenticationService: AuthenticationService,
-              private etherReceivingService: EtherReceivingService,
-              private tokenReceivingService: TokenReceivingService) {
+              private authenticationService: AuthenticationService) {
 
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateHeader(balance));
     this.updateHeader(this.balanceService.balance);
@@ -46,11 +42,11 @@ export class HeaderComponent {
   }
 
   async receiveEth() {
-    await this.etherReceivingService.receiveAsync();
+    await this.balanceService.receiveSvtAsync();
   }
 
   async receiveSVT() {
-    await this.tokenReceivingService.receiveAsync();
+    await this.balanceService.receiveEtherAsync();
   }
 
   async navigateToMyProjects() {

@@ -2,9 +2,13 @@ import {EventEmitter, Injectable} from '@angular/core';
 import {BalanceApiClient} from '../../api/balance/balance-api-client';
 import {Balance} from './balance';
 import {AuthenticationService} from '../authentication/authentication-service';
-import {TokenContractClient} from '../token-receiving/token-contract-client';
-import {MinterContractClient} from '../token-receiving/minter-contract-client';
-import {ProjectManagerContractClient} from '../project-manager-contract-client';
+import {TokenContractClient} from '../contract-clients/token-contract-client';
+import {MinterContractClient} from '../contract-clients/minter-contract-client';
+import {ProjectManagerContractClient} from '../contract-clients/project-manager-contract-client';
+import {DialogService} from '../dialog-service';
+import {Web3Service} from '../web3-service';
+import {NotificationsService} from 'angular2-notifications';
+import {TranslateService} from '@ngx-translate/core';
 
 @Injectable()
 export class BalanceService {
@@ -13,7 +17,11 @@ export class BalanceService {
               private authenticationService: AuthenticationService,
               private tokenContractClient: TokenContractClient,
               private minterContractClient: MinterContractClient,
-              private projectManagerContractClinet: ProjectManagerContractClient) {
+              private projectManagerContractClient: ProjectManagerContractClient,
+              private dialogService: DialogService,
+              private notificationsService: NotificationsService,
+              private web3Service: Web3Service,
+              private translateService: TranslateService) {
     this.authenticationService.accountChanged.subscribe(async () => await this.updateBalanceAsync());
   }
 
@@ -28,8 +36,8 @@ export class BalanceService {
     }
     const balanceResponse = await this.balanceApiClient.getBalanceAsync();
     const address = this.authenticationService.getCurrentUser().account;
-    const svtBalance = await this.getSvtBalanceAsync(address);
-    const canReceiveSvt = await this.canGetTokensAsync(address);
+    const svtBalance = await this.tokenContractClient.getBalanceAsync(address);
+    const canReceiveSvt = await this.minterContractClient.canGetTokensAsync(address);
     this.balance = {
       ethBalance: +balanceResponse.balance.toFixed(3),
       wasEtherReceived: balanceResponse.wasEtherReceived,
@@ -39,33 +47,85 @@ export class BalanceService {
     this.balanceChanged.emit(this.balance);
   }
 
-  public async hasUserEth(): Promise<boolean> {
-    const balanceResponse = await
-      this.balanceApiClient.getBalanceAsync();
-    return balanceResponse.balance > 0.1;
+  public async checkEthAsync(): Promise<boolean> {
+    const userHasETH = await this.hasUserEth();
+    if (userHasETH) {
+      return true;
+    }
+    const wasEtherReceived = await this.wasEtherReceived();
+    if (wasEtherReceived) {
+      return await this.dialogService.showRinkeByDialog();
+    }
+    if (await this.dialogService.showGetEtherDialog()) {
+      return await this.receiveEtherAsync();
+    }
+    return false;
   }
 
-  public async wasEtherReceived(): Promise<boolean> {
+  public async checkSvtForProjectAsync(): Promise<boolean> {
+    const userHasSvt = await this.hasUserSvtForProject();
+    if (userHasSvt) {
+      return true;
+    }
+    const dateToReceive = await this.getDateToReceiveTokensAsync();
+    if (dateToReceive.getTime() > Date.now()) {
+      return await this.dialogService.showSvtDialog(dateToReceive.toLocaleDateString());
+    }
+    if (await this.dialogService.showGetTokenDialog()) {
+      return await this.receiveSvtAsync();
+    }
+    return false;
+  }
+
+  public async receiveEtherAsync(): Promise<boolean> {
+    const transactionHash = (await this.balanceApiClient.receiveEtherAsync()).transactionHash;
+    return await this.showTransactionDialogAndGetResult(transactionHash);
+  }
+
+  public async receiveSvtAsync(): Promise<boolean> {
+    const transactionHash = await this.minterContractClient.getTokensAsync();
+    return await this.showTransactionDialogAndGetResult(transactionHash);
+  }
+
+  private async showTransactionDialogAndGetResult(transactionHash: string): Promise<boolean> {
+    const transactionDialog = this.dialogService.showTransactionDialog(
+      this.translateService.instant('Balance.TransactionDialog'),
+      transactionHash
+    );
+
+    try {
+      await this.web3Service.waitForConfirmationAsync(transactionHash);
+      this.notificationsService.success(this.translateService.instant('Balance.Success'));
+    } catch (e) {
+      this.notificationsService.error(this.translateService.instant('Balance.Error'));
+      return false;
+    }
+
+    await this.updateBalanceAsync();
+    transactionDialog.close();
+    return true;
+  }
+
+
+  private async hasUserEth(): Promise<boolean> {
+    const balanceResponse = await
+      this.balanceApiClient.getBalanceAsync();
+    return balanceResponse.balance > 0.05;
+  }
+
+  private async wasEtherReceived(): Promise<boolean> {
     const balanceResponse = await this.balanceApiClient.getBalanceAsync();
     return balanceResponse.wasEtherReceived;
   }
 
-  public async hasUserSvt(): Promise<boolean> {
+  private async hasUserSvtForProject(): Promise<boolean> {
     const accountAddress = (await this.authenticationService.getCurrentUser()).account;
     const tokenBalance = await this.tokenContractClient.getBalanceAsync(accountAddress);
-    const projectCreationCost = await this.projectManagerContractClinet.getProjectCreationCostAsync();
+    const projectCreationCost = await this.projectManagerContractClient.getProjectCreationCostAsync();
     return tokenBalance >= projectCreationCost;
   }
 
-  private async canGetTokensAsync(accountAddress: string): Promise<boolean> {
-    return await this.minterContractClient.canGetTokensAsync(accountAddress);
-  }
-
-  private async getSvtBalanceAsync(accountAddress: string): Promise<number> {
-    return await this.tokenContractClient.getBalanceAsync(accountAddress);
-  }
-
-  public async getDateToReceiveTokensAsync(): Promise<Date> {
+  private async getDateToReceiveTokensAsync(): Promise<Date> {
     const accountAddress = (await this.authenticationService.getCurrentUser()).account;
     const getReceiveDateForAddress = await this.minterContractClient.getReceiveDateForAddressAsync(accountAddress);
     const daysToReceive = await this.minterContractClient.getReceivingIntervalInDaysAsync();

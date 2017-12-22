@@ -1,7 +1,0 @@
-{
-  "EtherReceiving": {
-    "Dialog": "Ether transfer is in progress. Please wait for completion of transaction.",
-    "Success": "Ether transfer completed.",
-    "Error": "Ether transfer failed. Please try again later."
-  }
-}

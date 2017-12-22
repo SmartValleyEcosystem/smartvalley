@@ -10,6 +10,8 @@ import {ReportComponent} from './components/report/report.component';
 import {InitializationGuard} from './services/initialization/initialization.guard';
 import {InitializationComponent} from './components/initialization/initialization.component';
 import {RootComponent} from './components/root/root.component';
+import {ShouldHaveEthAndSvtGuard} from './services/balance/should-have-eth-and-svt.guard';
+import {ShouldHaveEthGuard} from './services/balance/should-have-eth.guard';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -18,9 +20,9 @@ const appRoutes: Routes = [
       {path: Paths.Root, pathMatch: 'full', component: LandingComponent},
       {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent},
       {path: Paths.Scoring, pathMatch: 'full', component: ScoringComponent},
-      {path: Paths.Application, pathMatch: 'full', component: ApplicationComponent},
+      {path: Paths.Application, pathMatch: 'full', component: ApplicationComponent, canActivate: [ShouldHaveEthAndSvtGuard]},
       {path: Paths.Report + '/:id', pathMatch: 'full', component: ReportComponent},
-      {path: Paths.Scoring + '/:id', pathMatch: 'full', component: EstimateComponent}
+      {path: Paths.Scoring + '/:id', pathMatch: 'full', component: EstimateComponent, canActivate: [ShouldHaveEthGuard]}
     ]
   },
   {path: '**', redirectTo: Paths.Root}

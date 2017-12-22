@@ -1,17 +1,13 @@
 import {Injectable} from '@angular/core';
-import {AuthenticationService} from './authentication/authentication-service';
-import {Web3Service} from './web3-service';
-import {ContractApiClient} from '../api/contract/contract-api-client';
-import {ConverterHelper} from './converter-helper';
-import {TokenContractClient} from './token-receiving/token-contract-client';
+import {AuthenticationService} from '../authentication/authentication-service';
+import {Web3Service} from '../web3-service';
+import {ContractApiClient} from '../../api/contract/contract-api-client';
+import {ConverterHelper} from '../converter-helper';
+import {TokenContractClient} from './token-contract-client';
+import {ContractClient} from './contract-client';
 
 @Injectable()
-export class ProjectManagerContractClient {
-
-  private projectManagerContractAbi: string;
-  private projectManagerAddress: string;
-
-  private isInitialized: boolean;
+export class ProjectManagerContractClient implements ContractClient {
 
   constructor(private authenticationService: AuthenticationService,
               private web3Service: Web3Service,
@@ -19,13 +15,14 @@ export class ProjectManagerContractClient {
               private tokenClient: TokenContractClient) {
   }
 
-  private async initilizeAsync(): Promise<void> {
+  public abi: string;
+  public address: string;
+
+  public async initializeAsync(): Promise<void> {
 
     const projectManagerContract = await this.contractClient.getProjectManagerContractAsync();
-    this.projectManagerContractAbi = projectManagerContract.abi;
-    this.projectManagerAddress = projectManagerContract.address;
-
-    this.isInitialized = true;
+    this.abi = projectManagerContract.abi;
+    this.address = projectManagerContract.address;
   }
 
   public addProjectAsync(contractAddress: string,
@@ -42,11 +39,7 @@ export class ProjectManagerContractClient {
   }
 
   public async getProjectCreationCostAsync() {
-    if (!this.isInitialized) {
-      await this.initilizeAsync();
-    }
-
-    const projectNamanger = this.web3Service.getContract(this.projectManagerContractAbi, this.projectManagerAddress);
+    const projectNamanger = this.web3Service.getContract(this.abi, this.address);
     const cost = ConverterHelper.extractNumberValue(await projectNamanger.projectCreationCostWEI());
     return this.web3Service.fromWei(cost, await this.tokenClient.getTokenDecimalsAsync());
   }

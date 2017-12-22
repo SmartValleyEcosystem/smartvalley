@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {InitializationService} from './initialization.service';
 import {Paths} from '../../paths';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/pairwise';
 
 @Injectable()
 export class InitializationGuard implements CanActivate {

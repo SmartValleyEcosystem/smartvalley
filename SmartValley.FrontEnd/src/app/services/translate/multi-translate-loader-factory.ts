@@ -4,8 +4,7 @@ export function multiTranslateLoaderFactory() {
   return new MultiTranslateLoader([
     'services/questions/questions',
     'services/authentication/authentication-service',
-    'services/ether-receiving/ether-receiving-service',
-    'services/token-receiving/token-receiving-service',
+    'services/balance/balance-service',
     'services/translate/common',
     'components/header/header.component',
     'components/application/application.component',
