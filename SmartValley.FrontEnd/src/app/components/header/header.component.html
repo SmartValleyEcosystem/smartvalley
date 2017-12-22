@@ -8,31 +8,37 @@
         <div class="col-2" style="margin-top: 24px;">
           <a target="_blank" href="https://smartvalley.io/files/WP_en.pdf" class="btn btn-link">White paper</a>
         </div>
-        <div class="col-4" style="margin-top: 24px;">
-          <div *ngIf="showBalance">
-            <span style="color: #aaaaaa;">{{ 'Header.Balance' | translate }}: {{currentBalance}} ETH / {{currentTokens}} SVT</span>
+        <div class="col-7  inline-blocks" *ngIf="showBalance; else authTemplate">
+          <div style="margin-top: 24px;">
+            <div *ngIf="showBalance">
+              <span style="color: #aaaaaa;">{{ 'Header.Balance' | translate }}: {{currentBalance}} ETH / {{currentTokens}} SVT</span>
+            </div>
+          </div>
+          <div style="text-align:right;    float: right;    margin-top: 24px;">
+            <div class="address" style="color: #aaaaaa;"> {{accountAddress}}</div>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon><i class="material-icons">expand_more</i></mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" align="end">
+              <button mat-menu-item class="btn btn-link">
+                Account
+              </button>
+              <button mat-menu-item (click)="navigateToMyProjects()" class="btn btn-link">
+                {{ 'Header.MyProjects' | translate }}
+              </button>
+              <button mat-menu-item (click)="logout()" class="btn btn-link">
+                Logout
+              </button>
+            </mat-menu>
           </div>
         </div>
-        <div class="col-3 sm-header__nav text-right" style="margin-top: 24px;">
-          <button *ngIf="showReceiveEtherButton"
-                  (click)="receiveEth()"
-                  class="btn btn-link"
-                  angulartics2On="click"
-                  angularticsAction="GetEtherClick"
-                  angularticsCategory="UserActions">
-            {{ 'Header.GetEther' | translate }}
-          </button>
-
-          <button *ngIf="showReceiveSVTButton"
-                  (click)="receiveSVT()"
-                  class="btn btn-link"
-                  angulartics2On="click"
-                  angularticsAction="GetSVTClick"
-                  angularticsCategory="UserActions">
-            {{ 'Header.GetSVT' | translate }}
-          </button>
-          <button (click)="navigateToMyProjects()" class="btn btn-link">{{ 'Header.MyProjects' | translate }}</button>
-        </div>
+        <ng-template #authTemplate>
+          <div class="col-7" style="text-align: right;">
+            <button (click)="loginAsync()" mat-raised-button class="col-2 sm-btn-primary login-button">{{
+              'Header.SignIn' | translate }}
+            </button>
+          </div>
+        </ng-template>
       </div>
     </div>
   </mat-toolbar-row>

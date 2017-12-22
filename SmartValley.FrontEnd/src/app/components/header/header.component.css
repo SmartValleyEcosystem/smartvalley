@@ -22,3 +22,21 @@ a, button, span {
   color: rgb(70, 137, 232);
   font-size: 0.7em;
 }
+.login-button{
+  margin-top: 24px;
+}
+.inline-blocks div{
+  display: inline-block;
+}
+.address{
+  vertical-align: middle;
+  font-size: 0.8em;
+  width: 10em;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+button:focus {
+   outline: initial;
+   outline: initial;
+ }
