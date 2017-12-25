@@ -10,7 +10,7 @@ namespace SmartValley.Data.SQL.Core
     {
         DbSet<Application> Applications { get; set; }
         DbSet<Project> Projects { get; set; }
-        DbSet<EstimateComment> Estimates { get; set; }
+        DbSet<EstimateComment> EstimateComments { get; set; }
         DbSet<TeamMember> TeamMembers { get; set; }
         DbSet<Question> Questions { get; set; }
         Task<int> SaveAsync();
