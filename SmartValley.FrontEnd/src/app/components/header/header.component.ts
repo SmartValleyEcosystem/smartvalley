@@ -33,11 +33,11 @@ export class HeaderComponent {
     this.updateHeader(this.balanceService.balance);
   }
 
-  public async loginAsync(): void {
-    const isOk = await this.authenticationService.authenticateAsync();
+  public async loginAsync(): Promise<void> {
+    await this.authenticationService.authenticateAsync();
   }
 
-  public logout(): void{
+  public logout(): void {
     this.authenticationService.stopUserSession();
   }
 
