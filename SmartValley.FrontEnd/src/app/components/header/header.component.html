@@ -21,22 +21,20 @@
             </button>
             <mat-menu #menu="matMenu" align="end">
               <button mat-menu-item class="btn btn-link">
-                Account
+                {{'Header.Account' | translate }}
               </button>
               <button mat-menu-item (click)="navigateToMyProjects()" class="btn btn-link">
                 {{ 'Header.MyProjects' | translate }}
               </button>
               <button mat-menu-item (click)="logout()" class="btn btn-link">
-                Logout
+                {{'Header.Logout' | translate }}
               </button>
             </mat-menu>
           </div>
         </div>
         <ng-template #authTemplate>
           <div class="col-7" style="text-align: right;">
-            <button (click)="loginAsync()" mat-raised-button class="col-2 sm-btn-primary login-button">{{
-              'Header.Login' | translate }}
-            </button>
+            <button (click)="loginAsync()" mat-raised-button class="col-2 sm-btn-primary login-button">{{'Header.Login' | translate }}</button>
           </div>
         </ng-template>
       </div>

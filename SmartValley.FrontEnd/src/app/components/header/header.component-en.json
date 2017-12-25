@@ -2,6 +2,8 @@
   "Header": {
     "Balance": "Balance",
     "MyProjects": "My projects",
+    "Account": "Account",
+    "Logout": "Logout",
     "GetEther": "Get Ether",
     "GetSVT": "Get SVT",
     "Login": "Login"
