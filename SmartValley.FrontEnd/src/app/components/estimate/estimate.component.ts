@@ -1,6 +1,5 @@
 import {Component, QueryList, ViewChildren, ElementRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {QuestionService} from '../../services/questions/question-service';
 import {Paths} from '../../paths';
 import {SubmitEstimatesRequest} from '../../api/estimates/submit-estimates-request';
@@ -11,7 +10,6 @@ import {ProjectDetailsResponse} from '../../api/project/project-details-response
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {TeamMember} from '../../services/team-member';
 import {ScoringContractClient} from '../../services/contract-clients/scoring-contract-client';
 import {DialogService} from '../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
@@ -25,12 +23,10 @@ import {BalanceService} from '../../services/balance/balance.service';
 })
 export class EstimateComponent {
   public hidden: boolean;
-  public EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
   public expertiseArea: ExpertiseArea;
   public projectId: number;
   public projectDetails: ProjectDetailsResponse;
   public estimateForm: FormGroup;
-  public teamMembers: Array<TeamMember>;
   public isEstimateSending: boolean;
 
   @ViewChildren('required') requiredFields: QueryList<any>;
@@ -179,24 +175,5 @@ export class EstimateComponent {
 
     this.estimateForm = this.formBuilder.group({questions: this.formBuilder.array(questionsFormGroups)});
     this.projectDetails = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
-    this.teamMembers = this.getMembersCollection(this.projectDetails);
-  }
-
-  private getMembersCollection(report: ProjectDetailsResponse): Array<TeamMember> {
-    const result: TeamMember[] = [];
-    const memberTypeNames = Object.keys(EnumTeamMemberType).filter(key => !isNaN(Number(EnumTeamMemberType[key])));
-
-    for (const memberType of memberTypeNames) {
-      const teamMember = report.teamMembers.find(value => value.memberType === EnumTeamMemberType[memberType])
-        || <TeamMember>{memberType: EnumTeamMemberType[memberType], fullName: '\u2014'};
-
-      result.push(<TeamMember>{
-        memberType: teamMember.memberType,
-        facebookLink: teamMember.facebookLink,
-        linkedInLink: teamMember.linkedInLink,
-        fullName: teamMember.fullName
-      });
-    }
-    return result;
   }
 }

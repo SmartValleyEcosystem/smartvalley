@@ -1,4 +1,4 @@
-<div class="container" *ngIf="report">
+<div class="container" *ngIf="details">
   <div class="row mx-auto">
     <div class="col-8 sm-title">
       <h1>{{ 'Report.Title' | translate }}</h1>
@@ -12,18 +12,18 @@
         </div>
         <div class="description col-5">
           <div class="main-info__title">
-            <span>{{report.name}}</span>
-            <span>{{report.area}}</span>
+            <span>{{details.name}}</span>
+            <span>{{details.area}}</span>
           </div>
         </div>
         <div class="scoring col-3">
           <div class="scoring-container">
             <span>{{ 'Report.ScoringRating' | translate }}</span>
-            <div *ngIf="report.score" class="score-panel">
-              <span class="score {{projectService.colorOfProjectRate(report.score)}}">{{report.score.toFixed(0)}}</span>
+            <div *ngIf="details.score" class="score-panel">
+              <span class="score {{projectService.colorOfProjectRate(details.score)}}">{{details.score.toFixed(0)}}</span>
               <span>/ 100</span>
             </div>
-            <span *ngIf="!report.score">{{ 'Report.InProgress' | translate }}</span>
+            <span *ngIf="!details.score">{{ 'Report.InProgress' | translate }}</span>
           </div>
         </div>
       </div>
@@ -33,97 +33,8 @@
     <ngb-tabset #reportTabSet (tabChange)="onMainTabChanged($event)" class="col-12 info">
       <ngb-tab id="form" title="{{ 'Report.Form' | translate }}">
         <ng-template ngbTabContent>
-          <div class="sw-card sw-content sw-main-info">
-            <div class="row">
-              <span class="col-3 offset-1">{{ 'Report.Name' | translate }}:</span>
-              <span class="col-8">{{report.name}}</span>
-            </div>
-            <div class="row">
-              <span class="col-3 offset-1">{{ 'Report.ProjectArea' | translate }}:</span>
-              <span class="col-8">{{report.area}}</span>
-            </div>
-            <div class="row">
-              <span class="col-3 offset-1">{{ 'Report.Description' | translate }}:</span>
-              <span class="col-8">{{report.description}}</span>
-            </div>
-            <div class="row">
-              <span class="col-3 offset-1">{{ 'Report.Status' | translate }}:</span>
-              <span class="col-8">{{report.status}}</span>
-            </div>
-            <div class="row">
-              <span class="col-3 offset-1">{{ 'Report.WhitePaperLink' | translate }}:</span>
-              <app-nullable-link [href]="report.whitePaperLink" class="col-8"></app-nullable-link>
-            </div>
-          </div>
-
-          <div class="sw-card sw-content">
-            <div class="row row-title">
-              <h3 class="col-10 offset-1">{{ 'Report.Team' | translate }}</h3>
-            </div>
-            <div *ngFor="let member of teamMembers;">
-              <div class="row">
-                <span class="col-1 offset-1">{{EnumTeamMemberType[member.memberType]}}:</span>
-                <span class="col-3" style="margin-left: 2em;">{{member.fullName}}</span>
-                <span class="col-2 offset-1 social-group">
-                  <a *ngIf="member.facebookLink" href="{{member.facebookLink}}" style="margin-right: 1em;">
-                    <i class="fa fa-facebook" aria-hidden="true"></i>
-                  </a>
-                  <a *ngIf="member.linkedInLink" href="{{member.linkedInLink}}">
-                    <i class="fa fa-linkedin" aria-hidden="true"></i>
-                  </a>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="sw-card sw-content">
-            <div class="row row-title">
-              <h3 class="col-10 offset-1">{{ 'Report.LegalPart' | translate }}</h3>
-            </div>
-            <div class="row">
-              <span class="col-3 offset-1">{{ 'Report.Incorporation' | translate }}:</span>
-              <span class="col-5">{{report.country}}</span>
-            </div>
-          </div>
-          <div class="sw-card sw-content">
-            <div class="row row-title">
-              <h3 class="col-10 offset-1">{{ 'Report.Finance' | translate }}</h3>
-            </div>
-            <div class="row" style="padding-bottom: 0;">
-              <span class="col-3 offset-1">{{ 'Report.Investments' | translate }}:</span>
-            </div>
-            <div class="row sub-row">
-              <span class="col-3 offset-1">{{ 'Report.SoftCap' | translate }}:</span>
-              <span class="col-5">{{report.softCap}}</span>
-            </div>
-            <div class="row sub-row">
-              <span class="col-3 offset-1">{{ 'Report.HardCap' | translate }}:</span>
-              <span class="col-5">{{report.hardCap}}</span>
-            </div>
-            <div class="row">
-              <span class="col-3 offset-1">{{ 'Report.FinancialModelLink' | translate }}:</span>
-              <app-nullable-link [href]="report.financeModelLink" class="col-5"></app-nullable-link>
-            </div>
-            <div class="row">
-              <span class="col-3 offset-1">{{ 'Report.AttractedInvestments' | translate }}:</span>
-              <span *ngIf="report.attractedInvestments; else noAttract" style="color:green;"
-                    class="col-5">{{ 'Common.Yes' | translate }}</span>
-              <ng-template #noAttract>
-                <span style="color:red;" class="col-5">{{ 'Common.No' | translate }}</span>
-              </ng-template>
-            </div>
-          </div>
-          <div class="sw-card sw-content">
-            <div class="row row-title">
-              <h3 class="col-10 offset-1">{{ 'Report.Tech' | translate }}</h3>
-            </div>
-            <div class="row">
-              <span class="col-3 offset-1">{{ 'Report.Blockchain' | translate }}:</span>
-              <span class="col-5">{{report.blockChainType}}</span>
-            </div>
-            <div class="row">
-              <span class="col-3 offset-1">{{ 'Report.MvpLink' | translate }}:</span>
-              <app-nullable-link [href]="report.mvpLink" class="col-5"></app-nullable-link>
-            </div>
+          <div class="tab-shift">
+            <app-project-information [projectDetails]="details"></app-project-information>
           </div>
           <div style="margin-left: calc(4em - 5px);" class="submit-button row">
             <button class="trans-btn col-3 btn btn-primary"

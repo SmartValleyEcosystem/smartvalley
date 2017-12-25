@@ -7,7 +7,6 @@
   padding: 0;
 }
 
-
 div.container > .row:nth-child(1), div.container > .row:nth-child(2) {
   padding: 0;
   margin-right: 1em;
@@ -17,13 +16,7 @@ div.container > .row:nth-child(2) {
   margin-bottom: 2em;
 }
 
-/*
-.row {
-  margin: 0.5em 0em;
-}*/
-
 .row > span {
-
 }
 
 .form-control {
@@ -59,11 +52,12 @@ div.container > .row:nth-child(2) {
 }
 
 textarea {
-
 }
+
 input[type='number'] {
   -moz-appearance:textfield;
 }
+
 /* Webkit browsers like Safari and Chrome */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {

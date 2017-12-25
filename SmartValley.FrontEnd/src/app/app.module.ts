@@ -57,6 +57,7 @@ import {ReceiveEtherModalComponent} from './components/common/receive-ether-moda
 import {ReceiveSvtModalComponent} from './components/common/receive-svt-modal/receive-svt-modal.component';
 import {ShouldHaveEthAndSvtGuard} from './services/balance/should-have-eth-and-svt.guard';
 import {ShouldHaveEthGuard} from './services/balance/should-have-eth.guard';
+import {ProjectInformationComponent} from './components/common/project-information/project-information.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import {ShouldHaveEthGuard} from './services/balance/should-have-eth.guard';
     InitializationComponent,
     RootComponent,
     ReceiveEtherModalComponent,
-    ReceiveSvtModalComponent
+    ReceiveSvtModalComponent,
+    ProjectInformationComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,

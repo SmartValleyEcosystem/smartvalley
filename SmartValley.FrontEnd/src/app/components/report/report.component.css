@@ -149,3 +149,7 @@ div.sw-main-info span, div.sw-main-info app-nullable-link {
   padding-bottom: 1em;
 }
 
+.tab-shift {
+  margin-left: 60px;
+  margin-right: -60px;
+}

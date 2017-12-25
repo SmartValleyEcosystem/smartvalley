@@ -1,6 +1,6 @@
 {
-  "Estimate": {
-    "Title": "Estimate the project",
+  "ProjectInformation": {
+    "BasicInformation": "Basic Information",
     "Name": "Project name",
     "ProjectArea": "Project area",
     "Description": "Description",
@@ -22,11 +22,6 @@
     "AttractedInvestments": "Attracted investments",
     "Tech": "Tech",
     "Blockchain": "Blockchain",
-    "MvpLink": "Prototype/MVP link",
-    "YourScore": "Your score",
-    "YourComment": "Comments 250 symbols",
-    "Send": "Send",
-    "Estimate": "Estimate",
-    "Dialog": "Your estimates are being processed. Please wait for completion of transaction."
+    "MvpLink": "Prototype/MVP link"
   }
 }

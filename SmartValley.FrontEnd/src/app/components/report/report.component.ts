@@ -1,5 +1,4 @@
 import {AfterViewChecked, Component, OnInit, ViewChild} from '@angular/core';
-import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {ProjectApiClient} from '../../api/project/project-api-client';
@@ -11,7 +10,6 @@ import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 import {ProjectService} from '../../services/project-service';
 import {BlockiesService} from '../../services/blockies-service';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
-import {TeamMember} from '../../services/team-member';
 import {Paths} from '../../paths';
 import {Constants} from '../../constants';
 import {QuestionResponse} from '../../api/estimates/question-response';
@@ -24,11 +22,9 @@ import {QuestionWithEstimatesResponse} from '../../api/estimates/question-with-e
 })
 export class ReportComponent implements AfterViewChecked, OnInit {
   public questions: Array<Question>;
-  public report: ProjectDetailsResponse;
-  public EnumTeamMemberType: typeof EnumTeamMemberType = EnumTeamMemberType;
+  public details: ProjectDetailsResponse;
   public expertiseAreaAverageScore: number;
   public expertiseMaxScore: number;
-  public teamMembers: Array<TeamMember>;
   public projectImageUrl: string;
 
   private projectId: number;
@@ -82,37 +78,18 @@ export class ReportComponent implements AfterViewChecked, OnInit {
 
   private async loadInitialData(): Promise<void> {
     this.projectId = +this.route.snapshot.paramMap.get('id');
-    this.report = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
+    this.details = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
     this.fillEmptyFields();
-    this.teamMembers = this.getMembersCollection(this.report);
-    this.projectImageUrl = this.blockiesService.getImageForAddress(this.report.projectAddress);
+    this.projectImageUrl = this.blockiesService.getImageForAddress(this.details.projectAddress);
     await this.reloadExpertEstimatesAsync();
   }
 
   private fillEmptyFields() {
-    for (const pair of Object.entries(this.report)) {
+    for (const pair of Object.entries(this.details)) {
       if (pair[1] === '') {
-        this.report[pair[0]] = '\u2014';
+        this.details[pair[0]] = '\u2014';
       }
     }
-  }
-
-  private getMembersCollection(report: ProjectDetailsResponse): Array<TeamMember> {
-    const result: TeamMember[] = [];
-    const memberTypeNames = Object.keys(EnumTeamMemberType).filter(key => !isNaN(Number(EnumTeamMemberType[key])));
-
-    for (const memberType of memberTypeNames) {
-      const teamMember = report.teamMembers.find(value => value.memberType === EnumTeamMemberType[memberType])
-        || <TeamMember>{memberType: EnumTeamMemberType[memberType], fullName: '\u2014'};
-
-      result.push(<TeamMember>{
-        memberType: teamMember.memberType,
-        facebookLink: teamMember.facebookLink,
-        linkedInLink: teamMember.linkedInLink,
-        fullName: teamMember.fullName
-      });
-    }
-    return result;
   }
 
   private async reloadExpertEstimatesAsync(): Promise<void> {
