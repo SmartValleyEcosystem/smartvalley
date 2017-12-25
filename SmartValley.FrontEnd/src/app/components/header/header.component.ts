@@ -18,13 +18,27 @@ export class HeaderComponent {
   public showReceiveEtherButton: boolean;
   public showReceiveSVTButton: boolean;
   public showBalance: boolean;
+  public accountAddress: string;
 
   constructor(private router: Router,
               private balanceService: BalanceService,
               private authenticationService: AuthenticationService) {
 
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateHeader(balance));
+    this.authenticationService.accountChanged.subscribe((user) => this.accountAddress = user ? user.account : '');
+    const currentUser = this.authenticationService.getCurrentUser();
+    if (currentUser) {
+      this.accountAddress = currentUser.account;
+    }
     this.updateHeader(this.balanceService.balance);
+  }
+
+  public async loginAsync(): Promise<void> {
+    await this.authenticationService.authenticateAsync();
+  }
+
+  public logout(): void {
+    this.authenticationService.stopUserSession();
   }
 
   private updateHeader(balance: Balance): void {
