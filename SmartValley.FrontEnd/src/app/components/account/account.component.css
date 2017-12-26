@@ -1,16 +1,28 @@
-.account-tooltip{
+.account-tooltip {
   display: inline-block;
 }
-.account-tooltip i{
+
+.account-tooltip i {
   vertical-align: middle;
 }
+
 .row-title {
   margin: 2em 0em;
 }
-.row-title h3, .row-title span{
+
+.row-title h3, .row-title span {
   padding-left: 3px;
 }
-.underline{
+
+.row-title span {
+  vertical-align: bottom;
+}
+
+.row-title div {
+  padding-left: 0px;
+}
+
+.underline {
   margin-top: 1em;
   margin-bottom: 1em;
   border-bottom: 1px solid #b1b1b1;
