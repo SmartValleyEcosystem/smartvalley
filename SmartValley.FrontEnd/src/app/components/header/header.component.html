@@ -20,7 +20,7 @@
               <mat-icon><i class="material-icons">expand_more</i></mat-icon>
             </button>
             <mat-menu #menu="matMenu" align="end">
-              <button mat-menu-item class="btn btn-link">
+              <button mat-menu-item (click)="navigateToAccount()" class="btn btn-link">
                 {{'Header.Account' | translate }}
               </button>
               <button mat-menu-item (click)="navigateToMyProjects()" class="btn btn-link">

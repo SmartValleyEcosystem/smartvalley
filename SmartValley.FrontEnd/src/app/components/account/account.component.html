@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="row mx-auto">
+    <div class="col-7 sm-title">
+      <h1>Account</h1>
+    </div>
+  </div>
+  <div class="sw-card sw-content">
+    <div class="row row-title">
+      <span class="col-10 offset-1">Address: {{accountAddress}}</span>
+    </div>
+    <div class="row">
+      <div class="col-10 underline"></div>
+    </div>
+    <div class="row">
+      <span class="col-10 offset-1" style="font-weight: bold; margin-bottom: 0.5em; margin-top: 0.5em;">{{ 'Account.AvailableBalances' | translate }}</span>
+    </div>
+    <div class="row">
+      <span class="col-2 offset-1">ETH: {{currentBalance}}</span>
+      <span class="col-2 offset-1">SVT: {{currentTokens}}
+        <div class="account-tooltip" [matTooltip]="'Account.SVTBalanceTooltip' | translate" matTooltipPosition="above">
+          <i class="material-icons">help_outline</i>
+        </div>
+        </span>
+    </div>
+    <div class="row">
+        <span class="col-2 offset-4">{{ 'Account.TransferableSVT' | translate }}
+        <div class="account-tooltip" [matTooltip]="'Account.TransferedTooltip' | translate" matTooltipPosition="above">
+          <i class="material-icons">help_outline</i>
+        </div>
+        </span>
+    </div>
+    <div class="row">
+        <span class="col-2 offset-4">{{ 'Account.FreezedSVT' | translate }}
+        <div class="account-tooltip" [matTooltip]="'Account.FreezedTooltip' | translate" matTooltipPosition="above">
+          <i class="material-icons">help_outline</i>
+        </div>
+        </span>
+    </div>
+    <div class="row">
+      <div class="col-10 underline"></div>
+    </div>
+  </div>
+</div>
+

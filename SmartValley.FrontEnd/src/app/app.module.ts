@@ -58,6 +58,8 @@ import {ReceiveSvtModalComponent} from './components/common/receive-svt-modal/re
 import {ShouldHaveEthAndSvtGuard} from './services/balance/should-have-eth-and-svt.guard';
 import {ShouldHaveEthGuard} from './services/balance/should-have-eth.guard';
 import {ProjectInformationComponent} from './components/common/project-information/project-information.component';
+import {AccountComponent} from './components/account/account.component';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -80,7 +82,8 @@ import {ProjectInformationComponent} from './components/common/project-informati
     RootComponent,
     ReceiveEtherModalComponent,
     ReceiveSvtModalComponent,
-    ProjectInformationComponent
+    ProjectInformationComponent,
+    AccountComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -102,6 +105,7 @@ import {ProjectInformationComponent} from './components/common/project-informati
     NgbModule.forRoot(),
     SimpleNotificationsModule.forRoot(),
     NgProgressModule,
+    MatIconModule,
     Ng2DeviceDetectorModule.forRoot(),
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
     TranslateModule.forRoot({

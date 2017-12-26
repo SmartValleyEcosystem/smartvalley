@@ -1,0 +1,10 @@
+{
+  "Account": {
+    "AvailableBalances": "AvailableBalances:",
+    "TransferableSVT": "Transferable SVT:",
+    "FreezedSVT": "Freezed SVT:",
+    "SVTBalanceTooltip": "All your SVT tokens",
+    "TransferedTooltip": "Amount of SVT, which you can transfer or pay for scoring",
+    "FreezedTooltip": "Amount of SVT, which you vote for free scoring. You can't transfer it until voting isn't finished"
+  }
+}

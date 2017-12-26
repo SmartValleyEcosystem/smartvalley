@@ -63,6 +63,13 @@ export class HeaderComponent {
     await this.balanceService.receiveEtherAsync();
   }
 
+  async navigateToAccount() {
+    const isOk = await this.authenticationService.authenticateAsync();
+    if (isOk) {
+      await this.router.navigate([Paths.Account]);
+    }
+  }
+
   async navigateToMyProjects() {
     const isOk = await this.authenticationService.authenticateAsync();
     if (isOk) {

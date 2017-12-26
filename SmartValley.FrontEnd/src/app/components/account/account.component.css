@@ -1,0 +1,19 @@
+.account-tooltip{
+  display: inline-block;
+}
+.account-tooltip i{
+  vertical-align: middle;
+}
+.row-title {
+  margin: 2em 0em;
+}
+.row-title h3, .row-title span{
+  padding-left: 3px;
+}
+.underline{
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border-bottom: 1px solid #b1b1b1;
+  margin-left: calc(8.333333% + 15px);
+}
+
