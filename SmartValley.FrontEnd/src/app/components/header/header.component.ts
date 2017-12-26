@@ -60,11 +60,11 @@ export class HeaderComponent {
   }
 
   async receiveEth() {
-    await this.balanceService.receiveSvtAsync();
+    await this.balanceService.receiveEtherAsync();
   }
 
   async receiveSVT() {
-    await this.balanceService.receiveEtherAsync();
+    await this.balanceService.receiveSvtAsync();
   }
 
   async navigateToAccount() {
