@@ -12,6 +12,7 @@ import {InitializationComponent} from './components/initialization/initializatio
 import {RootComponent} from './components/root/root.component';
 import {ShouldHaveEthAndSvtGuard} from './services/balance/should-have-eth-and-svt.guard';
 import {ShouldHaveEthGuard} from './services/balance/should-have-eth.guard';
+import {AccountComponent} from './components/account/account.component';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -20,6 +21,7 @@ const appRoutes: Routes = [
       {path: Paths.Root, pathMatch: 'full', component: LandingComponent},
       {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent},
       {path: Paths.Scoring, pathMatch: 'full', component: ScoringComponent},
+      {path: Paths.Account, pathMatch: 'full', component: AccountComponent},
       {path: Paths.Application, pathMatch: 'full', component: ApplicationComponent, canActivate: [ShouldHaveEthAndSvtGuard]},
       {path: Paths.Report + '/:id', pathMatch: 'full', component: ReportComponent},
       {path: Paths.Scoring + '/:id', pathMatch: 'full', component: EstimateComponent, canActivate: [ShouldHaveEthGuard]}

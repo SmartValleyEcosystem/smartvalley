@@ -14,13 +14,32 @@
               <span style="color: #aaaaaa;">{{ 'Header.Balance' | translate }}: {{currentBalance}} ETH / {{currentTokens}} SVT</span>
             </div>
           </div>
+          <div class="col-3 sm-header__nav text-right" style="margin-top: 24px;">
+            <button *ngIf="showReceiveEtherButton"
+                    (click)="receiveEth()"
+                    class="btn btn-link"
+                    angulartics2On="click"
+                    angularticsAction="GetEtherClick"
+                    angularticsCategory="UserActions">
+              {{ 'Header.GetEther' | translate }}
+            </button>
+            <button *ngIf="showReceiveSVTButton"
+                    (click)="receiveSVT()"
+                    class="btn btn-link"
+                    angulartics2On="click"
+                    angularticsAction="GetSVTClick"
+                    angularticsCategory="UserActions">
+              {{ 'Header.GetSVT' | translate }}
+            </button>
+          </div>
           <div style="text-align:right;    float: right;    margin-top: 24px;">
+            <img src="{{accountImgUrl}}" style="width: 32px;"/>
             <div class="address" style="color: #aaaaaa;"> {{accountAddress}}</div>
             <button mat-icon-button [matMenuTriggerFor]="menu">
               <mat-icon><i class="material-icons">expand_more</i></mat-icon>
             </button>
             <mat-menu #menu="matMenu" align="end">
-              <button mat-menu-item class="btn btn-link">
+              <button mat-menu-item (click)="navigateToAccount()" class="btn btn-link">
                 {{'Header.Account' | translate }}
               </button>
               <button mat-menu-item (click)="navigateToMyProjects()" class="btn btn-link">
@@ -34,7 +53,9 @@
         </div>
         <ng-template #authTemplate>
           <div class="col-7" style="text-align: right;">
-            <button (click)="loginAsync()" mat-raised-button class="col-2 sm-btn-primary login-button">{{'Header.Login' | translate }}</button>
+            <button (click)="loginAsync()" mat-raised-button class="col-2 sm-btn-primary login-button">{{'Header.Login'
+              | translate }}
+            </button>
           </div>
         </ng-template>
       </div>

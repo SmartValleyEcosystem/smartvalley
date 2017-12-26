@@ -5,6 +5,7 @@ import {Paths} from '../../paths';
 import {Constants} from '../../constants';
 import {BalanceService} from '../../services/balance/balance.service';
 import {Balance} from '../../services/balance/balance';
+import {BlockiesService} from '../../services/blockies-service';
 
 @Component({
   selector: 'app-header',
@@ -19,9 +20,11 @@ export class HeaderComponent {
   public showReceiveSVTButton: boolean;
   public showBalance: boolean;
   public accountAddress: string;
+  public accountImgUrl: string;
 
   constructor(private router: Router,
               private balanceService: BalanceService,
+              private blockiesService: BlockiesService,
               private authenticationService: AuthenticationService) {
 
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateHeader(balance));
@@ -29,6 +32,7 @@ export class HeaderComponent {
     const currentUser = this.authenticationService.getCurrentUser();
     if (currentUser) {
       this.accountAddress = currentUser.account;
+      this.accountImgUrl = this.blockiesService.getImageForAddress(currentUser.account);
     }
     this.updateHeader(this.balanceService.balance);
   }
@@ -61,6 +65,13 @@ export class HeaderComponent {
 
   async receiveSVT() {
     await this.balanceService.receiveEtherAsync();
+  }
+
+  async navigateToAccount() {
+    const isOk = await this.authenticationService.authenticateAsync();
+    if (isOk) {
+      await this.router.navigate([Paths.Account]);
+    }
   }
 
   async navigateToMyProjects() {
