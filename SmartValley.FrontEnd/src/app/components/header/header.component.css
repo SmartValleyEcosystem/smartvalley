@@ -38,6 +38,11 @@ button.mat-menu-item {
   font-size: 0.8em;
 }
 
+button.mat-icon-button {
+  width: auto;
+  height: auto;
+}
+
 .address{
   vertical-align: middle;
   font-size: 0.8em;

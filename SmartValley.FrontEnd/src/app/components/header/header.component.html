@@ -31,8 +31,8 @@
                   angularticsCategory="UserActions">
             {{ 'Header.GetSVT' | translate }}
           </button>
-          <span *ngIf="showBalance" style="text-align:right; margin-left: 1em; margin-right: 2.5em">
-            <button mat-icon-button [matMenuTriggerFor]="menu">
+          <span *ngIf="showBalance" style="text-align:right; margin-left: 1em;">
+            <button mat-icon-button disableRipple [matMenuTriggerFor]="menu" class="btn btn-link">
               <img src="{{accountImgUrl}}" style="width: 5em; border-radius: 1em;"/>
               <mat-icon><i class="material-icons">expand_more</i></mat-icon>
             </button>
