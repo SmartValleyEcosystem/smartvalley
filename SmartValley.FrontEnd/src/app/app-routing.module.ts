@@ -10,9 +10,10 @@ import {ReportComponent} from './components/report/report.component';
 import {InitializationGuard} from './services/initialization/initialization.guard';
 import {InitializationComponent} from './components/initialization/initialization.component';
 import {RootComponent} from './components/root/root.component';
-import {ShouldHaveEthAndSvtGuard} from './services/balance/should-have-eth-and-svt.guard';
 import {ShouldHaveEthGuard} from './services/balance/should-have-eth.guard';
 import {AccountComponent} from './components/account/account.component';
+import {CompositeGuard} from './services/guards/composite.guard';
+import {GuardType} from './services/guards/guard-type.enum';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -22,7 +23,18 @@ const appRoutes: Routes = [
       {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent},
       {path: Paths.Scoring, pathMatch: 'full', component: ScoringComponent},
       {path: Paths.Account, pathMatch: 'full', component: AccountComponent},
-      {path: Paths.Application, pathMatch: 'full', component: ApplicationComponent, canActivate: [ShouldHaveEthAndSvtGuard]},
+      {
+        path: Paths.Application,
+        pathMatch: 'full',
+        component: ApplicationComponent,
+        canActivate: [CompositeGuard],
+        data: {
+          guards: [
+            GuardType.ShouldHaveEth,
+            GuardType.ShouldHaveSvt
+          ]
+        }
+      },
       {path: Paths.Report + '/:id', pathMatch: 'full', component: ReportComponent},
       {path: Paths.Scoring + '/:id', pathMatch: 'full', component: EstimateComponent, canActivate: [ShouldHaveEthGuard]}
     ]
