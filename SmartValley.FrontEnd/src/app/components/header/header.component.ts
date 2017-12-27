@@ -28,15 +28,15 @@ export class HeaderComponent {
               private authenticationService: AuthenticationService) {
 
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateHeader(balance));
-    this.authenticationService.accountChanged.subscribe(async (user) => {
-      await this.updateAccountAsync(user);
+    this.authenticationService.accountChanged.subscribe((user) => {
+      this.updateAccount(user);
     });
     const currentUser = this.authenticationService.getCurrentUser();
-    this.updateAccountAsync(currentUser);
+    this.updateAccount(currentUser);
     this.updateHeader(this.balanceService.balance);
   }
 
-  private async updateAccountAsync(user: User): Promise<void> {
+  private updateAccount(user: User): void {
     if (user) {
       this.isAuthenticated = true;
       this.accountAddress = user.account;
