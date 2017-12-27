@@ -19,21 +19,21 @@
     </div>
     <div class="row">
       <span class="col-2 offset-1">ETH: {{currentBalance}}</span>
-      <span class="col-2 offset-1">SVT: {{currentTokens}}
+      <span class="col-3 offset-1">SVT: {{currentTokens}}
         <div class="account-tooltip" [matTooltip]="'Account.SVTBalanceTooltip' | translate" matTooltipPosition="above">
           <i class="material-icons">help_outline</i>
         </div>
         </span>
     </div>
     <div class="row" style="margin-top: 1em;">
-        <span class="col-2 offset-4">{{ 'Account.TransferableSVT' | translate }}
+        <span class="col-3 offset-4">{{ 'Account.TransferableSVT' | translate }} {{currentTokens}}
         <div class="account-tooltip" [matTooltip]="'Account.TransferedTooltip' | translate" matTooltipPosition="above">
           <i class="material-icons">help_outline</i>
         </div>
         </span>
     </div>
     <div class="row">
-        <span class="col-2 offset-4">{{ 'Account.FreezedSVT' | translate }}
+        <span class="col-3 offset-4">{{ 'Account.FreezedSVT' | translate }} 0
         <div class="account-tooltip" [matTooltip]="'Account.FreezedTooltip' | translate" matTooltipPosition="above">
           <i class="material-icons">help_outline</i>
         </div>
