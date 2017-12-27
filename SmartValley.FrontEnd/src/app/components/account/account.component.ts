@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BalanceService} from '../../services/balance/balance.service';
 import {Balance} from '../../services/balance/balance';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
@@ -16,12 +16,15 @@ export class AccountComponent implements OnInit {
   public accountAddress: string;
   public accountImgUrl: string;
 
-  constructor(
-    private balanceService: BalanceService,
-    private blockiesService: BlockiesService,
-    private authenticationService: AuthenticationService) {
+  constructor(private balanceService: BalanceService,
+              private blockiesService: BlockiesService,
+              private authenticationService: AuthenticationService) {
 
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalances(balance));
+    this.authenticationService.accountChanged.subscribe((user) => {
+      this.accountAddress = user ? user.account : '';
+      this.accountImgUrl = user ? this.blockiesService.getImageForAddress(user.account) : '';
+    });
   }
 
   async ngOnInit() {

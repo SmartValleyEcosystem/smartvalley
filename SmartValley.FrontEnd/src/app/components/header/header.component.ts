@@ -28,11 +28,14 @@ export class HeaderComponent {
               private authenticationService: AuthenticationService) {
 
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateHeader(balance));
-    this.authenticationService.accountChanged.subscribe((user) => this.accountAddress = user ? user.account : '');
+    this.authenticationService.accountChanged.subscribe((user) => {
+      this.accountAddress = user ? user.account : '';
+      this.accountImgUrl = user ? this.blockiesService.getImageForAddress(user.account) : '';
+    });
     const currentUser = this.authenticationService.getCurrentUser();
     if (currentUser) {
       this.accountAddress = currentUser.account;
-      this.accountImgUrl = this.blockiesService.getImageForAddress(currentUser.account);
+      this.blockiesService.getImageForAddress(currentUser.account);
     }
     this.updateHeader(this.balanceService.balance);
   }
