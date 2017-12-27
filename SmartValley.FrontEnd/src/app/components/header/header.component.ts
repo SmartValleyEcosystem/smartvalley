@@ -29,8 +29,10 @@ export class HeaderComponent {
 
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateHeader(balance));
     this.authenticationService.accountChanged.subscribe((user) => {
-      this.accountAddress = user ? user.account : '';
-      this.accountImgUrl = user ? this.blockiesService.getImageForAddress(user.account) : '';
+      if (user) {
+        this.accountAddress = user.account;
+        this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
+      }
     });
     const currentUser = this.authenticationService.getCurrentUser();
     if (currentUser) {

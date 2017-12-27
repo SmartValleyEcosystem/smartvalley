@@ -22,8 +22,10 @@ export class AccountComponent implements OnInit {
 
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalances(balance));
     this.authenticationService.accountChanged.subscribe((user) => {
-      this.accountAddress = user ? user.account : '';
-      this.accountImgUrl = user ? this.blockiesService.getImageForAddress(user.account) : '';
+      if (user) {
+        this.accountAddress = user.account;
+        this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
+      }
     });
   }
 
