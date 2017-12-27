@@ -8,14 +8,14 @@
     <div class="row row-title">
       <div class="col-10 offset-1">
         <img src="{{accountImgUrl}}" style="width: 128px;"/>
-        <span>{{accountAddress}}</span>
+        <span style="margin-left: 2em; font-family: 'AvenirNextCyr-Bold', sans-serif; font-size: 1.4em;">{{accountAddress}}</span>
       </div>
     </div>
     <div class="row">
       <div class="col-10 underline"></div>
     </div>
     <div class="row">
-      <span class="col-10 offset-1" style="font-weight: bold; margin-bottom: 0.5em; margin-top: 0.5em;">{{ 'Account.AvailableBalances' | translate }}</span>
+      <strong class="col-10 offset-1" style="margin-bottom: 0.5em; margin-top: 0.5em;">{{ 'Account.AvailableBalances' | translate }}</strong>
     </div>
     <div class="row">
       <span class="col-2 offset-1">ETH: {{currentBalance}}</span>
@@ -25,7 +25,7 @@
         </div>
         </span>
     </div>
-    <div class="row">
+    <div class="row" style="margin-top: 1em;">
         <span class="col-2 offset-4">{{ 'Account.TransferableSVT' | translate }}
         <div class="account-tooltip" [matTooltip]="'Account.TransferedTooltip' | translate" matTooltipPosition="above">
           <i class="material-icons">help_outline</i>
