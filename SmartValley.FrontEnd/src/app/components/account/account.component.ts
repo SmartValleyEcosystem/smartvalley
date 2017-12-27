@@ -3,7 +3,6 @@ import {BalanceService} from '../../services/balance/balance.service';
 import {Balance} from '../../services/balance/balance';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {BlockiesService} from '../../services/blockies-service';
-import {Paths} from '../../paths';
 import {Router} from '@angular/router';
 
 @Component({
