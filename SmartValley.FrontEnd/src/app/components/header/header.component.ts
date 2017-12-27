@@ -32,6 +32,8 @@ export class HeaderComponent {
       if (user) {
         this.accountAddress = user.account;
         this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
+      } else {
+        this.showBalance = false;
       }
     });
     const currentUser = this.authenticationService.getCurrentUser();
