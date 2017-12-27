@@ -36,6 +36,7 @@ a, button, span {
 
 button.mat-menu-item {
   font-size: 0.8em;
+  font-family: 'AvenirNextCyr', sans-serif;
 }
 
 button.mat-icon-button {
