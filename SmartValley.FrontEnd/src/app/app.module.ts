@@ -55,11 +55,13 @@ import {InitializationGuard} from './services/initialization/initialization.guar
 import {RootComponent} from './components/root/root.component';
 import {ReceiveEtherModalComponent} from './components/common/receive-ether-modal/receive-ether-modal.component';
 import {ReceiveSvtModalComponent} from './components/common/receive-svt-modal/receive-svt-modal.component';
-import {ShouldHaveEthAndSvtGuard} from './services/balance/should-have-eth-and-svt.guard';
 import {ShouldHaveEthGuard} from './services/balance/should-have-eth.guard';
 import {ProjectInformationComponent} from './components/common/project-information/project-information.component';
 import {AccountComponent} from './components/account/account.component';
 import {MatIconModule} from '@angular/material/icon';
+import {CompositeGuard} from './services/guards/composite.guard';
+import {GuardFactory} from './services/guards/guard-factory';
+import {ShouldHaveSvtGuard} from './services/balance/should-have-svt.guard';
 
 @NgModule({
   declarations: [
@@ -150,8 +152,10 @@ import {MatIconModule} from '@angular/material/icon';
     BalanceService,
     InitializationService,
     InitializationGuard,
-    ShouldHaveEthAndSvtGuard,
-    ShouldHaveEthGuard
+    ShouldHaveEthGuard,
+    ShouldHaveSvtGuard,
+    GuardFactory,
+    CompositeGuard
   ],
   bootstrap: [AppComponent]
 })
