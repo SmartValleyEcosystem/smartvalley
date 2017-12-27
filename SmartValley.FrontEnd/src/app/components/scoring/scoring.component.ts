@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Project} from '../../services/project';
 import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {Paths} from '../../paths';
@@ -17,7 +17,7 @@ import {ProjectResponse} from '../../api/project/project-response';
   templateUrl: './scoring.component.html',
   styleUrls: ['./scoring.component.css']
 })
-export class ScoringComponent implements AfterViewInit, OnDestroy {
+export class ScoringComponent implements AfterViewInit, OnDestroy, OnInit {
   public projectsForScoring: Array<Project> = [];
   public myProjects: Array<Project> = [];
   public selectedExpertiseTabIndex: number;
@@ -31,8 +31,11 @@ export class ScoringComponent implements AfterViewInit, OnDestroy {
               private authenticationService: AuthenticationService,
               private activatedRoute: ActivatedRoute,
               private router: Router) {
-    this.loadData();
     this.accountChangedSubscription = this.authenticationService.accountChanged.subscribe(() => this.loadData());
+  }
+
+  ngOnInit(): void {
+    this.loadData();
   }
 
   private loadData() {

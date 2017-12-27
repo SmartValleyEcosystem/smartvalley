@@ -24,6 +24,6 @@ export class InitializationComponent implements OnInit {
 
     await this.initializationService.initializeAppAsync();
 
-    this.router.navigateByUrl(this.returnUrl);
+    await this.router.navigateByUrl(this.returnUrl);
   }
 }

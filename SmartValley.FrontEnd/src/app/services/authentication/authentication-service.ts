@@ -1,7 +1,6 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import {Web3Service} from '../web3-service';
-import {NotificationsService} from 'angular2-notifications';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {Subscription} from 'rxjs/Subscription';
@@ -19,6 +18,13 @@ import {TranslateService} from '@ngx-translate/core';
 
 @Injectable()
 export class AuthenticationService {
+  public static MESSAGE_TO_SIGN = 'Confirm login. Please press the \'Sign\' button below.';
+  public accountChanged: EventEmitter<any> = new EventEmitter<any>();
+
+  private readonly userKey = 'userKey';
+  private backgroundChecker: Subscription;
+  private readonly compatibleBrowsers = [Constants.Chrome, Constants.Firefox];
+
   constructor(private web3Service: Web3Service,
               private router: Router,
               private deviceService: Ng2DeviceService,
@@ -29,13 +35,6 @@ export class AuthenticationService {
       this.startBackgroundChecker();
     }
   }
-
-  public static MESSAGE_TO_SIGN = 'Confirm login. Please press the \'Sign\' button below.';
-  public accountChanged: EventEmitter<any> = new EventEmitter<any>();
-
-  private readonly userKey = 'userKey';
-  private backgroundChecker: Subscription;
-  private readonly compatibleBrowsers = [Constants.Chrome, Constants.Firefox];
 
   private getSignatureByAccount(account: string): string {
     return localStorage.getItem(account);
@@ -52,33 +51,33 @@ export class AuthenticationService {
   public async authenticateAsync(): Promise<boolean> {
     if (!this.compatibleBrowsers.includes(this.deviceService.browser)) {
       this.showIncompatibleBrowserAlert();
-      return;
+      return false;
     }
 
     if (!this.web3Service.isMetamaskInstalled) {
-      this.router.navigate([Paths.MetaMaskHowTo]);
-      return;
+      await this.router.navigate([Paths.MetaMaskHowTo]);
+      return false;
     }
-    const accounts = await this.web3Service.getAccounts();
+    const accounts = await this.web3Service.getAccountsAsync();
     const currentAccount = accounts[0];
 
     if (currentAccount == null) {
       this.showUnlockAccountAlert();
-      return;
+      return false;
     }
 
     const isRinkeby = await this.web3Service.checkRinkebyNetworkAsync();
 
     if (!isRinkeby) {
       this.showRinkebyAlert();
-      return;
+      return false;
     }
 
     let signature = this.getSignatureByAccount(currentAccount);
     const shouldSign = await this.shouldSignAccount(currentAccount, signature);
     if (shouldSign) {
       try {
-        signature = await this.web3Service.sign(AuthenticationService.MESSAGE_TO_SIGN, currentAccount);
+        signature = await this.web3Service.signAsync(AuthenticationService.MESSAGE_TO_SIGN, currentAccount);
       } catch (e) {
         return false;
       }
@@ -149,7 +148,7 @@ export class AuthenticationService {
   }
 
   private async checkCurrentAuthStateAsync(): Promise<void> {
-    const accounts = await this.web3Service.getAccounts();
+    const accounts = await this.web3Service.getAccountsAsync();
     const currentAccount = accounts[0];
     const user = this.getCurrentUser();
     if (isNullOrUndefined(user)) {

@@ -10,7 +10,7 @@ export class DialogService {
   constructor(private projectModal: MatDialog) {
   }
 
-  public showGetEtherDialog(): Promise<boolean> {
+  public showGetEtherDialogAsync(): Promise<boolean> {
     return this.projectModal.open(ReceiveEtherModalComponent, {
       width: '600px',
       disableClose: false,
@@ -21,7 +21,7 @@ export class DialogService {
       .toPromise<boolean>();
   }
 
-  public async showRinkeByDialog(): Promise<boolean> {
+  public async showRinkeByDialogAsync(): Promise<boolean> {
     return this.projectModal.open(ReceiveEtherModalComponent, {
       width: '600px',
       disableClose: false,
@@ -32,7 +32,7 @@ export class DialogService {
       .toPromise<boolean>();
   }
 
-  public async showSvtDialog(date: string): Promise<boolean> {
+  public async showSvtDialogAsync(date: string): Promise<boolean> {
     return this.projectModal.open(ReceiveSvtModalComponent, {
       width: '600px',
       disableClose: false,
@@ -44,7 +44,7 @@ export class DialogService {
       .toPromise<boolean>();
   }
 
-  public async showGetTokenDialog(): Promise<boolean> {
+  public async showGetTokenDialogAsync(): Promise<boolean> {
     return this.projectModal.open(ReceiveSvtModalComponent, {
       width: '600px',
       disableClose: false,

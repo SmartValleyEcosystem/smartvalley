@@ -10,6 +10,8 @@ import {ProjectManagerContractClient} from '../contract-clients/project-manager-
 @Injectable()
 export class InitializationService {
 
+  public isAppInitialized: boolean;
+
   constructor(private questionService: QuestionService,
               private minterContractClient: MinterContractClient,
               private tokenContractClient: TokenContractClient,
@@ -17,8 +19,6 @@ export class InitializationService {
               private projectManagerContractClient: ProjectManagerContractClient,
               private balanceService: BalanceService) {
   }
-
-  public isAppInitialized: boolean;
 
   public async initializeAppAsync(): Promise<void> {
     if (this.isAppInitialized) {

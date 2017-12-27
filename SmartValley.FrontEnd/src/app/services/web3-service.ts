@@ -32,11 +32,11 @@ export class Web3Service {
     return (!isNullOrUndefined(window['web3']) && window['web3'].currentProvider.constructor.name === this.metamaskProviderName);
   }
 
-  public getAccounts(): Promise<Array<string>> {
+  public getAccountsAsync(): Promise<Array<string>> {
     return this.eth.accounts();
   }
 
-  public sign(message: string, address: string): Promise<string> {
+  public signAsync(message: string, address: string): Promise<string> {
     return this.eth.personal_sign(EthJs.fromUtf8(message), address);
   }
 
@@ -53,7 +53,7 @@ export class Web3Service {
   }
 
   public async checkRinkebyNetworkAsync(): Promise<boolean> {
-    const version = await this.getNetworkVersion();
+    const version = await this.getNetworkVersionAsync();
     return version === this.rinkebyNetworkId;
   }
 
@@ -79,13 +79,11 @@ export class Web3Service {
     }
   }
 
-  public async getHash(value: string): Promise<string> {
+  public async getHashAsync(value: string): Promise<string> {
     return await this.eth.web3_sha3(EthJs.fromUtf8(value));
   }
 
-
-
-  private getNetworkVersion(): Promise<any> {
+  private getNetworkVersionAsync(): Promise<any> {
     return this.eth.net_version();
   }
 }

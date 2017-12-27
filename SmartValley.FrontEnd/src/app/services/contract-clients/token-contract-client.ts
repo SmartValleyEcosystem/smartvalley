@@ -7,12 +7,12 @@ import {ContractClient} from './contract-client';
 @Injectable()
 export class TokenContractClient implements ContractClient {
 
+  public abi: string;
+  public address: string;
+
   constructor(private web3: Web3Service,
               private contractClient: ContractApiClient) {
   }
-
-  public abi: string;
-  public address: string;
 
   public async initializeAsync(): Promise<void> {
     const tokenContract = await this.contractClient.getTokenContractAsync();
