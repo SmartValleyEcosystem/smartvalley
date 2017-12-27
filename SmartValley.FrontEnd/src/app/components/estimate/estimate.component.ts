@@ -1,4 +1,4 @@
-import {Component, QueryList, ViewChildren, ElementRef} from '@angular/core';
+import {Component, QueryList, ViewChildren, ElementRef, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {QuestionService} from '../../services/questions/question-service';
 import {Paths} from '../../paths';
@@ -21,7 +21,7 @@ import {BalanceService} from '../../services/balance/balance.service';
   templateUrl: './estimate.component.html',
   styleUrls: ['./estimate.component.css']
 })
-export class EstimateComponent {
+export class EstimateComponent implements OnInit {
   public hidden: boolean;
   public expertiseArea: ExpertiseArea;
   public projectId: number;
@@ -29,7 +29,7 @@ export class EstimateComponent {
   public estimateForm: FormGroup;
   public isEstimateSending: boolean;
 
-  @ViewChildren('required') requiredFields: QueryList<any>;
+  @ViewChildren('required') public requiredFields: QueryList<any>;
 
   constructor(private route: ActivatedRoute,
               private projectApiClient: ProjectApiClient,
@@ -42,6 +42,9 @@ export class EstimateComponent {
               private dialogService: DialogService,
               private translateService: TranslateService,
               private balanceService: BalanceService) {
+  }
+
+  ngOnInit(): void {
     this.loadProjectInfo();
   }
 

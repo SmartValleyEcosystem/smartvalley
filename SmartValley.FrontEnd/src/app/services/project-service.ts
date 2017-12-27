@@ -8,23 +8,23 @@ export class ProjectService {
   constructor(private questionService: QuestionService) {
   }
 
-  public colorOfHrScore(score: number) {
+  public colorOfHrScore(score: number): string {
     return this.colorOfExpertiseAreaScore(score, ExpertiseArea.HR);
   }
 
-  public colorOfTechnicalScore(score: number) {
+  public colorOfTechnicalScore(score: number): string {
     return this.colorOfExpertiseAreaScore(score, ExpertiseArea.TechnicalExpert);
   }
 
-  public colorOfLawyerScore(score: number) {
+  public colorOfLawyerScore(score: number): string {
     return this.colorOfExpertiseAreaScore(score, ExpertiseArea.Lawyer);
   }
 
-  public colorOfAnalystScore(score: number) {
+  public colorOfAnalystScore(score: number): string {
     return this.colorOfExpertiseAreaScore(score, ExpertiseArea.Analyst);
   }
 
-  public colorOfExpertiseAreaScore(score: number, expertiseArea: ExpertiseArea) {
+  public colorOfExpertiseAreaScore(score: number, expertiseArea: ExpertiseArea): string {
     const maxScore = this.questionService.getMaxScoreForExpertiseArea(expertiseArea);
     const minScore = this.questionService.getMinScoreForExpertiseArea(expertiseArea);
 

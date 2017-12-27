@@ -9,13 +9,13 @@ import {ContractClient} from './contract-client';
 @Injectable()
 export class ScoringContractClient implements ContractClient {
 
+  public abi: string;
+  public address: string;
+
   constructor(private authenticationService: AuthenticationService,
               private web3Service: Web3Service,
               private contractApiClient: ContractApiClient) {
   }
-
-  public abi: string;
-  public address: string;
 
   public async initializeAsync(): Promise<void> {
     const contract = await this.contractApiClient.getScoringContractAsync();
@@ -36,7 +36,7 @@ export class ScoringContractClient implements ContractClient {
     for (const estimate of estimates) {
       questionIds.push(estimate.questionId);
       scores.push(estimate.score);
-      const commentHash = await this.web3Service.getHash(estimate.comments);
+      const commentHash = await this.web3Service.getHashAsync(estimate.comments);
       commentHashes.push(commentHash);
     }
 

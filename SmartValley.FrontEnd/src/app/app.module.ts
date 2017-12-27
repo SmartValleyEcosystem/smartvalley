@@ -62,6 +62,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {CompositeGuard} from './services/guards/composite.guard';
 import {GuardFactory} from './services/guards/guard-factory';
 import {ShouldHaveSvtGuard} from './services/balance/should-have-svt.guard';
+import { DashIfEmptyPipe } from './utils/dash-if-empty.pipe';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,8 @@ import {ShouldHaveSvtGuard} from './services/balance/should-have-svt.guard';
     ReceiveEtherModalComponent,
     ReceiveSvtModalComponent,
     ProjectInformationComponent,
-    AccountComponent
+    AccountComponent,
+    DashIfEmptyPipe
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,

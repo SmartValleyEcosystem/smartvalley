@@ -9,17 +9,16 @@ import {ContractClient} from './contract-client';
 @Injectable()
 export class ProjectManagerContractClient implements ContractClient {
 
+  public abi: string;
+  public address: string;
+
   constructor(private authenticationService: AuthenticationService,
               private web3Service: Web3Service,
               private contractClient: ContractApiClient,
               private tokenClient: TokenContractClient) {
   }
 
-  public abi: string;
-  public address: string;
-
   public async initializeAsync(): Promise<void> {
-
     const projectManagerContract = await this.contractClient.getProjectManagerContractAsync();
     this.abi = projectManagerContract.abi;
     this.address = projectManagerContract.address;
@@ -38,9 +37,9 @@ export class ProjectManagerContractClient implements ContractClient {
       {from: fromAddress});
   }
 
-  public async getProjectCreationCostAsync() {
-    const projectNamanger = this.web3Service.getContract(this.abi, this.address);
-    const cost = ConverterHelper.extractNumberValue(await projectNamanger.projectCreationCostWEI());
+  public async getProjectCreationCostAsync(): Promise<number> {
+    const projectManager = this.web3Service.getContract(this.abi, this.address);
+    const cost = ConverterHelper.extractNumberValue(await projectManager.projectCreationCostWEI());
     return this.web3Service.fromWei(cost, await this.tokenClient.getTokenDecimalsAsync());
   }
 }

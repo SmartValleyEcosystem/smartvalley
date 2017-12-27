@@ -19,6 +19,6 @@ export class InitializationGuard implements CanActivate {
       return true;
     }
     this.router.navigate([Paths.Initialization], {queryParams: {returnUrl: state.url}});
-    return;
+    return false;
   }
 }

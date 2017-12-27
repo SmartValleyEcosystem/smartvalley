@@ -13,6 +13,9 @@ import {TranslateService} from '@ngx-translate/core';
 @Injectable()
 export class BalanceService {
 
+  public balanceChanged: EventEmitter<Balance> = new EventEmitter<Balance>();
+  public balance: Balance;
+
   constructor(private balanceApiClient: BalanceApiClient,
               private authenticationService: AuthenticationService,
               private tokenContractClient: TokenContractClient,
@@ -24,10 +27,6 @@ export class BalanceService {
               private translateService: TranslateService) {
     this.authenticationService.accountChanged.subscribe(async () => await this.updateBalanceAsync());
   }
-
-  public balanceChanged: EventEmitter<Balance> = new EventEmitter<Balance>();
-
-  public balance: Balance;
 
   public async updateBalanceAsync(): Promise<void> {
     if (!this.authenticationService.isAuthenticated()) {
@@ -48,30 +47,30 @@ export class BalanceService {
   }
 
   public async checkEthAsync(): Promise<boolean> {
-    const userHasETH = await this.hasUserEth();
+    const userHasETH = await this.hasUserEthAsync();
     if (userHasETH) {
       return true;
     }
-    const wasEtherReceived = await this.wasEtherReceived();
+    const wasEtherReceived = await this.wasEtherReceivedAsync();
     if (wasEtherReceived) {
-      return await this.dialogService.showRinkeByDialog();
+      return await this.dialogService.showRinkeByDialogAsync();
     }
-    if (await this.dialogService.showGetEtherDialog()) {
+    if (await this.dialogService.showGetEtherDialogAsync()) {
       return await this.receiveEtherAsync();
     }
     return false;
   }
 
   public async checkSvtForProjectAsync(): Promise<boolean> {
-    const userHasSvt = await this.hasUserSvtForProject();
+    const userHasSvt = await this.hasUserSvtForProjectAsync();
     if (userHasSvt) {
       return true;
     }
     const dateToReceive = await this.getDateToReceiveTokensAsync();
     if (dateToReceive.getTime() > Date.now()) {
-      return await this.dialogService.showSvtDialog(dateToReceive.toLocaleDateString());
+      return await this.dialogService.showSvtDialogAsync(dateToReceive.toLocaleDateString());
     }
-    if (await this.dialogService.showGetTokenDialog()) {
+    if (await this.dialogService.showGetTokenDialogAsync()) {
       return await this.receiveSvtAsync();
     }
     return false;
@@ -79,15 +78,15 @@ export class BalanceService {
 
   public async receiveEtherAsync(): Promise<boolean> {
     const transactionHash = (await this.balanceApiClient.receiveEtherAsync()).transactionHash;
-    return await this.showTransactionDialogAndGetResult(transactionHash);
+    return await this.showTransactionDialogAndGetResultAsync(transactionHash);
   }
 
   public async receiveSvtAsync(): Promise<boolean> {
     const transactionHash = await this.minterContractClient.getTokensAsync();
-    return await this.showTransactionDialogAndGetResult(transactionHash);
+    return await this.showTransactionDialogAndGetResultAsync(transactionHash);
   }
 
-  private async showTransactionDialogAndGetResult(transactionHash: string): Promise<boolean> {
+  private async showTransactionDialogAndGetResultAsync(transactionHash: string): Promise<boolean> {
     const transactionDialog = this.dialogService.showTransactionDialog(
       this.translateService.instant('Balance.TransactionDialog'),
       transactionHash
@@ -106,19 +105,17 @@ export class BalanceService {
     return true;
   }
 
-
-  private async hasUserEth(): Promise<boolean> {
-    const balanceResponse = await
-      this.balanceApiClient.getBalanceAsync();
+  private async hasUserEthAsync(): Promise<boolean> {
+    const balanceResponse = await this.balanceApiClient.getBalanceAsync();
     return balanceResponse.balance > 0.05;
   }
 
-  private async wasEtherReceived(): Promise<boolean> {
+  private async wasEtherReceivedAsync(): Promise<boolean> {
     const balanceResponse = await this.balanceApiClient.getBalanceAsync();
     return balanceResponse.wasEtherReceived;
   }
 
-  private async hasUserSvtForProject(): Promise<boolean> {
+  private async hasUserSvtForProjectAsync(): Promise<boolean> {
     const accountAddress = (await this.authenticationService.getCurrentUser()).account;
     const tokenBalance = await this.tokenContractClient.getBalanceAsync(accountAddress);
     const projectCreationCost = await this.projectManagerContractClient.getProjectCreationCostAsync();

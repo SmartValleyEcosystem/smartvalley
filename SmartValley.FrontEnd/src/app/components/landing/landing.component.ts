@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
@@ -11,13 +11,16 @@ import {Constants} from '../../constants';
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.css']
 })
-export class LandingComponent {
+export class LandingComponent implements OnInit{
 
   public projects: Array<Project>;
 
   constructor(private authenticationService: AuthenticationService,
               private router: Router,
               private projectApiClient: ProjectApiClient) {
+  }
+
+  ngOnInit(): void {
     this.initializeProjectsCollection();
   }
 

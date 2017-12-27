@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ProjectDetailsResponse} from '../../../api/project/project-details-response';
 import {TeamMember} from '../../../services/team-member';
 import {EnumTeamMemberType} from '../../../services/enumTeamMemberType';
@@ -22,14 +22,19 @@ export class ProjectInformationComponent {
   public getMembersCollection(projectDetails: ProjectDetailsResponse): Array<TeamMember> {
     const teamMembers: TeamMember[] = [];
     const memberTypeNames = Object.keys(EnumTeamMemberType).filter(key => !isNaN(Number(EnumTeamMemberType[key])));
-
     for (const memberType of memberTypeNames) {
-      const teamMemberResponse = projectDetails.teamMembers.find(value => value.memberType === EnumTeamMemberType[memberType])
-        || <TeamMemberResponse>{memberType: EnumTeamMemberType[memberType], fullName: '\u2014'};
-
-      teamMembers.push(this.createTeamMember(teamMemberResponse));
+      const teamMember = this.getTeamMember(projectDetails.teamMembers, memberType);
+      teamMembers.push(teamMember);
     }
     return teamMembers;
+  }
+
+  private getTeamMember(teamMembers: Array<TeamMemberResponse>, memberType: string): TeamMember {
+    const teamMemberResponse = teamMembers
+      .find(value => value.memberType === EnumTeamMemberType[memberType]);
+    return teamMemberResponse
+      ? this.createTeamMember(teamMemberResponse)
+      : <TeamMember>{memberType: EnumTeamMemberType[memberType]};
   }
 
   private createTeamMember(teamMemberResponse: TeamMemberResponse): TeamMember {
