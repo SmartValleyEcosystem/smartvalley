@@ -10,12 +10,12 @@
         </div>
 
         <div class="col-3" style="margin-top: 24px;">
-          <div *ngIf="showBalance">
+          <div *ngIf="isAuthenticated">
             <span style="color: #aaaaaa;">{{ 'Header.Balance' | translate }}: {{currentBalance}} ETH / {{currentTokens}} SVT</span>
           </div>
         </div>
         <div class="col-4 sm-header__nav text-right">
-          <button *ngIf="showReceiveEtherButton"
+          <button *ngIf="showReceiveEtherButton && isAuthenticated"
                   (click)="receiveEth()"
                   class="btn btn-link"
                   angulartics2On="click"
@@ -23,7 +23,7 @@
                   angularticsCategory="UserActions">
             {{ 'Header.GetEther' | translate }}
           </button>
-          <button *ngIf="showReceiveSVTButton"
+          <button *ngIf="showReceiveSVTButton && isAuthenticated"
                   (click)="receiveSVT()"
                   class="btn btn-link"
                   angulartics2On="click"
@@ -31,7 +31,7 @@
                   angularticsCategory="UserActions">
             {{ 'Header.GetSVT' | translate }}
           </button>
-          <span *ngIf="showBalance" style="text-align:right; margin-left: 1em;">
+          <span *ngIf="isAuthenticated" style="text-align:right; margin-left: 1em;">
             <button mat-icon-button disableRipple [matMenuTriggerFor]="menu" class="btn btn-link">
               <img src="{{accountImgUrl}}" style="width: 5em; border-radius: 1em;"/>
               <mat-icon><i class="material-icons">expand_more</i></mat-icon>
@@ -48,7 +48,7 @@
               </button>
             </mat-menu>
           </span>
-          <button *ngIf="!showBalance"
+          <button *ngIf="!isAuthenticated"
                   (click)="loginAsync()"
                   class="btn btn-link">
             {{'Header.Login' | translate }}

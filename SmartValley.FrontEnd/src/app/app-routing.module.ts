@@ -14,6 +14,7 @@ import {ShouldHaveEthGuard} from './services/balance/should-have-eth.guard';
 import {AccountComponent} from './components/account/account.component';
 import {CompositeGuard} from './services/guards/composite.guard';
 import {GuardType} from './services/guards/guard-type.enum';
+import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-authenticated.guard';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -22,7 +23,7 @@ const appRoutes: Routes = [
       {path: Paths.Root, pathMatch: 'full', component: LandingComponent},
       {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent},
       {path: Paths.Scoring, pathMatch: 'full', component: ScoringComponent},
-      {path: Paths.Account, pathMatch: 'full', component: AccountComponent},
+      {path: Paths.Account, pathMatch: 'full', component: AccountComponent, canActivate: [ShouldBeAuthenticatedGuard]},
       {
         path: Paths.Application,
         pathMatch: 'full',

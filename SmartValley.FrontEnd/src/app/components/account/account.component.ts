@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BalanceService} from '../../services/balance/balance.service';
 import {Balance} from '../../services/balance/balance';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {BlockiesService} from '../../services/blockies-service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-account',
@@ -16,21 +17,28 @@ export class AccountComponent implements OnInit {
   public accountAddress: string;
   public accountImgUrl: string;
 
-  constructor(
-    private balanceService: BalanceService,
-    private blockiesService: BlockiesService,
-    private authenticationService: AuthenticationService) {
+  constructor(private router: Router,
+              private balanceService: BalanceService,
+              private blockiesService: BlockiesService,
+              private authenticationService: AuthenticationService) {
 
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalances(balance));
+    this.authenticationService.accountChanged.subscribe((user) => {
+      this.updateAccount(user);
+    });
+  }
+
+  private updateAccount(user: User): void {
+    if (user) {
+      this.accountAddress = user.account;
+      this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
+    }
   }
 
   async ngOnInit() {
     await this.balanceService.updateBalanceAsync();
     const currentUser = this.authenticationService.getCurrentUser();
-    if (currentUser) {
-      this.accountAddress = currentUser.account;
-      this.accountImgUrl = this.blockiesService.getImageForAddress(currentUser.account);
-    }
+    this.updateAccount(currentUser);
   }
 
   private updateBalances(balance: Balance): void {

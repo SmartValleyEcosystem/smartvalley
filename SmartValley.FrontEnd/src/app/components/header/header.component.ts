@@ -18,7 +18,7 @@ export class HeaderComponent {
   public currentTokens: number;
   public showReceiveEtherButton: boolean;
   public showReceiveSVTButton: boolean;
-  public showBalance: boolean;
+  public isAuthenticated: boolean;
   public accountAddress: string;
   public accountImgUrl: string;
 
@@ -27,14 +27,23 @@ export class HeaderComponent {
               private blockiesService: BlockiesService,
               private authenticationService: AuthenticationService) {
 
-    this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateHeader(balance));
-    this.authenticationService.accountChanged.subscribe((user) => this.accountAddress = user ? user.account : '');
+    this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
+    this.authenticationService.accountChanged.subscribe((user) => {
+      this.updateAccount(user);
+    });
     const currentUser = this.authenticationService.getCurrentUser();
-    if (currentUser) {
-      this.accountAddress = currentUser.account;
-      this.accountImgUrl = this.blockiesService.getImageForAddress(currentUser.account);
+    this.updateAccount(currentUser);
+    this.updateBalance(this.balanceService.balance);
+  }
+
+  private updateAccount(user: User): void {
+    if (user) {
+      this.isAuthenticated = true;
+      this.accountAddress = user.account;
+      this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
+    } else {
+      this.isAuthenticated = false;
     }
-    this.updateHeader(this.balanceService.balance);
   }
 
   public async loginAsync(): Promise<void> {
@@ -45,15 +54,13 @@ export class HeaderComponent {
     this.authenticationService.stopUserSession();
   }
 
-  private updateHeader(balance: Balance): void {
+  private updateBalance(balance: Balance): void {
     if (balance != null) {
-      this.showBalance = true;
       this.currentBalance = balance.ethBalance;
       this.currentTokens = balance.svtBalance;
       this.showReceiveEtherButton = !balance.wasEtherReceived;
       this.showReceiveSVTButton = balance.canReceiveSvt;
     } else {
-      this.showBalance = false;
       this.showReceiveEtherButton = false;
       this.showReceiveSVTButton = false;
     }
