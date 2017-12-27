@@ -5,7 +5,7 @@
     "GetButton": "Receive free SVT"
   },
   "CanNotReceiveSVTModal": {
-    "Title": "You have already received SVT",
-    "Content": "You can receive SVT at "
+    "Title": "You have not enough SVT",
+    "Content": "You have already received SVT. Again you can receive SVT at "
   }
 }
