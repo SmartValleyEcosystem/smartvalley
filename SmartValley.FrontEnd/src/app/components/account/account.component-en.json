@@ -1,6 +1,6 @@
 {
   "Account": {
-    "AvailableBalances": "AvailableBalances:",
+    "AvailableBalances": "Available balances:",
     "TransferableSVT": "Transferable SVT:",
     "FreezedSVT": "Freezed SVT:",
     "SVTBalanceTooltip": "All your SVT tokens",
