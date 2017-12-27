@@ -25,23 +25,21 @@ export class AccountComponent implements OnInit {
 
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalances(balance));
     this.authenticationService.accountChanged.subscribe((user) => {
-      this.checkUserAsync(user);
+      this.updateAccountAsync(user);
     });
   }
 
-  private async checkUserAsync(user: User): Promise<void> {
+  private async updateAccountAsync(user: User): Promise<void> {
     if (user) {
       this.accountAddress = user.account;
       this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
-    } else {
-      await this.router.navigate([Paths.Root]);
     }
   }
 
   async ngOnInit() {
     await this.balanceService.updateBalanceAsync();
     const currentUser = this.authenticationService.getCurrentUser();
-    await this.checkUserAsync(currentUser);
+    await this.updateAccountAsync(currentUser);
   }
 
   private updateBalances(balance: Balance): void {
