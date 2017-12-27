@@ -3,6 +3,8 @@ import {BalanceService} from '../../services/balance/balance.service';
 import {Balance} from '../../services/balance/balance';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {BlockiesService} from '../../services/blockies-service';
+import {Paths} from '../../paths';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-account',
@@ -16,7 +18,8 @@ export class AccountComponent implements OnInit {
   public accountAddress: string;
   public accountImgUrl: string;
 
-  constructor(private balanceService: BalanceService,
+  constructor(private router: Router,
+              private balanceService: BalanceService,
               private blockiesService: BlockiesService,
               private authenticationService: AuthenticationService) {
 
@@ -25,6 +28,8 @@ export class AccountComponent implements OnInit {
       if (user) {
         this.accountAddress = user.account;
         this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
+      } else {
+        this.router.navigate([Paths.Root]);
       }
     });
   }
@@ -35,6 +40,8 @@ export class AccountComponent implements OnInit {
     if (currentUser) {
       this.accountAddress = currentUser.account;
       this.accountImgUrl = this.blockiesService.getImageForAddress(currentUser.account);
+    } else {
+      await this.router.navigate([Paths.Root]);
     }
   }
 

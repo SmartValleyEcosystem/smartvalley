@@ -18,7 +18,7 @@ export class HeaderComponent {
   public currentTokens: number;
   public showReceiveEtherButton: boolean;
   public showReceiveSVTButton: boolean;
-  public showBalance: boolean;
+  public isAuthenticated: boolean;
   public accountAddress: string;
   public accountImgUrl: string;
 
@@ -32,12 +32,14 @@ export class HeaderComponent {
       if (user) {
         this.accountAddress = user.account;
         this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
+        this.isAuthenticated = true;
       } else {
-        this.showBalance = false;
+        this.isAuthenticated = false;
       }
     });
     const currentUser = this.authenticationService.getCurrentUser();
     if (currentUser) {
+      this.isAuthenticated = true;
       this.accountAddress = currentUser.account;
       this.accountImgUrl = this.blockiesService.getImageForAddress(currentUser.account);
     }
@@ -54,13 +56,11 @@ export class HeaderComponent {
 
   private updateHeader(balance: Balance): void {
     if (balance != null) {
-      this.showBalance = true;
       this.currentBalance = balance.ethBalance;
       this.currentTokens = balance.svtBalance;
       this.showReceiveEtherButton = !balance.wasEtherReceived;
       this.showReceiveSVTButton = balance.canReceiveSvt;
     } else {
-      this.showBalance = false;
       this.showReceiveEtherButton = false;
       this.showReceiveSVTButton = false;
     }
