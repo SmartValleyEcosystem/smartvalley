@@ -28,22 +28,22 @@ export class HeaderComponent {
               private authenticationService: AuthenticationService) {
 
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateHeader(balance));
-    this.authenticationService.accountChanged.subscribe((user) => {
-      if (user) {
-        this.accountAddress = user.account;
-        this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
-        this.isAuthenticated = true;
-      } else {
-        this.isAuthenticated = false;
-      }
+    this.authenticationService.accountChanged.subscribe(async (user) => {
+      await this.checkUserAsync(user);
     });
     const currentUser = this.authenticationService.getCurrentUser();
-    if (currentUser) {
-      this.isAuthenticated = true;
-      this.accountAddress = currentUser.account;
-      this.accountImgUrl = this.blockiesService.getImageForAddress(currentUser.account);
-    }
+    this.checkUserAsync(currentUser);
     this.updateHeader(this.balanceService.balance);
+  }
+
+  private async checkUserAsync(user: User): Promise<void> {
+    if (user) {
+      this.isAuthenticated = true;
+      this.accountAddress = user.account;
+      this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
+    } else {
+      this.isAuthenticated = false;
+    }
   }
 
   public async loginAsync(): Promise<void> {
