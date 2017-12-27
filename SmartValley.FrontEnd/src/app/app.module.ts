@@ -63,7 +63,7 @@ import {CompositeGuard} from './services/guards/composite.guard';
 import {GuardFactory} from './services/guards/guard-factory';
 import {ShouldHaveSvtGuard} from './services/balance/should-have-svt.guard';
 import { DashIfEmptyPipe } from './utils/dash-if-empty.pipe';
-import {CanShowAccountGuard} from './services/authentication/can-show-account.guard';
+import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-authenticated.guard';
 
 @NgModule({
   declarations: [
@@ -157,7 +157,7 @@ import {CanShowAccountGuard} from './services/authentication/can-show-account.gu
     InitializationGuard,
     ShouldHaveEthGuard,
     ShouldHaveSvtGuard,
-    CanShowAccountGuard,
+    ShouldBeAuthenticatedGuard,
     GuardFactory,
     CompositeGuard
   ],

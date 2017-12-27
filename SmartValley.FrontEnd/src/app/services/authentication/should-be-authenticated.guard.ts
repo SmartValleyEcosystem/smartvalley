@@ -4,16 +4,13 @@ import {AuthenticationService} from './authentication-service';
 import {Paths} from '../../paths';
 
 @Injectable()
-export class CanShowAccountGuard implements CanActivate {
+export class ShouldBeAuthenticatedGuard implements CanActivate {
   constructor(private router: Router,
               private authenticationService: AuthenticationService) {
   }
 
-
-
-
   public canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    if (this.authenticationService.getCurrentUser() !== null) {
+    if (this.authenticationService.isAuthenticated()) {
       return true;
     } else {
       this.router.navigate([Paths.Root]);

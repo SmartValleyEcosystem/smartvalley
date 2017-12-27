@@ -27,13 +27,13 @@ export class HeaderComponent {
               private blockiesService: BlockiesService,
               private authenticationService: AuthenticationService) {
 
-    this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateHeader(balance));
+    this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
     this.authenticationService.accountChanged.subscribe((user) => {
       this.updateAccount(user);
     });
     const currentUser = this.authenticationService.getCurrentUser();
     this.updateAccount(currentUser);
-    this.updateHeader(this.balanceService.balance);
+    this.updateBalance(this.balanceService.balance);
   }
 
   private updateAccount(user: User): void {
@@ -54,7 +54,7 @@ export class HeaderComponent {
     this.authenticationService.stopUserSession();
   }
 
-  private updateHeader(balance: Balance): void {
+  private updateBalance(balance: Balance): void {
     if (balance != null) {
       this.currentBalance = balance.ethBalance;
       this.currentTokens = balance.svtBalance;
