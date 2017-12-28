@@ -8,13 +8,8 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/map';
 import {Ng2DeviceService} from 'ng2-device-detector';
-import {MatDialog} from '@angular/material';
-import {AlertModalComponent} from '../../components/common/alert-modal/alert-modal.component';
-import {AlertModalData} from '../../components/common/alert-modal/alert-modal-data';
 import {Constants} from '../../constants';
-import {MetamaskManualModalData} from '../../components/common/metamask-manual-modal/metamask-manual-modal-data';
-import {MetamaskManualModalComponent} from '../../components/common/metamask-manual-modal/metamask-manual-modal.component';
-import {TranslateService} from '@ngx-translate/core';
+import {DialogService} from '../dialog-service';
 
 @Injectable()
 export class AuthenticationService {
@@ -28,9 +23,7 @@ export class AuthenticationService {
   constructor(private web3Service: Web3Service,
               private router: Router,
               private deviceService: Ng2DeviceService,
-              private alertModal: MatDialog,
-              private metamaskManualModel: MatDialog,
-              private translateService: TranslateService) {
+              private dialogService: DialogService) {
     if (this.web3Service.isMetamaskInstalled && this.getCurrentUser() != null) {
       this.startBackgroundChecker();
     }
@@ -50,7 +43,7 @@ export class AuthenticationService {
 
   public async authenticateAsync(): Promise<boolean> {
     if (!this.compatibleBrowsers.includes(this.deviceService.browser)) {
-      this.showIncompatibleBrowserAlert();
+      this.dialogService.showIncompatibleBrowserAlert();
       return false;
     }
 
@@ -62,14 +55,14 @@ export class AuthenticationService {
     const currentAccount = accounts[0];
 
     if (currentAccount == null) {
-      this.showUnlockAccountAlert();
+      this.dialogService.showUnlockAccountAlert();
       return false;
     }
 
     const isRinkeby = await this.web3Service.checkRinkebyNetworkAsync();
 
     if (!isRinkeby) {
-      this.showRinkebyAlert();
+      this.dialogService.showRinkebyAlert();
       return false;
     }
 
@@ -88,12 +81,10 @@ export class AuthenticationService {
 
   private async shouldSignAccount(currentAccount: string, savedSignature: string): Promise<boolean> {
     let user = this.getCurrentUser();
-
     if (user == null || user.account !== currentAccount) {
       user = {account: currentAccount, signature: savedSignature};
     }
-    const isValid = await this.checkSignatureAsync(user.account, user.signature);
-    return !isValid;
+    return !await this.checkSignatureAsync(user.account, user.signature);
   }
 
   private startUserSession(account: string, signature: string) {
@@ -158,7 +149,6 @@ export class AuthenticationService {
       return;
     }
     const savedSignature = this.getSignatureByAccount(currentAccount);
-
     const isSavedSignatureValid = await this.checkSignatureAsync(currentAccount, savedSignature);
     if (isSavedSignatureValid) {
       this.saveCurrentUser({account: currentAccount, signature: savedSignature});
@@ -171,40 +161,5 @@ export class AuthenticationService {
     this.deleteCurrentUser();
     this.stopBackgroundChecker();
     this.router.navigate([Paths.Root]);
-  }
-
-  private showIncompatibleBrowserAlert() {
-    this.alertModal.open(AlertModalComponent, {
-      width: '600px',
-      data: <AlertModalData>{
-        title: this.translateService.instant('Authentication.IncompatibleBrowserTitle'),
-        message: this.translateService.instant('Authentication.IncompatibleBrowserMessage'),
-        button: this.translateService.instant('Authentication.IncompatibleBrowserButton')
-      }
-    });
-  }
-
-  private showUnlockAccountAlert() {
-    this.metamaskManualModel.open(MetamaskManualModalComponent, {
-      width: '500px',
-      data: <MetamaskManualModalData>{
-        title: this.translateService.instant('Authentication.UnlockMetamaskTitle'),
-        message: this.translateService.instant('Authentication.UnlockMetamaskMessage'),
-        button: this.translateService.instant('Authentication.UnlockMetamaskButton'),
-        imgUrl: '/assets/img/unlock_metamask.png'
-      }
-    });
-  }
-
-  private showRinkebyAlert() {
-    this.metamaskManualModel.open(MetamaskManualModalComponent, {
-      width: '500px',
-      data: <MetamaskManualModalData>{
-        title: this.translateService.instant('Authentication.WrongNetworkTitle'),
-        message: this.translateService.instant('Authentication.WrongNetworkMessage'),
-        button: this.translateService.instant('Authentication.WrongNetworkButton'),
-        imgUrl: '/assets/img/change_network.png'
-      }
-    });
   }
 }

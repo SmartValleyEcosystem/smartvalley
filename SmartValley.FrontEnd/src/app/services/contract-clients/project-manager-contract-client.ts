@@ -24,14 +24,11 @@ export class ProjectManagerContractClient implements ContractClient {
     this.address = projectManagerContract.address;
   }
 
-  public addProjectAsync(contractAddress: string,
-                         abiString: string,
-                         projectId: string,
-                         name: string): Promise<string> {
-    const projectContract = this.web3Service.getContract(abiString, contractAddress);
+  public addProjectAsync(projectId: string, name: string): Promise<string> {
+    const projectManagerContract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.authenticationService.getCurrentUser().account;
 
-    return projectContract.addProject(
+    return projectManagerContract.addProject(
       projectId.replace(/-/g, ''),
       name,
       {from: fromAddress});

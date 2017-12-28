@@ -15,6 +15,7 @@ import {DialogService} from '../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
 import {Estimate} from '../../services/estimate';
 import {BalanceService} from '../../services/balance/balance.service';
+import {QuestionResponse} from '../../api/estimates/question-response';
 
 @Component({
   selector: 'app-estimate',
@@ -44,11 +45,11 @@ export class EstimateComponent implements OnInit {
               private balanceService: BalanceService) {
   }
 
-  ngOnInit(): void {
-    this.loadProjectInfo();
+  public ngOnInit(): void {
+    this.loadProjectDetailsAsync();
   }
 
-  changeHidden() {
+  public changeHidden() {
     this.hidden = true;
   }
 
@@ -66,17 +67,18 @@ export class EstimateComponent implements OnInit {
   }
 
   private validateForm(): boolean {
-    if (this.estimateForm.invalid) {
-      const invalidElements = this.requiredFields.filter(i => i.nativeElement.classList.contains('ng-invalid'));
-      if (invalidElements.length > 0) {
-        for (let a = 0; a < invalidElements.length; a++) {
-          this.setInvalid(invalidElements[a]);
-        }
-        this.scrollToElement(invalidElements[0]);
-      }
-      return false;
+    if (!this.estimateForm.invalid) {
+      return true;
     }
-    return true;
+
+    const invalidElements = this.requiredFields.filter(i => i.nativeElement.classList.contains('ng-invalid'));
+    if (invalidElements.length > 0) {
+      for (let a = 0; a < invalidElements.length; a++) {
+        this.setInvalid(invalidElements[a]);
+      }
+      this.scrollToElement(invalidElements[0]);
+    }
+    return false;
   }
 
   private async submitAsync(): Promise<boolean> {
@@ -139,44 +141,35 @@ export class EstimateComponent implements OnInit {
   }
 
   private getEstimates(): Array<Estimate> {
-    const estimates: Array<Estimate> = [];
-    const formModel = this.estimateForm.value;
-
-    for (const question of formModel.questions) {
-      estimates.push(<Estimate>{
-        questionId: question.questionId,
-        score: question.score,
-        comments: question.comments.replace(/\s+$/, '')
-      });
-    }
-
-    return estimates;
+    return this.estimateForm.value.questions.map(q => <Estimate>{
+      questionId: q.questionId,
+      score: q.score,
+      comments: q.comments.replace(/\s+$/, '')
+    });
   }
 
-  private async loadProjectInfo() {
+  private async loadProjectDetailsAsync(): Promise<void> {
     this.projectId = +this.route.snapshot.paramMap.get('id');
     this.expertiseArea = +this.route.snapshot.queryParamMap.get('expertiseArea');
 
-    const questionsFormGroups = [];
     const questions = this.questionService.getByExpertiseArea(this.expertiseArea);
-
-    for (const question of questions) {
-      const group = this.formBuilder.group({
-        questionId: question.id,
-        name: question.name,
-        description: question.description,
-        maxScore: question.maxScore,
-        score: ['', [
-          Validators.required,
-          Validators.max(question.maxScore),
-          Validators.min(question.minScore),
-          Validators.pattern('^-*[0-9]+$')]],
-        comments: ['', [Validators.required, Validators.maxLength(250)]],
-      });
-      questionsFormGroups.push(group);
-    }
-
+    const questionsFormGroups = questions.map(q => this.createQuestionFormGroup(q));
     this.estimateForm = this.formBuilder.group({questions: this.formBuilder.array(questionsFormGroups)});
     this.projectDetails = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
+  }
+
+  private createQuestionFormGroup(question: QuestionResponse): FormGroup {
+    return this.formBuilder.group({
+      questionId: question.id,
+      name: question.name,
+      description: question.description,
+      maxScore: question.maxScore,
+      score: ['', [
+        Validators.required,
+        Validators.max(question.maxScore),
+        Validators.min(question.minScore),
+        Validators.pattern('^-*[0-9]+$')]],
+      comments: ['', [Validators.required, Validators.maxLength(250)]],
+    });
   }
 }
