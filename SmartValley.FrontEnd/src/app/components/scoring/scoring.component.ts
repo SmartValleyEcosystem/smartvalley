@@ -1,12 +1,10 @@
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Project} from '../../services/project';
 import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
-import {ActivatedRoute} from '@angular/router';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 import {ProjectsForScoringRequest} from '../../api/scoring/projecs-for-scoring-request';
-import {Constants} from '../../constants';
 import {isNullOrUndefined} from 'util';
 import {Subscription} from 'rxjs/Subscription';
 import {ProjectResponse} from '../../api/project/project-response';
@@ -18,7 +16,6 @@ import {ProjectResponse} from '../../api/project/project-response';
 })
 export class ScoringComponent implements OnDestroy, OnInit {
   public projectsForScoring: Array<Project> = [];
-  public myProjects: Array<Project> = [];
   public selectedExpertiseTabIndex: number;
 
   @ViewChild('projectsTabSet')
