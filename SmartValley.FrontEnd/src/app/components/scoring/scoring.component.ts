@@ -7,7 +7,6 @@ import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 import {ProjectsForScoringRequest} from '../../api/scoring/projecs-for-scoring-request';
 import {isNullOrUndefined} from 'util';
 import {Subscription} from 'rxjs/Subscription';
-import {ProjectResponse} from '../../api/project/project-response';
 
 @Component({
   selector: 'app-scoring',
@@ -16,7 +15,7 @@ import {ProjectResponse} from '../../api/project/project-response';
 })
 export class ScoringComponent implements OnDestroy, OnInit {
   public projectsForScoring: Array<Project> = [];
-  public selectedExpertiseTabIndex: number;
+  public selectedTabIndex: number;
 
   @ViewChild('projectsTabSet')
   private projectsTabSet: NgbTabset;
@@ -36,7 +35,7 @@ export class ScoringComponent implements OnDestroy, OnInit {
   }
 
   public async onExpertiseTabIndexChanged(index: number) {
-    this.selectedExpertiseTabIndex = index;
+    this.selectedTabIndex = index;
     await this.reloadProjectsForScoringAsync();
   }
 
@@ -47,24 +46,11 @@ export class ScoringComponent implements OnDestroy, OnInit {
   }
 
   private async reloadProjectsForScoringAsync(): Promise<void> {
-    const expertiseArea = this.getExpertiseAreaByIndex(this.selectedExpertiseTabIndex);
+    const expertiseArea = this.getExpertiseAreaByIndex(this.selectedTabIndex);
     const response = await this.scoringApiClient.getProjectForScoringAsync(<ProjectsForScoringRequest>{
       expertiseArea: <number>expertiseArea
     });
-    this.projectsForScoring = response.items.map(p => this.createProject(p, expertiseArea));
-  }
-
-  private createProject(response: ProjectResponse, expertiseArea: ExpertiseArea = ExpertiseArea.HR): Project {
-    return <Project>{
-      id: response.id,
-      name: response.name,
-      area: response.area,
-      country: response.country,
-      score: response.score,
-      description: response.description,
-      address: response.address,
-      expertiseArea: expertiseArea
-    };
+    this.projectsForScoring = response.items.map(p => Project.createProjectByArea(p, expertiseArea));
   }
 
   private getExpertiseAreaByIndex(index: number): ExpertiseArea {
