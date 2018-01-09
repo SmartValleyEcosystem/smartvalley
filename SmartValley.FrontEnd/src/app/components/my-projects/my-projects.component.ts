@@ -20,12 +20,12 @@ export class MyProjectsComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit() {
-    this.loadMyProjectsAsync();
+    this.loadProjectsAsync();
   }
 
-  private async loadMyProjectsAsync(): Promise<void> {
+  private async loadProjectsAsync(): Promise<void> {
     const response = await this.scoringApiClient.getMyProjectsAsync();
-    this.myProjects = response.items.map(p => this.createProject(p));
+    this.projects = response.items.map(p => this.createProject(p));
   }
 
   public async navigateToApplicationPageAsync(): Promise<void> {
@@ -35,7 +35,7 @@ export class MyProjectsComponent implements OnInit {
     }
   }
 
-  private createProject(response: ProjectResponse, expertiseArea: ExpertiseArea = ExpertiseArea.HR): Project {
+  private createProject(response: ProjectResponse): Project {
     return <Project>{
       id: response.id,
       name: response.name,
@@ -43,8 +43,7 @@ export class MyProjectsComponent implements OnInit {
       country: response.country,
       score: response.score,
       description: response.description,
-      address: response.address,
-      expertiseArea: expertiseArea
+      address: response.address
     };
   }
 
