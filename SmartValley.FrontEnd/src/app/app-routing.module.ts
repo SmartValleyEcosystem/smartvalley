@@ -22,7 +22,7 @@ const appRoutes: Routes = [
   {
     path: Paths.Root, component: RootComponent, canActivate: [InitializationGuard], children: [
       {path: Paths.Root, pathMatch: 'full', component: LandingComponent},
-      {path: Paths.MyProjects, pathMatch: 'full', component: MyProjectsComponent},
+      {path: Paths.MyProjects, pathMatch: 'full', component: MyProjectsComponent, canActivate: [ShouldBeAuthenticatedGuard]},
       {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent},
       {path: Paths.Scoring, pathMatch: 'full', component: ScoringComponent},
       {path: Paths.Account, pathMatch: 'full', component: AccountComponent, canActivate: [ShouldBeAuthenticatedGuard]},
