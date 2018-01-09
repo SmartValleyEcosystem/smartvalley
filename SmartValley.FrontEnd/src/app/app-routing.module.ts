@@ -15,12 +15,14 @@ import {AccountComponent} from './components/account/account.component';
 import {CompositeGuard} from './services/guards/composite.guard';
 import {GuardType} from './services/guards/guard-type.enum';
 import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-authenticated.guard';
+import {MyProjectsComponent} from './components/my-projects/my-projects.component';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
   {
     path: Paths.Root, component: RootComponent, canActivate: [InitializationGuard], children: [
       {path: Paths.Root, pathMatch: 'full', component: LandingComponent},
+      {path: Paths.MyProjects, pathMatch: 'full', component: MyProjectsComponent},
       {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent},
       {path: Paths.Scoring, pathMatch: 'full', component: ScoringComponent},
       {path: Paths.Account, pathMatch: 'full', component: AccountComponent, canActivate: [ShouldBeAuthenticatedGuard]},

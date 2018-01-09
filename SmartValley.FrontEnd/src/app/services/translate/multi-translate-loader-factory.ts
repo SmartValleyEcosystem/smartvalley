@@ -8,6 +8,7 @@ export function multiTranslateLoaderFactory() {
     'services/translate/common',
     'components/header/header.component',
     'components/application/application.component',
+    'components/my-projects/my-projects.component',
     'components/landing/landing.component',
     'components/scoring/scoring.component',
     'components/estimate/estimate.component',

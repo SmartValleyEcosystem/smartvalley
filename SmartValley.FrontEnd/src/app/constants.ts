@@ -5,8 +5,6 @@ export class HeadersConstants {
 }
 
 export class Constants {
-  static ScoringMyProjectsTab = 'myprojects';
-  static ScoringProjectsForScoringTab = 'forscoring';
   static ReportFormTab = 'form';
   static ReportEstimatesTab = 'estimates';
   static TabQueryParam = 'tab';

@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="row mx-auto">
+    <div class="col-8 sm-title">
+      <h1>{{ 'MyProjects.Title' | translate }}</h1>
+      <p>
+      </p>
+    </div>
+  </div>
+  <div class="row mx-auto">
+    <div class="col-12 scoring-projects">
+      <div class="white-card">
+        <div class="content">
+          <div *ngIf="myProjects.length > 0; else withoutProject">
+            <div class="card" *ngFor="let project of myProjects;">
+              <app-project-card [project]="project" [isScoring]="false"></app-project-card>
+            </div>
+          </div>
+          <button *ngIf="myProjects.length > 0" (click)="navigateToApplicationPageAsync()"
+                  class="btn-blue col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">{{
+            'MyProjects.CreateProject' | translate }}
+          </button>
+        </div>
+      </div>
+      <ng-template #withoutProject>
+        <div class="without-project">
+          <button mat-raised-button class="col-5 sv-default-btn btn-space" (click)="navigateToApplicationPageAsync()">{{
+            'MyProjects.CreateProjectForScoring' | translate }}
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

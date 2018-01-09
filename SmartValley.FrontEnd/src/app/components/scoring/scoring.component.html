@@ -7,58 +7,34 @@
     </div>
   </div>
   <div class="row mx-auto">
-    <ngb-tabset #projectsTabSet (tabChange)="onMainTabChanged($event)" class="col-12 scoring-projects">
-      <ngb-tab id="forscoring" title="{{ 'Scoring.ProjectsForScoring' | translate }}">
-        <ng-template ngbTabContent>
-          <div class="white-card">
-            <div class="content">
-              <span class="choose">{{ 'Scoring.ChooseExpertise' | translate }}</span>
-              <mat-tab-group [selectedIndex]="selectedExpertiseTabIndex" (selectedIndexChange)="onExpertiseTabIndexChanged($event)">
-                <mat-tab label="{{ 'Common.Hr' | translate }}">
-                  <div class="card" *ngFor="let project of projectsForScoring;">
-                    <app-project-card [project]="project" [isScoring]="true"></app-project-card>
-                  </div>
-                </mat-tab>
-                <mat-tab label="{{ 'Common.Lawyer' | translate }}">
-                  <div class="card" *ngFor="let project of projectsForScoring;">
-                    <app-project-card [project]="project" [isScoring]="true"></app-project-card>
-                  </div>
-                </mat-tab>
-                <mat-tab label="{{ 'Common.Analyst' | translate }}">
-                  <div class="card" *ngFor="let project of projectsForScoring;">
-                    <app-project-card [project]="project" [isScoring]="true"></app-project-card>
-                  </div>
-                </mat-tab>
-                <mat-tab label="{{ 'Common.TechnicalExpert' | translate }}">
-                  <div class="card" *ngFor="let project of projectsForScoring;">
-                    <app-project-card [project]="project" [isScoring]="true"></app-project-card>
-                  </div>
-                </mat-tab>
-              </mat-tab-group>
-            </div>
-          </div>
-        </ng-template>
-      </ngb-tab>
-      <ngb-tab id="myprojects" title="{{ 'Scoring.MyProjects' | translate }}">
-        <ng-template ngbTabContent>
-          <div class="white-card">
-            <div class="content">
-              <div *ngIf="myProjects.length > 0; else withoutProject">
-                <div class="card" *ngFor="let project of myProjects;">
-                  <app-project-card [project]="project" [isScoring]="false"></app-project-card>
-                </div>
+    <div class="col-12 scoring-projects">
+      <div class="white-card">
+        <div class="content">
+          <span class="choose">{{ 'Scoring.ChooseExpertise' | translate }}</span>
+          <mat-tab-group [selectedIndex]="selectedExpertiseTabIndex" (selectedIndexChange)="onExpertiseTabIndexChanged($event)">
+            <mat-tab label="{{ 'Common.Hr' | translate }}">
+              <div class="card" *ngFor="let project of projectsForScoring;">
+                <app-project-card [project]="project" [isScoring]="true"></app-project-card>
               </div>
-                <button *ngIf="myProjects.length > 0" (click)="navigateToApplicationPageAsync()" class="btn-blue col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">{{ 'Scoring.CreateProject' | translate }}</button>
-            </div>
-          </div>
-          <ng-template #withoutProject>
-            <div class="without-project">
-              <button mat-raised-button class="col-5 sv-default-btn btn-space" (click)="navigateToApplicationPageAsync()">{{ 'Scoring.CreateProjectForScoring' | translate }}
-              </button>
-            </div>
-          </ng-template>
-        </ng-template>
-      </ngb-tab>
-    </ngb-tabset>
+            </mat-tab>
+            <mat-tab label="{{ 'Common.Lawyer' | translate }}">
+              <div class="card" *ngFor="let project of projectsForScoring;">
+                <app-project-card [project]="project" [isScoring]="true"></app-project-card>
+              </div>
+            </mat-tab>
+            <mat-tab label="{{ 'Common.Analyst' | translate }}">
+              <div class="card" *ngFor="let project of projectsForScoring;">
+                <app-project-card [project]="project" [isScoring]="true"></app-project-card>
+              </div>
+            </mat-tab>
+            <mat-tab label="{{ 'Common.TechnicalExpert' | translate }}">
+              <div class="card" *ngFor="let project of projectsForScoring;">
+                <app-project-card [project]="project" [isScoring]="true"></app-project-card>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

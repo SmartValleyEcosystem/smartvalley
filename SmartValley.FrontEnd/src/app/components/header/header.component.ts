@@ -84,7 +84,7 @@ export class HeaderComponent {
   async navigateToMyProjects() {
     const isOk = await this.authenticationService.authenticateAsync();
     if (isOk) {
-      await this.router.navigate([Paths.Scoring], {queryParams: {tab: Constants.ScoringMyProjectsTab}});
+      await this.router.navigate([Paths.MyProjects]);
     }
   }
 }

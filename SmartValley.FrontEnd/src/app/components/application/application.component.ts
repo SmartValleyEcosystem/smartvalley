@@ -97,7 +97,7 @@ export class ApplicationComponent implements OnInit {
 
     transactionDialog.close();
 
-    await this.router.navigate([Paths.Scoring], {queryParams: {tab: 'myProjects'}});
+    await this.router.navigate([Paths.MyProjects]);
     this.notificationsService.success(
       this.translateService.instant('Common.Success'),
       this.translateService.instant('Application.ProjectCreated')
