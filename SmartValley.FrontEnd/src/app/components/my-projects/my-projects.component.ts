@@ -14,7 +14,7 @@ import {AuthenticationService} from '../../services/authentication/authenticatio
 })
 export class MyProjectsComponent implements OnInit {
 
-  public myProjects: Array<Project> = [];
+  public projects: Array<Project> = [];
   constructor(private scoringApiClient: ScoringApiClient,
               private authenticationService: AuthenticationService,
               private router: Router) { }

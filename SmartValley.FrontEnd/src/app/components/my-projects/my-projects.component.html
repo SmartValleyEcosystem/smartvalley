@@ -10,12 +10,12 @@
     <div class="col-12 scoring-projects">
       <div class="white-card">
         <div class="content">
-          <div *ngIf="myProjects.length > 0; else withoutProject">
-            <div class="card" *ngFor="let project of myProjects;">
+          <div *ngIf="projects.length > 0; else withoutProject">
+            <div class="card" *ngFor="let project of projects;">
               <app-project-card [project]="project" [isScoring]="false"></app-project-card>
             </div>
           </div>
-          <button *ngIf="myProjects.length > 0" (click)="navigateToApplicationPageAsync()"
+          <button *ngIf="projects.length > 0" (click)="navigateToApplicationPageAsync()"
                   class="btn-blue col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">{{
             'MyProjects.CreateProject' | translate }}
           </button>
