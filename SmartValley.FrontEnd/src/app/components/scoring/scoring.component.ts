@@ -50,7 +50,7 @@ export class ScoringComponent implements OnDestroy, OnInit {
     const response = await this.scoringApiClient.getProjectForScoringAsync(<ProjectsForScoringRequest>{
       expertiseArea: <number>expertiseArea
     });
-    this.projectsForScoring = response.items.map(p => Project.createProjectByArea(p, expertiseArea));
+    this.projectsForScoring = response.items.map(p => Project.createProject(p));
   }
 
   private getExpertiseAreaByIndex(index: number): ExpertiseArea {
