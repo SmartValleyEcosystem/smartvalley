@@ -23,7 +23,7 @@ export class MyProjectsComponent implements OnInit {
 
   private async loadProjectsAsync(): Promise<void> {
     const response = await this.scoringApiClient.getMyProjectsAsync();
-    this.projects = response.items.map(p => Project.createProject(p));
+    this.projects = response.items.map(p => Project.create(p));
   }
 
   public async navigateToApplicationPageAsync(): Promise<void> {
