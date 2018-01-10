@@ -65,6 +65,7 @@ import {ShouldHaveSvtGuard} from './services/balance/should-have-svt.guard';
 import {DashIfEmptyPipe} from './utils/dash-if-empty.pipe';
 import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-authenticated.guard';
 import {SvtWithdrawalConfirmationModalComponent} from './components/common/svt-withdrawal-confirmation-modal/svt-withdrawal-confirmation-modal.component';
+import { VotingComponent } from './components/voting/voting.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import {SvtWithdrawalConfirmationModalComponent} from './components/common/svt-w
     ProjectInformationComponent,
     AccountComponent,
     DashIfEmptyPipe,
-    SvtWithdrawalConfirmationModalComponent
+    SvtWithdrawalConfirmationModalComponent,
+    VotingComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
