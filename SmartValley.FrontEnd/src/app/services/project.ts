@@ -14,7 +14,7 @@ export class Project {
   expertiseArea: ExpertiseArea;
   address: string
 
-  public static create(response: ProjectResponse): Project {
+  public static create(response: ProjectResponse, expertiseArea: ExpertiseArea): Project {
     return <Project>{
       id: response.id,
       name: response.name,
@@ -22,7 +22,8 @@ export class Project {
       country: response.country,
       score: response.score,
       description: response.description,
-      address: response.address
+      address: response.address,
+      expertiseArea: expertiseArea
     };
   }
 }

@@ -13,22 +13,22 @@
           <span class="choose">{{ 'Scoring.ChooseExpertise' | translate }}</span>
           <mat-tab-group [selectedIndex]="selectedExpertiseTabIndex" (selectedIndexChange)="onExpertiseTabIndexChanged($event)">
             <mat-tab label="{{ 'Common.Hr' | translate }}">
-              <div class="card" *ngFor="let project of projectsForScoring;">
+              <div class="card" *ngFor="let project of projects;">
                 <app-project-card [project]="project" [isScoring]="true"></app-project-card>
               </div>
             </mat-tab>
             <mat-tab label="{{ 'Common.Lawyer' | translate }}">
-              <div class="card" *ngFor="let project of projectsForScoring;">
+              <div class="card" *ngFor="let project of projects;">
                 <app-project-card [project]="project" [isScoring]="true"></app-project-card>
               </div>
             </mat-tab>
             <mat-tab label="{{ 'Common.Analyst' | translate }}">
-              <div class="card" *ngFor="let project of projectsForScoring;">
+              <div class="card" *ngFor="let project of projects;">
                 <app-project-card [project]="project" [isScoring]="true"></app-project-card>
               </div>
             </mat-tab>
             <mat-tab label="{{ 'Common.TechnicalExpert' | translate }}">
-              <div class="card" *ngFor="let project of projectsForScoring;">
+              <div class="card" *ngFor="let project of projects;">
                 <app-project-card [project]="project" [isScoring]="true"></app-project-card>
               </div>
             </mat-tab>
