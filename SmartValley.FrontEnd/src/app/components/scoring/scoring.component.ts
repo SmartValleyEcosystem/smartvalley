@@ -14,7 +14,7 @@ import {Subscription} from 'rxjs/Subscription';
   styleUrls: ['./scoring.component.css']
 })
 export class ScoringComponent implements OnDestroy, OnInit {
-  public projectsForScoring: Array<Project> = [];
+  public projects: Array<Project> = [];
   public selectedTabIndex: number;
 
   @ViewChild('projectsTabSet')
@@ -50,7 +50,7 @@ export class ScoringComponent implements OnDestroy, OnInit {
     const response = await this.scoringApiClient.getProjectForScoringAsync(<ProjectsForScoringRequest>{
       expertiseArea: <number>expertiseArea
     });
-    this.projectsForScoring = response.items.map(p => Project.createProject(p));
+    this.projects = response.items.map(p => Project.createProject(p));
   }
 
   private getExpertiseAreaByIndex(index: number): ExpertiseArea {
