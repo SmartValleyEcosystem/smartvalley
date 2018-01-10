@@ -12,9 +12,21 @@ export class Project {
   score: number;
   expertType: string;
   expertiseArea: ExpertiseArea;
-  address: string
+  address: string;
 
-  public static create(response: ProjectResponse, expertiseArea: ExpertiseArea): Project {
+  public static create(response: ProjectResponse): Project {
+    return <Project>{
+      id: response.id,
+      name: response.name,
+      area: response.area,
+      country: response.country,
+      score: response.score,
+      description: response.description,
+      address: response.address
+    };
+  }
+
+  public static createByArea(response: ProjectResponse, expertiseArea: ExpertiseArea): Project {
     return <Project>{
       id: response.id,
       name: response.name,
