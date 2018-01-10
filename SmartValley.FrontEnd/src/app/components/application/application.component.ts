@@ -6,37 +6,34 @@ import {Application} from '../../services/application';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {v4 as uuid} from 'uuid';
 import {ProjectManagerContractClient} from '../../services/contract-clients/project-manager-contract-client';
-import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {NotificationsService} from 'angular2-notifications';
 import {DialogService} from '../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
 import {BalanceService} from '../../services/balance/balance.service';
+import {isNullOrUndefined} from 'util';
 
 @Component({
   selector: 'app-application',
   templateUrl: './application.component.html',
   styleUrls: ['./application.component.css']
 })
-export class ApplicationComponent {
-
-  applicationForm: FormGroup;
-  isTeamShow = false;
-  isLegalShow = false;
-  isFinanceShow = false;
-  isTechShow = false;
+export class ApplicationComponent implements OnInit {
+  public applicationForm: FormGroup;
+  public isTeamShow = false;
+  public isLegalShow = false;
+  public isFinanceShow = false;
+  public isTechShow = false;
+  public isProjectCreating: boolean;
 
   @ViewChild('name') public nameRow: ElementRef;
   @ViewChild('area') public areaRow: ElementRef;
   @ViewChild('description') public descriptionRow: ElementRef;
-  @ViewChildren('required') requireds: QueryList<any>;
-
-  public isProjectCreating: boolean;
+  @ViewChildren('required') public requiredFields: QueryList<any>;
 
   constructor(private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
-              private contractApiClient: ContractApiClient,
               private projectManagerContractClient: ProjectManagerContractClient,
               private router: Router,
               private notificationsService: NotificationsService,
@@ -44,9 +41,11 @@ export class ApplicationComponent {
               private applicationApiClient: ApplicationApiClient,
               private translateService: TranslateService,
               private balanceService: BalanceService) {
-    this.createForm();
   }
 
+  public ngOnInit(): void {
+    this.createForm();
+  }
 
   public showNext() {
     if (this.isTeamShow === false) {
@@ -63,7 +62,6 @@ export class ApplicationComponent {
     }
     if (this.isTechShow === false) {
       this.isTechShow = true;
-      return;
     }
   }
 
@@ -71,13 +69,19 @@ export class ApplicationComponent {
     if (!this.validateForm()) {
       return;
     }
+
+    const projectCreationCost = await this.projectManagerContractClient.getProjectCreationCostAsync();
+    if (!await this.dialogService.showSvtWithdrawalConfirmationDialogAsync(projectCreationCost)) {
+      return;
+    }
+
     await this.submitApplicationAsync();
   }
 
   private async submitApplicationAsync(): Promise<void> {
-    const application = await this.fillApplication();
-
-    if (application == null) {
+    const projectId = uuid();
+    const transactionHash = await this.submitToContractAsync(projectId, this.applicationForm.value.name);
+    if (transactionHash == null) {
       this.notificationsService.error(this.translateService.instant('Common.Error'), this.translateService.instant('Common.TryAgain'));
       this.isProjectCreating = false;
       return;
@@ -85,11 +89,10 @@ export class ApplicationComponent {
 
     const transactionDialog = this.dialogService.showTransactionDialog(
       this.translateService.instant('Application.Dialog'),
-      application.transactionHash
+      transactionHash
     );
 
-    await this.applicationApiClient.createApplicationAsync(application);
-
+    await this.submitToBackendAsync(projectId, transactionHash);
     await this.balanceService.updateBalanceAsync();
 
     transactionDialog.close();
@@ -101,11 +104,15 @@ export class ApplicationComponent {
     );
   }
 
+  private submitToBackendAsync(projectId: any, transactionHash: string): Promise<void> {
+    const application = this.createApplication(projectId, transactionHash);
+    return this.applicationApiClient.createApplicationAsync(application);
+  }
+
   private createForm() {
     const teamMembers = [];
     for (const item in EnumTeamMemberType) {
       if (typeof EnumTeamMemberType[item] === 'number') {
-
         const group = this.formBuilder.group({
           memberType: EnumTeamMemberType[item],
           title: item,
@@ -134,63 +141,53 @@ export class ApplicationComponent {
     });
   }
 
-  private async fillApplication(): Promise<Application> {
+  private createApplication(projectId: string, transactionHash: string): Application {
+    const user = this.authenticationService.getCurrentUser();
+    const form = this.applicationForm.value;
+    return <Application>{
+      attractedInvestments: form.attractedInvestments,
+      blockChainType: form.blockChainType,
+      country: form.country,
+      financeModelLink: form.financeModelLink,
+      hardCap: form.hardCap,
+      mvpLink: form.mvpLink,
+      name: form.name,
+      description: form.description,
+      projectArea: form.projectArea,
+      projectStatus: form.projectStatus,
+      softCap: form.softCap,
+      whitePaperLink: form.whitePaperLink,
+      projectId: projectId,
+      authorAddress: user.account,
+      teamMembers: form.teamMembers.filter(m => !isNullOrUndefined(m.fullName)),
+      transactionHash: transactionHash
+    };
+  }
 
-    const formModel = this.applicationForm.value;
-
-    const application = {} as Application;
-    application.attractedInvestments = formModel.attractedInvestments;
-    application.blockChainType = formModel.blockChainType;
-    application.country = formModel.country;
-    application.financeModelLink = formModel.financeModelLink;
-    application.hardCap = formModel.hardCap;
-    application.mvpLink = formModel.mvpLink;
-    application.name = formModel.name;
-    application.description = formModel.description;
-    application.projectArea = formModel.projectArea;
-    application.projectStatus = formModel.projectStatus;
-    application.softCap = formModel.softCap;
-    application.whitePaperLink = formModel.whitePaperLink;
-
-    application.projectId = uuid();
-
-    const user = await this.authenticationService.getCurrentUser();
-    application.authorAddress = user.account;
-    application.teamMembers = [];
-    for (const teamMember of formModel.teamMembers) {
-      if (teamMember.fullName) {
-        application.teamMembers.push(teamMember);
-      }
-    }
-
-    const projectManagerContract = await this.contractApiClient.getProjectManagerContractAsync();
-
+  public async submitToContractAsync(projectId: string, projectName: string): Promise<string> {
     try {
-      application.transactionHash = await this.projectManagerContractClient.addProjectAsync(
-        projectManagerContract.address,
-        projectManagerContract.abi,
-        application.projectId,
-        formModel.name);
-
-      return application;
-
+      return await this.projectManagerContractClient.addProjectAsync(projectId, projectName);
     } catch (e) {
       return null;
     }
   }
 
   private validateForm(): boolean {
-    if (this.applicationForm.invalid) {
-      if (this.applicationForm.controls['name'].invalid) {
-        this.scrollToElement(this.nameRow);
-      } else if (this.applicationForm.controls['projectArea'].invalid) {
-        this.scrollToElement(this.areaRow);
-      } else if (this.applicationForm.controls['description'].invalid) {
-        this.scrollToElement(this.descriptionRow);
-      }
-      return false;
+    if (!this.applicationForm.invalid) {
+      return true;
     }
-    return true;
+    this.scrollToInvalidElement();
+    return false;
+  }
+
+  private scrollToInvalidElement() {
+    if (this.applicationForm.controls['name'].invalid) {
+      this.scrollToElement(this.nameRow);
+    } else if (this.applicationForm.controls['projectArea'].invalid) {
+      this.scrollToElement(this.areaRow);
+    } else if (this.applicationForm.controls['description'].invalid) {
+      this.scrollToElement(this.descriptionRow);
+    }
   }
 
   private scrollToElement(element: ElementRef) {
@@ -200,7 +197,7 @@ export class ApplicationComponent {
     element.nativeElement.children[1].classList.add('ng-invalid');
     element.nativeElement.children[1].classList.add('ng-dirty');
     element.nativeElement.children[1].classList.remove('ng-valid');
-    const invalidElements = this.requireds.filter(i => i.nativeElement.classList.contains('ng-invalid'));
+    const invalidElements = this.requiredFields.filter(i => i.nativeElement.classList.contains('ng-invalid'));
     if (invalidElements.length > 0) {
       for (let a = 0; a < invalidElements.length; a++) {
         invalidElements[a].nativeElement.classList.add('ng-invalid');

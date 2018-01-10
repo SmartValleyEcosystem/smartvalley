@@ -62,8 +62,9 @@ import {MatIconModule} from '@angular/material/icon';
 import {CompositeGuard} from './services/guards/composite.guard';
 import {GuardFactory} from './services/guards/guard-factory';
 import {ShouldHaveSvtGuard} from './services/balance/should-have-svt.guard';
-import { DashIfEmptyPipe } from './utils/dash-if-empty.pipe';
+import {DashIfEmptyPipe} from './utils/dash-if-empty.pipe';
 import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-authenticated.guard';
+import {SvtWithdrawalConfirmationModalComponent} from './components/common/svt-withdrawal-confirmation-modal/svt-withdrawal-confirmation-modal.component';
 
 @NgModule({
   declarations: [
@@ -88,14 +89,16 @@ import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-au
     ReceiveSvtModalComponent,
     ProjectInformationComponent,
     AccountComponent,
-    DashIfEmptyPipe
+    DashIfEmptyPipe,
+    SvtWithdrawalConfirmationModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
     AlertModalComponent,
     MetamaskManualModalComponent,
     ReceiveEtherModalComponent,
-    ReceiveSvtModalComponent
+    ReceiveSvtModalComponent,
+    SvtWithdrawalConfirmationModalComponent
   ],
   imports: [
     MatCheckboxModule,
