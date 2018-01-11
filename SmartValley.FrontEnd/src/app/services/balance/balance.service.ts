@@ -38,6 +38,7 @@ export class BalanceService {
     const svtBalance = await this.tokenContractClient.getBalanceAsync(address);
     const canReceiveSvt = await this.minterContractClient.canGetTokensAsync(address);
     this.balance = {
+      votingBalance: 250,
       ethBalance: +balanceResponse.balance.toFixed(3),
       wasEtherReceived: balanceResponse.wasEtherReceived,
       svtBalance: +svtBalance.toFixed(3),

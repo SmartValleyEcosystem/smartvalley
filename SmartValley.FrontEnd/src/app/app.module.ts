@@ -67,6 +67,7 @@ import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-au
 import {SvtWithdrawalConfirmationModalComponent} from './components/common/svt-withdrawal-confirmation-modal/svt-withdrawal-confirmation-modal.component';
 import {MyProjectsComponent} from './components/my-projects/my-projects.component';
 import {VotingComponent} from './components/voting/voting.component';
+import {SprintService} from './services/sprint/sprint-service';
 
 
 @NgModule({
@@ -157,6 +158,7 @@ import {VotingComponent} from './components/voting/voting.component';
     QuestionService,
     Web3Service,
     DialogService,
+    SprintService,
     ProjectManagerContractClient,
     ScoringContractClient,
     BlockiesService,
