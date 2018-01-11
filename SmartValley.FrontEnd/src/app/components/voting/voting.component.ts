@@ -76,6 +76,7 @@ export class VotingComponent implements OnInit {
       return 7;
     }
   }
+
 // Returns current week end date
   private getWeekStartDate(date: Date): Date {
     date.setDate(date.getDay() - this.getWeekDay(date) + 8);

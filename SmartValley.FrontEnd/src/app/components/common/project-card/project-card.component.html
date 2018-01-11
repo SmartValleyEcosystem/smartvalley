@@ -9,7 +9,8 @@
   </div>
   <div class="description col-5">
     <p class="card-text">{{project.description}}</p>
-    <a *ngIf="isVoting" (click)="voitingForProject(project.id)" class="offset-3 col-4 vote-button sv-default-btn btn btn-primary">
+    <a *ngIf="isVoting" (click)="voitingForProject(project.id)"
+       class="offset-3 col-4 vote-button sv-default-btn btn btn-primary">
       {{ 'ProjectCard.VotingForProject' | translate }}
     </a>
   </div>
