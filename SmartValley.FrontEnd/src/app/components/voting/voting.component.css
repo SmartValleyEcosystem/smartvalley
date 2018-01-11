@@ -1,0 +1,158 @@
+.sw-list-projects {
+  margin-top: 2em;
+  flex: inherit;
+  max-width: none;
+  width: calc(100% + 165px);
+}
+
+.btn-grp {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+
+.sw-project-card-block {
+  position: relative;
+  padding: 0px;
+}
+
+.sw-project-card-block > div {
+  padding: 40px;
+  vertical-align: top;
+}
+
+.sw-project-header {
+  display: inline-block;
+  padding: 0;
+}
+
+.sw-project-header__country {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.sw-project-header__title > span {
+  display: block;
+  margin: 5px 0px;
+}
+
+.sw-project-header__title > span:first-child {
+  font-size: 1.5em;
+}
+
+.sw-project-footer {
+  text-align: right;
+  max-width: calc(25% - 8px);
+  display: inline-block;
+  padding: 0;
+  position: absolute;
+  height: 100%;
+}
+
+.sw-project-footer > a {
+  float: right;
+}
+
+.sw-project-rating {
+  display: inline-block;
+}
+
+.sw-project-rating > span {
+  display: block;
+}
+
+.sw-project-rating > .score {
+  font-size: 3em;
+}
+
+.sw-project-content {
+  display: inline-block;
+  padding: 0;
+}
+
+.sw-project-desc {
+  margin-bottom: 60px;
+  color: white;
+  padding: 0;
+}
+
+.timer {
+  text-align: center;
+  line-height: 1.5em;
+}
+
+.timer-title {
+  text-align: center;
+  color: white;
+  display: block;
+  font-size: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.sprint-title{
+  text-align: center;
+  color: white;
+  display: block;
+  font-size: 1.5em;
+}
+
+.timer div {
+  width: 3em;
+  margin: 0em 0.5em;
+  display: inline-block;
+}
+
+.timer div .time-number, .timer div .time-label {
+  color: white;
+  display: block;
+  text-align: center;
+}
+
+.timer div .time-label {
+  font-size: 1em;
+}
+
+.timer div .time-number {
+  font-size: 1.5em;
+}
+
+.sw-project-desc h1 {
+  letter-spacing: 7px;
+  font-size: 50px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.sw-project-btn {
+  background-color: rgb(72, 138, 232) !important;
+  padding-bottom: 1em;
+  padding-top: 1em;
+  bottom: 40px;
+  right: 40px;
+  position: absolute;
+}
+
+.btn-space {
+  margin-left: 20px;
+}
+
+.mat-tab-label-container {
+  margin-left: 5em;
+}
+
+.sv-description {
+  padding-left: 0;
+  color: white;
+  margin-bottom: 2em;
+}
+
+.sv-description > h2 {
+  margin: 0;
+}
+
+.vote-balance{
+  text-align: right;
+  color: white;
+  display: block;
+  font-size: 1.5em;
+}

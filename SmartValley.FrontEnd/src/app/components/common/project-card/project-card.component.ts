@@ -14,6 +14,7 @@ import {Constants} from '../../../constants';
 export class ProjectCardComponent implements OnInit {
   @Input() public project: Project;
   @Input() public isScoring: boolean;
+  @Input() public isVoting: boolean;
   projectService: ProjectService;
   projectImageUrl: any;
 
@@ -28,6 +29,10 @@ export class ProjectCardComponent implements OnInit {
   }
 
   showProject(id: number) {
+    this.router.navigate([Paths.Scoring + '/' + id], {queryParams: {expertiseArea: this.project.expertiseArea}});
+  }
+
+  voitingForProject(id: number) {
     this.router.navigate([Paths.Scoring + '/' + id], {queryParams: {expertiseArea: this.project.expertiseArea}});
   }
 

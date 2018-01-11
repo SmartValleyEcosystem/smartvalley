@@ -23,6 +23,13 @@ export class LandingComponent implements OnInit{
     this.initializeProjectsCollection();
   }
 
+  async navigateToVoting() {
+    const isOk = await this.authenticationService.authenticateAsync();
+    if (isOk) {
+      await this.router.navigate([Paths.Voting]);
+    }
+  }
+
   async navigateToScoring() {
     const isOk = await this.authenticationService.authenticateAsync();
     if (isOk) {

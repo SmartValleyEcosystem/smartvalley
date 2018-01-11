@@ -92,6 +92,8 @@ import { VotingComponent } from './components/voting/voting.component';
     ProjectInformationComponent,
     AccountComponent,
     DashIfEmptyPipe,
+    VotingComponent,
+    MyProjectsComponent,
     SvtWithdrawalConfirmationModalComponent
   ],
   entryComponents: [

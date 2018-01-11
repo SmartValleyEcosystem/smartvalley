@@ -9,9 +9,12 @@
   </div>
   <div class="description col-5">
     <p class="card-text">{{project.description}}</p>
+    <a *ngIf="isVoting" (click)="voitingForProject(project.id)" class="offset-3 col-4 vote-button sv-default-btn btn btn-primary">
+      {{ 'ProjectCard.VotingForProject' | translate }}
+    </a>
   </div>
   <div class="scoring col-3">
-    <div class="scoring-container">
+    <div *ngIf="!isVoting" class="scoring-container">
       <span>{{ 'ProjectCard.ScoringRating' | translate }}</span>
       <div class="score-panel" *ngIf="project.score">
         <span class="score {{projectService.colorOfProjectRate(project.score)}}">{{project.score.toFixed(0)}}</span>
@@ -19,13 +22,16 @@
       </div>
       <span *ngIf="!project.score">{{ 'ProjectCard.InProgress' | translate }}</span>
     </div>
-    <div *ngIf="isScoring">
+    <div *ngIf="isVoting" class="voting-container">
+      <span>My vote: yes</span>
+    </div>
+    <div *ngIf="isScoring && !isVoting">
       <a class="col-8 sv-default-btn btn btn-primary"
          (click)="showProject(project.id)">{{ 'ProjectCard.Estimate' | translate }}</a>
     </div>
-    <div *ngIf="!isScoring">
+    <div *ngIf="!isScoring || isVoting">
       <a (click)="showReport(project.id)" class="col-8 sv-default-btn btn btn-primary">
-        {{ 'ProjectCard.ViewReport' | translate }}
+        {{ 'ProjectCard.Info' | translate }}
       </a>
     </div>
   </div>

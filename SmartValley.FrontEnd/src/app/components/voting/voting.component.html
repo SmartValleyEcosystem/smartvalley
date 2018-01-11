@@ -6,17 +6,47 @@
   </div>
   <div class="row mx-auto">
     <div class="col-6 sv-description d-flex align-items-end">
-      <h2 class="">{{ 'Landing.ScoredProjects' | translate }}</h2>
+      <h2 class="">{{ 'Voting.ProjectsForVoting' | translate }}</h2>
     </div>
-    <div class="col-6 btn-grp text-right">
-      <button mat-raised-button class="col-5 sm-btn-primary btn-space" (click)="navigateToScoring()">{{ 'Landing.BecomeAnExpert' | translate }}</button>
-      <button mat-raised-button class="col-5 sm-btn-primary btn-space" (click)="createProject()">{{ 'Landing.ApplyProject' | translate }}</button>
+  </div>
+  <div class="row mx-auto sprint-title">
+    {{ 'Voting.Sprint' | translate }} {{sprintNumber}}: {{ 'Voting.From' | translate }} {{dateFrom}} {{ 'Voting.To' |
+    translate }} {{dateTo}}
+  </div>
+  <div class="row mx-auto">
+    <a style="height: 3.6em; margin-top: 2.4em;" class="col-2 sv-default-btn btn btn-primary"
+       (click)="showProject(project.id)">{{ 'Voting.FinishedVotes' | translate }}</a>
+    <div class="offset-1 col-6">
+    <span class="timer-title">
+      {{ 'Voting.ReminingTime' | translate }}
+    </span>
+      <div class="timer">
+        <div>
+          <span class="time-number">{{endDays}}</span>
+          <span class="time-label">{{ 'Voting.Days' | translate }}</span>
+        </div>
+        <div>
+          <span class="time-number">{{endHours}}</span>
+          <span class="time-label">{{ 'Voting.Hours' | translate }}</span>
+        </div>
+        <div>
+          <span class="time-number">{{endMinutes}}</span>
+          <span class="time-label">{{ 'Voting.Minutes' | translate }}</span>
+        </div>
+        <div>
+          <span class="time-number">{{endSeconds}}</span>
+          <span class="time-label">{{ 'Voting.Seconds' | translate }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-3 vote-balance">
+      <span>{{ 'Voting.VoteBalance' | translate }}: {{voteBalance}} SVT</span>
     </div>
   </div>
   <div class="row mx-auto">
     <div class="sw-list-projects">
       <div class="card_no_shdw col-12 sw-card" style="margin: 0 0 20px 0" *ngFor="let project of projects;">
-        <app-project-card [project] = "project" [isScoring]="false"></app-project-card>
+        <app-project-card [project]="project" [isScoring]="false" [isVoting]="true"></app-project-card>
       </div>
     </div>
   </div>
