@@ -73,7 +73,7 @@ export class ReportComponent implements AfterViewChecked, OnInit {
   }
 
   public showForm() {
-    this.reportTabSet.select('form');
+    this.reportTabSet.select('about');
   }
 
   private async loadInitialData(): Promise<void> {
