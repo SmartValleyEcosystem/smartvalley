@@ -55,16 +55,6 @@ export class SprintService {
   }
 
 // Returns current week end date
-  private getWeekStartNewDate(date: Date): Date {
-    date.setDate(date.getDay() - this.getWeekDay(date) + 15);
-    date.setHours(0);
-    date.setMinutes(0);
-    date.setSeconds(0);
-    date.setMilliseconds(0);
-    return date;
-  }
-
-// Returns current week end date
   private getWeekEndDate(date: Date): Date {
     date.setDate(date.getDay() - this.getWeekDay(date) + 14);
     date.setHours(23);
