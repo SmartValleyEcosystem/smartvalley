@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Project} from '../../services/project';
 import {ProjectApiClient} from '../../api/project/project-api-client';
+import {ProjectCardType} from '../../services/projectCard-type';
 
 @Component({
   selector: 'app-voting',
@@ -8,6 +9,8 @@ import {ProjectApiClient} from '../../api/project/project-api-client';
   styleUrls: ['./voting.component.css']
 })
 export class VotingComponent implements OnInit {
+
+  public ProjectCardType = ProjectCardType;
 
   public projects: Array<Project>;
 

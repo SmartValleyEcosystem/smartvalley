@@ -7,6 +7,7 @@ import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 import {ProjectsForScoringRequest} from '../../api/scoring/projecs-for-scoring-request';
 import {isNullOrUndefined} from 'util';
 import {Subscription} from 'rxjs/Subscription';
+import {ProjectCardType} from '../../services/projectCard-type';
 
 @Component({
   selector: 'app-scoring',
@@ -14,6 +15,7 @@ import {Subscription} from 'rxjs/Subscription';
   styleUrls: ['./scoring.component.css']
 })
 export class ScoringComponent implements OnDestroy, OnInit {
+  public ProjectCardType = ProjectCardType;
   public projects: Array<Project> = [];
   public selectedTabIndex: number;
 

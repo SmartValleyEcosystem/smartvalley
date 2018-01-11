@@ -68,6 +68,7 @@ import {SvtWithdrawalConfirmationModalComponent} from './components/common/svt-w
 import {MyProjectsComponent} from './components/my-projects/my-projects.component';
 import {VotingComponent} from './components/voting/voting.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,

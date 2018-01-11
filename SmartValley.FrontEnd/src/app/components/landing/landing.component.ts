@@ -3,6 +3,7 @@ import {AuthenticationService} from '../../services/authentication/authenticatio
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {Project} from '../../services/project';
+import {ProjectCardType} from '../../services/projectCard-type';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 
 @Component({
@@ -13,6 +14,7 @@ import {ProjectApiClient} from '../../api/project/project-api-client';
 export class LandingComponent implements OnInit {
 
   public projects: Array<Project>;
+  public ProjectCardType = ProjectCardType;
 
   constructor(private authenticationService: AuthenticationService,
               private router: Router,

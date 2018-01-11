@@ -5,6 +5,7 @@ import {Paths} from '../../../paths';
 import {ProjectService} from '../../../services/project-service';
 import {BlockiesService} from '../../../services/blockies-service';
 import {Constants} from '../../../constants';
+import {ProjectCardType} from '../../../services/projectCard-type';
 
 @Component({
   selector: 'app-project-card',
@@ -12,9 +13,9 @@ import {Constants} from '../../../constants';
   styleUrls: ['./project-card.component.css']
 })
 export class ProjectCardComponent implements OnInit {
+  public ProjectCardType = ProjectCardType;
   @Input() public project: Project;
-  @Input() public isScoring: boolean;
-  @Input() public isVoting: boolean;
+  @Input() public projectCardType: ProjectCardType;
   projectService: ProjectService;
   projectImageUrl: any;
 

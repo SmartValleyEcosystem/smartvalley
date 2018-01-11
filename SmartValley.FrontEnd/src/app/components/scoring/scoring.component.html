@@ -11,25 +11,26 @@
       <div class="white-card">
         <div class="content">
           <span class="choose">{{ 'Scoring.ChooseExpertise' | translate }}</span>
-          <mat-tab-group [selectedIndex]="selectedExpertiseTabIndex" (selectedIndexChange)="onExpertiseTabIndexChanged($event)">
+          <mat-tab-group [selectedIndex]="selectedExpertiseTabIndex"
+                         (selectedIndexChange)="onExpertiseTabIndexChanged($event)">
             <mat-tab label="{{ 'Common.Hr' | translate }}">
               <div class="card" *ngFor="let project of projects;">
-                <app-project-card [project]="project" [isScoring]="true"></app-project-card>
+                <app-project-card [project]="project" [projectCardType]="ProjectCardType.Scoring"></app-project-card>
               </div>
             </mat-tab>
             <mat-tab label="{{ 'Common.Lawyer' | translate }}">
               <div class="card" *ngFor="let project of projects;">
-                <app-project-card [project]="project" [isScoring]="true"></app-project-card>
+                <app-project-card [project]="project" [projectCardType]="ProjectCardType.Scoring"></app-project-card>
               </div>
             </mat-tab>
             <mat-tab label="{{ 'Common.Analyst' | translate }}">
               <div class="card" *ngFor="let project of projects;">
-                <app-project-card [project]="project" [isScoring]="true"></app-project-card>
+                <app-project-card [project]="project" [projectCardType]="ProjectCardType.Scoring"></app-project-card>
               </div>
             </mat-tab>
             <mat-tab label="{{ 'Common.TechnicalExpert' | translate }}">
               <div class="card" *ngFor="let project of projects;">
-                <app-project-card [project]="project" [isScoring]="true"></app-project-card>
+                <app-project-card [project]="project" [projectCardType]="ProjectCardType.Scoring"></app-project-card>
               </div>
             </mat-tab>
           </mat-tab-group>
