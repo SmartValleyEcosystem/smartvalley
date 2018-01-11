@@ -33,7 +33,7 @@ export class ProjectCardComponent implements OnInit {
     this.router.navigate([Paths.Scoring + '/' + id], {queryParams: {expertiseArea: this.project.expertiseArea}});
   }
 
-  votingForProject(id: number) {
+  voteForProject(id: number) {
     this.router.navigate([Paths.Scoring + '/' + id], {queryParams: {expertiseArea: this.project.expertiseArea}});
   }
 
