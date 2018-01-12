@@ -68,14 +68,14 @@ import {SvtWithdrawalConfirmationModalComponent} from './components/common/svt-w
 import {MyProjectsComponent} from './components/my-projects/my-projects.component';
 import {SprintService} from './services/sprint/sprint-service';
 import {VotingComponent} from './components/voting/voting.component';
-import {VoteComponent} from './components/vote/vote.component';
+import {VotingCardComponent} from './components/voting-card/voting-card.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     VotingComponent,
-    VoteComponent,
+    VotingCardComponent,
     MetamaskHowtoComponent,
     LandingComponent,
     HeaderComponent,
@@ -98,7 +98,8 @@ import {VoteComponent} from './components/vote/vote.component';
     AccountComponent,
     DashIfEmptyPipe,
     SvtWithdrawalConfirmationModalComponent,
-    MyProjectsComponent
+    MyProjectsComponent,
+    VotingCardComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,

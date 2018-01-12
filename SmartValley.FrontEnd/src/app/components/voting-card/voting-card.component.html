@@ -1,7 +1,7 @@
 <div class="container" *ngIf="details">
   <div class="row mx-auto">
     <div class="col-8 title">
-      <h1>{{details.name}} {{ 'Vote.Title' | translate }}</h1>
+      <h1>{{details.name}} {{ 'VotingCard.Title' | translate }}</h1>
     </div>
   </div>
   <div class="row mx-auto">
@@ -17,30 +17,30 @@
           </div>
           <a (click)="vote()"
              class="offset-4 col-6 vote-button sv-default-btn btn btn-primary">
-            {{ 'Vote.VotingForProject' | translate }}
+            {{ 'VotingCard.VotingForProject' | translate }}
           </a>
         </div>
         <div class="scoring col-4">
           <div class="scoring-container">
     <span class="timer-title">
-      {{ 'Vote.ReminingTime' | translate }}
+      {{ 'VotingCard.ReminingTime' | translate }}
     </span>
             <div class="timer">
               <div>
                 <span class="time-number">{{endDays}}</span>
-                <span class="time-label">{{ 'Vote.Days' | translate }}</span>
+                <span class="time-label">{{ 'VotingCard.Days' | translate }}</span>
               </div>
               <div>
                 <span class="time-number">{{endHours}}</span>
-                <span class="time-label">{{ 'Vote.Hours' | translate }}</span>
+                <span class="time-label">{{ 'VotingCard.Hours' | translate }}</span>
               </div>
               <div>
                 <span class="time-number">{{endMinutes}}</span>
-                <span class="time-label">{{ 'Vote.Minutes' | translate }}</span>
+                <span class="time-label">{{ 'VotingCard.Minutes' | translate }}</span>
               </div>
               <div>
                 <span class="time-number">{{endSeconds}}</span>
-                <span class="time-label">{{ 'Vote.Seconds' | translate }}</span>
+                <span class="time-label">{{ 'VotingCard.Seconds' | translate }}</span>
               </div>
             </div>
           </div>
@@ -55,12 +55,12 @@
     <button class="trans-btn col-3 btn btn-primary"
             style="padding-top: 1em; padding-bottom: 1em;"
             (click)="vote()">
-      {{ 'Vote.VoteForProject' | translate }}
+      {{ 'VotingCard.VoteForProject' | translate }}
     </button>
     <button class="trans-btn col-3 btn btn-primary"
             style="padding-top: 1em; padding-bottom: 1em; margin-left: 3em;"
             (click)="navigateToVoting()">
-      {{ 'Vote.BackToVotes' | translate }}
+      {{ 'VotingCard.BackToVotes' | translate }}
     </button>
   </div>
 </div>

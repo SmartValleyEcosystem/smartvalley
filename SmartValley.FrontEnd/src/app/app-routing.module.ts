@@ -17,7 +17,7 @@ import {GuardType} from './services/guards/guard-type.enum';
 import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-authenticated.guard';
 import {MyProjectsComponent} from './components/my-projects/my-projects.component';
 import {VotingComponent} from './components/voting/voting.component';
-import {VoteComponent} from './components/vote/vote.component';
+import {VotingCardComponent} from './components/voting-card/voting-card.component';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -47,7 +47,7 @@ const appRoutes: Routes = [
         }
       },
       {path: Paths.Report + '/:id', pathMatch: 'full', component: ReportComponent},
-      {path: Paths.Vote + '/:id', pathMatch: 'full', component: VoteComponent, canActivate: [ShouldBeAuthenticatedGuard]},
+      {path: Paths.Vote + '/:id', pathMatch: 'full', component: VotingCardComponent, canActivate: [ShouldBeAuthenticatedGuard]},
       {path: Paths.Scoring + '/:id', pathMatch: 'full', component: EstimateComponent, canActivate: [ShouldHaveEthGuard]}
     ]
   },

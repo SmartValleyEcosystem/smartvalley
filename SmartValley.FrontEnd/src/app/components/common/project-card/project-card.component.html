@@ -30,8 +30,13 @@
       <a class="col-8 sv-default-btn btn btn-primary"
          (click)="showProject(project.id)">{{ 'ProjectCard.Estimate' | translate }}</a>
     </div>
-    <div *ngIf="projectCardType !== ProjectCardType.Scoring">
+    <div *ngIf="projectCardType === ProjectCardType.General">
       <a (click)="showReport(project.id)" class="col-8 sv-default-btn btn btn-primary">
+        {{ 'ProjectCard.Info' | translate }}
+      </a>
+    </div>
+    <div *ngIf="projectCardType === ProjectCardType.Voting">
+      <a (click)="voteForProject(project.id)" class="col-8 sv-default-btn btn btn-primary">
         {{ 'ProjectCard.Info' | translate }}
       </a>
     </div>

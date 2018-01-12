@@ -11,11 +11,11 @@ import {Sprint} from '../../services/sprint/sprint';
 import {SprintService} from '../../services/sprint/sprint-service';
 
 @Component({
-  selector: 'app-vote',
-  templateUrl: './vote.component.html',
-  styleUrls: ['./vote.component.css']
+  selector: 'app-voting-card',
+  templateUrl: './voting-card.component.html',
+  styleUrls: ['./voting-card.component.css']
 })
-export class VoteComponent implements OnInit {
+export class VotingCardComponent implements OnInit {
   public details: ProjectDetailsResponse;
   public projectImageUrl: string;
 
@@ -70,6 +70,6 @@ export class VoteComponent implements OnInit {
   }
 
   public async navigateToVoting() {
-    await this.router.navigate([Paths.Scoring]);
+    await this.router.navigate([Paths.Voting]);
   }
 }
