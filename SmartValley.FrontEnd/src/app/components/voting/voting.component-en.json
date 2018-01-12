@@ -1,0 +1,16 @@
+{
+  "Voting": {
+    "ProjectsForVoting": "Projects for voting",
+    "BecomeAnExpert": "Become an expert",
+    "ReminingTime": "Remining time:",
+    "FinishedVotes": "Finished votes",
+    "Days": "Days",
+    "Hours": "Hours",
+    "Minutes": "Minutes",
+    "Seconds": "Seconds",
+    "From": "From",
+    "To": "to",
+    "Sprint": "Sprint",
+    "VoteBalance" : "Vote balance"
+  }
+}

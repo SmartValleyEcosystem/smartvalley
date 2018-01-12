@@ -10,6 +10,7 @@ export function multiTranslateLoaderFactory() {
     'components/application/application.component',
     'components/my-projects/my-projects.component',
     'components/landing/landing.component',
+    'components/voting/voting.component',
     'components/scoring/scoring.component',
     'components/estimate/estimate.component',
     'components/report/report.component',

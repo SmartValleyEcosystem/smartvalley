@@ -16,6 +16,7 @@ import {CompositeGuard} from './services/guards/composite.guard';
 import {GuardType} from './services/guards/guard-type.enum';
 import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-authenticated.guard';
 import {MyProjectsComponent} from './components/my-projects/my-projects.component';
+import {VotingComponent} from './components/voting/voting.component';
 import {VoteComponent} from './components/vote/vote.component';
 
 const appRoutes: Routes = [
@@ -23,7 +24,13 @@ const appRoutes: Routes = [
   {
     path: Paths.Root, component: RootComponent, canActivate: [InitializationGuard], children: [
       {path: Paths.Root, pathMatch: 'full', component: LandingComponent},
-      {path: Paths.MyProjects, pathMatch: 'full', component: MyProjectsComponent, canActivate: [ShouldBeAuthenticatedGuard]},
+      {path: Paths.Voting, pathMatch: 'full', component: VotingComponent, canActivate: [ShouldBeAuthenticatedGuard]},
+      {
+        path: Paths.MyProjects,
+        pathMatch: 'full',
+        component: MyProjectsComponent,
+        canActivate: [ShouldBeAuthenticatedGuard]
+      },
       {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent},
       {path: Paths.Scoring, pathMatch: 'full', component: ScoringComponent},
       {path: Paths.Account, pathMatch: 'full', component: AccountComponent, canActivate: [ShouldBeAuthenticatedGuard]},

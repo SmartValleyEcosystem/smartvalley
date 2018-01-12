@@ -3,6 +3,7 @@ import {Project} from '../../services/project';
 import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {Paths} from '../../paths';
 import {Router} from '@angular/router';
+import {ProjectCardType} from '../../services/project-card-type';
 
 @Component({
   selector: 'app-my-projects',
@@ -11,6 +12,7 @@ import {Router} from '@angular/router';
 })
 export class MyProjectsComponent implements OnInit {
 
+  public ProjectCardType = ProjectCardType;
   public projects: Array<Project> = [];
 
   constructor(private scoringApiClient: ScoringApiClient,

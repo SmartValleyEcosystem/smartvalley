@@ -65,8 +65,11 @@ import {ShouldHaveSvtGuard} from './services/balance/should-have-svt.guard';
 import {DashIfEmptyPipe} from './utils/dash-if-empty.pipe';
 import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-authenticated.guard';
 import {SvtWithdrawalConfirmationModalComponent} from './components/common/svt-withdrawal-confirmation-modal/svt-withdrawal-confirmation-modal.component';
-import { MyProjectsComponent } from './components/my-projects/my-projects.component';
+import {MyProjectsComponent} from './components/my-projects/my-projects.component';
+import {SprintService} from './services/sprint/sprint-service';
+import {VotingComponent} from './components/voting/voting.component';
 import { VoteComponent } from './components/vote/vote.component';
+
 
 @NgModule({
   declarations: [
@@ -93,8 +96,7 @@ import { VoteComponent } from './components/vote/vote.component';
     AccountComponent,
     DashIfEmptyPipe,
     SvtWithdrawalConfirmationModalComponent,
-    MyProjectsComponent,
-    VoteComponent
+    MyProjectsComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -156,6 +158,7 @@ import { VoteComponent } from './components/vote/vote.component';
     QuestionService,
     Web3Service,
     DialogService,
+    SprintService,
     ProjectManagerContractClient,
     ScoringContractClient,
     BlockiesService,
