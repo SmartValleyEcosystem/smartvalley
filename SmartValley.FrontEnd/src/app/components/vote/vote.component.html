@@ -18,13 +18,29 @@
         </div>
         <div class="scoring col-3">
           <div class="scoring-container">
-            <span>{{ 'Vote.ScoringRating' | translate }}</span>
-            <div *ngIf="details.score" class="score-panel">
-              <span
-                class="score {{projectService.colorOfProjectRate(details.score)}}">{{details.score.toFixed(0)}}</span>
-              <span>/ 100</span>
+            <div class="offset-1 col-6">
+    <span class="timer-title">
+      {{ 'Vote.ReminingTime' | translate }}
+    </span>
+              <div class="timer">
+                <div>
+                  <span class="time-number">{{endDays}}</span>
+                  <span class="time-label">{{ 'Vote.Days' | translate }}</span>
+                </div>
+                <div>
+                  <span class="time-number">{{endHours}}</span>
+                  <span class="time-label">{{ 'Vote.Hours' | translate }}</span>
+                </div>
+                <div>
+                  <span class="time-number">{{endMinutes}}</span>
+                  <span class="time-label">{{ 'Vote.Minutes' | translate }}</span>
+                </div>
+                <div>
+                  <span class="time-number">{{endSeconds}}</span>
+                  <span class="time-label">{{ 'Vote.Seconds' | translate }}</span>
+                </div>
+              </div>
             </div>
-            <span *ngIf="!details.score">{{ 'Vote.InProgress' | translate }}</span>
           </div>
         </div>
       </div>

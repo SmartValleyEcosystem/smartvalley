@@ -19,6 +19,11 @@ export class VoteComponent implements OnInit {
 
   private projectId: number;
 
+  public endDays: number;
+  public endHours: number;
+  public endMinutes: number;
+  public endSeconds: number;
+
   constructor(private projectApiClient: ProjectApiClient,
               private estimatesApiClient: EstimatesApiClient,
               private questionService: QuestionService,
