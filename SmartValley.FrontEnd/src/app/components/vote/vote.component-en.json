@@ -9,6 +9,7 @@
     "Days": "Days",
     "Hours": "Hours",
     "Minutes" : "Minutes",
-    "Seconds": "Seconds"
+    "Seconds": "Seconds",
+    "VotingForProject": "Voting for project"
   }
 }

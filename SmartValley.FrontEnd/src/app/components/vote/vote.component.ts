@@ -31,6 +31,10 @@ export class VoteComponent implements OnInit {
               private router: Router,
               private blockiesService: BlockiesService,
               public projectService: ProjectService) {
+    this.endDays = 2;
+    this.endHours = 2;
+    this.endMinutes = 10;
+    this.endSeconds = 59;
   }
 
 
