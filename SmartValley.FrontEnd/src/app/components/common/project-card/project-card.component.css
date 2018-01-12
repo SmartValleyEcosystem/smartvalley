@@ -9,6 +9,12 @@
   display: inline-block;
 }
 
+.voting-container {
+  color: black;
+  font-size: 2em;
+  font-weight: 600;
+}
+
 .scoring-container > span {
   display: block;
 }
@@ -42,6 +48,13 @@
   display: inline-block;
   padding-right: 2em;
   padding-left: 2em;
+  height: 100%;
+  position: absolute;
+}
+
+.vote-button {
+  bottom: 3em;
+  position: absolute;
 }
 
 .main-info {

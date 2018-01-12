@@ -5,6 +5,7 @@ import {Paths} from '../../../paths';
 import {ProjectService} from '../../../services/project-service';
 import {BlockiesService} from '../../../services/blockies-service';
 import {Constants} from '../../../constants';
+import {ProjectCardType} from '../../../services/project-card-type';
 
 @Component({
   selector: 'app-project-card',
@@ -12,8 +13,9 @@ import {Constants} from '../../../constants';
   styleUrls: ['./project-card.component.css']
 })
 export class ProjectCardComponent implements OnInit {
+  public ProjectCardType = ProjectCardType;
   @Input() public project: Project;
-  @Input() public isScoring: boolean;
+  @Input() public projectCardType: ProjectCardType;
   projectService: ProjectService;
   projectImageUrl: any;
 
@@ -28,6 +30,10 @@ export class ProjectCardComponent implements OnInit {
   }
 
   showProject(id: number) {
+    this.router.navigate([Paths.Scoring + '/' + id], {queryParams: {expertiseArea: this.project.expertiseArea}});
+  }
+
+  voteForProject(id: number) {
     this.router.navigate([Paths.Scoring + '/' + id], {queryParams: {expertiseArea: this.project.expertiseArea}});
   }
 

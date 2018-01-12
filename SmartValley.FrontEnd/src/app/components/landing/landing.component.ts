@@ -3,24 +3,37 @@ import {AuthenticationService} from '../../services/authentication/authenticatio
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {Project} from '../../services/project';
+import {ProjectCardType} from '../../services/project-card-type';
 import {ProjectApiClient} from '../../api/project/project-api-client';
+import {SprintService} from '../../services/sprint/sprint-service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.css']
 })
-export class LandingComponent implements OnInit{
+export class LandingComponent implements OnInit {
 
   public projects: Array<Project>;
+  public ProjectCardType = ProjectCardType;
+  public canVote: boolean;
 
   constructor(private authenticationService: AuthenticationService,
               private router: Router,
-              private projectApiClient: ProjectApiClient) {
+              private projectApiClient: ProjectApiClient,
+              private sprintService: SprintService) {
   }
 
-  ngOnInit(): void {
-    this.initializeProjectsCollection();
+  async ngOnInit(): Promise<void> {
+    await this.initializeProjectsCollection();
+    this.canVote = await this.sprintService.hasActiveSprintAsync();
+  }
+
+  async navigateToVoting() {
+    const isOk = await this.authenticationService.authenticateAsync();
+    if (isOk) {
+      await this.router.navigate([Paths.Voting]);
+    }
   }
 
   async navigateToScoring() {

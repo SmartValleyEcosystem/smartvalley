@@ -2,6 +2,7 @@
   "Landing": {
     "ScoredProjects": "Scored Projects:",
     "BecomeAnExpert": "Become an expert",
-    "ApplyProject": "Apply project for scoring"
+    "ApplyProject": "Apply project for scoring",
+    "VoteForFree": "Vote for free scoring"
   }
 }

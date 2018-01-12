@@ -5,18 +5,25 @@
     </div>
   </div>
   <div class="row mx-auto">
-    <div class="col-6 sv-description d-flex align-items-end">
+    <div class="col-3 sv-description d-flex align-items-end">
       <h2 class="">{{ 'Landing.ScoredProjects' | translate }}</h2>
     </div>
-    <div class="col-6 btn-grp text-right">
-        <button mat-raised-button class="col-5 sm-btn-primary btn-space" (click)="navigateToScoring()">{{ 'Landing.BecomeAnExpert' | translate }}</button>
-        <button mat-raised-button class="col-5 sm-btn-primary btn-space" (click)="createProject()">{{ 'Landing.ApplyProject' | translate }}</button>
+    <div class="col-9 btn-grp text-right">
+      <button *ngIf="canVote" mat-raised-button class="col-3 sm-btn-primary btn-space" (click)="navigateToVoting()">{{
+        'Landing.VoteForFree' | translate }}
+      </button>
+      <button mat-raised-button class="col-3 sm-btn-primary btn-space" (click)="navigateToScoring()">{{
+        'Landing.BecomeAnExpert' | translate }}
+      </button>
+      <button mat-raised-button class="col-3 sm-btn-primary btn-space" (click)="createProject()">{{
+        'Landing.ApplyProject' | translate }}
+      </button>
     </div>
   </div>
   <div class="row mx-auto">
     <div class="sw-list-projects">
       <div class="card_no_shdw col-12 sw-card" style="margin: 0 0 20px 0" *ngFor="let project of projects;">
-        <app-project-card [project] = "project" [isScoring]="false"></app-project-card>
+        <app-project-card [project]="project" [projectCardType]="ProjectCardType.General"></app-project-card>
       </div>
     </div>
   </div>
