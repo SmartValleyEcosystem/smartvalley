@@ -13,6 +13,7 @@ export function multiTranslateLoaderFactory() {
     'components/scoring/scoring.component',
     'components/estimate/estimate.component',
     'components/report/report.component',
+    'components/vote/vote.component',
     'components/report/questions/questions.component',
     'components/footer/footer.component',
     'components/common/project-card/project-card.component',

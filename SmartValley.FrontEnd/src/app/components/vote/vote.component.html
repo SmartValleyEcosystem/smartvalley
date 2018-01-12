@@ -1,0 +1,52 @@
+<div class="container" *ngIf="details">
+  <div class="row mx-auto">
+    <div class="col-8 title">
+      <h1>{{details.name}} {{ 'Vote.Title' | translate }}</h1>
+    </div>
+  </div>
+  <div class="row mx-auto">
+    <div class="report-card col-12">
+      <div class="report-content">
+        <div class="main-info col-4">
+          <img src="{{projectImageUrl}}" style="width: 128px;"/>
+        </div>
+        <div class="description col-5">
+          <div class="main-info__title">
+            <span>{{details.name}}</span>
+            <span>{{details.area}}</span>
+          </div>
+        </div>
+        <div class="scoring col-3">
+          <div class="scoring-container">
+            <span>{{ 'Vote.ScoringRating' | translate }}</span>
+            <div *ngIf="details.score" class="score-panel">
+              <span
+                class="score {{projectService.colorOfProjectRate(details.score)}}">{{details.score.toFixed(0)}}</span>
+              <span>/ 100</span>
+            </div>
+            <span *ngIf="!details.score">{{ 'Vote.InProgress' | translate }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mx-auto">
+    <app-project-information class="col-12 info" [projectDetails]="details"></app-project-information>
+    <div>
+      <div style="margin-left: calc(4em - 5px);" class="submit-button row">
+        <button class="trans-btn col-3 btn btn-primary"
+                style="padding-top: 1em; padding-bottom: 1em;"
+                (click)="showEstimates()">
+          {{ 'Report.ExpertEstimates' | translate }}
+        </button>
+      </div>
+      <div style="margin-left: calc(4em - 5px);" class="submit-button row">
+        <button class="trans-btn col-3 btn btn-primary"
+                style="padding-top: 1em; padding-bottom: 1em;"
+                (click)="showEstimates()">
+          {{ 'Report.ExpertEstimates' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
