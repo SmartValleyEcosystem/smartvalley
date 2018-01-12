@@ -5,6 +5,7 @@ import {Paths} from '../../paths';
 import {Project} from '../../services/project';
 import {ProjectCardType} from '../../services/project-card-type';
 import {ProjectApiClient} from '../../api/project/project-api-client';
+import {SprintService} from '../../services/sprint/sprint-service';
 
 @Component({
   selector: 'app-root',
@@ -15,16 +16,17 @@ export class LandingComponent implements OnInit {
 
   public projects: Array<Project>;
   public ProjectCardType = ProjectCardType;
-  public hasAcriveSprint: boolean;
+  public canVote: boolean;
 
   constructor(private authenticationService: AuthenticationService,
               private router: Router,
-              private projectApiClient: ProjectApiClient) {
-    this.hasAcriveSprint = true;
+              private projectApiClient: ProjectApiClient,
+              private sprintService: SprintService) {
   }
 
-  ngOnInit(): void {
-    this.initializeProjectsCollection();
+  async ngOnInit(): Promise<void> {
+    await this.initializeProjectsCollection();
+    this.canVote = await this.sprintService.hasActiveSprintAsync();
   }
 
   async navigateToVoting() {

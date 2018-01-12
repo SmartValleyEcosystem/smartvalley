@@ -10,6 +10,12 @@ export class SprintService {
 
   }
 
+  public async hasActiveSprintAsync(): Promise<boolean> {
+    const currentSprint = await this.getCurrentSprintAsync();
+    return !!currentSprint;
+  }
+
+
   public async getCurrentSprintAsync(): Promise<Sprint> {
 
     const response = await this.projectApiClient.getScoredProjectsAsync();
