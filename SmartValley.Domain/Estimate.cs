@@ -2,14 +2,23 @@
 {
     public class Estimate
     {
-        public long ProjectId { get; set; }
+        public Estimate(long projectId, string expertAddress, long questionId, int score, string comment)
+        {
+            ProjectId = projectId;
+            ExpertAddress = expertAddress;
+            QuestionId = questionId;
+            Score = score;
+            Comment = comment;
+        }
 
-        public string ExpertAddress { get; set; }
+        public long ProjectId { get; }
 
-        public long QuestionId { get; set; }
+        public string ExpertAddress { get; }
 
-        public int Score { get; set; }
+        public long QuestionId { get; }
 
-        public string Comment { get; set; }
+        public int Score { get; }
+
+        public string Comment { get; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SmartValley.WebApi.Estimates
+namespace SmartValley.WebApi.Estimates.Requests
 {
     public class SubmitEstimatesRequest
     {

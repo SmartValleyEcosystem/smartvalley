@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application;
-using SmartValley.Application.Contracts;
 using SmartValley.Application.Exceptions;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
+using SmartValley.WebApi.Applications.Requests;
 
 namespace SmartValley.WebApi.Applications
 {
@@ -14,21 +14,21 @@ namespace SmartValley.WebApi.Applications
     {
         private readonly IApplicationRepository _applicationRepository;
         private readonly IProjectRepository _projectRepository;
+        private readonly IScoringRepository _scoringRepository;
         private readonly ITeamMemberRepository _teamRepository;
-        private readonly IProjectManagerContractClient _projectManagerContractClient;
         private readonly EthereumClient _ethereumClient;
 
         public ApplicationService(
             IApplicationRepository applicationRepository,
             IProjectRepository projectRepository,
+            IScoringRepository scoringRepository,
             ITeamMemberRepository teamRepository,
-            IProjectManagerContractClient projectManagerContractClient,
             EthereumClient ethereumClient)
         {
             _applicationRepository = applicationRepository;
             _projectRepository = projectRepository;
+            _scoringRepository = scoringRepository;
             _teamRepository = teamRepository;
-            _projectManagerContractClient = projectManagerContractClient;
             _ethereumClient = ethereumClient;
         }
 
@@ -38,21 +38,29 @@ namespace SmartValley.WebApi.Applications
                 throw new ArgumentNullException();
 
             await _ethereumClient.WaitForConfirmationAsync(applicationRequest.TransactionHash);
-
-            var projectAddress = await _projectManagerContractClient.GetProjectAddressAsync(applicationRequest.ProjectId);
-
-            await CreateProjectAsync(applicationRequest, projectAddress);
+            await CreateProjectAsync(applicationRequest);
         }
 
-        private async Task CreateProjectAsync(ApplicationRequest applicationRequest, string projectContractAddress)
+        private async Task CreateProjectAsync(ApplicationRequest applicationRequest)
         {
-            var project = await AddProjectAsync(applicationRequest, projectContractAddress);
+            var projectId = await AddProjectAsync(applicationRequest);
+            var applicationId = await AddApplicationAsync(applicationRequest, projectId);
+            await AddProjectScoringAsync(projectId);
+            await AddTeamMembersAsync(applicationRequest, applicationId);
+        }
 
-            var application = await AddApplicationAsync(applicationRequest, project.Id);
+        private Task AddProjectScoringAsync(long projectId)
+        {
+            var projectScoring = new Domain.Entities.Scoring {ProjectId = projectId};
+            return _scoringRepository.AddAsync(projectScoring);
+        }
 
+        private async Task AddTeamMembersAsync(ApplicationRequest applicationRequest, long applicationId)
+        {
             var teamMembers = applicationRequest
                 .TeamMembers
-                .Select(m => CreateTeamMember(m, application.Id)).ToArray();
+                .Select(m => CreateTeamMember(m, applicationId))
+                .ToArray();
 
             await _teamRepository.AddRangeAsync(teamMembers);
         }
@@ -77,29 +85,26 @@ namespace SmartValley.WebApi.Applications
             throw new AppErrorException(ErrorCode.ValidatationError, $"Unknown team member type: '{memberType}'");
         }
 
-        private async Task<Domain.Entities.Application> AddApplicationAsync(ApplicationRequest model, long projectId)
+        private async Task<long> AddApplicationAsync(ApplicationRequest request, long projectId)
         {
             var application = new Domain.Entities.Application
                               {
                                   ProjectId = projectId,
-                                  SoftCap = model.SoftCap,
-                                  HardCap = model.HardCap,
-                                  BlockchainType = model.BlockChainType,
-                                  FinancialModelLink = model.FinanceModelLink,
-                                  InvestmentsAreAttracted = model.AttractedInvestments,
-                                  ProjectStatus = model.ProjectStatus,
-                                  WhitePaperLink = model.WhitePaperLink,
-                                  MvpLink = model.MvpLink
+                                  SoftCap = request.SoftCap,
+                                  HardCap = request.HardCap,
+                                  BlockchainType = request.BlockChainType,
+                                  FinancialModelLink = request.FinanceModelLink,
+                                  InvestmentsAreAttracted = request.AttractedInvestments,
+                                  ProjectStatus = request.ProjectStatus,
+                                  WhitePaperLink = request.WhitePaperLink,
+                                  MvpLink = request.MvpLink
                               };
 
             await _applicationRepository.AddAsync(application);
-
-            return application;
+            return application.Id;
         }
 
-        private async Task<Project> AddProjectAsync(
-            ApplicationRequest request,
-            string projectContractAddress)
+        private async Task<long> AddProjectAsync(ApplicationRequest request)
         {
             var project = new Project
                           {
@@ -108,13 +113,11 @@ namespace SmartValley.WebApi.Applications
                               ProjectArea = request.ProjectArea,
                               Description = request.Description,
                               AuthorAddress = request.AuthorAddress,
-                              ProjectAddress = projectContractAddress,
                               ExternalId = Guid.Parse(request.ProjectId)
                           };
 
             await _projectRepository.AddAsync(project);
-
-            return project;
+            return project.Id;
         }
     }
 }

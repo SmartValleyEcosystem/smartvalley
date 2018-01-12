@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using SmartValley.WebApi.Applications.Requests;
 
 namespace SmartValley.WebApi.Applications
 {

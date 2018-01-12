@@ -1,67 +1,57 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SmartValley.Application.Exceptions;
+using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
-using SmartValley.WebApi.Applications;
-using SmartValley.WebApi.TeamMembers;
 
 namespace SmartValley.WebApi.Projects
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ProjectService : IProjectService
     {
         private readonly IApplicationRepository _applicationRepository;
         private readonly IProjectRepository _projectRepository;
+        private readonly IScoringRepository _scoringRepository;
         private readonly ITeamMemberRepository _teamRepository;
 
         public ProjectService(
             IApplicationRepository applicationRepository,
             IProjectRepository projectRepository,
+            IScoringRepository scoringRepository,
             ITeamMemberRepository teamRepository)
         {
             _applicationRepository = applicationRepository;
             _projectRepository = projectRepository;
+            _scoringRepository = scoringRepository;
             _teamRepository = teamRepository;
         }
 
-        public Task<Project> GetProjectByIdAsync(long projectId)
-            => GetProjectAsync(projectId);
-
-        public async Task<ProjectDetailsResponse> GetProjectDetailsByIdAsync(long projectId)
+        public async Task<ProjectDetails> GetDetailsAsync(long projectId)
         {
-            var project = await GetProjectAsync(projectId);
+            var project = await FindAsync(projectId);
+            var projectScoring = await _scoringRepository.GetByProjectIdAsync(projectId);
             var application = await _applicationRepository.GetByProjectIdAsync(projectId);
             var teamMembers = await _teamRepository.GetAllByApplicationIdAsync(application.Id);
-            var applicationResponse = new ProjectDetailsResponse
-                                      {
-                                          Name = project.Name,
-                                          Description = project.Description,
-                                          AuthorAddress = project.AuthorAddress,
-                                          Country = project.Country,
-                                          Area = project.ProjectArea,
-                                          Score = project.Score,
-                                          ProjectAddress = project.ProjectAddress,
-                                          AttractedInvestments = application.InvestmentsAreAttracted,
-                                          BlockChainType = application.BlockchainType,
-                                          FinanceModelLink = application.FinancialModelLink,
-                                          HardCap = application.HardCap,
-                                          SoftCap = application.SoftCap,
-                                          MvpLink = application.MvpLink,
-                                          Status = application.ProjectStatus,
-                                          WhitePaperLink = application.WhitePaperLink,
-                                          TeamMembers = teamMembers.Select(t => new TeamMemberResponse
-                                                                                {
-                                                                                    FacebookLink = t.FacebookLink,
-                                                                                    LinkedInLink = t.LinkedInLink,
-                                                                                    FullName = t.FullName,
-                                                                                    MemberType = t.Type.FromDomain()
-                                                                                }).ToList()
-                                      };
 
-            return applicationResponse;
+            return new ProjectDetails(project, projectScoring, application, teamMembers);
         }
 
-        private async Task<Project> GetProjectAsync(long projectId)
+        public Task<IReadOnlyCollection<ProjectScoring>> GetAllScoredAsync()
+        {
+            return _projectRepository.GetAllScoredAsync();
+        }
+
+        public async Task<bool> IsAuthorizedToSeeEstimatesAsync(string account, long projectId)
+        {
+            var project = await FindAsync(projectId);
+            var projectScoring = await _scoringRepository.GetByProjectIdAsync(projectId);
+
+            return projectScoring.Score != null || project.AuthorAddress.Equals(account, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private async Task<Project> FindAsync(long projectId)
         {
             var project = await _projectRepository.GetByIdAsync(projectId);
 

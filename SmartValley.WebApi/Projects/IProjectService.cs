@@ -1,12 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Projects
 {
     public interface IProjectService
     {
-        Task<Project> GetProjectByIdAsync(long projectId);
+        Task<ProjectDetails> GetDetailsAsync(long projectId);
 
-        Task<ProjectDetailsResponse> GetProjectDetailsByIdAsync(long projectId);
+        Task<IReadOnlyCollection<ProjectScoring>> GetAllScoredAsync();
+
+        Task<bool> IsAuthorizedToSeeEstimatesAsync(string account, long projectId);
     }
 }

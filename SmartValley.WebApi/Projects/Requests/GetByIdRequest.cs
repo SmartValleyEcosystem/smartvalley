@@ -1,4 +1,4 @@
-﻿namespace SmartValley.WebApi.Projects
+﻿namespace SmartValley.WebApi.Projects.Requests
 {
     public class GetByIdRequest
     {

@@ -1,6 +1,6 @@
 ﻿using SmartValley.Domain.Entities;
 
-namespace SmartValley.WebApi.Estimates
+namespace SmartValley.WebApi.Estimates.Responses
 {
     public class QuestionResponse
     {

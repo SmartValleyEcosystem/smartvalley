@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application;
 using SmartValley.Application.Contracts;
+using SmartValley.WebApi.Balance.Responses;
 
 namespace SmartValley.WebApi.Balance
 {

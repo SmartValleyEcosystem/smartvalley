@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
+using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ProjectRepository : EntityCrudRepository<Project>, IProjectRepository
     {
         public ProjectRepository(IReadOnlyDataContext readContext, IEditableDataContext editContext)
@@ -16,47 +17,38 @@ namespace SmartValley.Data.SQL.Repositories
         {
         }
 
-        public async Task<IReadOnlyCollection<Project>> GetAllScoredAsync()
-            => await ReadContext.Projects.Where(project => project.Score.HasValue).ToArrayAsync();
-
-        public async Task<IReadOnlyCollection<Project>> GetAllByAuthorAddressAsync(string address)
+        public async Task<IReadOnlyCollection<ProjectScoring>> GetAllScoredAsync()
         {
-            return await ReadContext
-                       .Projects
-                       .Where(project => project.AuthorAddress.Equals(address, StringComparison.OrdinalIgnoreCase))
-                       .ToArrayAsync();
+            return await (from project in ReadContext.Projects
+                          join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
+                          where scoring.Score.HasValue
+                          select new ProjectScoring(project, scoring)).ToArrayAsync();
         }
 
-        public async Task<IReadOnlyCollection<Project>> GetForScoringAsync(string expertAddress, ExpertiseArea expertiseArea)
+        public async Task<IReadOnlyCollection<ProjectScoring>> GetByAuthorAsync(string authorAddress)
+        {
+            return await (from project in ReadContext.Projects
+                          join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
+                          where project.AuthorAddress.OrdinalEquals(authorAddress)
+                          select new ProjectScoring(project, scoring)).ToArrayAsync();
+        }
+
+        public async Task<IReadOnlyCollection<Project>> GetForScoringAsync(string expertAddress, ExpertiseArea area)
         {
             var scoredProjects = (from question in ReadContext.Questions
-                                  join estimateComment in ReadContext.EstimateComments on question.Id equals estimateComment.QuestionId
-                                  where estimateComment.ExpertAddress.Equals(expertAddress, StringComparison.OrdinalIgnoreCase)
-                                        && question.ExpertiseArea == expertiseArea
-                                  select estimateComment.ProjectId)
-                .Distinct();
+                                  join comment in ReadContext.EstimateComments on question.Id equals comment.QuestionId
+                                  join scoring in ReadContext.Scorings on comment.ProjectId equals scoring.ProjectId
+                                  where (comment.ExpertAddress.OrdinalEquals(expertAddress) && question.ExpertiseArea == area)
+                                        || (area == ExpertiseArea.Analyst && scoring.IsScoredByAnalyst ||
+                                            area == ExpertiseArea.Hr && scoring.IsScoredByHr ||
+                                            area == ExpertiseArea.Lawyer && scoring.IsScoredByLawyer ||
+                                            area == ExpertiseArea.Tech && scoring.IsScoredByTechnical)
+                                  select comment.ProjectId).Distinct();
 
-            return await GetByExpertiseArea(expertiseArea)
+            return await ReadContext
+                       .Projects
                        .Where(p => !scoredProjects.Contains(p.Id))
                        .ToArrayAsync();
-        }
-
-        private IQueryable<Project> GetByExpertiseArea(ExpertiseArea expertiseArea)
-        {
-            var projects = ReadContext.Projects;
-            switch (expertiseArea)
-            {
-                case ExpertiseArea.Hr:
-                    return projects.Where(p => !p.IsScoredByHr);
-                case ExpertiseArea.Analyst:
-                    return projects.Where(p => !p.IsScoredByAnalyst);
-                case ExpertiseArea.Tech:
-                    return projects.Where(p => !p.IsScoredByTechnical);
-                case ExpertiseArea.Lawyer:
-                    return projects.Where(p => !p.IsScoredByLawyer);
-                default:
-                    return projects;
-            }
         }
     }
 }

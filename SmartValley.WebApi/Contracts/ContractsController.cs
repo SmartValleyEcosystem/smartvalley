@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application.Contracts;
+using SmartValley.WebApi.Contracts.Responses;
 
 namespace SmartValley.WebApi.Contracts
 {

@@ -1,4 +1,4 @@
-﻿namespace SmartValley.WebApi.Estimates
+﻿namespace SmartValley.WebApi.Estimates.Requests
 {
     public class GetEstimatesRequest
     {

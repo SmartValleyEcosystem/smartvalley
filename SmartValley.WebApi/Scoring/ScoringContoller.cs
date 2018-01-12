@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.WebApi.Estimates;
 using SmartValley.WebApi.Projects;
+using SmartValley.WebApi.Projects.Responses;
+using SmartValley.WebApi.Scoring.Requests;
 using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Scoring
@@ -25,7 +27,7 @@ namespace SmartValley.WebApi.Scoring
             var projects = await _scoringService.GetProjectsForScoringAsync(request.ExpertiseArea.ToDomain(), User.Identity.Name);
             return new CollectionResponse<ProjectResponse>
                    {
-                       Items = projects.Select(ProjectResponse.From).ToArray()
+                       Items = projects.Select(ProjectResponse.Create).ToArray()
                    };
         }
 
@@ -33,10 +35,10 @@ namespace SmartValley.WebApi.Scoring
         [Route("myprojects")]
         public async Task<CollectionResponse<ProjectResponse>> GetMyProjectsAsync()
         {
-            var projects = await _scoringService.GetProjectsByAuthorAddressAsync(User.Identity.Name);
+            var projects = await _scoringService.GetProjectsByAuthorAsync(User.Identity.Name);
             return new CollectionResponse<ProjectResponse>
                    {
-                       Items = projects.Select(ProjectResponse.From).ToArray()
+                       Items = projects.Select(ProjectResponse.Create).ToArray()
                    };
         }
     }

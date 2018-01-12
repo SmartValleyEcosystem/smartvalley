@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application;
 using SmartValley.Application.Contracts.Project;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
+using SmartValley.WebApi.Estimates.Requests;
 
 namespace SmartValley.WebApi.Estimates
 {
@@ -15,18 +15,18 @@ namespace SmartValley.WebApi.Estimates
         private readonly IEstimateCommentRepository _estimateCommentRepository;
         private readonly EthereumClient _ethereumClient;
         private readonly IProjectContractClient _projectContractClient;
-        private readonly IProjectRepository _projectRepository;
+        private readonly IScoringRepository _scoringRepository;
 
         public EstimationService(
             IEstimateCommentRepository estimateCommentRepository,
             EthereumClient ethereumClient,
             IProjectContractClient projectContractClient,
-            IProjectRepository projectRepository)
+            IScoringRepository scoringRepository)
         {
             _estimateCommentRepository = estimateCommentRepository;
             _ethereumClient = ethereumClient;
             _projectContractClient = projectContractClient;
-            _projectRepository = projectRepository;
+            _scoringRepository = scoringRepository;
         }
 
         public async Task SubmitEstimatesAsync(SubmitEstimatesRequest request)
@@ -35,49 +35,42 @@ namespace SmartValley.WebApi.Estimates
 
             await AddEstimateCommentsAsync(request);
 
-            var project = await _projectRepository.GetByIdAsync(request.ProjectId);
-            var scoringStatistics = await _projectContractClient.GetScoringStatisticsAsync(project.ProjectAddress);
+            var scoring = await _scoringRepository.GetByProjectIdAsync(request.ProjectId);
+            var scoringStatistics = await _projectContractClient.GetScoringStatisticsAsync(scoring.ContractAddress);
 
-            await UpdateProjectAsync(project, scoringStatistics);
+            await UpdateProjectScoringAsync(scoring, scoringStatistics);
         }
 
-        public async Task<Dictionary<long, IReadOnlyCollection<Estimate>>> GetQuestionsWithEstimatesAsync(
-            long projectId,
-            string projectAddress,
-            Domain.Entities.ExpertiseArea expertiseArea)
+        public async Task<ScoringStatisticsInArea> GetScoringStatisticsInAreaAsync(long projectId, Domain.Entities.ExpertiseArea expertiseArea)
         {
-            var estimateScores = await _projectContractClient.GetEstimatesAsync(projectAddress);
-            var estimateComments = await _estimateCommentRepository.GetAsync(projectId, expertiseArea);
+            var scoring = await _scoringRepository.GetByProjectIdAsync(projectId);
+            var scores = await _projectContractClient.GetEstimatesAsync(scoring.ContractAddress);
+            var comments = await _estimateCommentRepository.GetAsync(projectId, expertiseArea);
 
-            return (from comment in estimateComments
-                    join score in estimateScores
-                        on new {comment.QuestionId, comment.ExpertAddress} equals new {score.QuestionId, score.ExpertAddress}
-                    select CreateEstimate(projectId, score, comment))
-                .GroupBy(e => e.QuestionId)
-                .ToDictionary(g => g.Key, g => (IReadOnlyCollection<Estimate>) g.ToArray());
+            var estimates = (from comment in comments
+                             join score in scores on new {comment.QuestionId, comment.ExpertAddress} equals new {score.QuestionId, score.ExpertAddress}
+                             select CreateEstimate(score, comment)).ToArray();
+
+            var requiredSubmissionsInArea = (double) await _projectContractClient.GetRequiredSubmissionsInAreaCountAsync(scoring.ContractAddress);
+            var averageScore = scoring.IsCompletedInArea(expertiseArea)
+                                   ? estimates.Sum(i => i.Score) / requiredSubmissionsInArea
+                                   : (double?) null;
+
+            return new ScoringStatisticsInArea(averageScore, estimates);
         }
 
-        private static Estimate CreateEstimate(long projectId, EstimateScore score, EstimateComment comment)
-        {
-            return new Estimate
-                   {
-                       QuestionId = score.QuestionId,
-                       Comment = comment.Comment,
-                       ExpertAddress = score.ExpertAddress,
-                       Score = score.Score,
-                       ProjectId = projectId
-                   };
-        }
+        private static Estimate CreateEstimate(EstimateScore score, EstimateComment comment)
+            => new Estimate(comment.ProjectId, score.ExpertAddress, score.QuestionId, score.Score, comment.Comment);
 
-        private async Task UpdateProjectAsync(Project project, ProjectScoringStatistics scoringStatistics)
+        private async Task UpdateProjectScoringAsync(Domain.Entities.Scoring scoring, ProjectScoringStatistics scoringStatistics)
         {
-            project.Score = scoringStatistics.Score;
-            project.IsScoredByHr = scoringStatistics.IsScoredByHr;
-            project.IsScoredByAnalyst = scoringStatistics.IsScoredByAnalyst;
-            project.IsScoredByTechnical = scoringStatistics.IsScoredByTech;
-            project.IsScoredByLawyer = scoringStatistics.IsScoredByLawyer;
+            scoring.Score = scoringStatistics.Score;
+            scoring.IsScoredByHr = scoringStatistics.IsScoredByHr;
+            scoring.IsScoredByAnalyst = scoringStatistics.IsScoredByAnalyst;
+            scoring.IsScoredByTechnical = scoringStatistics.IsScoredByTech;
+            scoring.IsScoredByLawyer = scoringStatistics.IsScoredByLawyer;
 
-            await _projectRepository.UpdateWholeAsync(project);
+            await _scoringRepository.UpdateWholeAsync(scoring);
         }
 
         private Task AddEstimateCommentsAsync(SubmitEstimatesRequest request)

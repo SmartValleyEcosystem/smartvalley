@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Scoring
@@ -8,6 +9,6 @@ namespace SmartValley.WebApi.Scoring
     {
         Task<IReadOnlyCollection<Project>> GetProjectsForScoringAsync(ExpertiseArea expertiseArea, string expertAddress);
 
-        Task<IReadOnlyCollection<Project>> GetProjectsByAuthorAddressAsync(string address);
+        Task<IReadOnlyCollection<ProjectScoring>> GetProjectsByAuthorAsync(string authorAddress);
     }
 }

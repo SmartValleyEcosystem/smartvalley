@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using SmartValley.Domain;
-using SmartValley.Domain.Entities;
+using SmartValley.WebApi.Estimates.Requests;
 
 namespace SmartValley.WebApi.Estimates
 {
@@ -9,6 +8,6 @@ namespace SmartValley.WebApi.Estimates
     {
         Task SubmitEstimatesAsync(SubmitEstimatesRequest request);
 
-        Task<Dictionary<long, IReadOnlyCollection<Estimate>>> GetQuestionsWithEstimatesAsync(long projectId, string projectAddress, Domain.Entities.ExpertiseArea expertiseArea);
+        Task<ScoringStatisticsInArea> GetScoringStatisticsInAreaAsync(long projectId, Domain.Entities.ExpertiseArea expertiseArea);
     }
 }

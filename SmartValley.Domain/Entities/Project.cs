@@ -16,10 +16,6 @@ namespace SmartValley.Domain.Entities
         public string AuthorAddress { get; set; }
 
         [Required]
-        [MaxLength(42)]
-        public string ProjectAddress { get; set; }
-
-        [Required]
         [MaxLength(50)]
         public string Name { get; set; }
 
@@ -33,15 +29,5 @@ namespace SmartValley.Domain.Entities
         [Required]
         [MaxLength(1000)]
         public string Description { get; set; }
-
-        public bool IsScoredByHr { get; set; }
-
-        public bool IsScoredByLawyer { get; set; }
-
-        public bool IsScoredByAnalyst { get; set; }
-
-        public bool IsScoredByTechnical { get; set; }
-
-        public double? Score { get; set; }
     }
 }

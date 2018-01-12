@@ -1,4 +1,4 @@
-﻿namespace SmartValley.WebApi.Estimates
+﻿namespace SmartValley.WebApi.Estimates.Requests
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class EstimateCommentRequest

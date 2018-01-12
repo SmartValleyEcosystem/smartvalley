@@ -1,4 +1,4 @@
-﻿namespace SmartValley.WebApi.Applications
+﻿namespace SmartValley.WebApi.Applications.Requests
 {
     public class TeamMemberRequest
     {

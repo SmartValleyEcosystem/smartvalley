@@ -1,4 +1,4 @@
-﻿namespace SmartValley.WebApi.Balance
+﻿namespace SmartValley.WebApi.Balance.Responses
 {
     public class ReceiveEtherResponse
     {
