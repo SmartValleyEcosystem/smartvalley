@@ -31,7 +31,7 @@
   </div>
   <div class="row mx-auto">
     <ngb-tabset #reportTabSet (tabChange)="onMainTabChanged($event)" class="col-12 info">
-      <ngb-tab id="form" title="{{ 'Report.Form' | translate }}">
+      <ngb-tab id="about" title="{{ 'Report.Form' | translate }}">
         <ng-template ngbTabContent>
           <div class="tab-shift">
             <app-project-information [projectDetails]="details"></app-project-information>

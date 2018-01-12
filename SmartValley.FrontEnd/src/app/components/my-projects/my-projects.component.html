@@ -6,7 +6,7 @@
       </p>
     </div>
   </div>
-  <div class="row mx-auto">
+  <div class="row mx-auto" style="margin-top: 1.5em">
     <div class="col-12 scoring-projects">
       <div class="white-card">
         <div class="content">
@@ -16,7 +16,7 @@
             </div>
           </div>
           <button *ngIf="projects.length > 0" (click)="navigateToApplicationPageAsync()"
-                  class="btn-blue col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em;">{{
+                  class="btn-blue col-3 btn btn-primary" style="padding-top: 1em; padding-bottom: 1em; margin-left: 0.8em">{{
             'MyProjects.CreateProject' | translate }}
           </button>
         </div>

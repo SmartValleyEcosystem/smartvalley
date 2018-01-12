@@ -5,7 +5,7 @@ export class HeadersConstants {
 }
 
 export class Constants {
-  static ReportFormTab = 'form';
+  static ReportFormTab = 'about';
   static ReportEstimatesTab = 'estimates';
   static TabQueryParam = 'tab';
   static Chrome = 'chrome';
