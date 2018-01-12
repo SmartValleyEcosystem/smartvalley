@@ -17,7 +17,6 @@ export class SprintService {
 
 
   public async getCurrentSprintAsync(): Promise<Sprint> {
-
     const response = await this.projectApiClient.getScoredProjectsAsync();
     const projects = [];
     for (const projectResponse of response.items) {
@@ -40,7 +39,6 @@ export class SprintService {
     };
   }
 
-  // Returns the ISO day of week
   private getWeekDay(date: Date): number {
     const day = date.getDay();
     if (day !== 0) {
@@ -50,7 +48,6 @@ export class SprintService {
     }
   }
 
-// Returns current week end date
   private getWeekStartDate(date: Date): Date {
     date.setDate(date.getDay() - this.getWeekDay(date) + 8);
     date.setHours(0);
@@ -60,7 +57,6 @@ export class SprintService {
     return date;
   }
 
-// Returns current week end date
   private getWeekEndDate(date: Date): Date {
     date.setDate(date.getDay() - this.getWeekDay(date) + 14);
     date.setHours(23);
