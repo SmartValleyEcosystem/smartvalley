@@ -66,13 +66,16 @@ import {DashIfEmptyPipe} from './utils/dash-if-empty.pipe';
 import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-authenticated.guard';
 import {SvtWithdrawalConfirmationModalComponent} from './components/common/svt-withdrawal-confirmation-modal/svt-withdrawal-confirmation-modal.component';
 import {MyProjectsComponent} from './components/my-projects/my-projects.component';
-import {VotingComponent} from './components/voting/voting.component';
 import {SprintService} from './services/sprint/sprint-service';
+import {VotingComponent} from './components/voting/voting.component';
+import {VotingCardComponent} from './components/voting-card/voting-card.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    VotingComponent,
+    VotingCardComponent,
     MetamaskHowtoComponent,
     LandingComponent,
     HeaderComponent,
@@ -94,9 +97,9 @@ import {SprintService} from './services/sprint/sprint-service';
     ProjectInformationComponent,
     AccountComponent,
     DashIfEmptyPipe,
-    VotingComponent,
+    SvtWithdrawalConfirmationModalComponent,
     MyProjectsComponent,
-    SvtWithdrawalConfirmationModalComponent
+    VotingCardComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,

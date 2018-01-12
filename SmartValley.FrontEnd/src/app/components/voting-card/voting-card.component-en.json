@@ -1,0 +1,15 @@
+{
+  "VotingCard": {
+    "Title": "Vote",
+    "ScoringRating": "Scoring rating:",
+    "InProgress": "In progress...",
+    "VoteForProject" : "Vote for this project",
+    "BackToVotes": "Back to voting page",
+    "ReminingTime": "Remining time",
+    "Days": "Days",
+    "Hours": "Hours",
+    "Minutes" : "Minutes",
+    "Seconds": "Seconds",
+    "VotingForProject": "Voting for project"
+  }
+}
