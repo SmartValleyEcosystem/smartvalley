@@ -68,12 +68,14 @@ import {SvtWithdrawalConfirmationModalComponent} from './components/common/svt-w
 import {MyProjectsComponent} from './components/my-projects/my-projects.component';
 import {SprintService} from './services/sprint/sprint-service';
 import {VotingComponent} from './components/voting/voting.component';
-import { VoteComponent } from './components/vote/vote.component';
+import {VoteComponent} from './components/vote/vote.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    VotingComponent,
+    VoteComponent,
     MetamaskHowtoComponent,
     LandingComponent,
     HeaderComponent,
