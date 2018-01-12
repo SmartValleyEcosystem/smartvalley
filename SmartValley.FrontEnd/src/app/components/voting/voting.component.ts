@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {SprintService} from '../../services/sprint/sprint-service';
-import {ProjectCardType} from '../../services/projectCard-type';
+import {ProjectCardType} from '../../services/project-card-type';
 import {Balance} from '../../services/balance/balance';
 import {BalanceService} from '../../services/balance/balance.service';
 import {Sprint} from '../../services/sprint/sprint';

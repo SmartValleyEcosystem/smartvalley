@@ -7,7 +7,7 @@ import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 import {ProjectsForScoringRequest} from '../../api/scoring/projecs-for-scoring-request';
 import {isNullOrUndefined} from 'util';
 import {Subscription} from 'rxjs/Subscription';
-import {ProjectCardType} from '../../services/projectCard-type';
+import {ProjectCardType} from '../../services/project-card-type';
 
 @Component({
   selector: 'app-scoring',

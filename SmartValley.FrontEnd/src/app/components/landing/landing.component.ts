@@ -3,7 +3,7 @@ import {AuthenticationService} from '../../services/authentication/authenticatio
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {Project} from '../../services/project';
-import {ProjectCardType} from '../../services/projectCard-type';
+import {ProjectCardType} from '../../services/project-card-type';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 
 @Component({
@@ -15,10 +15,12 @@ export class LandingComponent implements OnInit {
 
   public projects: Array<Project>;
   public ProjectCardType = ProjectCardType;
+  public hasAcriveSprint: boolean;
 
   constructor(private authenticationService: AuthenticationService,
               private router: Router,
               private projectApiClient: ProjectApiClient) {
+    this.hasAcriveSprint = true;
   }
 
   ngOnInit(): void {

@@ -5,7 +5,7 @@ import {Paths} from '../../../paths';
 import {ProjectService} from '../../../services/project-service';
 import {BlockiesService} from '../../../services/blockies-service';
 import {Constants} from '../../../constants';
-import {ProjectCardType} from '../../../services/projectCard-type';
+import {ProjectCardType} from '../../../services/project-card-type';
 
 @Component({
   selector: 'app-project-card',
