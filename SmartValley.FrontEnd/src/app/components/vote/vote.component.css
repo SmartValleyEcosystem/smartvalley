@@ -3,6 +3,10 @@
   padding: 0;
 }
 
+.buttons div{
+  display: inline-block;
+}
+
 .report-card {
   position: relative;
   display: -ms-flexbox;

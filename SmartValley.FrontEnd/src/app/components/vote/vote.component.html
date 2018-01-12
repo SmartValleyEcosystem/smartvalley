@@ -32,21 +32,17 @@
   </div>
   <div class="row mx-auto">
     <app-project-information class="col-12 info" [projectDetails]="details"></app-project-information>
-    <div>
-      <div style="margin-left: calc(4em - 5px);" class="submit-button row">
-        <button class="trans-btn col-3 btn btn-primary"
-                style="padding-top: 1em; padding-bottom: 1em;"
-                (click)="showEstimates()">
-          {{ 'Report.ExpertEstimates' | translate }}
-        </button>
-      </div>
-      <div style="margin-left: calc(4em - 5px);" class="submit-button row">
-        <button class="trans-btn col-3 btn btn-primary"
-                style="padding-top: 1em; padding-bottom: 1em;"
-                (click)="showEstimates()">
-          {{ 'Report.ExpertEstimates' | translate }}
-        </button>
-      </div>
-    </div>
+  </div>
+  <div style="margin-left: 0px;margin-top: 1em;" class="submit-button buttons row">
+    <button class="trans-btn col-3 btn btn-primary"
+            style="padding-top: 1em; padding-bottom: 1em;"
+            (click)="vote()">
+      {{ 'Vote.VoteForProject' | translate }}
+    </button>
+    <button class="trans-btn col-3 btn btn-primary"
+            style="padding-top: 1em; padding-bottom: 1em; margin-left: 3em;"
+            (click)="navigateToVoting()">
+      {{ 'Vote.BackToVotes' | translate }}
+    </button>
   </div>
 </div>

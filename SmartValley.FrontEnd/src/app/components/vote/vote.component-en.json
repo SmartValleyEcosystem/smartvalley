@@ -2,6 +2,8 @@
   "Vote": {
     "Title": "Vote",
     "ScoringRating": "Scoring rating:",
-    "InProgress": "In progress..."
+    "InProgress": "In progress...",
+    "VoteForProject" : "Vote for this project",
+    "BackToVotes": "Back to voting page"
   }
 }
