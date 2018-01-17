@@ -35,20 +35,5 @@ namespace SmartValley.WebApi.Projects.Responses
                        Score = projectScoring.Scoring?.Score
                    };
         }
-
-        public static ProjectResponse Create(Project project)
-        {
-            return new ProjectResponse
-                   {
-                       Id = project.Id,
-                       Name = project.Name,
-                       Country = project.Country,
-                       Area = project.ProjectArea,
-                       Description = project.Description,
-                       Author = project.AuthorAddress,
-                       Address = null,
-                       Score = null
-                   };
-        }
     }
 }

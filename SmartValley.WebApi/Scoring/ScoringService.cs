@@ -29,7 +29,7 @@ namespace SmartValley.WebApi.Scoring
             _ethereumClient = ethereumClient;
         }
 
-        public Task<IReadOnlyCollection<Project>> GetProjectsForScoringAsync(ExpertiseArea expertiseArea, string expertAddress)
+        public Task<IReadOnlyCollection<ProjectScoring>> GetProjectsForScoringAsync(ExpertiseArea expertiseArea, string expertAddress)
             => _projectRepository.GetForScoringAsync(expertAddress, expertiseArea);
 
         public Task<IReadOnlyCollection<ProjectScoring>> GetProjectsByAuthorAsync(string authorAddress)

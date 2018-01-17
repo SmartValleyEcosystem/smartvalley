@@ -8,7 +8,7 @@ namespace SmartValley.WebApi.Scoring
 {
     public interface IScoringService
     {
-        Task<IReadOnlyCollection<Project>> GetProjectsForScoringAsync(ExpertiseArea expertiseArea, string expertAddress);
+        Task<IReadOnlyCollection<ProjectScoring>> GetProjectsForScoringAsync(ExpertiseArea expertiseArea, string expertAddress);
 
         Task<IReadOnlyCollection<ProjectScoring>> GetProjectsByAuthorAsync(string authorAddress);
 

@@ -34,7 +34,7 @@ namespace SmartValley.Data.SQL.Repositories
                           select new ProjectScoring(project, scoring)).ToArrayAsync();
         }
 
-        public async Task<IReadOnlyCollection<Project>> GetForScoringAsync(string expertAddress, ExpertiseArea area)
+        public async Task<IReadOnlyCollection<ProjectScoring>> GetForScoringAsync(string expertAddress, ExpertiseArea area)
         {
             var scoredProjects = (from question in ReadContext.Questions
                                   join comment in ReadContext.EstimateComments on question.Id equals comment.QuestionId
@@ -46,10 +46,10 @@ namespace SmartValley.Data.SQL.Repositories
                                          area == ExpertiseArea.Tech && scoring.IsScoredByTechnical)
                                   select comment.ProjectId).Distinct();
 
-            return await ReadContext
-                       .Projects
-                       .Where(p => !scoredProjects.Contains(p.Id))
-                       .ToArrayAsync();
+            return await (from project in ReadContext.Projects
+                          where !scoredProjects.Contains(project.Id)
+                          join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
+                          select new ProjectScoring(project, scoring)).ToArrayAsync();
         }
 
         public Task<Project> GetByExternalIdAsync(Guid externalId)
