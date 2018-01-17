@@ -4,6 +4,7 @@ import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {Paths} from '../../paths';
 import {Router} from '@angular/router';
 import {ProjectCardType} from '../../services/project-card-type';
+import {AuthenticationService} from '../../services/authentication/authentication-service';
 
 @Component({
   selector: 'app-my-projects',
@@ -16,11 +17,15 @@ export class MyProjectsComponent implements OnInit {
   public projects: Array<Project> = [];
 
   constructor(private scoringApiClient: ScoringApiClient,
-              private router: Router) {
+              private router: Router,
+              private authenticationService: AuthenticationService) {
+    this.authenticationService.accountChanged.subscribe(async() => {
+      await this.loadProjectsAsync();
+    });
   }
 
-  ngOnInit() {
-    this.loadProjectsAsync();
+  async ngOnInit() {
+    await this.loadProjectsAsync();
   }
 
   private async loadProjectsAsync(): Promise<void> {
