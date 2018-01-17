@@ -2,7 +2,7 @@ import {Component, ViewChild, ElementRef, ViewChildren, QueryList, OnInit} from 
 import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {ApplicationApiClient} from '../../api/application/application-api.client';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Application} from '../../services/application';
+import {SubmitApplicationRequest} from '../../api/application/submit-application-request';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {v4 as uuid} from 'uuid';
 import {ProjectManagerContractClient} from '../../services/contract-clients/project-manager-contract-client';
@@ -13,6 +13,9 @@ import {DialogService} from '../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
 import {BalanceService} from '../../services/balance/balance.service';
 import {isNullOrUndefined} from 'util';
+import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
+import {VotingManagerContractClient} from '../../services/contract-clients/voting-manager-contract-client';
+import {Web3Service} from '../../services/web3-service';
 
 @Component({
   selector: 'app-application',
@@ -35,12 +38,15 @@ export class ApplicationComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
               private projectManagerContractClient: ProjectManagerContractClient,
+              private votingManagerContractClient: VotingManagerContractClient,
               private router: Router,
               private notificationsService: NotificationsService,
               private dialogService: DialogService,
               private applicationApiClient: ApplicationApiClient,
               private translateService: TranslateService,
-              private balanceService: BalanceService) {
+              private balanceService: BalanceService,
+              private scoringApiClient: ScoringApiClient,
+              private web3Service: Web3Service) {
   }
 
   public ngOnInit(): void {
@@ -65,24 +71,23 @@ export class ApplicationComponent implements OnInit {
     }
   }
 
-  public async onSubmitAsync() {
+  public async onSubmitForTokensAsync() {
     if (!this.validateForm()) {
       return;
     }
 
-    const projectCreationCost = await this.projectManagerContractClient.getProjectCreationCostAsync();
-    if (!await this.dialogService.showSvtWithdrawalConfirmationDialogAsync(projectCreationCost)) {
+    if (!await this.balanceService.checkSvtForProjectAsync()) {
       return;
     }
 
-    await this.submitApplicationAsync();
-  }
+    if (!await this.confirmSvtWithdrawalAsync()) {
+      return;
+    }
 
-  private async submitApplicationAsync(): Promise<void> {
-    const projectId = uuid();
-    const transactionHash = await this.submitToContractAsync(projectId, this.applicationForm.value.name);
+    const projectId = await this.submitApplicationToBackendAsync();
+    const transactionHash = await this.deployContractAsync(projectId, this.applicationForm.value.name);
     if (transactionHash == null) {
-      this.notificationsService.error(this.translateService.instant('Common.Error'), this.translateService.instant('Common.TryAgain'));
+      this.notifyError();
       this.isProjectCreating = false;
       return;
     }
@@ -92,21 +97,79 @@ export class ApplicationComponent implements OnInit {
       transactionHash
     );
 
-    await this.submitToBackendAsync(projectId, transactionHash);
+    await this.scoringApiClient.startAsync(projectId, transactionHash);
     await this.balanceService.updateBalanceAsync();
 
     transactionDialog.close();
 
     await this.router.navigate([Paths.MyProjects]);
+    this.notifyProjectCreated();
+  }
+
+  public async onSubmitForFreeAsync() {
+    if (!this.validateForm()) {
+      return;
+    }
+
+    if (!await this.confirmFreeScoringAsync()) {
+      return;
+    }
+
+    const projectId = await this.submitApplicationToBackendAsync();
+    const transactionHash = await this.enqueueProjectForVotingAsync(projectId);
+    if (transactionHash == null) {
+      this.notifyError();
+      this.isProjectCreating = false;
+      return;
+    }
+
+    const transactionDialog = this.dialogService.showTransactionDialog(
+      this.translateService.instant('Application.Dialog'),
+      transactionHash
+    );
+
+    await this.web3Service.waitForConfirmationAsync(transactionHash);
+    await this.balanceService.updateBalanceAsync();
+
+    transactionDialog.close();
+
+    await this.router.navigate([Paths.MyProjects]);
+    this.notifyProjectEnqueuedForVoting();
+  }
+
+  private notifyProjectEnqueuedForVoting() {
+    this.notificationsService.success(
+      this.translateService.instant('Common.Success'),
+      this.translateService.instant('Application.ProjectEnqueuedForVoting')
+    );
+  }
+
+  private notifyProjectCreated() {
     this.notificationsService.success(
       this.translateService.instant('Common.Success'),
       this.translateService.instant('Application.ProjectCreated')
     );
   }
 
-  private submitToBackendAsync(projectId: any, transactionHash: string): Promise<void> {
-    const application = this.createApplication(projectId, transactionHash);
-    return this.applicationApiClient.createApplicationAsync(application);
+  private notifyError() {
+    this.notificationsService.error(
+      this.translateService.instant('Common.Error'),
+      this.translateService.instant('Common.TryAgain'));
+  }
+
+  private async confirmSvtWithdrawalAsync(): Promise<boolean> {
+    const projectCreationCost = await this.projectManagerContractClient.getProjectCreationCostAsync();
+    return await this.dialogService.showSvtWithdrawalConfirmationDialogAsync(projectCreationCost);
+  }
+
+  private async confirmFreeScoringAsync(): Promise<boolean> {
+    return await this.dialogService.showFreeScoringConfirmationDialogAsync();
+  }
+
+  private async submitApplicationToBackendAsync(): Promise<string> {
+    const request = this.createSubmitApplicationRequest();
+    await this.applicationApiClient.submitAsync(request);
+    return request.projectId;
   }
 
   private createForm() {
@@ -141,10 +204,10 @@ export class ApplicationComponent implements OnInit {
     });
   }
 
-  private createApplication(projectId: string, transactionHash: string): Application {
+  private createSubmitApplicationRequest(): SubmitApplicationRequest {
     const user = this.authenticationService.getCurrentUser();
     const form = this.applicationForm.value;
-    return <Application>{
+    return <SubmitApplicationRequest>{
       attractedInvestments: form.attractedInvestments,
       blockChainType: form.blockChainType,
       country: form.country,
@@ -157,16 +220,23 @@ export class ApplicationComponent implements OnInit {
       projectStatus: form.projectStatus,
       softCap: form.softCap,
       whitePaperLink: form.whitePaperLink,
-      projectId: projectId,
+      projectId: uuid(),
       authorAddress: user.account,
-      teamMembers: form.teamMembers.filter(m => !isNullOrUndefined(m.fullName)),
-      transactionHash: transactionHash
+      teamMembers: form.teamMembers.filter(m => !isNullOrUndefined(m.fullName))
     };
   }
 
-  public async submitToContractAsync(projectId: string, projectName: string): Promise<string> {
+  private async deployContractAsync(projectId: string, projectName: string): Promise<string> {
     try {
       return await this.projectManagerContractClient.addProjectAsync(projectId, projectName);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  private async enqueueProjectForVotingAsync(projectId: string): Promise<string> {
+    try {
+      return await this.votingManagerContractClient.enqueueProjectAsync(projectId);
     } catch (e) {
       return null;
     }

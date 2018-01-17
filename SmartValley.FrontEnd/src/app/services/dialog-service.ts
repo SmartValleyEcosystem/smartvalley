@@ -12,11 +12,11 @@ import {MetamaskManualModalComponent} from '../components/common/metamask-manual
 import {TranslateService} from '@ngx-translate/core';
 import {AlertModalComponent} from '../components/common/alert-modal/alert-modal.component';
 import {AlertModalData} from '../components/common/alert-modal/alert-modal-data';
+import {FreeScoringConfirmationModalComponent} from '../components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component';
 
 @Injectable()
 export class DialogService {
-  constructor(private dialog: MatDialog,
-              private translateService: TranslateService) {
+  constructor(private dialog: MatDialog, private translateService: TranslateService) {
   }
 
   public showGetEtherDialogAsync(): Promise<boolean> {
@@ -43,6 +43,10 @@ export class DialogService {
   public showSvtWithdrawalConfirmationDialogAsync(amountToWithdraw: number): Promise<boolean> {
     const data = <SvtWithdrawalConfirmationModalData>{amount: amountToWithdraw};
     return this.openModalAsync(SvtWithdrawalConfirmationModalComponent, data);
+  }
+
+  public showFreeScoringConfirmationDialogAsync(): Promise<boolean> {
+    return this.openModalAsync(FreeScoringConfirmationModalComponent, {});
   }
 
   public showRinkebyAlert(): MatDialogRef<MetamaskManualModalComponent> {

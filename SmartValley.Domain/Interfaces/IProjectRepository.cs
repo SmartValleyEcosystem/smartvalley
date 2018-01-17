@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SmartValley.Domain.Entities;
 
@@ -15,5 +16,7 @@ namespace SmartValley.Domain.Interfaces
         Task<IReadOnlyCollection<ProjectScoring>> GetByAuthorAsync(string authorAddress);
 
         Task<IReadOnlyCollection<Project>> GetForScoringAsync(string expertAddress, ExpertiseArea area);
+
+        Task<Project> GetByExternalIdAsync(Guid externalId);
     }
 }

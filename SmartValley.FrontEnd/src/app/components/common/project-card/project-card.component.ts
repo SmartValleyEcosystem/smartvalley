@@ -26,7 +26,7 @@ export class ProjectCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.projectImageUrl = this.blockiesService.getImageForAddress(this.project.address);
+    this.projectImageUrl = this.blockiesService.getImageForAddress(this.project.address ? this.project.address : this.project.author);
   }
 
   showProject(id: number) {

@@ -23,6 +23,7 @@ export function multiTranslateLoaderFactory() {
     'components/common/receive-ether-modal/receive-ether-modal.component',
     'components/common/project-information/project-information.component',
     'components/account/account.component',
-    'components/common/svt-withdrawal-confirmation-modal/svt-withdrawal-confirmation-modal.component'
+    'components/common/svt-withdrawal-confirmation-modal/svt-withdrawal-confirmation-modal.component',
+    'components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component'
   ]);
 }

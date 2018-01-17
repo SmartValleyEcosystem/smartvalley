@@ -19,5 +19,7 @@
         public ContractOptions ProjectContract { get; set; }
 
         public ContractOptions ScoringContract { get; set; }
+
+        public ContractOptions VotingManagerContract { get; set; }
     }
 }

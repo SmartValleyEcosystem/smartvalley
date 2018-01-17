@@ -102,8 +102,8 @@
           <input class="form-control col-7" formControlName="financeModelLink" placeholder="http://">
         </div>
         <div class="row">
-          <mat-checkbox class="col-6 offset-1" labelPosition="before" style="margin-bottom: 1em;"
-                        formControlName="attractedInvestments">{{ 'Application.AttractedInvestments' | translate }}
+          <mat-checkbox class="col-6 offset-1" labelPosition="before" style="margin-bottom: 1em;" formControlName="attractedInvestments">
+            {{ 'Application.AttractedInvestments' | translate }}
           </mat-checkbox>
         </div>
       </div>
@@ -128,10 +128,12 @@
       </div>
     </div>
     <div [ngClass]="isTechShow ? '' : 'submit-btn'" class="row">
-      <button (click)="onSubmitAsync()" [disabled]="isProjectCreating" class="col-3 btn btn-primary">
+      <button (click)="onSubmitForTokensAsync()" [disabled]="isProjectCreating" class="col-3 btn btn-primary">
         {{ 'Application.Submit' | translate }}
+      </button>
+      <button (click)="onSubmitForFreeAsync()" [disabled]="isProjectCreating" class="col-3 btn btn-primary" style="margin-left: 1em">
+        {{ 'Application.SubmitForFree' | translate }}
       </button>
     </div>
   </form>
 </div>
-

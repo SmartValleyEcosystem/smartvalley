@@ -59,3 +59,7 @@ textarea {
   height: 10em;
   resize: none;
 }
+
+label.mat-checkbox-layout > div.mat-checkbox-inner-container {
+margin-left: 6.2em;
+}

@@ -1,6 +1,6 @@
-import {TeamMember} from './team-member';
+import {TeamMemberRequest} from './team-member-request';
 
-export interface Application {
+export interface SubmitApplicationRequest {
   name: string;
   projectArea: string;
   projectId: string;
@@ -14,7 +14,6 @@ export interface Application {
   hardCap: string;
   attractedInvestments: boolean;
   financeModelLink: string;
-  teamMembers: Array<TeamMember>;
+  teamMembers: Array<TeamMemberRequest>;
   authorAddress: string;
-  transactionHash: string;
 }

@@ -1,5 +1,7 @@
 ﻿using SmartValley.Domain.Entities;
 using SmartValley.WebApi.TeamMembers;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace SmartValley.WebApi.Applications.Responses
 {

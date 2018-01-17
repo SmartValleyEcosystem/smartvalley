@@ -1,10 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ProjectApiClient} from '../../api/project/project-api-client';
-import {QuestionService} from '../../services/questions/question-service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectService} from '../../services/project-service';
 import {BlockiesService} from '../../services/blockies-service';
-import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {Paths} from '../../paths';
 import {Sprint} from '../../services/sprint/sprint';
@@ -28,8 +26,6 @@ export class VotingCardComponent implements OnInit {
   public endSeconds: number;
 
   constructor(private projectApiClient: ProjectApiClient,
-              private estimatesApiClient: EstimatesApiClient,
-              private questionService: QuestionService,
               private route: ActivatedRoute,
               private router: Router,
               private blockiesService: BlockiesService,
@@ -58,7 +54,12 @@ export class VotingCardComponent implements OnInit {
   private async loadInitialData(): Promise<void> {
     this.projectId = +this.route.snapshot.paramMap.get('id');
     this.details = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
-    this.projectImageUrl = this.blockiesService.getImageForAddress(this.details.projectAddress);
+    this.projectImageUrl = this.getImageUrl();
+  }
+
+  private getImageUrl(): string {
+    const address = this.details.projectAddress ? this.details.projectAddress : this.details.authorAddress;
+    return this.blockiesService.getImageForAddress(address);
   }
 
   private async loadSprintAsync() {
@@ -66,7 +67,6 @@ export class VotingCardComponent implements OnInit {
   }
 
   public async vote() {
-
   }
 
   public async navigateToVoting() {

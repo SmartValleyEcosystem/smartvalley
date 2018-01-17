@@ -11,6 +11,8 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public string Address { get; set; }
 
+        public string Author { get; set; }
+
         public string Country { get; set; }
 
         public string Area { get; set; }
@@ -25,11 +27,12 @@ namespace SmartValley.WebApi.Projects.Responses
                    {
                        Id = projectScoring.Project.Id,
                        Name = projectScoring.Project.Name,
-                       Address = projectScoring.Scoring.ContractAddress,
                        Country = projectScoring.Project.Country,
                        Area = projectScoring.Project.ProjectArea,
                        Description = projectScoring.Project.Description,
-                       Score = projectScoring.Scoring.Score
+                       Author = projectScoring.Project.AuthorAddress,
+                       Address = projectScoring.Scoring?.ContractAddress,
+                       Score = projectScoring.Scoring?.Score
                    };
         }
 
@@ -42,6 +45,7 @@ namespace SmartValley.WebApi.Projects.Responses
                        Country = project.Country,
                        Area = project.ProjectArea,
                        Description = project.Description,
+                       Author = project.AuthorAddress,
                        Address = null,
                        Score = null
                    };

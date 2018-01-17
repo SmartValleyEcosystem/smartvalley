@@ -46,7 +46,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab id="estimates" title="{{ 'Report.ExpertEstimates' | translate }}">
+      <ngb-tab id="estimates" title="{{ 'Report.ExpertEstimates' | translate }}" *ngIf="details.score">
         <ng-template ngbTabContent>
           <div class="content sw-card sw-content">
             <mat-tab-group [selectedIndex]="selectedExpertiseTabIndex"

@@ -79,8 +79,15 @@ export class ReportComponent implements AfterViewChecked, OnInit {
   private async loadInitialData(): Promise<void> {
     this.projectId = +this.route.snapshot.paramMap.get('id');
     this.details = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
-    this.projectImageUrl = this.blockiesService.getImageForAddress(this.details.projectAddress);
-    await this.reloadExpertEstimatesAsync();
+    this.projectImageUrl = this.getImageUrl();
+    if (this.details.score) {
+      await this.reloadExpertEstimatesAsync();
+    }
+  }
+
+  private getImageUrl(): string {
+    const address = this.details.projectAddress ? this.details.projectAddress : this.details.authorAddress;
+    return this.blockiesService.getImageForAddress(address);
   }
 
   private async reloadExpertEstimatesAsync(): Promise<void> {

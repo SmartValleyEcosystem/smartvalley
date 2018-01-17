@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using SmartValley.Application;
 using SmartValley.Application.Exceptions;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
@@ -14,22 +13,16 @@ namespace SmartValley.WebApi.Applications
     {
         private readonly IApplicationRepository _applicationRepository;
         private readonly IProjectRepository _projectRepository;
-        private readonly IScoringRepository _scoringRepository;
         private readonly ITeamMemberRepository _teamRepository;
-        private readonly EthereumClient _ethereumClient;
 
         public ApplicationService(
             IApplicationRepository applicationRepository,
             IProjectRepository projectRepository,
-            IScoringRepository scoringRepository,
-            ITeamMemberRepository teamRepository,
-            EthereumClient ethereumClient)
+            ITeamMemberRepository teamRepository)
         {
             _applicationRepository = applicationRepository;
             _projectRepository = projectRepository;
-            _scoringRepository = scoringRepository;
             _teamRepository = teamRepository;
-            _ethereumClient = ethereumClient;
         }
 
         public async Task CreateAsync(ApplicationRequest applicationRequest)
@@ -37,22 +30,9 @@ namespace SmartValley.WebApi.Applications
             if (applicationRequest == null)
                 throw new ArgumentNullException();
 
-            await _ethereumClient.WaitForConfirmationAsync(applicationRequest.TransactionHash);
-            await CreateProjectAsync(applicationRequest);
-        }
-
-        private async Task CreateProjectAsync(ApplicationRequest applicationRequest)
-        {
             var projectId = await AddProjectAsync(applicationRequest);
             var applicationId = await AddApplicationAsync(applicationRequest, projectId);
-            await AddProjectScoringAsync(projectId);
             await AddTeamMembersAsync(applicationRequest, applicationId);
-        }
-
-        private Task AddProjectScoringAsync(long projectId)
-        {
-            var projectScoring = new Domain.Entities.Scoring {ProjectId = projectId};
-            return _scoringRepository.AddAsync(projectScoring);
         }
 
         private async Task AddTeamMembersAsync(ApplicationRequest applicationRequest, long applicationId)

@@ -40,10 +40,7 @@ const appRoutes: Routes = [
         component: ApplicationComponent,
         canActivate: [CompositeGuard],
         data: {
-          guards: [
-            GuardType.ShouldHaveEth,
-            GuardType.ShouldHaveSvt
-          ]
+          guards: [GuardType.ShouldHaveEth]
         }
       },
       {path: Paths.Report + '/:id', pathMatch: 'full', component: ReportComponent},

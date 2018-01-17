@@ -14,6 +14,6 @@ namespace SmartValley.Data.SQL.Repositories
         }
 
         public Task<Scoring> GetByProjectIdAsync(long projectId)
-            => ReadContext.Scorings.FirstAsync(scoring => scoring.ProjectId == projectId);
+            => ReadContext.Scorings.FirstOrDefaultAsync(scoring => scoring.ProjectId == projectId);
     }
 }

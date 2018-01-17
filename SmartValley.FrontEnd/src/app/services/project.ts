@@ -13,6 +13,7 @@ export class Project {
   expertType: string;
   expertiseArea: ExpertiseArea;
   address: string;
+  author: string;
 
   public static create(response: ProjectResponse): Project {
     return <Project>{
@@ -22,7 +23,8 @@ export class Project {
       country: response.country,
       score: response.score,
       description: response.description,
-      address: response.address
+      address: response.address,
+      author: response.author
     };
   }
 
@@ -35,6 +37,7 @@ export class Project {
       score: response.score,
       description: response.description,
       address: response.address,
+      author: response.author,
       expertiseArea: expertiseArea
     };
   }

@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartValley.Application;
 using SmartValley.WebApi.Estimates;
-using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.Projects.Responses;
 using SmartValley.WebApi.Scoring.Requests;
 using SmartValley.WebApi.WebApi;
@@ -16,7 +16,7 @@ namespace SmartValley.WebApi.Scoring
     {
         private readonly IScoringService _scoringService;
 
-        public ScoringContoller(IScoringService scoringService)
+        public ScoringContoller(IScoringService scoringService, EthereumClient ethereumClient)
         {
             _scoringService = scoringService;
         }
@@ -40,6 +40,14 @@ namespace SmartValley.WebApi.Scoring
                    {
                        Items = projects.Select(ProjectResponse.Create).ToArray()
                    };
+        }
+
+        [HttpPost]
+        [Route("start")]
+        public async Task<IActionResult> StartAsync(StartProjectScoringRequest request)
+        {
+            await _scoringService.StartAsync(request.ProjectExternalId, request.TransactionHash);
+            return NoContent();
         }
     }
 }

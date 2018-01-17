@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace SmartValley.WebApi.Applications.Requests
 {
@@ -31,8 +32,6 @@ namespace SmartValley.WebApi.Applications.Requests
         public string HardCap { get; set; }
 
         public bool AttractedInvestments { get; set; }
-
-        public string TransactionHash { get; set; }
 
         public IEnumerable<TeamMemberRequest> TeamMembers { get; set; }
     }

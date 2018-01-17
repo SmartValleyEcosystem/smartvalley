@@ -31,7 +31,9 @@
     "MvpLink": "Prototype/MVP link",
     "Next": "Next",
     "Submit": "Submit",
+    "SubmitForFree": "Submit for free",
     "Dialog": "Your project for scoring is being created. Please wait for completion of transaction.",
-    "ProjectCreated": "Project created"
+    "ProjectCreated": "Project created",
+    "ProjectEnqueuedForVoting": "Project has been enqueued for voting."
   }
 }

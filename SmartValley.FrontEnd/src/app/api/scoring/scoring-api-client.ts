@@ -4,6 +4,7 @@ import {ProjectsForScoringRequest} from './projecs-for-scoring-request';
 import {CollectionResponse} from '../collection-response';
 import {ProjectResponse} from '../project/project-response';
 import {HttpClient, HttpParams} from '@angular/common/http';
+import {StartProjectScoringRequest} from './start-project-scoring-request';
 
 @Injectable()
 export class ScoringApiClient extends BaseApiClient {
@@ -11,16 +12,25 @@ export class ScoringApiClient extends BaseApiClient {
     super();
   }
 
-  async getProjectForScoringAsync(request: ProjectsForScoringRequest): Promise<CollectionResponse<ProjectResponse>> {
+  public async getProjectForScoringAsync(request: ProjectsForScoringRequest): Promise<CollectionResponse<ProjectResponse>> {
     const parameters = new HttpParams()
       .append('expertiseArea', request.expertiseArea.toString());
 
-    return this.http.get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/scoring', {params: parameters})
+    return this.http
+      .get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/scoring', {params: parameters})
       .toPromise();
   }
 
-  async getMyProjectsAsync(): Promise<CollectionResponse<ProjectResponse>> {
-    return this.http.get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/scoring/myprojects')
+  public async getMyProjectsAsync(): Promise<CollectionResponse<ProjectResponse>> {
+    return this.http
+      .get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/scoring/myprojects')
+      .toPromise();
+  }
+
+  public async startAsync(projectId: string, transactionHash: string): Promise<void> {
+    const request = <StartProjectScoringRequest>{projectExternalId: projectId, transactionHash: transactionHash};
+    await this.http
+      .post(this.baseApiUrl + '/scoring/start', request)
       .toPromise();
   }
 }

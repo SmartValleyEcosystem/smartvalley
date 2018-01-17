@@ -44,10 +44,6 @@ div.mat-checkbox-frame {
   border-width: 1px;
 }
 
-label.mat-checkbox-layout > div.mat-checkbox-inner-container {
-  margin-left: 6.2em;
-}
-
 .nav-tabs {
   border-bottom: inherit;
 }

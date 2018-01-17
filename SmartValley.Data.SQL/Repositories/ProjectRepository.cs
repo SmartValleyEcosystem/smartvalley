@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +29,7 @@ namespace SmartValley.Data.SQL.Repositories
         public async Task<IReadOnlyCollection<ProjectScoring>> GetByAuthorAsync(string authorAddress)
         {
             return await (from project in ReadContext.Projects
-                          join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
+                          from scoring in ReadContext.Scorings.Where(s => s.ProjectId == project.Id).DefaultIfEmpty()
                           where project.AuthorAddress.OrdinalEquals(authorAddress)
                           select new ProjectScoring(project, scoring)).ToArrayAsync();
         }
@@ -38,17 +39,22 @@ namespace SmartValley.Data.SQL.Repositories
             var scoredProjects = (from question in ReadContext.Questions
                                   join comment in ReadContext.EstimateComments on question.Id equals comment.QuestionId
                                   join scoring in ReadContext.Scorings on comment.ProjectId equals scoring.ProjectId
-                                  where (comment.ExpertAddress.OrdinalEquals(expertAddress) && question.ExpertiseArea == area)
-                                        || (area == ExpertiseArea.Analyst && scoring.IsScoredByAnalyst ||
-                                            area == ExpertiseArea.Hr && scoring.IsScoredByHr ||
-                                            area == ExpertiseArea.Lawyer && scoring.IsScoredByLawyer ||
-                                            area == ExpertiseArea.Tech && scoring.IsScoredByTechnical)
+                                  where (comment.ExpertAddress.OrdinalEquals(expertAddress) && question.ExpertiseArea == area) ||
+                                        (area == ExpertiseArea.Analyst && scoring.IsScoredByAnalyst ||
+                                         area == ExpertiseArea.Hr && scoring.IsScoredByHr ||
+                                         area == ExpertiseArea.Lawyer && scoring.IsScoredByLawyer ||
+                                         area == ExpertiseArea.Tech && scoring.IsScoredByTechnical)
                                   select comment.ProjectId).Distinct();
 
             return await ReadContext
                        .Projects
                        .Where(p => !scoredProjects.Contains(p.Id))
                        .ToArrayAsync();
+        }
+
+        public Task<Project> GetByExternalIdAsync(Guid externalId)
+        {
+            return ReadContext.Projects.FirstAsync(project => project.ExternalId == externalId);
         }
     }
 }
