@@ -30,37 +30,32 @@
 .scoring a.sv-default-btn {
   float: right;
   bottom: 3em;
-  position: absolute;
-  right: calc(1.5em + 8px);
 }
 
 .scoring-card-block {
   position: relative;
   padding: 0px;
+  min-width: 1090px;
 }
 
 .scoring-card-block > div {
   vertical-align: top;
-  padding: 3em 2em;
+  padding: 3em 3em;
 }
 
 .description {
   display: inline-block;
-  padding-right: 2em;
-  padding-left: 2em;
   height: 100%;
-  position: absolute;
+  position: relative;
 }
 
 .vote-button {
-  bottom: 3em;
-  position: absolute;
+  margin-right: 25%;
+  position: relative;
 }
 
 .main-info {
   display: inline-block;
-  left: 1.5em;
-  padding: 2em;
 }
 
 .main-info img {
@@ -76,6 +71,7 @@
 .main-info__title > span {
   display: block;
   margin: 0.2em 0px;
+  word-wrap: break-word;
 }
 
 .main-info__title > span:first-child {
@@ -84,11 +80,7 @@
 
 .scoring {
   text-align: right;
-  max-width: calc(25% - 8px);
   display: inline-block;
-  padding: 0;
-  position: absolute;
   height: 100%;
-  right: 1.5em;
   color: rgb(180, 180, 180);
 }

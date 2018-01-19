@@ -1,7 +1,7 @@
 @import "~@angular/material/prebuilt-themes/purple-green.css";
 @import "~bootstrap/dist/css/bootstrap.css";
 
-.container {
+div.container {
   min-width: 1100px;
 }
 
@@ -178,6 +178,10 @@ div.mat-checkbox-frame {
 
 .mat-tab-body-wrapper {
   margin-top: 50px;
+}
+
+div.mat-tab-body-content {
+  overflow: hidden;
 }
 
 .high_rate {
