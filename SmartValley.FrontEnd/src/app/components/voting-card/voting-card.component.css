@@ -7,6 +7,11 @@
   display: inline-block;
 }
 
+.vote-button {
+  margin-right: 0.5em;
+  margin-top: 1em;
+}
+
 .timer-title{
   text-align: center;
   margin-bottom: 1em;
@@ -15,7 +20,7 @@
 
 .timer div {
   width: 4em;
-  margin: 0em 0.5em;
+  margin: 0em;
   display: inline-block;
 }
 
@@ -46,7 +51,6 @@
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
   padding: 0;
-  height: 14em;
 }
 
 .title h1 {
@@ -115,18 +119,11 @@ div.sw-main-info span, div.sw-main-info app-nullable-link {
 
 .description {
   display: inline-block;
-  padding-right: 2em;
-  padding-left: 0.5em;
-  position: absolute;
-  left: 30%;
 }
 
 .main-info {
   display: inline-block;
-  left: 3em;
   padding: 1em;
-  position: absolute;
-  top: calc(25% - 3em + 25px);
 }
 .main-info img {
   width: 6em;
@@ -153,10 +150,6 @@ div.sw-main-info span, div.sw-main-info app-nullable-link {
 .scoring {
   text-align: right;
   display: inline-block;
-  padding: 0;
-  position: absolute;
-  height: 100%;
-  right: 2.5em;
   padding: 1em;
 }
 

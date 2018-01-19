@@ -6,25 +6,21 @@
   </div>
   <div class="row mx-auto">
     <div class="report-card col-12">
-      <div class="report-content">
-        <div class="main-info col-4">
+      <div class="report-content row">
+        <div class="main-info col-2">
           <img src="{{projectImageUrl}}" style="width: 128px;"/>
         </div>
-        <div class="description col-4">
+        <div class="description col-6">
           <div class="main-info__title">
             <span>{{details.name}}</span>
             <span>{{details.area}}</span>
           </div>
-          <a (click)="vote()"
-             class="offset-4 col-6 vote-button sv-default-btn btn btn-primary">
-            {{ 'VotingCard.VotingForProject' | translate }}
-          </a>
         </div>
         <div class="scoring col-4">
-          <div class="scoring-container">
-    <span class="timer-title">
-      {{ 'VotingCard.ReminingTime' | translate }}
-    </span>
+          <div class="scoring-container row">
+            <span class="timer-title">
+              {{ 'VotingCard.ReminingTime' | translate }}
+            </span>
             <div class="timer">
               <div>
                 <span class="time-number">{{endDays}}</span>
@@ -42,6 +38,14 @@
                 <span class="time-number">{{endSeconds}}</span>
                 <span class="time-label">{{ 'VotingCard.Seconds' | translate }}</span>
               </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <a (click)="vote()"
+                 class="col-8 vote-button sv-default-btn btn btn-primary">
+                {{ 'VotingCard.VotingForProject' | translate }}
+              </a>
             </div>
           </div>
         </div>
