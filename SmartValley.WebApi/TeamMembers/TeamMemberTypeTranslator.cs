@@ -1,6 +1,5 @@
 ﻿using System;
 using SmartValley.Domain.Entities;
-using SmartValley.WebApi.Estimates;
 
 namespace SmartValley.WebApi.TeamMembers
 {

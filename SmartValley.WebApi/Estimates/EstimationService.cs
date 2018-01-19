@@ -62,7 +62,7 @@ namespace SmartValley.WebApi.Estimates
         private static Estimate CreateEstimate(EstimateScore score, EstimateComment comment)
             => new Estimate(comment.ProjectId, score.ExpertAddress, score.QuestionId, score.Score, comment.Comment);
 
-        private async Task UpdateProjectScoringAsync(Domain.Entities.Scoring scoring, ProjectScoringStatistics scoringStatistics)
+        private Task UpdateProjectScoringAsync(Domain.Entities.Scoring scoring, ProjectScoringStatistics scoringStatistics)
         {
             scoring.Score = scoringStatistics.Score;
             scoring.IsScoredByHr = scoringStatistics.IsScoredByHr;
@@ -70,7 +70,7 @@ namespace SmartValley.WebApi.Estimates
             scoring.IsScoredByTechnical = scoringStatistics.IsScoredByTech;
             scoring.IsScoredByLawyer = scoringStatistics.IsScoredByLawyer;
 
-            await _scoringRepository.UpdateWholeAsync(scoring);
+            return _scoringRepository.UpdateWholeAsync(scoring);
         }
 
         private Task AddEstimateCommentsAsync(SubmitEstimatesRequest request)

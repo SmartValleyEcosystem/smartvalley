@@ -35,14 +35,14 @@ namespace SmartValley.WebApi.Applications
             await AddTeamMembersAsync(applicationRequest, applicationId);
         }
 
-        private async Task AddTeamMembersAsync(ApplicationRequest applicationRequest, long applicationId)
+        private Task AddTeamMembersAsync(ApplicationRequest applicationRequest, long applicationId)
         {
             var teamMembers = applicationRequest
                 .TeamMembers
                 .Select(m => CreateTeamMember(m, applicationId))
                 .ToArray();
 
-            await _teamRepository.AddRangeAsync(teamMembers);
+            return _teamRepository.AddRangeAsync(teamMembers);
         }
 
         private static TeamMember CreateTeamMember(TeamMemberRequest memberRequest, long applicationId)
