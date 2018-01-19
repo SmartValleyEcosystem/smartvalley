@@ -1,7 +1,4 @@
-﻿using System;
-using SmartValley.Domain.Entities;
-
-namespace SmartValley.Application.Contracts.Project
+﻿namespace SmartValley.Application.Contracts.Project
 {
     public class ProjectScoringStatistics
     {

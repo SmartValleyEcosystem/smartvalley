@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Nethereum.Hex.HexConvertors.Extensions;
+using SmartValley.Application.Extensions;
 
 namespace SmartValley.Application.Contracts
 {
@@ -24,12 +25,10 @@ namespace SmartValley.Application.Contracts
 
             var projectAddress = await _contractClient.CallFunctionAsync<string>(_contractAddress, _contractAbi, "projectsMap", projectId);
 
-            if (IsAddressEmpty(projectAddress))
+            if (projectAddress.IsAddressEmpty())
                 throw new InvalidOperationException("Project id was not found in contract.");
 
             return projectAddress;
         }
-
-        private static bool IsAddressEmpty(string projectAddress) => string.IsNullOrWhiteSpace(projectAddress?.RemoveHexPrefix().Replace("0", ""));
     }
 }
