@@ -15,16 +15,18 @@ using Nethereum.Web3;
 using SmartValley.Application;
 using SmartValley.Application.Contracts;
 using SmartValley.Application.Contracts.Project;
-using SmartValley.Data.SQL.Core;
-using SmartValley.Data.SQL.Repositories;
-using SmartValley.Domain.Interfaces;
+using SmartValley.Application.Contracts.VotingSprint;
 using SmartValley.WebApi.Applications;
 using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.Estimates;
 using SmartValley.WebApi.ExceptionHandler;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.Scoring;
+using SmartValley.WebApi.Voting;
 using SmartValley.WebApi.WebApi;
+using SmartValley.Data.SQL.Core;
+using SmartValley.Data.SQL.Repositories;
+using SmartValley.Domain.Interfaces;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace SmartValley.WebApi
@@ -64,6 +66,10 @@ namespace SmartValley.WebApi
             services.AddSingleton<EthereumMessageSigner>();
             services.AddSingleton<EthereumClient>();
             services.AddSingleton<EthereumContractClient>();
+            services.AddSingleton<IVotingSprintContractClient, VotingSprintContractClient>(
+                provider => new VotingSprintContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().VotingSprintContract));
+            services.AddSingleton<IVotingManagerContractClient, VotingManagerContractClient>(
+                provider => new VotingManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().VotingManagerContract));
             services.AddSingleton<IProjectContractClient, ProjectContractClient>(
                 provider => new ProjectContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ProjectContract));
             services.AddSingleton<IEtherManagerContractClient, EtherManagerContractClient>(
@@ -89,6 +95,7 @@ namespace SmartValley.WebApi
             services.AddTransient<IScoringRepository, ScoringRepository>();
             services.AddTransient<IEstimateCommentRepository, EstimateCommentRepository>();
             services.AddTransient<IApplicationService, ApplicationService>();
+            services.AddTransient<IVotingService, VotingService>();
             services.AddTransient<IProjectService, ProjectService>();
             services.AddTransient<IEstimationService, EstimationService>();
             services.AddTransient<IScoringService, ScoringService>();
