@@ -56,7 +56,7 @@ namespace SmartValley.Application.Contracts.VotingSprint
         public async Task<long> GetVoteAsync(string sprintAddress, string investorAddress, Guid projectId)
         {
             var investorProjectVotes = await _contractClient.CallFunctionDeserializingToObjectAsync<InvestorProjectVoteDto>(sprintAddress, _abi, "getVote", investorAddress, projectId);
-            return investorProjectVotes.VotingTokensAmount;
+            return investorProjectVotes.TokenAmount;
         }
     }
 }
