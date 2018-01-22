@@ -7,6 +7,8 @@
         ValidatationError,
         ProjectAlreadyEstimatedInExpertiseArea,
         ProjectNotFound,
-        ExpertAlreadyEstimatedProjectInExpertiseArea
+        ExpertAlreadyEstimatedProjectInExpertiseArea,
+        VotingSprintAlreadyInProgress,
+        NotEnoughProjectsForSprintStart
     }
 }

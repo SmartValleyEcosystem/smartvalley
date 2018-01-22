@@ -10,12 +10,12 @@ import {ProjectDetailsResponse} from '../../api/project/project-details-response
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ScoringContractClient} from '../../services/contract-clients/scoring-contract-client';
 import {DialogService} from '../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
 import {Estimate} from '../../services/estimate';
 import {BalanceService} from '../../services/balance/balance.service';
 import {QuestionResponse} from '../../api/estimates/question-response';
+import {ScoringManagerContractClient} from '../../services/contract-clients/scoring-manager-contract-client';
 
 @Component({
   selector: 'app-estimate',
@@ -39,7 +39,7 @@ export class EstimateComponent implements OnInit {
               private estimatesApiClient: EstimatesApiClient,
               private authenticationService: AuthenticationService,
               private formBuilder: FormBuilder,
-              private scoringContractClient: ScoringContractClient,
+              private scoringContractClient: ScoringManagerContractClient,
               private dialogService: DialogService,
               private translateService: TranslateService,
               private balanceService: BalanceService) {

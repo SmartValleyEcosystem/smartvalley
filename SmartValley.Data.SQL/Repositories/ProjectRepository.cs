@@ -56,5 +56,10 @@ namespace SmartValley.Data.SQL.Repositories
         {
             return ReadContext.Projects.FirstAsync(project => project.ExternalId == externalId);
         }
+
+        public async Task<IReadOnlyCollection<Project>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds)
+        {
+            return await ReadContext.Projects.Where(project => externalIds.Contains(project.ExternalId)).ToArrayAsync();
+        }
     }
 }

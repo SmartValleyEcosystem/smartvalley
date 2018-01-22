@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using SmartValley.Application.Contracts.Options;
+using SmartValley.Application.Contracts.SmartValley.Application.Contracts;
 using SmartValley.Application.Exceptions;
 
 namespace SmartValley.Application.Contracts
@@ -11,9 +13,7 @@ namespace SmartValley.Application.Contracts
         private readonly string _contractAddress;
         private readonly string _contractAbi;
 
-        public EtherManagerContractClient(
-            EthereumContractClient contractClient,
-            ContractOptions contractOptions)
+        public EtherManagerContractClient(EthereumContractClient contractClient, ContractOptions contractOptions)
         {
             _contractClient = contractClient;
 

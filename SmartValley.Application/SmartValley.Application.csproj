@@ -7,6 +7,7 @@
     <PackageReference Include="Nethereum.Web3" Version="2.1.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\IcoLab.Common\IcoLab.Common\IcoLab.Common.csproj" />
     <ProjectReference Include="..\SmartValley.Domain\SmartValley.Domain.csproj" />
   </ItemGroup>
 </Project>

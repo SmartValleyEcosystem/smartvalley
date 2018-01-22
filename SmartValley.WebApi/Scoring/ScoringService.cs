@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SmartValley.Application;
-using SmartValley.Application.Contracts;
+using SmartValley.Application.Contracts.Scorings;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
@@ -14,18 +14,18 @@ namespace SmartValley.WebApi.Scoring
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IScoringRepository _scoringRepository;
-        private readonly IProjectManagerContractClient _projectManagerContractClient;
+        private readonly IScoringManagerContractClient _scoringManagerContractClient;
         private readonly EthereumClient _ethereumClient;
 
         public ScoringService(
             IProjectRepository projectRepository,
             IScoringRepository scoringRepository,
-            IProjectManagerContractClient projectManagerContractClient,
+            IScoringManagerContractClient scoringManagerContractClient,
             EthereumClient ethereumClient)
         {
             _projectRepository = projectRepository;
             _scoringRepository = scoringRepository;
-            _projectManagerContractClient = projectManagerContractClient;
+            _scoringManagerContractClient = scoringManagerContractClient;
             _ethereumClient = ethereumClient;
         }
 
@@ -40,7 +40,7 @@ namespace SmartValley.WebApi.Scoring
             await _ethereumClient.WaitForConfirmationAsync(transactionHash);
 
             var project = await _projectRepository.GetByExternalIdAsync(projectExternalId);
-            var contractAddress = await _projectManagerContractClient.GetProjectAddressAsync(projectExternalId.ToString());
+            var contractAddress = await _scoringManagerContractClient.GetScoringAddressAsync(projectExternalId.ToString());
             var scoring = new Domain.Entities.Scoring
                           {
                               ProjectId = project.Id,

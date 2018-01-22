@@ -5,7 +5,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SubmitApplicationRequest} from '../../api/application/submit-application-request';
 import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {v4 as uuid} from 'uuid';
-import {ProjectManagerContractClient} from '../../services/contract-clients/project-manager-contract-client';
+import {ScoringManagerContractClient} from '../../services/contract-clients/scoring-manager-contract-client';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {NotificationsService} from 'angular2-notifications';
@@ -37,7 +37,7 @@ export class ApplicationComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
-              private projectManagerContractClient: ProjectManagerContractClient,
+              private scoringManagerContractClient: ScoringManagerContractClient,
               private votingManagerContractClient: VotingManagerContractClient,
               private router: Router,
               private notificationsService: NotificationsService,
@@ -85,7 +85,7 @@ export class ApplicationComponent implements OnInit {
     }
 
     const projectId = await this.submitApplicationToBackendAsync();
-    const transactionHash = await this.deployContractAsync(projectId, this.applicationForm.value.name);
+    const transactionHash = await this.deployContractAsync(projectId);
     if (transactionHash == null) {
       this.notifyError();
       this.isProjectCreating = false;
@@ -158,7 +158,7 @@ export class ApplicationComponent implements OnInit {
   }
 
   private async confirmSvtWithdrawalAsync(): Promise<boolean> {
-    const projectCreationCost = await this.projectManagerContractClient.getProjectCreationCostAsync();
+    const projectCreationCost = await this.scoringManagerContractClient.getScoringCostAsync();
     return await this.dialogService.showSvtWithdrawalConfirmationDialogAsync(projectCreationCost);
   }
 
@@ -226,9 +226,9 @@ export class ApplicationComponent implements OnInit {
     };
   }
 
-  private async deployContractAsync(projectId: string, projectName: string): Promise<string> {
+  private async deployContractAsync(projectId: string): Promise<string> {
     try {
-      return await this.projectManagerContractClient.addProjectAsync(projectId, projectName);
+      return await this.scoringManagerContractClient.startAsync(projectId);
     } catch (e) {
       return null;
     }

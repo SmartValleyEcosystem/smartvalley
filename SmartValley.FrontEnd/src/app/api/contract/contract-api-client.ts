@@ -9,18 +9,13 @@ export class ContractApiClient extends BaseApiClient {
     super();
   }
 
-  async getProjectManagerContractAsync(): Promise<ContractResponse> {
-    return await this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/projectManager')
+  async getScoringManagerContractAsync(): Promise<ContractResponse> {
+    return await this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/scoringManager')
       .toPromise();
   }
 
   async getVotingManagerContractAsync(): Promise<ContractResponse> {
     return await this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/votingManager')
-      .toPromise();
-  }
-
-  async getScoringContractAsync(): Promise<ContractResponse> {
-    return await this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/scoring')
       .toPromise();
   }
 

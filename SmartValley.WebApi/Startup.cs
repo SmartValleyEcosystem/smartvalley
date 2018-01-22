@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using IcoLab.Common;
 using IcoLab.Common.Web.WebApi;
 using IcoLab.Web.Common.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -14,15 +17,20 @@ using Nethereum.Signer;
 using Nethereum.Web3;
 using SmartValley.Application;
 using SmartValley.Application.Contracts;
-using SmartValley.Application.Contracts.Project;
-using SmartValley.Application.Contracts.VotingSprint;
+using SmartValley.Application.Contracts.Options;
+using SmartValley.Application.Contracts.Scorings;
+using SmartValley.Application.Contracts.SmartValley.Application.Contracts;
+using SmartValley.Application.Contracts.Votings;
+using SmartValley.Data.SQL.Core;
+using SmartValley.Data.SQL.Repositories;
+using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Applications;
 using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.Estimates;
 using SmartValley.WebApi.ExceptionHandler;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.Scoring;
-using SmartValley.WebApi.Voting;
+using SmartValley.WebApi.Votings;
 using SmartValley.WebApi.WebApi;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Data.SQL.Repositories;
@@ -49,8 +57,8 @@ namespace SmartValley.WebApi
         // ReSharper disable once UnusedMember.Global
         public void ConfigureServices(IServiceCollection services)
         {
-            services.ConfigureOptions(Configuration, typeof(SiteOptions), typeof(ContractOptions), typeof(NethereumOptions));
-
+            services.ConfigureOptions(Configuration, typeof(NethereumOptions), typeof(SiteOptions));
+        
             ConfigureCorsPolicy(services);
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "SmartValley API", Version = "v1"}); });
@@ -63,6 +71,7 @@ namespace SmartValley.WebApi
                     .AddScheme<EcdsaAuthenticationOptions, EcdsaAuthenticationHandler>(EcdsaAuthenticationOptions.DefaultScheme, options => { });
 
             services.AddSingleton(provider => InitializeWeb3(provider.GetService<NethereumOptions>().RpcAddress));
+            services.AddSingleton<IDateTime, UtcDateTime>();
             services.AddSingleton<EthereumMessageSigner>();
             services.AddSingleton<EthereumClient>();
             services.AddSingleton<EthereumContractClient>();
@@ -70,12 +79,12 @@ namespace SmartValley.WebApi
                 provider => new VotingSprintContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().VotingSprintContract));
             services.AddSingleton<IVotingManagerContractClient, VotingManagerContractClient>(
                 provider => new VotingManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().VotingManagerContract));
-            services.AddSingleton<IProjectContractClient, ProjectContractClient>(
-                provider => new ProjectContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ProjectContract));
+            services.AddSingleton<IScoringContractClient, ScoringContractClient>(
+                provider => new ScoringContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringContract));
             services.AddSingleton<IEtherManagerContractClient, EtherManagerContractClient>(
                 provider => new EtherManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().EtherManagerContract));
-            services.AddSingleton<IProjectManagerContractClient, ProjectManagerContractClient>(
-                provider => new ProjectManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ProjectManagerContract));
+            services.AddSingleton<IScoringManagerContractClient, ScoringManagerContractClient>(
+                provider => new ScoringManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringManagerContract));
 
             services.AddMvc(options =>
                             {
@@ -100,6 +109,9 @@ namespace SmartValley.WebApi
             services.AddTransient<IEstimationService, EstimationService>();
             services.AddTransient<IScoringService, ScoringService>();
             services.AddTransient<IQuestionRepository, QuestionRepository>();
+            services.AddTransient<IVotingService, VotingService>();
+            services.AddTransient<IVotingRepository, VotingRepository>();
+            services.AddTransient<IVotingProjectRepository, VotingProjectRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -117,6 +129,7 @@ namespace SmartValley.WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "SmartValley API V1"); });
             }
+
             app.UseAuthentication();
             app.Use(async (context, next) =>
                     {
@@ -127,7 +140,7 @@ namespace SmartValley.WebApi
                             await next();
                         }
                     })
-               .UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new List<string> { "index.html" } })
+               .UseDefaultFiles(new DefaultFilesOptions {DefaultFileNames = new List<string> {"index.html"}})
                .UseStaticFiles()
                .UseMvc();
         }
@@ -141,6 +154,7 @@ namespace SmartValley.WebApi
             {
                 url = "*";
             }
+
             var corsPolicyBuilder = new CorsPolicyBuilder();
             corsPolicyBuilder.WithOrigins(url);
             corsPolicyBuilder.AllowAnyHeader();

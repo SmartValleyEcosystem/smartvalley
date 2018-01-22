@@ -4,7 +4,7 @@ import {Balance} from './balance';
 import {AuthenticationService} from '../authentication/authentication-service';
 import {TokenContractClient} from '../contract-clients/token-contract-client';
 import {MinterContractClient} from '../contract-clients/minter-contract-client';
-import {ProjectManagerContractClient} from '../contract-clients/project-manager-contract-client';
+import {ScoringManagerContractClient} from '../contract-clients/scoring-manager-contract-client';
 import {DialogService} from '../dialog-service';
 import {Web3Service} from '../web3-service';
 import {NotificationsService} from 'angular2-notifications';
@@ -20,7 +20,7 @@ export class BalanceService {
               private authenticationService: AuthenticationService,
               private tokenContractClient: TokenContractClient,
               private minterContractClient: MinterContractClient,
-              private projectManagerContractClient: ProjectManagerContractClient,
+              private scoringManagerContractClient: ScoringManagerContractClient,
               private dialogService: DialogService,
               private notificationsService: NotificationsService,
               private web3Service: Web3Service,
@@ -119,8 +119,8 @@ export class BalanceService {
   private async hasUserSvtForProjectAsync(): Promise<boolean> {
     const accountAddress = (await this.authenticationService.getCurrentUser()).account;
     const tokenBalance = await this.tokenContractClient.getBalanceAsync(accountAddress);
-    const projectCreationCost = await this.projectManagerContractClient.getProjectCreationCostAsync();
-    return tokenBalance >= projectCreationCost;
+    const scoringCost = await this.scoringManagerContractClient.getScoringCostAsync();
+    return tokenBalance >= scoringCost;
   }
 
   private async getDateToReceiveTokensAsync(): Promise<Date> {

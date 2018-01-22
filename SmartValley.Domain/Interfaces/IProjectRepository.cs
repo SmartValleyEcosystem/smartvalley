@@ -18,5 +18,7 @@ namespace SmartValley.Domain.Interfaces
         Task<IReadOnlyCollection<ProjectScoring>> GetForScoringAsync(string expertAddress, ExpertiseArea area);
 
         Task<Project> GetByExternalIdAsync(Guid externalId);
+
+        Task<IReadOnlyCollection<Project>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds);
     }
 }

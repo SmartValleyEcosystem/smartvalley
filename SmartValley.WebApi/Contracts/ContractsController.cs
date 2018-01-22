@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application.Contracts;
+using SmartValley.Application.Contracts.Options;
 using SmartValley.WebApi.Contracts.Responses;
 
 namespace SmartValley.WebApi.Contracts
@@ -14,10 +15,10 @@ namespace SmartValley.WebApi.Contracts
             _nethereumOptions = nethereumOptions;
         }
 
-        [Route("projectManager")]
-        public ContractResponse GetProjectManagerContract()
+        [Route("scoringManager")]
+        public ContractResponse GetScoringManagerContract()
         {
-            var contractOptions = _nethereumOptions.ProjectManagerContract;
+            var contractOptions = _nethereumOptions.ScoringManagerContract;
             return new ContractResponse
                    {
                        Address = contractOptions.Address,
@@ -33,17 +34,6 @@ namespace SmartValley.WebApi.Contracts
                    {
                        Address = contractOptions.Address,
                        Abi = contractOptions.Abi,
-                   };
-        }
-
-        [Route("scoring")]
-        public ContractResponse GetScoringContract()
-        {
-            var contractOptions = _nethereumOptions.ScoringContract;
-            return new ContractResponse
-                   {
-                       Abi = contractOptions.Abi,
-                       Address = contractOptions.Address
                    };
         }
 

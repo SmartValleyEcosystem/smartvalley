@@ -25,6 +25,10 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<Question> IReadOnlyDataContext.Questions => Questions.AsNoTracking();
 
+        IQueryable<Voting> IReadOnlyDataContext.Votings => Votings.AsNoTracking();
+
+        IQueryable<VotingProject> IReadOnlyDataContext.VotingProjects => VotingProjects.AsNoTracking();
+
         public DbSet<Application> Applications { get; set; }
 
         public DbSet<Project> Projects { get; set; }
@@ -36,6 +40,10 @@ namespace SmartValley.Data.SQL.Core
         public DbSet<TeamMember> TeamMembers { get; set; }
 
         public DbSet<Question> Questions { get; set; }
+
+        public DbSet<Voting> Votings { get; set; }
+
+        public DbSet<VotingProject> VotingProjects { get; set; }
 
         public IQueryable<T> GetAll<T>() where T : class
         {
@@ -81,6 +89,12 @@ namespace SmartValley.Data.SQL.Core
             modelBuilder.Entity<Scoring>()
                         .HasIndex(p => new {p.ProjectId})
                         .IsUnique();
+
+            modelBuilder.Entity<VotingProject>()
+                        .HasKey(v => new {v.ProjectId, v.VotingId});
+
+            modelBuilder.Entity<VotingProject>()
+                        .HasIndex(v => new {v.ProjectId, v.VotingId});
         }
     }
 }
