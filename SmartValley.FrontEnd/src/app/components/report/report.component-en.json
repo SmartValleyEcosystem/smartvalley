@@ -1,6 +1,6 @@
 {
   "Report": {
-    "Title": "Scoring report",
+    "Title": "Project profile",
     "ScoringRating": "Scoring rating:",
     "InProgress": "In progress...",
     "InProgressLower": "in progress",
@@ -9,7 +9,7 @@
     "Cmo": "CMO",
     "Cto": "CTO",
     "Pr": "PR",
-    "ExpertEstimates": "Experts estimates",
+    "ExpertEstimates": "Scoring Report",
     "HrAvg": "HR average score",
     "LawyerAvg": "Lawyer average score",
     "AnalystAvg": "Analyst average score",

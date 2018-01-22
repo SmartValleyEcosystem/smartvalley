@@ -171,3 +171,13 @@ div.sw-main-info span, div.sw-main-info app-nullable-link {
   margin-left: 60px;
   margin-right: -60px;
 }
+
+.sv-description {
+  padding-left: 0;
+  color: white;
+  margin-bottom: 2em;
+}
+
+.sv-description > h2 {
+  margin: 0;
+}

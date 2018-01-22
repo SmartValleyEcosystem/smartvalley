@@ -1,7 +1,12 @@
 <div class="container" *ngIf="details">
   <div class="row mx-auto">
-    <div class="col-8 title">
-      <h1>{{details.name}} {{ 'VotingCard.Title' | translate }}</h1>
+    <div class="col-8 sm-title">
+      <h1>{{ 'Common.Title' | translate }}</h1>
+    </div>
+  </div>
+  <div class="row mx-auto">
+    <div class="col-8 sv-description d-flex align-items-end">
+      <h2 class="">{{details.name}} {{ 'VotingCard.Title' | translate }}</h2>
     </div>
   </div>
   <div class="row mx-auto">
