@@ -15,7 +15,7 @@ export class SprintService {
   public async hasActiveSprintAsync(): Promise<boolean> {
     const currentSprint = await this.votingManagerContractClient.getLastSprintAsync();
     console.log(currentSprint);
-    return !!currentSprint;
+    return currentSprint.doesExist;
   }
 
 
