@@ -5,7 +5,7 @@ import {Paths} from '../../paths';
 import {Project} from '../../services/project';
 import {ProjectCardType} from '../../services/project-card-type';
 import {ProjectApiClient} from '../../api/project/project-api-client';
-import {SprintService} from '../../services/sprint/sprint-service';
+import {VotingService} from '../../services/voting/voting-service';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +21,7 @@ export class LandingComponent implements OnInit {
   constructor(private authenticationService: AuthenticationService,
               private router: Router,
               private projectApiClient: ProjectApiClient,
-              private sprintService: SprintService) {
+              private sprintService: VotingService) {
   }
 
   async ngOnInit(): Promise<void> {

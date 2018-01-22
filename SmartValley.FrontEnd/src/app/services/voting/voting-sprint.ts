@@ -1,6 +1,6 @@
 import {Project} from '../project';
-export interface Sprint {
-  number: number;
+export interface VotingSprint {
+  voteBalance: number;
   startDate: Date;
   endDate: Date;
   projects: Array<Project>;

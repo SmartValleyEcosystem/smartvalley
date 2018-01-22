@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {SprintService} from '../../services/sprint/sprint-service';
+import {VotingService} from '../../services/voting/voting-service';
 import {ProjectCardType} from '../../services/project-card-type';
 import {Balance} from '../../services/balance/balance';
 import {BalanceService} from '../../services/balance/balance.service';
-import {Sprint} from '../../services/sprint/sprint';
+import {VotingSprint} from '../../services/voting/voting-sprint';
 
 @Component({
   selector: 'app-voting',
@@ -14,22 +14,18 @@ export class VotingComponent implements OnInit {
 
   public ProjectCardType = ProjectCardType;
 
-  public currentSprint: Sprint;
+  public currentSprint: VotingSprint;
 
   public endDays: number;
   public endHours: number;
   public endMinutes: number;
   public endSeconds: number;
 
-  public voteBalance = 0;
-
   public dateFrom: string;
   public dateTo: string;
 
   constructor(private balanceService: BalanceService,
-              private sprintService: SprintService) {
-    this.voteBalance = this.balanceService.balance.votingBalance;
-    this.balanceService.balanceChanged.subscribe((balance: Balance) => this.voteBalance = balance.votingBalance);
+              private sprintService: VotingService) {
   }
 
   async ngOnInit(): Promise<void> {

@@ -5,8 +5,8 @@ import {ProjectService} from '../../services/project-service';
 import {BlockiesService} from '../../services/blockies-service';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {Paths} from '../../paths';
-import {Sprint} from '../../services/sprint/sprint';
-import {SprintService} from '../../services/sprint/sprint-service';
+import {VotingSprint} from '../../services/voting/voting-sprint';
+import {VotingService} from '../../services/voting/voting-service';
 
 @Component({
   selector: 'app-voting-card',
@@ -18,7 +18,7 @@ export class VotingCardComponent implements OnInit {
   public projectImageUrl: string;
 
   private projectId: number;
-  public currentSprint: Sprint;
+  public currentSprint: VotingSprint;
 
   public endDays: number;
   public endHours: number;
@@ -30,7 +30,7 @@ export class VotingCardComponent implements OnInit {
               private router: Router,
               private blockiesService: BlockiesService,
               public projectService: ProjectService,
-              private sprintService: SprintService) {
+              private sprintService: VotingService) {
   }
 
   public async ngOnInit() {

@@ -1,5 +1,4 @@
 ﻿using SmartValley.Domain;
-using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Projects.Responses
 {

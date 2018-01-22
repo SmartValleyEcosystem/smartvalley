@@ -8,5 +8,4 @@ export class Paths {
   public static readonly Account = 'account';
   public static readonly MyProjects = 'myprojects';
   public static readonly Voting = 'voting';
-  public static readonly Vote = 'vote';
 }

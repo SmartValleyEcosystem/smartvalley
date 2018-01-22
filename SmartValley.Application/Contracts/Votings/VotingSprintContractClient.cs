@@ -35,7 +35,8 @@ namespace SmartValley.Application.Contracts.Votings
                        EndDate = DateUtils.FromUnixTime(sprintDto.EndDate),
                        MaximumScore = sprintDto.MaximumScore,
                        ProjectExternalIds = sprintDto.ProjectExternalIds.Select(e => e.ToGuid()).ToList(),
-                       StartDate = DateUtils.FromUnixTime(sprintDto.StartDate)
+                       StartDate = DateUtils.FromUnixTime(sprintDto.StartDate),
+                       Address = sprintAddress
                    };
         }
 

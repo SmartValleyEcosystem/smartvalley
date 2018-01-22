@@ -51,6 +51,11 @@ namespace SmartValley.WebApi.Projects
             return projectScoring.Score != null || project.AuthorAddress.Equals(account, StringComparison.InvariantCultureIgnoreCase);
         }
 
+        public Task<IReadOnlyCollection<Project>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds)
+        {
+            return _projectRepository.GetByExternalIdsAsync(externalIds);
+        }
+
         private async Task<Project> FindAsync(long projectId)
         {
             var project = await _projectRepository.GetByIdAsync(projectId);

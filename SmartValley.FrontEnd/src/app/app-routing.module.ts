@@ -31,6 +31,7 @@ const appRoutes: Routes = [
         component: MyProjectsComponent,
         canActivate: [ShouldBeAuthenticatedGuard]
       },
+      {path: Paths.Voting + '/:id', pathMatch: 'full', component: VotingCardComponent, canActivate: [ShouldBeAuthenticatedGuard]},
       {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent},
       {path: Paths.Scoring, pathMatch: 'full', component: ScoringComponent},
       {path: Paths.Account, pathMatch: 'full', component: AccountComponent, canActivate: [ShouldBeAuthenticatedGuard]},
@@ -44,7 +45,6 @@ const appRoutes: Routes = [
         }
       },
       {path: Paths.Report + '/:id', pathMatch: 'full', component: ReportComponent},
-      {path: Paths.Vote + '/:id', pathMatch: 'full', component: VotingCardComponent, canActivate: [ShouldBeAuthenticatedGuard]},
       {path: Paths.Scoring + '/:id', pathMatch: 'full', component: EstimateComponent, canActivate: [ShouldHaveEthGuard]}
     ]
   },

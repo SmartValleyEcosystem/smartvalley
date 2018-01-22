@@ -5,6 +5,7 @@
     "Info": "Info",
     "ProjectProfile": "Project profile",
     "Estimate": "Estimate",
-    "VotingForProject": "Voting for project"
+    "VotingForProject": "Voting for project",
+    "MyVoteLabel": "My vote"
   }
 }

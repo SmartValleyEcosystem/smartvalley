@@ -17,13 +17,14 @@
           <div *ngIf="projectCardType !== ProjectCardType.Voting" class="scoring-container">
             <span>{{ 'ProjectCard.ScoringRating' | translate }}</span>
             <div class="score-panel" *ngIf="project.score">
-              <span class="score {{projectService.colorOfProjectRate(project.score)}}">{{project.score.toFixed(0)}}</span>
+              <span
+                class="score {{projectService.colorOfProjectRate(project.score)}}">{{project.score.toFixed(0)}}</span>
               <span>/ 100</span>
             </div>
             <span *ngIf="!project.score">{{ 'ProjectCard.InProgress' | translate }}</span>
           </div>
           <div *ngIf="projectCardType === ProjectCardType.Voting" class="voting-container">
-            <span>My vote: yes</span>
+            <span>{{ 'ProjectCard.MyVoteLabel' | translate }}: {{project.isVotedByMe ? 'Common.Yes' : 'Common.No' | translate}}</span>
           </div>
         </div>
       </div>

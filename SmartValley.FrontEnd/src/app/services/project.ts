@@ -14,6 +14,7 @@ export class Project {
   expertiseArea: ExpertiseArea;
   address: string;
   author: string;
+  isVotedByMe: boolean;
 
   public static create(response: ProjectResponse): Project {
     return <Project>{

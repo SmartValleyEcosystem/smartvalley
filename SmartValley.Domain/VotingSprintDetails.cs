@@ -14,5 +14,7 @@ namespace SmartValley.Domain
         public long MaximumScore { get; set; }
 
         public List<Guid> ProjectExternalIds { get; set; }
+
+        public string Address { get; set; }
     }
 }

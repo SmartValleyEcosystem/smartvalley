@@ -10,8 +10,7 @@
     </div>
   </div>
   <div class="row mx-auto sprint-title" *ngIf="currentSprint">
-    {{ 'Voting.Sprint' | translate }} {{currentSprint.number}}: {{ 'Voting.From' | translate }} {{dateFrom}} {{ 'Voting.To' |
-    translate }} {{dateTo}}
+    {{ 'Voting.From' | translate }} {{dateFrom}} {{ 'Voting.To' | translate }} {{dateTo}}
   </div>
   <div class="row mx-auto">
     <a style="height: 3.6em; margin-top: 2.4em;" class="col-2 sv-default-btn btn btn-primary"
@@ -39,13 +38,14 @@
         </div>
       </div>
     </div>
-    <div class="col-3 vote-balance">
-      <span>{{ 'Voting.VoteBalance' | translate }}: {{voteBalance}} SVT</span>
+    <div *ngIf="currentSprint" class="col-3 vote-balance">
+      <span>{{ 'Voting.VoteBalance' | translate }}: {{currentSprint.voteBalance}} SVT</span>
     </div>
   </div>
   <div class="row mx-auto" *ngIf="currentSprint">
     <div class="sw-list-projects">
-      <div class="card_no_shdw col-12 sw-card" style="margin: 0 0 20px 0" *ngFor="let project of currentSprint.projects;">
+      <div class="card_no_shdw col-12 sw-card" style="margin: 0 0 20px 0"
+           *ngFor="let project of currentSprint.projects;">
         <app-project-card [project]="project" [projectCardType]="ProjectCardType.Voting"></app-project-card>
       </div>
     </div>

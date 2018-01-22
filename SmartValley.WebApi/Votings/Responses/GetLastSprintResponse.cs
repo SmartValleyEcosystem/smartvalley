@@ -1,11 +1,11 @@
-﻿using System;
+﻿using SmartValley.Domain;
 
 namespace SmartValley.WebApi.Votings.Responses
 {
     public class GetLastSprintResponse
     {
-        public bool DoesExist => Sprint != null;
+        public bool DoesExist => LastSprint != null;
 
-        public SprintResponse Sprint { get; set; }
+        public VotingSprintResponse LastSprint { get; set; }
     }
 }

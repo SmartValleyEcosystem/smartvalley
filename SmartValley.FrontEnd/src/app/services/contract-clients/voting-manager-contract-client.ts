@@ -3,8 +3,6 @@ import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {Web3Service} from '../web3-service';
 import {AuthenticationService} from '../authentication/authentication-service';
 import {Injectable} from '@angular/core';
-import {VotingResponse} from '../../api/voting/voting-response';
-import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class VotingManagerContractClient implements ContractClient {

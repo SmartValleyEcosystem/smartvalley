@@ -34,7 +34,7 @@ export class ProjectCardComponent implements OnInit {
   }
 
   voteForProject(id: number) {
-    this.router.navigate([Paths.Vote + '/' + id]);
+    this.router.navigate([Paths.Voting + '/' + id]);
   }
 
   showReport(id: number) {
