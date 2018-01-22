@@ -44,6 +44,10 @@ button.mat-icon-button {
   height: auto;
 }
 
+button.mat-menu-item:hover {
+  color: white;
+}
+
 .address{
   vertical-align: middle;
   font-size: 0.8em;
