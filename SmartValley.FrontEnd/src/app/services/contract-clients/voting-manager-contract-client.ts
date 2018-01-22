@@ -3,20 +3,17 @@ import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {Web3Service} from '../web3-service';
 import {AuthenticationService} from '../authentication/authentication-service';
 import {Injectable} from '@angular/core';
-import {BaseApiClient} from '../../api/base-api-client';
-import {VotingResponse} from '../../services/contract-clients/voting-response';
+import {VotingResponse} from '../../api/voting/voting-response';
 import {HttpClient} from '@angular/common/http';
 
 @Injectable()
-export class VotingManagerContractClient extends BaseApiClient implements ContractClient {
+export class VotingManagerContractClient implements ContractClient {
   public abi: string;
   public address: string;
 
   constructor(private authenticationService: AuthenticationService,
               private web3Service: Web3Service,
-              private contractClient: ContractApiClient,
-              private http: HttpClient) {
-    super();
+              private contractClient: ContractApiClient) {
   }
 
   public async initializeAsync(): Promise<void> {
@@ -32,9 +29,5 @@ export class VotingManagerContractClient extends BaseApiClient implements Contra
     return contract.enqueueProject(
       projectId.replace(/-/g, ''),
       {from: fromAddress});
-  }
-
-  public async getLastSprintAsync(): Promise<VotingResponse> {
-    return await this.http.get<VotingResponse>(this.baseApiUrl + '/votings/last').toPromise();
   }
 }

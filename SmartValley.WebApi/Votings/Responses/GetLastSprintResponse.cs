@@ -4,12 +4,8 @@ namespace SmartValley.WebApi.Votings.Responses
 {
     public class GetLastSprintResponse
     {
-        public bool DoesExist { get; set; }
+        public bool DoesExist => Sprint != null;
 
-        public DateTime? StartDate { get; set; }
-
-        public DateTime? EndDate { get; set; }
-
-        public long? MaximumScore { get; set; }
+        public SprintResponse Sprint { get; set; }
     }
 }
