@@ -2,16 +2,19 @@ import {Injectable} from '@angular/core';
 import {Project} from '../project';
 import {Sprint} from './sprint';
 import {ProjectApiClient} from '../../api/project/project-api-client';
+import {VotingManagerContractClient} from '../../services/contract-clients/voting-manager-contract-client';
 
 @Injectable()
 export class SprintService {
 
-  constructor(private projectApiClient: ProjectApiClient) {
+  constructor(private projectApiClient: ProjectApiClient,
+              private votingManagerContractClient: VotingManagerContractClient) {
 
   }
 
   public async hasActiveSprintAsync(): Promise<boolean> {
-    const currentSprint = await this.getCurrentSprintAsync();
+    const currentSprint = await this.votingManagerContractClient.getLastSprintAsync();
+    console.log(currentSprint);
     return !!currentSprint;
   }
 

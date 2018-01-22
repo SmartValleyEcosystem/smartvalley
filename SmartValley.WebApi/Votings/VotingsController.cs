@@ -20,7 +20,13 @@ namespace SmartValley.WebApi.Votings
         public async Task<GetLastSprintResponse> GetLastSprintAsync()
         {
             var lastSprint = await _votingService.GetLastSprintDetailsAsync();
-            return new GetLastSprintResponse { LastSprint = lastSprint };
+            return new GetLastSprintResponse
+                   {
+                       DoesExist = lastSprint != null,
+                       EndDate = lastSprint?.EndDate,
+                       MaximumScore = lastSprint?.MaximumScore,
+                       StartDate = lastSprint?.StartDate
+                   };
         }
 
         [HttpGet]
