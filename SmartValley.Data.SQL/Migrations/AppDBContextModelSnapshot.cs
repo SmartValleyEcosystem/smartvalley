@@ -184,6 +184,39 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("TeamMembers");
                 });
 
+            modelBuilder.Entity("SmartValley.Domain.Entities.Voting", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("EndDate");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.Property<string>("VotingAddress")
+                        .IsRequired()
+                        .HasMaxLength(42);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Votings");
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.Entities.VotingProject", b =>
+                {
+                    b.Property<long>("ProjectId");
+
+                    b.Property<long>("VotingId");
+
+                    b.HasKey("ProjectId", "VotingId");
+
+                    b.HasIndex("VotingId");
+
+                    b.HasIndex("ProjectId", "VotingId");
+
+                    b.ToTable("VotingProjects");
+                });
+
             modelBuilder.Entity("SmartValley.Domain.Entities.Application", b =>
                 {
                     b.HasOne("SmartValley.Domain.Entities.Project", "Project")
@@ -218,6 +251,19 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasOne("SmartValley.Domain.Entities.Application", "Application")
                         .WithMany()
                         .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.Entities.VotingProject", b =>
+                {
+                    b.HasOne("SmartValley.Domain.Entities.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SmartValley.Domain.Entities.Voting", "Voting")
+                        .WithMany()
+                        .HasForeignKey("VotingId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

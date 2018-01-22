@@ -16,7 +16,7 @@ import {BalanceApiClient} from './api/balance/balance-api-client';
 import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
 import {ApplicationComponent} from './components/application/application.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {ProjectManagerContractClient} from './services/contract-clients/project-manager-contract-client';
+import {ScoringManagerContractClient} from './services/contract-clients/scoring-manager-contract-client';
 import {ScoringComponent} from './components/scoring/scoring.component';
 import {MatTabsModule} from '@angular/material';
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -33,6 +33,7 @@ import {ProjectCardComponent} from './components/common/project-card/project-car
 import {ProjectApiClient} from './api/project/project-api-client';
 import {ReportComponent} from './components/report/report.component';
 import {EstimatesApiClient} from './api/estimates/estimates-api-client';
+import {VotingApiClient} from './api/voting/voting-api-client';
 import {QuestionsComponent} from './components/report/questions/questions.component';
 import {ProjectService} from './services/project-service';
 import {NgProgressInterceptor, NgProgressModule} from 'ngx-progressbar';
@@ -45,7 +46,6 @@ import {AlertModalComponent} from './components/common/alert-modal/alert-modal.c
 import {MetamaskManualModalComponent} from './components/common/metamask-manual-modal/metamask-manual-modal.component';
 import {Angulartics2GoogleAnalytics} from 'angulartics2/ga';
 import {Angulartics2Module} from 'angulartics2';
-import {ScoringContractClient} from './services/contract-clients/scoring-contract-client';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {multiTranslateLoaderFactory} from './services/translate/multi-translate-loader-factory';
 import {BalanceService} from './services/balance/balance.service';
@@ -160,14 +160,14 @@ import {FreeScoringConfirmationModalComponent} from './components/common/free-sc
     ScoringApiClient,
     EstimatesApiClient,
     AuthenticationService,
+    VotingApiClient,
     ProjectService,
     QuestionService,
     Web3Service,
     DialogService,
     SprintService,
-    ProjectManagerContractClient,
+    ScoringManagerContractClient,
     VotingManagerContractClient,
-    ScoringContractClient,
     BlockiesService,
     BalanceService,
     InitializationService,
