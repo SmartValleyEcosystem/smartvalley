@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.Votings.Responses;
@@ -29,7 +28,7 @@ namespace SmartValley.WebApi.Votings
             var investorVotes = await _votingService.GetVotesAsync(lastSprint.Address, User.Identity.Name);
             var projects = await _projectService.GetByExternalIdsAsync(lastSprint.ProjectExternalIds);
 
-            return new GetLastSprintResponse {LastSprint = VotingSprintResponse.Create(lastSprint, projects, investorVotes) };
+            return new GetLastSprintResponse {LastSprint = VotingSprintResponse.Create(lastSprint, projects, investorVotes)};
         }
 
         [HttpGet]

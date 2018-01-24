@@ -5,9 +5,7 @@
         EtherAlreadySent,
         ServerError,
         ValidatationError,
-        ProjectAlreadyEstimatedInExpertiseArea,
         ProjectNotFound,
-        ExpertAlreadyEstimatedProjectInExpertiseArea,
         VotingSprintAlreadyInProgress,
         NotEnoughProjectsForSprintStart
     }

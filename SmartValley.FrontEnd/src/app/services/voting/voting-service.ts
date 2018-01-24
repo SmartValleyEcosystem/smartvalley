@@ -18,8 +18,9 @@ export class VotingService {
 
   public async getCurrentSprintAsync(): Promise<VotingSprint> {
     const lastSprintResponse = await this.votingApiClient.getLastVotingSprintAsync();
-    if (!lastSprintResponse.doesExist)
+    if (!lastSprintResponse.doesExist) {
       return null;
+    }
 
     const projects = [];
     for (const projectVoteResponse of lastSprintResponse.lastSprint.projects) {

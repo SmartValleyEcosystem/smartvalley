@@ -1,6 +1,6 @@
 ﻿using SmartValley.WebApi.Estimates;
 
-namespace SmartValley.WebApi.Scoring.Requests
+namespace SmartValley.WebApi.Projects.Requests
 {
     public class GetProjectsForScoringRequest
     {

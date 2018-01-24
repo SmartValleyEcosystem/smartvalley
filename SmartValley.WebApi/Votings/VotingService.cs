@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IcoLab.Common;
 using SmartValley.Application;
 using SmartValley.Application.Contracts.Votings;
-using SmartValley.Application.Contracts.Votings.Dto;
 using SmartValley.Application.Exceptions;
 using SmartValley.Application.Extensions;
 using SmartValley.Domain;
@@ -40,7 +40,8 @@ namespace SmartValley.WebApi.Votings
             _ethereumClient = ethereumClient;
         }
 
-        public Task<VotingSprintDetails> GetSprintAsync(string sprintAddress) => _votingSprintContractClient.GetDetailsAsync(sprintAddress);
+        public Task<VotingSprintDetails> GetSprintAsync(string sprintAddress)
+            => _votingSprintContractClient.GetDetailsAsync(sprintAddress);
 
         public Task<long> GetVoteAsync(string sprintAddress, string investorAddress, Guid projectId)
             => _votingSprintContractClient.GetVoteAsync(sprintAddress, investorAddress, projectId);
@@ -51,53 +52,79 @@ namespace SmartValley.WebApi.Votings
         public async Task<VotingSprintDetails> GetLastSprintDetailsAsync()
         {
             var lastSprintAddress = await _votingManagerContractClient.GetLastSprintAddressAsync();
+
             if (lastSprintAddress.IsAddressEmpty())
                 return null;
+
             return await _votingSprintContractClient.GetDetailsAsync(lastSprintAddress);
         }
 
         public async Task StartSprintAsync()
         {
-            var lastSprintAddress = await _votingManagerContractClient.GetLastSprintAddressAsync();
-            if (lastSprintAddress != null)
-            {
-                var lastSprintEndDate = (await _votingSprintContractClient.GetDetailsAsync(lastSprintAddress)).EndDate;
-                if (_dateTime.UtcNow < lastSprintEndDate)
-                    throw new AppErrorException(ErrorCode.VotingSprintAlreadyInProgress);
-            }
+            if (await IsVotingInProgressAsync())
+                throw new AppErrorException(ErrorCode.VotingSprintAlreadyInProgress);
 
             var projectsQueue = await _votingManagerContractClient.GetProjectsQueueAsync();
-            if (projectsQueue.Count <= 1)
-            {
+            var minimumProjectsCount = await _votingManagerContractClient.GetMinimumVotingProjectsCountAsync();
+            if (projectsQueue.Count < minimumProjectsCount)
                 throw new AppErrorException(ErrorCode.NotEnoughProjectsForSprintStart);
-            }
 
-            var newVoting = await CreateVotingAsync();
-            await _votingRepository.AddAsync(newVoting);
-
-            var projects = await _projectRepository.GetByExternalIdsAsync(projectsQueue.Select(p => p).ToArray());
-
-            await _votingProjectRepository.AddRangeAsync(projects.Select(p => new VotingProject
-                                                                              {
-                                                                                  ProjectId = p.Id,
-                                                                                  VotingId = newVoting.Id
-                                                                              }));
+            await CreateVotingAsync(projectsQueue);
         }
 
-        private async Task<Voting> CreateVotingAsync()
+        public async Task<VotingProjectDetails> GetVotingProjectDetailsAsync(long projectId)
         {
-            var txHash = await _votingManagerContractClient.CreateSprintAsync();
-            await _ethereumClient.WaitForConfirmationAsync(txHash);
+            var votingProject = await _votingProjectRepository.GetByProjectAsync(projectId);
+            if (votingProject == null)
+                return null;
+
+            var project = await _projectRepository.GetByIdAsync(projectId);
+            var voting = await _votingRepository.GetByIdAsync(votingProject.VotingId);
+            var isAccepted = await _votingSprintContractClient.IsAcceptedAsync(voting.VotingAddress, project.ExternalId);
+            return new VotingProjectDetails(projectId, voting, isAccepted);
+        }
+
+        private async Task CreateVotingAsync(IReadOnlyCollection<Guid> projectExternalIds)
+        {
+            var transactionHash = await _votingManagerContractClient.CreateSprintAsync();
+            await _ethereumClient.WaitForConfirmationAsync(transactionHash);
 
             var sprintAddress = await _votingManagerContractClient.GetLastSprintAddressAsync();
-            var sprint = await _votingSprintContractClient.GetDetailsAsync(sprintAddress);
-            var newVoting = new Voting
-                            {
-                                StartDate = sprint.StartDate,
-                                EndDate = sprint.EndDate,
-                                VotingAddress = sprintAddress
-                            };
-            return newVoting;
+            var votingDetails = await _votingSprintContractClient.GetDetailsAsync(sprintAddress);
+
+            var votingId = await SaveVotingAsync(votingDetails, sprintAddress);
+            await SaveVotingProjectsAsync(projectExternalIds, votingId);
+        }
+
+        private async Task<long> SaveVotingAsync(
+            VotingSprintDetails votingDetails,
+            string sprintAddress)
+        {
+            var voting = new Voting
+                         {
+                             StartDate = votingDetails.StartDate,
+                             EndDate = votingDetails.EndDate,
+                             VotingAddress = sprintAddress
+                         };
+            await _votingRepository.AddAsync(voting);
+            return voting.Id;
+        }
+
+        private async Task SaveVotingProjectsAsync(IReadOnlyCollection<Guid> projectExternalIds, long votingId)
+        {
+            var projects = await _projectRepository.GetByExternalIdsAsync(projectExternalIds);
+            var votingProjects = projects.Select(p => new VotingProject {ProjectId = p.Id, VotingId = votingId});
+            await _votingProjectRepository.AddRangeAsync(votingProjects);
+        }
+
+        private async Task<bool> IsVotingInProgressAsync()
+        {
+            var lastSprintAddress = await _votingManagerContractClient.GetLastSprintAddressAsync();
+            if (lastSprintAddress == null)
+                return false;
+
+            var lastSprintDetails = await _votingSprintContractClient.GetDetailsAsync(lastSprintAddress);
+            return _dateTime.UtcNow < lastSprintDetails.EndDate;
         }
     }
 }

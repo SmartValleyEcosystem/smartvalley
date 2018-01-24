@@ -1,8 +1,7 @@
 .scoring-card {
   display: inline-block;
-  margin: 0px;
   padding: 0px;
-  margin-bottom: 1rem;
+  margin: 0px 0px 1rem;
 }
 
 .scoring-container {
@@ -25,6 +24,10 @@
 
 .scoring-container > .score-panel > .score {
   font-size: 3em;
+}
+
+.scoring-container > .voting-result {
+  font-size: 2em;
 }
 
 .scoring a.sv-default-btn {
@@ -83,4 +86,30 @@
   display: inline-block;
   height: 100%;
   color: rgb(180, 180, 180);
+}
+
+.timer {
+  text-align: center;
+  line-height: 1.5em;
+}
+
+.timer div {
+  width: 2.5em;
+  margin: 0em;
+  display: inline-block;
+}
+
+.timer div .time-number, .timer div .time-label {
+  color: black;
+  display: block;
+  text-align: center;
+}
+
+.timer div .time-label {
+  font-size: 1em;
+}
+
+.timer div .time-number {
+  font-size: 1em;
+  margin-top: 0.5em;
 }

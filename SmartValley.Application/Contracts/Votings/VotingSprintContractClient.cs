@@ -42,17 +42,18 @@ namespace SmartValley.Application.Contracts.Votings
 
         public async Task<InvestorVotes> GetVotesAsync(string sprintAddress, string investorAddress)
         {
-            var investorVotes = await _contractClient.CallFunctionDeserializingToObjectAsync<InvestorVotesDto>(sprintAddress, _contractAbi, "getInvestorVotes", investorAddress);
+            var dto = await _contractClient.CallFunctionDeserializingToObjectAsync<InvestorVotesDto>(sprintAddress, _contractAbi, "getInvestorVotes", investorAddress);
             return new InvestorVotes
                    {
-                       ProjectExternalIds = investorVotes.ProjectExternalIds,
-                       TokenAmount = investorVotes.TokenAmount
+                       ProjectExternalIds = dto.ProjectExternalIds,
+                       TokenAmount = dto.TokenAmount
                    };
         }
 
         public Task<long> GetVoteAsync(string sprintAddress, string investorAddress, Guid projectId)
-        {
-            return _contractClient.CallFunctionAsync<long>(sprintAddress, _contractAbi, "getVote", investorAddress, projectId);
-        }
+            => _contractClient.CallFunctionAsync<long>(sprintAddress, _contractAbi, "getVote", investorAddress, projectId.ToBigInteger());
+
+        public Task<bool> IsAcceptedAsync(string sprintAddress, Guid projectId)
+            => _contractClient.CallFunctionAsync<bool>(sprintAddress, _contractAbi, "isAccepted", projectId.ToBigInteger());
     }
 }

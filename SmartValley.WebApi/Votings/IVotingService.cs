@@ -15,5 +15,7 @@ namespace SmartValley.WebApi.Votings
         Task<VotingSprintDetails> GetLastSprintDetailsAsync();
 
         Task StartSprintAsync();
+
+        Task<VotingProjectDetails> GetVotingProjectDetailsAsync(long projectId);
     }
 }

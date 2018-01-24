@@ -7,5 +7,7 @@ namespace SmartValley.Domain.Interfaces
     public interface IVotingProjectRepository
     {
         Task AddRangeAsync(IEnumerable<VotingProject> votingProjects);
+
+        Task<VotingProject> GetByProjectAsync(long projectId);
     }
 }

@@ -6,5 +6,7 @@ namespace SmartValley.Domain.Interfaces
     public interface IVotingRepository
     {
         Task<int> AddAsync(Voting voting);
+        
+        Task<Voting> GetByIdAsync(long votingId);
     }
 }

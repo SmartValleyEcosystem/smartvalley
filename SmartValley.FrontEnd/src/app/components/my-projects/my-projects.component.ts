@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {Project} from '../../services/project';
-import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {Paths} from '../../paths';
 import {Router} from '@angular/router';
 import {ProjectCardType} from '../../services/project-card-type';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
+import {ProjectApiClient} from '../../api/project/project-api-client';
+import {ProjectCardData} from '../common/project-card/project-card-data';
 
 @Component({
   selector: 'app-my-projects',
@@ -14,12 +14,12 @@ import {AuthenticationService} from '../../services/authentication/authenticatio
 export class MyProjectsComponent implements OnInit {
 
   public ProjectCardType = ProjectCardType;
-  public projects: Array<Project> = [];
+  public projects: Array<ProjectCardData> = [];
 
-  constructor(private scoringApiClient: ScoringApiClient,
+  constructor(private projectApiClient: ProjectApiClient,
               private router: Router,
               private authenticationService: AuthenticationService) {
-    this.authenticationService.accountChanged.subscribe(async() => {
+    this.authenticationService.accountChanged.subscribe(async () => {
       await this.loadProjectsAsync();
     });
   }
@@ -29,8 +29,8 @@ export class MyProjectsComponent implements OnInit {
   }
 
   private async loadProjectsAsync(): Promise<void> {
-    const response = await this.scoringApiClient.getMyProjectsAsync();
-    this.projects = response.items.map(p => Project.create(p));
+    const response = await this.projectApiClient.getMyProjectsAsync();
+    this.projects = response.items.map(p => ProjectCardData.fromMyProjectsItemResponse(p));
   }
 
   public async navigateToApplicationPageAsync(): Promise<void> {

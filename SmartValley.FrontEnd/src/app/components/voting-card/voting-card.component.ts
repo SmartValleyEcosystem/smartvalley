@@ -7,6 +7,7 @@ import {ProjectDetailsResponse} from '../../api/project/project-details-response
 import {Paths} from '../../paths';
 import {VotingSprint} from '../../services/voting/voting-sprint';
 import {VotingService} from '../../services/voting/voting-service';
+import * as timespan from 'timespan';
 
 @Component({
   selector: 'app-voting-card',
@@ -20,10 +21,10 @@ export class VotingCardComponent implements OnInit {
   private projectId: number;
   public currentSprint: VotingSprint;
 
-  public endDays: number;
-  public endHours: number;
-  public endMinutes: number;
-  public endSeconds: number;
+  public remainingDays: number;
+  public remainingHours: number;
+  public remainingMinutes: number;
+  public remainingSeconds: number;
 
   constructor(private projectApiClient: ProjectApiClient,
               private route: ActivatedRoute,
@@ -36,19 +37,16 @@ export class VotingCardComponent implements OnInit {
   public async ngOnInit() {
     await this.loadInitialData();
     await this.loadSprintAsync();
-    this.updateDate();
-    setInterval(() => this.updateDate(), 1000);
+    this.updateRemainingTime();
+    setInterval(() => this.updateRemainingTime(), 1000);
   }
 
-  private updateDate(): void {
-    const currentDate = new Date();
-    this.endDays = this.currentSprint.endDate.getDate() - currentDate.getDate();
-    if (this.endDays < 0) {
-      this.endDays = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate() + this.endDays;
-    }
-    this.endHours = this.currentSprint.endDate.getHours() - currentDate.getHours();
-    this.endMinutes = this.currentSprint.endDate.getMinutes() - currentDate.getMinutes();
-    this.endSeconds = this.currentSprint.endDate.getSeconds() - currentDate.getSeconds();
+  private updateRemainingTime(): void {
+    const remaining = timespan.fromDates(new Date(), this.currentSprint.endDate);
+    this.remainingDays = remaining.days;
+    this.remainingHours = remaining.hours;
+    this.remainingMinutes = remaining.minutes;
+    this.remainingSeconds = remaining.seconds;
   }
 
   private async loadInitialData(): Promise<void> {
