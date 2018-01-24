@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Numerics;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 
 namespace SmartValley.Application.Contracts.Votings.Dto
@@ -8,9 +8,9 @@ namespace SmartValley.Application.Contracts.Votings.Dto
     public class InvestorVotesDto
     {
         [Parameter("uint", "tokenAmount", 1)]
-        public long TokenAmount { get; set; }
+        public BigInteger TokenAmount { get; set; }
 
         [Parameter("uint[]", "projectsIds", 2)]
-        public List<Guid> ProjectExternalIds { get; set; }
+        public List<BigInteger> ProjectExternalIds { get; set; }
     }
 }

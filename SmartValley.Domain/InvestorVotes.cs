@@ -6,6 +6,6 @@ namespace SmartValley.Domain
     public class InvestorVotes
     {
         public double TokenAmount { get; set; }
-        public List<Guid> ProjectExternalIds { get; set; }
+        public IReadOnlyCollection<Guid> ProjectExternalIds { get; set; }
     }
 }

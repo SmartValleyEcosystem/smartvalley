@@ -38,7 +38,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="currentSprint" class="col-3 vote-balance">
+    <div *ngIf="currentSprint && currentSprint.voteBalance !== 0" class="col-3 vote-balance">
       <span>{{ 'Voting.VoteBalance' | translate }}: {{currentSprint.voteBalance}} SVT</span>
     </div>
   </div>

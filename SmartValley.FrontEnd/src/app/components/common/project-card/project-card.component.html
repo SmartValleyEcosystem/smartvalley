@@ -23,21 +23,24 @@
             </div>
             <span *ngIf="!project.score">{{ 'ProjectCard.InProgress' | translate }}</span>
           </div>
-          <div *ngIf="projectCardType === ProjectCardType.Voting" class="voting-container">
-            <span>{{ 'ProjectCard.MyVoteLabel' | translate }}: {{project.isVotedByMe ? 'Common.Yes' : 'Common.No' | translate}}</span>
+          <div *ngIf="projectCardType === ProjectCardType.Voting && project.isVotedByMe != null"
+               class="voting-container">
+            <span>{{ 'ProjectCard.MyVoteLabel' | translate }}: {{project.isVotedByMe ? ('Common.Yes' | translate) : ('Common.No' | translate)}}</span>
           </div>
         </div>
       </div>
       <div class="row text-right" style="position: absolute; width: 100%; bottom: 0;">
         <div class="col-12">
-          <a *ngIf="projectCardType === ProjectCardType.Voting" class="col-4 vote-button sv-default-btn btn btn-primary"
+          <a *ngIf="projectCardType === ProjectCardType.Voting && project.isVotedByMe !== true" class="col-4 vote-button sv-default-btn btn btn-primary"
              (click)="voteForProject(project.id)">
             {{ 'ProjectCard.VotingForProject' | translate }}</a>
           <a *ngIf="projectCardType === ProjectCardType.Scoring" class="col-3 sv-default-btn btn btn-primary"
              (click)="showProject(project.id)">{{ 'ProjectCard.Estimate' | translate }}</a>
-          <a *ngIf="projectCardType === ProjectCardType.General" (click)="showReport(project.id)" class="col-3 sv-default-btn btn btn-primary">
+          <a *ngIf="projectCardType === ProjectCardType.General" (click)="showReport(project.id)"
+             class="col-3 sv-default-btn btn btn-primary">
             {{ 'ProjectCard.ProjectProfile' | translate }}</a>
-          <a *ngIf="projectCardType === ProjectCardType.Voting" (click)="voteForProject(project.id)" class="col-3 sv-default-btn btn btn-primary">
+          <a *ngIf="projectCardType === ProjectCardType.Voting" (click)="voteForProject(project.id)"
+             class="col-3 sv-default-btn btn btn-primary">
             {{ 'ProjectCard.Info' | translate }}</a>
         </div>
       </div>

@@ -14,7 +14,9 @@ declare class EthJs {
 
   static fromUtf8(str: string): string;
 
-  static fromWei(wei: string, unit: string): number
+  static fromWei(wei: string, unit: string): number;
+
+  static toWei(value: number, unit: string): number;
 
   static isAddress(address: string): boolean;
 

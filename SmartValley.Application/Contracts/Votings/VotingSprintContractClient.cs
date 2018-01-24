@@ -13,12 +13,14 @@ namespace SmartValley.Application.Contracts.Votings
     public class VotingSprintContractClient : IVotingSprintContractClient
     {
         private readonly EthereumContractClient _contractClient;
+        private readonly ITokenContractClient _tokenContractClient;
 
         private readonly string _contractAbi;
 
-        public VotingSprintContractClient(EthereumContractClient contractClient, ContractOptions contractOptions)
+        public VotingSprintContractClient(EthereumContractClient contractClient, ContractOptions contractOptions, ITokenContractClient tokenContractClient)
         {
             _contractClient = contractClient;
+            _tokenContractClient = tokenContractClient;
             _contractAbi = contractOptions.Abi;
         }
 
@@ -42,11 +44,11 @@ namespace SmartValley.Application.Contracts.Votings
 
         public async Task<InvestorVotes> GetVotesAsync(string sprintAddress, string investorAddress)
         {
-            var investorVotes = await _contractClient.CallFunctionDeserializingToObjectAsync<InvestorVotesDto>(sprintAddress, _contractAbi, "getInvestorVotes", investorAddress);
+            var dto = await _contractClient.CallFunctionDeserializingToObjectAsync<InvestorVotesDto>(sprintAddress, _contractAbi, "getInvestorVotes", investorAddress);
             return new InvestorVotes
                    {
-                       ProjectExternalIds = investorVotes.ProjectExternalIds,
-                       TokenAmount = investorVotes.TokenAmount
+                       ProjectExternalIds = dto.ProjectExternalIds.Select(p => p.ToGuid()).ToArray(),
+                       TokenAmount = dto.TokenAmount.FromWei(await _tokenContractClient.GetDecimalsAsync())
                    };
         }
 

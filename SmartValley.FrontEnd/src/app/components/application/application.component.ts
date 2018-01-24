@@ -76,7 +76,7 @@ export class ApplicationComponent implements OnInit {
       return;
     }
 
-    if (!await this.balanceService.checkSvtForProjectAsync()) {
+    if (!await this.balanceService.checkSvtForScoringAsync()) {
       return;
     }
 

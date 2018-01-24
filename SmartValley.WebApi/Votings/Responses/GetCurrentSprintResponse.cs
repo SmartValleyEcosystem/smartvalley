@@ -2,7 +2,7 @@
 
 namespace SmartValley.WebApi.Votings.Responses
 {
-    public class GetLastSprintResponse
+    public class GetCurrentSprintResponse
     {
         public bool DoesExist => LastSprint != null;
 

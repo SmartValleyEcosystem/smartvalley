@@ -30,10 +30,7 @@ export class LandingComponent implements OnInit {
   }
 
   async navigateToVoting() {
-    const isOk = await this.authenticationService.authenticateAsync();
-    if (isOk) {
-      await this.router.navigate([Paths.Voting]);
-    }
+    await this.router.navigate([Paths.Voting]);
   }
 
   async navigateToScoring() {

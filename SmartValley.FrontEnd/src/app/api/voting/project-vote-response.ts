@@ -1,4 +1,5 @@
 export interface ProjectVoteResponse {
+  externalId: string;
   author: string;
   id: number;
   name: string;

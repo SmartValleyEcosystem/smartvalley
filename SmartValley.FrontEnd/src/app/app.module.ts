@@ -71,6 +71,8 @@ import {VotingComponent} from './components/voting/voting.component';
 import {VotingCardComponent} from './components/voting-card/voting-card.component';
 import {VotingManagerContractClient} from './services/contract-clients/voting-manager-contract-client';
 import {FreeScoringConfirmationModalComponent} from './components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component';
+import {VotingContractClient} from './services/contract-clients/voting-contract-client';
+import { VoteModalComponent } from './components/common/vote-modal/vote-modal.component';
 
 @NgModule({
   declarations: [
@@ -101,7 +103,8 @@ import {FreeScoringConfirmationModalComponent} from './components/common/free-sc
     SvtWithdrawalConfirmationModalComponent,
     MyProjectsComponent,
     VotingCardComponent,
-    FreeScoringConfirmationModalComponent
+    FreeScoringConfirmationModalComponent,
+    VoteModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -110,7 +113,8 @@ import {FreeScoringConfirmationModalComponent} from './components/common/free-sc
     ReceiveEtherModalComponent,
     ReceiveSvtModalComponent,
     SvtWithdrawalConfirmationModalComponent,
-    FreeScoringConfirmationModalComponent
+    FreeScoringConfirmationModalComponent,
+    VoteModalComponent
   ],
   imports: [
     MatCheckboxModule,
@@ -168,6 +172,7 @@ import {FreeScoringConfirmationModalComponent} from './components/common/free-sc
     VotingService,
     ScoringManagerContractClient,
     VotingManagerContractClient,
+    VotingContractClient,
     BlockiesService,
     BalanceService,
     InitializationService,

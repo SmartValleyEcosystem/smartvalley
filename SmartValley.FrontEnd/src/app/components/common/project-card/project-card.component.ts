@@ -6,6 +6,7 @@ import {ProjectService} from '../../../services/project-service';
 import {BlockiesService} from '../../../services/blockies-service';
 import {Constants} from '../../../constants';
 import {ProjectCardType} from '../../../services/project-card-type';
+import {AuthenticationService} from '../../../services/authentication/authentication-service';
 
 @Component({
   selector: 'app-project-card',
@@ -21,7 +22,8 @@ export class ProjectCardComponent implements OnInit {
 
   constructor(private router: Router,
               private blockiesService: BlockiesService,
-              projectService: ProjectService) {
+              projectService: ProjectService,
+              private authenticationService: AuthenticationService) {
     this.projectService = projectService;
   }
 
@@ -33,8 +35,11 @@ export class ProjectCardComponent implements OnInit {
     this.router.navigate([Paths.Scoring + '/' + id], {queryParams: {expertiseArea: this.project.expertiseArea}});
   }
 
-  voteForProject(id: number) {
-    this.router.navigate([Paths.Voting + '/' + id]);
+  async voteForProject(id: number) {
+    const isOk = await this.authenticationService.authenticateAsync();
+    if (isOk) {
+      this.router.navigate([Paths.Voting + '/' + id]);
+    }
   }
 
   showReport(id: number) {

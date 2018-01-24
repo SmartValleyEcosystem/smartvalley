@@ -9,6 +9,8 @@ namespace SmartValley.WebApi.Votings.Responses
 {
     public class VotingSprintResponse
     {
+        public string Address { get; set; }
+
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
@@ -21,11 +23,12 @@ namespace SmartValley.WebApi.Votings.Responses
         {
             return new VotingSprintResponse
                    {
+                       Address = votingSprint.Address,
                        StartDate = votingSprint.StartDate,
                        EndDate = votingSprint.EndDate,
                        Projects = projects.Select(project => ProjectVoteResponse.Create(project, investorVotes)).ToArray(),
-                       VoteBalance = investorVotes.TokenAmount
-            };
+                       VoteBalance = investorVotes?.TokenAmount ?? 0
+                   };
         }
     }
 }

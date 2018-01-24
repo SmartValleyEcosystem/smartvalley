@@ -1,4 +1,5 @@
-﻿using SmartValley.Domain;
+﻿using System.Linq;
+using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Votings.Responses
@@ -6,6 +7,8 @@ namespace SmartValley.WebApi.Votings.Responses
     public class ProjectVoteResponse
     {
         public long Id { get; set; }
+
+        public string ExternalId { get; set; }
 
         public string Name { get; set; }
 
@@ -25,11 +28,12 @@ namespace SmartValley.WebApi.Votings.Responses
                    {
                        Id = project.Id,
                        Name = project.Name,
+                       ExternalId = project.ExternalId.ToString(),
                        Country = project.Country,
                        Area = project.ProjectArea,
                        Description = project.Description,
                        Author = project.AuthorAddress,
-                       IsVotedByMe = investorVotes.ProjectExternalIds.Contains(project.ExternalId)
+                       IsVotedByMe = investorVotes?.ProjectExternalIds.Contains(project.ExternalId) ?? false
                    };
         }
     }

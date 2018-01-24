@@ -48,6 +48,13 @@ export class Web3Service {
     return EthJs.fromWei(weiNumber, unit);
   }
 
+  public toWei(value: number, unit: string | number): number {
+    if (typeof unit === 'number') {
+      return value * Math.pow(10, unit);
+    }
+    return EthJs.toWei(value, unit);
+  }
+
   public recoverSignature(message: string, signature: string): Promise<string> {
     return this.eth.personal_ecRecover(EthJs.fromUtf8(message), signature);
   }

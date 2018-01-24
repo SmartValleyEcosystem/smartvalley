@@ -3,6 +3,7 @@ import {ProjectResponse} from '../api/project/project-response';
 
 export class Project {
   id: number;
+  externalId: string;
   name: string;
   country: string;
   area: string;

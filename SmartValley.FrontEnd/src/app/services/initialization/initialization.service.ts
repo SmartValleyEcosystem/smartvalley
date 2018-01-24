@@ -6,6 +6,7 @@ import {PromiseUtils} from '../../utils/promise-utils';
 import {BalanceService} from '../balance/balance.service';
 import {ScoringManagerContractClient} from '../contract-clients/scoring-manager-contract-client';
 import {VotingManagerContractClient} from '../contract-clients/voting-manager-contract-client';
+import {VotingContractClient} from '../contract-clients/voting-contract-client';
 
 @Injectable()
 export class InitializationService {
@@ -17,6 +18,7 @@ export class InitializationService {
               private tokenContractClient: TokenContractClient,
               private scoringManagerContractClient: ScoringManagerContractClient,
               private votingManagerContractClient: VotingManagerContractClient,
+              private votingContractClient: VotingContractClient,
               private balanceService: BalanceService) {
   }
 
@@ -36,6 +38,7 @@ export class InitializationService {
       this.tokenContractClient.initializeAsync(),
       this.scoringManagerContractClient.initializeAsync(),
       this.votingManagerContractClient.initializeAsync(),
+      this.votingContractClient.initializeAsync(),
       this.balanceService.updateBalanceAsync()
     ]);
   }

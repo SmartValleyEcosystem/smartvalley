@@ -13,6 +13,8 @@ import {TranslateService} from '@ngx-translate/core';
 import {AlertModalComponent} from '../components/common/alert-modal/alert-modal.component';
 import {AlertModalData} from '../components/common/alert-modal/alert-modal-data';
 import {FreeScoringConfirmationModalComponent} from '../components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component';
+import {VoteModalData} from '../components/common/vote-modal/vote-modal-data';
+import {VoteModalComponent} from '../components/common/vote-modal/vote-modal.component';
 
 @Injectable()
 export class DialogService {
@@ -47,6 +49,22 @@ export class DialogService {
 
   public showFreeScoringConfirmationDialogAsync(): Promise<boolean> {
     return this.openModalAsync(FreeScoringConfirmationModalComponent, {});
+  }
+
+  public showVoteDialogAsync(projectName: string,
+                             currentBalance: number,
+                             currentVoteBalance: number,
+                             currentSprintEndDate: Date): Promise<number> {
+    const data = <VoteModalData>{
+      projectName: projectName,
+      currentBalance: currentBalance,
+      currentVoteBalance: currentVoteBalance,
+      currentSprintEndDate: currentSprintEndDate
+    };
+
+    return this.openModal(VoteModalComponent, data)
+      .afterClosed()
+      .toPromise<number>();
   }
 
   public showRinkebyAlert(): MatDialogRef<MetamaskManualModalComponent> {

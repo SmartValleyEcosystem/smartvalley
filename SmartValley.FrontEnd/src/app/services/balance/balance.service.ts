@@ -36,13 +36,16 @@ export class BalanceService {
     const balanceResponse = await this.balanceApiClient.getBalanceAsync();
     const address = this.authenticationService.getCurrentUser().account;
     const svtBalance = await this.tokenContractClient.getBalanceAsync(address);
+    const availableBalance = await this.tokenContractClient.getAvailableBalanceAsync(address);
     const canReceiveSvt = await this.minterContractClient.canGetTokensAsync(address);
     this.balance = {
       ethBalance: +balanceResponse.balance.toFixed(3),
       wasEtherReceived: balanceResponse.wasEtherReceived,
       svtBalance: +svtBalance.toFixed(3),
+      availableBalance: +availableBalance.toFixed(3),
       canReceiveSvt: canReceiveSvt
     };
+    console.log(this.balance)
     this.balanceChanged.emit(this.balance);
   }
 
@@ -61,19 +64,20 @@ export class BalanceService {
     return false;
   }
 
-  public async checkSvtForProjectAsync(): Promise<boolean> {
+  public async checkSvtForScoringAsync(): Promise<boolean> {
     const userHasSvt = await this.hasUserSvtForProjectAsync();
     if (userHasSvt) {
       return true;
     }
-    const dateToReceive = await this.getDateToReceiveTokensAsync();
-    if (dateToReceive.getTime() > Date.now()) {
-      return await this.dialogService.showSvtDialogAsync(dateToReceive.toLocaleDateString());
+    return await this.checkSvtAndShowDialogAsync();
+  }
+
+  public async checkSvtGreaterThanZero(): Promise<boolean> {
+    const userHasSvt = await this.hasUserSvtAsync();
+    if (userHasSvt) {
+      return true;
     }
-    if (await this.dialogService.showGetTokenDialogAsync()) {
-      return await this.receiveSvtAsync();
-    }
-    return false;
+    return await this.checkSvtAndShowDialogAsync();
   }
 
   public async receiveEtherAsync(): Promise<boolean> {
@@ -84,6 +88,17 @@ export class BalanceService {
   public async receiveSvtAsync(): Promise<boolean> {
     const transactionHash = await this.minterContractClient.getTokensAsync();
     return await this.showTransactionDialogAndGetResultAsync(transactionHash);
+  }
+
+  private async checkSvtAndShowDialogAsync(): Promise<boolean> {
+    const dateToReceive = await this.getDateToReceiveTokensAsync();
+    if (dateToReceive.getTime() > Date.now()) {
+      return await this.dialogService.showSvtDialogAsync(dateToReceive.toLocaleDateString());
+    }
+    if (await this.dialogService.showGetTokenDialogAsync()) {
+      return await this.receiveSvtAsync();
+    }
+    return false;
   }
 
   private async showTransactionDialogAndGetResultAsync(transactionHash: string): Promise<boolean> {
@@ -120,6 +135,12 @@ export class BalanceService {
     const tokenBalance = await this.tokenContractClient.getBalanceAsync(accountAddress);
     const scoringCost = await this.scoringManagerContractClient.getScoringCostAsync();
     return tokenBalance >= scoringCost;
+  }
+
+  private async hasUserSvtAsync(): Promise<boolean> {
+    const accountAddress = (await this.authenticationService.getCurrentUser()).account;
+    const tokenBalance = await this.tokenContractClient.getBalanceAsync(accountAddress);
+    return tokenBalance > 0;
   }
 
   private async getDateToReceiveTokensAsync(): Promise<Date> {
