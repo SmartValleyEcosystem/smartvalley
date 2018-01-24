@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SmartValley.Application.Contracts.Options;
 using SmartValley.Application.Contracts.SmartValley.Application.Contracts;
 using SmartValley.Application.Extensions;
+using SmartValley.Application.Contracts.Votings.Dto;
 
 namespace SmartValley.Application.Contracts.Votings
 {
@@ -42,6 +43,12 @@ namespace SmartValley.Application.Contracts.Votings
         {
             var sprintAddress = await _contractClient.CallFunctionAsync<string>(_contractAddress, _contractAbi, "lastSprint");
             return sprintAddress.IsAddressEmpty() ? null : sprintAddress;
+        }
+
+        public async Task<IReadOnlyCollection<string>> GetAllSprintsAddressesAsync()
+        {
+            var sprintsDto = await _contractClient.CallFunctionDeserializingToObjectAsync<VotingSprintsDto>(_contractAddress, _contractAbi, "getSprints");
+            return sprintsDto.SprintsAddresses;
         }
     }
 }

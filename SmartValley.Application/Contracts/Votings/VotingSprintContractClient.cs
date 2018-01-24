@@ -2,11 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using IcoLab.Common;
+using Org.BouncyCastle.Utilities.Date;
 using SmartValley.Application.Contracts.Options;
 using SmartValley.Application.Contracts.SmartValley.Application.Contracts;
 using SmartValley.Application.Contracts.Votings.Dto;
 using SmartValley.Application.Extensions;
 using SmartValley.Domain;
+using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Application.Contracts.Votings
 {
@@ -27,17 +29,16 @@ namespace SmartValley.Application.Contracts.Votings
             if (sprintAddress.IsAddressEmpty())
                 throw new InvalidOperationException("Sprint address can not be empty.");
 
-            var sprintDto = await _contractClient.CallFunctionDeserializingToObjectAsync<VotingSprintDto>(sprintAddress, _contractAbi, "getSprint");
+            var sprintDto = await _contractClient.CallFunctionDeserializingToObjectAsync<VotingSprintDto>(sprintAddress, _contractAbi, "getDetails");
 
-            return new VotingSprintDetails
-                   {
-                       AcceptanceThreshold = sprintDto.AcceptanceThreshold,
-                       EndDate = DateUtils.FromUnixTime(sprintDto.EndDate),
-                       MaximumScore = sprintDto.MaximumScore,
-                       ProjectExternalIds = sprintDto.ProjectExternalIds.Select(e => e.ToGuid()).ToList(),
-                       StartDate = DateUtils.FromUnixTime(sprintDto.StartDate),
-                       Address = sprintAddress
-                   };
+            return new VotingSprintDetails(
+                sprintAddress, 
+                DateTimeUtilities.UnixMsToDateTime(sprintDto.StartDate),
+                DateTimeUtilities.UnixMsToDateTime(sprintDto.EndDate), 
+                sprintDto.AcceptanceThreshold, 
+                sprintDto.MaximumScore, 
+                sprintDto.ProjectExternalIds.Select(e => e.ToGuid()).ToArray());
+
         }
 
         public async Task<InvestorVotes> GetVotesAsync(string sprintAddress, string investorAddress)
@@ -45,7 +46,7 @@ namespace SmartValley.Application.Contracts.Votings
             var dto = await _contractClient.CallFunctionDeserializingToObjectAsync<InvestorVotesDto>(sprintAddress, _contractAbi, "getInvestorVotes", investorAddress);
             return new InvestorVotes
                    {
-                       ProjectExternalIds = dto.ProjectExternalIds,
+                       ProjectsExternalIds = dto.ProjectExternalIds.Select(e => e.ToGuid()).ToArray(),
                        TokenAmount = dto.TokenAmount
                    };
         }

@@ -5,16 +5,32 @@ namespace SmartValley.Domain
 {
     public class VotingSprintDetails
     {
-        public DateTime StartDate { get; set; }
+        public VotingSprintDetails(
+            string address,
+            DateTime startDate, 
+            DateTime endDate, 
+            long acceptanceThreshold, 
+            long maximumScore, 
+            IReadOnlyCollection<Guid> projectsExternalIds)
+        {
+            Address = address;
+            StartDate = startDate;
+            EndDate = endDate;
+            AcceptanceThreshold = acceptanceThreshold;
+            MaximumScore = maximumScore;
+            ProjectsExternalIds = projectsExternalIds;
+        }
 
-        public DateTime EndDate { get; set; }
+        public DateTime StartDate { get; }
 
-        public long AcceptanceThreshold { get; set; }
+        public DateTime EndDate { get; }
 
-        public long MaximumScore { get; set; }
+        public long AcceptanceThreshold { get; }
 
-        public List<Guid> ProjectExternalIds { get; set; }
+        public long MaximumScore { get; }
 
-        public string Address { get; set; }
+        public IReadOnlyCollection<Guid> ProjectsExternalIds { get; }
+
+        public string Address { get; }
     }
 }

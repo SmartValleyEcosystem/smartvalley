@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
-using SmartValley.WebApi.Projects.Responses;
 
 namespace SmartValley.WebApi.Votings.Responses
 {
@@ -15,6 +14,8 @@ namespace SmartValley.WebApi.Votings.Responses
 
         public double VoteBalance { get; set; }
 
+        public long MaximumScore { get; set; }
+
         public IReadOnlyCollection<ProjectVoteResponse> Projects { get; set; }
 
         public static VotingSprintResponse Create(VotingSprintDetails votingSprint, IReadOnlyCollection<Project> projects, InvestorVotes investorVotes)
@@ -24,7 +25,8 @@ namespace SmartValley.WebApi.Votings.Responses
                        StartDate = votingSprint.StartDate,
                        EndDate = votingSprint.EndDate,
                        Projects = projects.Select(project => ProjectVoteResponse.Create(project, investorVotes)).ToArray(),
-                       VoteBalance = investorVotes.TokenAmount
+                       VoteBalance = investorVotes.TokenAmount,
+                       MaximumScore = votingSprint.MaximumScore
             };
         }
     }

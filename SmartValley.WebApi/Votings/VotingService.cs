@@ -40,14 +40,19 @@ namespace SmartValley.WebApi.Votings
             _ethereumClient = ethereumClient;
         }
 
-        public Task<VotingSprintDetails> GetSprintAsync(string sprintAddress)
-            => _votingSprintContractClient.GetDetailsAsync(sprintAddress);
+        public Task<VotingSprintDetails> GetSprintDetailsByAddressAsync(string address) 
+            => _votingSprintContractClient.GetDetailsAsync(address);
 
         public Task<long> GetVoteAsync(string sprintAddress, string investorAddress, Guid projectId)
             => _votingSprintContractClient.GetVoteAsync(sprintAddress, investorAddress, projectId);
 
         public Task<InvestorVotes> GetVotesAsync(string sprintAddress, string investorAddress)
             => _votingSprintContractClient.GetVotesAsync(sprintAddress, investorAddress);
+
+        public Task<IReadOnlyCollection<Voting>> GetFinishedSprintsAsync()
+        {
+            return _votingRepository.GetAllTillDateAsync(_dateTime.UtcNow);
+        }
 
         public async Task<VotingSprintDetails> GetLastSprintDetailsAsync()
         {

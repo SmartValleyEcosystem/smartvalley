@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using IcoLab.Common;
 using IcoLab.Common.Web.WebApi;
 using IcoLab.Web.Common.Extensions;
@@ -32,9 +30,6 @@ using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.Scoring;
 using SmartValley.WebApi.Votings;
 using SmartValley.WebApi.WebApi;
-using SmartValley.Data.SQL.Core;
-using SmartValley.Data.SQL.Repositories;
-using SmartValley.Domain.Interfaces;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace SmartValley.WebApi
@@ -58,10 +53,10 @@ namespace SmartValley.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureOptions(Configuration, typeof(NethereumOptions), typeof(SiteOptions));
-        
+
             ConfigureCorsPolicy(services);
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "SmartValley API", Version = "v1"}); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "SmartValley API", Version = "v1" }); });
 
             services.AddAuthentication(options =>
                                        {
@@ -75,6 +70,7 @@ namespace SmartValley.WebApi
             services.AddSingleton<EthereumMessageSigner>();
             services.AddSingleton<EthereumClient>();
             services.AddSingleton<EthereumContractClient>();
+
             services.AddSingleton<IVotingSprintContractClient, VotingSprintContractClient>(
                 provider => new VotingSprintContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().VotingSprintContract));
             services.AddSingleton<IVotingManagerContractClient, VotingManagerContractClient>(
@@ -140,7 +136,7 @@ namespace SmartValley.WebApi
                             await next();
                         }
                     })
-               .UseDefaultFiles(new DefaultFilesOptions {DefaultFileNames = new List<string> {"index.html"}})
+               .UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new List<string> { "index.html" } })
                .UseStaticFiles()
                .UseMvc();
         }

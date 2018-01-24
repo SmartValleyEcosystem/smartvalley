@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Nethereum.Web3;
 using SmartValley.Application.Contracts.Options;
 using SmartValley.Application.Contracts.Scorings.Dto;
 using SmartValley.Application.Contracts.SmartValley.Application.Contracts;

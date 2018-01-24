@@ -1,4 +1,5 @@
-﻿using SmartValley.Domain;
+﻿using System.Linq;
+using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Votings.Responses
@@ -29,7 +30,7 @@ namespace SmartValley.WebApi.Votings.Responses
                        Area = project.ProjectArea,
                        Description = project.Description,
                        Author = project.AuthorAddress,
-                       IsVotedByMe = investorVotes.ProjectExternalIds.Contains(project.ExternalId)
+                       IsVotedByMe = investorVotes.ProjectsExternalIds.Contains(project.ExternalId)
                    };
         }
     }
