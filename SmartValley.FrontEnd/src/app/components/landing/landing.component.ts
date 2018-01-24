@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
-import {Project} from '../../services/project';
 import {ProjectCardType} from '../../services/project-card-type';
 import {ProjectApiClient} from '../../api/project/project-api-client';
+import {ProjectCardData} from '../common/project-card/project-card-data';
 import {VotingService} from '../../services/voting/voting-service';
 
 @Component({
@@ -14,12 +13,11 @@ import {VotingService} from '../../services/voting/voting-service';
 })
 export class LandingComponent implements OnInit {
 
-  public projects: Array<Project>;
+  public scoredProjects: Array<ProjectCardData>;
   public ProjectCardType = ProjectCardType;
   public canVote: boolean;
 
-  constructor(private authenticationService: AuthenticationService,
-              private router: Router,
+  constructor(private router: Router,
               private projectApiClient: ProjectApiClient,
               private sprintService: VotingService) {
   }
@@ -34,32 +32,15 @@ export class LandingComponent implements OnInit {
   }
 
   async navigateToScoring() {
-    const isOk = await this.authenticationService.authenticateAsync();
-    if (isOk) {
-      await this.router.navigate([Paths.Scoring]);
-    }
+    await this.router.navigate([Paths.Scoring]);
   }
 
   async createProject() {
-    const isOk = await this.authenticationService.authenticateAsync();
-    if (isOk) {
-      await this.router.navigate([Paths.Application]);
-    }
+    await this.router.navigate([Paths.Application]);
   }
 
   private async initializeProjectsCollection() {
     const response = await this.projectApiClient.getScoredProjectsAsync();
-    this.projects = [];
-    for (const projectResponse of response.items) {
-      this.projects.push(<Project>{
-        id: projectResponse.id,
-        name: projectResponse.name,
-        area: projectResponse.area,
-        country: projectResponse.country,
-        score: projectResponse.score,
-        description: projectResponse.description,
-        address: projectResponse.address
-      });
-    }
+    this.scoredProjects = response.items.map(p => ProjectCardData.fromProjectResponse(p));
   }
 }

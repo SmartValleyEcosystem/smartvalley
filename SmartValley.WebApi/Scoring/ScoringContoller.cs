@@ -21,27 +21,6 @@ namespace SmartValley.WebApi.Scoring
             _scoringService = scoringService;
         }
 
-        [HttpGet]
-        public async Task<CollectionResponse<ProjectResponse>> GetProjectsForScoringAsync([FromQuery] GetProjectsForScoringRequest request)
-        {
-            var projects = await _scoringService.GetProjectsForScoringAsync(request.ExpertiseArea.ToDomain(), User.Identity.Name);
-            return new CollectionResponse<ProjectResponse>
-                   {
-                       Items = projects.Select(ProjectResponse.Create).ToArray()
-                   };
-        }
-
-        [HttpGet]
-        [Route("myprojects")]
-        public async Task<CollectionResponse<ProjectResponse>> GetMyProjectsAsync()
-        {
-            var projects = await _scoringService.GetProjectsByAuthorAsync(User.Identity.Name);
-            return new CollectionResponse<ProjectResponse>
-                   {
-                       Items = projects.Select(ProjectResponse.Create).ToArray()
-                   };
-        }
-
         [HttpPost]
         [Route("start")]
         public async Task<IActionResult> StartAsync(StartProjectScoringRequest request)

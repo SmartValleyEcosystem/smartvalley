@@ -33,7 +33,7 @@ namespace SmartValley.WebApi.Votings.Responses
                        Area = project.ProjectArea,
                        Description = project.Description,
                        Author = project.AuthorAddress,
-                       IsVotedByMe = investorVotes?.ProjectExternalIds.Contains(project.ExternalId) ?? false
+                       IsVotedByMe = investorVotes?.ProjectsExternalIds.Contains(project.ExternalId) ?? false
                    };
         }
     }

@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
-using IcoLab.Common;
-using Nethereum.Hex.HexConvertors.Extensions;
-using Nethereum.Web3;
 using SmartValley.Application.Contracts.Options;
 using SmartValley.Application.Contracts.SmartValley.Application.Contracts;
-using SmartValley.Application.Exceptions;
 using SmartValley.Application.Extensions;
+using SmartValley.Application.Contracts.Votings.Dto;
 
 namespace SmartValley.Application.Contracts.Votings
 {
@@ -32,19 +29,26 @@ namespace SmartValley.Application.Contracts.Votings
 
         public async Task<IReadOnlyCollection<Guid>> GetProjectsQueueAsync()
         {
-            var extIds = await _contractClient.CallFunctionAsync<List<BigInteger>>(_contractAddress, _contractAbi, "getProjectsQueue");
-            return extIds.Select(e => e.ToGuid()).ToArray();
+            var externalIds = await _contractClient.CallFunctionAsync<List<BigInteger>>(_contractAddress, _contractAbi, "getProjectsQueue");
+            return externalIds.Select(e => e.ToGuid()).ToArray();
         }
 
+        public Task<uint> GetMinimumVotingProjectsCountAsync()
+            => _contractClient.CallFunctionAsync<uint>(_contractAddress, _contractAbi, "minimumProjectsCount");
+
         public Task<string> CreateSprintAsync()
-        {
-            return _contractClient.SignAndSendTransactionAsync(_contractAddress, _contractAbi, "createSprint", _votingSprintDurationInDays);
-        }
+            => _contractClient.SignAndSendTransactionAsync(_contractAddress, _contractAbi, "createSprint", _votingSprintDurationInDays);
 
         public async Task<string> GetLastSprintAddressAsync()
         {
             var sprintAddress = await _contractClient.CallFunctionAsync<string>(_contractAddress, _contractAbi, "lastSprint");
             return sprintAddress.IsAddressEmpty() ? null : sprintAddress;
+        }
+
+        public async Task<IReadOnlyCollection<string>> GetAllSprintsAddressesAsync()
+        {
+            var sprintsDto = await _contractClient.CallFunctionDeserializingToObjectAsync<VotingSprintsDto>(_contractAddress, _contractAbi, "getSprints");
+            return sprintsDto.SprintsAddresses;
         }
     }
 }

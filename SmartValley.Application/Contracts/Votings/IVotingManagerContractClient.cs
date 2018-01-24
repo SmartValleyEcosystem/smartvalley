@@ -11,5 +11,9 @@ namespace SmartValley.Application.Contracts.Votings
         Task<string> CreateSprintAsync();
 
         Task<string> GetLastSprintAddressAsync();
+
+        Task<IReadOnlyCollection<string>> GetAllSprintsAddressesAsync();
+
+        Task<uint> GetMinimumVotingProjectsCountAsync();
     }
 }

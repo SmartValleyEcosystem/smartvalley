@@ -1,12 +1,16 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Project} from '../../../services/project';
 import {Router} from '@angular/router';
 import {Paths} from '../../../paths';
 import {ProjectService} from '../../../services/project-service';
 import {BlockiesService} from '../../../services/blockies-service';
 import {Constants} from '../../../constants';
 import {ProjectCardType} from '../../../services/project-card-type';
-import {AuthenticationService} from '../../../services/authentication/authentication-service';
+import {ProjectCardData} from './project-card-data';
+import {VotingStatus} from '../../../services/voting-status.enum';
+import {ScoringStatus} from '../../../services/scoring-status.enum';
+import {isNullOrUndefined} from 'util';
+import * as timespan from 'timespan';
+import {VotingService} from '../../../services/voting/voting-service';
 
 @Component({
   selector: 'app-project-card',
@@ -15,34 +19,57 @@ import {AuthenticationService} from '../../../services/authentication/authentica
 })
 export class ProjectCardComponent implements OnInit {
   public ProjectCardType = ProjectCardType;
-  @Input() public project: Project;
-  @Input() public projectCardType: ProjectCardType;
-  projectService: ProjectService;
-  projectImageUrl: any;
+  public ScoringStatus = ScoringStatus;
+  public VotingStatus = VotingStatus;
+  public projectImageUrl: string;
+
+  public votingRemainingDays: number;
+  public votingRemainingHours: number;
+  public votingRemainingMinutes: number;
+  public votingRemainingSeconds: number;
+
+  @Input() public data: ProjectCardData;
+  @Input() public type: ProjectCardType;
 
   constructor(private router: Router,
               private blockiesService: BlockiesService,
-              projectService: ProjectService,
-              private authenticationService: AuthenticationService) {
-    this.projectService = projectService;
+              public projectService: ProjectService,
+              private votingService: VotingService) {
   }
 
-  ngOnInit(): void {
-    this.projectImageUrl = this.blockiesService.getImageForAddress(this.project.address ? this.project.address : this.project.author);
+  public ngOnInit(): void {
+    const address = this.data.address ? this.data.address : this.data.author;
+    this.projectImageUrl = this.blockiesService.getImageForAddress(address);
+
+    this.updateVotingRemainingTime();
+    setInterval(() => this.updateVotingRemainingTime(), 1000);
   }
 
-  showProject(id: number) {
-    this.router.navigate([Paths.Scoring + '/' + id], {queryParams: {expertiseArea: this.project.expertiseArea}});
+  public showProject(id: number): void {
+    this.router.navigate([Paths.Scoring + '/' + id], {queryParams: {expertiseArea: this.data.expertiseArea}});
   }
 
-  async voteForProject(id: number) {
-    const isOk = await this.authenticationService.authenticateAsync();
-    if (isOk) {
-      this.router.navigate([Paths.Voting + '/' + id]);
-    }
+  public showVotingDetails(id: number): void {
+    this.router.navigate([Paths.Voting + '/' + id]);
   }
 
-  showReport(id: number) {
+  public async voteForProjectAsync(externalId: string, name: string): Promise<void> {
+    await this.votingService.getCurrentSprintAndSubmitVoteAsync(externalId, name);
+  }
+
+  public showReport(id: number): void {
     this.router.navigate([Paths.Report + '/' + id], {queryParams: {tab: Constants.ReportFormTab}});
+  }
+
+  private updateVotingRemainingTime(): void {
+    if (isNullOrUndefined(this.data.votingEndDate)) {
+      return;
+    }
+
+    const remaining = timespan.fromDates(new Date(), this.data.votingEndDate);
+    this.votingRemainingDays = remaining.days;
+    this.votingRemainingHours = remaining.hours;
+    this.votingRemainingMinutes = remaining.minutes;
+    this.votingRemainingSeconds = remaining.seconds;
   }
 }

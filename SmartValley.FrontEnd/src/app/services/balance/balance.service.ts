@@ -45,7 +45,6 @@ export class BalanceService {
       availableBalance: +availableBalance.toFixed(3),
       canReceiveSvt: canReceiveSvt
     };
-    console.log(this.balance)
     this.balanceChanged.emit(this.balance);
   }
 

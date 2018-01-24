@@ -1,9 +1,11 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BaseApiClient} from '../base-api-client';
 import {ProjectResponse} from './project-response';
 import {CollectionResponse} from '../collection-response';
 import {ProjectDetailsResponse} from './project-details-response';
+import {MyProjectsItemResponse} from './my-projects-item-response';
+import {ExpertiseArea} from '../scoring/expertise-area.enum';
 
 @Injectable()
 export class ProjectApiClient extends BaseApiClient {
@@ -18,6 +20,20 @@ export class ProjectApiClient extends BaseApiClient {
 
   async getDetailsByIdAsync(id: number): Promise<ProjectDetailsResponse> {
     return this.http.get<ProjectDetailsResponse>(this.baseApiUrl + '/projects?projectId=' + id)
+      .toPromise();
+  }
+
+  public async getForScoringAsync(expertiseArea: ExpertiseArea): Promise<CollectionResponse<ProjectResponse>> {
+    const parameters = new HttpParams().append('expertiseArea', expertiseArea.toString());
+
+    return this.http
+      .get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/projects/forscoring', {params: parameters})
+      .toPromise();
+  }
+
+  public async getMyProjectsAsync(): Promise<CollectionResponse<MyProjectsItemResponse>> {
+    return this.http
+      .get<CollectionResponse<MyProjectsItemResponse>>(this.baseApiUrl + '/projects/my')
       .toPromise();
   }
 }

@@ -29,17 +29,15 @@ namespace SmartValley.Application.Contracts.Votings
             if (sprintAddress.IsAddressEmpty())
                 throw new InvalidOperationException("Sprint address can not be empty.");
 
-            var sprintDto = await _contractClient.CallFunctionDeserializingToObjectAsync<VotingSprintDto>(sprintAddress, _contractAbi, "getSprint");
+            var sprintDto = await _contractClient.CallFunctionDeserializingToObjectAsync<VotingSprintDto>(sprintAddress, _contractAbi, "getDetails");
 
-            return new VotingSprintDetails
-                   {
-                       AcceptanceThreshold = sprintDto.AcceptanceThreshold,
-                       EndDate = DateUtils.FromUnixTime(sprintDto.EndDate),
-                       MaximumScore = sprintDto.MaximumScore,
-                       ProjectExternalIds = sprintDto.ProjectExternalIds.Select(e => e.ToGuid()).ToList(),
-                       StartDate = DateUtils.FromUnixTime(sprintDto.StartDate),
-                       Address = sprintAddress
-                   };
+            return new VotingSprintDetails(
+                sprintAddress,
+                DateUtils.FromUnixTime(sprintDto.StartDate),
+                DateUtils.FromUnixTime(sprintDto.EndDate),
+                sprintDto.AcceptanceThreshold,
+                sprintDto.MaximumScore.FromWei(await _tokenContractClient.GetDecimalsAsync()),
+                sprintDto.ProjectExternalIds.Select(e => e.ToGuid()).ToArray());
         }
 
         public async Task<InvestorVotes> GetVotesAsync(string sprintAddress, string investorAddress)
@@ -47,14 +45,15 @@ namespace SmartValley.Application.Contracts.Votings
             var dto = await _contractClient.CallFunctionDeserializingToObjectAsync<InvestorVotesDto>(sprintAddress, _contractAbi, "getInvestorVotes", investorAddress);
             return new InvestorVotes
                    {
-                       ProjectExternalIds = dto.ProjectExternalIds.Select(p => p.ToGuid()).ToArray(),
+                       ProjectsExternalIds = dto.ProjectExternalIds.Select(p => p.ToGuid()).ToArray(),
                        TokenAmount = dto.TokenAmount.FromWei(await _tokenContractClient.GetDecimalsAsync())
                    };
         }
 
         public Task<long> GetVoteAsync(string sprintAddress, string investorAddress, Guid projectId)
-        {
-            return _contractClient.CallFunctionAsync<long>(sprintAddress, _contractAbi, "getVote", investorAddress, projectId);
-        }
+            => _contractClient.CallFunctionAsync<long>(sprintAddress, _contractAbi, "getVote", investorAddress, projectId.ToBigInteger());
+
+        public Task<bool> IsAcceptedAsync(string sprintAddress, Guid projectId)
+            => _contractClient.CallFunctionAsync<bool>(sprintAddress, _contractAbi, "isAccepted", projectId.ToBigInteger());
     }
 }

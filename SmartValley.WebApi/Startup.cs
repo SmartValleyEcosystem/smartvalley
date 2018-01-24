@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using IcoLab.Common;
 using IcoLab.Common.Web.WebApi;
 using IcoLab.Web.Common.Extensions;
@@ -32,9 +30,6 @@ using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.Scoring;
 using SmartValley.WebApi.Votings;
 using SmartValley.WebApi.WebApi;
-using SmartValley.Data.SQL.Core;
-using SmartValley.Data.SQL.Repositories;
-using SmartValley.Domain.Interfaces;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace SmartValley.WebApi
@@ -61,7 +56,7 @@ namespace SmartValley.WebApi
 
             ConfigureCorsPolicy(services);
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "SmartValley API", Version = "v1"}); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "SmartValley API", Version = "v1" }); });
 
             services.AddAuthentication(options =>
                                        {
@@ -144,7 +139,7 @@ namespace SmartValley.WebApi
                             await next();
                         }
                     })
-               .UseDefaultFiles(new DefaultFilesOptions {DefaultFileNames = new List<string> {"index.html"}})
+               .UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new List<string> { "index.html" } })
                .UseStaticFiles()
                .UseMvc();
         }

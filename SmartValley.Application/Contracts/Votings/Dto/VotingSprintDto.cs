@@ -14,10 +14,10 @@ namespace SmartValley.Application.Contracts.Votings.Dto
         public long EndDate { get; set; }
 
         [Parameter("uint", "acceptanceThreshold", 3)]
-        public long AcceptanceThreshold { get; set; }
+        public int AcceptanceThreshold { get; set; }
 
         [Parameter("uint", "maximumScore", 4)]
-        public long MaximumScore { get; set; }
+        public BigInteger MaximumScore { get; set; }
 
         [Parameter("uint[]", "projectIds", 5)]
         public List<BigInteger> ProjectExternalIds { get; set; }

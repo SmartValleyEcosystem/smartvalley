@@ -1,6 +1,6 @@
 import {TranslateLoader} from '@ngx-translate/core';
 import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/observable/forkJoin';;
 
 export class MultiTranslateLoader implements TranslateLoader {
 

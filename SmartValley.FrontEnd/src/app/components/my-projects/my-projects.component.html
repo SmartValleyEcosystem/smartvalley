@@ -12,7 +12,7 @@
         <div class="content">
           <div *ngIf="projects.length > 0; else withoutProject">
             <div class="card" *ngFor="let project of projects;">
-              <app-project-card [project]="project" [projectCardType]="ProjectCardType.General"></app-project-card>
+              <app-project-card [data]="project" [type]="ProjectCardType.General"></app-project-card>
             </div>
           </div>
           <button *ngIf="projects.length > 0" (click)="navigateToApplicationPageAsync()"

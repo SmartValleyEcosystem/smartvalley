@@ -32,7 +32,4 @@
     <ProjectReference Include="..\SmartValley.Data.SQL\SmartValley.Data.SQL.csproj" />
     <ProjectReference Include="..\SmartValley.Domain\SmartValley.Domain.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
 </Project>

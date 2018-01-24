@@ -1,13 +1,12 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Project} from '../../services/project';
-import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
-import {ProjectsForScoringRequest} from '../../api/scoring/projecs-for-scoring-request';
 import {isNullOrUndefined} from 'util';
 import {Subscription} from 'rxjs/Subscription';
 import {ProjectCardType} from '../../services/project-card-type';
+import {ProjectApiClient} from '../../api/project/project-api-client';
+import {ProjectCardData} from '../common/project-card/project-card-data';
 
 @Component({
   selector: 'app-scoring',
@@ -16,24 +15,21 @@ import {ProjectCardType} from '../../services/project-card-type';
 })
 export class ScoringComponent implements OnDestroy, OnInit {
   public ProjectCardType = ProjectCardType;
-  public projects: Array<Project> = [];
+  public projects: Array<ProjectCardData> = [];
   public selectedTabIndex: number;
 
   @ViewChild('projectsTabSet')
   private projectsTabSet: NgbTabset;
   private accountChangedSubscription: Subscription;
 
-  constructor(private scoringApiClient: ScoringApiClient,
+  constructor(private projectApiClient: ProjectApiClient,
               private authenticationService: AuthenticationService) {
-    this.accountChangedSubscription = this.authenticationService.accountChanged.subscribe(() => this.loadData());
+    this.accountChangedSubscription = this.authenticationService.accountChanged.subscribe(
+      () => this.reloadProjectsForScoringAsync());
   }
 
-  ngOnInit(): void {
-    this.loadData();
-  }
-
-  private loadData() {
-    this.reloadProjectsForScoringAsync();
+  async ngOnInit(): Promise<void> {
+    await this.reloadProjectsForScoringAsync();
   }
 
   public async onExpertiseTabIndexChanged(index: number) {
@@ -49,10 +45,8 @@ export class ScoringComponent implements OnDestroy, OnInit {
 
   private async reloadProjectsForScoringAsync(): Promise<void> {
     const expertiseArea = this.getExpertiseAreaByIndex(this.selectedTabIndex);
-    const response = await this.scoringApiClient.getProjectForScoringAsync(<ProjectsForScoringRequest>{
-      expertiseArea: <number>expertiseArea
-    });
-    this.projects = response.items.map(p => Project.createByArea(p, expertiseArea));
+    const response = await this.projectApiClient.getForScoringAsync(expertiseArea);
+    this.projects = response.items.map(p => ProjectCardData.fromProjectResponse(p, expertiseArea));
   }
 
   private getExpertiseAreaByIndex(index: number): ExpertiseArea {

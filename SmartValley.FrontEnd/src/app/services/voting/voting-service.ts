@@ -33,8 +33,9 @@ export class VotingService {
 
   public async getCurrentSprintAsync(): Promise<VotingSprint> {
     const lastSprintResponse = await this.votingApiClient.getLastVotingSprintAsync();
-    if (!lastSprintResponse.doesExist)
+    if (!lastSprintResponse.doesExist) {
       return null;
+    }
 
     const projects = [];
     for (const projectVoteResponse of lastSprintResponse.lastSprint.projects) {
@@ -57,6 +58,18 @@ export class VotingService {
       startDate: moment(lastSprintResponse.lastSprint.startDate).toDate(),
       endDate: moment(lastSprintResponse.lastSprint.endDate).toDate()
     };
+  }
+
+  public async getCurrentSprintAndSubmitVoteAsync(projectExternalId: string, projectName: string): Promise<void> {
+    const currentSprint = await this.getCurrentSprintAsync();
+
+    return await this.submitVoteAsync(
+      currentSprint.address,
+      projectExternalId,
+      projectName,
+      currentSprint.voteBalance,
+      currentSprint.endDate
+    );
   }
 
   public async submitVoteAsync(votingSprintAddress: string,

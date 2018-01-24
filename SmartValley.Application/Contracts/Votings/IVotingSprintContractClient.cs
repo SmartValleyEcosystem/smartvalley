@@ -12,5 +12,7 @@ namespace SmartValley.Application.Contracts.Votings
         Task<InvestorVotes> GetVotesAsync(string sprintAddress, string investorAddress);
 
         Task<long> GetVoteAsync(string sprintAddress, string investorAddress, Guid projectId);
+
+        Task<bool> IsAcceptedAsync(string sprintAddress, Guid projectId);
     }
 }

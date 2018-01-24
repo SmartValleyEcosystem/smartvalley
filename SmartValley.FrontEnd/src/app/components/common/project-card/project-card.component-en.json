@@ -6,6 +6,16 @@
     "ProjectProfile": "Project profile",
     "Estimate": "Estimate",
     "VotingForProject": "Vote for this project",
-    "MyVoteLabel": "My vote"
+    "MyVoteLabel": "My vote",
+    "Soon": "Coming soon...",
+    "Voting": "Voting",
+    "RemainingTime": "Remaining time:",
+    "Finished": "Finished",
+    "Accepted": "Accepted",
+    "Rejected": "Rejected",
+    "Days": "Days",
+    "Hours": "Hrs",
+    "Minutes": "Min",
+    "Seconds": "Sec"
   }
 }

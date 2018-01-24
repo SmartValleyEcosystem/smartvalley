@@ -29,18 +29,12 @@ namespace SmartValley.WebApi.Scoring
             _ethereumClient = ethereumClient;
         }
 
-        public Task<IReadOnlyCollection<ProjectScoring>> GetProjectsForScoringAsync(ExpertiseArea expertiseArea, string expertAddress)
-            => _projectRepository.GetForScoringAsync(expertAddress, expertiseArea);
-
-        public Task<IReadOnlyCollection<ProjectScoring>> GetProjectsByAuthorAsync(string authorAddress)
-            => _projectRepository.GetByAuthorAsync(authorAddress);
-
         public async Task StartAsync(Guid projectExternalId, string transactionHash)
         {
             await _ethereumClient.WaitForConfirmationAsync(transactionHash);
 
             var project = await _projectRepository.GetByExternalIdAsync(projectExternalId);
-            var contractAddress = await _scoringManagerContractClient.GetScoringAddressAsync(projectExternalId.ToString());
+            var contractAddress = await _scoringManagerContractClient.GetScoringAddressAsync(projectExternalId);
             var scoring = new Domain.Entities.Scoring
                           {
                               ProjectId = project.Id,

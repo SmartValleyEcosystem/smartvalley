@@ -3,45 +3,114 @@
     <div class="main-info col-4">
       <img src="{{projectImageUrl}}"/>
       <div class="main-info__title">
-        <span>{{project.name}}</span>
-        <span class="main-info__country">{{project.country}}</span>
-        <span>{{project.area}}</span>
+        <span>{{data.name}}</span>
+        <span class="main-info__country">{{data.country}}</span>
+        <span>{{data.area}}</span>
       </div>
     </div>
     <div class="col-8">
       <div class="row" style="padding-bottom: 4em;">
         <div class="description col-8">
-          <p class="card-text">{{project.description}}</p>
+          <p class="card-text">{{data.description}}</p>
         </div>
         <div class="scoring col-4">
-          <div *ngIf="projectCardType !== ProjectCardType.Voting" class="scoring-container">
-            <span>{{ 'ProjectCard.ScoringRating' | translate }}</span>
-            <div class="score-panel" *ngIf="project.score">
-              <span
-                class="score {{projectService.colorOfProjectRate(project.score)}}">{{project.score.toFixed(0)}}</span>
-              <span>/ 100</span>
+          <div *ngIf="type !== ProjectCardType.Voting" class="scoring-container">
+            <div *ngIf="data.scoringStatus !== ScoringStatus.Pending" class="scoring-container">
+              <span>
+                {{ 'ProjectCard.ScoringRating' | translate }}
+              </span>
+              <div class="score-panel" *ngIf="data.scoringStatus === ScoringStatus.Finished">
+                <span class="score {{projectService.colorOfProjectRate(data.score)}}">
+                  {{data.score.toFixed(0)}}
+                </span>
+                <span>/ 100</span>
+              </div>
+              <span *ngIf="data.scoringStatus === ScoringStatus.InProgress">
+                {{ 'ProjectCard.InProgress' | translate }}
+              </span>
             </div>
-            <span *ngIf="!project.score">{{ 'ProjectCard.InProgress' | translate }}</span>
+            <div *ngIf="data.scoringStatus === ScoringStatus.Pending" class="scoring-container">
+              <div *ngIf="data.votingStatus === VotingStatus.InProgress">
+                <span>
+                    {{'ProjectCard.Voting' | translate}}
+                </span>
+                <div *ngIf="!data.votingEndDate">
+                  <span>
+                    {{'ProjectCard.Soon' | translate}}
+                  </span>
+                </div>
+                <div *ngIf="data.votingEndDate">
+                  <span>
+                    {{'ProjectCard.RemainingTime' | translate}}
+                  </span>
+                  <div class="timer">
+                    <div>
+                      <span class="time-number">{{votingRemainingDays}}</span>
+                      <span class="time-label">{{ 'ProjectCard.Days' | translate }}</span>
+                    </div>
+                    <div>
+                      <span class="time-number">{{votingRemainingHours}}</span>
+                      <span class="time-label">{{ 'ProjectCard.Hours' | translate }}</span>
+                    </div>
+                    <div>
+                      <span class="time-number">{{votingRemainingMinutes}}</span>
+                      <span class="time-label">{{ 'ProjectCard.Minutes' | translate }}</span>
+                    </div>
+                    <div>
+                      <span class="time-number">{{votingRemainingSeconds}}</span>
+                      <span class="time-label">{{ 'ProjectCard.Seconds' | translate }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="data.votingStatus === VotingStatus.Accepted" class="scoring-container">
+                <span>
+                  {{'ProjectCard.Voting' | translate}}
+                </span>
+                <span>
+                  {{'ProjectCard.Finished' | translate}}
+                </span>
+                <span class="voting-result high_rate">
+                  {{'ProjectCard.Accepted' | translate}}
+                </span>
+              </div>
+              <div *ngIf="data.votingStatus === VotingStatus.Rejected" class="scoring-container">
+                <span>
+                  {{'ProjectCard.Voting' | translate}}
+                </span>
+                <span>
+                  {{'ProjectCard.Finished' | translate}}
+                </span>
+                <span class="voting-result low_rate">
+                  {{'ProjectCard.Rejected' | translate}}
+                </span>
+              </div>
+            </div>
           </div>
-          <div *ngIf="projectCardType === ProjectCardType.Voting && project.isVotedByMe != null"
-               class="voting-container">
-            <span>{{ 'ProjectCard.MyVoteLabel' | translate }}: {{project.isVotedByMe ? ('Common.Yes' | translate) : ('Common.No' | translate)}}</span>
+          <div *ngIf="type === ProjectCardType.Voting" class="voting-container">
+            <span>{{ 'ProjectCard.MyVoteLabel' | translate }}: {{data.isVotedByMe ? ('Common.Yes' | translate) : ('Common.No' | translate)}}</span>
           </div>
         </div>
       </div>
       <div class="row text-right" style="position: absolute; width: 100%; bottom: 0;">
         <div class="col-12">
-          <a *ngIf="projectCardType === ProjectCardType.Voting && project.isVotedByMe !== true" class="col-4 vote-button sv-default-btn btn btn-primary"
-             (click)="voteForProject(project.id)">
-            {{ 'ProjectCard.VotingForProject' | translate }}</a>
-          <a *ngIf="projectCardType === ProjectCardType.Scoring" class="col-3 sv-default-btn btn btn-primary"
-             (click)="showProject(project.id)">{{ 'ProjectCard.Estimate' | translate }}</a>
-          <a *ngIf="projectCardType === ProjectCardType.General" (click)="showReport(project.id)"
-             class="col-3 sv-default-btn btn btn-primary">
-            {{ 'ProjectCard.ProjectProfile' | translate }}</a>
-          <a *ngIf="projectCardType === ProjectCardType.Voting" (click)="voteForProject(project.id)"
-             class="col-3 sv-default-btn btn btn-primary">
-            {{ 'ProjectCard.Info' | translate }}</a>
+          <a *ngIf="type === ProjectCardType.Voting && data.isVotedByMe !== true"
+             class="col-4 vote-button sv-default-btn btn btn-primary"
+             (click)="voteForProjectAsync(data.externalId, data.name)">
+            {{ 'ProjectCard.VotingForProject' | translate }}
+          </a>
+          <a *ngIf="type === ProjectCardType.Scoring" class="col-3 sv-default-btn btn btn-primary"
+             (click)="showProject(data.id)">
+            {{ 'ProjectCard.Estimate' | translate }}
+          </a>
+          <a *ngIf="type === ProjectCardType.General" class="col-3 sv-default-btn btn btn-primary"
+             (click)="showReport(data.id)">
+            {{ 'ProjectCard.ProjectProfile' | translate }}
+          </a>
+          <a *ngIf="type === ProjectCardType.Voting" class="col-3 sv-default-btn btn btn-primary"
+             (click)="showVotingDetails(data.id)">
+            {{ 'ProjectCard.Info' | translate }}
+          </a>
         </div>
       </div>
     </div>
