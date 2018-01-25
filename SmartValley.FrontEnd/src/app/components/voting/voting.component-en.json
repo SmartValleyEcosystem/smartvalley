@@ -10,7 +10,7 @@
     "Seconds": "Seconds",
     "From": "From",
     "To": "to",
-    "Sprint": "Sprint",
+    "Sprint": "Sprint {{sprintNumber}}:",
     "VoteBalance" : "Vote balance"
   }
 }

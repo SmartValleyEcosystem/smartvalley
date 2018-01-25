@@ -1,10 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using IcoLab.Common;
 using Microsoft.AspNetCore.Mvc;
+using SmartValley.Domain;
+using SmartValley.Domain.Entities;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.Votings.Responses;
 using SmartValley.WebApi.WebApi;
-using System.Linq;
 
 namespace SmartValley.WebApi.Votings
 {
@@ -42,9 +45,9 @@ namespace SmartValley.WebApi.Votings
         {
             var sprints = await _votingService.GetFinishedSprintsAsync();
             return new CollectionResponse<SprintResponse>
-            {
-                Items = sprints.Select(SprintResponse.Create).ToArray()
-            };
+                   {
+                       Items = sprints.Select(SprintResponse.Create).ToArray()
+                   };
         }
 
         [HttpGet]
@@ -60,9 +63,9 @@ namespace SmartValley.WebApi.Votings
             return Ok(VotingSprintResponse.Create(sprint, projects, investorVotes));
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("start")]
-        public async Task<IActionResult> StartSprint()
+        public async Task<IActionResult> StartSprintAsync()
         {
             await _votingService.StartSprintAsync();
             return NoContent();

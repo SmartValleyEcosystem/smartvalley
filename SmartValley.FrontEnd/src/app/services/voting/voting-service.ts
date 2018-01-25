@@ -55,7 +55,8 @@ export class VotingService {
       projects: projects,
       voteBalance: currentSprintResponse.currentSprint.voteBalance,
       startDate: moment(currentSprintResponse.currentSprint.startDate).toDate(),
-      endDate: moment(currentSprintResponse.currentSprint.endDate).toDate()
+      endDate: moment(currentSprintResponse.currentSprint.endDate).toDate(),
+      number: currentSprintResponse.currentSprint.number
     };
   }
 

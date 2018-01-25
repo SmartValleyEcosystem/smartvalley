@@ -37,7 +37,8 @@ namespace SmartValley.Application.Contracts.Votings
                 DateUtils.FromUnixTime(sprintDto.EndDate),
                 sprintDto.AcceptanceThreshold,
                 sprintDto.MaximumScore.FromWei(await _tokenContractClient.GetDecimalsAsync()),
-                sprintDto.ProjectExternalIds.Select(e => e.ToGuid()).ToArray());
+                sprintDto.ProjectExternalIds.Select(e => e.ToGuid()).ToArray(),
+                sprintDto.Number);
         }
 
         public async Task<InvestorVotes> GetVotesAsync(string sprintAddress, string investorAddress)

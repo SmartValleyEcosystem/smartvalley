@@ -11,7 +11,8 @@ namespace SmartValley.Domain
             DateTime endDate, 
             int acceptanceThreshold, 
             double maximumScore, 
-            IReadOnlyCollection<Guid> projectsExternalIds)
+            IReadOnlyCollection<Guid> projectsExternalIds,
+            int number)
         {
             Address = address;
             StartDate = startDate;
@@ -19,6 +20,7 @@ namespace SmartValley.Domain
             AcceptanceThreshold = acceptanceThreshold;
             MaximumScore = maximumScore;
             ProjectsExternalIds = projectsExternalIds;
+            Number = number;
         }
 
         public DateTime StartDate { get; }
@@ -32,5 +34,7 @@ namespace SmartValley.Domain
         public IReadOnlyCollection<Guid> ProjectsExternalIds { get; }
 
         public string Address { get; }
+        
+        public int Number { get; }
     }
 }

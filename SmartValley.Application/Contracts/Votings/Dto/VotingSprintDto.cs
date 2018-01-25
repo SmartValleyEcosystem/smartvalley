@@ -7,19 +7,22 @@ namespace SmartValley.Application.Contracts.Votings.Dto
     [FunctionOutput]
     public class VotingSprintDto
     {
-        [Parameter("uint", "startDate", 1)]
+        [Parameter("uint", "_startDate", 1)]
         public long StartDate { get; set; }
 
-        [Parameter("uint", "endDate", 2)]
+        [Parameter("uint", "_endDate", 2)]
         public long EndDate { get; set; }
 
-        [Parameter("uint", "acceptanceThresholdPercent", 3)]
+        [Parameter("uint", "_acceptanceThresholdPercent", 3)]
         public int AcceptanceThreshold { get; set; }
 
-        [Parameter("uint", "maximumScore", 4)]
+        [Parameter("uint", "_maximumScore", 4)]
         public BigInteger MaximumScore { get; set; }
 
-        [Parameter("uint[]", "projectIds", 5)]
+        [Parameter("uint[]", "_projectIds", 5)]
         public List<BigInteger> ProjectExternalIds { get; set; }
+
+        [Parameter("uint", "_number", 6)]
+        public int Number { get; set; }
     }
 }

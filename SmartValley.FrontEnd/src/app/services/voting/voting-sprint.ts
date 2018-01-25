@@ -5,5 +5,6 @@ export interface VotingSprint {
   voteBalance: number;
   startDate: Date;
   endDate: Date;
+  number: number;
   projects: Array<Project>;
 }
