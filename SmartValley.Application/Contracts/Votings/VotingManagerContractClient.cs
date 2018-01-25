@@ -29,8 +29,8 @@ namespace SmartValley.Application.Contracts.Votings
 
         public async Task<IReadOnlyCollection<Guid>> GetProjectsQueueAsync()
         {
-            var externalIds = await _contractClient.CallFunctionAsync<List<BigInteger>>(_contractAddress, _contractAbi, "getProjectsQueue");
-            return externalIds.Select(e => e.ToGuid()).ToArray();
+            var dto = await _contractClient.CallFunctionDeserializingToObjectAsync<ProjectsQueueDto>(_contractAddress, _contractAbi, "getProjectsQueue");
+            return dto.ProjectsQueue.Select(e => e.ToGuid()).ToArray();
         }
 
         public Task<uint> GetMinimumVotingProjectsCountAsync()
