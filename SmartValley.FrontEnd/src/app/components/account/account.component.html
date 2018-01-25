@@ -26,14 +26,14 @@
         </span>
     </div>
     <div class="row" style="margin-top: 1em;">
-        <span class="col-3 offset-4">{{ 'Account.TransferableSVT' | translate }} {{currentTokens}}
+        <span class="col-3 offset-4">{{ 'Account.TransferableSVT' | translate }} {{transefableTokens}}
         <div class="account-tooltip" [matTooltip]="'Account.TransferedTooltip' | translate" matTooltipPosition="above">
           <i class="material-icons">help_outline</i>
         </div>
         </span>
     </div>
     <div class="row">
-        <span class="col-3 offset-4">{{ 'Account.FreezedSVT' | translate }} 0
+        <span class="col-3 offset-4">{{ 'Account.FreezedSVT' | translate }} {{frozenTokens}}
         <div class="account-tooltip" [matTooltip]="'Account.FreezedTooltip' | translate" matTooltipPosition="above">
           <i class="material-icons">help_outline</i>
         </div>

@@ -11,7 +11,7 @@
 
         <div class="col-3" style="margin-top: 24px;">
           <div *ngIf="isAuthenticated">
-            <span style="color: #aaaaaa;">{{ 'Header.Balance' | translate }}: {{currentBalance}} ETH / {{currentTokens}} SVT</span>
+            <span style="color: #aaaaaa;">{{ 'Header.Balance' | translate }}: {{currentBalance}} ETH / {{currentTokens}} SVT ({{frozenTokens}} {{'Header.OnFreeze' | translate}})</span>
           </div>
         </div>
         <div class="col-4 sm-header__nav text-right">
