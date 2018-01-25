@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SmartValley.Domain;
 using SmartValley.WebApi.Applications.Responses;
@@ -39,10 +40,20 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public double? Score { get; set; }
 
+        public ScoringStatus ScoringStatus { get; set; }
+
+        public VotingStatus VotingStatus { get; set; }
+
+        public DateTime? VotingEndDate { get; set; }
+
         public IReadOnlyCollection<TeamMemberResponse> TeamMembers { get; set; }
 
-        public static ProjectDetailsResponse Create(ProjectDetails details)
+        public static ProjectDetailsResponse Create(ProjectDetails details, VotingProjectDetails votingDetails)
         {
+            var scoringStatus = details.Scoring == null
+                                    ? ScoringStatus.Pending
+                                    : (details.Scoring.Score.HasValue ? ScoringStatus.Finished : ScoringStatus.InProgress);
+
             return new ProjectDetailsResponse
                    {
                        Name = details.Project.Name,
@@ -61,8 +72,19 @@ namespace SmartValley.WebApi.Projects.Responses
                        MvpLink = details.Application.MvpLink,
                        Status = details.Application.ProjectStatus,
                        WhitePaperLink = details.Application.WhitePaperLink,
-                       TeamMembers = details.TeamMembers.Select(TeamMemberResponse.Create).ToList()
+                       TeamMembers = details.TeamMembers.Select(TeamMemberResponse.Create).ToList(),
+                       ScoringStatus = scoringStatus,
+                       VotingStatus = details.Scoring == null ? GetVotingStatus(votingDetails) : VotingStatus.None,
+                       VotingEndDate = votingDetails?.Voting?.EndDate
                    };
+        }
+
+        private static VotingStatus GetVotingStatus(VotingProjectDetails votingDetails)
+        {
+            if (votingDetails == null)
+                return VotingStatus.InProgress;
+
+            return votingDetails.IsAccepted ? VotingStatus.Accepted : VotingStatus.Rejected;
         }
     }
 }

@@ -90,10 +90,13 @@ div.sw-main-info span, div.sw-main-info app-nullable-link {
   display: inline-block;
 }
 
+.submit-button {
+  margin-top: 2em;
+}
+
 .main-info {
   display: inline-block;
   padding: 1em;
-  top: calc(25% - 3em + 25px);
 }
 .main-info img {
   width: 6em;
@@ -140,4 +143,38 @@ div.sw-main-info span, div.sw-main-info app-nullable-link {
 .tab-shift {
   margin-left: 60px;
   margin-right: -60px;
+}
+
+.timer {
+  text-align: center;
+  line-height: 1.5em;
+}
+
+.timer div {
+  width: 2.5em;
+  margin: 0em;
+  display: inline-block;
+}
+
+.timer div .time-number, .timer div .time-label {
+  color: black;
+  display: block;
+  text-align: center;
+}
+
+.timer div .time-label {
+  font-size: 1em;
+}
+
+.timer div .time-number {
+  font-size: 1em;
+  margin-top: 0.5em;
+}
+
+.scoring-container > .score-panel > .score {
+  font-size: 3em;
+}
+
+.scoring-container > .voting-result {
+  font-size: 2em;
 }

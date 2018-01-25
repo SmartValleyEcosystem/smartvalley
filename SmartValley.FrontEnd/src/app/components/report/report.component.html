@@ -10,20 +10,95 @@
         <div class="main-info col-2">
           <img src="{{projectImageUrl}}" style="width: 128px;"/>
         </div>
-        <div class="description col-7">
+        <div class="description col-3">
           <div class="main-info__title">
             <span>{{details.name}}</span>
             <span>{{details.area}}</span>
           </div>
         </div>
+        <div class="main-info col-4">
+          <div class="col-12" *ngIf="details.scoringStatus == ScoringStatus.Pending && details.votingStatus != VotingStatus.InProgress">
+            <span>
+              {{details.votingStatus == VotingStatus.Accepted
+              ? ('Report.SubmitForFree' | translate)
+              : ('Report.SubmitForTokens' | translate:{scoringCost: scoringCost}) }}
+            </span>
+            <a (click)="submitToScoringAsync()" class="col-8 submit-button sv-default-btn btn btn-primary">
+              {{ 'Report.Submit' | translate }}
+            </a>
+          </div>
+        </div>
         <div class="scoring col-3">
-          <div class="scoring-container">
-            <span>{{ 'Report.ScoringRating' | translate }}</span>
-            <div *ngIf="details.score" class="score-panel">
-              <span class="score {{projectService.colorOfProjectRate(details.score)}}">{{details.score.toFixed(0)}}</span>
+          <div *ngIf="details.scoringStatus !== ScoringStatus.Pending" class="scoring-container">
+              <span>
+                {{ 'Report.ScoringRating' | translate }}
+              </span>
+            <div class="score-panel" *ngIf="details.scoringStatus === ScoringStatus.Finished">
+                <span class="score {{projectService.colorOfProjectRate(details.score)}}">
+                  {{details.score.toFixed(0)}}
+                </span>
               <span>/ 100</span>
             </div>
-            <span *ngIf="!details.score">{{ 'Report.InProgress' | translate }}</span>
+            <span *ngIf="details.scoringStatus === ScoringStatus.InProgress">
+                {{ 'Report.InProgress' | translate }}
+              </span>
+          </div>
+          <div *ngIf="details.scoringStatus === ScoringStatus.Pending" class="scoring-container">
+            <div *ngIf="details.votingStatus === VotingStatus.InProgress">
+                <span>
+                    {{'Report.Voting' | translate}}
+                </span>
+              <div *ngIf="!details.votingEndDate">
+                  <span>
+                    {{'Report.Soon' | translate}}
+                  </span>
+              </div>
+              <div *ngIf="details.votingEndDate">
+                  <span>
+                    {{'Report.RemainingTime' | translate}}
+                  </span>
+                <div class="timer">
+                  <div>
+                    <span class="time-number">{{votingRemainingDays}}</span>
+                    <span class="time-label">{{ 'Report.Days' | translate }}</span>
+                  </div>
+                  <div>
+                    <span class="time-number">{{votingRemainingHours}}</span>
+                    <span class="time-label">{{ 'Report.Hours' | translate }}</span>
+                  </div>
+                  <div>
+                    <span class="time-number">{{votingRemainingMinutes}}</span>
+                    <span class="time-label">{{ 'Report.Minutes' | translate }}</span>
+                  </div>
+                  <div>
+                    <span class="time-number">{{votingRemainingSeconds}}</span>
+                    <span class="time-label">{{ 'Report.Seconds' | translate }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="details.votingStatus === VotingStatus.Accepted" class="scoring-container">
+                <span>
+                  {{'Report.Voting' | translate}}
+                </span>
+              <span>
+                  {{'Report.Finished' | translate}}
+                </span>
+              <span class="voting-result high_rate">
+                  {{'Report.Accepted' | translate}}
+                </span>
+            </div>
+            <div *ngIf="details.votingStatus === VotingStatus.Rejected" class="scoring-container">
+                <span>
+                  {{'Report.Voting' | translate}}
+                </span>
+              <span>
+                  {{'Report.Finished' | translate}}
+                </span>
+              <span class="voting-result low_rate">
+                  {{'Report.Rejected' | translate}}
+                </span>
+            </div>
           </div>
         </div>
       </div>

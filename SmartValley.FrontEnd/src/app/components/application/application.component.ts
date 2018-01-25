@@ -85,7 +85,7 @@ export class ApplicationComponent implements OnInit {
     }
 
     const projectId = await this.submitApplicationToBackendAsync();
-    const transactionHash = await this.deployContractAsync(projectId);
+    const transactionHash = await this.startScoringAsync(projectId);
     if (transactionHash == null) {
       this.notifyError();
       this.isProjectCreating = false;
@@ -226,7 +226,7 @@ export class ApplicationComponent implements OnInit {
     };
   }
 
-  private async deployContractAsync(projectId: string): Promise<string> {
+  private async startScoringAsync(projectId: string): Promise<string> {
     try {
       return await this.scoringManagerContractClient.startAsync(projectId);
     } catch (e) {

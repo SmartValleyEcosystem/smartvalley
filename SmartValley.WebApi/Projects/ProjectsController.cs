@@ -27,7 +27,9 @@ namespace SmartValley.WebApi.Projects
         public async Task<ProjectDetailsResponse> GetByIdAsync(GetByIdRequest request)
         {
             var details = await _projectService.GetDetailsAsync(request.ProjectId);
-            return ProjectDetailsResponse.Create(details);
+            var votingDetails = await _votingService.GetVotingProjectDetailsAsync(request.ProjectId);
+
+            return ProjectDetailsResponse.Create(details, votingDetails);
         }
 
         [HttpGet]

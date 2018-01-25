@@ -41,8 +41,10 @@ export class ProjectCardComponent implements OnInit {
     const address = this.data.address ? this.data.address : this.data.author;
     this.projectImageUrl = this.blockiesService.getImageForAddress(address);
 
-    this.updateVotingRemainingTime();
-    setInterval(() => this.updateVotingRemainingTime(), 1000);
+    if (this.data.votingStatus === VotingStatus.InProgress) {
+      this.updateVotingRemainingTime();
+      setInterval(() => this.updateVotingRemainingTime(), 1000);
+    }
   }
 
   public showProject(): void {
@@ -50,7 +52,7 @@ export class ProjectCardComponent implements OnInit {
   }
 
   public showVotingDetails(): void {
-    this.router.navigate([Paths.Voting + '/' + this.data]);
+    this.router.navigate([Paths.Voting + '/' + this.data.id]);
   }
 
   public async voteForProjectAsync(): Promise<void> {
@@ -58,7 +60,7 @@ export class ProjectCardComponent implements OnInit {
   }
 
   public showReport(): void {
-    this.router.navigate([Paths.Report + '/' + this.data], {queryParams: {tab: Constants.ReportFormTab}});
+    this.router.navigate([Paths.Report + '/' + this.data.id], {queryParams: {tab: Constants.ReportFormTab}});
   }
 
   private updateVotingRemainingTime(): void {

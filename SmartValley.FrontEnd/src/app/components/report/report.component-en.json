@@ -16,6 +16,18 @@
     "TechnicalExpertAvg": "Technical expert average score",
     "Form": "About",
     "Submit": "Submit",
-    "OutOf": "out of"
+    "OutOf": "out of",
+    "Soon": "Coming soon...",
+    "Voting": "Voting",
+    "RemainingTime": "Remaining time:",
+    "Finished": "Finished",
+    "Accepted": "Accepted",
+    "Rejected": "Rejected",
+    "Days": "Days",
+    "Hours": "Hrs",
+    "Minutes": "Min",
+    "Seconds": "Sec",
+    "SubmitForFree": "Submit for free scoring",
+    "SubmitForTokens": "Submit to scoring for {{scoringCost}} SVT"
   }
 }

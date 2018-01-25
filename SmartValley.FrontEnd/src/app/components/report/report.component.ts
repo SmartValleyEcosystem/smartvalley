@@ -14,6 +14,16 @@ import {Paths} from '../../paths';
 import {Constants} from '../../constants';
 import {QuestionResponse} from '../../api/estimates/question-response';
 import {QuestionWithEstimatesResponse} from '../../api/estimates/question-with-estimates-response';
+import {VotingStatus} from '../../services/voting-status.enum';
+import {ScoringStatus} from '../../services/scoring-status.enum';
+import {isNullOrUndefined} from 'util';
+import * as timespan from 'timespan';
+import {ScoringManagerContractClient} from '../../services/contract-clients/scoring-manager-contract-client';
+import {BalanceService} from '../../services/balance/balance.service';
+import {TranslateService} from '@ngx-translate/core';
+import {DialogService} from '../../services/dialog-service';
+import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
+import {NotificationsService} from 'angular2-notifications';
 
 @Component({
   selector: 'app-report',
@@ -21,6 +31,15 @@ import {QuestionWithEstimatesResponse} from '../../api/estimates/question-with-e
   styleUrls: ['./report.component.css']
 })
 export class ReportComponent implements AfterViewChecked, OnInit {
+  public ScoringStatus = ScoringStatus;
+  public VotingStatus = VotingStatus;
+
+  public votingRemainingDays: number;
+  public votingRemainingHours: number;
+  public votingRemainingMinutes: number;
+  public votingRemainingSeconds: number;
+  public scoringCost: number;
+
   public questions: Array<Question>;
   public details: ProjectDetailsResponse;
   public expertiseAreaAverageScore: number;
@@ -41,11 +60,17 @@ export class ReportComponent implements AfterViewChecked, OnInit {
               private blockiesService: BlockiesService,
               public projectService: ProjectService,
               private activatedRoute: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private translateService: TranslateService,
+              private balanceService: BalanceService,
+              private dialogService: DialogService,
+              private scoringApiClient: ScoringApiClient,
+              private notificationsService: NotificationsService,
+              private scoringManagerContractClient: ScoringManagerContractClient) {
   }
 
   public async ngOnInit() {
-    await this.loadInitialData();
+    await this.loadInitialDataAsync();
     this.activatedRoute.queryParams.subscribe(params => {
       this.selectedReportTab = params[Constants.TabQueryParam];
     });
@@ -76,13 +101,58 @@ export class ReportComponent implements AfterViewChecked, OnInit {
     this.reportTabSet.select('about');
   }
 
-  private async loadInitialData(): Promise<void> {
+  public async submitToScoringAsync(): Promise<void> {
+    const transactionHash = await this.startScoringAsync(this.details.externalId);
+    if (transactionHash == null) {
+      this.notificationsService.error(
+        this.translateService.instant('Common.Error'),
+        this.translateService.instant('Common.TryAgain'));
+      return;
+    }
+
+    const transactionDialog = this.dialogService.showTransactionDialog(
+      this.translateService.instant('Application.Dialog'),
+      transactionHash
+    );
+
+    await this.scoringApiClient.startAsync(this.details.externalId, transactionHash);
+    await this.balanceService.updateBalanceAsync();
+
+    transactionDialog.close();
+  }
+
+  private async startScoringAsync(projectId: string): Promise<string> {
+    try {
+      return await this.scoringManagerContractClient.startAsync(projectId);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  private async loadInitialDataAsync(): Promise<void> {
     this.projectId = +this.route.snapshot.paramMap.get('id');
     this.details = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
     this.projectImageUrl = this.getImageUrl();
-    if (this.details.score) {
+    if (this.details.scoringStatus !== ScoringStatus.Pending) {
       await this.reloadExpertEstimatesAsync();
+    } else if (this.details.votingStatus !== VotingStatus.InProgress) {
+      this.scoringCost = await this.scoringManagerContractClient.getScoringCostAsync();
+    } else {
+      this.updateVotingRemainingTime();
+      setInterval(() => this.updateVotingRemainingTime(), 1000);
     }
+  }
+
+  private updateVotingRemainingTime(): void {
+    if (isNullOrUndefined(this.details.votingEndDate)) {
+      return;
+    }
+
+    const remaining = timespan.fromDates(new Date(), this.details.votingEndDate);
+    this.votingRemainingDays = remaining.days;
+    this.votingRemainingHours = remaining.hours;
+    this.votingRemainingMinutes = remaining.minutes;
+    this.votingRemainingSeconds = remaining.seconds;
   }
 
   private getImageUrl(): string {

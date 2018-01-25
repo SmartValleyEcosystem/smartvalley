@@ -1,4 +1,6 @@
 import {TeamMemberResponse} from '../application/team-member-response';
+import {ScoringStatus} from '../../services/scoring-status.enum';
+import {VotingStatus} from '../../services/voting-status.enum';
 
 export interface ProjectDetailsResponse {
   name: string;
@@ -18,4 +20,7 @@ export interface ProjectDetailsResponse {
   teamMembers: Array<TeamMemberResponse>;
   authorAddress: string;
   score: number;
+  scoringStatus: ScoringStatus;
+  votingStatus: VotingStatus;
+  votingEndDate: Date;
 }
