@@ -97,7 +97,7 @@ export class VotingService {
         'VotingService.VoteTransactionDialog'),
         transactionHash);
 
-      try {Account
+      try {
         await this.web3Service.waitForConfirmationAsync(transactionHash);
         this.notificationsService.success(this.translateService.instant('VotingService.Success'));
       } catch (e) {
