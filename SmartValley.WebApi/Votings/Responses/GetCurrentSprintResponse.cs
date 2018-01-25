@@ -4,8 +4,8 @@ namespace SmartValley.WebApi.Votings.Responses
 {
     public class GetCurrentSprintResponse
     {
-        public bool DoesExist => LastSprint != null;
+        public bool DoesExist => CurrentSprint != null;
 
-        public VotingSprintResponse LastSprint { get; set; }
+        public VotingSprintResponse CurrentSprint { get; set; }
     }
 }

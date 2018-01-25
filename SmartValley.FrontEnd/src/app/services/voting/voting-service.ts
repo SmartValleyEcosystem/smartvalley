@@ -11,6 +11,7 @@ import {DialogService} from '../dialog-service';
 import {TranslateService} from '@ngx-translate/core';
 import {Web3Service} from '../web3-service';
 import {NotificationsService} from 'angular2-notifications';
+import {isNullOrUndefined} from 'util';
 
 @Injectable()
 export class VotingService {
@@ -86,7 +87,7 @@ export class VotingService {
         currentVoteBalance,
         currentSprintEndDate);
 
-      if (amount === undefined || amount === 0) {
+      if (isNullOrUndefined(amount) || amount === 0) {
         return;
       }
 

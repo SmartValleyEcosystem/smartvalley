@@ -45,20 +45,20 @@ export class ProjectCardComponent implements OnInit {
     setInterval(() => this.updateVotingRemainingTime(), 1000);
   }
 
-  public showProject(id: number): void {
-    this.router.navigate([Paths.Scoring + '/' + id], {queryParams: {expertiseArea: this.data.expertiseArea}});
+  public showProject(): void {
+    this.router.navigate([Paths.Scoring + '/' + this.data.id], {queryParams: {expertiseArea: this.data.expertiseArea}});
   }
 
-  public showVotingDetails(id: number): void {
-    this.router.navigate([Paths.Voting + '/' + id]);
+  public showVotingDetails(): void {
+    this.router.navigate([Paths.Voting + '/' + this.data]);
   }
 
-  public async voteForProjectAsync(externalId: string, name: string): Promise<void> {
-    await this.votingService.getCurrentSprintAndSubmitVoteAsync(externalId, name);
+  public async voteForProjectAsync(): Promise<void> {
+    await this.votingService.getCurrentSprintAndSubmitVoteAsync(this.data.externalId, this.data.name);
   }
 
-  public showReport(id: number): void {
-    this.router.navigate([Paths.Report + '/' + id], {queryParams: {tab: Constants.ReportFormTab}});
+  public showReport(): void {
+    this.router.navigate([Paths.Report + '/' + this.data], {queryParams: {tab: Constants.ReportFormTab}});
   }
 
   private updateVotingRemainingTime(): void {

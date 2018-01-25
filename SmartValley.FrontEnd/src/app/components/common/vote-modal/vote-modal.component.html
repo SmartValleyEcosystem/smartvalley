@@ -8,7 +8,7 @@
         <mat-form-field>
           <input matInput formControlName="amount" #required>
         </mat-form-field>
-      <p> {{'VoteModal.FrozenTill' | translate}} {{data.currentSprintEndDate.toDateString()}}</p>
+      <p> {{'VoteModal.FrozenTill' | translate}} {{data.currentSprintEndDate.toLocaleDateString()}}</p>
     </mat-dialog-content>
     <hr>
     <mat-dialog-actions class="d-flex justify-content-center">

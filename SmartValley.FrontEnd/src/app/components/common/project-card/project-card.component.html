@@ -96,19 +96,19 @@
         <div class="col-12">
           <a *ngIf="type === ProjectCardType.Voting && data.isVotedByMe !== true"
              class="col-4 vote-button sv-default-btn btn btn-primary"
-             (click)="voteForProjectAsync(data.externalId, data.name)">
+             (click)="voteForProjectAsync()">
             {{ 'ProjectCard.VotingForProject' | translate }}
           </a>
           <a *ngIf="type === ProjectCardType.Scoring" class="col-3 sv-default-btn btn btn-primary"
-             (click)="showProject(data.id)">
+             (click)="showProject()">
             {{ 'ProjectCard.Estimate' | translate }}
           </a>
           <a *ngIf="type === ProjectCardType.General" class="col-3 sv-default-btn btn btn-primary"
-             (click)="showReport(data.id)">
+             (click)="showReport()">
             {{ 'ProjectCard.ProjectProfile' | translate }}
           </a>
           <a *ngIf="type === ProjectCardType.Voting" class="col-3 sv-default-btn btn btn-primary"
-             (click)="showVotingDetails(data.id)">
+             (click)="showVotingDetails()">
             {{ 'ProjectCard.Info' | translate }}
           </a>
         </div>

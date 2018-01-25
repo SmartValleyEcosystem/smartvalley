@@ -13,7 +13,7 @@ namespace SmartValley.Application.Contracts.Votings.Dto
         [Parameter("uint", "endDate", 2)]
         public long EndDate { get; set; }
 
-        [Parameter("uint", "acceptanceThreshold", 3)]
+        [Parameter("uint", "acceptanceThresholdPercent", 3)]
         public int AcceptanceThreshold { get; set; }
 
         [Parameter("uint", "maximumScore", 4)]

@@ -26,14 +26,14 @@ namespace SmartValley.WebApi.Votings
         [Route("current")]
         public async Task<GetCurrentSprintResponse> GetCurrentSprintAsync()
         {
-            var lastSprint = await _votingService.GetLastSprintDetailsAsync();
-            if (lastSprint == null || _dateTime.UtcNow > lastSprint.EndDate)
+            var currentSprint = await _votingService.GetLastSprintDetailsAsync();
+            if (currentSprint == null || _dateTime.UtcNow > currentSprint.EndDate)
                 return new GetCurrentSprintResponse();
 
-            var investorVotes = await _votingService.GetVotesAsync(lastSprint.Address, User.Identity.Name);
-            var projects = await _projectService.GetByExternalIdsAsync(lastSprint.ProjectsExternalIds);
+            var investorVotes = await _votingService.GetVotesAsync(currentSprint.Address, User.Identity.Name);
+            var projects = await _projectService.GetByExternalIdsAsync(currentSprint.ProjectsExternalIds);
 
-            return new GetCurrentSprintResponse { LastSprint = VotingSprintResponse.Create(lastSprint, projects, investorVotes) };
+            return new GetCurrentSprintResponse { CurrentSprint = VotingSprintResponse.Create(currentSprint, projects, investorVotes) };
         }
 
         [HttpGet]
