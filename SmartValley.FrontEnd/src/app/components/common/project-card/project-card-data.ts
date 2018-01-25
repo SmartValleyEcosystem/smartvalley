@@ -48,6 +48,7 @@ export class ProjectCardData {
       address: response.address,
       author: response.author,
       expertiseArea: expertiseArea,
+      scoringStatus: response.score ? ScoringStatus.Finished : ScoringStatus.InProgress
     };
   }
 
