@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,7 @@ namespace SmartValley.WebApi.Scoring
 
         [HttpPost]
         [Route("start")]
-        public async Task<IActionResult> StartAsync(StartProjectScoringRequest request)
+        public async Task<IActionResult> StartAsync([FromBody] StartProjectScoringRequest request)
         {
             await _scoringService.StartAsync(request.ProjectExternalId, request.TransactionHash);
             return NoContent();

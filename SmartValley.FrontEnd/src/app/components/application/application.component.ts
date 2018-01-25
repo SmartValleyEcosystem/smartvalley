@@ -84,8 +84,8 @@ export class ApplicationComponent implements OnInit {
       return;
     }
 
-    const projectId = await this.submitApplicationToBackendAsync();
-    const transactionHash = await this.startScoringAsync(projectId);
+    const request = this.createSubmitApplicationRequest();
+    const transactionHash = await this.startScoringAsync(request.projectId);
     if (transactionHash == null) {
       this.notifyError();
       this.isProjectCreating = false;
@@ -97,7 +97,8 @@ export class ApplicationComponent implements OnInit {
       transactionHash
     );
 
-    await this.scoringApiClient.startAsync(projectId, transactionHash);
+    await this.applicationApiClient.submitAsync(request);
+    await this.scoringApiClient.startAsync(request.projectId, transactionHash);
     await this.balanceService.updateBalanceAsync();
 
     transactionDialog.close();
@@ -111,12 +112,12 @@ export class ApplicationComponent implements OnInit {
       return;
     }
 
-    if (!await this.confirmFreeScoringAsync()) {
+    if (!await await this.dialogService.showFreeScoringConfirmationDialogAsync()) {
       return;
     }
 
-    const projectId = await this.submitApplicationToBackendAsync();
-    const transactionHash = await this.enqueueProjectForVotingAsync(projectId);
+    const request = await this.createSubmitApplicationRequest();
+    const transactionHash = await this.enqueueProjectForVotingAsync(request.projectId);
     if (transactionHash == null) {
       this.notifyError();
       this.isProjectCreating = false;
@@ -129,6 +130,7 @@ export class ApplicationComponent implements OnInit {
     );
 
     await this.web3Service.waitForConfirmationAsync(transactionHash);
+    await this.applicationApiClient.submitAsync(request);
     await this.balanceService.updateBalanceAsync();
 
     transactionDialog.close();
@@ -160,16 +162,6 @@ export class ApplicationComponent implements OnInit {
   private async confirmSvtWithdrawalAsync(): Promise<boolean> {
     const projectCreationCost = await this.scoringManagerContractClient.getScoringCostAsync();
     return await this.dialogService.showSvtWithdrawalConfirmationDialogAsync(projectCreationCost);
-  }
-
-  private async confirmFreeScoringAsync(): Promise<boolean> {
-    return await this.dialogService.showFreeScoringConfirmationDialogAsync();
-  }
-
-  private async submitApplicationToBackendAsync(): Promise<string> {
-    const request = this.createSubmitApplicationRequest();
-    await this.applicationApiClient.submitAsync(request);
-    return request.projectId;
   }
 
   private createForm() {
