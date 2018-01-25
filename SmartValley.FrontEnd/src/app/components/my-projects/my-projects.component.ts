@@ -19,8 +19,10 @@ export class MyProjectsComponent implements OnInit {
   constructor(private projectApiClient: ProjectApiClient,
               private router: Router,
               private authenticationService: AuthenticationService) {
-    this.authenticationService.accountChanged.subscribe(async () => {
-      await this.loadProjectsAsync();
+    this.authenticationService.accountChanged.subscribe(async user => {
+      if (user) {
+        await this.loadProjectsAsync();
+      }
     });
   }
 

@@ -9,7 +9,7 @@ export class VotingApiClient extends BaseApiClient {
     super();
   }
 
-  async getLastVotingSprintAsync(): Promise<GetCurrentSprintResponse> {
+  async getCurrentVotingSprintAsync(): Promise<GetCurrentSprintResponse> {
     return await this.http.get<GetCurrentSprintResponse>(this.baseApiUrl + '/votings/current')
       .toPromise();
   }

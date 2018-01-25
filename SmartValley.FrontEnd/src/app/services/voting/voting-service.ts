@@ -5,7 +5,6 @@ import {VotingApiClient} from '../../api/voting/voting-api-client';
 import * as moment from 'moment';
 import {AuthenticationService} from '../authentication/authentication-service';
 import {VotingContractClient} from '../contract-clients/voting-contract-client';
-import {Paths} from '../../paths';
 import {BalanceService} from '../balance/balance.service';
 import {DialogService} from '../dialog-service';
 import {TranslateService} from '@ngx-translate/core';
@@ -24,7 +23,6 @@ export class VotingService {
               private web3Service: Web3Service,
               private notificationsService: NotificationsService,
               private balanceService: BalanceService) {
-
   }
 
   public async hasActiveSprintAsync(): Promise<boolean> {
@@ -33,13 +31,13 @@ export class VotingService {
   }
 
   public async getCurrentSprintAsync(): Promise<VotingSprint> {
-    const lastSprintResponse = await this.votingApiClient.getLastVotingSprintAsync();
-    if (!lastSprintResponse.doesExist) {
+    const currentSprintResponse = await this.votingApiClient.getCurrentVotingSprintAsync();
+    if (!currentSprintResponse.doesExist) {
       return null;
     }
 
     const projects = [];
-    for (const projectVoteResponse of lastSprintResponse.lastSprint.projects) {
+    for (const projectVoteResponse of currentSprintResponse.currentSprint.projects) {
       projects.push(<Project>{
         id: projectVoteResponse.id,
         externalId: projectVoteResponse.externalId,
@@ -53,11 +51,11 @@ export class VotingService {
     }
 
     return <VotingSprint> {
-      address: lastSprintResponse.lastSprint.address,
+      address: currentSprintResponse.currentSprint.address,
       projects: projects,
-      voteBalance: lastSprintResponse.lastSprint.voteBalance,
-      startDate: moment(lastSprintResponse.lastSprint.startDate).toDate(),
-      endDate: moment(lastSprintResponse.lastSprint.endDate).toDate()
+      voteBalance: currentSprintResponse.currentSprint.voteBalance,
+      startDate: moment(currentSprintResponse.currentSprint.startDate).toDate(),
+      endDate: moment(currentSprintResponse.currentSprint.endDate).toDate()
     };
   }
 
@@ -78,9 +76,7 @@ export class VotingService {
                                projectName: string,
                                currentVoteBalance: number,
                                currentSprintEndDate: Date): Promise<void> {
-    const isOk = await this.authenticationService.authenticateAsync();
-    if (isOk) {
-
+    if (await this.authenticationService.authenticateAsync()) {
       const amount = await this.dialogService.showVoteDialogAsync(
         projectName,
         this.balanceService.balance.availableBalance,
