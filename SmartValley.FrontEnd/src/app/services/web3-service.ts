@@ -3,6 +3,7 @@ import {isNullOrUndefined} from 'util';
 import * as EthJs from 'ethjs';
 import {NgProgress} from 'ngx-progressbar';
 import {PromiseUtils} from '../utils/promise-utils';
+import BigNumber from 'bignumber.js';
 
 @Injectable()
 export class Web3Service {
@@ -46,6 +47,13 @@ export class Web3Service {
     }
 
     return EthJs.fromWei(weiNumber, unit);
+  }
+
+  public toWei(value: number, unit: string | number): BigNumber {
+    if (typeof unit === 'number') {
+      return new BigNumber(value * Math.pow(10, unit));
+    }
+    return EthJs.toWei(value, unit);
   }
 
   public recoverSignature(message: string, signature: string): Promise<string> {

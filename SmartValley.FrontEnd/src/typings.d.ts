@@ -1,4 +1,6 @@
 /* SystemJS module definition */
+import BigNumber from 'bignumber.js';
+
 declare var module: NodeModule;
 
 interface NodeModule {
@@ -14,7 +16,9 @@ declare class EthJs {
 
   static fromUtf8(str: string): string;
 
-  static fromWei(wei: string, unit: string): number
+  static fromWei(wei: string, unit: string): number;
+
+  static toWei(value: number, unit: string): BigNumber;
 
   static isAddress(address: string): boolean;
 

@@ -7,6 +7,8 @@ import {ProjectDetailsResponse} from '../../api/project/project-details-response
 import {Paths} from '../../paths';
 import {VotingSprint} from '../../services/voting/voting-sprint';
 import {VotingService} from '../../services/voting/voting-service';
+import {VotingContractClient} from '../../services/contract-clients/voting-contract-client';
+import {DialogService} from '../../services/dialog-service';
 import * as timespan from 'timespan';
 
 @Component({
@@ -15,7 +17,7 @@ import * as timespan from 'timespan';
   styleUrls: ['./voting-card.component.css']
 })
 export class VotingCardComponent implements OnInit {
-  public details: ProjectDetailsResponse;
+  public projectDetails: ProjectDetailsResponse;
   public projectImageUrl: string;
 
   private projectId: number;
@@ -26,12 +28,14 @@ export class VotingCardComponent implements OnInit {
   public remainingMinutes: number;
   public remainingSeconds: number;
 
+  public isVotedByMe: boolean;
+
   constructor(private projectApiClient: ProjectApiClient,
               private route: ActivatedRoute,
               private router: Router,
               private blockiesService: BlockiesService,
               public projectService: ProjectService,
-              private sprintService: VotingService) {
+              private votingService: VotingService) {
   }
 
   public async ngOnInit() {
@@ -51,20 +55,29 @@ export class VotingCardComponent implements OnInit {
 
   private async loadInitialData(): Promise<void> {
     this.projectId = +this.route.snapshot.paramMap.get('id');
-    this.details = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
+    this.projectDetails = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
     this.projectImageUrl = this.getImageUrl();
   }
 
   private getImageUrl(): string {
-    const address = this.details.projectAddress ? this.details.projectAddress : this.details.authorAddress;
+    const address = this.projectDetails.projectAddress ? this.projectDetails.projectAddress : this.projectDetails.authorAddress;
     return this.blockiesService.getImageForAddress(address);
   }
 
   private async loadSprintAsync() {
-    this.currentSprint = await this.sprintService.getCurrentSprintAsync();
+    this.currentSprint = await this.votingService.getCurrentSprintAsync();
+    this.isVotedByMe = this.currentSprint.projects.find(p => p.externalId === this.projectDetails.externalId).isVotedByMe;
   }
 
-  public async vote() {
+  public async voteAsync(): Promise<void> {
+    await this.votingService.submitVoteAsync(
+      this.currentSprint.address,
+      this.projectDetails.externalId,
+      this.projectDetails.name,
+      this.currentSprint.voteBalance,
+      this.currentSprint.endDate);
+
+    await this.loadSprintAsync();
   }
 
   public async navigateToVoting() {

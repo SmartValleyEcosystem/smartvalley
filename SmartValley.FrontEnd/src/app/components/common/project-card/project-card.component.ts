@@ -10,6 +10,7 @@ import {VotingStatus} from '../../../services/voting-status.enum';
 import {ScoringStatus} from '../../../services/scoring-status.enum';
 import {isNullOrUndefined} from 'util';
 import * as timespan from 'timespan';
+import {VotingService} from '../../../services/voting/voting-service';
 
 @Component({
   selector: 'app-project-card',
@@ -32,7 +33,8 @@ export class ProjectCardComponent implements OnInit {
 
   constructor(private router: Router,
               private blockiesService: BlockiesService,
-              public projectService: ProjectService) {
+              public projectService: ProjectService,
+              private votingService: VotingService) {
   }
 
   public ngOnInit(): void {
@@ -43,16 +45,20 @@ export class ProjectCardComponent implements OnInit {
     setInterval(() => this.updateVotingRemainingTime(), 1000);
   }
 
-  public showProject(id: number): void {
-    this.router.navigate([Paths.Scoring + '/' + id], {queryParams: {expertiseArea: this.data.expertiseArea}});
+  public showProject(): void {
+    this.router.navigate([Paths.Scoring + '/' + this.data.id], {queryParams: {expertiseArea: this.data.expertiseArea}});
   }
 
-  public voteForProject(id: number): void {
-    this.router.navigate([Paths.Voting + '/' + id]);
+  public showVotingDetails(): void {
+    this.router.navigate([Paths.Voting + '/' + this.data]);
   }
 
-  public showReport(id: number): void {
-    this.router.navigate([Paths.Report + '/' + id], {queryParams: {tab: Constants.ReportFormTab}});
+  public async voteForProjectAsync(): Promise<void> {
+    await this.votingService.getCurrentSprintAndSubmitVoteAsync(this.data.externalId, this.data.name);
+  }
+
+  public showReport(): void {
+    this.router.navigate([Paths.Report + '/' + this.data], {queryParams: {tab: Constants.ReportFormTab}});
   }
 
   private updateVotingRemainingTime(): void {

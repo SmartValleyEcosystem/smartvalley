@@ -46,8 +46,12 @@ namespace SmartValley.WebApi.Votings
         public Task<long> GetVoteAsync(string sprintAddress, string investorAddress, Guid projectId)
             => _votingSprintContractClient.GetVoteAsync(sprintAddress, investorAddress, projectId);
 
-        public Task<InvestorVotes> GetVotesAsync(string sprintAddress, string investorAddress)
-            => _votingSprintContractClient.GetVotesAsync(sprintAddress, investorAddress);
+        public async Task<InvestorVotes> GetVotesAsync(string sprintAddress, string investorAddress)
+        {
+            if (string.IsNullOrEmpty(investorAddress))
+                return null;
+            return await _votingSprintContractClient.GetVotesAsync(sprintAddress, investorAddress);
+        }
 
         public Task<IReadOnlyCollection<Voting>> GetFinishedSprintsAsync()
         {

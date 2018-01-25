@@ -1,0 +1,20 @@
+<div>
+  <h2 mat-mat-title>{{'VoteModal.Title' | translate}} {{data.projectName}}</h2>
+  <hr>
+  <form [formGroup]="form" novalidate>
+    <mat-dialog-content>
+      <p> {{'VoteModal.Balance' | translate}}: {{data.currentBalance}}</p>
+      <p> {{'VoteModal.TokensToVote' | translate}}:
+        <mat-form-field>
+          <input matInput formControlName="amount" #required>
+        </mat-form-field>
+      <p> {{'VoteModal.FrozenTill' | translate}} {{data.currentSprintEndDate.toLocaleDateString()}}</p>
+    </mat-dialog-content>
+    <hr>
+    <mat-dialog-actions class="d-flex justify-content-center">
+      <button mat-raised-button (click)="submit(form)" [disabled]="form.invalid" class="col-2 sv-default-btn btn-space">
+        {{'VoteModal.Vote' | translate}}
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>

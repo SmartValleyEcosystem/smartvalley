@@ -18,20 +18,28 @@ import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-au
 import {MyProjectsComponent} from './components/my-projects/my-projects.component';
 import {VotingComponent} from './components/voting/voting.component';
 import {VotingCardComponent} from './components/voting-card/voting-card.component';
+import {ShouldHaveSvtGuard} from './services/balance/should-have-svt.guard';
+import {SvtRequiredType} from './services/balance/svt-required-type.enum';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
   {
     path: Paths.Root, component: RootComponent, canActivate: [InitializationGuard], children: [
       {path: Paths.Root, pathMatch: 'full', component: LandingComponent},
-      {path: Paths.Voting, pathMatch: 'full', component: VotingComponent, canActivate: [ShouldBeAuthenticatedGuard]},
+      {path: Paths.Voting, pathMatch: 'full', component: VotingComponent},
       {
         path: Paths.MyProjects,
         pathMatch: 'full',
         component: MyProjectsComponent,
         canActivate: [ShouldBeAuthenticatedGuard]
       },
-      {path: Paths.Voting + '/:id', pathMatch: 'full', component: VotingCardComponent, canActivate: [ShouldBeAuthenticatedGuard]},
+      {
+        path: Paths.Voting + '/:id',
+        pathMatch: 'full',
+        component: VotingCardComponent,
+        canActivate: [ShouldHaveSvtGuard],
+        data: {requiredFor: SvtRequiredType.GreaterThanZero}
+      },
       {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent},
       {path: Paths.Scoring, pathMatch: 'full', component: ScoringComponent},
       {path: Paths.Account, pathMatch: 'full', component: AccountComponent, canActivate: [ShouldBeAuthenticatedGuard]},

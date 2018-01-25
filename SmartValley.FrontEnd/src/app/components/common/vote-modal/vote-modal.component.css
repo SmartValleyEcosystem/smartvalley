@@ -1,0 +1,4 @@
+input.ng-dirty.ng-invalid{
+  border: none !important;
+  box-shadow: none !important;
+}

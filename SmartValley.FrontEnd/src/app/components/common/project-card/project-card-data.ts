@@ -7,6 +7,7 @@ import {Project} from '../../../services/project';
 
 export class ProjectCardData {
   id: number;
+  externalId: string;
   name: string;
   country: string;
   area: string;
@@ -23,6 +24,7 @@ export class ProjectCardData {
   public static fromProject(response: Project): ProjectCardData {
     return <ProjectCardData>{
       id: response.id,
+      externalId: response.externalId,
       name: response.name,
       area: response.area,
       country: response.country,

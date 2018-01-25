@@ -2,6 +2,7 @@ import {ExpertiseArea} from '../api/scoring/expertise-area.enum';
 
 export class Project {
   id: number;
+  externalId: string;
   name: string;
   country: string;
   area: string;

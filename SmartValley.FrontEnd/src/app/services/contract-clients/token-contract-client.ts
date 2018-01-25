@@ -31,4 +31,11 @@ export class TokenContractClient implements ContractClient {
     const token = this.web3.getContract(this.abi, this.address);
     return ConverterHelper.extractNumberValue(await token.decimals());
   }
+
+  async getAvailableBalanceAsync(accountAddress: string): Promise<number> {
+    const token = this.web3.getContract(this.abi, this.address);
+    const balance = ConverterHelper.extractNumberValue(await token.getAvailableBalance(accountAddress));
+    const decimals = ConverterHelper.extractNumberValue(await token.decimals());
+    return this.web3.fromWei(balance, decimals);
+  }
 }

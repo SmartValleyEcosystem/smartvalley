@@ -8,6 +8,8 @@ namespace SmartValley.WebApi.Votings.Responses
     {
         public long Id { get; set; }
 
+        public string ExternalId { get; set; }
+
         public string Name { get; set; }
 
         public string Author { get; set; }
@@ -26,11 +28,12 @@ namespace SmartValley.WebApi.Votings.Responses
                    {
                        Id = project.Id,
                        Name = project.Name,
+                       ExternalId = project.ExternalId.ToString(),
                        Country = project.Country,
                        Area = project.ProjectArea,
                        Description = project.Description,
                        Author = project.AuthorAddress,
-                       IsVotedByMe = investorVotes.ProjectsExternalIds.Contains(project.ExternalId)
+                       IsVotedByMe = investorVotes?.ProjectsExternalIds.Contains(project.ExternalId) ?? false
                    };
         }
     }

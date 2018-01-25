@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BaseApiClient} from '../base-api-client';
 import {HttpClient} from '@angular/common/http';
-import {GetLastSprintResponse} from './get-last-sprint-response';
+import {GetCurrentSprintResponse} from './get-current-sprint-response';
 
 @Injectable()
 export class VotingApiClient extends BaseApiClient {
@@ -9,8 +9,8 @@ export class VotingApiClient extends BaseApiClient {
     super();
   }
 
-  async getLastVotingSprintAsync(): Promise<GetLastSprintResponse> {
-    return await this.http.get<GetLastSprintResponse>(this.baseApiUrl + '/votings/last')
+  async getLastVotingSprintAsync(): Promise<GetCurrentSprintResponse> {
+    return await this.http.get<GetCurrentSprintResponse>(this.baseApiUrl + '/votings/current')
       .toPromise();
   }
 }

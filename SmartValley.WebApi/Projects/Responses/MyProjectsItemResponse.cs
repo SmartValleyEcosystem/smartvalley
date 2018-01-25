@@ -60,7 +60,7 @@ namespace SmartValley.WebApi.Projects.Responses
                        Score = null,
                        ScoringStatus = ScoringStatus.Pending,
                        VotingStatus = GetVotingStatus(votingDetails),
-                       VotingEndDate = votingDetails.Voting.EndDate
+                       VotingEndDate = votingDetails?.Voting?.EndDate
                    };
         }
 

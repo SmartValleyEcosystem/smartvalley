@@ -70,9 +70,12 @@ namespace SmartValley.WebApi
             services.AddSingleton<EthereumMessageSigner>();
             services.AddSingleton<EthereumClient>();
             services.AddSingleton<EthereumContractClient>();
-
+            services.AddSingleton<ITokenContractClient, TokenContractClient>(
+                provider => new TokenContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().TokenContract));
             services.AddSingleton<IVotingSprintContractClient, VotingSprintContractClient>(
-                provider => new VotingSprintContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().VotingSprintContract));
+                provider => new VotingSprintContractClient(provider.GetService<EthereumContractClient>(),
+                                                           provider.GetService<NethereumOptions>().VotingSprintContract,
+                                                           provider.GetService<ITokenContractClient>()));
             services.AddSingleton<IVotingManagerContractClient, VotingManagerContractClient>(
                 provider => new VotingManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().VotingManagerContract));
             services.AddSingleton<IScoringContractClient, ScoringContractClient>(

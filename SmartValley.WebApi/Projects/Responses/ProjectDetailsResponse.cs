@@ -9,6 +9,8 @@ namespace SmartValley.WebApi.Projects.Responses
     {
         public string Name { get; set; }
 
+        public string ExternalId { get; set; }
+
         public string AuthorAddress { get; set; }
 
         public string Area { get; set; }
@@ -44,6 +46,7 @@ namespace SmartValley.WebApi.Projects.Responses
             return new ProjectDetailsResponse
                    {
                        Name = details.Project.Name,
+                       ExternalId = details.Project.ExternalId.ToString(),
                        Description = details.Project.Description,
                        AuthorAddress = details.Project.AuthorAddress,
                        Country = details.Project.Country,
