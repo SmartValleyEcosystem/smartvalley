@@ -7,6 +7,7 @@ import {TokenContractClient} from './token-contract-client';
 import {ContractClient} from './contract-client';
 import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 import {Estimate} from '../estimate';
+import {Md5} from 'ts-md5';
 
 @Injectable()
 export class ScoringManagerContractClient implements ContractClient {
@@ -41,7 +42,7 @@ export class ScoringManagerContractClient implements ContractClient {
     return this.web3Service.fromWei(cost, await this.tokenClient.getTokenDecimalsAsync());
   }
 
-  public async submitEstimatesAsync(projectAddress: string,
+  public async submitEstimatesAsync(scoringAddress: string,
                                     expertiseArea: ExpertiseArea,
                                     estimates: Array<Estimate>): Promise<string> {
     const contract = this.web3Service.getContract(this.abi, this.address);
@@ -54,12 +55,12 @@ export class ScoringManagerContractClient implements ContractClient {
     for (const estimate of estimates) {
       questionIds.push(estimate.questionId);
       scores.push(estimate.score);
-      const commentHash = await this.web3Service.getHashAsync(estimate.comments);
+      const commentHash = '0x' + Md5.hashStr(estimate.comments, false).toString();
       commentHashes.push(commentHash);
     }
 
     return await contract.submitEstimates(
-      projectAddress,
+      scoringAddress,
       <number>expertiseArea,
       questionIds,
       scores,

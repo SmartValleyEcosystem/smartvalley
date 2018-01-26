@@ -87,10 +87,6 @@ export class Web3Service {
     }
   }
 
-  public async getHashAsync(value: string): Promise<string> {
-    return await this.eth.web3_sha3(EthJs.fromUtf8(value));
-  }
-
   private getNetworkVersionAsync(): Promise<any> {
     return this.eth.net_version();
   }

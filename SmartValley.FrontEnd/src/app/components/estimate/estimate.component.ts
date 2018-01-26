@@ -120,7 +120,7 @@ export class EstimateComponent implements OnInit {
   private async submitToContractAsync(estimates: Array<Estimate>): Promise<string> {
     try {
       return await this.scoringContractClient.submitEstimatesAsync(
-        this.projectDetails.projectAddress,
+        this.projectDetails.scoringContractAddress,
         this.expertiseArea,
         estimates);
     } catch (e) {
