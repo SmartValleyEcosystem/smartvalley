@@ -1,6 +1,7 @@
 {
   "Header": {
     "Balance": "Balance",
+    "OnFreeze": "on freeze",
     "MyProjects": "My projects",
     "Account": "Account",
     "Logout": "Logout",

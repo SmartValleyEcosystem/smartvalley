@@ -16,6 +16,7 @@ export class HeaderComponent {
 
   public currentBalance: number;
   public currentTokens: number;
+  public frozenTokens: number;
   public showReceiveEtherButton: boolean;
   public showReceiveSVTButton: boolean;
   public isAuthenticated: boolean;
@@ -58,6 +59,7 @@ export class HeaderComponent {
     if (balance != null) {
       this.currentBalance = balance.ethBalance;
       this.currentTokens = balance.svtBalance;
+      this.frozenTokens = balance.svtBalance - balance.availableBalance;
       this.showReceiveEtherButton = !balance.wasEtherReceived;
       this.showReceiveSVTButton = balance.canReceiveSvt;
     } else {

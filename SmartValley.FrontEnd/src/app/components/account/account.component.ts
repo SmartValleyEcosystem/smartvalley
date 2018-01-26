@@ -14,6 +14,8 @@ export class AccountComponent implements OnInit {
 
   public currentBalance: number;
   public currentTokens: number;
+  public transefableTokens: number;
+  public frozenTokens: number;
   public accountAddress: string;
   public accountImgUrl: string;
 
@@ -45,6 +47,8 @@ export class AccountComponent implements OnInit {
     if (balance != null) {
       this.currentBalance = balance.ethBalance;
       this.currentTokens = balance.svtBalance;
+      this.transefableTokens = balance.availableBalance;
+      this.frozenTokens = balance.svtBalance - balance.availableBalance;
     }
   }
 

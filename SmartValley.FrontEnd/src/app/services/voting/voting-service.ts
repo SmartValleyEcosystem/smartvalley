@@ -105,6 +105,7 @@ export class VotingService {
       }
 
       transactionDialog.close();
+      await this.balanceService.updateBalanceAsync();
     }
   }
 }
