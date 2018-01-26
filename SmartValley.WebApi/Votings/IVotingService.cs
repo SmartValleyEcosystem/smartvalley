@@ -10,9 +10,9 @@ namespace SmartValley.WebApi.Votings
     {
         Task<VotingSprintDetails> GetSprintDetailsByAddressAsync(string address);
 
-        Task<long> GetVoteAsync(string sprintAddress, string investorAddress, Guid projectId);
+        Task<double> GetVoteAsync(string sprintAddress, string investorAddress, Guid projectId);
 
-        Task<InvestorVotes> GetVotesAsync(string sprintAddress, string investorAddress);
+        Task<InvestorVotesDetails> GetVotesAsync(string sprintAddress, string investorAddress);
 
         Task<VotingSprintDetails> GetLastSprintDetailsAsync();
 

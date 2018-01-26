@@ -22,6 +22,7 @@ export class ProjectCardComponent implements OnInit {
   public ScoringStatus = ScoringStatus;
   public VotingStatus = VotingStatus;
   public projectImageUrl: string;
+  public projectTokensPercent: number;
 
   public votingRemainingDays: number;
   public votingRemainingHours: number;
@@ -30,6 +31,8 @@ export class ProjectCardComponent implements OnInit {
 
   @Input() public data: ProjectCardData;
   @Input() public type: ProjectCardType;
+  @Input() public totalVotes: number;
+  @Input() public votingAcceptanceThreshold: number;
 
   constructor(private router: Router,
               private blockiesService: BlockiesService,
@@ -45,6 +48,8 @@ export class ProjectCardComponent implements OnInit {
       this.updateVotingRemainingTime();
       setInterval(() => this.updateVotingRemainingTime(), 1000);
     }
+
+    this.projectTokensPercent = Math.round(100 * this.data.projectVote / this.totalVotes) / 100;
   }
 
   public showProject(): void {

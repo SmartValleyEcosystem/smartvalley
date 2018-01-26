@@ -13,9 +13,8 @@
     {{ 'Voting.Sprint' | translate:{sprintNumber: currentSprint.number} }} {{ 'Voting.From' | translate }} {{dateFrom}} {{ 'Voting.To' | translate }} {{dateTo}}
   </div>
   <div class="row mx-auto">
-    <a style="height: 3.6em; margin-top: 2.4em;" class="col-2 sv-default-btn btn btn-primary" (click)="showProject(0)">
-      {{ 'Voting.FinishedVotes' | translate }}
-    </a>
+    <a style="height: 3.6em; margin-top: 2.4em;" class="col-2 sv-default-btn btn btn-primary"
+       (click)="navigateToCompleted()">{{ 'Voting.FinishedVotes' | translate }}</a>
     <div class="offset-1 col-6">
       <span class="timer-title">
         {{ 'Voting.ReminingTime' | translate }}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using IcoLab.Common;
 using SmartValley.Application.Contracts.Options;
@@ -30,29 +31,41 @@ namespace SmartValley.Application.Contracts.Votings
                 throw new InvalidOperationException("Sprint address can not be empty.");
 
             var sprintDto = await _contractClient.CallFunctionDeserializingToObjectAsync<VotingSprintDto>(sprintAddress, _contractAbi, "getDetails");
+            var decimals = await _tokenContractClient.GetDecimalsAsync();
 
             return new VotingSprintDetails(
                 sprintAddress,
                 DateUtils.FromUnixTime(sprintDto.StartDate),
                 DateUtils.FromUnixTime(sprintDto.EndDate),
                 sprintDto.AcceptanceThreshold,
-                sprintDto.MaximumScore.FromWei(await _tokenContractClient.GetDecimalsAsync()),
+                sprintDto.MaximumScore.FromWei(decimals),
                 sprintDto.ProjectExternalIds.Select(e => e.ToGuid()).ToArray(),
                 sprintDto.Number);
+        }
+
+        public async Task<double> GetProjectTotalTokensAsync(string sprintAddress, Guid projectExternalId)
+        {
+            var result = await _contractClient.CallFunctionAsync<BigInteger>(sprintAddress, _contractAbi, "projectTokenAmounts", projectExternalId);
+            return result.FromWei(await _tokenContractClient.GetDecimalsAsync());
         }
 
         public async Task<InvestorVotes> GetVotesAsync(string sprintAddress, string investorAddress)
         {
             var dto = await _contractClient.CallFunctionDeserializingToObjectAsync<InvestorVotesDto>(sprintAddress, _contractAbi, "getInvestorVotes", investorAddress);
+            var decimals = await _tokenContractClient.GetDecimalsAsync();
             return new InvestorVotes
-                   {
-                       ProjectsExternalIds = dto.ProjectExternalIds.Select(p => p.ToGuid()).ToArray(),
-                       TokenAmount = dto.TokenAmount.FromWei(await _tokenContractClient.GetDecimalsAsync())
-                   };
+            {
+                ProjectsExternalIds = dto.ProjectExternalIds.Select(p => p.ToGuid()).ToArray(),
+                TokenAmount = dto.TokenAmount.FromWei(decimals)
+            };
         }
 
-        public Task<long> GetVoteAsync(string sprintAddress, string investorAddress, Guid projectId)
-            => _contractClient.CallFunctionAsync<long>(sprintAddress, _contractAbi, "getVote", investorAddress, projectId.ToBigInteger());
+        public async Task<double> GetVoteAsync(string sprintAddress, string investorAddress, Guid projectId)
+        {
+            var result = await _contractClient.CallFunctionAsync<BigInteger>(sprintAddress, _contractAbi, "getVote", investorAddress, projectId.ToBigInteger());
+            var decimals = await _tokenContractClient.GetDecimalsAsync();
+            return result.FromWei(decimals);
+        }
 
         public Task<bool> IsAcceptedAsync(string sprintAddress, Guid projectId)
             => _contractClient.CallFunctionAsync<bool>(sprintAddress, _contractAbi, "isAccepted", projectId.ToBigInteger());

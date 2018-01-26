@@ -12,4 +12,6 @@ export class Project {
   address: string;
   author: string;
   isVotedByMe: boolean;
+  myVoteTokensAmount: number;
+  totalTokenVote: number;
 }

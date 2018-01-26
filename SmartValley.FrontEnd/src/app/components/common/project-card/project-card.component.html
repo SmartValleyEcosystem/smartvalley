@@ -89,25 +89,33 @@
           </div>
           <div *ngIf="type === ProjectCardType.Voting" class="voting-container">
             <span>{{ 'ProjectCard.MyVoteLabel' | translate }}: {{data.isVotedByMe ? ('Common.Yes' | translate) : ('Common.No' | translate)}}</span>
+            <span *ngIf="data.isVotedByMe">{{data.myVoteTokensAmount}}</span>
           </div>
         </div>
       </div>
       <div class="row text-right" style="position: absolute; width: 100%; bottom: 0;">
         <div class="col-12">
-          <a *ngIf="type === ProjectCardType.Voting && data.isVotedByMe !== true"
+          <a *ngIf="type === ProjectCardType.Voting && !data.isVotedByMe"
              class="col-4 vote-button sv-default-btn btn btn-primary"
              (click)="voteForProjectAsync()">
             {{ 'ProjectCard.VotingForProject' | translate }}
           </a>
+          <div *ngIf="type === ProjectCardType.Voting && data.isVotedByMe"
+             class="col-4 voting-info">
+            <span *ngIf="votingAcceptanceThreshold < projectTokensPercent" style="color:green">Accepted {{projectTokensPercent}}%</span>
+            <span *ngIf="votingAcceptanceThreshold >= projectTokensPercent" style="color:red">Rejected {{projectTokensPercent}}%</span>
+            <span>Voted "Yes" - {{data.projectVote}}</span>
+            <span>Total Votes - {{totalVotes}}</span>
+          </div>
           <a *ngIf="type === ProjectCardType.Scoring" class="col-3 sv-default-btn btn btn-primary"
              (click)="showProject()">
             {{ 'ProjectCard.Estimate' | translate }}
           </a>
-          <a *ngIf="type === ProjectCardType.General" class="col-3 sv-default-btn btn btn-primary"
+          <a *ngIf="type === ProjectCardType.General || (type === ProjectCardType.Voting && data.isVotedByMe)" class="col-3 sv-default-btn btn btn-primary"
              (click)="showReport()">
             {{ 'ProjectCard.ProjectProfile' | translate }}
           </a>
-          <a *ngIf="type === ProjectCardType.Voting" class="col-3 sv-default-btn btn btn-primary"
+          <a *ngIf="type === ProjectCardType.Voting && !data.isVotedByMe" class="col-3 sv-default-btn btn btn-primary"
              (click)="showVotingDetails()">
             {{ 'ProjectCard.Info' | translate }}
           </a>

@@ -5,6 +5,8 @@ export interface VotingSprintResponse {
   startDate: Date;
   endDate: Date;
   voteBalance: number;
+  maximumScore: number;
+  acceptanceThreshold: number;
   number: number;
   projects: Array<ProjectVoteResponse>;
 }

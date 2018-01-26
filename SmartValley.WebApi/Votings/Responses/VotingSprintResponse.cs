@@ -20,23 +20,23 @@ namespace SmartValley.WebApi.Votings.Responses
 
         public int Number { get; set; }
 
+        public int AcceptanceThreshold { get; set; }
+
         public IReadOnlyCollection<ProjectVoteResponse> Projects { get; set; }
 
-        public static VotingSprintResponse Create(
-            VotingSprintDetails votingSprint,
-            IReadOnlyCollection<Project> projects,
-            InvestorVotes investorVotes)
+        public static VotingSprintResponse Create(VotingSprintDetails votingSprint, IReadOnlyCollection<Project> projects, InvestorVotesDetails details)
         {
             return new VotingSprintResponse
-                   {
-                       Address = votingSprint.Address,
-                       StartDate = votingSprint.StartDate,
-                       EndDate = votingSprint.EndDate,
-                       Projects = projects.Select(project => ProjectVoteResponse.Create(project, investorVotes)).ToArray(),
-                       VoteBalance = investorVotes?.TokenAmount ?? 0,
-                       MaximumScore = votingSprint.MaximumScore,
-                       Number = votingSprint.Number
-                   };
+            {
+                Address = votingSprint.Address,
+                StartDate = votingSprint.StartDate,
+                EndDate = votingSprint.EndDate,
+                Number = votingSprint.Number,
+                Projects = projects.Select(project => ProjectVoteResponse.Create(project, details.InvestorProjectVotes.FirstOrDefault(i => i.ProjectExternalId == project.ExternalId))).ToArray(),
+                VoteBalance = details?.TokenAmount ?? 0,
+                MaximumScore = votingSprint.MaximumScore,
+                AcceptanceThreshold = votingSprint.AcceptanceThreshold
+            };
         }
     }
 }

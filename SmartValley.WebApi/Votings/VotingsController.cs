@@ -1,13 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using IcoLab.Common;
 using Microsoft.AspNetCore.Mvc;
-using SmartValley.Domain;
-using SmartValley.Domain.Entities;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.Votings.Responses;
 using SmartValley.WebApi.WebApi;
+using System.Linq;
 
 namespace SmartValley.WebApi.Votings
 {
@@ -58,8 +55,9 @@ namespace SmartValley.WebApi.Votings
             if (sprint == null)
                 return NotFound();
 
-            var investorVotes = await _votingService.GetVotesAsync(sprint.Address, User.Identity.Name);
             var projects = await _projectService.GetByExternalIdsAsync(sprint.ProjectsExternalIds);
+            var investorVotes = await _votingService.GetVotesAsync(sprint.Address, User.Identity.Name);
+
             return Ok(VotingSprintResponse.Create(sprint, projects, investorVotes));
         }
 
