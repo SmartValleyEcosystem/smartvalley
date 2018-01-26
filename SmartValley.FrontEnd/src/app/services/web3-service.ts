@@ -33,8 +33,9 @@ export class Web3Service {
     return (!isNullOrUndefined(window['web3']) && window['web3'].currentProvider.constructor.name === this.metamaskProviderName);
   }
 
-  public getAccountsAsync(): Promise<Array<string>> {
-    return this.eth.accounts();
+  public async getCurrentAccountAsync(): Promise<string> {
+    const accounts = await this.eth.accounts();
+    return accounts[0];
   }
 
   public signAsync(message: string, address: string): Promise<string> {
@@ -60,7 +61,7 @@ export class Web3Service {
     return this.eth.personal_ecRecover(EthJs.fromUtf8(message), signature);
   }
 
-  public async checkRinkebyNetworkAsync(): Promise<boolean> {
+  public async checkNetworkAsync(): Promise<boolean> {
     const version = await this.getNetworkVersionAsync();
     return version === this.rinkebyNetworkId;
   }
