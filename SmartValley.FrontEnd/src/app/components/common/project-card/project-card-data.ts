@@ -20,6 +20,8 @@ export class ProjectCardData {
   votingStatus: VotingStatus;
   votingEndDate: Date;
   isVotedByMe: boolean;
+  myVoteTokensAmount: number;
+  projectVote: number;
 
   public static fromProject(response: Project): ProjectCardData {
     return <ProjectCardData>{
@@ -32,7 +34,9 @@ export class ProjectCardData {
       description: response.description,
       address: response.address,
       author: response.author,
-      isVotedByMe: response.isVotedByMe
+      myVoteTokensAmount: response.myVoteTokensAmount,
+      isVotedByMe: response.isVotedByMe,
+      projectVote: response.totalTokenVote
     };
   }
 

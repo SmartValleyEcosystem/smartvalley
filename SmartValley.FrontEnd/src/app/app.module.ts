@@ -73,6 +73,7 @@ import {VotingManagerContractClient} from './services/contract-clients/voting-ma
 import {FreeScoringConfirmationModalComponent} from './components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component';
 import {VotingContractClient} from './services/contract-clients/voting-contract-client';
 import { VoteModalComponent } from './components/common/vote-modal/vote-modal.component';
+import { CompletedVotingComponent } from './components/completed-voting/completed-voting.component';
 
 @NgModule({
   declarations: [
@@ -104,7 +105,8 @@ import { VoteModalComponent } from './components/common/vote-modal/vote-modal.co
     MyProjectsComponent,
     VotingCardComponent,
     FreeScoringConfirmationModalComponent,
-    VoteModalComponent
+    VoteModalComponent,
+    CompletedVotingComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,

@@ -7,10 +7,10 @@ namespace SmartValley.Domain
     {
         public VotingSprintDetails(
             string address,
-            DateTime startDate, 
-            DateTime endDate, 
-            int acceptanceThreshold, 
-            double maximumScore, 
+            DateTime startDate,
+            DateTime endDate,
+            int acceptanceThreshold,
+            double maximumScore,
             IReadOnlyCollection<Guid> projectsExternalIds,
             int number)
         {
@@ -34,7 +34,7 @@ namespace SmartValley.Domain
         public IReadOnlyCollection<Guid> ProjectsExternalIds { get; }
 
         public string Address { get; }
-        
+
         public int Number { get; }
     }
 }

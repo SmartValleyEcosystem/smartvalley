@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using SmartValley.Domain;
+﻿using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Votings.Responses
@@ -20,9 +19,13 @@ namespace SmartValley.WebApi.Votings.Responses
 
         public string Description { get; set; }
 
+        public double? MyVoteTokenAmount { get; set; }
+
+        public double? TotalTokenAmount { get; set; }
+
         public bool IsVotedByMe { get; set; }
 
-        public static ProjectVoteResponse Create(Project project, InvestorVotes investorVotes)
+        public static ProjectVoteResponse Create(Project project, InvestorProjectVote investorVotes)
         {
             return new ProjectVoteResponse
                    {
@@ -33,7 +36,9 @@ namespace SmartValley.WebApi.Votings.Responses
                        Area = project.ProjectArea,
                        Description = project.Description,
                        Author = project.AuthorAddress,
-                       IsVotedByMe = investorVotes?.ProjectsExternalIds.Contains(project.ExternalId) ?? false
+                       MyVoteTokenAmount = investorVotes?.InvestorTokenVote,
+                       IsVotedByMe = investorVotes != null,
+                       TotalTokenAmount = investorVotes?.TotalTokenVote
                    };
         }
     }

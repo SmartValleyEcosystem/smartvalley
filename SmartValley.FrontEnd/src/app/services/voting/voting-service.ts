@@ -30,6 +30,36 @@ export class VotingService {
     return !!currentSprint;
   }
 
+  public async getSprintByAddressAsync(address: string): Promise<VotingSprint> {
+    const lastSprintResponse = await this.votingApiClient.getVotingSprintByAddressAsync(address);
+
+    const projects = [];
+    for (const projectVoteResponse of lastSprintResponse.projects) {
+      projects.push(<Project>{
+        id: projectVoteResponse.id,
+        externalId: projectVoteResponse.externalId,
+        name: projectVoteResponse.name,
+        area: projectVoteResponse.area,
+        country: projectVoteResponse.country,
+        description: projectVoteResponse.description,
+        address: projectVoteResponse.author,
+        isVotedByMe: this.authenticationService.isAuthenticated() ? projectVoteResponse.isVotedByMe : null,
+        myVoteTokensAmount: projectVoteResponse.myVoteTokenAmount,
+        totalTokenVote: projectVoteResponse.totalTokenAmount
+      });
+    }
+
+    return <VotingSprint> {
+      address: lastSprintResponse.address,
+      projects: projects,
+      voteBalance: lastSprintResponse.voteBalance,
+      startDate: moment(lastSprintResponse.startDate).toDate(),
+      endDate: moment(lastSprintResponse.endDate).toDate(),
+      maximumScore: lastSprintResponse.maximumScore,
+      acceptanceThreshold: lastSprintResponse.acceptanceThreshold
+    };
+  }
+
   public async getCurrentSprintAsync(): Promise<VotingSprint> {
     const currentSprintResponse = await this.votingApiClient.getCurrentVotingSprintAsync();
     if (!currentSprintResponse.doesExist) {

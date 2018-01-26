@@ -112,7 +112,7 @@
             <app-project-information [projectDetails]="details"></app-project-information>
           </div>
           <div style="margin-left: calc(4em - 5px); margin-top: 1em" class="submit-button row">
-            <button *ngIf="details.score"
+            <button *ngIf="details.scoringStatus !== ScoringStatus.Pending"
                     class="trans-btn col-3 btn btn-primary"
                     style="padding-top: 1em; padding-bottom: 1em;"
                     (click)="showEstimates()">
@@ -122,7 +122,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab id="estimates" title="{{ 'Report.ExpertEstimates' | translate }}" *ngIf="details.score">
+      <ngb-tab id="estimates" title="{{ 'Report.ExpertEstimates' | translate }}" *ngIf="details.scoringStatus !== ScoringStatus.Pending">
         <ng-template ngbTabContent>
           <div class="content sw-card sw-content">
             <mat-tab-group [selectedIndex]="selectedExpertiseTabIndex"

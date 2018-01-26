@@ -5,6 +5,8 @@ import {BalanceService} from '../../services/balance/balance.service';
 import {ProjectCardData} from '../common/project-card/project-card-data';
 import {VotingSprint} from '../../services/voting/voting-sprint';
 import * as timespan from 'timespan';
+import {Paths} from '../../paths';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-voting',
@@ -25,7 +27,8 @@ export class VotingComponent implements OnInit {
   public dateFrom: string;
   public dateTo: string;
 
-  constructor(private balanceService: BalanceService,
+  constructor(private router: Router,
+              private balanceService: BalanceService,
               private sprintService: VotingService) {
   }
 
@@ -44,6 +47,10 @@ export class VotingComponent implements OnInit {
     this.dateTo = this.currentSprint.endDate.toLocaleDateString('en-us', options);
 
     setInterval(() => this.updateRemainingTime(), 1000);
+  }
+
+  async navigateToCompleted() {
+    await this.router.navigate([Paths.CompletedVoting]);
   }
 
   private updateRemainingTime(): void {

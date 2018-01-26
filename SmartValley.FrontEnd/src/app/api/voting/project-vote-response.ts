@@ -7,4 +7,6 @@ export interface ProjectVoteResponse {
   area: string;
   description: string;
   isVotedByMe: boolean;
+  myVoteTokenAmount: number;
+  totalTokenAmount: number;
 }

@@ -7,6 +7,7 @@ export interface ProjectDetailsResponse {
   externalId: string;
   area: string;
   projectAddress: string;
+  scoringContractAddress: string;
   description: string;
   status: string;
   whitePaperLink: string;

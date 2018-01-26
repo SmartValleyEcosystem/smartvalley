@@ -26,7 +26,6 @@ export class LandingComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.initializeProjectsCollection();
-    this.canVote = await this.sprintService.hasActiveSprintAsync();
   }
 
   async navigateToVoting() {
@@ -49,6 +48,7 @@ export class LandingComponent implements OnInit {
 
   private async initializeProjectsCollection() {
     const response = await this.projectApiClient.getScoredProjectsAsync();
+    this.canVote = await this.sprintService.hasActiveSprintAsync();
     this.scoredProjects = response.items.map(p => ProjectCardData.fromProjectResponse(p));
   }
 }
