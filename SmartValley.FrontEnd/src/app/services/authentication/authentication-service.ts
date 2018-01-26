@@ -24,17 +24,12 @@ export class AuthenticationService {
               private router: Router,
               private deviceService: Ng2DeviceService,
               private dialogService: DialogService) {
+  }
+
+  public async initializeAsync(): Promise<void> {
     if (this.web3Service.isMetamaskInstalled && this.getCurrentUser() != null) {
       this.startBackgroundChecker();
     }
-  }
-
-  private getSignatureByAccount(account: string): string {
-    return localStorage.getItem(account);
-  }
-
-  private saveSignatureForAccount(account: string, signature: string) {
-    localStorage.setItem(account, signature);
   }
 
   public isAuthenticated() {
@@ -51,24 +46,20 @@ export class AuthenticationService {
       await this.router.navigate([Paths.MetaMaskHowTo]);
       return false;
     }
-    const accounts = await this.web3Service.getAccountsAsync();
-    const currentAccount = accounts[0];
 
+    const currentAccount = await this.web3Service.getCurrentAccountAsync();
     if (currentAccount == null) {
       this.dialogService.showUnlockAccountAlert();
       return false;
     }
 
-    const isRinkeby = await this.web3Service.checkRinkebyNetworkAsync();
-
-    if (!isRinkeby) {
+    if (!await this.web3Service.checkNetworkAsync()) {
       this.dialogService.showRinkebyAlert();
       return false;
     }
 
     let signature = this.getSignatureByAccount(currentAccount);
-    const shouldSign = await this.shouldSignAccount(currentAccount, signature);
-    if (shouldSign) {
+    if (await this.shouldSignAccountAsync(currentAccount, signature)) {
       try {
         signature = await this.web3Service.signAsync(AuthenticationService.MESSAGE_TO_SIGN, currentAccount);
       } catch (e) {
@@ -79,7 +70,19 @@ export class AuthenticationService {
     return true;
   }
 
-  private async shouldSignAccount(currentAccount: string, savedSignature: string): Promise<boolean> {
+  public getCurrentUser(): User {
+    return JSON.parse(localStorage.getItem(this.userKey));
+  }
+
+  private getSignatureByAccount(account: string): string {
+    return localStorage.getItem(account);
+  }
+
+  private saveSignatureForAccount(account: string, signature: string) {
+    localStorage.setItem(account, signature);
+  }
+
+  private async shouldSignAccountAsync(currentAccount: string, savedSignature: string): Promise<boolean> {
     let user = this.getCurrentUser();
     if (user == null || user.account !== currentAccount) {
       user = {account: currentAccount, signature: savedSignature};
@@ -109,10 +112,6 @@ export class AuthenticationService {
     }
   }
 
-  public getCurrentUser(): User {
-    return JSON.parse(localStorage.getItem(this.userKey));
-  }
-
   private saveCurrentUser(user: User) {
     localStorage.setItem(this.userKey, JSON.stringify(user));
     this.accountChanged.emit(user);
@@ -139,8 +138,7 @@ export class AuthenticationService {
   }
 
   private async checkCurrentAuthStateAsync(): Promise<void> {
-    const accounts = await this.web3Service.getAccountsAsync();
-    const currentAccount = accounts[0];
+    const currentAccount = await this.web3Service.getCurrentAccountAsync();
     const user = this.getCurrentUser();
     if (isNullOrUndefined(user)) {
       this.stopUserSession();

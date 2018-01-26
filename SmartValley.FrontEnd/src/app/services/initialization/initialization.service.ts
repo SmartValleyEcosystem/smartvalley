@@ -7,6 +7,7 @@ import {BalanceService} from '../balance/balance.service';
 import {ScoringManagerContractClient} from '../contract-clients/scoring-manager-contract-client';
 import {VotingManagerContractClient} from '../contract-clients/voting-manager-contract-client';
 import {VotingContractClient} from '../contract-clients/voting-contract-client';
+import {AuthenticationService} from '../authentication/authentication-service';
 
 @Injectable()
 export class InitializationService {
@@ -19,7 +20,8 @@ export class InitializationService {
               private scoringManagerContractClient: ScoringManagerContractClient,
               private votingManagerContractClient: VotingManagerContractClient,
               private votingContractClient: VotingContractClient,
-              private balanceService: BalanceService) {
+              private balanceService: BalanceService,
+              private authenticationService: AuthenticationService) {
   }
 
   public async initializeAppAsync(): Promise<void> {
@@ -33,6 +35,7 @@ export class InitializationService {
 
   private async initializeAppInternalAsync(): Promise<void> {
     await Promise.all([
+      this.authenticationService.initializeAsync(),
       this.questionService.initializeAsync(),
       this.minterContractClient.initializeAsync(),
       this.tokenContractClient.initializeAsync(),
