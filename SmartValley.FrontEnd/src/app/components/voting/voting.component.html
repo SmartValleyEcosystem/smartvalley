@@ -40,7 +40,7 @@
       </div>
     </div>
     <div *ngIf="currentSprint && currentSprint.voteBalance !== 0" class="col-3 vote-balance">
-      <span>{{ 'Voting.VoteBalance' | translate }}: {{currentSprint.voteBalance}} SVT</span>
+      <span>{{ 'Voting.VoteBalance' | translate }}: {{currentSprint.voteBalance.toFixed(3)}} SVT</span>
     </div>
   </div>
   <div class="row mx-auto" *ngIf="currentSprint">
