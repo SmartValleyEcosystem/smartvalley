@@ -119,6 +119,7 @@ export class ReportComponent implements AfterViewChecked, OnInit {
     await this.balanceService.updateBalanceAsync();
 
     transactionDialog.close();
+    this.router.navigate([Paths.MyProjects]);
   }
 
   private async startScoringAsync(projectId: string): Promise<string> {

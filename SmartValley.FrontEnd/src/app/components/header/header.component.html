@@ -6,7 +6,8 @@
           <a [routerLink]="['/']"><img src="/assets/img/logo.png" alt="Smart valley"></a>
         </div>
         <div class="col-1" style="margin-top: 24px;">
-          <a target="_blank" href="https://www.youtube.com/watch?v=mNIHWk1KsZw&list=PLT-hvZ_jkN7AegglvE0Ovo4He1jyHh2fx" class="btn btn-link">MVP Instruction</a>
+          <a target="_blank" href="https://www.youtube.com/watch?v=mNIHWk1KsZw&list=PLT-hvZ_jkN7AegglvE0Ovo4He1jyHh2fx"
+             class="btn btn-link">MVP Instruction</a>
         </div>
         <div class="col-2 text-left" style="margin-top: 24px; padding-left: 2em;">
           <a target="_blank" href="https://smartvalley.io/files/WP_en.pdf" class="btn btn-link">White paper</a>
@@ -14,7 +15,8 @@
 
         <div class="col-3" style="margin-top: 24px;">
           <div *ngIf="isAuthenticated">
-            <span style="color: #aaaaaa;">{{ 'Header.Balance' | translate }}: {{currentBalance}} ETH / {{currentTokens}} SVT ({{frozenTokens}} {{'Header.OnFreeze' | translate}})</span>
+            <span style="color: #aaaaaa;">{{ 'Header.Balance' | translate }}: {{currentBalance}} ETH / {{currentTokens}} SVT  <span
+              *ngIf="frozenTokens !==0">({{frozenTokens}} {{'Header.OnFreeze' | translate}})</span></span>
           </div>
         </div>
         <div class="col-4 sm-header__nav text-right">

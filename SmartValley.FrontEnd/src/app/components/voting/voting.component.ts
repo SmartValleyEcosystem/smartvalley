@@ -63,6 +63,10 @@ export class VotingComponent implements OnInit {
 
   private async loadSprintAsync() {
     this.currentSprint = await this.sprintService.getCurrentSprintAsync();
+    if (this.currentSprint == null) {
+      this.router.navigate([Paths.Root]);
+      return;
+    }
     this.projects = this.currentSprint.projects.map(p => ProjectCardData.fromProject(p));
   }
 }
