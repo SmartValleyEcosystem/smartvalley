@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {Project} from '../project';
 import {VotingSprint} from './voting-sprint';
 import {VotingApiClient} from '../../api/voting/voting-api-client';
@@ -11,9 +11,13 @@ import {TranslateService} from '@ngx-translate/core';
 import {Web3Service} from '../web3-service';
 import {NotificationsService} from 'angular2-notifications';
 import {isNullOrUndefined} from 'util';
+import {ProjectVoteResponse} from '../../api/voting/project-vote-response';
+import {VotingSprintResponse} from '../../api/voting/voting-sprint-response';
 
 @Injectable()
 export class VotingService {
+
+  public voteSubmitted: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private votingApiClient: VotingApiClient,
               private authenticationService: AuthenticationService,
@@ -26,80 +30,28 @@ export class VotingService {
   }
 
   public async hasActiveSprintAsync(): Promise<boolean> {
-    const currentSprint = await this.getCurrentSprintAsync();
-    return !!currentSprint;
+    const currentSprintResponse = await this.votingApiClient.getCurrentVotingSprintAsync();
+    return currentSprintResponse.doesExist;
   }
 
   public async getSprintByAddressAsync(address: string): Promise<VotingSprint> {
-    const votingSprintResponse = (await this.votingApiClient.getVotingSprintByAddressAsync(address));
-
-    if (!votingSprintResponse.doesExist) {
+    const response = await this.votingApiClient.getVotingSprintByAddressAsync(address);
+    if (!response.doesExist) {
       return null;
     }
-
-    const sprint = votingSprintResponse.sprint;
-
-    const projects = [];
-    for (const projectVoteResponse of sprint.projects) {
-      projects.push(<Project>{
-        id: projectVoteResponse.id,
-        externalId: projectVoteResponse.externalId,
-        name: projectVoteResponse.name,
-        area: projectVoteResponse.area,
-        country: projectVoteResponse.country,
-        description: projectVoteResponse.description,
-        address: projectVoteResponse.author,
-        isVotedByMe: this.authenticationService.isAuthenticated() ? projectVoteResponse.isVotedByMe : null,
-        myVoteTokensAmount: projectVoteResponse.myVoteTokenAmount,
-        totalTokenVote: projectVoteResponse.totalTokenAmount
-      });
-    }
-
-    return <VotingSprint> {
-      address: sprint.address,
-      projects: projects,
-      voteBalance: sprint.voteBalance,
-      startDate: moment(sprint.startDate).toDate(),
-      endDate: moment(sprint.endDate).toDate(),
-      maximumScore: sprint.maximumScore,
-      acceptanceThreshold: sprint.acceptanceThreshold
-    };
+    return this.createVotingSprint(response.sprint);
   }
 
   public async getCurrentSprintAsync(): Promise<VotingSprint> {
-    const currentSprintResponse = await this.votingApiClient.getCurrentVotingSprintAsync();
-    if (!currentSprintResponse.doesExist) {
+    const response = await this.votingApiClient.getCurrentVotingSprintAsync();
+    if (!response.doesExist) {
       return null;
     }
-
-    const projects = [];
-    for (const projectVoteResponse of currentSprintResponse.sprint.projects) {
-      projects.push(<Project>{
-        id: projectVoteResponse.id,
-        externalId: projectVoteResponse.externalId,
-        name: projectVoteResponse.name,
-        area: projectVoteResponse.area,
-        country: projectVoteResponse.country,
-        description: projectVoteResponse.description,
-        address: projectVoteResponse.author,
-        isVotedByMe: this.authenticationService.isAuthenticated() ? projectVoteResponse.isVotedByMe : null,
-        votingStatus: projectVoteResponse.votingStatus
-      });
-    }
-
-    return <VotingSprint> {
-      address: currentSprintResponse.sprint.address,
-      projects: projects,
-      voteBalance: currentSprintResponse.sprint.voteBalance,
-      startDate: moment(currentSprintResponse.sprint.startDate).toDate(),
-      endDate: moment(currentSprintResponse.sprint.endDate).toDate(),
-      number: currentSprintResponse.sprint.number
-    };
+    return this.createVotingSprint(response.sprint);
   }
 
-  public async getCurrentSprintAndSubmitVoteAsync(projectExternalId: string, projectName: string): Promise<void> {
+  public async submitVoteToCurrentSprintAsync(projectExternalId: string, projectName: string): Promise<void> {
     const currentSprint = await this.getCurrentSprintAsync();
-
     return await this.submitVoteAsync(
       currentSprint.address,
       projectExternalId,
@@ -114,35 +66,65 @@ export class VotingService {
                                projectName: string,
                                currentVoteBalance: number,
                                currentSprintEndDate: Date): Promise<void> {
-    if (await this.authenticationService.authenticateAsync()) {
-      const amount = await this.dialogService.showVoteDialogAsync(
-        projectName,
-        this.balanceService.balance.availableBalance,
-        currentVoteBalance,
-        currentSprintEndDate);
-
-      if (isNullOrUndefined(amount) || amount === 0) {
-        return;
-      }
-
-      const transactionHash = await this.votingContractClient.submitVoteAsync(
-        votingSprintAddress,
-        projectExternalId,
-        amount);
-
-      const transactionDialog = this.dialogService.showTransactionDialog(this.translateService.instant(
-        'VotingService.VoteTransactionDialog'),
-        transactionHash);
-
-      try {
-        await this.web3Service.waitForConfirmationAsync(transactionHash);
-        this.notificationsService.success(this.translateService.instant('VotingService.Success'));
-      } catch (e) {
-        this.notificationsService.error(this.translateService.instant('VotingService.Error'));
-      }
-
-      transactionDialog.close();
-      await this.balanceService.updateBalanceAsync();
+    if (!await this.authenticationService.authenticateAsync()) {
+      return;
     }
+
+    const amount = await this.dialogService.showVoteDialogAsync(
+      projectName,
+      this.balanceService.balance.availableBalance,
+      currentVoteBalance,
+      currentSprintEndDate);
+
+    if (isNullOrUndefined(amount) || amount === 0) {
+      return;
+    }
+
+    const transactionHash = await this.votingContractClient.submitVoteAsync(
+      votingSprintAddress,
+      projectExternalId,
+      amount);
+    const transactionDialog = this.dialogService.showTransactionDialog(this.translateService.instant(
+      'VotingService.VoteTransactionDialog'),
+      transactionHash);
+    try {
+      await this.web3Service.waitForConfirmationAsync(transactionHash);
+      this.notificationsService.success(this.translateService.instant('VotingService.Success'));
+      this.voteSubmitted.emit(votingSprintAddress);
+    } catch (e) {
+      this.notificationsService.error(this.translateService.instant('VotingService.Error'));
+    }
+    transactionDialog.close();
+    await this.balanceService.updateBalanceAsync();
+  }
+
+  private createVotingSprint(votingSprintResponse: VotingSprintResponse): VotingSprint {
+    const isAuthenticated = this.authenticationService.isAuthenticated();
+    return <VotingSprint> {
+      address: votingSprintResponse.address,
+      projects: votingSprintResponse.projects.map(p => this.createProject(p, isAuthenticated)),
+      voteBalance: votingSprintResponse.voteBalance,
+      startDate: moment(votingSprintResponse.startDate).toDate(),
+      endDate: moment(votingSprintResponse.endDate).toDate(),
+      maximumScore: votingSprintResponse.maximumScore,
+      acceptanceThreshold: votingSprintResponse.acceptanceThreshold,
+      number: votingSprintResponse.number
+    };
+  }
+
+  private createProject(projectVoteResponse: ProjectVoteResponse, isAuthenticated: boolean): Project {
+    return <Project>{
+      id: projectVoteResponse.id,
+      externalId: projectVoteResponse.externalId,
+      name: projectVoteResponse.name,
+      area: projectVoteResponse.area,
+      country: projectVoteResponse.country,
+      description: projectVoteResponse.description,
+      address: projectVoteResponse.author,
+      isVotedByMe: isAuthenticated ? projectVoteResponse.isVotedByMe : null,
+      myVoteTokensAmount: projectVoteResponse.myVoteTokenAmount,
+      totalTokenVote: projectVoteResponse.totalTokenAmount,
+      votingStatus: projectVoteResponse.votingStatus
+    };
   }
 }

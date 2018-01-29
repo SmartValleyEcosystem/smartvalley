@@ -7,7 +7,7 @@ import {VotingSprint} from '../../services/voting/voting-sprint';
 import * as timespan from 'timespan';
 import {Paths} from '../../paths';
 import {Router} from '@angular/router';
-import * as moment from 'moment';
+import {AuthenticationService} from '../../services/authentication/authentication-service';
 
 @Component({
   selector: 'app-voting',
@@ -18,30 +18,25 @@ export class VotingComponent implements OnInit {
 
   public ProjectCardType = ProjectCardType;
   public projects: Array<ProjectCardData> = [];
-  public currentSprint: VotingSprint;
+  public sprint: VotingSprint;
 
   public remainingDays: number;
   public remainingHours: number;
   public remainingMinutes: number;
   public remainingSeconds: number;
 
-  public dateFrom: string;
-  public dateTo: string;
-
   constructor(private router: Router,
               private balanceService: BalanceService,
-              private sprintService: VotingService) {
+              private votingService: VotingService,
+              private authenticationService: AuthenticationService) {
   }
 
   async ngOnInit(): Promise<void> {
-    await this.loadSprintAsync();
-
-    this.updateRemainingTime();
-
-    this.dateFrom = moment(this.currentSprint.startDate).format('MMMM D, Y');
-    this.dateTo = moment(this.currentSprint.endDate).format('MMMM D, Y');
-
+    await this.loadSprintDataAsync();
     setInterval(() => this.updateRemainingTime(), 1000);
+
+    this.votingService.voteSubmitted.subscribe(() => this.loadSprintDataAsync());
+    this.authenticationService.accountChanged.subscribe(() => this.loadSprintDataAsync());
   }
 
   async navigateToCompleted() {
@@ -49,15 +44,17 @@ export class VotingComponent implements OnInit {
   }
 
   private updateRemainingTime(): void {
-    const remaining = timespan.fromDates(new Date(), this.currentSprint.endDate);
+    const remaining = timespan.fromDates(new Date(), this.sprint.endDate);
     this.remainingDays = remaining.days;
     this.remainingHours = remaining.hours;
     this.remainingMinutes = remaining.minutes;
     this.remainingSeconds = remaining.seconds;
   }
 
-  private async loadSprintAsync() {
-    this.currentSprint = await this.sprintService.getCurrentSprintAsync();
-    this.projects = this.currentSprint.projects.map(p => ProjectCardData.fromProject(p));
+  private async loadSprintDataAsync(): Promise<void> {
+    this.sprint = await this.votingService.getCurrentSprintAsync();
+    this.projects = this.sprint.projects.map(p => ProjectCardData.fromProject(p));
+
+    this.updateRemainingTime();
   }
 }

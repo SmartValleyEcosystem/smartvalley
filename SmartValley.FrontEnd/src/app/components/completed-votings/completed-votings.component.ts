@@ -3,7 +3,6 @@ import {VotingApiClient} from '../../api/voting/voting-api-client';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {Voting} from '../../services/voting';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-completed-votings',
@@ -27,8 +26,8 @@ export class CompletedVotingsComponent implements OnInit {
     for (const votingResponse of response.items) {
       this.votings.push(<Voting>{
         address: votingResponse.address,
-        fromDate: moment(votingResponse.startDate).format('MMMM D, Y'),
-        endDate: moment(votingResponse.endDate).format('MMMM D, Y')
+        fromDate: votingResponse.startDate,
+        endDate: votingResponse.endDate
       });
     }
   }

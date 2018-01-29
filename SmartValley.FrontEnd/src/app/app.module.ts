@@ -75,6 +75,7 @@ import {VotingContractClient} from './services/contract-clients/voting-contract-
 import { VoteModalComponent } from './components/common/vote-modal/vote-modal.component';
 import { CompletedVotingComponent } from './components/completed-voting/completed-voting.component';
 import { CompletedVotingsComponent } from './components/completed-votings/completed-votings.component';
+import { FormatDatePipe } from './utils/format-date.pipe';
 
 @NgModule({
   declarations: [
@@ -108,7 +109,8 @@ import { CompletedVotingsComponent } from './components/completed-votings/comple
     FreeScoringConfirmationModalComponent,
     VoteModalComponent,
     CompletedVotingComponent,
-    CompletedVotingsComponent
+    CompletedVotingsComponent,
+    FormatDatePipe
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
