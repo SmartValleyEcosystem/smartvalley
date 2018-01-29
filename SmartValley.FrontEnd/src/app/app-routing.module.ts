@@ -38,9 +38,7 @@ const appRoutes: Routes = [
       {
         path: Paths.Voting + '/:id',
         pathMatch: 'full',
-        component: VotingCardComponent,
-        canActivate: [ShouldHaveSvtGuard],
-        data: {requiredFor: SvtRequiredType.GreaterThanZero}
+        component: VotingCardComponent
       },
       {
         path: Paths.CompletedVoting + '/:address',
