@@ -1,3 +1,5 @@
+import {VotingStatus} from '../../services/voting-status.enum';
+
 export interface ProjectVoteResponse {
   externalId: string;
   author: string;
@@ -9,4 +11,5 @@ export interface ProjectVoteResponse {
   isVotedByMe: boolean;
   myVoteTokenAmount: number;
   totalTokenAmount: number;
+  votingStatus: VotingStatus;
 }

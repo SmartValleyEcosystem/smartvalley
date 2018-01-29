@@ -1,6 +1,6 @@
 import {VotingSprintResponse} from './voting-sprint-response';
 
-export interface GetCurrentSprintResponse {
+export interface GetSprintResponse {
   doesExist: boolean;
-  currentSprint: VotingSprintResponse;
+  sprint: VotingSprintResponse;
 }

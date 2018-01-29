@@ -25,7 +25,9 @@ namespace SmartValley.WebApi.Votings.Responses
 
         public bool IsVotedByMe { get; set; }
 
-        public static ProjectVoteResponse Create(Project project, InvestorProjectVote investorVotes)
+        public VotingStatus VotingStatus { get; set; }
+
+        public static ProjectVoteResponse Create(Project project, VotingStatus votingStatus, InvestorProjectVote investorVotes)
         {
             return new ProjectVoteResponse
                    {
@@ -38,7 +40,8 @@ namespace SmartValley.WebApi.Votings.Responses
                        Author = project.AuthorAddress,
                        MyVoteTokenAmount = investorVotes?.InvestorTokenVote,
                        IsVotedByMe = investorVotes != null,
-                       TotalTokenAmount = investorVotes?.TotalTokenVote
+                       TotalTokenAmount = investorVotes?.TotalTokenVote,
+                       VotingStatus = votingStatus
                    };
         }
     }

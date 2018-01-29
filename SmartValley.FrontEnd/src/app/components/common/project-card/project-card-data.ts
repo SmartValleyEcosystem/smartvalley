@@ -36,7 +36,8 @@ export class ProjectCardData {
       author: response.author,
       myVoteTokensAmount: response.myVoteTokensAmount,
       isVotedByMe: response.isVotedByMe,
-      projectVote: response.totalTokenVote
+      projectVote: response.totalTokenVote,
+      votingStatus: response.votingStatus
     };
   }
 

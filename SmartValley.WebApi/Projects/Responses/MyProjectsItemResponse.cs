@@ -46,7 +46,7 @@ namespace SmartValley.WebApi.Projects.Responses
                    };
         }
 
-        public static MyProjectsItemResponse Create(Project project, VotingProjectDetails votingDetails)
+        public static MyProjectsItemResponse Create(Project project, VotingProjectDetails votingDetails, DateTime now)
         {
             return new MyProjectsItemResponse
                    {
@@ -59,17 +59,9 @@ namespace SmartValley.WebApi.Projects.Responses
                        Address = null,
                        Score = null,
                        ScoringStatus = ScoringStatus.Pending,
-                       VotingStatus = GetVotingStatus(votingDetails),
+                       VotingStatus = votingDetails?.GetVotingStatus(now) ?? VotingStatus.InProgress,
                        VotingEndDate = votingDetails?.Voting?.EndDate
                    };
-        }
-
-        private static VotingStatus GetVotingStatus(VotingProjectDetails votingDetails)
-        {
-            if (votingDetails == null)
-                return VotingStatus.InProgress;
-
-            return votingDetails.IsAccepted ? VotingStatus.Accepted : VotingStatus.Rejected;
         }
     }
 }

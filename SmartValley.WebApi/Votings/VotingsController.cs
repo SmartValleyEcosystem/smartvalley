@@ -5,6 +5,7 @@ using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.Votings.Responses;
 using SmartValley.WebApi.WebApi;
 using System.Linq;
+using SmartValley.Domain;
 
 namespace SmartValley.WebApi.Votings
 {
@@ -24,16 +25,12 @@ namespace SmartValley.WebApi.Votings
 
         [HttpGet]
         [Route("current")]
-        public async Task<GetCurrentSprintResponse> GetCurrentSprintAsync()
+        public async Task<GetSprintResponse> GetCurrentSprintAsync()
         {
-            var currentSprint = await _votingService.GetLastSprintDetailsAsync();
-            if (currentSprint == null || _dateTime.UtcNow > currentSprint.EndDate)
-                return new GetCurrentSprintResponse();
-
-            var investorVotes = await _votingService.GetVotesAsync(currentSprint.Address, User.Identity.Name);
-            var projects = await _projectService.GetByExternalIdsAsync(currentSprint.ProjectsExternalIds);
-
-            return new GetCurrentSprintResponse { CurrentSprint = VotingSprintResponse.Create(currentSprint, projects, investorVotes) };
+            var sprint = await _votingService.GetLastSprintDetailsAsync();
+            if (sprint == null || _dateTime.UtcNow > sprint.EndDate)
+                return new GetSprintResponse();
+            return await GetSprintResponseAsync(sprint);
         }
 
         [HttpGet]
@@ -49,16 +46,12 @@ namespace SmartValley.WebApi.Votings
 
         [HttpGet]
         [Route("{address}")]
-        public async Task<IActionResult> GetSprintDetailsByAddressAsync(string address)
+        public async Task<GetSprintResponse> GetSprintDetailsByAddressAsync(string address)
         {
             var sprint = await _votingService.GetSprintDetailsByAddressAsync(address);
             if (sprint == null)
-                return NotFound();
-
-            var projects = await _projectService.GetByExternalIdsAsync(sprint.ProjectsExternalIds);
-            var investorVotes = await _votingService.GetVotesAsync(sprint.Address, User.Identity.Name);
-
-            return Ok(VotingSprintResponse.Create(sprint, projects, investorVotes));
+                return new GetSprintResponse();
+            return await GetSprintResponseAsync(sprint);
         }
 
         [HttpPost]
@@ -67,6 +60,14 @@ namespace SmartValley.WebApi.Votings
         {
             await _votingService.StartSprintAsync();
             return NoContent();
+        }
+
+        private async Task<GetSprintResponse> GetSprintResponseAsync(VotingSprintDetails sprint)
+        {
+            var investorVotes = await _votingService.GetVotesAsync(sprint.Address, User.Identity.Name);
+            var projects = await _projectService.GetByExternalIdsAsync(sprint.ProjectsExternalIds);
+
+            return new GetSprintResponse {Sprint = VotingSprintResponse.Create(sprint, projects, investorVotes, _dateTime.UtcNow)};
         }
     }
 }

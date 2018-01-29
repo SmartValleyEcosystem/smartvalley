@@ -45,7 +45,7 @@ namespace SmartValley.Application.Contracts.Votings
 
         public async Task<double> GetProjectTotalTokensAsync(string sprintAddress, Guid projectExternalId)
         {
-            var result = await _contractClient.CallFunctionAsync<BigInteger>(sprintAddress, _contractAbi, "projectTokenAmounts", projectExternalId);
+            var result = await _contractClient.CallFunctionAsync<BigInteger>(sprintAddress, _contractAbi, "projectTokenAmounts", projectExternalId.ToBigInteger());
             return result.FromWei(await _tokenContractClient.GetDecimalsAsync());
         }
 

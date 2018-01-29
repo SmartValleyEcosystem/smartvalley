@@ -1,4 +1,5 @@
-﻿using SmartValley.Domain.Entities;
+﻿using System;
+using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain
 {
@@ -16,5 +17,13 @@ namespace SmartValley.Domain
         public Voting Voting { get; }
 
         public bool IsAccepted { get; }
+
+        public VotingStatus GetVotingStatus(DateTime now)
+        {
+            if (Voting.EndDate > now)
+                return VotingStatus.InProgress;
+
+            return IsAccepted ? VotingStatus.Accepted : VotingStatus.Rejected;
+        }
     }
 }

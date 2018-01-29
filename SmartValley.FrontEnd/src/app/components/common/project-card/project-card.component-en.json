@@ -16,6 +16,8 @@
     "Days": "Days",
     "Hours": "Hrs",
     "Minutes": "Min",
-    "Seconds": "Sec"
+    "Seconds": "Sec",
+    "VotedYes": "Voted \"Yes\"",
+    "TotalVotes": "Total votes"
   }
 }

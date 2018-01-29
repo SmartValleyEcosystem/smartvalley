@@ -100,12 +100,12 @@
              (click)="voteForProjectAsync()">
             {{ 'ProjectCard.VotingForProject' | translate }}
           </a>
-          <div *ngIf="type === ProjectCardType.Voting && data.isVotedByMe"
+          <div *ngIf="type === ProjectCardType.Voting && data.votingStatus !== VotingStatus.InProgress"
              class="col-4 voting-info">
             <span *ngIf="votingAcceptanceThreshold < projectTokensPercent" style="color:green">Accepted {{projectTokensPercent}}%</span>
             <span *ngIf="votingAcceptanceThreshold >= projectTokensPercent" style="color:red">Rejected {{projectTokensPercent}}%</span>
-            <span>Voted "Yes" - {{data.projectVote}}</span>
-            <span>Total Votes - {{totalVotes}}</span>
+            <span>{{ 'ProjectCard.VotedYes' | translate }} - {{data.projectVote}}</span>
+            <span>{{ 'ProjectCard.TotalVotes' | translate }} - {{totalVotes}}</span>
           </div>
           <a *ngIf="type === ProjectCardType.Scoring" class="col-3 sv-default-btn btn btn-primary"
              (click)="showProject()">

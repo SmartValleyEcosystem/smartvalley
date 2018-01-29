@@ -48,7 +48,7 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public IReadOnlyCollection<TeamMemberResponse> TeamMembers { get; set; }
 
-        public static ProjectDetailsResponse Create(ProjectDetails details, VotingProjectDetails votingDetails)
+        public static ProjectDetailsResponse Create(ProjectDetails details, VotingProjectDetails votingDetails, DateTime now)
         {
             var scoringStatus = details.Scoring == null
                                     ? ScoringStatus.Pending
@@ -74,17 +74,9 @@ namespace SmartValley.WebApi.Projects.Responses
                        WhitePaperLink = details.Application.WhitePaperLink,
                        TeamMembers = details.TeamMembers.Select(TeamMemberResponse.Create).ToList(),
                        ScoringStatus = scoringStatus,
-                       VotingStatus = details.Scoring == null ? GetVotingStatus(votingDetails) : VotingStatus.None,
+                       VotingStatus = details.Scoring == null ? votingDetails.GetVotingStatus(now) : VotingStatus.None,
                        VotingEndDate = votingDetails?.Voting?.EndDate
                    };
-        }
-
-        private static VotingStatus GetVotingStatus(VotingProjectDetails votingDetails)
-        {
-            if (votingDetails == null)
-                return VotingStatus.InProgress;
-
-            return votingDetails.IsAccepted ? VotingStatus.Accepted : VotingStatus.Rejected;
         }
     }
 }

@@ -1,4 +1,5 @@
 import {ExpertiseArea} from '../api/scoring/expertise-area.enum';
+import {VotingStatus} from './voting-status.enum';
 
 export class Project {
   id: number;
@@ -14,4 +15,5 @@ export class Project {
   isVotedByMe: boolean;
   myVoteTokensAmount: number;
   totalTokenVote: number;
+  votingStatus: VotingStatus;
 }

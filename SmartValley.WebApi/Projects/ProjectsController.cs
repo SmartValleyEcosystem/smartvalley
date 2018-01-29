@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IcoLab.Common;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Domain;
 using SmartValley.WebApi.Estimates;
@@ -16,11 +17,13 @@ namespace SmartValley.WebApi.Projects
     {
         private readonly IProjectService _projectService;
         private readonly IVotingService _votingService;
+        private readonly IDateTime _dateTime;
 
-        public ProjectsController(IProjectService projectService, IVotingService votingService)
+        public ProjectsController(IProjectService projectService, IVotingService votingService, IDateTime dateTime)
         {
             _projectService = projectService;
             _votingService = votingService;
+            _dateTime = dateTime;
         }
 
         [HttpGet]
@@ -29,7 +32,7 @@ namespace SmartValley.WebApi.Projects
             var details = await _projectService.GetDetailsAsync(request.ProjectId);
             var votingDetails = await _votingService.GetVotingProjectDetailsAsync(request.ProjectId);
 
-            return ProjectDetailsResponse.Create(details, votingDetails);
+            return ProjectDetailsResponse.Create(details, votingDetails, _dateTime.UtcNow);
         }
 
         [HttpGet]
@@ -79,7 +82,7 @@ namespace SmartValley.WebApi.Projects
                 return MyProjectsItemResponse.Create(project, scoring);
 
             var votingDetails = await _votingService.GetVotingProjectDetailsAsync(project.Id);
-            return MyProjectsItemResponse.Create(project, votingDetails);
+            return MyProjectsItemResponse.Create(project, votingDetails, _dateTime.UtcNow);
         }
     }
 }

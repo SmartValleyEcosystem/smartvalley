@@ -31,10 +31,16 @@ export class VotingService {
   }
 
   public async getSprintByAddressAsync(address: string): Promise<VotingSprint> {
-    const lastSprintResponse = await this.votingApiClient.getVotingSprintByAddressAsync(address);
+    const votingSprintResponse = (await this.votingApiClient.getVotingSprintByAddressAsync(address));
+
+    if (!votingSprintResponse.doesExist) {
+      return null;
+    }
+
+    const sprint = votingSprintResponse.sprint;
 
     const projects = [];
-    for (const projectVoteResponse of lastSprintResponse.projects) {
+    for (const projectVoteResponse of sprint.projects) {
       projects.push(<Project>{
         id: projectVoteResponse.id,
         externalId: projectVoteResponse.externalId,
@@ -50,13 +56,13 @@ export class VotingService {
     }
 
     return <VotingSprint> {
-      address: lastSprintResponse.address,
+      address: sprint.address,
       projects: projects,
-      voteBalance: lastSprintResponse.voteBalance,
-      startDate: moment(lastSprintResponse.startDate).toDate(),
-      endDate: moment(lastSprintResponse.endDate).toDate(),
-      maximumScore: lastSprintResponse.maximumScore,
-      acceptanceThreshold: lastSprintResponse.acceptanceThreshold
+      voteBalance: sprint.voteBalance,
+      startDate: moment(sprint.startDate).toDate(),
+      endDate: moment(sprint.endDate).toDate(),
+      maximumScore: sprint.maximumScore,
+      acceptanceThreshold: sprint.acceptanceThreshold
     };
   }
 
@@ -67,7 +73,7 @@ export class VotingService {
     }
 
     const projects = [];
-    for (const projectVoteResponse of currentSprintResponse.currentSprint.projects) {
+    for (const projectVoteResponse of currentSprintResponse.sprint.projects) {
       projects.push(<Project>{
         id: projectVoteResponse.id,
         externalId: projectVoteResponse.externalId,
@@ -76,17 +82,18 @@ export class VotingService {
         country: projectVoteResponse.country,
         description: projectVoteResponse.description,
         address: projectVoteResponse.author,
-        isVotedByMe: this.authenticationService.isAuthenticated() ? projectVoteResponse.isVotedByMe : null
+        isVotedByMe: this.authenticationService.isAuthenticated() ? projectVoteResponse.isVotedByMe : null,
+        votingStatus: projectVoteResponse.votingStatus
       });
     }
 
     return <VotingSprint> {
-      address: currentSprintResponse.currentSprint.address,
+      address: currentSprintResponse.sprint.address,
       projects: projects,
-      voteBalance: currentSprintResponse.currentSprint.voteBalance,
-      startDate: moment(currentSprintResponse.currentSprint.startDate).toDate(),
-      endDate: moment(currentSprintResponse.currentSprint.endDate).toDate(),
-      number: currentSprintResponse.currentSprint.number
+      voteBalance: currentSprintResponse.sprint.voteBalance,
+      startDate: moment(currentSprintResponse.sprint.startDate).toDate(),
+      endDate: moment(currentSprintResponse.sprint.endDate).toDate(),
+      number: currentSprintResponse.sprint.number
     };
   }
 
