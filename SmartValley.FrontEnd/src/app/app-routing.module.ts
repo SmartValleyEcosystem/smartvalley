@@ -21,6 +21,7 @@ import {VotingCardComponent} from './components/voting-card/voting-card.componen
 import {ShouldHaveSvtGuard} from './services/balance/should-have-svt.guard';
 import {SvtRequiredType} from './services/balance/svt-required-type.enum';
 import {CompletedVotingComponent} from './components/completed-voting/completed-voting.component';
+import {CompletedVotingsComponent} from './components/completed-votings/completed-votings.component';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -44,8 +45,12 @@ const appRoutes: Routes = [
       {
         path: Paths.CompletedVoting + '/:address',
         pathMatch: 'full',
-        component: CompletedVotingComponent,
-        canActivate: [ShouldBeAuthenticatedGuard]
+        component: CompletedVotingComponent
+      },
+      {
+        path: Paths.CompletedVotings,
+        pathMatch: 'full',
+        component: CompletedVotingsComponent
       },
       {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent},
       {path: Paths.Scoring, pathMatch: 'full', component: ScoringComponent},

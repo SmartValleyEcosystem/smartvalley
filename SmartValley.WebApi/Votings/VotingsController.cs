@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using IcoLab.Common;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.WebApi.Projects;
@@ -34,10 +35,10 @@ namespace SmartValley.WebApi.Votings
         }
 
         [HttpGet]
-        [Route("finished")]
-        public async Task<CollectionResponse<SprintResponse>> GetFinishedSprintsAsync()
+        [Route("completed")]
+        public async Task<CollectionResponse<SprintResponse>> GetCompletedSprintsAsync()
         {
-            var sprints = await _votingService.GetFinishedSprintsAsync();
+            var sprints = await _votingService.GetCompletedSprintsAsync();
             return new CollectionResponse<SprintResponse>
                    {
                        Items = sprints.Select(SprintResponse.Create).ToArray()

@@ -18,7 +18,7 @@ namespace SmartValley.WebApi.Votings
 
         Task StartSprintAsync();
 
-        Task<IReadOnlyCollection<Voting>> GetFinishedSprintsAsync();
+        Task<IReadOnlyCollection<Voting>> GetCompletedSprintsAsync();
 
         Task<VotingProjectDetails> GetVotingProjectDetailsAsync(long projectId);
     }

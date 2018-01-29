@@ -7,6 +7,7 @@ import {VotingSprint} from '../../services/voting/voting-sprint';
 import * as timespan from 'timespan';
 import {Paths} from '../../paths';
 import {Router} from '@angular/router';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-voting',
@@ -37,20 +38,14 @@ export class VotingComponent implements OnInit {
 
     this.updateRemainingTime();
 
-    const options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    };
-
-    this.dateFrom = this.currentSprint.startDate.toLocaleDateString('en-us', options);
-    this.dateTo = this.currentSprint.endDate.toLocaleDateString('en-us', options);
+    this.dateFrom = moment(this.currentSprint.startDate).format('MMMM D, Y');
+    this.dateTo = moment(this.currentSprint.endDate).format('MMMM D, Y');
 
     setInterval(() => this.updateRemainingTime(), 1000);
   }
 
   async navigateToCompleted() {
-    await this.router.navigate([Paths.CompletedVoting]);
+    await this.router.navigate([Paths.CompletedVotings]);
   }
 
   private updateRemainingTime(): void {

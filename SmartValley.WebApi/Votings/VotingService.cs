@@ -64,7 +64,7 @@ namespace SmartValley.WebApi.Votings
             };
         }
 
-        public Task<IReadOnlyCollection<Voting>> GetFinishedSprintsAsync()
+        public Task<IReadOnlyCollection<Voting>> GetCompletedSprintsAsync()
         {
             return _votingRepository.GetAllTillDateAsync(_dateTime.UtcNow);
         }
