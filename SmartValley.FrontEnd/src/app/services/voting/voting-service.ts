@@ -70,9 +70,8 @@ export class VotingService {
       return;
     }
 
-    const amount = await this.dialogService.showVoteDialogAsync(
+    const amount = await this.getVotingTokenAmountAsync(
       projectName,
-      this.balanceService.balance.availableBalance,
       currentVoteBalance,
       currentSprintEndDate);
 
@@ -96,6 +95,20 @@ export class VotingService {
     }
     transactionDialog.close();
     await this.balanceService.updateBalanceAsync();
+  }
+
+  private async getVotingTokenAmountAsync(projectName: string,
+                                          currentVoteBalance: number,
+                                          currentSprintEndDate: Date): Promise<number> {
+    if (!isNullOrUndefined(currentVoteBalance) && currentVoteBalance > 0) {
+      return currentVoteBalance;
+    }
+
+    return await this.dialogService.showVoteDialogAsync(
+      projectName,
+      this.balanceService.balance.availableBalance,
+      currentVoteBalance,
+      currentSprintEndDate);
   }
 
   private createVotingSprint(votingSprintResponse: VotingSprintResponse): VotingSprint {
