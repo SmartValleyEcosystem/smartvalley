@@ -137,7 +137,7 @@ export class ReportComponent implements AfterViewChecked, OnInit {
     if (this.details.scoringStatus !== ScoringStatus.Pending) {
       await this.reloadExpertEstimatesAsync();
     } else if (this.details.votingStatus !== VotingStatus.InProgress) {
-      this.scoringCost = await this.scoringManagerContractClient.getScoringCostAsync();
+      this.scoringCost = +(await this.scoringManagerContractClient.getScoringCostAsync()).toFixed(3);
     } else {
       this.updateVotingRemainingTime();
       setInterval(() => this.updateVotingRemainingTime(), 1000);

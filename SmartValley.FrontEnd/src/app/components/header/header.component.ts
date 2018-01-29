@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
-import {Constants} from '../../constants';
 import {BalanceService} from '../../services/balance/balance.service';
 import {Balance} from '../../services/balance/balance';
 import {BlockiesService} from '../../services/blockies-service';
@@ -27,11 +26,8 @@ export class HeaderComponent {
               private balanceService: BalanceService,
               private blockiesService: BlockiesService,
               private authenticationService: AuthenticationService) {
-
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
-    this.authenticationService.accountChanged.subscribe((user) => {
-      this.updateAccount(user);
-    });
+    this.authenticationService.accountChanged.subscribe((user) => this.updateAccount(user));
     const currentUser = this.authenticationService.getCurrentUser();
     this.updateAccount(currentUser);
     this.updateBalance(this.balanceService.balance);
@@ -59,7 +55,7 @@ export class HeaderComponent {
     if (balance != null) {
       this.currentBalance = balance.ethBalance;
       this.currentTokens = balance.svtBalance;
-      this.frozenTokens = balance.svtBalance - balance.availableBalance;
+      this.frozenTokens = +(balance.svtBalance - balance.availableBalance).toFixed(3);
       this.showReceiveEtherButton = !balance.wasEtherReceived;
       this.showReceiveSVTButton = balance.canReceiveSvt;
     } else {
