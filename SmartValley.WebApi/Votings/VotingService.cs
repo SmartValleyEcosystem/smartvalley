@@ -60,7 +60,8 @@ namespace SmartValley.WebApi.Votings
             }
             return new InvestorVotesDetails
             {
-                InvestorProjectVotes = investorVotes
+                InvestorProjectVotes = investorVotes,
+                TokenAmount = votes.TokenAmount
             };
         }
 
