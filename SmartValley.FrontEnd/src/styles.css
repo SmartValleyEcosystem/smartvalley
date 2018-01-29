@@ -289,7 +289,7 @@ input.ng-dirty.ng-invalid, textarea.ng-dirty.ng-invalid {
 .mat-dialog-container {
   background: white;
   color: rgb(32, 32, 32);
-  width: 600px;
+  max-width: 600px;
 }
 
 div.white-card .mat-tab-label-container{

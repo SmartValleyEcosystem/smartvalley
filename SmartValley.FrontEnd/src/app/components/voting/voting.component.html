@@ -9,8 +9,10 @@
       <h2 class="">{{ 'Voting.ProjectsForVoting' | translate }}</h2>
     </div>
   </div>
-  <div class="row mx-auto sprint-title" *ngIf="currentSprint">
-    {{ 'Voting.Sprint' | translate:{sprintNumber: currentSprint.number} }} {{ 'Voting.From' | translate }} {{dateFrom}} {{ 'Voting.To' | translate }} {{dateTo}}
+  <div class="row mx-auto sprint-title" *ngIf="sprint">
+    {{ 'Voting.Sprint' | translate:{sprintNumber: sprint.number} }}
+    {{ 'Voting.From' | translate }} {{this.sprint.startDate | formatDate}}
+    {{ 'Voting.To' | translate }} {{this.sprint.endDate | formatDate}}
   </div>
   <div class="row mx-auto">
     <a style="height: 3.6em; margin-top: 2.4em;" class="col-2 sv-default-btn btn btn-primary"
@@ -38,11 +40,11 @@
         </div>
       </div>
     </div>
-    <div *ngIf="currentSprint && currentSprint.voteBalance !== 0" class="col-3 vote-balance">
-      <span>{{ 'Voting.VoteBalance' | translate }}: {{currentSprint.voteBalance.toFixed(3)}} SVT</span>
+    <div *ngIf="sprint && sprint.voteBalance !== 0" class="col-3 vote-balance">
+      <span>{{ 'Voting.VoteBalance' | translate }}: {{sprint.voteBalance.toFixed(3)}} SVT</span>
     </div>
   </div>
-  <div class="row mx-auto" *ngIf="currentSprint">
+  <div class="row mx-auto" *ngIf="sprint">
     <div class="sw-list-projects">
       <div class="card_no_shdw col-12 sw-card" style="margin: 0 0 20px 0" *ngFor="let project of projects;">
         <app-project-card [data]="project" [type]="ProjectCardType.Voting"></app-project-card>

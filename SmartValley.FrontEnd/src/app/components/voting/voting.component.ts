@@ -7,6 +7,7 @@ import {VotingSprint} from '../../services/voting/voting-sprint';
 import * as timespan from 'timespan';
 import {Paths} from '../../paths';
 import {Router} from '@angular/router';
+import {AuthenticationService} from '../../services/authentication/authentication-service';
 
 @Component({
   selector: 'app-voting',
@@ -17,56 +18,46 @@ export class VotingComponent implements OnInit {
 
   public ProjectCardType = ProjectCardType;
   public projects: Array<ProjectCardData> = [];
-  public currentSprint: VotingSprint;
+  public sprint: VotingSprint;
 
   public remainingDays: number;
   public remainingHours: number;
   public remainingMinutes: number;
   public remainingSeconds: number;
 
-  public dateFrom: string;
-  public dateTo: string;
-
   constructor(private router: Router,
               private balanceService: BalanceService,
-              private sprintService: VotingService) {
+              private votingService: VotingService,
+              private authenticationService: AuthenticationService) {
   }
 
   async ngOnInit(): Promise<void> {
-    await this.loadSprintAsync();
-
-    this.updateRemainingTime();
-
-    const options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    };
-
-    this.dateFrom = this.currentSprint.startDate.toLocaleDateString('en-us', options);
-    this.dateTo = this.currentSprint.endDate.toLocaleDateString('en-us', options);
-
+    await this.loadSprintDataAsync();
     setInterval(() => this.updateRemainingTime(), 1000);
+
+    this.votingService.voteSubmitted.subscribe(() => this.loadSprintDataAsync());
+    this.authenticationService.accountChanged.subscribe(() => this.loadSprintDataAsync());
   }
 
   async navigateToCompleted() {
-    await this.router.navigate([Paths.CompletedVoting]);
+    await this.router.navigate([Paths.CompletedVotings]);
   }
 
   private updateRemainingTime(): void {
-    const remaining = timespan.fromDates(new Date(), this.currentSprint.endDate);
+    const remaining = timespan.fromDates(new Date(), this.sprint.endDate);
     this.remainingDays = remaining.days;
     this.remainingHours = remaining.hours;
     this.remainingMinutes = remaining.minutes;
     this.remainingSeconds = remaining.seconds;
   }
 
-  private async loadSprintAsync() {
-    this.currentSprint = await this.sprintService.getCurrentSprintAsync();
-    if (this.currentSprint == null) {
+  private async loadSprintDataAsync() {
+    this.sprint = await this.votingService.getCurrentSprintAsync();
+    if (this.sprint == null) {
       this.router.navigate([Paths.Root]);
       return;
     }
-    this.projects = this.currentSprint.projects.map(p => ProjectCardData.fromProject(p));
+    this.projects = this.sprint.projects.map(p => ProjectCardData.fromProject(p));
+    this.updateRemainingTime();
   }
 }

@@ -61,7 +61,7 @@ export class ProjectCardComponent implements OnInit {
   }
 
   public async voteForProjectAsync(): Promise<void> {
-    await this.votingService.getCurrentSprintAndSubmitVoteAsync(this.data.externalId, this.data.name);
+    await this.votingService.submitVoteToCurrentSprintAsync(this.data.externalId, this.data.name);
   }
 
   public showReport(): void {
