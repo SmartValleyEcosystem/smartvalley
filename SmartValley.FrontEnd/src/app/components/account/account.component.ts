@@ -14,7 +14,7 @@ export class AccountComponent implements OnInit {
 
   public currentBalance: number;
   public currentTokens: number;
-  public transefableTokens: number;
+  public transferableTokens: number;
   public frozenTokens: number;
   public accountAddress: string;
   public accountImgUrl: string;
@@ -25,9 +25,7 @@ export class AccountComponent implements OnInit {
               private authenticationService: AuthenticationService) {
 
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalances(balance));
-    this.authenticationService.accountChanged.subscribe((user) => {
-      this.updateAccount(user);
-    });
+    this.authenticationService.accountChanged.subscribe((user) => this.updateAccount(user));
   }
 
   private updateAccount(user: User): void {
@@ -47,9 +45,8 @@ export class AccountComponent implements OnInit {
     if (balance != null) {
       this.currentBalance = balance.ethBalance;
       this.currentTokens = balance.svtBalance;
-      this.transefableTokens = balance.availableBalance;
-      this.frozenTokens = balance.svtBalance - balance.availableBalance;
+      this.transferableTokens = balance.availableBalance;
+      this.frozenTokens = +(balance.svtBalance - balance.availableBalance).toFixed(3);
     }
   }
-
 }
