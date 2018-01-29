@@ -90,7 +90,7 @@ export class VotingService {
     try {
       await this.web3Service.waitForConfirmationAsync(transactionHash);
       this.notificationsService.success(this.translateService.instant('VotingService.Success'));
-      this.voteSubmitted.emit(votingSprintAddress);
+      this.voteSubmitted.emit();
     } catch (e) {
       this.notificationsService.error(this.translateService.instant('VotingService.Error'));
     }
