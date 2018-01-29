@@ -9,6 +9,7 @@ export class TokenContractClient implements ContractClient {
 
   public abi: string;
   public address: string;
+  public decimals: number;
 
   constructor(private web3: Web3Service,
               private contractClient: ContractApiClient) {
@@ -18,6 +19,7 @@ export class TokenContractClient implements ContractClient {
     const tokenContract = await this.contractClient.getTokenContractAsync();
     this.abi = tokenContract.abi;
     this.address = tokenContract.address;
+    this.decimals = await this.getTokenDecimalsAsync();
   }
 
   async getBalanceAsync(accountAddress: string): Promise<number> {
@@ -27,7 +29,7 @@ export class TokenContractClient implements ContractClient {
     return this.web3.fromWei(balance, decimals);
   }
 
-  async getTokenDecimalsAsync(): Promise<number> {
+  private async getTokenDecimalsAsync(): Promise<number> {
     const token = this.web3.getContract(this.abi, this.address);
     return ConverterHelper.extractNumberValue(await token.decimals());
   }
