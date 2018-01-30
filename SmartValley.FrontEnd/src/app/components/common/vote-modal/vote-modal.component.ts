@@ -22,6 +22,7 @@ export class VoteModalComponent implements OnInit {
   ngOnInit() {
     this.form = this.formBuilder.group({
       amount: [this.data.currentVoteBalance, [
+        Validators.required,
         Validators.max(this.data.currentVoteBalance > 0 ? this.data.currentVoteBalance : this.data.currentBalance),
         Validators.pattern('^\\s*(?=.*[1-9])\\d*(?:\\.\\d{1,' + this.tokenService.decimals + '})?\\s*$')]
       ],

@@ -89,7 +89,7 @@
           </div>
           <div *ngIf="type === ProjectCardType.Voting" class="voting-container">
             <span>{{ 'ProjectCard.MyVoteLabel' | translate }}: {{data.isVotedByMe ? ('Common.Yes' | translate) : ('Common.No' | translate)}}</span>
-            <span *ngIf="data.isVotedByMe">{{data.myVoteTokensAmount}}</span>
+            <span *ngIf="data.isVotedByMe && data.votingStatus != VotingStatus.InProgress">{{data.myVoteTokensAmount}}</span>
           </div>
         </div>
       </div>
@@ -111,11 +111,11 @@
              (click)="showProject()">
             {{ 'ProjectCard.Estimate' | translate }}
           </a>
-          <a *ngIf="type === ProjectCardType.General || (type === ProjectCardType.Voting && data.isVotedByMe)" class="col-3 sv-default-btn btn btn-primary"
+          <a *ngIf="type === ProjectCardType.General" class="col-3 sv-default-btn btn btn-primary"
              (click)="showReport()">
             {{ 'ProjectCard.ProjectProfile' | translate }}
           </a>
-          <a *ngIf="type === ProjectCardType.Voting && !data.isVotedByMe" class="col-3 sv-default-btn btn btn-primary"
+          <a *ngIf="type === ProjectCardType.Voting" class="col-3 sv-default-btn btn btn-primary"
              (click)="showVotingDetails()">
             {{ 'ProjectCard.Info' | translate }}
           </a>
