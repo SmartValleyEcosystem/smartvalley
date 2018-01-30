@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using IcoLab.Common;
 using IcoLab.Common.Web.WebApi;
 using IcoLab.Web.Common.Extensions;
 using Microsoft.AspNetCore.Builder;

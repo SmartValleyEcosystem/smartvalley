@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using IcoLab.Common;
 using SmartValley.Application;
 using SmartValley.Application.Contracts.Votings;
 using SmartValley.Application.Exceptions;

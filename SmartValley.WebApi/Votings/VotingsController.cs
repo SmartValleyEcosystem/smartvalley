@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using IcoLab.Common;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.Votings.Responses;
