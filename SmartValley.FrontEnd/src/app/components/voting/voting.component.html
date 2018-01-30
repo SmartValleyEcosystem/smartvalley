@@ -15,9 +15,11 @@
     {{ 'Voting.To' | translate }} {{this.sprint.endDate | formatDate}}
   </div>
   <div class="row mx-auto">
-    <a *ngIf="hasCompletedSprints" style="height: 3.6em; margin-top: 2.4em;" class="col-2 sv-default-btn btn btn-primary"
-       (click)="navigateToCompleted()">{{ 'Voting.FinishedVotes' | translate }}
-    </a>
+    <div class="col-2" style="padding-left: 0">
+      <a *ngIf="hasCompletedSprints" style="margin-top: 2.4em;" class="col-12 sv-default-btn btn btn-primary"
+         (click)="navigateToCompleted()">{{ 'Voting.FinishedVotes' | translate }}
+      </a>
+    </div>
     <div class="offset-1 col-6">
       <span class="timer-title">
         {{ 'Voting.ReminingTime' | translate }}
