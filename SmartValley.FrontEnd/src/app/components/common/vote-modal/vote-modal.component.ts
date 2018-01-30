@@ -1,7 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {VoteModalData} from './vote-modal-data';
-import {TokenContractClient} from '../../../services/contract-clients/token-contract-client';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
@@ -15,8 +14,7 @@ export class VoteModalComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               @Inject(MAT_DIALOG_DATA) public data: VoteModalData,
-              private dialogRef: MatDialogRef<VoteModalComponent>,
-              private tokenService: TokenContractClient) {
+              private dialogRef: MatDialogRef<VoteModalComponent>) {
   }
 
   async ngOnInit() {
@@ -24,7 +22,7 @@ export class VoteModalComponent implements OnInit {
       amount: [this.data.currentVoteBalance, [
         Validators.required,
         Validators.max(this.data.currentVoteBalance > 0 ? this.data.currentVoteBalance : this.data.currentBalance),
-        Validators.pattern('^\\s*(?=.*[1-9])\\d*(?:\\.\\d{1,' + await this.tokenService.getDecimalsAsync() + '})?\\s*$')]
+        Validators.pattern('^\\s*(?=.*[1-9])\\d*(?:\\.\\d{1,18})?\\s*$')]
       ],
     });
   }
@@ -32,7 +30,4 @@ export class VoteModalComponent implements OnInit {
   submit(form) {
     this.dialogRef.close(form.value.amount);
   }
-
 }
-
-
