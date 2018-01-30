@@ -19,6 +19,7 @@ export class VotingComponent implements OnInit {
   public ProjectCardType = ProjectCardType;
   public projects: Array<ProjectCardData> = [];
   public sprint: VotingSprint;
+  public hasCompletedSprints: boolean;
 
   public remainingDays: number;
   public remainingHours: number;
@@ -57,6 +58,7 @@ export class VotingComponent implements OnInit {
       this.router.navigate([Paths.Root]);
       return;
     }
+    this.hasCompletedSprints = await this.votingService.hasCompletedSprintsAsync();
     this.projects = this.sprint.projects.map(p => ProjectCardData.fromProject(p));
     this.updateRemainingTime();
   }
