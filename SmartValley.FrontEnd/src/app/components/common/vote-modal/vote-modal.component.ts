@@ -10,7 +10,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 })
 export class VoteModalComponent implements OnInit {
 
-  private form: FormGroup;
+  public form: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
               @Inject(MAT_DIALOG_DATA) public data: VoteModalData,
