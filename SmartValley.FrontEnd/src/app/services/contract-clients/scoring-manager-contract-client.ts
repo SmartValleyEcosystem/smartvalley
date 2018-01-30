@@ -39,7 +39,7 @@ export class ScoringManagerContractClient implements ContractClient {
   public async getScoringCostAsync(): Promise<number> {
     const scoringManager = this.web3Service.getContract(this.abi, this.address);
     const cost = ConverterHelper.extractNumberValue(await scoringManager.scoringCostWEI());
-    return this.web3Service.fromWei(cost, this.tokenClient.decimals);
+    return this.web3Service.fromWei(cost, await this.tokenClient.getDecimalsAsync());
   }
 
   public async submitEstimatesAsync(scoringAddress: string,

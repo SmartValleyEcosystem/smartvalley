@@ -1,9 +1,9 @@
 export class ConverterHelper {
-  static extractNumberValue(result: Array<any>): number {
+  static extractNumberValue(result): number {
     return +result[0].toString(10);
   }
 
-  static extractBoolValue(result: Array<any>): boolean {
+  static extractBoolValue(result): boolean {
     return result[0];
   }
 }

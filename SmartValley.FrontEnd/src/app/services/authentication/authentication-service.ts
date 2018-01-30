@@ -33,7 +33,7 @@ export class AuthenticationService {
   }
 
   public isAuthenticated() {
-    return !isNullOrUndefined(this.getCurrentUser());
+    return this.web3Service.isMetamaskInstalled && !isNullOrUndefined(this.getCurrentUser());
   }
 
   public async authenticateAsync(): Promise<boolean> {
