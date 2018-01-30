@@ -3,6 +3,7 @@ import {VotingApiClient} from '../../api/voting/voting-api-client';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {Voting} from '../../services/voting';
+import {VotingService} from '../../services/voting/voting-service';
 
 @Component({
   selector: 'app-completed-votings',
@@ -12,9 +13,11 @@ import {Voting} from '../../services/voting';
 export class CompletedVotingsComponent implements OnInit {
 
   public votings: Array<Voting> = [];
+  public canVote: boolean;
 
   constructor(private router: Router,
-              private votingClient: VotingApiClient) {
+              private votingClient: VotingApiClient,
+              private sprintService: VotingService) {
   }
 
   async ngOnInit() {
@@ -30,9 +33,14 @@ export class CompletedVotingsComponent implements OnInit {
         endDate: votingResponse.endDate
       });
     }
+    this.canVote = await this.sprintService.hasActiveSprintAsync();
   }
 
   showVoting(address: string) {
     this.router.navigate([Paths.CompletedVoting + '/' + address]);
+  }
+
+  async navigateToVoting() {
+    await this.router.navigate([Paths.Voting]);
   }
 }

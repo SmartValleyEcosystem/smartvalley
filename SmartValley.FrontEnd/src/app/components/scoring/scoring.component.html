@@ -11,7 +11,7 @@
       <div class="white-card">
         <div class="content">
           <span class="choose">{{ 'Scoring.ChooseExpertise' | translate }}</span>
-          <mat-tab-group [selectedIndex]="selectedExpertiseTabIndex"
+          <mat-tab-group [selectedIndex]="selectedTabIndex"
                          (selectedIndexChange)="onExpertiseTabIndexChanged($event)">
             <mat-tab label="{{ 'Common.Hr' | translate }}">
               <div class="card" *ngFor="let project of projects;">

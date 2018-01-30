@@ -17,7 +17,6 @@ export class CompletedVotingComponent implements OnInit {
   public ProjectCardType = ProjectCardType;
   public projects: Array<ProjectCardData> = [];
   public sprint: VotingSprint;
-  public canVote: boolean;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -27,11 +26,10 @@ export class CompletedVotingComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.loadSprintAsync();
-    this.canVote = await this.sprintService.hasActiveSprintAsync();
   }
 
-  async navigateToVoting() {
-    await this.router.navigate([Paths.Voting]);
+  async navigateToCompletedVotings() {
+    await this.router.navigate([Paths.CompletedVotings]);
   }
 
   private async loadSprintAsync() {
