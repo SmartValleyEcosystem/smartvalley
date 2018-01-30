@@ -12,5 +12,5 @@ export interface MyProjectsItemResponse {
   score: number;
   scoringStatus: ScoringStatus;
   votingStatus: VotingStatus;
-  votingEndDate: Date;
+  votingEndDate: string;
 }

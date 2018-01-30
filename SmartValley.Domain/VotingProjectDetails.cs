@@ -18,7 +18,7 @@ namespace SmartValley.Domain
 
         public bool IsAccepted { get; }
 
-        public VotingStatus GetVotingStatus(DateTime now)
+        public VotingStatus GetVotingStatus(DateTimeOffset now)
         {
             if (Voting.EndDate > now)
                 return VotingStatus.InProgress;

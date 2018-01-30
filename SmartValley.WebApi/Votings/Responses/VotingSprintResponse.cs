@@ -10,9 +10,9 @@ namespace SmartValley.WebApi.Votings.Responses
     {
         public string Address { get; set; }
 
-        public DateTime StartDate { get; set; }
+        public DateTimeOffset StartDate { get; set; }
 
-        public DateTime EndDate { get; set; }
+        public DateTimeOffset EndDate { get; set; }
 
         public double VoteBalance { get; set; }
 
@@ -24,27 +24,35 @@ namespace SmartValley.WebApi.Votings.Responses
 
         public IReadOnlyCollection<ProjectVoteResponse> Projects { get; set; }
 
-        public static VotingSprintResponse Create(VotingSprintDetails votingSprint, IReadOnlyCollection<Project> projects, InvestorVotesDetails details, DateTime now)
+        public static VotingSprintResponse Create(
+            VotingSprintDetails votingSprint,
+            IReadOnlyCollection<Project> projects,
+            InvestorVotesDetails details,
+            DateTimeOffset now)
         {
+            var votingStatus = votingSprint.EndDate > now ? VotingStatus.InProgress : VotingStatus.None;
             return new VotingSprintResponse
                    {
                        Address = votingSprint.Address,
                        StartDate = votingSprint.StartDate,
                        EndDate = votingSprint.EndDate,
                        Number = votingSprint.Number,
-                       Projects = SelectProjects(projects, details, votingSprint.EndDate, now),
+                       Projects = SelectProjects(projects, details, votingStatus),
                        VoteBalance = details?.TokenAmount ?? 0,
                        MaximumScore = votingSprint.MaximumScore,
                        AcceptanceThreshold = votingSprint.AcceptanceThreshold
                    };
         }
 
-        private static IReadOnlyCollection<ProjectVoteResponse> SelectProjects(IReadOnlyCollection<Project> projects, InvestorVotesDetails details, DateTime sprintEndDate, DateTime now)
+        private static IReadOnlyCollection<ProjectVoteResponse> SelectProjects(
+            IReadOnlyCollection<Project> projects,
+            InvestorVotesDetails details,
+            VotingStatus votingStatus)
         {
-            return projects.Select(project =>
-                                       ProjectVoteResponse.Create(project,
-                                                                  sprintEndDate > now ? VotingStatus.InProgress : VotingStatus.None,
-                                                                  details?.InvestorProjectVotes.FirstOrDefault(i => i.ProjectExternalId == project.ExternalId)))
+            return projects.Select(project => ProjectVoteResponse.Create(
+                                       project,
+                                       votingStatus,
+                                       details?.InvestorProjectVotes.FirstOrDefault(i => i.ProjectExternalId == project.ExternalId)))
                            .ToArray();
         }
     }

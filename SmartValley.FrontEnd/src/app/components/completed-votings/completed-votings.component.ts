@@ -3,6 +3,7 @@ import {VotingApiClient} from '../../api/voting/voting-api-client';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {Voting} from '../../services/voting';
+import * as moment from 'moment';
 import {VotingService} from '../../services/voting/voting-service';
 
 @Component({
@@ -29,8 +30,8 @@ export class CompletedVotingsComponent implements OnInit {
     for (const votingResponse of response.items) {
       this.votings.push(<Voting>{
         address: votingResponse.address,
-        fromDate: votingResponse.startDate,
-        endDate: votingResponse.endDate
+        fromDate: moment(votingResponse.startDate).toDate(),
+        endDate: moment(votingResponse.endDate).toDate()
       });
     }
     this.canVote = await this.sprintService.hasActiveSprintAsync();

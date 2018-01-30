@@ -12,8 +12,6 @@ namespace SmartValley.Domain.Interfaces
 
         Task<Voting> GetByIdAsync(long votingId);
 
-        Task<IReadOnlyCollection<Voting>> GetAllAsync();
-
-        Task<IReadOnlyCollection<Voting>> GetAllTillDateAsync(DateTime tillDate);
+        Task<IReadOnlyCollection<Voting>> GetAllTillDateAsync(DateTimeOffset tillDate);
     }
 }

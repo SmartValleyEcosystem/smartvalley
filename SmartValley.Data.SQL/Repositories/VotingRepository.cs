@@ -9,17 +9,17 @@ using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class VotingRepository : EntityCrudRepository<Voting>, IVotingRepository
     {
         public VotingRepository(IReadOnlyDataContext readContext, IEditableDataContext editContext)
             : base(readContext, editContext)
         {
-
         }
 
-        public async Task<IReadOnlyCollection<Voting>> GetAllTillDateAsync(DateTime tillDate)
+        public async Task<IReadOnlyCollection<Voting>> GetAllTillDateAsync(DateTimeOffset tillDate)
         {
-            return await ReadContext.Votings.Where(i=>i.EndDate <= tillDate).ToArrayAsync();
+            return await ReadContext.Votings.Where(i => i.EndDate <= tillDate).ToArrayAsync();
         }
     }
 }

@@ -20,7 +20,7 @@ namespace SmartValley.WebApi.Votings
         private readonly IProjectRepository _projectRepository;
         private readonly IVotingManagerContractClient _votingManagerContractClient;
         private readonly IVotingSprintContractClient _votingSprintContractClient;
-        private readonly IDateTime _dateTime;
+        private readonly IClock _clock;
         private readonly EthereumClient _ethereumClient;
 
         public VotingService(IVotingRepository votingRepository,
@@ -28,7 +28,7 @@ namespace SmartValley.WebApi.Votings
                              IVotingSprintContractClient votingSprintContractClient,
                              IVotingProjectRepository votingProjectRepository,
                              IProjectRepository projectRepository,
-                             IDateTime dateTime,
+                             IClock clock,
                              EthereumClient ethereumClient)
         {
             _votingRepository = votingRepository;
@@ -36,7 +36,7 @@ namespace SmartValley.WebApi.Votings
             _votingSprintContractClient = votingSprintContractClient;
             _votingProjectRepository = votingProjectRepository;
             _projectRepository = projectRepository;
-            _dateTime = dateTime;
+            _clock = clock;
             _ethereumClient = ethereumClient;
         }
 
@@ -67,7 +67,7 @@ namespace SmartValley.WebApi.Votings
 
         public Task<IReadOnlyCollection<Voting>> GetCompletedSprintsAsync()
         {
-            return _votingRepository.GetAllTillDateAsync(_dateTime.UtcNow);
+            return _votingRepository.GetAllTillDateAsync(_clock.UtcNow);
         }
 
         public async Task<VotingSprintDetails> GetLastSprintDetailsAsync()
@@ -145,7 +145,7 @@ namespace SmartValley.WebApi.Votings
                 return false;
 
             var lastSprintDetails = await _votingSprintContractClient.GetDetailsAsync(lastSprintAddress);
-            return _dateTime.UtcNow < lastSprintDetails.EndDate;
+            return _clock.UtcNow < lastSprintDetails.EndDate;
         }
     }
 }

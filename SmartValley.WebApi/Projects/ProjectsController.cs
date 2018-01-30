@@ -17,13 +17,13 @@ namespace SmartValley.WebApi.Projects
     {
         private readonly IProjectService _projectService;
         private readonly IVotingService _votingService;
-        private readonly IDateTime _dateTime;
+        private readonly IClock _clock;
 
-        public ProjectsController(IProjectService projectService, IVotingService votingService, IDateTime dateTime)
+        public ProjectsController(IProjectService projectService, IVotingService votingService, IClock clock)
         {
             _projectService = projectService;
             _votingService = votingService;
-            _dateTime = dateTime;
+            _clock = clock;
         }
 
         [HttpGet]
@@ -32,7 +32,7 @@ namespace SmartValley.WebApi.Projects
             var details = await _projectService.GetDetailsAsync(request.ProjectId);
             var votingDetails = await _votingService.GetVotingProjectDetailsAsync(request.ProjectId);
 
-            return ProjectDetailsResponse.Create(details, votingDetails, _dateTime.UtcNow);
+            return ProjectDetailsResponse.Create(details, votingDetails, _clock.UtcNow);
         }
 
         [HttpGet]
@@ -82,7 +82,7 @@ namespace SmartValley.WebApi.Projects
                 return MyProjectsItemResponse.Create(project, scoring);
 
             var votingDetails = await _votingService.GetVotingProjectDetailsAsync(project.Id);
-            return MyProjectsItemResponse.Create(project, votingDetails, _dateTime.UtcNow);
+            return MyProjectsItemResponse.Create(project, votingDetails, _clock.UtcNow);
         }
     }
 }

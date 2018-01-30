@@ -15,13 +15,13 @@ namespace SmartValley.WebApi.Votings
     {
         private readonly IVotingService _votingService;
         private readonly IProjectService _projectService;
-        private readonly IDateTime _dateTime;
+        private readonly IClock _clock;
 
-        public VotingsController(IVotingService votingService, IProjectService projectService, IDateTime dateTime)
+        public VotingsController(IVotingService votingService, IProjectService projectService, IClock clock)
         {
             _votingService = votingService;
             _projectService = projectService;
-            _dateTime = dateTime;
+            _clock = clock;
         }
 
         [HttpGet]
@@ -29,7 +29,7 @@ namespace SmartValley.WebApi.Votings
         public async Task<GetSprintResponse> GetCurrentSprintAsync()
         {
             var sprint = await _votingService.GetLastSprintDetailsAsync();
-            if (sprint == null || _dateTime.UtcNow > sprint.EndDate)
+            if (sprint == null || _clock.UtcNow > sprint.EndDate)
                 return new GetSprintResponse();
             return await GetSprintResponseAsync(sprint);
         }
@@ -68,7 +68,7 @@ namespace SmartValley.WebApi.Votings
             var investorVotes = await _votingService.GetVotesAsync(sprint.Address, User.Identity.Name);
             var projects = await _projectService.GetByExternalIdsAsync(sprint.ProjectsExternalIds);
 
-            return new GetSprintResponse {Sprint = VotingSprintResponse.Create(sprint, projects, investorVotes, _dateTime.UtcNow)};
+            return new GetSprintResponse {Sprint = VotingSprintResponse.Create(sprint, projects, investorVotes, _clock.UtcNow)};
         }
     }
 }

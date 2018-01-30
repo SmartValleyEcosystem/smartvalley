@@ -12,8 +12,8 @@ namespace SmartValley.Domain.Entities
         [MaxLength(42)]
         public string VotingAddress { get; set; }
 
-        public DateTime StartDate { get; set; }
+        public DateTimeOffset StartDate { get; set; }
 
-        public DateTime EndDate { get; set; }
+        public DateTimeOffset EndDate { get; set; }
     }
 }

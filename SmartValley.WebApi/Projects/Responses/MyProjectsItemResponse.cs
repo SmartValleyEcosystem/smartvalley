@@ -26,7 +26,7 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public VotingStatus VotingStatus { get; set; }
 
-        public DateTime? VotingEndDate { get; set; }
+        public DateTimeOffset? VotingEndDate { get; set; }
 
         public static MyProjectsItemResponse Create(Project project, Domain.Entities.Scoring scoring)
         {
@@ -46,7 +46,7 @@ namespace SmartValley.WebApi.Projects.Responses
                    };
         }
 
-        public static MyProjectsItemResponse Create(Project project, VotingProjectDetails votingDetails, DateTime now)
+        public static MyProjectsItemResponse Create(Project project, VotingProjectDetails votingDetails, DateTimeOffset now)
         {
             return new MyProjectsItemResponse
                    {

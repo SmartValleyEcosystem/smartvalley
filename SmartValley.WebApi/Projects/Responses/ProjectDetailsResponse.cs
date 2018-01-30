@@ -44,11 +44,11 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public VotingStatus VotingStatus { get; set; }
 
-        public DateTime? VotingEndDate { get; set; }
+        public DateTimeOffset? VotingEndDate { get; set; }
 
         public IReadOnlyCollection<TeamMemberResponse> TeamMembers { get; set; }
 
-        public static ProjectDetailsResponse Create(ProjectDetails details, VotingProjectDetails votingDetails, DateTime now)
+        public static ProjectDetailsResponse Create(ProjectDetails details, VotingProjectDetails votingDetails, DateTimeOffset now)
         {
             var scoringStatus = details.Scoring == null
                                     ? ScoringStatus.Pending

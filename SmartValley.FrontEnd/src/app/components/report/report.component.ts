@@ -24,6 +24,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {DialogService} from '../../services/dialog-service';
 import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {NotificationsService} from 'angular2-notifications';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-report',
@@ -149,7 +150,7 @@ export class ReportComponent implements AfterViewChecked, OnInit {
       return;
     }
 
-    const remaining = timespan.fromDates(new Date(), this.details.votingEndDate);
+    const remaining = timespan.fromDates(new Date(), moment(this.details.votingEndDate).toDate());
     this.votingRemainingDays = remaining.days;
     this.votingRemainingHours = remaining.hours;
     this.votingRemainingMinutes = remaining.minutes;

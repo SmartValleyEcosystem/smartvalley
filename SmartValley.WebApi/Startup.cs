@@ -66,7 +66,7 @@ namespace SmartValley.WebApi
                     .AddScheme<EcdsaAuthenticationOptions, EcdsaAuthenticationHandler>(EcdsaAuthenticationOptions.DefaultScheme, options => { });
 
             services.AddSingleton(provider => InitializeWeb3(provider.GetService<NethereumOptions>().RpcAddress));
-            services.AddSingleton<IDateTime, UtcDateTime>();
+            services.AddSingleton<IClock, UtcClock>();
             services.AddSingleton<EthereumMessageSigner>();
             services.AddSingleton<EthereumClient>();
             services.AddSingleton<EthereumContractClient>();

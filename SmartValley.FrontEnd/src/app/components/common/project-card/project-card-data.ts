@@ -4,6 +4,8 @@ import {MyProjectsItemResponse} from '../../../api/project/my-projects-item-resp
 import {VotingStatus} from '../../../services/voting-status.enum';
 import {ScoringStatus} from '../../../services/scoring-status.enum';
 import {Project} from '../../../services/project';
+import * as moment from 'moment';
+import {isNullOrUndefined} from 'util';
 
 export class ProjectCardData {
   id: number;
@@ -69,7 +71,7 @@ export class ProjectCardData {
       author: response.author,
       scoringStatus: response.scoringStatus,
       votingStatus: response.votingStatus,
-      votingEndDate: response.votingEndDate
+      votingEndDate: !isNullOrUndefined(response.votingEndDate) ? moment(response.votingEndDate).toDate() : null
     };
   }
 }

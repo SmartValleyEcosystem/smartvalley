@@ -35,8 +35,8 @@ namespace SmartValley.Application.Contracts.Votings
 
             return new VotingSprintDetails(
                 sprintAddress,
-                DateUtils.FromUnixTime(sprintDto.StartDate),
-                DateUtils.FromUnixTime(sprintDto.EndDate),
+                DateTimeOffset.FromUnixTimeSeconds(sprintDto.StartDate),
+                DateTimeOffset.FromUnixTimeSeconds(sprintDto.EndDate),
                 sprintDto.AcceptanceThreshold,
                 sprintDto.MaximumScore.FromWei(decimals),
                 sprintDto.ProjectExternalIds.Select(e => e.ToGuid()).ToArray(),
