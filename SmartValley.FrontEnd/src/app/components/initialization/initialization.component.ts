@@ -23,7 +23,6 @@ export class InitializationComponent implements OnInit {
       });
 
     await this.initializationService.initializeAppAsync();
-
     await this.router.navigateByUrl(this.returnUrl);
   }
 }

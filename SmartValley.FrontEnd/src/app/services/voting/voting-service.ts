@@ -34,6 +34,11 @@ export class VotingService {
     return currentSprintResponse.doesExist;
   }
 
+  public async hasCompletedSprintsAsync(): Promise<boolean> {
+    const currentSprintResponse = await this.votingApiClient.getСompletedSprintsAsync();
+    return currentSprintResponse.items.length > 0;
+  }
+
   public async getSprintByAddressAsync(address: string): Promise<VotingSprint> {
     const response = await this.votingApiClient.getVotingSprintByAddressAsync(address);
     if (!response.doesExist) {
