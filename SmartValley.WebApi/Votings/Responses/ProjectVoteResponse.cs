@@ -27,7 +27,7 @@ namespace SmartValley.WebApi.Votings.Responses
 
         public VotingStatus VotingStatus { get; set; }
 
-        public static ProjectVoteResponse Create(Project project, VotingStatus votingStatus, InvestorProjectVote investorVotes)
+        public static ProjectVoteResponse Create(Project project, bool isVotingInProgress, InvestorProjectVote investorVotes)
         {
             return new ProjectVoteResponse
                    {
@@ -41,8 +41,16 @@ namespace SmartValley.WebApi.Votings.Responses
                        MyVoteTokenAmount = investorVotes?.InvestorTokenVote,
                        IsVotedByMe = investorVotes != null,
                        TotalTokenAmount = investorVotes?.TotalTokenVote,
-                       VotingStatus = votingStatus
+                       VotingStatus = GetVotingStatus(isVotingInProgress)
                    };
+        }
+
+        private static VotingStatus GetVotingStatus(bool isVotingInProgress)
+        {
+            if (isVotingInProgress)
+                return VotingStatus.InProgress;
+
+            return VotingStatus.None; //TODO
         }
     }
 }

@@ -110,8 +110,7 @@
           </div>
         </div>
         <div class="col-4">
-          <a *ngIf="type === ProjectCardType.Scoring" class="col-10 sv-default-btn btn btn-primary"
-             (click)="showProject()">
+          <a *ngIf="type === ProjectCardType.Scoring" class="col-10 sv-default-btn btn btn-primary" (click)="showProject()">
             {{ 'ProjectCard.Estimate' | translate }}
           </a>
           <a *ngIf="type === ProjectCardType.General || (type === ProjectCardType.Voting && data.votingStatus !== VotingStatus.InProgress)" class="col-10 sv-default-btn btn btn-primary"

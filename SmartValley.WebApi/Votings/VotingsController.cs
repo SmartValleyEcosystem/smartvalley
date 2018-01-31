@@ -63,10 +63,10 @@ namespace SmartValley.WebApi.Votings
 
         private async Task<GetSprintResponse> GetSprintResponseAsync(VotingSprintDetails sprint)
         {
-            var investorVotes = await _votingService.GetVotesAsync(sprint.Address, User.Identity.Name);
+            var votes = await _votingService.GetVotesAsync(sprint.Address, sprint.ProjectsExternalIds, User.Identity.Name);
             var projects = await _projectService.GetByExternalIdsAsync(sprint.ProjectsExternalIds);
 
-            return new GetSprintResponse {Sprint = VotingSprintResponse.Create(sprint, projects, investorVotes, _clock.UtcNow)};
+            return new GetSprintResponse {Sprint = VotingSprintResponse.Create(sprint, projects, votes, _clock.UtcNow)};
         }
     }
 }
