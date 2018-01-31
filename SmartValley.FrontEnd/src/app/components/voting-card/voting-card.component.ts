@@ -60,7 +60,7 @@ export class VotingCardComponent implements OnInit {
   }
 
   private getImageUrl(): string {
-    const address = this.projectDetails.projectAddress ? this.projectDetails.projectAddress : this.projectDetails.authorAddress;
+    const address = this.projectDetails.scoringContractAddress ? this.projectDetails.scoringContractAddress : this.projectDetails.authorAddress;
     return this.blockiesService.getImageForAddress(address);
   }
 

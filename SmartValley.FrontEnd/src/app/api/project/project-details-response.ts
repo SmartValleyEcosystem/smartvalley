@@ -6,7 +6,6 @@ export interface ProjectDetailsResponse {
   name: string;
   externalId: string;
   area: string;
-  projectAddress: string;
   scoringContractAddress: string;
   description: string;
   status: string;

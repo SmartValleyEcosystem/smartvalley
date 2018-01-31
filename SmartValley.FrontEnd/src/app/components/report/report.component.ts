@@ -169,7 +169,7 @@ export class ReportComponent implements AfterViewChecked, OnInit {
   }
 
   private getImageUrl(): string {
-    const address = this.details.projectAddress ? this.details.projectAddress : this.details.authorAddress;
+    const address = this.details.scoringContractAddress ? this.details.scoringContractAddress : this.details.authorAddress;
     return this.blockiesService.getImageForAddress(address);
   }
 
