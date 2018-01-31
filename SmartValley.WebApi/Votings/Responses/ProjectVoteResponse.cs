@@ -39,7 +39,7 @@ namespace SmartValley.WebApi.Votings.Responses
                        Description = project.Description,
                        Author = project.AuthorAddress,
                        MyVoteTokenAmount = investorVotes?.InvestorTokenVote,
-                       IsVotedByMe = investorVotes != null,
+                       IsVotedByMe = investorVotes?.InvestorTokenVote > 0,
                        TotalTokenAmount = investorVotes?.TotalTokenVote,
                        VotingStatus = GetVotingStatus(isVotingInProgress)
                    };
