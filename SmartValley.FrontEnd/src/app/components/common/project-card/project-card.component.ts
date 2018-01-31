@@ -49,7 +49,7 @@ export class ProjectCardComponent implements OnInit {
       setInterval(() => this.updateVotingRemainingTime(), 1000);
     }
 
-    this.projectTokensPercent = Math.round(100 * this.data.projectVote / this.totalVotes) / 100;
+    this.projectTokensPercent = Math.round(100 * this.data.projectVote / this.totalVotes);
   }
 
   public showProject(): void {

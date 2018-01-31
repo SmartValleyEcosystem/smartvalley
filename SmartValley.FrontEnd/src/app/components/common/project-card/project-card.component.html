@@ -88,7 +88,7 @@
             </div>
           </div>
           <div *ngIf="type === ProjectCardType.Voting" class="voting-container">
-            <span>{{ 'ProjectCard.MyVoteLabel' | translate }}: {{data.isVotedByMe ? ('Common.Yes' | translate) : ('Common.No' | translate)}}</span>
+            <span>{{ 'ProjectCard.MyVoteLabel' | translate }}: {{data.myVoteTokensAmount > 0 ? ('Common.Yes' | translate) : ('Common.No' | translate)}}</span>
             <span *ngIf="data.isVotedByMe && data.votingStatus != VotingStatus.InProgress">{{data.myVoteTokensAmount}}</span>
           </div>
         </div>
