@@ -36,6 +36,8 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public string HardCap { get; set; }
 
+        public string VotingAddress { get; set; }
+
         public bool AttractedInvestments { get; set; }
 
         public double? Score { get; set; }
@@ -75,7 +77,8 @@ namespace SmartValley.WebApi.Projects.Responses
                        TeamMembers = details.TeamMembers.Select(TeamMemberResponse.Create).ToList(),
                        ScoringStatus = scoringStatus,
                        VotingStatus = details.Scoring == null ? votingDetails.GetVotingStatus(now) : VotingStatus.None,
-                       VotingEndDate = votingDetails?.Voting?.EndDate
+                       VotingEndDate = votingDetails?.Voting?.EndDate,
+                       VotingAddress = votingDetails?.Voting?.VotingAddress
                    };
         }
     }

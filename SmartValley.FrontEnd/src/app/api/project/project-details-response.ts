@@ -20,6 +20,7 @@ export interface ProjectDetailsResponse {
   financeModelLink: string;
   teamMembers: Array<TeamMemberResponse>;
   authorAddress: string;
+  votingAddress: string;
   score: number;
   scoringStatus: ScoringStatus;
   votingStatus: VotingStatus;

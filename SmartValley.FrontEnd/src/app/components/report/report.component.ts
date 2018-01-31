@@ -103,7 +103,7 @@ export class ReportComponent implements AfterViewChecked, OnInit {
   }
 
   public async submitToScoringAsync(): Promise<void> {
-    const transactionHash = await this.startScoringAsync(this.details.externalId);
+    const transactionHash = await this.startScoringAsync();
     if (transactionHash == null) {
       this.notificationsService.error(
         this.translateService.instant('Common.Error'),
@@ -123,9 +123,13 @@ export class ReportComponent implements AfterViewChecked, OnInit {
     this.router.navigate([Paths.MyProjects]);
   }
 
-  private async startScoringAsync(projectId: string): Promise<string> {
+  private async startScoringAsync(): Promise<string> {
     try {
-      return await this.scoringManagerContractClient.startAsync(projectId);
+      if (this.details.votingStatus === VotingStatus.Accepted) {
+        return await this.scoringManagerContractClient.startForFreeAsync(this.details.externalId, this.details.votingAddress);
+      } else {
+        return await this.scoringManagerContractClient.startAsync(this.details.externalId);
+      }
     } catch (e) {
       return null;
     }

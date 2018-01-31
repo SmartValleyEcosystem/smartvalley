@@ -36,6 +36,17 @@ export class ScoringManagerContractClient implements ContractClient {
       {from: fromAddress});
   }
 
+  public startForFreeAsync(projectId: string,
+                           sprintAddress: string): Promise<string> {
+    const scoringManagerContract = this.web3Service.getContract(this.abi, this.address);
+    const fromAddress = this.authenticationService.getCurrentUser().account;
+
+    return scoringManagerContract.startForFree(
+      projectId.replace(/-/g, ''),
+      sprintAddress,
+      {from: fromAddress});
+  }
+
   public async getScoringCostAsync(): Promise<number> {
     const scoringManager = this.web3Service.getContract(this.abi, this.address);
     const cost = ConverterHelper.extractNumberValue(await scoringManager.scoringCostWEI());
