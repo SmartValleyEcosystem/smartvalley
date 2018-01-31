@@ -25,21 +25,21 @@ export class ProjectCardData {
   myVoteTokensAmount: number;
   projectVote: number;
 
-  public static fromProject(response: Project): ProjectCardData {
+  public static fromProject(project: Project): ProjectCardData {
     return <ProjectCardData>{
-      id: response.id,
-      externalId: response.externalId,
-      name: response.name,
-      area: response.area,
-      country: response.country,
-      score: response.score,
-      description: response.description,
-      address: response.address,
-      author: response.author,
-      myVoteTokensAmount: response.myVoteTokensAmount,
-      isVotedByMe: response.isVotedByMe,
-      projectVote: response.totalTokenVote,
-      votingStatus: response.votingStatus
+      id: project.id,
+      externalId: project.externalId,
+      name: project.name,
+      area: project.area,
+      country: project.country,
+      score: project.score,
+      description: project.description,
+      address: project.address,
+      author: project.author,
+      myVoteTokensAmount: project.myVoteTokensAmount,
+      isVotedByMe: project.isVotedByMe,
+      projectVote: project.totalTokenVote,
+      votingStatus: project.votingStatus
     };
   }
 

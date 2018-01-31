@@ -42,26 +42,34 @@ namespace SmartValley.WebApi.Votings
         public Task<VotingSprintDetails> GetSprintDetailsByAddressAsync(string address)
             => _votingSprintContractClient.GetDetailsAsync(address);
 
-        public Task<double> GetVoteAsync(string sprintAddress, string investorAddress, Guid projectId)
-            => _votingSprintContractClient.GetVoteAsync(sprintAddress, investorAddress, projectId);
-
-        public async Task<InvestorVotesDetails> GetVotesAsync(string sprintAddress, string investorAddress)
+        public async Task<InvestorVotesDetails> GetVotesAsync(
+            string sprintAddress,
+            IReadOnlyCollection<Guid> sprintProjectExternalIds,
+            string investorAddress)
         {
             if (string.IsNullOrEmpty(investorAddress))
                 return null;
-            var votes = await _votingSprintContractClient.GetVotesAsync(sprintAddress, investorAddress);
-            var investorVotes = new List<InvestorProjectVote>();
-            foreach (var projectExternalId in votes.ProjectsExternalIds)
+
+            var investorVotes = await _votingSprintContractClient.GetVotesAsync(sprintAddress, investorAddress);
+            var result = new List<InvestorProjectVote>();
+            foreach (var projectExternalId in sprintProjectExternalIds)
             {
-                var vote = await GetVoteAsync(sprintAddress, investorAddress, projectExternalId);
-                var totalVotes = await _votingSprintContractClient.GetProjectTotalTokensAsync(sprintAddress, projectExternalId);
-                investorVotes.Add(new InvestorProjectVote { ProjectExternalId = projectExternalId, InvestorTokenVote = vote, TotalTokenVote = totalVotes });
+                var investorProjectTokenAmount = investorVotes.ProjectsExternalIds.Contains(projectExternalId) ? investorVotes.TokenAmount : 0;
+                var totalProjectVotingAmount = await _votingSprintContractClient.GetProjectTotalTokensAsync(sprintAddress, projectExternalId);
+                var investorProjectVote = new InvestorProjectVote
+                                          {
+                                              ProjectExternalId = projectExternalId,
+                                              InvestorTokenVote = investorProjectTokenAmount,
+                                              TotalTokenVote = totalProjectVotingAmount
+                                          };
+                result.Add(investorProjectVote);
             }
+
             return new InvestorVotesDetails
-            {
-                InvestorProjectVotes = investorVotes,
-                TokenAmount = votes.TokenAmount
-            };
+                   {
+                       InvestorProjectVotes = result,
+                       InvestorVoteBalance = investorVotes.TokenAmount
+                   };
         }
 
         public Task<IReadOnlyCollection<Voting>> GetCompletedSprintsAsync()
@@ -121,11 +129,11 @@ namespace SmartValley.WebApi.Votings
             string sprintAddress)
         {
             var voting = new Voting
-            {
-                StartDate = votingDetails.StartDate,
-                EndDate = votingDetails.EndDate,
-                VotingAddress = sprintAddress
-            };
+                         {
+                             StartDate = votingDetails.StartDate,
+                             EndDate = votingDetails.EndDate,
+                             VotingAddress = sprintAddress
+                         };
             await _votingRepository.AddAsync(voting);
             return voting.Id;
         }
@@ -133,7 +141,7 @@ namespace SmartValley.WebApi.Votings
         private async Task SaveVotingProjectsAsync(IReadOnlyCollection<Guid> projectExternalIds, long votingId)
         {
             var projects = await _projectRepository.GetByExternalIdsAsync(projectExternalIds);
-            var votingProjects = projects.Select(p => new VotingProject { ProjectId = p.Id, VotingId = votingId });
+            var votingProjects = projects.Select(p => new VotingProject {ProjectId = p.Id, VotingId = votingId});
             await _votingProjectRepository.AddRangeAsync(votingProjects);
         }
 
