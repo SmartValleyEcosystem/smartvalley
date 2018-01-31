@@ -47,8 +47,8 @@
   font-weight: bold;
 }
 .voting-info span:first-child {
-   font-size: 2em;
- }
+  font-size: 2em;
+}
 
 .scoring-card-block {
   position: relative;
@@ -68,7 +68,6 @@
 }
 
 .vote-button {
-  margin-right: 25%;
   position: relative;
 }
 

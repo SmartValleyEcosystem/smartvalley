@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="col-8">
-      <div class="row" style="padding-bottom: 4em;">
+      <div class="row" style="padding-bottom: 3em;">
         <div class="description col-8">
           <p class="card-text">{{data.description}}</p>
         </div>
@@ -93,29 +93,32 @@
           </div>
         </div>
       </div>
-      <div class="row text-right" style="position: absolute; width: 100%; bottom: 0;">
-        <div class="col-12">
-          <a *ngIf="type === ProjectCardType.Voting && !data.isVotedByMe"
-             class="col-4 vote-button sv-default-btn btn btn-primary"
-             (click)="voteForProjectAsync()">
-            {{ 'ProjectCard.VotingForProject' | translate }}
-          </a>
+      <div class="row text-right">
+        <div class="col-8">
+          <div *ngIf="type === ProjectCardType.Voting && !data.isVotedByMe && data.votingStatus === VotingStatus.InProgress"
+               class="col-8">
+            <a class="col-10 vote-button sv-default-btn btn btn-primary"
+               (click)="voteForProjectAsync()">
+              {{ 'ProjectCard.VotingForProject' | translate }}
+            </a>
+          </div>
           <div *ngIf="type === ProjectCardType.Voting && data.votingStatus !== VotingStatus.InProgress"
-             class="col-4 voting-info">
-            <span *ngIf="votingAcceptanceThreshold < projectTokensPercent" style="color:green">Accepted {{projectTokensPercent}}%</span>
-            <span *ngIf="votingAcceptanceThreshold >= projectTokensPercent" style="color:red">Rejected {{projectTokensPercent}}%</span>
-            <span>{{ 'ProjectCard.VotedYes' | translate }} - {{data.projectVote}}</span>
+               class="col-8 voting-info">
+            <span *ngIf="votingAcceptanceThreshold < projectTokensPercent" class="high_rate">Accepted {{projectTokensPercent}}%</span>
+            <span *ngIf="votingAcceptanceThreshold >= projectTokensPercent" class="low_rate">Rejected {{projectTokensPercent}}%</span>
             <span>{{ 'ProjectCard.TotalVotes' | translate }} - {{totalVotes}}</span>
           </div>
-          <a *ngIf="type === ProjectCardType.Scoring" class="col-3 sv-default-btn btn btn-primary"
+        </div>
+        <div class="col-4">
+          <a *ngIf="type === ProjectCardType.Scoring" class="col-10 sv-default-btn btn btn-primary"
              (click)="showProject()">
             {{ 'ProjectCard.Estimate' | translate }}
           </a>
-          <a *ngIf="type === ProjectCardType.General" class="col-3 sv-default-btn btn btn-primary"
+          <a *ngIf="type === ProjectCardType.General" class="col-10 sv-default-btn btn btn-primary"
              (click)="showReport()">
             {{ 'ProjectCard.ProjectProfile' | translate }}
           </a>
-          <a *ngIf="type === ProjectCardType.Voting" class="col-3 sv-default-btn btn btn-primary"
+          <a *ngIf="type === ProjectCardType.Voting" class="col-10 sv-default-btn btn btn-primary"
              (click)="showVotingDetails()">
             {{ 'ProjectCard.Info' | translate }}
           </a>
