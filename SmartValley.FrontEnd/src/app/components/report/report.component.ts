@@ -25,6 +25,7 @@ import {DialogService} from '../../services/dialog-service';
 import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {NotificationsService} from 'angular2-notifications';
 import * as moment from 'moment';
+import {AuthenticationService} from "../../services/authentication/authentication-service";
 
 @Component({
   selector: 'app-report',
@@ -46,6 +47,7 @@ export class ReportComponent implements AfterViewChecked, OnInit {
   public expertiseAreaAverageScore: number;
   public expertiseMaxScore: number;
   public projectImageUrl: string;
+  public currentAccount: string;
 
   private projectId: number;
   @ViewChild('reportTabSet')
@@ -67,11 +69,16 @@ export class ReportComponent implements AfterViewChecked, OnInit {
               private dialogService: DialogService,
               private scoringApiClient: ScoringApiClient,
               private notificationsService: NotificationsService,
+              private authenticationService: AuthenticationService,
               private scoringManagerContractClient: ScoringManagerContractClient) {
   }
 
   public async ngOnInit() {
     await this.loadInitialDataAsync();
+    const currentUser = this.authenticationService.getCurrentUser();
+    if (!isNullOrUndefined(currentUser)) {
+      this.currentAccount = currentUser.account;
+    }
     this.activatedRoute.queryParams.subscribe(params => {
       this.selectedReportTab = params[Constants.TabQueryParam];
     });

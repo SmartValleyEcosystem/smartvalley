@@ -17,7 +17,7 @@
           </div>
         </div>
         <div class="main-info col-4">
-          <div class="col-12" *ngIf="details.scoringStatus == ScoringStatus.Pending && details.votingStatus != VotingStatus.InProgress">
+          <div class="col-12" *ngIf="details.scoringStatus == ScoringStatus.Pending && details.votingStatus != VotingStatus.InProgress && details.authorAddress === currentAccount">
             <span>
               {{details.votingStatus == VotingStatus.Accepted
               ? ('Report.SubmitForFree' | translate)

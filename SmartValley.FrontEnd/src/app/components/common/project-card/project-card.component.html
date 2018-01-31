@@ -114,11 +114,11 @@
              (click)="showProject()">
             {{ 'ProjectCard.Estimate' | translate }}
           </a>
-          <a *ngIf="type === ProjectCardType.General" class="col-10 sv-default-btn btn btn-primary"
+          <a *ngIf="type === ProjectCardType.General || (type === ProjectCardType.Voting && data.votingStatus !== VotingStatus.InProgress)" class="col-10 sv-default-btn btn btn-primary"
              (click)="showReport()">
             {{ 'ProjectCard.ProjectProfile' | translate }}
           </a>
-          <a *ngIf="type === ProjectCardType.Voting" class="col-10 sv-default-btn btn btn-primary"
+          <a *ngIf="type === ProjectCardType.Voting && data.votingStatus === VotingStatus.InProgress" class="col-10 sv-default-btn btn btn-primary"
              (click)="showVotingDetails()">
             {{ 'ProjectCard.Info' | translate }}
           </a>
