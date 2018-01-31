@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application;
 using SmartValley.Application.Contracts.Scorings;
@@ -48,7 +49,9 @@ namespace SmartValley.WebApi.Estimates
             var comments = await _estimateCommentRepository.GetAsync(projectId, expertiseArea);
 
             var estimates = (from comment in comments
-                             join score in scores on new {comment.QuestionId, comment.ExpertAddress} equals new {score.QuestionId, score.ExpertAddress}
+                             join score in scores
+                                 on new {comment.QuestionId, ExpertAddress = comment.ExpertAddress.ToUpper(CultureInfo.InvariantCulture)}
+                                 equals new {score.QuestionId, ExpertAddress = score.ExpertAddress.ToUpper(CultureInfo.InvariantCulture)}
                              select CreateEstimate(score, comment)).ToArray();
 
             var requiredSubmissionsInArea = (double) await _scoringContractClient.GetRequiredSubmissionsInAreaCountAsync(scoring.ContractAddress);
@@ -76,9 +79,9 @@ namespace SmartValley.WebApi.Estimates
         private Task AddEstimateCommentsAsync(SubmitEstimatesRequest request)
         {
             var estimates = request
-                .EstimateComments
-                .Select(e => CreateEstimateComment(e, request.ProjectId, request.ExpertAddress))
-                .ToArray();
+                            .EstimateComments
+                            .Select(e => CreateEstimateComment(e, request.ProjectId, request.ExpertAddress))
+                            .ToArray();
 
             return _estimateCommentRepository.AddRangeAsync(estimates);
         }
