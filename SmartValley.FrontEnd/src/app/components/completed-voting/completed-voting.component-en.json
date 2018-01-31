@@ -1,6 +1,7 @@
 {
   "CompletedVoting": {
     "CompletedVotes": "Completed votes",
-    "Back": "Back"
+    "Back": "Back",
+    "CurrentVoting": "Current Voting"
   }
 }
