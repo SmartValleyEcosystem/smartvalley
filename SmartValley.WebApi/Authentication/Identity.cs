@@ -2,7 +2,7 @@
 
 namespace SmartValley.WebApi.Authentication
 {
-    public class User : IIdentity
+    public class Identity : IIdentity
     {
         public string EthereumAddress { get; }
 
@@ -12,7 +12,7 @@ namespace SmartValley.WebApi.Authentication
 
         public string Name { get; }
 
-        public User(string address, bool isAuthenticated)
+        public Identity(string address, bool isAuthenticated)
         {
             EthereumAddress = address;
             IsAuthenticated = isAuthenticated;

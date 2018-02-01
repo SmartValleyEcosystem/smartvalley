@@ -133,6 +133,22 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("Questions");
                 });
 
+            modelBuilder.Entity("SmartValley.Domain.Entities.Role", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("SmartValley.Domain.Entities.Scoring", b =>
                 {
                     b.Property<long>("Id")
@@ -186,6 +202,44 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasIndex("ApplicationId");
 
                     b.ToTable("TeamMembers");
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.Entities.User", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(42);
+
+                    b.Property<string>("Email")
+                        .IsRequired();
+
+                    b.Property<bool>("IsEmailConfirmed");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Address")
+                        .IsUnique();
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.Entities.UserRole", b =>
+                {
+                    b.Property<long>("UserId");
+
+                    b.Property<long>("RoleId");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.Voting", b =>
@@ -255,6 +309,19 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasOne("SmartValley.Domain.Entities.Application", "Application")
                         .WithMany()
                         .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.Entities.UserRole", b =>
+                {
+                    b.HasOne("SmartValley.Domain.Entities.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SmartValley.Domain.Entities.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
