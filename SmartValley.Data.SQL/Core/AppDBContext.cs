@@ -29,6 +29,12 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<VotingProject> IReadOnlyDataContext.VotingProjects => VotingProjects.AsNoTracking();
 
+        IQueryable<User> IReadOnlyDataContext.Users => Users.AsNoTracking();
+
+        IQueryable<Role> IReadOnlyDataContext.Roles => Roles.AsNoTracking();
+
+        IQueryable<UserRole> IReadOnlyDataContext.UserRoles => UserRoles.AsNoTracking();
+
         public DbSet<Application> Applications { get; set; }
 
         public DbSet<Project> Projects { get; set; }
@@ -44,6 +50,12 @@ namespace SmartValley.Data.SQL.Core
         public DbSet<Voting> Votings { get; set; }
 
         public DbSet<VotingProject> VotingProjects { get; set; }
+
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<Role> Roles { get; set; }
+
+        public DbSet<UserRole> UserRoles { get; set; }
 
         public IQueryable<T> GetAll<T>() where T : class
         {
@@ -95,6 +107,21 @@ namespace SmartValley.Data.SQL.Core
 
             modelBuilder.Entity<VotingProject>()
                         .HasIndex(v => new {v.ProjectId, v.VotingId});
+
+            modelBuilder.Entity<User>()
+                        .HasIndex(u => u.Email)
+                        .IsUnique();
+
+            modelBuilder.Entity<User>()
+                        .HasIndex(u => u.Address)
+                        .IsUnique();
+
+            modelBuilder.Entity<Role>()
+                        .HasIndex(r => r.Name)
+                        .IsUnique();
+
+            modelBuilder.Entity<UserRole>()
+                        .HasKey(u => new {u.UserId, u.RoleId});
         }
     }
 }

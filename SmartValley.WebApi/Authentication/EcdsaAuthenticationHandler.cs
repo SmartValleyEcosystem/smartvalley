@@ -48,7 +48,7 @@ namespace SmartValley.WebApi.Authentication
                 return AuthenticateResult.Fail("Signed message is invalid");
             }
 
-            var ticket = new AuthenticationTicket(new ClaimsPrincipal(new User(ethereumAddess, true)), EcdsaAuthenticationOptions.DefaultScheme);
+            var ticket = new AuthenticationTicket(new ClaimsPrincipal(new Identity(ethereumAddess, true)), EcdsaAuthenticationOptions.DefaultScheme);
             return AuthenticateResult.Success(ticket);
         }
 

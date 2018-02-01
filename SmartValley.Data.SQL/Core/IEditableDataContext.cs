@@ -15,6 +15,9 @@ namespace SmartValley.Data.SQL.Core
         DbSet<Question> Questions { get; set; }
         DbSet<Voting> Votings { get; set; }
         DbSet<VotingProject> VotingProjects { get; set; }
+        DbSet<User> Users { get; set; }
+        DbSet<Role> Roles { get; set; }
+        DbSet<UserRole> UserRoles { get; set; }
         Task<int> SaveAsync();
         EntityEntry<T> Entity<T>(T x) where T : class;
         DbSet<T> DbSet<T>() where T : class;
