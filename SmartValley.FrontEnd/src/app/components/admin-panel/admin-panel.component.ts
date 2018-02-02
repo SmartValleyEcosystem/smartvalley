@@ -29,6 +29,7 @@ export class AdminPanelComponent implements OnInit {
   }
 
   async deleteAsync(address: string) {
+    debugger
     const transactionHash = await this.adminContractClient.deleteAdminAsync(address);
     await this.adminApiClient.deleteAdminAsync(address, transactionHash);
     await this.updateAdminsAsync();
