@@ -23,14 +23,14 @@ export class AdminPanelComponent implements OnInit {
 
   async createAsync() {
     const address = await this.dialogService.showCreateAdminDialogAsync()
-    //await this.adminApiClient.addAdminAsync(address);
-    await this.adminContractClient.addAdminAsync(address);
+    const transactionHash = await this.adminContractClient.addAdminAsync(address);
+    await this.adminApiClient.addAdminAsync(address, transactionHash);
     await this.updateAdminsAsync();
   }
 
   async deleteAsync(address: string) {
-    //await this.adminApiClient.deleteAdminAsync(address);
-    await this.adminContractClient.deleteAdminAsync(address);
+    const transactionHash = await this.adminContractClient.deleteAdminAsync(address);
+    await this.adminApiClient.deleteAdminAsync(address, transactionHash);
     await this.updateAdminsAsync();
   }
 

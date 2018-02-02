@@ -30,7 +30,7 @@ export class AdminContractClient implements ContractClient {
     return ConverterHelper.extractBoolValue(await token.isAdministrator(accountAddress));
   }
 
-  public async addAdminAsync(accountAddress: string): Promise<number> {
+  public async addAdminAsync(accountAddress: string): Promise<string> {
     const contract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.authenticationService.getCurrentUser().account;
     return await contract.add(
@@ -38,7 +38,7 @@ export class AdminContractClient implements ContractClient {
       {from: fromAddress});
   }
 
-  public async deleteAdminAsync(accountAddress: string): Promise<number> {
+  public async deleteAdminAsync(accountAddress: string): Promise<string> {
     const contract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.authenticationService.getCurrentUser().account;
     return await contract.remove(

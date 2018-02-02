@@ -2,6 +2,8 @@
 {
     public class AdminRequest
     {
-        public string address { get; set; }
+        public string Address { get; set; }
+
+        public string TransactionHash { get; set; }
     }
 }

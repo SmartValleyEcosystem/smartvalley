@@ -10,19 +10,25 @@ export class AdminApiClient extends BaseApiClient {
     super();
   }
 
-  public async addAdminAsync(address: string): Promise<void> {
-    await this.http.post(this.baseApiUrl + '/admin', <AdminRequest> { address: address}).toPromise();
+  public async addAdminAsync(address: string, transactionHash: string): Promise<void> {
+    await this.http.post(this.baseApiUrl + '/admin', <AdminRequest> {
+      address: address,
+      transactionHash: transactionHash
+    }).toPromise();
   }
 
-  public async deleteAdminAsync(address: string): Promise<void> {
-    await this.http.delete(this.baseApiUrl + '/admin/' + address).toPromise();
+  public async deleteAdminAsync(address: string, transactionHash: string): Promise<void> {
+    await this.http.post(this.baseApiUrl + '/admin/', <AdminRequest> {
+      address: address,
+      transactionHash: transactionHash
+    }).toPromise();
   }
 
   public isAdminAsync(address: string): Promise<boolean> {
-    return this.http.post<boolean>(this.baseApiUrl + '/admin/isAdmin', <AdminRequest> { address: address}).toPromise();
+    return this.http.post<boolean>(this.baseApiUrl + '/admin/isAdmin', <AdminRequest> {address: address}).toPromise();
   }
 
   public getAllAdminsAsync(): Promise<any> {
-    return this.http.get<CollectionResponse<AdminRequest>> (this.baseApiUrl + '/admin').toPromise();
+    return this.http.get<CollectionResponse<AdminRequest>>(this.baseApiUrl + '/admin').toPromise();
   }
 }
