@@ -1,17 +1,19 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {BalanceService} from '../../services/balance/balance.service';
 import {Balance} from '../../services/balance/balance';
 import {BlockiesService} from '../../services/blockies-service';
+import {AdminApiClient} from '../../api/admin/admin-api-client';
+import {AdminContractClient} from '../../services/contract-clients/admin-contract-client';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
 
   public currentBalance: number;
   public currentTokens: number;
@@ -19,27 +21,34 @@ export class HeaderComponent {
   public showReceiveEtherButton: boolean;
   public showReceiveSVTButton: boolean;
   public isAuthenticated: boolean;
+  public isAdmin: boolean;
   public accountAddress: string;
   public accountImgUrl: string;
 
   constructor(private router: Router,
               private balanceService: BalanceService,
               private blockiesService: BlockiesService,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              private adminContractClient: AdminContractClient) {
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
-    this.authenticationService.accountChanged.subscribe((user) => this.updateAccount(user));
-    const currentUser = this.authenticationService.getCurrentUser();
-    this.updateAccount(currentUser);
+    this.authenticationService.accountChanged.subscribe(async (user) => await this.updateAccount(user));
     this.updateBalance(this.balanceService.balance);
   }
 
-  private updateAccount(user: User): void {
+  public async ngOnInit(): Promise<void> {
+    const currentUser = this.authenticationService.getCurrentUser();
+    await this.updateAccount(currentUser);
+  }
+
+  private async updateAccount(user: User): Promise<void> {
     if (user) {
       this.isAuthenticated = true;
       this.accountAddress = user.account;
       this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
+      this.isAdmin = await this.adminContractClient.isAdminAsync(user.account);
     } else {
       this.isAuthenticated = false;
+      this.isAdmin = false;
     }
   }
 
@@ -70,6 +79,10 @@ export class HeaderComponent {
 
   async receiveSVT() {
     await this.balanceService.receiveSvtAsync();
+  }
+
+  async navigateToAdminPanel() {
+    await this.router.navigate([Paths.Admin]);
   }
 
   async navigateToAccount() {

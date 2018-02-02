@@ -15,6 +15,7 @@ import {AlertModalData} from '../components/common/alert-modal/alert-modal-data'
 import {FreeScoringConfirmationModalComponent} from '../components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component';
 import {VoteModalData} from '../components/common/vote-modal/vote-modal-data';
 import {VoteModalComponent} from '../components/common/vote-modal/vote-modal.component';
+import {AddAdminModalComponent} from '../components/common/add-admin-modal/add-admin-modal.component';
 
 @Injectable()
 export class DialogService {
@@ -49,6 +50,12 @@ export class DialogService {
 
   public showFreeScoringConfirmationDialogAsync(): Promise<boolean> {
     return this.openModalAsync(FreeScoringConfirmationModalComponent, {});
+  }
+
+  public showCreateAdminDialogAsync(): Promise<string> {
+    return this.openModal(AddAdminModalComponent, {})
+      .afterClosed()
+      .toPromise<string>();
   }
 
   public showVoteDialogAsync(projectName: string,

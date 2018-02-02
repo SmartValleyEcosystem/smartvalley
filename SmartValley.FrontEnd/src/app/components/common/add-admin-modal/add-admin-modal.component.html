@@ -1,0 +1,17 @@
+<div>
+  <h2 mat-mat-title>Enter address</h2>
+  <hr>
+  <form [formGroup]="form" novalidate>
+    <mat-dialog-content>
+        <mat-form-field>
+          <input matInput formControlName="address" #required>
+        </mat-form-field>
+    </mat-dialog-content>
+    <hr>
+    <mat-dialog-actions class="d-flex justify-content-center">
+      <button mat-raised-button (click)="submit(form)" [disabled]="form.invalid" class="col-2 sv-default-btn btn-space">
+        Create
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>

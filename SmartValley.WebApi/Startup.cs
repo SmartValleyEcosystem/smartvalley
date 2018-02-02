@@ -21,6 +21,7 @@ using SmartValley.Application.Contracts.Votings;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Data.SQL.Repositories;
 using SmartValley.Domain.Interfaces;
+using SmartValley.WebApi.Admin;
 using SmartValley.WebApi.Applications;
 using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.Estimates;
@@ -110,6 +111,8 @@ namespace SmartValley.WebApi
             services.AddTransient<IVotingService, VotingService>();
             services.AddTransient<IVotingRepository, VotingRepository>();
             services.AddTransient<IVotingProjectRepository, VotingProjectRepository>();
+            //services.AddTransient<IAdminService, AdminService>();
+            services.AddSingleton<IAdminService, MockAdminService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

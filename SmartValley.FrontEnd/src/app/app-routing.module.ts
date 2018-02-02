@@ -21,6 +21,7 @@ import {VotingCardComponent} from './components/voting-card/voting-card.componen
 import {ShouldHaveSvtGuard} from './services/balance/should-have-svt.guard';
 import {SvtRequiredType} from './services/balance/svt-required-type.enum';
 import {CompletedVotingComponent} from './components/completed-voting/completed-voting.component';
+import {AdminPanelComponent} from './components/admin-panel/admin-panel.component';
 import {CompletedVotingsComponent} from './components/completed-votings/completed-votings.component';
 
 const appRoutes: Routes = [
@@ -34,6 +35,11 @@ const appRoutes: Routes = [
         pathMatch: 'full',
         component: MyProjectsComponent,
         canActivate: [ShouldBeAuthenticatedGuard]
+      },
+      {
+        path: Paths.Admin,
+        pathMatch: 'full',
+        component: AdminPanelComponent
       },
       {
         path: Paths.Voting + '/:id',
