@@ -1,4 +1,5 @@
 export enum GuardType {
   ShouldHaveEth,
-  ShouldHaveSvt
+  ShouldHaveSvt,
+  IsAdmin
 }

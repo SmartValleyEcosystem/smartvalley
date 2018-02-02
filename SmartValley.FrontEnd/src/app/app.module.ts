@@ -81,7 +81,7 @@ import {FormatDatePipe} from './utils/format-date.pipe';
 import {AdminPanelComponent} from './components/admin-panel/admin-panel.component';
 import {DataTableModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
-import { AddAdminModalComponent } from './components/common/add-admin-modal/add-admin-modal.component';
+import {AddAdminModalComponent} from './components/common/add-admin-modal/add-admin-modal.component';
 
 @NgModule({
   declarations: [

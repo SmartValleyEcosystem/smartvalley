@@ -23,6 +23,7 @@ import {SvtRequiredType} from './services/balance/svt-required-type.enum';
 import {CompletedVotingComponent} from './components/completed-voting/completed-voting.component';
 import {AdminPanelComponent} from './components/admin-panel/admin-panel.component';
 import {CompletedVotingsComponent} from './components/completed-votings/completed-votings.component';
+import {IsAdminGuard} from './services/authentication/is-admin-guard';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
