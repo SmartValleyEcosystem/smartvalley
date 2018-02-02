@@ -24,10 +24,6 @@ export class AdminApiClient extends BaseApiClient {
     }).toPromise();
   }
 
-  public isAdminAsync(address: string): Promise<boolean> {
-    return this.http.post<boolean>(this.baseApiUrl + '/admin/isAdmin', <AdminRequest> {address: address}).toPromise();
-  }
-
   public getAllAdminsAsync(): Promise<any> {
     return this.http.get<CollectionResponse<AdminRequest>>(this.baseApiUrl + '/admin').toPromise();
   }
