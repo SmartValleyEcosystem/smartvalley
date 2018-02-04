@@ -55,6 +55,6 @@ export class AdminPanelComponent implements OnInit {
 
   private async updateAdminsAsync() {
     const response = await this.adminApiClient.getAllAdminsAsync();
-    this.admins = response.items;
+    this.admins = response.items.map(i => i.address);
   }
 }

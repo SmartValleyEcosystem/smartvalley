@@ -18,12 +18,9 @@ import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-au
 import {MyProjectsComponent} from './components/my-projects/my-projects.component';
 import {VotingComponent} from './components/voting/voting.component';
 import {VotingCardComponent} from './components/voting-card/voting-card.component';
-import {ShouldHaveSvtGuard} from './services/balance/should-have-svt.guard';
-import {SvtRequiredType} from './services/balance/svt-required-type.enum';
 import {CompletedVotingComponent} from './components/completed-voting/completed-voting.component';
 import {AdminPanelComponent} from './components/admin-panel/admin-panel.component';
 import {CompletedVotingsComponent} from './components/completed-votings/completed-votings.component';
-import {IsAdminGuard} from './services/authentication/is-admin-guard';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
