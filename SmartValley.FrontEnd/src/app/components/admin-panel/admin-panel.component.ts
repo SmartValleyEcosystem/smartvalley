@@ -5,6 +5,7 @@ import {AdminContractClient} from '../../services/contract-clients/admin-contrac
 import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {Paths} from '../../paths';
 import {Router} from '@angular/router';
+import {AdminResponse} from '../../api/admin/admin-response';
 
 @Component({
   selector: 'app-admin-panel',
@@ -13,7 +14,7 @@ import {Router} from '@angular/router';
 })
 export class AdminPanelComponent implements OnInit {
 
-  admins: string[];
+  admins: AdminResponse[];
 
   constructor(private router: Router,
               private adminApiClient: AdminApiClient,
@@ -55,6 +56,6 @@ export class AdminPanelComponent implements OnInit {
 
   private async updateAdminsAsync() {
     const response = await this.adminApiClient.getAllAdminsAsync();
-    this.admins = response.items.map(i => i.address);
+    this.admins = response.items;
   }
 }
