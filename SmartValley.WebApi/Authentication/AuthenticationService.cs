@@ -51,12 +51,12 @@ namespace SmartValley.WebApi.Authentication
             var claimsIdentity = CreateClaimsIdentity(user.Address, roles);
 
             var jwtSecurityToken = new JwtSecurityToken(
-                SiteOptions.Issuer,
-                SiteOptions.Audience,
+                AuthenticationOptions.Issuer,
+                AuthenticationOptions.Audience,
                 claimsIdentity.Claims,
                 now.UtcDateTime,
-                now.UtcDateTime.Add(TimeSpan.FromMinutes(SiteOptions.LifetimeInMinutes)),
-                new SigningCredentials(SiteOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+                now.UtcDateTime.Add(TimeSpan.FromMinutes(AuthenticationOptions.LifetimeInMinutes)),
+                new SigningCredentials(AuthenticationOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
 
             var token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
             return new Identity(user.Address, true, token, roles.Select(r => r.Name).ToArray());
