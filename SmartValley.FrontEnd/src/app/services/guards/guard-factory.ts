@@ -4,12 +4,10 @@ import {ShouldHaveSvtGuard} from '../balance/should-have-svt.guard';
 import {Injectable} from '@angular/core';
 import {BalanceService} from '../balance/balance.service';
 import {CanActivate} from '@angular/router';
-import {AdminContractClient} from '../contract-clients/admin-contract-client';
 
 @Injectable()
 export class GuardFactory {
-  constructor(private adminContractClient: AdminContractClient,
-              private balanceService: BalanceService) {
+  constructor(private balanceService: BalanceService) {
   }
 
   public create(type: GuardType): CanActivate {
