@@ -55,7 +55,7 @@ namespace SmartValley.WebApi
         // ReSharper disable once UnusedMember.Global
         public void ConfigureServices(IServiceCollection services)
         {
-            services.ConfigureOptions(Configuration, typeof(NethereumOptions), typeof(SiteOptions));
+            services.ConfigureOptions(Configuration, typeof(NethereumOptions), typeof(AuthenticationOptions));
 
             ConfigureCorsPolicy(services);
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "SmartValley API", Version = "v1"}); });
@@ -67,11 +67,11 @@ namespace SmartValley.WebApi
                                       options.TokenValidationParameters = new TokenValidationParameters
                                                                           {
                                                                               ValidateIssuer = true,
-                                                                              ValidIssuer = SiteOptions.Issuer,
+                                                                              ValidIssuer = AuthenticationOptions.Issuer,
                                                                               ValidateAudience = true,
-                                                                              ValidAudience = SiteOptions.Audience,
+                                                                              ValidAudience = AuthenticationOptions.Audience,
                                                                               ValidateLifetime = true,
-                                                                              IssuerSigningKey = SiteOptions.GetSymmetricSecurityKey(),
+                                                                              IssuerSigningKey = AuthenticationOptions.GetSymmetricSecurityKey(),
                                                                               ValidateIssuerSigningKey = true
                                                                           };
                                   });
@@ -159,7 +159,7 @@ namespace SmartValley.WebApi
         private void ConfigureCorsPolicy(IServiceCollection services)
         {
             var sp = services.BuildServiceProvider();
-            var siteOptions = sp.GetService<SiteOptions>();
+            var siteOptions = sp.GetService<AuthenticationOptions>();
             var url = siteOptions.BaseUrl;
             if (!_currentEnvironment.IsProduction())
             {
