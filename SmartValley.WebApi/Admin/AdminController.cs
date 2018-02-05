@@ -40,9 +40,8 @@ namespace SmartValley.WebApi.Admin
             });
         }
 
-        [HttpPost]
-        [Route("delete")]
-        public async Task<IActionResult> Delete([FromBody] AdminRequest request)
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromQuery] AdminRequest request)
         {
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
             await _service.DeleteAsync(request.Address);

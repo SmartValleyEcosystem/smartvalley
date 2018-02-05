@@ -1,4 +1,4 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BaseApiClient} from '../base-api-client';
 import {AdminRequest} from './admin-request';
@@ -19,10 +19,9 @@ export class AdminApiClient extends BaseApiClient {
   }
 
   public async deleteAsync(address: string, transactionHash: string): Promise<void> {
-    await this.http.post(this.baseApiUrl + '/admin/delete', <AdminRequest> {
-      address: address,
-      transactionHash: transactionHash
-    }).toPromise();
+    const params = new HttpParams().set('address', address);
+    params.set('transactionHash', transactionHash);
+    await this.http.delete(this.baseApiUrl + '/admin/delete', {params}).toPromise();
   }
 
   public getAllAsync(): Promise<CollectionResponse<AdminResponse>> {
