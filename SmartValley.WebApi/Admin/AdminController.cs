@@ -9,7 +9,7 @@ using SmartValley.WebApi.WebApi;
 namespace SmartValley.WebApi.Admin
 {
     [Route("api/admin")]
-    //[Authorize]
+    //TODO 583 [Authorize]
     public class AdminController : Controller
     {
         private readonly IAdminService _service;
