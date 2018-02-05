@@ -26,10 +26,9 @@ export class AddAdminModalComponent implements OnInit {
 
   public static validateWalletAddress(control: AbstractControl) {
     const address = control.value;
-    const error = {'walletAddress': true}
     if (!address || /^(0x)[0-9a-f]{40}$/i.test(address)) {
       return null;
     }
-    return error;
+    return {'walletAddress': true};
   }
 }
