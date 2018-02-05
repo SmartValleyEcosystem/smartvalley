@@ -7,6 +7,10 @@
         ValidatationError,
         ProjectNotFound,
         VotingSprintAlreadyInProgress,
-        NotEnoughProjectsForSprintStart
+        NotEnoughProjectsForSprintStart,
+        EmailAlreadyExists,
+        InvalidSignature,
+        EmailNotConfrimed,
+        UserIsNotExist
     }
 }
