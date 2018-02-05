@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using IcoLab.Common.Web.WebApi;
 using IcoLab.Web.Common.Extensions;
-using IcoLab.Web.Common.WebApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;

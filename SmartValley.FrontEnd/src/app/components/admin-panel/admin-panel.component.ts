@@ -14,7 +14,7 @@ import {AdminResponse} from '../../api/admin/admin-response';
 })
 export class AdminPanelComponent implements OnInit {
 
-  public admins: AdminResponse[];
+  public admins: Array<AdminResponse> = [];
 
   constructor(private router: Router,
               private adminApiClient: AdminApiClient,
