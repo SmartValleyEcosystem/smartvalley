@@ -28,8 +28,7 @@ export class HeaderComponent implements OnInit {
   constructor(private router: Router,
               private balanceService: BalanceService,
               private blockiesService: BlockiesService,
-              private authenticationService: AuthenticationService,
-              private adminContractClient: AdminContractClient) {
+              private authenticationService: AuthenticationService) {
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
     this.authenticationService.accountChanged.subscribe(async (user) => await this.updateAccount(user));
     this.updateBalance(this.balanceService.balance);
@@ -45,7 +44,7 @@ export class HeaderComponent implements OnInit {
       this.isAuthenticated = true;
       this.accountAddress = user.account;
       this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
-      this.isAdmin = await this.adminContractClient.isAdminAsync(user.account);
+      this.isAdmin = user.isAdmin;
     } else {
       this.isAuthenticated = false;
       this.isAdmin = false;

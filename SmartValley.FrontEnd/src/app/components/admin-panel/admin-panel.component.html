@@ -13,6 +13,7 @@
   </div>
   <p-dataTable [value]="admins">
     <p-column field="address" header="Address"></p-column>
+    <p-column field="email" header="Email"></p-column>
     <p-column header="Actions">
       <ng-template let-admin="rowData" pTemplate type="body">
         <button (click)="deleteAsync(admin.address)" class="btn btn-link">

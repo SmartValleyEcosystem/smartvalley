@@ -1,4 +1,4 @@
-import {EventEmitter, Injectable} from '@angular/core';
+import {EventEmitter, Injectable, Injector} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import {Web3Service} from '../web3-service';
 import {Router} from '@angular/router';
@@ -10,6 +10,7 @@ import 'rxjs/add/operator/map';
 import {Ng2DeviceService} from 'ng2-device-detector';
 import {Constants} from '../../constants';
 import {DialogService} from '../dialog-service';
+import {AdminContractClient} from '../contract-clients/admin-contract-client';
 
 @Injectable()
 export class AuthenticationService {
@@ -22,8 +23,13 @@ export class AuthenticationService {
 
   constructor(private web3Service: Web3Service,
               private router: Router,
+              private injector: Injector,
               private deviceService: Ng2DeviceService,
               private dialogService: DialogService) {
+  }
+
+  private get adminContractClient(): AdminContractClient {
+    return this.injector.get(AdminContractClient);
   }
 
   public async initializeAsync(): Promise<void> {
@@ -59,14 +65,15 @@ export class AuthenticationService {
     }
 
     let signature = this.getSignatureByAccount(currentAccount);
-    if (await this.shouldSignAccountAsync(currentAccount, signature)) {
+    const isAdmin = await this.adminContractClient.isAdminAsync(currentAccount);
+    if (await this.shouldSignAccountAsync(currentAccount, signature, isAdmin)) {
       try {
         signature = await this.web3Service.signAsync(AuthenticationService.MESSAGE_TO_SIGN, currentAccount);
       } catch (e) {
         return false;
       }
     }
-    this.startUserSession(currentAccount, signature);
+    this.startUserSession(currentAccount, signature, isAdmin);
     return true;
   }
 
@@ -82,20 +89,20 @@ export class AuthenticationService {
     localStorage.setItem(account, signature);
   }
 
-  private async shouldSignAccountAsync(currentAccount: string, savedSignature: string): Promise<boolean> {
+  private async shouldSignAccountAsync(currentAccount: string, savedSignature: string, isAdmin: boolean): Promise<boolean> {
     let user = this.getCurrentUser();
     if (user == null || user.account !== currentAccount) {
-      user = {account: currentAccount, signature: savedSignature};
+      user = {account: currentAccount, signature: savedSignature, isAdmin: isAdmin};
     }
     return !await this.checkSignatureAsync(user.account, user.signature);
   }
 
-  private startUserSession(account: string, signature: string) {
+  private startUserSession(account: string, signature: string, isAdmin: boolean) {
     const user = this.getCurrentUser();
-    if (user != null && user.account === account && user.signature === signature) {
+    if (user != null && user.account === account && user.signature === signature && user.isAdmin === isAdmin) {
       return;
     }
-    this.saveCurrentUser({account, signature});
+    this.saveCurrentUser({account, signature, isAdmin});
     this.saveSignatureForAccount(account, signature);
     this.startBackgroundChecker();
   }
@@ -146,10 +153,12 @@ export class AuthenticationService {
     if (user.account === currentAccount) {
       return;
     }
+
+    const isAdmin = await this.adminContractClient.isAdminAsync(currentAccount);
     const savedSignature = this.getSignatureByAccount(currentAccount);
     const isSavedSignatureValid = await this.checkSignatureAsync(currentAccount, savedSignature);
     if (isSavedSignatureValid) {
-      this.saveCurrentUser({account: currentAccount, signature: savedSignature});
+      this.saveCurrentUser({account: currentAccount, signature: savedSignature, isAdmin: isAdmin});
     } else {
       this.stopUserSession();
     }

@@ -14,8 +14,7 @@ export class AdminContractClient implements ContractClient {
   public abi: string;
   public address: string;
 
-  constructor(private authenticationService: AuthenticationService,
-              private web3Service: Web3Service,
+  constructor(private web3Service: Web3Service,
               private contractClient: ContractApiClient) {
   }
 
@@ -30,17 +29,15 @@ export class AdminContractClient implements ContractClient {
     return ConverterHelper.extractBoolValue(await token.isAdministrator(accountAddress));
   }
 
-  public async addAsync(accountAddress: string): Promise<string> {
+  public async addAsync(accountAddress: string, fromAddress: string): Promise<string> {
     const contract = this.web3Service.getContract(this.abi, this.address);
-    const fromAddress = this.authenticationService.getCurrentUser().account;
     return await contract.add(
       accountAddress,
       {from: fromAddress});
   }
 
-  public async deleteAsync(accountAddress: string): Promise<string> {
+  public async deleteAsync(accountAddress: string, fromAddress: string): Promise<string> {
     const contract = this.web3Service.getContract(this.abi, this.address);
-    const fromAddress = this.authenticationService.getCurrentUser().account;
     return await contract.remove(
       accountAddress,
       {from: fromAddress});
