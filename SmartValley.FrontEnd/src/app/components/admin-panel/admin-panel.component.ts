@@ -21,13 +21,10 @@ export class AdminPanelComponent implements OnInit {
               private adminContractClient: AdminContractClient,
               private authenticationService: AuthenticationService,
               private dialogService: DialogService) {
-    this.authenticationService.accountChanged.subscribe(async (user) => await this.checkAdmin(user));
   }
 
   async ngOnInit(): Promise<void> {
     await this.updateAdminsAsync();
-    const currentUser = this.authenticationService.getCurrentUser();
-    await this.checkAdmin(currentUser);
   }
 
   async createAsync() {
@@ -36,17 +33,6 @@ export class AdminPanelComponent implements OnInit {
     const transactionHash = await this.adminContractClient.addAsync(address, fromAddress);
     await this.adminApiClient.addAsync(address, transactionHash);
     await this.updateAdminsAsync();
-  }
-
-  private async checkAdmin(user: User): Promise<void> {
-    if (user) {
-      const isAdmin = await this.adminContractClient.isAdminAsync(user.account);
-      if (!isAdmin) {
-        await this.router.navigate([Paths.Root]);
-      }
-    } else {
-      await this.router.navigate([Paths.Root]);
-    }
   }
 
   async deleteAsync(address: string) {

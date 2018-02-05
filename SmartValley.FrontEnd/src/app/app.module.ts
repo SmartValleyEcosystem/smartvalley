@@ -82,6 +82,7 @@ import {AdminPanelComponent} from './components/admin-panel/admin-panel.componen
 import {DataTableModule} from 'primeng/primeng';
 import {TableModule} from 'primeng/table';
 import {AddAdminModalComponent} from './components/common/add-admin-modal/add-admin-modal.component';
+import {ShouldBeAdminGuard} from './services/authentication/should-be-admin.guard';
 
 @NgModule({
   declarations: [
@@ -199,6 +200,7 @@ import {AddAdminModalComponent} from './components/common/add-admin-modal/add-ad
     ShouldHaveEthGuard,
     ShouldHaveSvtGuard,
     ShouldBeAuthenticatedGuard,
+    ShouldBeAdminGuard,
     GuardFactory,
     CompositeGuard
   ],
