@@ -30,16 +30,16 @@ export class HeaderComponent implements OnInit {
               private blockiesService: BlockiesService,
               private authenticationService: AuthenticationService) {
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
-    this.authenticationService.accountChanged.subscribe(async (user) => await this.updateAccount(user));
+    this.authenticationService.accountChanged.subscribe(async (user) => this.updateAccount(user));
     this.updateBalance(this.balanceService.balance);
   }
 
-  public async ngOnInit(): Promise<void> {
+  public ngOnInit(): void {
     const currentUser = this.authenticationService.getCurrentUser();
-    await this.updateAccount(currentUser);
+    this.updateAccount(currentUser);
   }
 
-  private async updateAccount(user: User): Promise<void> {
+  private updateAccount(user: User): void {
     if (user) {
       this.isAuthenticated = true;
       this.accountAddress = user.account;
