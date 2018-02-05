@@ -19,9 +19,8 @@ export class AdminApiClient extends BaseApiClient {
   }
 
   public async deleteAsync(address: string, transactionHash: string): Promise<void> {
-    const params = new HttpParams().set('address', address);
-    params.set('transactionHash', transactionHash);
-    await this.http.delete(this.baseApiUrl + '/admin/delete', {params}).toPromise();
+    const queryString = '?address=' + address + '&transactionHash=' + transactionHash;
+    await this.http.delete(this.baseApiUrl + '/admin' + queryString).toPromise();
   }
 
   public getAllAsync(): Promise<CollectionResponse<AdminResponse>> {
