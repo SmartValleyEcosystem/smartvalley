@@ -1,23 +1,27 @@
-﻿using System.Security.Principal;
+﻿using System.Collections.Generic;
+using System.Security.Principal;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace SmartValley.WebApi.Authentication
 {
-    public class Identity : IIdentity
+    public class Identity
     {
-        public string EthereumAddress { get; }
-
-        public string AuthenticationType { get; }
+        public string Address { get; }
 
         public bool IsAuthenticated { get; }
 
-        public string Name { get; }
+        public string Token { get; set; }
 
-        public Identity(string address, bool isAuthenticated)
+        public IReadOnlyCollection<string> Roles { get; set; }
+
+
+        public Identity(string address, bool isAuthenticated, string token, IReadOnlyCollection<string> roles)
         {
-            EthereumAddress = address;
+            Address = address;
             IsAuthenticated = isAuthenticated;
-            Name = address;
-            AuthenticationType = EcdsaAuthenticationOptions.DefaultScheme;
+            Token = token;
+            Roles = roles;
         }
     }
 }

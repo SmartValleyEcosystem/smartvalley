@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using IcoLab.Common.Web.WebApi;
 using IcoLab.Web.Common.Extensions;
+using IcoLab.Web.Common.WebApi;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Nethereum.JsonRpc.IpcClient;
 using Nethereum.Signer;
 using Nethereum.Web3;
@@ -55,15 +57,23 @@ namespace SmartValley.WebApi
             services.ConfigureOptions(Configuration, typeof(NethereumOptions), typeof(SiteOptions));
 
             ConfigureCorsPolicy(services);
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "SmartValley API", Version = "v1"}); });
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "SmartValley API", Version = "v1" }); });
-
-            services.AddAuthentication(options =>
-                                       {
-                                           options.DefaultAuthenticateScheme = EcdsaAuthenticationOptions.DefaultScheme;
-                                           options.DefaultChallengeScheme = EcdsaAuthenticationOptions.DefaultScheme;
-                                       })
-                    .AddScheme<EcdsaAuthenticationOptions, EcdsaAuthenticationHandler>(EcdsaAuthenticationOptions.DefaultScheme, options => { });
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                                  {
+                                      options.RequireHttpsMetadata = _currentEnvironment.IsProduction();
+                                      options.TokenValidationParameters = new TokenValidationParameters
+                                                                          {
+                                                                              ValidateIssuer = true,
+                                                                              ValidIssuer = SiteOptions.Issuer,
+                                                                              ValidateAudience = true,
+                                                                              ValidAudience = SiteOptions.Audience,
+                                                                              ValidateLifetime = true,
+                                                                              IssuerSigningKey = SiteOptions.GetSymmetricSecurityKey(),
+                                                                              ValidateIssuerSigningKey = true
+                                                                          };
+                                  });
 
             services.AddSingleton(provider => InitializeWeb3(provider.GetService<NethereumOptions>().RpcAddress));
             services.AddSingleton<IClock, UtcClock>();
@@ -141,7 +151,7 @@ namespace SmartValley.WebApi
                             await next();
                         }
                     })
-               .UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new List<string> { "index.html" } })
+               .UseDefaultFiles(new DefaultFilesOptions {DefaultFileNames = new List<string> {"index.html"}})
                .UseStaticFiles()
                .UseMvc();
         }
