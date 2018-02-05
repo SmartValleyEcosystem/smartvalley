@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using IcoLab.Common.Web.WebApi;
 using IcoLab.Web.Common.Extensions;
 using IcoLab.Web.Common.WebApi;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -121,8 +122,7 @@ namespace SmartValley.WebApi
             services.AddTransient<IVotingService, VotingService>();
             services.AddTransient<IVotingRepository, VotingRepository>();
             services.AddTransient<IVotingProjectRepository, VotingProjectRepository>();
-            //services.AddTransient<IAdminService, AdminService>();
-            services.AddSingleton<IAdminService, MockAdminService>();
+            services.AddTransient<IAdminService, AdminService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

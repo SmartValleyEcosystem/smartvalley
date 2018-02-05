@@ -36,7 +36,7 @@ namespace SmartValley.WebApi.Admin
             var admins = await _service.GetAllAsync();
             return Ok(new CollectionResponse<AdminResponse>
             {
-                Items = admins.Select(i => new AdminResponse { Address = i }).ToArray()
+                Items = admins.Select(i => new AdminResponse { Address = i.Address, Email = i.Email }).ToArray()
             });
         }
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Admin
 {
@@ -9,7 +10,7 @@ namespace SmartValley.WebApi.Admin
 
         Task DeleteAsync(string address);
 
-        Task<IReadOnlyCollection<string>> GetAllAsync();
+        Task<IReadOnlyCollection<User>> GetAllAsync();
 
         Task<bool> IsAdminAsync(string address);
     }

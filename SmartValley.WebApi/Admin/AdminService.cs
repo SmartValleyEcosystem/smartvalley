@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Admin
 {
@@ -16,7 +17,7 @@ namespace SmartValley.WebApi.Admin
             throw new NotImplementedException();
         }
 
-        public Task<IReadOnlyCollection<string>> GetAllAsync()
+        public Task<IReadOnlyCollection<User>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
