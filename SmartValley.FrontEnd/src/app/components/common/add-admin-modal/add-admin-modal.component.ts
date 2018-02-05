@@ -16,8 +16,7 @@ export class AddAdminModalComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      address: ['', [Validators.required, AddAdminModalComponent.validateWalletAddress]
-      ],
+      address: ['', [Validators.required, AddAdminModalComponent.validateWalletAddress]],
     });
   }
 
