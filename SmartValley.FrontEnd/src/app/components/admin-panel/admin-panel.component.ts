@@ -3,7 +3,6 @@ import {AdminApiClient} from '../../api/admin/admin-api-client';
 import {DialogService} from '../../services/dialog-service';
 import {AdminContractClient} from '../../services/contract-clients/admin-contract-client';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
-import {Paths} from '../../paths';
 import {Router} from '@angular/router';
 import {AdminResponse} from '../../api/admin/admin-response';
 

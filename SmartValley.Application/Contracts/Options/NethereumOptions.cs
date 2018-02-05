@@ -23,6 +23,5 @@
         public ContractOptions ScoringContract { get; set; }
 
         public VotingManagerContractOptions VotingManagerContract { get; set; }
-
     }
 }
