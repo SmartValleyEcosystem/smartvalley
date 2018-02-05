@@ -14,7 +14,7 @@
 
         public ContractOptions EtherManagerContract { get; set; }
 
-        public ContractOptions AdminRegisterContract { get; set; }
+        public ContractOptions AdminRegistryContract { get; set; }
 
         public ContractOptions ScoringManagerContract { get; set; }
 
@@ -23,5 +23,6 @@
         public ContractOptions ScoringContract { get; set; }
 
         public VotingManagerContractOptions VotingManagerContract { get; set; }
+
     }
 }

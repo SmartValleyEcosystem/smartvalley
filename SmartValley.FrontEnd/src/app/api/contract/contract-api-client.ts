@@ -14,8 +14,8 @@ export class ContractApiClient extends BaseApiClient {
       .toPromise();
   }
 
-  async getAdminRegisterContractAsync(): Promise<ContractResponse> {
-    return await this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/adminRegister')
+  async getAdminRegistryContractAsync(): Promise<ContractResponse> {
+    return await this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/adminRegistry')
       .toPromise();
   }
 

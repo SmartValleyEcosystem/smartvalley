@@ -20,7 +20,7 @@ export class AdminContractClient implements ContractClient {
   }
 
   public async initializeAsync(): Promise<void> {
-    const tokenContract = await this.contractClient.getAdminRegisterContractAsync();
+    const tokenContract = await this.contractClient.getAdminRegistryContractAsync();
     this.abi = tokenContract.abi;
     this.address = tokenContract.address;
   }
