@@ -27,6 +27,7 @@ import {QuestionService} from './services/questions/question-service';
 import {ContractApiClient} from './api/contract/contract-api-client';
 import {ErrorInterceptor} from './api/error-interceptor';
 import {TokenContractClient} from './services/contract-clients/token-contract-client';
+import {AdminContractClient} from './services/contract-clients/admin-contract-client';
 import {MinterContractClient} from './services/contract-clients/minter-contract-client';
 import {ScoringApiClient} from './api/scoring/scoring-api-client';
 import {ProjectCardComponent} from './components/common/project-card/project-card.component';
@@ -72,10 +73,16 @@ import {VotingCardComponent} from './components/voting-card/voting-card.componen
 import {VotingManagerContractClient} from './services/contract-clients/voting-manager-contract-client';
 import {FreeScoringConfirmationModalComponent} from './components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component';
 import {VotingContractClient} from './services/contract-clients/voting-contract-client';
-import { VoteModalComponent } from './components/common/vote-modal/vote-modal.component';
-import { CompletedVotingComponent } from './components/completed-voting/completed-voting.component';
-import { CompletedVotingsComponent } from './components/completed-votings/completed-votings.component';
-import { FormatDatePipe } from './utils/format-date.pipe';
+import {AdminApiClient} from './api/admin/admin-api-client';
+import {VoteModalComponent} from './components/common/vote-modal/vote-modal.component';
+import {CompletedVotingComponent} from './components/completed-voting/completed-voting.component';
+import {CompletedVotingsComponent} from './components/completed-votings/completed-votings.component';
+import {FormatDatePipe} from './utils/format-date.pipe';
+import {AdminPanelComponent} from './components/admin-panel/admin-panel.component';
+import {DataTableModule} from 'primeng/primeng';
+import {TableModule} from 'primeng/table';
+import {AddAdminModalComponent} from './components/common/add-admin-modal/add-admin-modal.component';
+import {ShouldBeAdminGuard} from './services/authentication/should-be-admin.guard';
 
 @NgModule({
   declarations: [
@@ -110,7 +117,9 @@ import { FormatDatePipe } from './utils/format-date.pipe';
     VoteModalComponent,
     CompletedVotingComponent,
     CompletedVotingsComponent,
-    FormatDatePipe
+    FormatDatePipe,
+    AdminPanelComponent,
+    AddAdminModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -120,9 +129,12 @@ import { FormatDatePipe } from './utils/format-date.pipe';
     ReceiveSvtModalComponent,
     SvtWithdrawalConfirmationModalComponent,
     FreeScoringConfirmationModalComponent,
-    VoteModalComponent
+    VoteModalComponent,
+    AddAdminModalComponent
   ],
   imports: [
+    TableModule,
+    DataTableModule,
     MatCheckboxModule,
     MatTabsModule,
     BrowserModule,
@@ -164,11 +176,13 @@ import { FormatDatePipe } from './utils/format-date.pipe';
     BalanceApiClient,
     ApplicationApiClient,
     ContractApiClient,
+    AdminContractClient,
     TokenContractClient,
     MinterContractClient,
     ProjectApiClient,
     ScoringApiClient,
     EstimatesApiClient,
+    AdminApiClient,
     VotingApiClient,
     AuthenticationService,
     ProjectService,
@@ -186,6 +200,7 @@ import { FormatDatePipe } from './utils/format-date.pipe';
     ShouldHaveEthGuard,
     ShouldHaveSvtGuard,
     ShouldBeAuthenticatedGuard,
+    ShouldBeAdminGuard,
     GuardFactory,
     CompositeGuard
   ],

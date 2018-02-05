@@ -15,12 +15,12 @@ import {AccountComponent} from './components/account/account.component';
 import {CompositeGuard} from './services/guards/composite.guard';
 import {GuardType} from './services/guards/guard-type.enum';
 import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-authenticated.guard';
+import {ShouldBeAdminGuard} from './services/authentication/should-be-admin.guard';
 import {MyProjectsComponent} from './components/my-projects/my-projects.component';
 import {VotingComponent} from './components/voting/voting.component';
 import {VotingCardComponent} from './components/voting-card/voting-card.component';
-import {ShouldHaveSvtGuard} from './services/balance/should-have-svt.guard';
-import {SvtRequiredType} from './services/balance/svt-required-type.enum';
 import {CompletedVotingComponent} from './components/completed-voting/completed-voting.component';
+import {AdminPanelComponent} from './components/admin-panel/admin-panel.component';
 import {CompletedVotingsComponent} from './components/completed-votings/completed-votings.component';
 
 const appRoutes: Routes = [
@@ -34,6 +34,12 @@ const appRoutes: Routes = [
         pathMatch: 'full',
         component: MyProjectsComponent,
         canActivate: [ShouldBeAuthenticatedGuard]
+      },
+      {
+        path: Paths.Admin,
+        pathMatch: 'full',
+        component: AdminPanelComponent,
+        canActivate: [ShouldBeAdminGuard]
       },
       {
         path: Paths.Voting + '/:id',

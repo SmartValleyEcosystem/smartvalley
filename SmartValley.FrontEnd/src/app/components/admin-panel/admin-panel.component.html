@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="row mx-auto">
+    <div class="col-6 sv-description d-flex align-items-end">
+      <h2 class="">{{ 'AdminPanel.AdminPanel' | translate }}</h2>
+    </div>
+  </div>
+  <div class="row mx-auto">
+    <div class="col-2" style="padding-left: 0">
+      <a style="margin-top: 2.4em;" class="col-12 sv-default-btn btn btn-primary"
+         (click)="createAsync()">{{ 'AdminPanel.Create' | translate }}
+      </a>
+    </div>
+  </div>
+  <p-dataTable [value]="admins">
+    <p-column field="address" header="Address"></p-column>
+    <p-column field="email" header="Email"></p-column>
+    <p-column header="Actions">
+      <ng-template let-admin="rowData" pTemplate type="body">
+        <button (click)="deleteAsync(admin.address)" class="btn btn-link">
+          {{ 'AdminPanel.Delete' | translate }}
+        </button>
+      </ng-template>
+    </p-column>
+  </p-dataTable>
+</div>

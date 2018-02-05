@@ -10,4 +10,5 @@ export class Paths {
   public static readonly Voting = 'voting';
   public static readonly CompletedVoting = 'completedvoting';
   public static readonly CompletedVotings = 'completedvotings';
+  public static readonly Admin = 'admin';
 }

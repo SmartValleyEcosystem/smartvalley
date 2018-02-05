@@ -12,6 +12,7 @@ export function multiTranslateLoaderFactory() {
     'components/my-projects/my-projects.component',
     'components/landing/landing.component',
     'components/voting/voting.component',
+    'components/admin-panel/admin-panel.component',
     'components/scoring/scoring.component',
     'components/estimate/estimate.component',
     'components/report/report.component',

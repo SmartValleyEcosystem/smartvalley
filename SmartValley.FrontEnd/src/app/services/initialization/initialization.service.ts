@@ -8,6 +8,7 @@ import {ScoringManagerContractClient} from '../contract-clients/scoring-manager-
 import {VotingManagerContractClient} from '../contract-clients/voting-manager-contract-client';
 import {VotingContractClient} from '../contract-clients/voting-contract-client';
 import {AuthenticationService} from '../authentication/authentication-service';
+import {AdminContractClient} from '../contract-clients/admin-contract-client';
 
 @Injectable()
 export class InitializationService {
@@ -16,6 +17,7 @@ export class InitializationService {
 
   constructor(private questionService: QuestionService,
               private minterContractClient: MinterContractClient,
+              private adminContractClient: AdminContractClient,
               private tokenContractClient: TokenContractClient,
               private scoringManagerContractClient: ScoringManagerContractClient,
               private votingManagerContractClient: VotingManagerContractClient,
@@ -38,6 +40,7 @@ export class InitializationService {
       this.authenticationService.initializeAsync(),
       this.questionService.initializeAsync(),
       this.minterContractClient.initializeAsync(),
+      this.adminContractClient.initializeAsync(),
       this.tokenContractClient.initializeAsync(),
       this.scoringManagerContractClient.initializeAsync(),
       this.votingManagerContractClient.initializeAsync(),

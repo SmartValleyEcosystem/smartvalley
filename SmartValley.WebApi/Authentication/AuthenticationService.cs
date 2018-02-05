@@ -4,7 +4,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using IcoLab.Web.Common.WebApi;
 using Microsoft.IdentityModel.Tokens;
 using Nethereum.Signer;
 using SmartValley.Application.Exceptions;
