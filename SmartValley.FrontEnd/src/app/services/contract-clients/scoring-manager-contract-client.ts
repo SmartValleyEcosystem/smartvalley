@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {AuthenticationService} from '../authentication/authentication-service';
 import {Web3Service} from '../web3-service';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {ConverterHelper} from '../converter-helper';
@@ -8,6 +7,7 @@ import {ContractClient} from './contract-client';
 import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 import {Estimate} from '../estimate';
 import {Md5} from 'ts-md5';
+import {UserContext} from '../authentication/user-context';
 
 @Injectable()
 export class ScoringManagerContractClient implements ContractClient {
@@ -15,7 +15,7 @@ export class ScoringManagerContractClient implements ContractClient {
   public abi: string;
   public address: string;
 
-  constructor(private authenticationService: AuthenticationService,
+  constructor(private userContext: UserContext,
               private web3Service: Web3Service,
               private contractClient: ContractApiClient,
               private tokenClient: TokenContractClient) {
@@ -29,7 +29,7 @@ export class ScoringManagerContractClient implements ContractClient {
 
   public startAsync(projectId: string): Promise<string> {
     const scoringManagerContract = this.web3Service.getContract(this.abi, this.address);
-    const fromAddress = this.authenticationService.getCurrentUser().account;
+    const fromAddress = this.userContext.getCurrentUser().account;
 
     return scoringManagerContract.start(
       projectId.replace(/-/g, ''),
@@ -39,7 +39,7 @@ export class ScoringManagerContractClient implements ContractClient {
   public startForFreeAsync(projectId: string,
                            sprintAddress: string): Promise<string> {
     const scoringManagerContract = this.web3Service.getContract(this.abi, this.address);
-    const fromAddress = this.authenticationService.getCurrentUser().account;
+    const fromAddress = this.userContext.getCurrentUser().account;
 
     return scoringManagerContract.startForFree(
       projectId.replace(/-/g, ''),
@@ -57,7 +57,7 @@ export class ScoringManagerContractClient implements ContractClient {
                                     expertiseArea: ExpertiseArea,
                                     estimates: Array<Estimate>): Promise<string> {
     const contract = this.web3Service.getContract(this.abi, this.address);
-    const fromAddress = this.authenticationService.getCurrentUser().account;
+    const fromAddress = this.userContext.getCurrentUser().account;
 
     const questionIds: number[] = [];
     const scores: number[] = [];

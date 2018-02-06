@@ -5,8 +5,7 @@ import {Paths} from '../../paths';
 import {BalanceService} from '../../services/balance/balance.service';
 import {Balance} from '../../services/balance/balance';
 import {BlockiesService} from '../../services/blockies-service';
-import {AdminApiClient} from '../../api/admin/admin-api-client';
-import {AdminContractClient} from '../../services/contract-clients/admin-contract-client';
+import {UserContext} from '../../services/authentication/user-context';
 
 @Component({
   selector: 'app-header',
@@ -28,14 +27,15 @@ export class HeaderComponent implements OnInit {
   constructor(private router: Router,
               private balanceService: BalanceService,
               private blockiesService: BlockiesService,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              private userContext: UserContext) {
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
-    this.authenticationService.accountChanged.subscribe(async (user) => this.updateAccount(user));
-    this.updateBalance(this.balanceService.balance);
+    this.userContext.userContextChanged.subscribe((user) => this.updateAccount(user));
+
   }
 
-  public ngOnInit(): void {
-    const currentUser = this.authenticationService.getCurrentUser();
+  ngOnInit(): void {
+    const currentUser = this.userContext.getCurrentUser();
     this.updateAccount(currentUser);
   }
 
@@ -56,7 +56,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public logout(): void {
-    this.authenticationService.stopUserSession();
+    this.userContext.deleteCurrentUser();
   }
 
   private updateBalance(balance: Balance): void {

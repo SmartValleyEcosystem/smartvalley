@@ -8,7 +8,7 @@ using SmartValley.WebApi.Balance.Responses;
 namespace SmartValley.WebApi.Balance
 {
     [Route("api/balance/")]
-    //TODO 583 [Authorize]
+    [Authorize]
     public class BalanceController : Controller
     {
         private readonly IEtherManagerContractClient _etherManagerContractClient;

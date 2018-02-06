@@ -10,7 +10,7 @@ namespace SmartValley.WebApi.Authentication
     {
         private readonly IAuthenticationService _authenticationService;
 
-        public AuthenticationController(AuthenticationService authenticationService)
+        public AuthenticationController(IAuthenticationService authenticationService)
         {
             _authenticationService = authenticationService;
         }
@@ -28,9 +28,10 @@ namespace SmartValley.WebApi.Authentication
         }
 
         [HttpPost("register")]
-        public Task RegisterAsync([FromBody] RegistrationRequest request)
+        public async Task<EmptyResponse> RegisterAsync([FromBody] RegistrationRequest request)
         {
-            return _authenticationService.RegisterAsync(request);
+            await _authenticationService.RegisterAsync(request);
+            return new EmptyResponse();
         }
     }
 }

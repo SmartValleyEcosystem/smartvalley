@@ -4,7 +4,6 @@ import {QuestionService} from '../../services/questions/question-service';
 import {Paths} from '../../paths';
 import {SubmitEstimatesRequest} from '../../api/estimates/submit-estimates-request';
 import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';
-import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {EstimateCommentRequest} from '../../api/estimates/estimate-comment-request';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {ProjectApiClient} from '../../api/project/project-api-client';
@@ -16,6 +15,7 @@ import {Estimate} from '../../services/estimate';
 import {BalanceService} from '../../services/balance/balance.service';
 import {QuestionResponse} from '../../api/estimates/question-response';
 import {ScoringManagerContractClient} from '../../services/contract-clients/scoring-manager-contract-client';
+import {UserContext} from '../../services/authentication/user-context';
 
 @Component({
   selector: 'app-estimate',
@@ -37,7 +37,7 @@ export class EstimateComponent implements OnInit {
               private questionService: QuestionService,
               private router: Router,
               private estimatesApiClient: EstimatesApiClient,
-              private authenticationService: AuthenticationService,
+              private userContext: UserContext,
               private formBuilder: FormBuilder,
               private scoringContractClient: ScoringManagerContractClient,
               private dialogService: DialogService,
@@ -106,7 +106,7 @@ export class EstimateComponent implements OnInit {
     const submitEstimatesRequest = <SubmitEstimatesRequest>{
       transactionHash: transactionHash,
       projectId: this.projectId,
-      expertAddress: this.authenticationService.getCurrentUser().account,
+      expertAddress: this.userContext.getCurrentUser().account,
       estimateComments: estimates.map(e => <EstimateCommentRequest>{
         questionId: e.questionId,
         score: e.score,

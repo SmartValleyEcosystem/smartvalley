@@ -9,6 +9,7 @@ import {DialogService} from '../dialog-service';
 import {Web3Service} from '../web3-service';
 import {NotificationsService} from 'angular2-notifications';
 import {TranslateService} from '@ngx-translate/core';
+import {UserContext} from '../authentication/user-context';
 
 @Injectable()
 export class BalanceService {
@@ -18,6 +19,7 @@ export class BalanceService {
 
   constructor(private balanceApiClient: BalanceApiClient,
               private authenticationService: AuthenticationService,
+              private userContext: UserContext,
               private tokenContractClient: TokenContractClient,
               private minterContractClient: MinterContractClient,
               private scoringManagerContractClient: ScoringManagerContractClient,
@@ -25,7 +27,7 @@ export class BalanceService {
               private notificationsService: NotificationsService,
               private web3Service: Web3Service,
               private translateService: TranslateService) {
-    this.authenticationService.accountChanged.subscribe(async () => await this.updateBalanceAsync());
+    this.userContext.userContextChanged.subscribe(async () => await this.updateBalanceAsync());
   }
 
   public async updateBalanceAsync(): Promise<void> {
@@ -34,7 +36,7 @@ export class BalanceService {
       return;
     }
     const balanceResponse = await this.balanceApiClient.getBalanceAsync();
-    const address = this.authenticationService.getCurrentUser().account;
+    const address = this.userContext.getCurrentUser().account;
     const svtBalance = await this.tokenContractClient.getBalanceAsync(address);
     const availableBalance = await this.tokenContractClient.getAvailableBalanceAsync(address);
     const canReceiveSvt = await this.minterContractClient.canGetTokensAsync(address);
@@ -130,20 +132,20 @@ export class BalanceService {
   }
 
   private async hasUserSvtForProjectAsync(): Promise<boolean> {
-    const accountAddress = (await this.authenticationService.getCurrentUser()).account;
+    const accountAddress = (await this.userContext.getCurrentUser()).account;
     const tokenBalance = await this.tokenContractClient.getBalanceAsync(accountAddress);
     const scoringCost = await this.scoringManagerContractClient.getScoringCostAsync();
     return tokenBalance >= scoringCost;
   }
 
   private async hasUserSvtAsync(): Promise<boolean> {
-    const accountAddress = (await this.authenticationService.getCurrentUser()).account;
+    const accountAddress = (await this.userContext.getCurrentUser()).account;
     const tokenBalance = await this.tokenContractClient.getBalanceAsync(accountAddress);
     return tokenBalance > 0;
   }
 
   private async getDateToReceiveTokensAsync(): Promise<Date> {
-    const accountAddress = (await this.authenticationService.getCurrentUser()).account;
+    const accountAddress = (await this.userContext.getCurrentUser()).account;
     const getReceiveDateForAddress = await this.minterContractClient.getReceiveDateForAddressAsync(accountAddress);
     const daysToReceive = await this.minterContractClient.getReceivingIntervalInDaysAsync();
     const dateToReceive = new Date(getReceiveDateForAddress * 1000);

@@ -28,6 +28,7 @@ export function multiTranslateLoaderFactory() {
     'components/common/svt-withdrawal-confirmation-modal/svt-withdrawal-confirmation-modal.component',
     'components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component',
     'components/common/vote-modal/vote-modal.component',
+    'components/common/register-modal/register-modal.component',
     'components/completed-voting/completed-voting.component'
   ]);
 }

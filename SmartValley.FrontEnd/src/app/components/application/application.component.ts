@@ -1,5 +1,4 @@
 import {Component, ViewChild, ElementRef, ViewChildren, QueryList, OnInit} from '@angular/core';
-import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {ApplicationApiClient} from '../../api/application/application-api.client';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SubmitApplicationRequest} from '../../api/application/submit-application-request';
@@ -16,6 +15,7 @@ import {isNullOrUndefined} from 'util';
 import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {VotingManagerContractClient} from '../../services/contract-clients/voting-manager-contract-client';
 import {Web3Service} from '../../services/web3-service';
+import {UserContext} from '../../services/authentication/user-context';
 
 @Component({
   selector: 'app-application',
@@ -36,7 +36,7 @@ export class ApplicationComponent implements OnInit {
   @ViewChildren('required') public requiredFields: QueryList<any>;
 
   constructor(private formBuilder: FormBuilder,
-              private authenticationService: AuthenticationService,
+              private userContext: UserContext,
               private scoringManagerContractClient: ScoringManagerContractClient,
               private votingManagerContractClient: VotingManagerContractClient,
               private router: Router,
@@ -197,7 +197,7 @@ export class ApplicationComponent implements OnInit {
   }
 
   private createSubmitApplicationRequest(): SubmitApplicationRequest {
-    const user = this.authenticationService.getCurrentUser();
+    const user = this.userContext.getCurrentUser();
     const form = this.applicationForm.value;
     return <SubmitApplicationRequest>{
       attractedInvestments: form.attractedInvestments,

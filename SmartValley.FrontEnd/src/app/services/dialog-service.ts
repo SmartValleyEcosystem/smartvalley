@@ -15,6 +15,8 @@ import {AlertModalData} from '../components/common/alert-modal/alert-modal-data'
 import {FreeScoringConfirmationModalComponent} from '../components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component';
 import {VoteModalData} from '../components/common/vote-modal/vote-modal-data';
 import {VoteModalComponent} from '../components/common/vote-modal/vote-modal.component';
+import {RegisterModelData} from '../components/common/register-modal/register-modal-data';
+import {RegisterModalComponent} from '../components/common/register-modal/register-modal.component';
 import {AddAdminModalComponent} from '../components/common/add-admin-modal/add-admin-modal.component';
 
 @Injectable()
@@ -72,6 +74,15 @@ export class DialogService {
     return this.openModal(VoteModalComponent, data)
       .afterClosed()
       .toPromise<number>();
+  }
+
+  public async showRegisterDialogAsync() {
+    const data = <RegisterModelData>{
+      email: ''
+    };
+    return this.openModal(RegisterModalComponent, data)
+      .afterClosed()
+      .toPromise<string>();
   }
 
   public showRinkebyAlert(): MatDialogRef<MetamaskManualModalComponent> {

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application;
 using SmartValley.WebApi.Admin.Request;
@@ -9,7 +10,7 @@ using SmartValley.WebApi.WebApi;
 namespace SmartValley.WebApi.Admin
 {
     [Route("api/admin")]
-    //TODO 583 [Authorize]
+    [Authorize]
     public class AdminController : Controller
     {
         private readonly IAdminService _service;
