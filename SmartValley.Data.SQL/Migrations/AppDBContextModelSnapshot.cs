@@ -134,7 +134,7 @@ namespace SmartValley.Data.SQL.Migrations
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.Role", b =>
-                {
+                                                                    {
                     b.Property<int>("Id");
 
                     b.Property<string>("Name")
@@ -313,12 +313,12 @@ namespace SmartValley.Data.SQL.Migrations
 
             modelBuilder.Entity("SmartValley.Domain.Entities.UserRole", b =>
                 {
-                    b.HasOne("SmartValley.Domain.Entities.Role")
+                    b.HasOne("SmartValley.Domain.Entities.Role", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SmartValley.Domain.Entities.User")
+                    b.HasOne("SmartValley.Domain.Entities.User", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

@@ -12,8 +12,8 @@ using System;
 namespace SmartValley.Data.SQL.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20180207092706_initial")]
-    partial class initial
+    [Migration("20171204160353_Questions")]
+    partial class Questions
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -59,7 +59,7 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("Applications");
                 });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.EstimateComment", b =>
+            modelBuilder.Entity("SmartValley.Domain.Entities.Estimate", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
@@ -71,9 +71,13 @@ namespace SmartValley.Data.SQL.Migrations
                         .IsRequired()
                         .HasMaxLength(42);
 
+                    b.Property<int>("ExpertiseArea");
+
                     b.Property<long>("ProjectId");
 
                     b.Property<long>("QuestionId");
+
+                    b.Property<int>("Score");
 
                     b.HasKey("Id");
 
@@ -81,13 +85,15 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("EstimateComments");
+                    b.ToTable("Estimates");
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.Project", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<byte>("AnalystEstimatesCount");
 
                     b.Property<string>("AuthorAddress")
                         .IsRequired()
@@ -102,13 +108,25 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<Guid>("ExternalId");
 
+                    b.Property<byte>("HrEstimatesCount");
+
+                    b.Property<byte>("LawyerEstimatesCount");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50);
 
+                    b.Property<string>("ProjectAddress")
+                        .IsRequired()
+                        .HasMaxLength(42);
+
                     b.Property<string>("ProjectArea")
                         .IsRequired()
                         .HasMaxLength(100);
+
+                    b.Property<double?>("Score");
+
+                    b.Property<byte>("TechnicalEstimatesCount");
 
                     b.HasKey("Id");
 
@@ -123,59 +141,23 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500);
+
                     b.Property<int>("ExpertiseArea");
 
                     b.Property<int>("MaxScore");
 
                     b.Property<int>("MinScore");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
                     b.HasKey("Id");
 
                     b.ToTable("Questions");
-                });
-
-            modelBuilder.Entity("SmartValley.Domain.Entities.Role", b =>
-                {
-                    b.Property<int>("Id");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("SmartValley.Domain.Entities.Scoring", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ContractAddress")
-                        .IsRequired()
-                        .HasMaxLength(42);
-
-                    b.Property<bool>("IsScoredByAnalyst");
-
-                    b.Property<bool>("IsScoredByHr");
-
-                    b.Property<bool>("IsScoredByLawyer");
-
-                    b.Property<bool>("IsScoredByTechnical");
-
-                    b.Property<long>("ProjectId");
-
-                    b.Property<double?>("Score");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId")
-                        .IsUnique();
-
-                    b.ToTable("Scorings");
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.TeamMember", b =>
@@ -204,77 +186,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("TeamMembers");
                 });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.User", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(42);
-
-                    b.Property<string>("Email")
-                        .IsRequired();
-
-                    b.Property<bool>("IsEmailConfirmed");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Address")
-                        .IsUnique();
-
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("SmartValley.Domain.Entities.UserRole", b =>
-                {
-                    b.Property<long>("UserId");
-
-                    b.Property<int>("RoleId");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("UserRoles");
-                });
-
-            modelBuilder.Entity("SmartValley.Domain.Entities.Voting", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTimeOffset>("EndDate");
-
-                    b.Property<DateTimeOffset>("StartDate");
-
-                    b.Property<string>("VotingAddress")
-                        .IsRequired()
-                        .HasMaxLength(42);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Votings");
-                });
-
-            modelBuilder.Entity("SmartValley.Domain.Entities.VotingProject", b =>
-                {
-                    b.Property<long>("ProjectId");
-
-                    b.Property<long>("VotingId");
-
-                    b.HasKey("ProjectId", "VotingId");
-
-                    b.HasIndex("VotingId");
-
-                    b.HasIndex("ProjectId", "VotingId");
-
-                    b.ToTable("VotingProjects");
-                });
-
             modelBuilder.Entity("SmartValley.Domain.Entities.Application", b =>
                 {
                     b.HasOne("SmartValley.Domain.Entities.Project", "Project")
@@ -283,7 +194,7 @@ namespace SmartValley.Data.SQL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.EstimateComment", b =>
+            modelBuilder.Entity("SmartValley.Domain.Entities.Estimate", b =>
                 {
                     b.HasOne("SmartValley.Domain.Entities.Project", "Project")
                         .WithMany()
@@ -296,45 +207,11 @@ namespace SmartValley.Data.SQL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.Scoring", b =>
-                {
-                    b.HasOne("SmartValley.Domain.Entities.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("SmartValley.Domain.Entities.TeamMember", b =>
                 {
                     b.HasOne("SmartValley.Domain.Entities.Application", "Application")
                         .WithMany()
                         .HasForeignKey("ApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SmartValley.Domain.Entities.UserRole", b =>
-                {
-                    b.HasOne("SmartValley.Domain.Entities.Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SmartValley.Domain.Entities.User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SmartValley.Domain.Entities.VotingProject", b =>
-                {
-                    b.HasOne("SmartValley.Domain.Entities.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SmartValley.Domain.Entities.Voting", "Voting")
-                        .WithMany()
-                        .HasForeignKey("VotingId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
