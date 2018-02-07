@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using SmartValley.Application.Exceptions;
 using SmartValley.Domain.Entities;
+using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Applications.Requests;
 

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using SmartValley.Application.Contracts.Options;
 using SmartValley.Application.Contracts.SmartValley.Application.Contracts;
-using SmartValley.Application.Exceptions;
+using SmartValley.Domain.Exceptions;
 
 namespace SmartValley.Application.Contracts
 {

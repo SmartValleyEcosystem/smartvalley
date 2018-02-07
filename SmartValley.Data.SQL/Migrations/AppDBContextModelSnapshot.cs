@@ -135,8 +135,7 @@ namespace SmartValley.Data.SQL.Migrations
 
             modelBuilder.Entity("SmartValley.Domain.Entities.Role", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -233,7 +232,7 @@ namespace SmartValley.Data.SQL.Migrations
                 {
                     b.Property<long>("UserId");
 
-                    b.Property<long>("RoleId");
+                    b.Property<int>("RoleId");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -314,12 +313,12 @@ namespace SmartValley.Data.SQL.Migrations
 
             modelBuilder.Entity("SmartValley.Domain.Entities.UserRole", b =>
                 {
-                    b.HasOne("SmartValley.Domain.Entities.Role", "Role")
+                    b.HasOne("SmartValley.Domain.Entities.Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SmartValley.Domain.Entities.User", "User")
+                    b.HasOne("SmartValley.Domain.Entities.User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

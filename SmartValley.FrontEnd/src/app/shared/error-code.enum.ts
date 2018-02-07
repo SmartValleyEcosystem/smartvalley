@@ -1,3 +1,3 @@
 export enum ErrorCode {
-  UserIsNotExist = 'UserIsNotExist'
+  UserNotFound = 'UserNotFound'
 }

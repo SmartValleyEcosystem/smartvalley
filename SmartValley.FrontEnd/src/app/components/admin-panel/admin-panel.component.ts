@@ -5,6 +5,10 @@ import {AdminContractClient} from '../../services/contract-clients/admin-contrac
 import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {Router} from '@angular/router';
 import {AdminResponse} from '../../api/admin/admin-response';
+import {NotificationsService} from 'angular2-notifications';
+import {UserApiClient} from '../../api/user/user-api-client';
+import {ErrorCode} from '../../shared/error-code.enum';
+import {TranslateService} from '@ngx-translate/core';
 import {UserContext} from '../../services/authentication/user-context';
 
 @Component({
@@ -19,8 +23,12 @@ export class AdminPanelComponent implements OnInit {
   constructor(private router: Router,
               private adminApiClient: AdminApiClient,
               private adminContractClient: AdminContractClient,
+              private authenticationService: AuthenticationService,
+              private notificationsService: NotificationsService,
+              private userApiClient: UserApiClient,
+              private dialogService: DialogService,
               private userContext: UserContext,
-              private dialogService: DialogService) {
+              private translateService: TranslateService) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -28,9 +36,17 @@ export class AdminPanelComponent implements OnInit {
   }
 
   async createAsync() {
-    const address = await this.dialogService.showCreateAdminDialogAsync()
-    const transactionHash = await this.adminContractClient.addAsync(address);
-    await this.adminApiClient.addAsync(address, transactionHash);
+    try {
+      const address = await this.dialogService.showCreateAdminDialogAsync()
+      const user = await this.userApiClient.getByAddressAsync(address);
+      const transactionHash = await this.adminContractClient.addAsync(address);
+
+      await this.adminApiClient.addAsync(address, transactionHash);
+    } catch (e) {
+      if (e.error.errorCode === ErrorCode.UserNotFound) {
+        this.notificationsService.error(this.translateService.instant('Common.UserNotFound'));
+      }
+    }
     await this.updateAdminsAsync();
   }
 

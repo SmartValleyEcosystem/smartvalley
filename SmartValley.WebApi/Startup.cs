@@ -29,6 +29,7 @@ using SmartValley.WebApi.Estimates;
 using SmartValley.WebApi.ExceptionHandler;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.Scoring;
+using SmartValley.WebApi.Users;
 using SmartValley.WebApi.Votings;
 using SmartValley.WebApi.WebApi;
 using Swashbuckle.AspNetCore.Swagger;
@@ -121,9 +122,11 @@ namespace SmartValley.WebApi
             services.AddTransient<IVotingService, VotingService>();
             services.AddTransient<IVotingRepository, VotingRepository>();
             services.AddTransient<IVotingProjectRepository, VotingProjectRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IRoleRepository, RolesRepository>();
+            services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IUserRolesRepository, UserRolesRepository>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
         }
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SmartValley.Application.Exceptions;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
+using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.WebApi.Projects

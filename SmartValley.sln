@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IcoLab.Common", "IcoLab.Common\IcoLab.Common\IcoLab.Common.csproj", "{74AFFA99-7464-422B-B6FA-A793F750A954}"
 EndProject
@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IcoLab.Web.Common", "IcoLab
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartValley.Data.SQL", "SmartValley.Data.SQL\SmartValley.Data.SQL.csproj", "{7CF0857B-A3ED-4055-812A-1DA984137FAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartValley.Domain", "SmartValley.Domain\SmartValley.Domain.csproj", "{97033F10-3AB1-4571-AABC-985FEA1F6DBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartValley.Domain", "SmartValley.Domain\SmartValley.Domain.csproj", "{97033F10-3AB1-4571-AABC-985FEA1F6DBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartValley.Application", "SmartValley.Application\SmartValley.Application.csproj", "{80B98124-7428-45B3-A305-6EC2DD4E0B0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartValley.Application", "SmartValley.Application\SmartValley.Application.csproj", "{80B98124-7428-45B3-A305-6EC2DD4E0B0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

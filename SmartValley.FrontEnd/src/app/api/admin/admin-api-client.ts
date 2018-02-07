@@ -1,4 +1,4 @@
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BaseApiClient} from '../base-api-client';
 import {AdminRequest} from './admin-request';

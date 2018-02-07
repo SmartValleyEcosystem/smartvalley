@@ -1,4 +1,4 @@
-﻿namespace SmartValley.Application.Exceptions
+﻿namespace SmartValley.Domain.Exceptions
 {
     public enum ErrorCode
     {
@@ -11,6 +11,8 @@
         EmailAlreadyExists,
         InvalidSignature,
         EmailNotConfrimed,
-        UserIsNotExist
+        UserNotFound,
+        RoleNotFound,
+        UserHaveNoRole
     }
 }

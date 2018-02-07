@@ -27,10 +27,10 @@ namespace SmartValley.WebApi.Balance
             var balance = await _ethereumClient.GetBalanceAsync(User.Identity.Name);
 
             return new BalanceResponse
-                   {
-                       WasEtherReceived = wasEtherReceived,
-                       Balance = balance
-                   };
+            {
+                WasEtherReceived = wasEtherReceived,
+                Balance = balance
+            };
         }
 
         [HttpPost]

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application;
 using SmartValley.Application.Contracts.Votings;
-using SmartValley.Application.Exceptions;
 using SmartValley.Application.Extensions;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
+using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.WebApi.Votings

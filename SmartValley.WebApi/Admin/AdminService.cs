@@ -1,30 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SmartValley.Domain.Entities;
+using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.WebApi.Admin
 {
     public class AdminService : IAdminService
     {
-        public Task AddAsync(string address)
+        private readonly IUserRepository _userRepository;
+
+        public AdminService(IUserRepository userRepository)
         {
-            throw new NotImplementedException();
+            _userRepository = userRepository;
         }
+
+        public Task AddAsync(string address)
+            => _userRepository.AddRoleAsync(address, RoleType.Admin);
 
         public Task DeleteAsync(string address)
-        {
-            throw new NotImplementedException();
-        }
+            => _userRepository.RemoveRoleAsync(address, RoleType.Admin);
 
         public Task<IReadOnlyCollection<User>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
+            => _userRepository.GetByRoleAsync(RoleType.Admin);
 
         public Task<bool> IsAdminAsync(string address)
-        {
-            throw new NotImplementedException();
-        }
+            => _userRepository.HasRoleAsync(address, RoleType.Admin);
     }
 }

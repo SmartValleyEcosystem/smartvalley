@@ -11,6 +11,7 @@
     "ServerError": "Server error",
     "Error": "Error",
     "TryAgain": "Please try again later",
-    "Success": "Success"
+    "Success": "Success",
+    "UserNotFound": "User not found."
   }
 }

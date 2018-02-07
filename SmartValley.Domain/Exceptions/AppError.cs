@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SmartValley.Application.Exceptions
+namespace SmartValley.Domain.Exceptions
 {
     public class AppError
     {

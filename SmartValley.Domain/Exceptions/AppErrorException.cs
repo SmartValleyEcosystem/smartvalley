@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SmartValley.Application.Exceptions
+namespace SmartValley.Domain.Exceptions
 {
     public class AppErrorException : Exception
     {

@@ -12,7 +12,7 @@
     </div>
   </div>
   <p-dataTable [value]="admins">
-    <p-column field="address" header="Address"></p-column>
+    <p-column [style]="{'width': '24.4em'}" field="address" header="Address"></p-column>
     <p-column field="email" header="Email"></p-column>
     <p-column header="Actions">
       <ng-template let-admin="rowData" pTemplate type="body">

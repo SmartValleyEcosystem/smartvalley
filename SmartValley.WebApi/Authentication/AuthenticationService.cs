@@ -6,8 +6,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using Nethereum.Signer;
-using SmartValley.Application.Exceptions;
 using SmartValley.Domain.Entities;
+using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Authentication.Requests;
 
@@ -15,17 +15,15 @@ namespace SmartValley.WebApi.Authentication
 {
     public class AuthenticationService : IAuthenticationService
     {
-        private readonly IUserRolesRepository _userRolesRepository;
         private readonly IUserRepository _userRepository;
         private readonly EthereumMessageSigner _ethereumMessageSigner;
         private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
         private readonly IClock _clock;
 
-        public AuthenticationService(EthereumMessageSigner ethereumMessageSigner, IClock clock, IUserRolesRepository userRolesRepository, IUserRepository userRepository)
+        public AuthenticationService(EthereumMessageSigner ethereumMessageSigner, IClock clock, IUserRepository userRepository)
         {
             _ethereumMessageSigner = ethereumMessageSigner;
             _clock = clock;
-            _userRolesRepository = userRolesRepository;
             _userRepository = userRepository;
             _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
         }
@@ -39,7 +37,7 @@ namespace SmartValley.WebApi.Authentication
             //https://rassvet-capital.atlassian.net/browse/ILT-595
             if (string.IsNullOrEmpty(user?.Email))
             {
-                throw new AppErrorException(ErrorCode.UserIsNotExist);
+                throw new AppErrorException(ErrorCode.UserNotFound);
             }
 
             if (!IsSignedMessageValid(request.Address, request.SignedText, request.Signature))
@@ -105,7 +103,7 @@ namespace SmartValley.WebApi.Authentication
         private async Task<Identity> GenerateJwtAsync(User user)
         {
             var now = _clock.UtcNow;
-            var roles = await _userRolesRepository.GetRolesByUserIdAsync(user.Id);
+            var roles = await _userRepository.GetRolesByUserIdAsync(user.Id);
             var claimsIdentity = CreateClaimsIdentity(user.Address, roles);
 
             var jwtSecurityToken = new JwtSecurityToken(

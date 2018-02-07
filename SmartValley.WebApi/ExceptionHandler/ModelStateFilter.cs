@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc.Filters;
-using SmartValley.Application.Exceptions;
+using SmartValley.Domain.Exceptions;
 
 namespace SmartValley.WebApi.ExceptionHandler
 {

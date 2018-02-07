@@ -48,12 +48,5 @@ namespace SmartValley.WebApi.Admin
             await _service.DeleteAsync(address);
             return NoContent();
         }
-
-        [HttpPost]
-        [Route("isAdmin")]
-        public async Task<IActionResult> IsAdmin([FromBody] AdminRequest request)
-        {
-            return Ok(new IsAdminResponse { IsAdmin = await _service.IsAdminAsync(request.Address) });
-        }
     }
 }

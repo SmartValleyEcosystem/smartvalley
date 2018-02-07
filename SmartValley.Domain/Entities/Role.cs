@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
 {
-    public class Role : IEntityWithId
+    public class Role
     {
-        public long Id { get; set; }
+        public RoleType Id { get; set; }
 
         [Required]
         public string Name { get; set; }

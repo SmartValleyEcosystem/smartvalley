@@ -116,7 +116,7 @@ export class AuthenticationService {
         isAdmin: isAdmin
       };
     } catch (e) {
-      if (e.error.errorCode === ErrorCode.UserIsNotExist) {
+      if (e.error.errorCode === ErrorCode.UserNotFound) {
         const isSuccess = await this.registerAsync(account, signature, messageToSign);
 
         if (isSuccess) {
