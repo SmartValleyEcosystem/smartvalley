@@ -25,7 +25,7 @@ import {DialogService} from '../../services/dialog-service';
 import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {NotificationsService} from 'angular2-notifications';
 import * as moment from 'moment';
-import {AuthenticationService} from "../../services/authentication/authentication-service";
+import {UserContext} from '../../services/authentication/user-context';
 
 @Component({
   selector: 'app-report',
@@ -69,13 +69,13 @@ export class ReportComponent implements AfterViewChecked, OnInit {
               private dialogService: DialogService,
               private scoringApiClient: ScoringApiClient,
               private notificationsService: NotificationsService,
-              private authenticationService: AuthenticationService,
+              private userContext: UserContext,
               private scoringManagerContractClient: ScoringManagerContractClient) {
   }
 
   public async ngOnInit() {
     await this.loadInitialDataAsync();
-    const currentUser = this.authenticationService.getCurrentUser();
+    const currentUser = this.userContext.getCurrentUser();
     if (!isNullOrUndefined(currentUser)) {
       this.currentAccount = currentUser.account;
     }

@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Web3Service} from '../web3-service';
-import {AuthenticationService} from '../authentication/authentication-service';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {ConverterHelper} from '../converter-helper';
 import {ContractClient} from './contract-client';
+import {UserContext} from '../authentication/user-context';
 
 @Injectable()
 export class MinterContractClient implements ContractClient {
@@ -12,7 +12,7 @@ export class MinterContractClient implements ContractClient {
   public address: string;
 
   constructor(private web3Service: Web3Service,
-              private authenticationService: AuthenticationService,
+              private userContext: UserContext,
               private contractClient: ContractApiClient) {
   }
 
@@ -38,7 +38,7 @@ export class MinterContractClient implements ContractClient {
   }
 
   public async getTokensAsync(): Promise<string> {
-    const accountAddress = this.authenticationService.getCurrentUser().account;
+    const accountAddress = this.userContext.getCurrentUser().account;
     const minter = this.web3Service.getContract(this.abi, this.address);
     return await minter.getTokens({from: accountAddress});
   }

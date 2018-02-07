@@ -7,5 +7,7 @@ namespace SmartValley.WebApi.Authentication
     {
         Task<Identity> AuthenticateAsync(AuthenticationRequest request);
         Task RegisterAsync(RegistrationRequest request);
+        Task<Identity> RefreshAccessTokenAsync(string address);
+        bool ShouldRefreshToken(string token);
     }
 }

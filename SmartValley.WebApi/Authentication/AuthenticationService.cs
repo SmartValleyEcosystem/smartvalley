@@ -18,6 +18,7 @@ namespace SmartValley.WebApi.Authentication
         private readonly IUserRolesRepository _userRolesRepository;
         private readonly IUserRepository _userRepository;
         private readonly EthereumMessageSigner _ethereumMessageSigner;
+        private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
         private readonly IClock _clock;
 
         public AuthenticationService(EthereumMessageSigner ethereumMessageSigner, IClock clock, IUserRolesRepository userRolesRepository, IUserRepository userRepository)
@@ -26,6 +27,7 @@ namespace SmartValley.WebApi.Authentication
             _clock = clock;
             _userRolesRepository = userRolesRepository;
             _userRepository = userRepository;
+            _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
         }
 
         public async Task<Identity> AuthenticateAsync(AuthenticationRequest request)
@@ -45,20 +47,7 @@ namespace SmartValley.WebApi.Authentication
                 throw new AppErrorException(ErrorCode.InvalidSignature);
             }
 
-            var now = _clock.UtcNow;
-            var roles = await _userRolesRepository.GetRolesByUserIdAsync(user.Id);
-            var claimsIdentity = CreateClaimsIdentity(user.Address, roles);
-
-            var jwtSecurityToken = new JwtSecurityToken(
-                AuthenticationOptions.Issuer,
-                AuthenticationOptions.Audience,
-                claimsIdentity.Claims,
-                now.UtcDateTime,
-                now.UtcDateTime.Add(TimeSpan.FromMinutes(AuthenticationOptions.LifetimeInMinutes)),
-                new SigningCredentials(AuthenticationOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-
-            var token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-            return new Identity(user.Address, true, token, roles.Select(r => r.Name).ToArray());
+            return await GenerateJwtAsync(user);
         }
 
         public async Task RegisterAsync(RegistrationRequest request)
@@ -84,6 +73,25 @@ namespace SmartValley.WebApi.Authentication
                                            });
         }
 
+        public async Task<Identity> RefreshAccessTokenAsync(string address)
+        {
+            var user = await _userRepository.GetByAddressAsync(address);
+            return await GenerateJwtAsync(user);
+        }
+
+        public bool ShouldRefreshToken(string encodedToken)
+        {
+            var token = _jwtSecurityTokenHandler.ReadJwtToken(encodedToken.Replace("Bearer ", ""));
+            if (!token.Payload.ContainsKey("TokenIssueDate"))
+            {
+                return true;
+            }
+
+            var issueDate = (DateTime) token.Payload["TokenIssueDate"];
+
+            return (_clock.UtcNow - issueDate).TotalMinutes >= AuthenticationOptions.LifetimeInMinutes;
+        }
+
         private ClaimsIdentity CreateClaimsIdentity(string address, IReadOnlyCollection<Role> roles)
         {
             var claims = new List<Claim>
@@ -92,6 +100,26 @@ namespace SmartValley.WebApi.Authentication
                          };
             claims.AddRange(roles.Select(r => new Claim(ClaimsIdentity.DefaultRoleClaimType, r.Name)));
             return new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+        }
+
+        private async Task<Identity> GenerateJwtAsync(User user)
+        {
+            var now = _clock.UtcNow;
+            var roles = await _userRolesRepository.GetRolesByUserIdAsync(user.Id);
+            var claimsIdentity = CreateClaimsIdentity(user.Address, roles);
+
+            var jwtSecurityToken = new JwtSecurityToken(
+                AuthenticationOptions.Issuer,
+                AuthenticationOptions.Audience,
+                claimsIdentity.Claims,
+                now.UtcDateTime,
+                now.UtcDateTime.Add(TimeSpan.FromMinutes(AuthenticationOptions.LifetimeInMinutes)),
+                new SigningCredentials(AuthenticationOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+
+            jwtSecurityToken.Payload["TokenIssueDate"] = now;
+
+            var jwt = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            return new Identity(user.Address, true, jwt, roles.Select(r => r.Name).ToArray());
         }
 
         private bool IsSignedMessageValid(string address, string signedText, string signature)

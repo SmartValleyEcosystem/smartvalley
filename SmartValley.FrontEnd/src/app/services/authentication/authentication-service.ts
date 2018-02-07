@@ -1,4 +1,4 @@
-import {EventEmitter, Injectable, Injector} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import {Web3Service} from '../web3-service';
 import {Router} from '@angular/router';
@@ -10,36 +10,49 @@ import 'rxjs/add/operator/map';
 import {Ng2DeviceService} from 'ng2-device-detector';
 import {Constants} from '../../constants';
 import {DialogService} from '../dialog-service';
+import {UserContext} from './user-context';
+import {ErrorCode} from '../../shared/error-code.enum';
+import {AuthenticationApiClient} from '../../api/authentication/authentication-api-client';
+import {NotificationsService} from 'angular2-notifications';
 import {AdminContractClient} from '../contract-clients/admin-contract-client';
+import {AccountSignatureDto} from './account-signature-dto';
+import {RegistrationRequest} from '../../api/authentication/registration-request';
+import {AuthenticationRequest} from '../../api/authentication/authentication-request';
+
 
 @Injectable()
 export class AuthenticationService {
   public static MESSAGE_TO_SIGN = 'Confirm login. Please press the \'Sign\' button below.';
-  public accountChanged: EventEmitter<any> = new EventEmitter<any>();
 
-  private readonly userKey = 'userKey';
   private backgroundChecker: Subscription;
   private readonly compatibleBrowsers = [Constants.Chrome, Constants.Firefox];
 
   constructor(private web3Service: Web3Service,
               private router: Router,
-              private injector: Injector,
               private deviceService: Ng2DeviceService,
-              private dialogService: DialogService) {
+              private dialogService: DialogService,
+              private userContext: UserContext,
+              private authenticationApiClient: AuthenticationApiClient,
+              private notificationsService: NotificationsService,
+              private adminContractClient: AdminContractClient) {
+
+    this.userContext.userContextChanged.subscribe((user) => {
+      if (user == null) {
+        this.stopBackgroundChecker();
+        this.router.navigate([Paths.Root]);
+      }
+    });
   }
 
-  private get adminContractClient(): AdminContractClient {
-    return this.injector.get(AdminContractClient);
-  }
 
   public async initializeAsync(): Promise<void> {
-    if (this.web3Service.isMetamaskInstalled && this.getCurrentUser() != null) {
+    if (this.web3Service.isMetamaskInstalled && this.userContext.getCurrentUser() != null) {
       this.startBackgroundChecker();
     }
   }
 
   public isAuthenticated() {
-    return this.web3Service.isMetamaskInstalled && !isNullOrUndefined(this.getCurrentUser());
+    return this.web3Service.isMetamaskInstalled && !isNullOrUndefined(this.userContext.getCurrentUser());
   }
 
   public async authenticateAsync(): Promise<boolean> {
@@ -64,46 +77,102 @@ export class AuthenticationService {
       return false;
     }
 
-    let signature = this.getSignatureByAccount(currentAccount);
-    const isAdmin = await this.adminContractClient.isAdminAsync(currentAccount);
-    if (await this.shouldSignAccountAsync(currentAccount, signature, isAdmin)) {
+    let signature = this.userContext.getSignatureByAccount(currentAccount);
+    if (await this.shouldSignAccountAsync(currentAccount, signature)) {
       try {
         signature = await this.web3Service.signAsync(AuthenticationService.MESSAGE_TO_SIGN, currentAccount);
       } catch (e) {
         return false;
       }
     }
-    this.startUserSession(currentAccount, signature, isAdmin);
+
+    const user = await this.authenticateOnBackendAsync(currentAccount, signature, AuthenticationService.MESSAGE_TO_SIGN);
+    if (user == null) {
+      return false;
+    }
+
+    this.startUserSession(user);
     return true;
   }
 
-  public getCurrentUser(): User {
-    return JSON.parse(localStorage.getItem(this.userKey));
-  }
-
-  private getSignatureByAccount(account: string): string {
-    return localStorage.getItem(account);
-  }
-
-  private saveSignatureForAccount(account: string, signature: string) {
-    localStorage.setItem(account, signature);
-  }
-
-  private async shouldSignAccountAsync(currentAccount: string, savedSignature: string, isAdmin: boolean): Promise<boolean> {
-    let user = this.getCurrentUser();
-    if (user == null || user.account !== currentAccount) {
-      user = {account: currentAccount, signature: savedSignature, isAdmin: isAdmin};
+  private async authenticateOnBackendAsync(account: string, signature: string, messageToSign: string): Promise<User> {
+    const user = this.userContext.getCurrentUser();
+    if (user != null && user.account === account) {
+      return user;
     }
-    return !await this.checkSignatureAsync(user.account, user.signature);
+    try {
+      const response = await this.authenticationApiClient.authenticateAsync(<AuthenticationRequest>{
+        address: account,
+        signature: signature,
+        signedText: messageToSign
+      });
+
+      const isAdmin = await this.adminContractClient.isAdminAsync(account);
+      return <User>{
+        account: account,
+        signature: signature,
+        token: response.token,
+        roles: response.roles,
+        isAdmin: isAdmin
+      };
+    } catch (e) {
+      if (e.error.errorCode === ErrorCode.UserIsNotExist) {
+        const isSuccess = await this.registerAsync(account, signature, messageToSign);
+
+        if (isSuccess) {
+          this.notificationsService.success('Successful registration', 'Please check your email');
+        } else {
+          this.notificationsService.error('Failed registration', 'Please try again later');
+        }
+        return null;
+      }
+    }
   }
 
-  private startUserSession(account: string, signature: string, isAdmin: boolean) {
-    const user = this.getCurrentUser();
-    if (user != null && user.account === account && user.signature === signature && user.isAdmin === isAdmin) {
+  private async registerAsync(account: string, signature: string, messageToSign: string): Promise<boolean> {
+    try {
+      const email = await this.dialogService.showRegisterDialogAsync();
+      if (isNullOrUndefined(email)) {
+        return false;
+      }
+      await this.authenticationApiClient.registerAsync(<RegistrationRequest>{
+        address: account,
+        email: email,
+        signedText: messageToSign,
+        signature: signature
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  private async shouldSignAccountAsync(currentAccount: string, savedSignature: string): Promise<boolean> {
+    const accountSignature = this.getAccountAndSignatureToCheck(currentAccount, savedSignature);
+    return !await this.checkSignatureAsync(accountSignature.account, accountSignature.signature);
+  }
+
+  private getAccountAndSignatureToCheck(currentAccount: string, savedSignature: string): AccountSignatureDto {
+    const user = this.userContext.getCurrentUser();
+    if (user == null || user.account !== currentAccount) {
+      return <AccountSignatureDto>{
+        account: currentAccount,
+        signature: savedSignature
+      };
+    }
+    return <AccountSignatureDto>{
+      account: user.account,
+      signature: user.signature
+    };
+  }
+
+  private startUserSession(newUser: User) {
+    const user = this.userContext.getCurrentUser();
+    if (user != null && user.account === newUser.account && user.signature === newUser.signature) {
       return;
     }
-    this.saveCurrentUser({account, signature, isAdmin});
-    this.saveSignatureForAccount(account, signature);
+    this.userContext.saveCurrentUser(newUser);
+    this.userContext.saveSignatureForAccount(newUser.account, newUser.signature);
     this.startBackgroundChecker();
   }
 
@@ -117,16 +186,6 @@ export class AuthenticationService {
     } catch (e) {
       return false;
     }
-  }
-
-  private saveCurrentUser(user: User) {
-    localStorage.setItem(this.userKey, JSON.stringify(user));
-    this.accountChanged.emit(user);
-  }
-
-  private deleteCurrentUser() {
-    localStorage.removeItem(this.userKey);
-    this.accountChanged.emit();
   }
 
   private startBackgroundChecker() {
@@ -146,27 +205,20 @@ export class AuthenticationService {
 
   private async checkCurrentAuthStateAsync(): Promise<void> {
     const currentAccount = await this.web3Service.getCurrentAccountAsync();
-    const user = this.getCurrentUser();
+    let user = this.userContext.getCurrentUser();
     if (isNullOrUndefined(user)) {
-      this.stopUserSession();
+      this.userContext.deleteCurrentUser();
     }
     if (user.account === currentAccount) {
       return;
     }
-
-    const isAdmin = await this.adminContractClient.isAdminAsync(currentAccount);
-    const savedSignature = this.getSignatureByAccount(currentAccount);
+    const savedSignature = this.userContext.getSignatureByAccount(currentAccount);
     const isSavedSignatureValid = await this.checkSignatureAsync(currentAccount, savedSignature);
     if (isSavedSignatureValid) {
-      this.saveCurrentUser({account: currentAccount, signature: savedSignature, isAdmin: isAdmin});
+      user = await this.authenticateOnBackendAsync(currentAccount, savedSignature, AuthenticationService.MESSAGE_TO_SIGN);
+      this.userContext.saveCurrentUser(user);
     } else {
-      this.stopUserSession();
+      this.userContext.deleteCurrentUser();
     }
-  }
-
-  public stopUserSession() {
-    this.deleteCurrentUser();
-    this.stopBackgroundChecker();
-    this.router.navigate([Paths.Root]);
   }
 }

@@ -7,6 +7,7 @@ import {isNullOrUndefined} from 'util';
 import {AdminRequest} from '../../api/admin/admin-request';
 import {Md5} from 'ts-md5';
 import {AuthenticationService} from '../authentication/authentication-service';
+import {UserContext} from '../authentication/user-context';
 
 @Injectable()
 export class AdminContractClient implements ContractClient {
@@ -15,7 +16,8 @@ export class AdminContractClient implements ContractClient {
   public address: string;
 
   constructor(private web3Service: Web3Service,
-              private contractClient: ContractApiClient) {
+              private contractClient: ContractApiClient,
+              private userContext: UserContext) {
   }
 
   public async initializeAsync(): Promise<void> {
@@ -29,7 +31,8 @@ export class AdminContractClient implements ContractClient {
     return ConverterHelper.extractBoolValue(await token.isAdministrator(accountAddress));
   }
 
-  public async addAsync(accountAddress: string, fromAddress: string): Promise<string> {
+  public async addAsync(accountAddress: string): Promise<string> {
+    const fromAddress = await this.userContext.getCurrentUser().account;
     const contract = this.web3Service.getContract(this.abi, this.address);
     return await contract.add(
       accountAddress,

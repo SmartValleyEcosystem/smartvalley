@@ -5,6 +5,7 @@ import {ProjectCardType} from '../../services/project-card-type';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ProjectCardData} from '../common/project-card/project-card-data';
+import {UserContext} from '../../services/authentication/user-context';
 
 @Component({
   selector: 'app-my-projects',
@@ -18,8 +19,8 @@ export class MyProjectsComponent implements OnInit {
 
   constructor(private projectApiClient: ProjectApiClient,
               private router: Router,
-              private authenticationService: AuthenticationService) {
-    this.authenticationService.accountChanged.subscribe(async user => {
+              private userContext: UserContext) {
+    this.userContext.userContextChanged.subscribe(async user => {
       if (user) {
         await this.loadProjectsAsync();
       }

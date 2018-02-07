@@ -13,7 +13,6 @@ import {ApplicationApiClient} from './api/application/application-api.client';
 import {HeaderComponent} from './components/header/header.component';
 import {MaterialModule} from './shared/material.module';
 import {BalanceApiClient} from './api/balance/balance-api-client';
-import {AuthHeaderInterceptor} from './api/auth-header-interceptor';
 import {ApplicationComponent} from './components/application/application.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ScoringManagerContractClient} from './services/contract-clients/scoring-manager-contract-client';
@@ -73,16 +72,20 @@ import {VotingCardComponent} from './components/voting-card/voting-card.componen
 import {VotingManagerContractClient} from './services/contract-clients/voting-manager-contract-client';
 import {FreeScoringConfirmationModalComponent} from './components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component';
 import {VotingContractClient} from './services/contract-clients/voting-contract-client';
-import {AdminApiClient} from './api/admin/admin-api-client';
 import {VoteModalComponent} from './components/common/vote-modal/vote-modal.component';
 import {CompletedVotingComponent} from './components/completed-voting/completed-voting.component';
 import {CompletedVotingsComponent} from './components/completed-votings/completed-votings.component';
 import {FormatDatePipe} from './utils/format-date.pipe';
+import {AuthenticationApiClient} from './api/authentication/authentication-api-client';
+import {RegisterModalComponent} from './components/common/register-modal/register-modal.component';
+import {UserContext} from './services/authentication/user-context';
+import {JwtInterceptor} from './api/jwt-interceptor';
+import {AdminApiClient} from './api/admin/admin-api-client';
 import {AdminPanelComponent} from './components/admin-panel/admin-panel.component';
-import {DataTableModule} from 'primeng/primeng';
-import {TableModule} from 'primeng/table';
 import {AddAdminModalComponent} from './components/common/add-admin-modal/add-admin-modal.component';
 import {ShouldBeAdminGuard} from './services/authentication/should-be-admin.guard';
+import {TableModule} from 'primeng/table';
+import {DataTableModule} from 'primeng/primeng';
 
 @NgModule({
   declarations: [
@@ -115,6 +118,7 @@ import {ShouldBeAdminGuard} from './services/authentication/should-be-admin.guar
     VotingCardComponent,
     FreeScoringConfirmationModalComponent,
     VoteModalComponent,
+    RegisterModalComponent,
     CompletedVotingComponent,
     CompletedVotingsComponent,
     FormatDatePipe,
@@ -130,6 +134,7 @@ import {ShouldBeAdminGuard} from './services/authentication/should-be-admin.guar
     SvtWithdrawalConfirmationModalComponent,
     FreeScoringConfirmationModalComponent,
     VoteModalComponent,
+    RegisterModalComponent,
     AddAdminModalComponent
   ],
   imports: [
@@ -155,12 +160,12 @@ import {ShouldBeAdminGuard} from './services/authentication/should-be-admin.guar
         provide: TranslateLoader,
         useFactory: multiTranslateLoaderFactory
       }
-    })
+    }),
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthHeaderInterceptor,
+      useClass: JwtInterceptor,
       multi: true
     },
     {
@@ -184,7 +189,9 @@ import {ShouldBeAdminGuard} from './services/authentication/should-be-admin.guar
     EstimatesApiClient,
     AdminApiClient,
     VotingApiClient,
+    AuthenticationApiClient,
     AuthenticationService,
+    UserContext,
     ProjectService,
     QuestionService,
     Web3Service,

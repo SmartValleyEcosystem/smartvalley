@@ -96,6 +96,7 @@ namespace SmartValley.WebApi
 
             services.AddMvc(options =>
                             {
+                                options.Filters.Add(new AuthenticationFilterFactory());
                                 options.Filters.Add(new AppErrorsExceptionFilter());
                                 options.Filters.Add(new ModelStateFilter());
                             });
@@ -121,6 +122,9 @@ namespace SmartValley.WebApi
             services.AddTransient<IVotingRepository, VotingRepository>();
             services.AddTransient<IVotingProjectRepository, VotingProjectRepository>();
             services.AddTransient<IAdminService, AdminService>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserRolesRepository, UserRolesRepository>();
+            services.AddTransient<IAuthenticationService, AuthenticationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -168,7 +172,11 @@ namespace SmartValley.WebApi
             corsPolicyBuilder.WithOrigins(url);
             corsPolicyBuilder.AllowAnyHeader();
             corsPolicyBuilder.AllowAnyMethod();
-            corsPolicyBuilder.WithExposedHeaders(Headers.XEthereumAddress, Headers.XSignedText, Headers.XSignature);
+            corsPolicyBuilder.WithExposedHeaders(Headers.XNewAuthToken, 
+                                                 Headers.XNewRoles,
+                                                 Headers.XEthereumAddress,
+                                                 Headers.XSignature,
+                                                 Headers.XSignedText);
             corsPolicyBuilder.AllowCredentials();
 
             services.AddCors(options => { options.AddPolicy(CorsPolicyName, corsPolicyBuilder.Build()); });

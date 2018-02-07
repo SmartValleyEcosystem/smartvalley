@@ -8,6 +8,7 @@ import * as timespan from 'timespan';
 import {Paths} from '../../paths';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
+import {UserContext} from '../../services/authentication/user-context';
 
 @Component({
   selector: 'app-voting',
@@ -29,7 +30,7 @@ export class VotingComponent implements OnInit {
   constructor(private router: Router,
               private balanceService: BalanceService,
               private votingService: VotingService,
-              private authenticationService: AuthenticationService) {
+              private userContext: UserContext) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -37,7 +38,7 @@ export class VotingComponent implements OnInit {
     setInterval(() => this.updateRemainingTime(), 1000);
 
     this.votingService.voteSubmitted.subscribe(() => this.loadSprintDataAsync());
-    this.authenticationService.accountChanged.subscribe(() => this.loadSprintDataAsync());
+    this.userContext.userContextChanged.subscribe(() => this.loadSprintDataAsync());
   }
 
   async navigateToCompleted() {

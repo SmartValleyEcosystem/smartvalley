@@ -5,6 +5,7 @@ import {AdminContractClient} from '../../services/contract-clients/admin-contrac
 import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {Router} from '@angular/router';
 import {AdminResponse} from '../../api/admin/admin-response';
+import {UserContext} from '../../services/authentication/user-context';
 
 @Component({
   selector: 'app-admin-panel',
@@ -18,7 +19,7 @@ export class AdminPanelComponent implements OnInit {
   constructor(private router: Router,
               private adminApiClient: AdminApiClient,
               private adminContractClient: AdminContractClient,
-              private authenticationService: AuthenticationService,
+              private userContext: UserContext,
               private dialogService: DialogService) {
   }
 
@@ -28,14 +29,13 @@ export class AdminPanelComponent implements OnInit {
 
   async createAsync() {
     const address = await this.dialogService.showCreateAdminDialogAsync()
-    const fromAddress = await this.authenticationService.getCurrentUser().account;
-    const transactionHash = await this.adminContractClient.addAsync(address, fromAddress);
+    const transactionHash = await this.adminContractClient.addAsync(address);
     await this.adminApiClient.addAsync(address, transactionHash);
     await this.updateAdminsAsync();
   }
 
   async deleteAsync(address: string) {
-    const fromAddress = await this.authenticationService.getCurrentUser().account;
+    const fromAddress = await this.userContext.getCurrentUser().account;
     const transactionHash = await this.adminContractClient.deleteAsync(address, fromAddress);
     await this.adminApiClient.deleteAsync(address, transactionHash);
     await this.updateAdminsAsync();

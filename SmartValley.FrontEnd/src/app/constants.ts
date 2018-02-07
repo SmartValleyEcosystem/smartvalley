@@ -1,7 +1,7 @@
 export class HeadersConstants {
-  static XEthereumAddress = 'X-Ethereum-Address';
-  static XSignature = 'X-Signature';
-  static XSignedText = 'X-Signed-Text';
+  static Authorization = 'Authorization';
+  static XNewAuthToken = 'X-New-Auth-Token';
+  static XNewRoles = 'X-New-Roles';
 }
 
 export class Constants {

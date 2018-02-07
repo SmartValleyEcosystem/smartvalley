@@ -1,5 +1,4 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 import {isNullOrUndefined} from 'util';
@@ -7,6 +6,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {ProjectCardType} from '../../services/project-card-type';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ProjectCardData} from '../common/project-card/project-card-data';
+import {UserContext} from '../../services/authentication/user-context';
 
 @Component({
   selector: 'app-scoring',
@@ -23,8 +23,8 @@ export class ScoringComponent implements OnDestroy, OnInit {
   private accountChangedSubscription: Subscription;
 
   constructor(private projectApiClient: ProjectApiClient,
-              private authenticationService: AuthenticationService) {
-    this.accountChangedSubscription = this.authenticationService.accountChanged.subscribe(
+              private userContext: UserContext) {
+    this.accountChangedSubscription = this.userContext.userContextChanged.subscribe(
       () => this.reloadProjectsForScoringAsync());
   }
 

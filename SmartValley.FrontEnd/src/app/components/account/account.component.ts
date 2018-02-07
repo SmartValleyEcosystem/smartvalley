@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {BalanceService} from '../../services/balance/balance.service';
 import {Balance} from '../../services/balance/balance';
-import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {BlockiesService} from '../../services/blockies-service';
 import {Router} from '@angular/router';
+import {UserContext} from '../../services/authentication/user-context';
 
 @Component({
   selector: 'app-account',
@@ -22,10 +22,10 @@ export class AccountComponent implements OnInit {
   constructor(private router: Router,
               private balanceService: BalanceService,
               private blockiesService: BlockiesService,
-              private authenticationService: AuthenticationService) {
+              private userContext: UserContext) {
 
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalances(balance));
-    this.authenticationService.accountChanged.subscribe((user) => this.updateAccount(user));
+    this.userContext.userContextChanged.subscribe((user) => this.updateAccount(user));
   }
 
   private updateAccount(user: User): void {
@@ -37,7 +37,7 @@ export class AccountComponent implements OnInit {
 
   async ngOnInit() {
     await this.balanceService.updateBalanceAsync();
-    const currentUser = this.authenticationService.getCurrentUser();
+    const currentUser = this.userContext.getCurrentUser();
     this.updateAccount(currentUser);
   }
 

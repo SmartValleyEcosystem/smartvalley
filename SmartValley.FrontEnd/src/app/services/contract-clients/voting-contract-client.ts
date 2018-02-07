@@ -5,13 +5,14 @@ import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {Injectable} from '@angular/core';
 import {ConverterHelper} from '../converter-helper';
 import {TokenContractClient} from './token-contract-client';
+import {UserContext} from '../authentication/user-context';
 
 @Injectable()
 export class VotingContractClient implements ContractClient {
   public abi: string;
   public address: string;
 
-  constructor(private authenticationService: AuthenticationService,
+  constructor(private userContext: UserContext,
               private web3Service: Web3Service,
               private contractClient: ContractApiClient,
               private tokenContractClient: TokenContractClient) {
@@ -24,7 +25,7 @@ export class VotingContractClient implements ContractClient {
 
   public async submitVoteAsync(votingSprintAddress: string, projectExternalId: string, amount: number): Promise<string> {
     const contract = this.web3Service.getContract(this.abi, votingSprintAddress);
-    const fromAddress = this.authenticationService.getCurrentUser().account;
+    const fromAddress = this.userContext.getCurrentUser().account;
 
     const token = this.web3Service.getContract(this.tokenContractClient.abi, this.tokenContractClient.address);
     const decimals = ConverterHelper.extractNumberValue(await token.decimals());
