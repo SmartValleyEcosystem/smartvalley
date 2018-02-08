@@ -26,20 +26,20 @@ namespace SmartValley.Domain.Entities
 
         public Project Project { get; set; }
 
-        public bool IsCompletedInArea(ExpertiseArea area)
+        public bool IsCompletedInArea(ExpertiseAreaType areaType)
         {
-            switch (area)
+            switch (areaType)
             {
-                case ExpertiseArea.Hr:
+                case ExpertiseAreaType.Hr:
                     return IsScoredByHr;
-                case ExpertiseArea.Analyst:
+                case ExpertiseAreaType.Analyst:
                     return IsScoredByAnalyst;
-                case ExpertiseArea.Tech:
+                case ExpertiseAreaType.Tech:
                     return IsScoredByTechnical;
-                case ExpertiseArea.Lawyer:
+                case ExpertiseAreaType.Lawyer:
                     return IsScoredByLawyer;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(area), area, null);
+                    throw new ArgumentOutOfRangeException(nameof(areaType), areaType, null);
             }
         }
     }

@@ -27,6 +27,7 @@ using SmartValley.WebApi.Applications;
 using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.Estimates;
 using SmartValley.WebApi.ExceptionHandler;
+using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.Scoring;
 using SmartValley.WebApi.Users;
@@ -128,6 +129,8 @@ namespace SmartValley.WebApi
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
+            services.AddTransient<IExpertService, ExpertService>();
+            services.AddTransient<IExpertApplicationRepository, ExpertApplicationRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -175,7 +178,7 @@ namespace SmartValley.WebApi
             corsPolicyBuilder.WithOrigins(url);
             corsPolicyBuilder.AllowAnyHeader();
             corsPolicyBuilder.AllowAnyMethod();
-            corsPolicyBuilder.WithExposedHeaders(Headers.XNewAuthToken, 
+            corsPolicyBuilder.WithExposedHeaders(Headers.XNewAuthToken,
                                                  Headers.XNewRoles,
                                                  Headers.XEthereumAddress,
                                                  Headers.XSignature,

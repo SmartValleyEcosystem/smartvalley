@@ -17,6 +17,10 @@ namespace SmartValley.Data.SQL.Core
         IQueryable<User> Users { get; }
         IQueryable<Role> Roles { get; }
         IQueryable<UserRole> UserRoles { get; }
+        IQueryable<ExpertiseArea> ExpertiseAreas { get; }
+        IQueryable<ExpertApplication> ExpertApplications { get; }
+        IQueryable<ExpertApplicationArea> ExpertApplicationAreas { get; }
+
         IQueryable<T> GetAll<T>() where T : class;
     }
 }

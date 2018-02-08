@@ -34,16 +34,16 @@ namespace SmartValley.Data.SQL.Repositories
                           select new ProjectScoring(project, scoring)).ToArrayAsync();
         }
 
-        public async Task<IReadOnlyCollection<ProjectScoring>> GetForScoringAsync(string expertAddress, ExpertiseArea area)
+        public async Task<IReadOnlyCollection<ProjectScoring>> GetForScoringAsync(string expertAddress, ExpertiseAreaType areaType)
         {
             var scoredProjects = (from question in ReadContext.Questions
                                   join comment in ReadContext.EstimateComments on question.Id equals comment.QuestionId
                                   join scoring in ReadContext.Scorings on comment.ProjectId equals scoring.ProjectId
-                                  where (comment.ExpertAddress.OrdinalEquals(expertAddress) && question.ExpertiseArea == area) ||
-                                        (area == ExpertiseArea.Analyst && scoring.IsScoredByAnalyst ||
-                                         area == ExpertiseArea.Hr && scoring.IsScoredByHr ||
-                                         area == ExpertiseArea.Lawyer && scoring.IsScoredByLawyer ||
-                                         area == ExpertiseArea.Tech && scoring.IsScoredByTechnical)
+                                  where (comment.ExpertAddress.OrdinalEquals(expertAddress) && question.ExpertiseAreaType == areaType) ||
+                                        (areaType == ExpertiseAreaType.Analyst && scoring.IsScoredByAnalyst ||
+                                         areaType == ExpertiseAreaType.Hr && scoring.IsScoredByHr ||
+                                         areaType == ExpertiseAreaType.Lawyer && scoring.IsScoredByLawyer ||
+                                         areaType == ExpertiseAreaType.Tech && scoring.IsScoredByTechnical)
                                   select comment.ProjectId).Distinct();
 
             return await (from project in ReadContext.Projects

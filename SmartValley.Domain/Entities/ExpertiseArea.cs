@@ -1,11 +1,15 @@
-﻿namespace SmartValley.Domain.Entities
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+namespace SmartValley.Domain.Entities
 {
-    public enum ExpertiseArea
+    public class ExpertiseArea
     {
-        Unknown = 0,
-        Hr = 1,
-        Analyst = 2,
-        Tech = 3,
-        Lawyer = 4
+        public ExpertiseAreaType Id { get; set; }
+
+        [Required]
+        public string Name { get; set; }
+
+        public IEnumerable<ExpertApplicationArea> ExpertApplicationAreas { get; set; }
     }
 }

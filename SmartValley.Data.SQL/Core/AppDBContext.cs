@@ -35,6 +35,12 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<UserRole> IReadOnlyDataContext.UserRoles => UserRoles.AsNoTracking();
 
+        IQueryable<ExpertiseArea> IReadOnlyDataContext.ExpertiseAreas => ExpertiseAreas.AsNoTracking();
+
+        IQueryable<ExpertApplication> IReadOnlyDataContext.ExpertApplications => ExpertApplications.AsNoTracking();
+
+        IQueryable<ExpertApplicationArea> IReadOnlyDataContext.ExpertApplicationAreas => ExpertApplicationAreas.AsNoTracking();
+
         public DbSet<Application> Applications { get; set; }
 
         public DbSet<Project> Projects { get; set; }
@@ -56,6 +62,12 @@ namespace SmartValley.Data.SQL.Core
         public DbSet<Role> Roles { get; set; }
 
         public DbSet<UserRole> UserRoles { get; set; }
+
+        public DbSet<ExpertiseArea> ExpertiseAreas { get; set; }
+
+        public DbSet<ExpertApplication> ExpertApplications { get; set; }
+
+        public DbSet<ExpertApplicationArea> ExpertApplicationAreas { get; set; }
 
         public IQueryable<T> GetAll<T>() where T : class
         {
@@ -122,6 +134,20 @@ namespace SmartValley.Data.SQL.Core
 
             modelBuilder.Entity<UserRole>()
                         .HasKey(u => new {u.UserId, u.RoleId});
+
+            modelBuilder.Entity<ExpertiseArea>()
+                        .HasKey(r => r.Id);
+
+            modelBuilder.Entity<ExpertiseArea>()
+                        .Property(r => r.Id)
+                        .ValueGeneratedNever();
+
+            modelBuilder.Entity<ExpertiseArea>()
+                        .HasIndex(r => r.Name)
+                        .IsUnique();
+
+            modelBuilder.Entity<ExpertApplicationArea>()
+                        .HasKey(e => new {e.ExpertApplicationId, ExpertiseAreaType = e.ExpertiseAreaType});
         }
     }
 }

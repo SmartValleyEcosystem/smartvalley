@@ -42,11 +42,11 @@ namespace SmartValley.WebApi.Estimates
             await UpdateProjectScoringAsync(scoring, scoringStatistics);
         }
 
-        public async Task<ScoringStatisticsInArea> GetScoringStatisticsInAreaAsync(long projectId, Domain.Entities.ExpertiseArea expertiseArea)
+        public async Task<ScoringStatisticsInArea> GetScoringStatisticsInAreaAsync(long projectId, Domain.Entities.ExpertiseAreaType expertiseAreaType)
         {
             var scoring = await _scoringRepository.GetByProjectIdAsync(projectId);
             var scores = await _scoringContractClient.GetEstimatesAsync(scoring.ContractAddress);
-            var comments = await _estimateCommentRepository.GetAsync(projectId, expertiseArea);
+            var comments = await _estimateCommentRepository.GetAsync(projectId, expertiseAreaType);
 
             var estimates = (from comment in comments
                              join score in scores
@@ -55,7 +55,7 @@ namespace SmartValley.WebApi.Estimates
                              select CreateEstimate(score, comment)).ToArray();
 
             var requiredSubmissionsInArea = (double) await _scoringContractClient.GetRequiredSubmissionsInAreaCountAsync(scoring.ContractAddress);
-            var averageScore = scoring.IsCompletedInArea(expertiseArea)
+            var averageScore = scoring.IsCompletedInArea(expertiseAreaType)
                                    ? estimates.Sum(i => i.Score) / requiredSubmissionsInArea
                                    : (double?) null;
 

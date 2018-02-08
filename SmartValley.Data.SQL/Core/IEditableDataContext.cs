@@ -18,6 +18,10 @@ namespace SmartValley.Data.SQL.Core
         DbSet<User> Users { get; set; }
         DbSet<Role> Roles { get; set; }
         DbSet<UserRole> UserRoles { get; set; }
+        DbSet<ExpertiseArea> ExpertiseAreas { get; set; }
+        DbSet<ExpertApplication> ExpertApplications { get; set; }
+        DbSet<ExpertApplicationArea> ExpertApplicationAreas { get; set; }
+
         Task<int> SaveAsync();
         EntityEntry<T> Entity<T>(T x) where T : class;
         DbSet<T> DbSet<T>() where T : class;
