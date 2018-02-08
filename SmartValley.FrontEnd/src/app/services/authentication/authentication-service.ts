@@ -18,6 +18,9 @@ import {AdminContractClient} from '../contract-clients/admin-contract-client';
 import {AccountSignatureDto} from './account-signature-dto';
 import {RegistrationRequest} from '../../api/authentication/registration-request';
 import {AuthenticationRequest} from '../../api/authentication/authentication-request';
+import {UserApiClient} from '../../api/user/user-api-client';
+import {EmailRequest} from '../../api/user/email-request';
+import {TranslateService} from '@ngx-translate/core';
 
 
 @Injectable()
@@ -34,7 +37,9 @@ export class AuthenticationService {
               private userContext: UserContext,
               private authenticationApiClient: AuthenticationApiClient,
               private notificationsService: NotificationsService,
-              private adminContractClient: AdminContractClient) {
+              private adminContractClient: AdminContractClient,
+              private userApiClient: UserApiClient,
+              private translateService: TranslateService) {
 
     this.userContext.userContextChanged.subscribe((user) => {
       if (user == null) {
@@ -94,7 +99,7 @@ export class AuthenticationService {
     this.startUserSession(user);
     return true;
   }
-
+  
   private async authenticateOnBackendAsync(account: string, signature: string, messageToSign: string): Promise<User> {
     const user = this.userContext.getCurrentUser();
     if (user != null && user.account === account) {
@@ -116,15 +121,23 @@ export class AuthenticationService {
         isAdmin: isAdmin
       };
     } catch (e) {
-      if (e.error.errorCode === ErrorCode.UserNotFound) {
-        const isSuccess = await this.registerAsync(account, signature, messageToSign);
-
-        if (isSuccess) {
-          this.notificationsService.success('Successful registration', 'Please check your email');
-        } else {
-          this.notificationsService.error('Failed registration', 'Please try again later');
-        }
-        return null;
+      switch (e.error.errorCode) {
+        case ErrorCode.UserNotFound:
+          const isSuccess = await this.registerAsync(account, signature, messageToSign);
+          if (isSuccess) {
+            this.notificationsService.success('Successful registration', 'Please check your email');
+          } else {
+            this.notificationsService.error('Failed registration', 'Please try again later');
+          }
+          return null;
+        case ErrorCode.EmailNotConfirmed:
+          const response = await this.userApiClient.getEmailBySignatureAsync(<EmailRequest>{
+            address: account,
+            signature: signature,
+            signedText: AuthenticationService.MESSAGE_TO_SIGN
+          });
+          console.log(response);
+          await this.dialogService.showConfirmEmailDialogAsync(response.email);
       }
     }
   }
@@ -143,6 +156,12 @@ export class AuthenticationService {
       });
       return true;
     } catch (e) {
+      if (e.error.errorCode === ErrorCode.EmailSendingFailed) {
+        this.notificationsService.error(
+          this.translateService.instant('Authentication.EmailSendingErrorTitle'),
+          this.translateService.instant('Authentication.EmailSendingErrorMessage')
+        );
+      }
       return false;
     }
   }
@@ -220,5 +239,15 @@ export class AuthenticationService {
     } else {
       this.userContext.deleteCurrentUser();
     }
+  }
+
+  private async getEmailBySignatureAsync(address: string, signature: string): Promise<string> {
+    const response = await this.userApiClient.getEmailBySignatureAsync(<EmailRequest>{
+      address: address,
+      signature: signature,
+      signedText: AuthenticationService.MESSAGE_TO_SIGN
+    });
+
+    return response.email;
   }
 }

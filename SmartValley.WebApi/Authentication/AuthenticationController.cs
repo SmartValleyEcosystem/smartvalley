@@ -33,5 +33,19 @@ namespace SmartValley.WebApi.Authentication
             await _authenticationService.RegisterAsync(request);
             return new EmptyResponse();
         }
+
+        [HttpPut("confirm")]
+        public async Task<EmptyResponse> ConfrimEmailAsync([FromBody] ConfirmEmailRequest request)
+        {
+            await _authenticationService.ConfirmEmailAsync(request.Address, request.Token);
+            return new EmptyResponse();
+        }
+
+        [HttpPost("resend")]
+        public async Task<EmptyResponse> ReSendEmailAsync([FromBody] ReSendEmailRequest request)
+        {
+            await _authenticationService.ReSendEmailAsync(request.Address);
+            return new EmptyResponse();
+        }
     }
 }

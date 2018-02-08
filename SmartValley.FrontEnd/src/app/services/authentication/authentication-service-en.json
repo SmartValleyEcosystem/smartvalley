@@ -8,6 +8,8 @@
     "UnlockMetamaskButton": "Ok",
     "WrongNetworkTitle": "Wrong network",
     "WrongNetworkMessage": "Please click Metamask extension's logo in the top right corner of your browser and change network to 'Rinkeby Test Network'.",
-    "WrongNetworkButton": "Ok"
+    "WrongNetworkButton": "Ok",
+    "EmailSendingErrorTitle": "Failed to send email",
+    "EmailSendingErrorMessage": "Please try again"
   }
 }

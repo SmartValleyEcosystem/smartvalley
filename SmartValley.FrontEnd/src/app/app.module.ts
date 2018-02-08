@@ -87,6 +87,8 @@ import {AddAdminModalComponent} from './components/common/add-admin-modal/add-ad
 import {ShouldBeAdminGuard} from './services/authentication/should-be-admin.guard';
 import {TableModule} from 'primeng/table';
 import {DataTableModule} from 'primeng/primeng';
+import {ConfirmEmailModalComponent} from './components/common/confirm-email/confirm-email-modal.component';
+import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
 
 @NgModule({
   declarations: [
@@ -124,7 +126,9 @@ import {DataTableModule} from 'primeng/primeng';
     CompletedVotingsComponent,
     FormatDatePipe,
     AdminPanelComponent,
-    AddAdminModalComponent
+    AddAdminModalComponent,
+    ConfirmEmailModalComponent,
+    ConfirmEmailComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -136,7 +140,8 @@ import {DataTableModule} from 'primeng/primeng';
     FreeScoringConfirmationModalComponent,
     VoteModalComponent,
     RegisterModalComponent,
-    AddAdminModalComponent
+    AddAdminModalComponent,
+    ConfirmEmailModalComponent
   ],
   imports: [
     TableModule,

@@ -1,3 +1,5 @@
 export enum ErrorCode {
-  UserNotFound = 'UserNotFound'
+  EmailNotConfirmed = 'EmailNotConfirmed',
+  UserNotFound = 'UserNotFound',
+  EmailSendingFailed = 'EmailSendingFailed'
 }

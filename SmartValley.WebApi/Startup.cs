@@ -19,6 +19,8 @@ using SmartValley.Application.Contracts.Options;
 using SmartValley.Application.Contracts.Scorings;
 using SmartValley.Application.Contracts.SmartValley.Application.Contracts;
 using SmartValley.Application.Contracts.Votings;
+using SmartValley.Application.Email;
+using SmartValley.Application.Templates;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Data.SQL.Repositories;
 using SmartValley.Domain.Interfaces;
@@ -55,7 +57,7 @@ namespace SmartValley.WebApi
         // ReSharper disable once UnusedMember.Global
         public void ConfigureServices(IServiceCollection services)
         {
-            services.ConfigureOptions(Configuration, typeof(NethereumOptions), typeof(AuthenticationOptions));
+            services.ConfigureOptions(Configuration, typeof(NethereumOptions), typeof(AuthenticationOptions), typeof(SiteOptions), typeof(SmtpOptions));
 
             ConfigureCorsPolicy(services);
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "SmartValley API", Version = "v1"}); });
@@ -81,6 +83,10 @@ namespace SmartValley.WebApi
             services.AddSingleton<EthereumMessageSigner>();
             services.AddSingleton<EthereumClient>();
             services.AddSingleton<EthereumContractClient>();
+            services.AddSingleton<MailService>();
+            services.AddSingleton<MailTokenService>();
+            services.AddSingleton<MailSender>();
+            services.AddSingleton<ITemplateProvider, TemplateProvider>();
             services.AddSingleton<ITokenContractClient, TokenContractClient>(
                 provider => new TokenContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().TokenContract));
             services.AddSingleton<IVotingSprintContractClient, VotingSprintContractClient>(
@@ -95,6 +101,8 @@ namespace SmartValley.WebApi
                 provider => new EtherManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().EtherManagerContract));
             services.AddSingleton<IScoringManagerContractClient, ScoringManagerContractClient>(
                 provider => new ScoringManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringManagerContract));
+
+            services.AddMemoryCache();
 
             services.AddMvc(options =>
                             {
@@ -167,8 +175,8 @@ namespace SmartValley.WebApi
         private void ConfigureCorsPolicy(IServiceCollection services)
         {
             var sp = services.BuildServiceProvider();
-            var siteOptions = sp.GetService<AuthenticationOptions>();
-            var url = siteOptions.BaseUrl;
+            var siteOptions = sp.GetService<SiteOptions>();
+            var url = siteOptions.Root;
             if (!_currentEnvironment.IsProduction())
             {
                 url = "*";

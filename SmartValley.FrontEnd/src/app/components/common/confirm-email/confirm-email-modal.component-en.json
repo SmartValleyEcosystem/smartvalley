@@ -1,0 +1,11 @@
+{
+  "ConfirmEmailModal": {
+    "Title": "Email confirmation",
+    "CheckEmail": "Confirmation letter has been sent to",
+    "CanSendEmail": "You can request new email",
+    "InSeconds": "in {{seconds}} seconds",
+    "SendEmail": "Send",
+    "ErrorTitle": "Failed to send email",
+    "ErrorBody": "Please try again later"
+  }
+}

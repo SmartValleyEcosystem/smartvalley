@@ -10,9 +10,12 @@
         NotEnoughProjectsForSprintStart,
         EmailAlreadyExists,
         InvalidSignature,
-        EmailNotConfrimed,
+        EmailNotConfirmed,
+        IncorrectData,
+        EmailAlreadySent,
         UserNotFound,
         RoleNotFound,
-        UserHaveNoRole
+        UserHaveNoRole,
+        EmailSendingFailed
     }
 }

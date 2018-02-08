@@ -11,4 +11,5 @@ export class Paths {
   public static readonly CompletedVoting = 'completedvoting';
   public static readonly CompletedVotings = 'completedvotings';
   public static readonly Admin = 'admin';
+  public static readonly ConfirmEmail = 'auth/confirm/:address/:token';
 }

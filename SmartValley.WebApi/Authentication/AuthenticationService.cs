@@ -4,8 +4,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using Nethereum.Signer;
+using SmartValley.Application.Email;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
@@ -19,12 +21,24 @@ namespace SmartValley.WebApi.Authentication
         private readonly EthereumMessageSigner _ethereumMessageSigner;
         private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
         private readonly IClock _clock;
+        private readonly MailService _mailService;
+        private readonly MailTokenService _mailTokenService;
+        private readonly IMemoryCache _memoryCache;
+        private const string MemoryCacheEmailKey = "emailsended";
 
-        public AuthenticationService(EthereumMessageSigner ethereumMessageSigner, IClock clock, IUserRepository userRepository)
+        public AuthenticationService(EthereumMessageSigner ethereumMessageSigner,
+                                     IClock clock,
+                                     IUserRepository userRepository,
+                                     MailService mailService,
+                                     MailTokenService mailTokenService,
+                                     IMemoryCache memoryCache)
         {
             _ethereumMessageSigner = ethereumMessageSigner;
             _clock = clock;
             _userRepository = userRepository;
+            _mailService = mailService;
+            _mailTokenService = mailTokenService;
+            _memoryCache = memoryCache;
             _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
         }
 
@@ -32,18 +46,14 @@ namespace SmartValley.WebApi.Authentication
         {
             var user = await _userRepository.GetByAddressAsync(request.Address);
 
-            //TODO
-            //Add email confrimation check 
-            //https://rassvet-capital.atlassian.net/browse/ILT-595
             if (string.IsNullOrEmpty(user?.Email))
-            {
                 throw new AppErrorException(ErrorCode.UserNotFound);
-            }
+
+            if (!user.IsEmailConfirmed)
+                throw new AppErrorException(ErrorCode.EmailNotConfirmed);
 
             if (!IsSignedMessageValid(request.Address, request.SignedText, request.Signature))
-            {
                 throw new AppErrorException(ErrorCode.InvalidSignature);
-            }
 
             return await GenerateJwtAsync(user);
         }
@@ -51,24 +61,21 @@ namespace SmartValley.WebApi.Authentication
         public async Task RegisterAsync(RegistrationRequest request)
         {
             if (!IsSignedMessageValid(request.Address, request.SignedText, request.Signature))
-            {
                 throw new AppErrorException(ErrorCode.InvalidSignature);
-            }
 
             var user = await _userRepository.GetByEmailAsync(request.Email);
             if (user != null)
-            {
                 throw new AppErrorException(ErrorCode.EmailAlreadyExists);
-            }
 
-            await _userRepository.AddAsync(new User
-                                           {
-                                               Address = request.Address,
-                                               Email = request.Email,
-                                               //TODO
-                                               //https://rassvet-capital.atlassian.net/browse/ILT-595
-                                               IsEmailConfirmed = true
-                                           });
+            user = new User
+                   {
+                       Address = request.Address,
+                       Email = request.Email
+                   };
+
+            await _userRepository.AddAsync(user);
+
+            await _mailService.SendConfirmRegistrationAsync(user.Address, user.Email);
         }
 
         public async Task<Identity> RefreshAccessTokenAsync(string address)
@@ -81,13 +88,46 @@ namespace SmartValley.WebApi.Authentication
         {
             var token = _jwtSecurityTokenHandler.ReadJwtToken(encodedToken.Replace("Bearer ", ""));
             if (!token.Payload.ContainsKey("TokenIssueDate"))
-            {
                 return true;
-            }
 
             var issueDate = (DateTime) token.Payload["TokenIssueDate"];
 
             return (_clock.UtcNow - issueDate).TotalMinutes >= AuthenticationOptions.LifetimeInMinutes;
+        }
+
+        public async Task ConfirmEmailAsync(string address, string token)
+        {
+            var user = await _userRepository.GetByAddressAsync(address);
+            if (user == null || user.IsEmailConfirmed || !_mailTokenService.CheckEmailConfirmationToken(address, user.Email, token))
+                throw new AppErrorException(ErrorCode.IncorrectData);
+
+            user.IsEmailConfirmed = true;
+            await _userRepository.UpdateWholeAsync(user);
+        }
+
+        public async Task ReSendEmailAsync(string address)
+        {
+            if (_memoryCache.TryGetValue(MemoryCacheEmailKey + address, out bool isEmailSended))
+                throw new AppErrorException(ErrorCode.EmailAlreadySent);
+
+            var user = await _userRepository.GetByAddressAsync(address);
+
+            await _mailService.SendConfirmRegistrationAsync(user.Address, user.Email);
+
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromMinutes(1));
+
+            _memoryCache.Set(MemoryCacheEmailKey + address, true, cacheEntryOptions);
+        }
+
+        public async Task<string> GetEmailBySignatureAsync(string address, string signature, string signedText)
+        {
+            var user = await _userRepository.GetByAddressAsync(address);
+
+            if (!IsSignedMessageValid(address, signedText, signature) || string.IsNullOrEmpty(user?.Email))
+                return null;
+
+            return user.Email;
         }
 
         private ClaimsIdentity CreateClaimsIdentity(string address, IReadOnlyCollection<Role> roles)

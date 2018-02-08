@@ -18,6 +18,7 @@ import {VoteModalComponent} from '../components/common/vote-modal/vote-modal.com
 import {RegisterModelData} from '../components/common/register-modal/register-modal-data';
 import {RegisterModalComponent} from '../components/common/register-modal/register-modal.component';
 import {AddAdminModalComponent} from '../components/common/add-admin-modal/add-admin-modal.component';
+import {ConfirmEmailModalComponent} from '../components/common/confirm-email/confirm-email-modal.component';
 
 @Injectable()
 export class DialogService {
@@ -83,6 +84,10 @@ export class DialogService {
     return this.openModal(RegisterModalComponent, data)
       .afterClosed()
       .toPromise<string>();
+  }
+
+  public showConfirmEmailDialogAsync(email: string) {
+    this.dialog.open(ConfirmEmailModalComponent, {data: email, width: '30em'});
   }
 
   public showRinkebyAlert(): MatDialogRef<MetamaskManualModalComponent> {

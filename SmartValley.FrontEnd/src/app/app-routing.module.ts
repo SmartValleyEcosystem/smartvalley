@@ -22,6 +22,7 @@ import {VotingCardComponent} from './components/voting-card/voting-card.componen
 import {CompletedVotingComponent} from './components/completed-voting/completed-voting.component';
 import {AdminPanelComponent} from './components/admin-panel/admin-panel.component';
 import {CompletedVotingsComponent} from './components/completed-votings/completed-votings.component';
+import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -69,7 +70,8 @@ const appRoutes: Routes = [
         }
       },
       {path: Paths.Report + '/:id', pathMatch: 'full', component: ReportComponent},
-      {path: Paths.Scoring + '/:id', pathMatch: 'full', component: EstimateComponent, canActivate: [ShouldHaveEthGuard]}
+      {path: Paths.Scoring + '/:id', pathMatch: 'full', component: EstimateComponent, canActivate: [ShouldHaveEthGuard]},
+      {path: Paths.ConfirmEmail, component: ConfirmEmailComponent}
     ]
   },
   {path: '**', redirectTo: Paths.Root}

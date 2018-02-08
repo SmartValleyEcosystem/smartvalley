@@ -1,0 +1,15 @@
+<div>
+  <h2 mat-mat-title>{{'ConfirmEmailModal.Title' | translate}}</h2>
+  <hr>
+  <mat-dialog-content>
+    <p> {{'ConfirmEmailModal.CheckEmail' | translate}} {{email}} </p>
+    <p> {{'ConfirmEmailModal.CanSendEmail' | translate}} <span *ngIf="seconds > 0">{{'ConfirmEmailModal.InSeconds' | translate:{seconds: seconds} }} </span>
+    </p>
+    <hr>
+    <mat-dialog-actions class="d-flex justify-content-center">
+      <button mat-raised-button (click)="sendEmail()" [disabled]="seconds > 0" class="col-2 sv-default-btn btn-space">
+        {{'ConfirmEmailModal.SendEmail' | translate}}
+      </button>
+    </mat-dialog-actions>
+  </mat-dialog-content>
+</div>

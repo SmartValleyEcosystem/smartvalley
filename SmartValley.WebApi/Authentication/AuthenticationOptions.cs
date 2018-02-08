@@ -5,8 +5,6 @@ namespace SmartValley.WebApi.Authentication
 {
     public class AuthenticationOptions
     {
-        public string BaseUrl { get; set; }
-
         public const string Issuer = "SmartValley";
         public const string Audience = "https://smartvalley.io/";
         public const int LifetimeInMinutes = 10;
