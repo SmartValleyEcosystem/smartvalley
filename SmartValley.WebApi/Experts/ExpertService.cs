@@ -61,10 +61,9 @@ namespace SmartValley.WebApi.Experts
 
             await _expertApplicationRepository.AddAsync(expertApplication, request.Areas);
         }
-
-        // TODO 
+        
         public Task<bool> IsAppliedAsync(string address)
-            => Task.FromResult(statuses.Any(i => i.Address.Equals(address, StringComparison.OrdinalIgnoreCase)));
+            => _expertApplicationRepository.IsAppliedAsync(address);
 
         // TODO 
         public Task<bool> IsConfirmedAsync(string address)
