@@ -76,7 +76,7 @@ namespace SmartValley.WebApi.Projects.Responses
                        WhitePaperLink = details.Application.WhitePaperLink,
                        TeamMembers = details.TeamMembers.Select(TeamMemberResponse.Create).ToList(),
                        ScoringStatus = scoringStatus,
-                       VotingStatus = details.Scoring == null ? votingDetails.GetVotingStatus(now) : VotingStatus.None,
+                       VotingStatus = details.Scoring == null ? (votingDetails?.GetVotingStatus(now) ?? VotingStatus.InProgress) : VotingStatus.None,
                        VotingEndDate = votingDetails?.Voting?.EndDate,
                        VotingAddress = votingDetails?.Voting?.VotingAddress
                    };
