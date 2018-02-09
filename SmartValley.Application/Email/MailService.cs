@@ -1,8 +1,4 @@
-﻿using System.IO;
-using System.Threading.Tasks;
-using MailKit.Net.Smtp;
-using Microsoft.AspNetCore.Hosting;
-using MimeKit;
+﻿using System.Threading.Tasks;
 using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Application.Email

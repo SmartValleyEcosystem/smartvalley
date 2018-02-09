@@ -4,19 +4,13 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MailKit" Version="1.10.0" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="2.0.1" />
     <PackageReference Include="Nethereum.JsonRpc.IpcClient" Version="2.1.0" />
     <PackageReference Include="Nethereum.Web3" Version="2.1.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IcoLab.Common\IcoLab.Common\IcoLab.Common.csproj" />
     <ProjectReference Include="..\SmartValley.Domain\SmartValley.Domain.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.AspNetCore.DataProtection.Abstractions">
-      <HintPath>..\..\..\Users\User\.nuget\packages\microsoft.aspnetcore.dataprotection.abstractions\2.0.0\lib\netstandard2.0\Microsoft.AspNetCore.DataProtection.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
-      <HintPath>..\..\..\Users\User\.nuget\packages\microsoft.aspnetcore.hosting.abstractions\2.0.0\lib\netstandard2.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
-    </Reference>
   </ItemGroup>
 </Project>

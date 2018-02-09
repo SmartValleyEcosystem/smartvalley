@@ -13,6 +13,7 @@ import {ApplicationApiClient} from './api/application/application-api.client';
 import {HeaderComponent} from './components/header/header.component';
 import {MaterialModule} from './shared/material.module';
 import {BalanceApiClient} from './api/balance/balance-api-client';
+import {ExpertApiClient} from './api/expert/expert-api-client';
 import {ApplicationComponent} from './components/application/application.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ScoringManagerContractClient} from './services/contract-clients/scoring-manager-contract-client';
@@ -61,6 +62,9 @@ import {ProjectInformationComponent} from './components/common/project-informati
 import {AccountComponent} from './components/account/account.component';
 import {MatIconModule} from '@angular/material/icon';
 import {CompositeGuard} from './services/guards/composite.guard';
+import {ExpertGuard} from './services/guards/expert-guard';
+import {BecomeExpertGuard} from './services/guards/become-expert.guard';
+import {RegisterExpertGuard} from './services/guards/register-expert.guard';
 import {GuardFactory} from './services/guards/guard-factory';
 import {ShouldHaveSvtGuard} from './services/balance/should-have-svt.guard';
 import {DashIfEmptyPipe} from './utils/dash-if-empty.pipe';
@@ -89,6 +93,9 @@ import {TableModule} from 'primeng/table';
 import {DataTableModule} from 'primeng/primeng';
 import {ConfirmEmailModalComponent} from './components/common/confirm-email/confirm-email-modal.component';
 import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
+import { BecomeExpertComponent } from './components/become-expert/become-expert.component';
+import { ExpertComponent } from './components/expert/expert.component';
+import { RegisterExpertComponent } from './components/register-expert/register-expert.component';
 
 @NgModule({
   declarations: [
@@ -127,6 +134,9 @@ import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-e
     FormatDatePipe,
     AdminPanelComponent,
     AddAdminModalComponent,
+    BecomeExpertComponent,
+    ExpertComponent,
+    RegisterExpertComponent
     ConfirmEmailModalComponent,
     ConfirmEmailComponent
   ],
@@ -193,6 +203,7 @@ import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-e
     ProjectApiClient,
     ScoringApiClient,
     EstimatesApiClient,
+    ExpertApiClient,
     AdminApiClient,
     VotingApiClient,
     AuthenticationApiClient,
@@ -216,7 +227,10 @@ import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-e
     ShouldBeAuthenticatedGuard,
     ShouldBeAdminGuard,
     GuardFactory,
-    CompositeGuard
+    CompositeGuard,
+    ExpertGuard,
+    BecomeExpertGuard,
+    RegisterExpertGuard
   ],
   bootstrap: [AppComponent]
 })
