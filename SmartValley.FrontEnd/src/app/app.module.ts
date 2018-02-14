@@ -136,7 +136,7 @@ import { RegisterExpertComponent } from './components/register-expert/register-e
     AddAdminModalComponent,
     BecomeExpertComponent,
     ExpertComponent,
-    RegisterExpertComponent
+    RegisterExpertComponent,
     ConfirmEmailModalComponent,
     ConfirmEmailComponent
   ],
