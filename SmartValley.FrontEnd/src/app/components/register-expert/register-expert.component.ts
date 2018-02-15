@@ -13,6 +13,7 @@ import {Country} from './country';
 import {TranslateService} from '@ngx-translate/core';
 import {SelectItem} from 'primeng/api';
 import {UserContext} from '../../services/authentication/user-context';
+import {NotificationsService} from 'angular2-notifications';
 
 const countries = <Country[]>require('../../../assets/countryList.json');
 
@@ -41,6 +42,7 @@ export class RegisterExpertComponent implements OnInit {
               private expertApiClient: ExpertApiClient,
               private dialogService: DialogService,
               private userContext: UserContext,
+              private notificationsService: NotificationsService,
               private translateService: TranslateService,
               private expertContactClient: ExpertContractClient) {
   }
@@ -169,6 +171,11 @@ export class RegisterExpertComponent implements OnInit {
 
   private async submitAsync(): Promise<boolean> {
     const areas = this.getAreas();
+
+    if (areas.length === 0) {
+      this.notificationsService.error(this.translateService.instant('RegisterExpert.CategoryNotSelectedError'));
+      return false;
+    }
 
     const transactionHash = await this.applyToContractAsync(areas);
     if (transactionHash == null) {

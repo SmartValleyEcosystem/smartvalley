@@ -19,6 +19,7 @@
     "DocumentType":"Document type",
     "DocumentNumber" : "Document number",
     "UploadDocument" : "Upload document",
-    "Photo": "Photo of your, holding the document"
+    "Photo": "Photo of your, holding the document",
+    "CategoryNotSelectedError" : "Category not selected"
   }
 }
