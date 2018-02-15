@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SmartValley.WebApi.Experts.Requests;
 using SmartValley.WebApi.Experts.Responses;
 
 namespace SmartValley.WebApi.Experts
@@ -21,6 +22,14 @@ namespace SmartValley.WebApi.Experts
             var isApplied = await _expertService.IsAppliedAsync(address);
             var isConfirmed = await _expertService.IsConfirmedAsync(address);
             return new GetExpertStatusResponse { IsConfirmed = isConfirmed, IsApplied = isApplied };
+        }
+
+        [HttpPost]
+        [Route("apply")]
+        public async Task<IActionResult> ApplyAsync([FromBody] ExpertApplicationRequest request)
+        {
+            await _expertService.CreateApplicationAsync(request);
+            return NoContent();
         }
     }
 }

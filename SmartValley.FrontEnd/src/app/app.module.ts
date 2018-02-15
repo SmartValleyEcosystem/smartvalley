@@ -17,6 +17,7 @@ import {ExpertApiClient} from './api/expert/expert-api-client';
 import {ApplicationComponent} from './components/application/application.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ScoringManagerContractClient} from './services/contract-clients/scoring-manager-contract-client';
+import {CheckboxModule} from 'primeng/checkbox';
 import {ScoringComponent} from './components/scoring/scoring.component';
 import {MatTabsModule} from '@angular/material';
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -89,13 +90,17 @@ import {AdminApiClient} from './api/admin/admin-api-client';
 import {AdminPanelComponent} from './components/admin-panel/admin-panel.component';
 import {AddAdminModalComponent} from './components/common/add-admin-modal/add-admin-modal.component';
 import {ShouldBeAdminGuard} from './services/authentication/should-be-admin.guard';
+import {FileUploadModule} from 'primeng/fileupload';
 import {TableModule} from 'primeng/table';
 import {DataTableModule} from 'primeng/primeng';
+import {DropdownModule} from 'primeng/dropdown';
 import {ConfirmEmailModalComponent} from './components/common/confirm-email/confirm-email-modal.component';
 import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
-import { BecomeExpertComponent } from './components/become-expert/become-expert.component';
-import { ExpertComponent } from './components/expert/expert.component';
-import { RegisterExpertComponent } from './components/register-expert/register-expert.component';
+import {BecomeExpertComponent} from './components/become-expert/become-expert.component';
+import {ExpertComponent} from './components/expert/expert.component';
+import {ExpertContractClient} from './services/contract-clients/expert-contract-client';
+import {RegisterExpertComponent} from './components/register-expert/register-expert.component';
+import {CalendarModule} from 'primeng/calendar';
 
 @NgModule({
   declarations: [
@@ -154,13 +159,17 @@ import { RegisterExpertComponent } from './components/register-expert/register-e
     ConfirmEmailModalComponent
   ],
   imports: [
+    FileUploadModule,
     TableModule,
+    CalendarModule,
     DataTableModule,
     MatCheckboxModule,
     MatTabsModule,
     BrowserModule,
+    CheckboxModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    DropdownModule,
     MaterialModule,
     AppRoutingModule,
     FormsModule,
@@ -204,6 +213,7 @@ import { RegisterExpertComponent } from './components/register-expert/register-e
     ScoringApiClient,
     EstimatesApiClient,
     ExpertApiClient,
+    ExpertContractClient,
     AdminApiClient,
     VotingApiClient,
     AuthenticationApiClient,
