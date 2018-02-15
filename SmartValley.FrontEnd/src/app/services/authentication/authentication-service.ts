@@ -99,7 +99,7 @@ export class AuthenticationService {
     this.startUserSession(user);
     return true;
   }
-  
+
   private async authenticateOnBackendAsync(account: string, signature: string, messageToSign: string): Promise<User> {
     const user = this.userContext.getCurrentUser();
     if (user != null && user.account === account) {
@@ -112,13 +112,11 @@ export class AuthenticationService {
         signedText: messageToSign
       });
 
-      const isAdmin = await this.adminContractClient.isAdminAsync(account);
       return <User>{
         account: account,
         signature: signature,
         token: response.token,
-        roles: response.roles,
-        isAdmin: isAdmin
+        roles: response.roles
       };
     } catch (e) {
       switch (e.error.errorCode) {

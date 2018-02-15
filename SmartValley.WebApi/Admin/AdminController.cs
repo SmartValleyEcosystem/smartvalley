@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application;
+using SmartValley.Domain.Entities;
 using SmartValley.WebApi.Admin.Request;
 using SmartValley.WebApi.Admin.Response;
 using SmartValley.WebApi.WebApi;
@@ -10,7 +11,7 @@ using SmartValley.WebApi.WebApi;
 namespace SmartValley.WebApi.Admin
 {
     [Route("api/admin")]
-    [Authorize]
+    [Authorize(Roles = nameof(RoleType.Admin))]
     public class AdminController : Controller
     {
         private readonly IAdminService _service;

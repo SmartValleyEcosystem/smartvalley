@@ -27,7 +27,12 @@ namespace SmartValley.WebApi.Users
         public async Task<GetUserResponse> GetByAddressAsync(string address)
         {
             var user = await _userService.GetByAddressAsync(address);
-            return new GetUserResponse {Address = user.Address, Email = user.Email, IsEmailConfirmed = user.IsEmailConfirmed};
+            return new GetUserResponse
+                   {
+                       Address = user?.Address,
+                       Email = user?.Email,
+                       IsEmailConfirmed = user != null && user.IsEmailConfirmed
+                   };
         }
 
         [HttpGet("{address}/email")]

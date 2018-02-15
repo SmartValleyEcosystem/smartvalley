@@ -3,5 +3,4 @@ class User {
   signature: string;
   token: string;
   roles: string[];
-  isAdmin: boolean;
 }

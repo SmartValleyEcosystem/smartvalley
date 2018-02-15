@@ -37,20 +37,19 @@ export class AdminPanelComponent implements OnInit {
   }
 
   async createAsync() {
-    try {
-      const address = await this.dialogService.showCreateAdminDialogAsync()
+      const address = await this.dialogService.showCreateAdminDialogAsync();
       if (isNullOrUndefined(address)) {
-        return;
+          return;
       }
-      const user = await this.userApiClient.getByAddressAsync(address);
-      const transactionHash = await this.adminContractClient.addAsync(address);
-
-      await this.adminApiClient.addAsync(address, transactionHash);
-    } catch (e) {
-      if (e.error.errorCode === ErrorCode.UserNotFound) {
-        this.notificationsService.error(this.translateService.instant('Common.UserNotFound'));
-      }
+    const user = await this.userApiClient.getByAddressAsync(address);
+    if (user.address == null) {
+      this.notificationsService.error(
+        this.translateService.instant('Common.Error'),
+        this.translateService.instant('Common.UserNotFound'));
+      return;
     }
+    const transactionHash = await this.adminContractClient.addAsync(address);
+    await this.adminApiClient.addAsync(address, transactionHash);
     await this.updateAdminsAsync();
   }
 
