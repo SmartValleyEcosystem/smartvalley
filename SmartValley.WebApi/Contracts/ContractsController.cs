@@ -26,6 +26,17 @@ namespace SmartValley.WebApi.Contracts
                    };
         }
 
+        [Route("expertsRegistry")]
+        public ContractResponse GetExpertsRegistryContract()
+        {
+            var contractOptions = _nethereumOptions.ExpertsRegistryContract;
+            return new ContractResponse
+                   {
+                       Address = contractOptions.Address,
+                       Abi = contractOptions.Abi,
+                   };
+        }
+
         [Route("adminRegistry")]
         public ContractResponse GetAdminRegistryContract()
         {

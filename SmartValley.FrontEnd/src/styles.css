@@ -235,6 +235,13 @@ div.mat-tab-body-content {
   padding: 0;
 }
 
+.form-control, .ui-inputtext, .ui-dropdown {
+  border-color: rgb(70, 137, 232) !important;
+}
+.form-control, .ui-inputtext {
+  padding: 0.6em 1.2em 0.6em 1.2em !important;
+}
+
 .sm-title h1 {
   font-family: 'AvenirNextCyr-Bold', sans-serif;
   letter-spacing: 8px;

@@ -1,0 +1,70 @@
+.row {
+  margin: 1em 0em;
+}
+.ui-chkbox-label{
+  margin-left: 0.5em;
+  margin-top: 0.5em;
+}
+.row > span {
+  padding-top: 0.6em;
+  padding-right: 1.5em;
+}
+
+.form-control {
+  padding: 0.6em 1.2em 0.6em 1.2em;
+  border-color: rgb(70, 137, 232);
+}
+
+.row-title {
+  margin: 2em 0em;
+}
+
+.row-primary {
+  background-color: rgb(248, 248, 248);
+}
+
+.row-content {
+  padding-bottom: 1em;
+}
+
+.btn {
+  cursor: pointer;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+.is-active .row-content {
+  display: block;
+}
+
+.submit-btn, .finance-btn, .legal-btn, .team-btn {
+  display: none;
+}
+
+.sw-members > div{
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+.padding-zero{
+  padding: 0;
+  font-size: 0.9em;
+  padding-top: 0.5em;
+}
+
+.main-btn {
+  display: none;
+}
+
+.row-content {
+  display: none;
+}
+
+textarea {
+  height: 10em;
+  resize: none;
+}
+
+label.mat-checkbox-layout > div.mat-checkbox-inner-container {
+  margin-left: 6.2em;
+}

@@ -1,3 +1,113 @@
-<p>
-  register-expert works!
-</p>
+<div class="container">
+  <div class="row mx-auto">
+    <div class="col-7 sm-title">
+      <h2 class="">{{ 'RegisterExpert.Title' | translate }}</h2>
+    </div>
+  </div>
+  <div style="display: inline-block; margin-right: 2em; color:white;margin-bottom: 1em;" *ngFor="let area of areas">
+    <p-checkbox [(ngModel)]="selectedAreas" value="{{area.value}}" inputId="ny"></p-checkbox>
+    <span style="vertical-align: middle; margin-left: 1em;">{{area.label}}</span>
+  </div>
+  <form [formGroup]="registryForm" novalidate>
+    <div class="sw-card sw-content" style="padding: 2em;">
+      <div class="row">
+        <h3 class="col-10 offset-1">{{ 'Application.BasicInformation' | translate }}</h3>
+      </div>
+      <div #name class="row">
+        <span class="col-2">{{ 'RegisterExpert.FirstName' | translate }}</span>
+        <input class="form-control col-4" formControlName="firstName"
+               placeholder="{{ 'Application.NamePlaceholder' | translate }}" #required>
+        <span class="col-2">{{ 'RegisterExpert.SecondName' | translate }}</span>
+        <input class="form-control col-4" formControlName="secondName"
+               placeholder="{{ 'Application.NamePlaceholder' | translate }}" #required>
+      </div>
+      <div #birthDate class="row">
+        <span class="col-2">{{ 'RegisterExpert.BirthDate' | translate }}</span>
+        <p-calendar [showIcon]="true" class="padding-zero col-4" formControlName="birthDate"></p-calendar>
+        <span class="col-2">{{ 'RegisterExpert.Sex' | translate }}</span>
+        <p-dropdown class="col-4 padding-zero" [options]="sex" formControlName="selectedSex"></p-dropdown>
+      </div>
+      <div #place class="row">
+        <span class="col-2">{{ 'RegisterExpert.Country' | translate }}</span>
+        <p-dropdown class="col-4 padding-zero" [options]="countries" formControlName="country"></p-dropdown>
+        <span class="col-2">{{ 'RegisterExpert.City' | translate }}</span>
+        <input class="form-control col-4" formControlName="city"
+               placeholder="{{ 'Application.NamePlaceholder' | translate }}">
+      </div>
+      <div class="row">
+        <span class="col-2">{{ 'RegisterExpert.LinkedinLink' | translate }}</span>
+        <input class="form-control col-10" formControlName="linkedin"
+               placeholder="{{ 'Application.NamePlaceholder' | translate }}">
+      </div>
+      <div class="row">
+        <span class="col-2">{{ 'RegisterExpert.FacebookLink' | translate }}</span>
+        <input class="form-control col-10" formControlName="facebook"
+               placeholder="{{ 'Application.NamePlaceholder' | translate }}" #required>
+      </div>
+      <div class="row">
+        <span class="col-3">{{ 'RegisterExpert.UploadTitle' | translate }}:</span>
+        <p-fileUpload class="col-9" style="padding: 0 !important;" mode="basic" name="demo[]" url="./upload.php"
+                      accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"
+                      chooseLabel="{{ 'RegisterExpert.Upload' | translate }}"></p-fileUpload>
+      </div>
+    </div>
+    <div [ngClass]="!isLetterShow ? '' : 'main-btn'" class="row">
+      <button (click)="showNext()" class="col-3 btn btn-primary">{{ 'Application.Next' | translate }}
+      </button>
+    </div>
+    <div [ngClass]="isLetterShow ? 'is-active' : ''" class="sw-card sw-content">
+      <div class="row row-title">
+        <h3 class="col-10 offset-1">{{ 'RegisterExpert.MotivationLetter' | translate }}</h3>
+      </div>
+      <div class="row-content">
+        <div class="row">
+          <span class="col-2 offset-1">{{ 'RegisterExpert.Description' | translate }}</span>
+          <textarea class="form-control col-8" formControlName="description"
+                    placeholder="{{ 'Application.DescriptionPlaceholder' | translate }}" #required>
+        </textarea>
+          <span class="col-2 offset-1">{{ 'RegisterExpert.Why' | translate }}</span>
+          <textarea class="form-control col-8" formControlName="why"
+                    placeholder="{{ 'Application.DescriptionPlaceholder' | translate }}" #required>
+        </textarea>
+        </div>
+      </div>
+    </div>
+    <div [ngClass]="isLetterShow && !isKYCShow ? '' : 'legal-btn'" class="row">
+      <button (click)="showNext()" class="col-3 btn btn-primary">{{ 'Application.Next' | translate }}
+      </button>
+    </div>
+    <div [ngClass]="isKYCShow ? 'is-active' : ''" class="sw-card sw-content" style="padding: 2em;">
+      <div class="row">
+        <h3 class="col-10 offset-1">{{ 'RegisterExpert.KYC' | translate }}</h3>
+      </div>
+      <div class="row-content">
+        <div class="row">
+          <span class="col-3">{{ 'RegisterExpert.DocumentType' | translate }}</span>
+          <p-dropdown [style]="{'width':'140px'}" class="col-4 padding-zero" [options]="documentTypes" formControlName="selectedDocumentType"></p-dropdown>
+        </div>
+        <div class="row">
+          <span class="col-3">{{ 'RegisterExpert.DocumentNumber' | translate }}</span>
+          <input class="form-control col-9" formControlName="number"
+                 placeholder="{{ 'Application.NamePlaceholder' | translate }}" #required>
+        </div>
+        <div class="row">
+          <span class="col-3">{{ 'RegisterExpert.UploadTitle' | translate }}:</span>
+          <p-fileUpload class="col-9" style="padding: 0 !important;" mode="basic" name="demo[]" url="./upload.php"
+                        accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"
+                        chooseLabel="{{ 'RegisterExpert.Upload' | translate }}"></p-fileUpload>
+        </div>
+        <div class="row">
+          <span class="col-3">{{ 'RegisterExpert.UploadTitle' | translate }}:</span>
+          <p-fileUpload class="col-9" style="padding: 0 !important;" mode="basic" name="demo[]" url="./upload.php"
+                        accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"
+                        chooseLabel="{{ 'RegisterExpert.Upload' | translate }}"></p-fileUpload>
+        </div>
+      </div>
+    </div>
+    <div [ngClass]="isKYCShow ? '' : 'submit-btn'" class="row">
+      <button (click)="applyAsync()" [disabled]="isProjectCreating" class="col-3 btn btn-primary">
+        {{ 'Application.Submit' | translate }}
+      </button>
+    </div>
+  </form>
+</div>
