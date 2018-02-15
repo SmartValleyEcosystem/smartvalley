@@ -32,4 +32,9 @@
     <ProjectReference Include="..\SmartValley.Data.SQL\SmartValley.Data.SQL.csproj" />
     <ProjectReference Include="..\SmartValley.Domain\SmartValley.Domain.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Email\template.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
