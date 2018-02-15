@@ -10,6 +10,7 @@ import {UserApiClient} from '../../api/user/user-api-client';
 import {ErrorCode} from '../../shared/error-code.enum';
 import {TranslateService} from '@ngx-translate/core';
 import {UserContext} from '../../services/authentication/user-context';
+import {isNullOrUndefined} from 'util';
 
 @Component({
   selector: 'app-admin-panel',
@@ -38,6 +39,9 @@ export class AdminPanelComponent implements OnInit {
   async createAsync() {
     try {
       const address = await this.dialogService.showCreateAdminDialogAsync()
+      if (isNullOrUndefined(address)) {
+        return;
+      }
       const user = await this.userApiClient.getByAddressAsync(address);
       const transactionHash = await this.adminContractClient.addAsync(address);
 
