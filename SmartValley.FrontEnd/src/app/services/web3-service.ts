@@ -4,13 +4,14 @@ import * as EthJs from 'ethjs';
 import {NgProgress} from 'ngx-progressbar';
 import {PromiseUtils} from '../utils/promise-utils';
 import BigNumber from 'bignumber.js';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class Web3Service {
   constructor(private progress: NgProgress) {
   }
 
-  private readonly rinkebyNetworkId = '4';
+  private readonly rinkebyNetworkId = environment.network_id;
   private readonly metamaskProviderName = 'MetamaskInpageProvider';
   private _transactionReceiptPollingInterval = 1000;
 
