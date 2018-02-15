@@ -12,10 +12,11 @@ namespace SmartValley.WebApi.ExceptionHandler
                 return;
 
             var fieldErrors = context
-                .ModelState.Keys
-                .ToDictionary(
-                    key => key,
-                    key => context.ModelState[key].Errors.Select(x => x.ErrorMessage).ToList());
+                              .ModelState.Keys
+                              .Where(key => context.ModelState[key].Errors.Count > 0)
+                              .ToDictionary(
+                                  key => key,
+                                  key => context.ModelState[key].Errors.Select(x => x.ErrorMessage).ToList());
 
             throw new AppErrorException(new AppError(ErrorCode.ValidatationError, fieldErrors));
         }

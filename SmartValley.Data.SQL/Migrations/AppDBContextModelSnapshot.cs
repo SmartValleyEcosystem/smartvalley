@@ -100,6 +100,9 @@ namespace SmartValley.Data.SQL.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
+                    b.Property<string>("CvName")
+                        .HasMaxLength(50);
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(1500);
@@ -122,6 +125,12 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<string>("LinkedInLink")
                         .HasMaxLength(400);
+
+                    b.Property<string>("PhotoName")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("ScanName")
+                        .HasMaxLength(50);
 
                     b.Property<int>("Sex");
 

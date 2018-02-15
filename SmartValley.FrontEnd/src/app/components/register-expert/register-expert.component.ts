@@ -13,6 +13,7 @@ import {Country} from './country';
 import {TranslateService} from '@ngx-translate/core';
 import {SelectItem} from 'primeng/api';
 import {UserContext} from '../../services/authentication/user-context';
+import * as moment from 'moment';
 import {NotificationsService} from 'angular2-notifications';
 
 const countries = <Country[]>require('../../../assets/countryList.json');
@@ -36,6 +37,10 @@ export class RegisterExpertComponent implements OnInit {
   public selectedAreas: ExpertiseArea[] = [];
 
   @ViewChildren('required') public requiredFields: QueryList<any>;
+
+  private cv: File;
+  private document: File;
+  private photo: File;
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
@@ -117,6 +122,18 @@ export class RegisterExpertComponent implements OnInit {
     }
   }
 
+  public onCvUpload(event: any) {
+    this.cv = event.files[0];
+  }
+
+  public onDocumentUpload(event: any) {
+    this.document = event.files[0];
+  }
+
+  public onPhotoUpload(event: any) {
+    this.photo = event.files[0];
+  }
+
   private setInvalid(element: ElementRef) {
     element.nativeElement.classList.add('ng-invalid');
     element.nativeElement.classList.add('ng-dirty');
@@ -143,53 +160,53 @@ export class RegisterExpertComponent implements OnInit {
     window.scrollTo({left: 0, top: offsetTop1 + offsetTop3, behavior: 'smooth'});
   }
 
-  private getAreas(): Array<ExpertiseArea> {
-    return this.selectedAreas;
-  }
-
   private createExpertApplicationRequest(transactionHash: string, areas: Array<ExpertiseArea>): ExpertApplicationRequest {
     const user = this.userContext.getCurrentUser();
     const form = this.registryForm.value;
+    const input = new FormData();
+    input.append('scan', this.document);
+    input.append('photo', this.photo);
+    input.append('cv', this.cv);
+    input.append('transactionHash', transactionHash);
+    input.append('sex', (<number>form.selectedSex).toString());
+    input.append('applicantAddress', user.account);
+    input.append('birthDate', moment(form.birthDate).toISOString());
+    input.append('city', form.city);
+    input.append('countryIsoCode', form.country.code);
+    input.append('documentNumber', form.number);
+    input.append('documentType', form.selectedDocumentType);
+    input.append('facebookLink', form.facebook);
+    input.append('linkedInLink', form.linkedin);
+    input.append('firstName', form.firstName);
+    input.append('lastName', form.secondName);
+    input.append('description', form.description);
+    input.append('why', form.why);
+    areas.forEach(a => input.append('areas', a.toString()));
+
     return <ExpertApplicationRequest>{
-      transactionHash: transactionHash,
-      sex: <number>form.selectedSex,
-      applicantAddress: user.account,
-      birthDate: <Date>form.birthDate,
-      city: form.city,
-      countryIsoCode: form.country.code,
-      documentNumber: form.number,
-      documentType: form.selectedDocumentType,
-      facebookLink: form.facebook,
-      linkedInLink: form.linkedin,
-      firstName: form.firstName,
-      lastName: form.secondName,
-      description: form.description,
-      why: form.why,
-      areas: areas
+      body: input
     };
   }
 
   private async submitAsync(): Promise<boolean> {
-    const areas = this.getAreas();
-
+    const areas = this.selectedAreas.map(a => +a);
     if (areas.length === 0) {
       this.notificationsService.error(this.translateService.instant('RegisterExpert.CategoryNotSelectedError'));
       return false;
     }
-
     const transactionHash = await this.applyToContractAsync(areas);
     if (transactionHash == null) {
       return false;
     }
 
     const transactionDialog = this.dialogService.showTransactionDialog(
-      this.translateService.instant('Estimate.Dialog'),
+      this.translateService.instant('RegisterExpert.Dialog'),
       transactionHash
     );
 
     const request = this.createExpertApplicationRequest(transactionHash, areas);
 
-    await this.expertApiClient.applyAsync(request);
+    await this.expertApiClient.createApplicationAsync(request);
 
     transactionDialog.close();
     return true;

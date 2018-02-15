@@ -14,6 +14,7 @@ using Nethereum.JsonRpc.IpcClient;
 using Nethereum.Signer;
 using Nethereum.Web3;
 using SmartValley.Application;
+using SmartValley.Application.AzureStorage;
 using SmartValley.Application.Contracts;
 using SmartValley.Application.Contracts.Options;
 using SmartValley.Application.Contracts.Scorings;
@@ -57,7 +58,7 @@ namespace SmartValley.WebApi
         // ReSharper disable once UnusedMember.Global
         public void ConfigureServices(IServiceCollection services)
         {
-            services.ConfigureOptions(Configuration, typeof(NethereumOptions), typeof(AuthenticationOptions), typeof(SiteOptions), typeof(SmtpOptions));
+            services.ConfigureOptions(Configuration, typeof(NethereumOptions), typeof(AuthenticationOptions), typeof(SiteOptions), typeof(SmtpOptions), typeof(AzureStorageOptions));
 
             ConfigureCorsPolicy(services);
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "SmartValley API", Version = "v1"}); });
@@ -87,6 +88,7 @@ namespace SmartValley.WebApi
             services.AddSingleton<MailTokenService>();
             services.AddSingleton<MailSender>();
             services.AddSingleton<ITemplateProvider, TemplateProvider>();
+            services.AddSingleton<ExpertApplicationsStorageProvider>();
             services.AddSingleton<ITokenContractClient, TokenContractClient>(
                 provider => new TokenContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().TokenContract));
             services.AddSingleton<IVotingSprintContractClient, VotingSprintContractClient>(

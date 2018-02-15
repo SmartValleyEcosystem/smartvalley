@@ -45,10 +45,12 @@
                placeholder="{{ 'Application.NamePlaceholder' | translate }}" #required>
       </div>
       <div class="row">
-        <span class="col-3">{{ 'RegisterExpert.UploadTitle' | translate }}:</span>
-        <p-fileUpload class="col-9" style="padding: 0 !important;" mode="basic" name="demo[]" url="./upload.php"
-                      accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"
-                      chooseLabel="{{ 'RegisterExpert.Upload' | translate }}"></p-fileUpload>
+        <span class="col-3">{{ 'RegisterExpert.UploadCv' | translate }}:</span>
+        <p-fileUpload mode="advanced" auto="true" name="cv[]" customUpload="true" [showUploadButton]="false"
+                      [showCancelButton]="false" accept=".pdf,.doc,.docx" maxFileSize="5242880"
+                      (uploadHandler)="onCvUpload($event)">
+
+        </p-fileUpload>
       </div>
     </div>
     <div [ngClass]="!isLetterShow ? '' : 'main-btn'" class="row">
@@ -83,7 +85,8 @@
       <div class="row-content">
         <div class="row">
           <span class="col-3">{{ 'RegisterExpert.DocumentType' | translate }}</span>
-          <p-dropdown [style]="{'width':'140px'}" class="col-4 padding-zero" [options]="documentTypes" formControlName="selectedDocumentType"></p-dropdown>
+          <p-dropdown [style]="{'width':'140px'}" class="col-4 padding-zero" [options]="documentTypes"
+                      formControlName="selectedDocumentType"></p-dropdown>
         </div>
         <div class="row">
           <span class="col-3">{{ 'RegisterExpert.DocumentNumber' | translate }}</span>
@@ -91,16 +94,20 @@
                  placeholder="{{ 'Application.NamePlaceholder' | translate }}" #required>
         </div>
         <div class="row">
-          <span class="col-3">{{ 'RegisterExpert.UploadTitle' | translate }}:</span>
-          <p-fileUpload class="col-9" style="padding: 0 !important;" mode="basic" name="demo[]" url="./upload.php"
-                        accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"
-                        chooseLabel="{{ 'RegisterExpert.Upload' | translate }}"></p-fileUpload>
+          <span class="col-3">{{ 'RegisterExpert.UploadDocument' | translate }}:</span>
+          <p-fileUpload mode="advanced" auto="true" name="doc[]" customUpload="true" [showUploadButton]="false"
+                        [showCancelButton]="false" name="document[]" customUpload="true" accept="image/*"
+                        maxFileSize="5242880" (uploadHandler)="onDocumentUpload($event)">
+
+          </p-fileUpload>
         </div>
         <div class="row">
-          <span class="col-3">{{ 'RegisterExpert.UploadTitle' | translate }}:</span>
-          <p-fileUpload class="col-9" style="padding: 0 !important;" mode="basic" name="demo[]" url="./upload.php"
-                        accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"
-                        chooseLabel="{{ 'RegisterExpert.Upload' | translate }}"></p-fileUpload>
+          <span class="col-3">{{ 'RegisterExpert.UploadPhoto' | translate }}:</span>
+          <p-fileUpload mode="advanced" auto="true" name="photo[]" customUpload="true" [showUploadButton]="false"
+                        [showCancelButton]="false" name="document[]" customUpload="true" accept="image/*"
+                        maxFileSize="5242880" (uploadHandler)="onPhotoUpload($event)">
+
+          </p-fileUpload>
         </div>
       </div>
     </div>

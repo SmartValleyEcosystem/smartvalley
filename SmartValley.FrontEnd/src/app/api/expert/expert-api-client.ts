@@ -4,6 +4,7 @@ import {BaseApiClient} from '../base-api-client';
 import {GetExpertStatusResponse} from './get-expert-status-response';
 import {ExpertApplicationRequest} from './expert-applitacion-request';
 
+
 @Injectable()
 export class ExpertApiClient extends BaseApiClient {
   constructor(private http: HttpClient) {
@@ -14,7 +15,7 @@ export class ExpertApiClient extends BaseApiClient {
     return await this.http.get<GetExpertStatusResponse>(`${this.baseApiUrl}/experts/${address}/status`).toPromise();
   }
 
-  public async applyAsync(request: ExpertApplicationRequest): Promise<void> {
-    await this.http.post(this.baseApiUrl + '/experts/apply', request).toPromise();
+  public async createApplicationAsync(request: ExpertApplicationRequest): Promise<void> {
+    await this.http.post(this.baseApiUrl + '/experts/application', request.body).toPromise();
   }
 }

@@ -96,11 +96,11 @@ import {DataTableModule} from 'primeng/primeng';
 import {DropdownModule} from 'primeng/dropdown';
 import {ConfirmEmailModalComponent} from './components/common/confirm-email/confirm-email-modal.component';
 import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
+import {ExpertContractClient} from './services/contract-clients/expert-contract-client';
+import {CalendarModule} from 'primeng/calendar';
 import {BecomeExpertComponent} from './components/become-expert/become-expert.component';
 import {ExpertComponent} from './components/expert/expert.component';
-import {ExpertContractClient} from './services/contract-clients/expert-contract-client';
 import {RegisterExpertComponent} from './components/register-expert/register-expert.component';
-import {CalendarModule} from 'primeng/calendar';
 
 @NgModule({
   declarations: [
@@ -163,6 +163,7 @@ import {CalendarModule} from 'primeng/calendar';
     TableModule,
     CalendarModule,
     DataTableModule,
+    FileUploadModule,
     MatCheckboxModule,
     MatTabsModule,
     BrowserModule,

@@ -17,6 +17,7 @@
         RoleNotFound,
         UserHaveNoRole,
         EmailSendingFailed,
+        InvalidFileUploaded,
         AddressAlreadyExists
     }
 }

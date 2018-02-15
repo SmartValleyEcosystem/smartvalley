@@ -49,6 +49,15 @@ namespace SmartValley.Domain.Entities
 
         [MaxLength(30)]
         public string DocumentNumber { get; set; }
+      
+        [MaxLength(50)]
+        public string ScanName { get; set; }
+      
+        [MaxLength(50)]
+        public string PhotoName { get; set; }
+    
+        [MaxLength(50)]
+        public string CvName { get; set; }
 
         public User Applicant { get; set; }
     }

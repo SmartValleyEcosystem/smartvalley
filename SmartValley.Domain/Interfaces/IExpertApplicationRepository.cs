@@ -11,5 +11,7 @@ namespace SmartValley.Domain.Interfaces
         Task<bool> IsAppliedAsync(string address);
 
         Task<bool> IsConfirmedAsync(string address);
+
+        Task<int> UpdateWholeAsync(ExpertApplication expertApplication);
     }
 }

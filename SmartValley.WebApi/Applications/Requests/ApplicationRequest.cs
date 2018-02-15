@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace SmartValley.WebApi.Applications.Requests
@@ -26,9 +27,9 @@ namespace SmartValley.WebApi.Applications.Requests
         public string FinanceModelLink { get; set; }
 
         public string MvpLink { get; set; }
-   
+
         public string SoftCap { get; set; }
-   
+
         public string HardCap { get; set; }
 
         public bool AttractedInvestments { get; set; }
