@@ -39,7 +39,6 @@ export class UserContext {
     const currentUser = this.getCurrentUser();
     if (currentUser != null && user.account === currentUser.account
       && user.signature === currentUser.signature
-      && user.isAdmin === currentUser.isAdmin
       && user.token === currentUser.token
       && user.roles.length === currentUser.roles.length
       && user.roles.every((v, i) => v === currentUser.roles[i])) {

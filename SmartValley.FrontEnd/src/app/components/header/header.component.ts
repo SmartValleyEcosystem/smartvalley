@@ -44,7 +44,7 @@ export class HeaderComponent implements OnInit {
       this.isAuthenticated = true;
       this.accountAddress = user.account;
       this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
-      this.isAdmin = user.isAdmin;
+      this.isAdmin = user.roles.includes('Admin');
     } else {
       this.isAuthenticated = false;
       this.isAdmin = false;

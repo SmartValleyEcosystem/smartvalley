@@ -13,7 +13,7 @@ export class ShouldBeAdminGuard implements CanActivate {
 
   public canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const user = this.userContext.getCurrentUser();
-    if (this.authenticationService.isAuthenticated() && user.isAdmin) {
+    if (this.authenticationService.isAuthenticated() && user.roles.includes('Admin')) {
       return true;
     } else {
       this.router.navigate([Paths.Root]);

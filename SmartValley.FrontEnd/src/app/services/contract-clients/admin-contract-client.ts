@@ -26,11 +26,6 @@ export class AdminContractClient implements ContractClient {
     this.address = tokenContract.address;
   }
 
-  public async isAdminAsync(accountAddress: string): Promise<boolean> {
-    const token = this.web3Service.getContract(this.abi, this.address);
-    return ConverterHelper.extractBoolValue(await token.isAdministrator(accountAddress));
-  }
-
   public async addAsync(accountAddress: string): Promise<string> {
     const fromAddress = await this.userContext.getCurrentUser().account;
     const contract = this.web3Service.getContract(this.abi, this.address);
