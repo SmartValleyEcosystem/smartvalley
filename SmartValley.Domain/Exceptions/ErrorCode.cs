@@ -16,6 +16,7 @@
         UserNotFound,
         RoleNotFound,
         UserHaveNoRole,
-        EmailSendingFailed
+        EmailSendingFailed,
+        AddressAlreadyExists
     }
 }

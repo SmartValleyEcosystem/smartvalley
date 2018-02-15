@@ -67,6 +67,10 @@ namespace SmartValley.WebApi.Authentication
             if (user != null)
                 throw new AppErrorException(ErrorCode.EmailAlreadyExists);
 
+            user = await _userRepository.GetByAddressAsync(request.Address);
+            if (user != null)
+                throw new AppErrorException(ErrorCode.AddressAlreadyExists);
+
             user = new User
                    {
                        Address = request.Address,
