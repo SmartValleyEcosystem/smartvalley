@@ -9,15 +9,17 @@ body {
   background: rgb(32, 32, 32);
   font-family: 'AvenirNextCyr', sans-serif;
 }
-.body-visible{
+
+.body-visible {
   opacity: 1;
   visibility: visible;
   transition-delay: 0s;
 }
 
 .mat-progress-spinner circle, .mat-spinner circle {
-   stroke: rgb(72, 138, 232);
- }
+  stroke: rgb(72, 138, 232);
+}
+
 .mat-toolbar {
   background: transparent !important;
   font-family: 'AvenirNextCyr', sans-serif;
@@ -57,11 +59,6 @@ div.mat-checkbox-frame {
   padding-bottom: 24px;
   padding-top: 18px;
   font-weight: 500;
-}
-
-.nav-tabs .nav-link.active {
-  color: rgb(32, 32, 32);
-  background: white;
 }
 
 .nav-tabs .nav-link {
@@ -108,7 +105,7 @@ div.mat-checkbox-frame {
 
 .mat-tab-label {
   min-width: 0px !important;
-  color: rgb(72, 138, 232);
+  color: white;
   opacity: 1 !important;
   padding: inherit !important;
   font-size: 30px;
@@ -116,7 +113,46 @@ div.mat-checkbox-frame {
   margin-left: 60px;
 }
 
-.mat-tab-label-active, .choose, .scoring-rating > span {
+.mat-ink-bar {
+  background-color: rgb(246, 150, 1) !important;
+}
+
+.white-card .mat-ink-bar {
+  background-color: rgb(72, 138, 232) !important;
+}
+
+.white-card .nav-tabs .nav-link.active {
+  color: rgb(32, 32, 32);
+  background: white;
+}
+
+.nav-pills {
+  font-size: 1.2em;
+}
+
+.nav-pills .nav-link.active {
+  color: rgb(246, 150, 1);
+  background-color: transparent;
+}
+
+.nav-pills .nav-link {
+  color: white;
+  padding: 0;
+}
+
+.nav-pills .nav-item {
+  padding: 0;
+}
+
+.mat-tab-label-active {
+  color: rgb(246, 150, 1);
+}
+
+.white-card .mat-tab-label {
+  color: rgb(72, 138, 232);
+}
+
+.white-card .mat-tab-label-active, .choose, .scoring-rating > span {
   color: rgb(180, 180, 180) !important;
 }
 
@@ -171,10 +207,6 @@ div.mat-checkbox-frame {
 
 .mat-tab-label:focus {
   background-color: inherit !important;
-}
-
-.mat-ink-bar {
-  background-color: rgb(72, 138, 232) !important;
 }
 
 .mat-tab-body-wrapper {
@@ -238,6 +270,7 @@ div.mat-tab-body-content {
 .form-control, .ui-inputtext, .ui-dropdown {
   border-color: rgb(70, 137, 232) !important;
 }
+
 .form-control, .ui-inputtext {
   padding: 0.6em 1.2em 0.6em 1.2em !important;
 }
@@ -289,7 +322,7 @@ input.ng-dirty.ng-invalid, textarea.ng-dirty.ng-invalid {
   box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
 }
 
-.login-button .mat-button-wrapper{
+.login-button .mat-button-wrapper {
   padding-bottom: 10px;
   padding-top: 10px;
 }
@@ -300,7 +333,7 @@ input.ng-dirty.ng-invalid, textarea.ng-dirty.ng-invalid {
   max-width: 600px;
 }
 
-div.white-card .mat-tab-label-container{
+div.white-card .mat-tab-label-container {
   margin-left: 0.8em;
 }
 

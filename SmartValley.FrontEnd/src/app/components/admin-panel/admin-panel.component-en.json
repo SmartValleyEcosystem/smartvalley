@@ -2,6 +2,9 @@
   "AdminPanel": {
     "Create": "Create new",
     "Delete": "Delete",
-    "AdminPanel": "Admin panel"
+    "Title": "Admin panel",
+    "AdminsTab": "Admins",
+    "ExpertsTab": "Experts",
+    "ScoringTab": "Scoring"
   }
 }
