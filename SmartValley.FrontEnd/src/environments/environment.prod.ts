@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  baseUrl: 'https://mvp.smartvalley.io',
+  baseUrl: '.',
   network_id: '4'
 };
