@@ -22,7 +22,7 @@ namespace SmartValley.Data.SQL.Repositories
             EditContext.ExpertApplicationAreas.AddRange(areas.Select(area => new ExpertApplicationArea
                                                                              {
                                                                                  ExpertApplication = expertApplication,
-                                                                                 ExpertiseAreaType = (ExpertiseAreaType) area
+                                                                                 AreaId = (AreaType) area
                                                                              }));
 
             return EditContext.SaveAsync();

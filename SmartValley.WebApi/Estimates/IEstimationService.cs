@@ -8,6 +8,6 @@ namespace SmartValley.WebApi.Estimates
     {
         Task SubmitEstimatesAsync(SubmitEstimatesRequest request);
 
-        Task<ScoringStatisticsInArea> GetScoringStatisticsInAreaAsync(long projectId, Domain.Entities.ExpertiseAreaType expertiseAreaType);
+        Task<ScoringStatisticsInArea> GetScoringStatisticsInAreaAsync(long projectId, Domain.Entities.AreaType areaType);
     }
 }

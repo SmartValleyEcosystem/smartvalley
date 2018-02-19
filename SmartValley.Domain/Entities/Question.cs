@@ -6,7 +6,7 @@ namespace SmartValley.Domain.Entities
     {
         public long Id { get; set; }
 
-        public ExpertiseAreaType ExpertiseAreaType { get; set; }
+        public AreaType AreaType { get; set; }
 
         public int MinScore { get; set; }
 

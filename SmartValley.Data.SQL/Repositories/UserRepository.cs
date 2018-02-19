@@ -18,18 +18,18 @@ namespace SmartValley.Data.SQL.Repositories
         }
 
         public Task<User> GetByAddressAsync(string address)
-        => ReadContext.Users.SingleOrDefaultAsync(u => u.Address.Equals(address, StringComparison.OrdinalIgnoreCase));
+        => ReadContext.Users.FirstOrDefaultAsync(u => u.Address.Equals(address, StringComparison.OrdinalIgnoreCase));
 
         public Task<User> GetByEmailAsync(string email)
-        => ReadContext.Users.SingleOrDefaultAsync(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+        => ReadContext.Users.FirstOrDefaultAsync(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
 
         public async Task AddRoleAsync(string address, RoleType type)
         {
-            var user = await ReadContext.Users.SingleOrDefaultAsync(i => i.Address.Equals(address, StringComparison.OrdinalIgnoreCase));
+            var user = await ReadContext.Users.FirstOrDefaultAsync(i => i.Address.Equals(address, StringComparison.OrdinalIgnoreCase));
             if (user == null)
                 throw new AppErrorException(ErrorCode.UserNotFound, $"User at address '{address}' not found.");
 
-            var role = await ReadContext.Roles.SingleOrDefaultAsync(i => i.Id == type);
+            var role = await ReadContext.Roles.FirstOrDefaultAsync(i => i.Id == type);
             if (role == null)
                 throw new AppErrorException(ErrorCode.RoleNotFound, $"Role '{type}' not found.");
 
@@ -48,15 +48,15 @@ namespace SmartValley.Data.SQL.Repositories
 
         public async Task RemoveRoleAsync(string address, RoleType type)
         {
-            var user = await ReadContext.Users.SingleOrDefaultAsync(i => i.Address.Equals(address, StringComparison.OrdinalIgnoreCase));
+            var user = await ReadContext.Users.FirstOrDefaultAsync(i => i.Address.Equals(address, StringComparison.OrdinalIgnoreCase));
             if (user == null)
                 throw new AppErrorException(ErrorCode.UserNotFound, $"User at address '{address}' not found.");
 
-            var role = await ReadContext.Roles.SingleOrDefaultAsync(i => i.Id == type);
+            var role = await ReadContext.Roles.FirstOrDefaultAsync(i => i.Id == type);
             if (role == null)
                 throw new AppErrorException(ErrorCode.RoleNotFound, $"Role '{type}' not found.");
 
-            var userRole = await ReadContext.UserRoles.SingleOrDefaultAsync(i => i.RoleId == role.Id && i.UserId == user.Id);
+            var userRole = await ReadContext.UserRoles.FirstOrDefaultAsync(i => i.RoleId == role.Id && i.UserId == user.Id);
             if (userRole == null)
                 throw new AppErrorException(ErrorCode.UserHaveNoRole, $"User at address '{address}' has no '{type}' role.");
 

@@ -44,8 +44,8 @@ namespace SmartValley.WebApi.Projects
         public Task<IReadOnlyCollection<ProjectScoring>> GetByAuthorAsync(string authorAddress)
             => _projectRepository.GetByAuthorAsync(authorAddress);
 
-        public Task<IReadOnlyCollection<ProjectScoring>> GetForScoringAsync(ExpertiseAreaType expertiseAreaType, string expertAddress)
-            => _projectRepository.GetForScoringAsync(expertAddress, expertiseAreaType);
+        public Task<IReadOnlyCollection<ProjectScoring>> GetForScoringAsync(AreaType areaType, string expertAddress)
+            => _projectRepository.GetForScoringAsync(expertAddress, areaType);
 
         public async Task<bool> IsAuthorizedToSeeEstimatesAsync(string account, long projectId)
         {

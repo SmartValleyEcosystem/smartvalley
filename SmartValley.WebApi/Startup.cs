@@ -139,6 +139,7 @@ namespace SmartValley.WebApi
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
+            services.AddTransient<IExpertRepository, ExpertRepository>();
             services.AddTransient<IExpertService, ExpertService>();
             services.AddTransient<IExpertApplicationRepository, ExpertApplicationRepository>();
         }

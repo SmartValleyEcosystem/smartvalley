@@ -18,7 +18,9 @@ namespace SmartValley.Data.SQL.Core
         DbSet<User> Users { get; set; }
         DbSet<Role> Roles { get; set; }
         DbSet<UserRole> UserRoles { get; set; }
-        DbSet<ExpertiseArea> ExpertiseAreas { get; set; }
+        DbSet<Area> Areas { get; set; }
+        DbSet<Expert> Experts { get; }
+        DbSet<ExpertArea> ExpertAreas { get; }
         DbSet<ExpertApplication> ExpertApplications { get; set; }
         DbSet<ExpertApplicationArea> ExpertApplicationAreas { get; set; }
 

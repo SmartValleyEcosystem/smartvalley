@@ -26,17 +26,17 @@ namespace SmartValley.Domain.Entities
 
         public Project Project { get; set; }
 
-        public bool IsCompletedInArea(ExpertiseAreaType areaType)
+        public bool IsCompletedInArea(AreaType areaType)
         {
             switch (areaType)
             {
-                case ExpertiseAreaType.Hr:
+                case AreaType.Hr:
                     return IsScoredByHr;
-                case ExpertiseAreaType.Analyst:
+                case AreaType.Analyst:
                     return IsScoredByAnalyst;
-                case ExpertiseAreaType.Tech:
+                case AreaType.Tech:
                     return IsScoredByTechnical;
-                case ExpertiseAreaType.Lawyer:
+                case AreaType.Lawyer:
                     return IsScoredByLawyer;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(areaType), areaType, null);

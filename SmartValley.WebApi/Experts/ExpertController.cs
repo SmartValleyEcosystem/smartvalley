@@ -1,14 +1,16 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
-using Newtonsoft.Json;
+using SmartValley.Application;
 using SmartValley.Application.AzureStorage;
+using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
-using SmartValley.WebApi.Applications.Requests;
 using SmartValley.WebApi.Experts.Requests;
 using SmartValley.WebApi.Experts.Responses;
+using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Experts
 {
@@ -16,20 +18,61 @@ namespace SmartValley.WebApi.Experts
     public class ExpertController : Controller
     {
         private readonly IExpertService _expertService;
+        private readonly EthereumClient _ethereumClient;
         private const int FileSizeLimitBytes = 5242880;
 
-        public ExpertController(IExpertService expertService, ExpertApplicationsStorageProvider expertApplicationsStorageProvider)
+        public ExpertController(
+            IExpertService expertService,
+            ExpertApplicationsStorageProvider expertApplicationsStorageProvider,
+            EthereumClient ethereumClient)
         {
             _expertService = expertService;
+            _ethereumClient = ethereumClient;
         }
 
-        [HttpGet]
-        [Route("{address}/status")]
+        [HttpGet, Route("{address}/status")]
         public async Task<GetExpertStatusResponse> GetExpertStatusAsync(string address)
         {
             var isApplied = await _expertService.IsAppliedAsync(address);
             var isConfirmed = await _expertService.IsConfirmedAsync(address);
             return new GetExpertStatusResponse {IsConfirmed = isConfirmed, IsApplied = isApplied};
+        }
+
+        [HttpPost]
+        [Authorize(Roles = nameof(RoleType.Admin))]
+        public async Task<IActionResult> Post([FromBody] ExpertRequest request)
+        {
+            await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
+            await _expertService.AddAsync(request.Address);
+            return NoContent();
+        }
+
+        [HttpDelete]
+        [Authorize(Roles = nameof(RoleType.Admin))]
+        public async Task<IActionResult> Delete(string address, string transactionHash)
+        {
+            await _ethereumClient.WaitForConfirmationAsync(transactionHash);
+            await _expertService.DeleteAsync(address);
+            return NoContent();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = nameof(RoleType.Admin))]
+        public async Task<IActionResult> GetAllExperts()
+        {
+            var experts = await _expertService.GetAllExpertsDetailsAsync();
+            return Ok(new CollectionResponse<ExpertResponse>
+                      {
+                          Items = experts.Select(i => new ExpertResponse
+                                                      {
+                                                          Address = i.Address,
+                                                          Email = i.Email,
+                                                          About = i.About,
+                                                          IsAvailable = i.IsAvailable,
+                                                          Name = i.Name,
+                                                          Areas = i.Areas.Select(j => new AreaResponse {Id = j.Id.FromDomain(), Name = j.Name}).ToArray()
+                                                      }).ToArray()
+                      });
         }
 
         [HttpPost, DisableRequestSizeLimit, Route("application")]

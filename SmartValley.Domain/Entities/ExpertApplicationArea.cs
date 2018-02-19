@@ -4,7 +4,7 @@
     {
         public long ExpertApplicationId { get; set; }
 
-        public ExpertiseAreaType ExpertiseAreaType { get; set; }
+        public AreaType AreaId { get; set; }
 
         public virtual ExpertApplication ExpertApplication { get; set; }
     }
