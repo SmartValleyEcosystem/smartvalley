@@ -3,7 +3,7 @@ import {Paths} from '../../paths';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ExpertApiClient} from '../../api/expert/expert-api-client';
-import {ExpertApplicationRequest} from '../../api/expert/expert-applitacion-request';
+import {CreateExpertApplicationRequest} from '../../api/expert/expert-applitacion-request';
 import {ExpertContractClient} from '../../services/contract-clients/expert-contract-client';
 import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 import {DialogService} from '../../services/dialog-service';
@@ -160,7 +160,7 @@ export class RegisterExpertComponent implements OnInit {
     window.scrollTo({left: 0, top: offsetTop1 + offsetTop3, behavior: 'smooth'});
   }
 
-  private createExpertApplicationRequest(transactionHash: string, areas: Array<ExpertiseArea>): ExpertApplicationRequest {
+  private createExpertApplicationRequest(transactionHash: string, areas: Array<ExpertiseArea>): CreateExpertApplicationRequest {
     const user = this.userContext.getCurrentUser();
     const form = this.registryForm.value;
     const input = new FormData();
@@ -183,7 +183,7 @@ export class RegisterExpertComponent implements OnInit {
     input.append('why', form.why);
     areas.forEach(a => input.append('areas', a.toString()));
 
-    return <ExpertApplicationRequest>{
+    return <CreateExpertApplicationRequest>{
       body: input
     };
   }

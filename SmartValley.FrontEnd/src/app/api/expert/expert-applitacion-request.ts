@@ -1,3 +1,3 @@
-export interface ExpertApplicationRequest {
+export interface CreateExpertApplicationRequest {
   body: any;
 }

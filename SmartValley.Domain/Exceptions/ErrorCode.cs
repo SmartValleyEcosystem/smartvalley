@@ -18,6 +18,7 @@
         UserHaveNoRole,
         EmailSendingFailed,
         InvalidFileUploaded,
-        AddressAlreadyExists
+        AddressAlreadyExists,
+        ExpertApplicationAlreadyProcessed
     }
 }

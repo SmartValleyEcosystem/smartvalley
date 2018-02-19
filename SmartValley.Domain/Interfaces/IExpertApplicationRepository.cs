@@ -6,12 +6,18 @@ namespace SmartValley.Domain.Interfaces
 {
     public interface IExpertApplicationRepository
     {
+        Task<IReadOnlyCollection<ExpertApplication>> GetAllByStatusAsync(ExpertApplicationStatus status);
+
+        Task<ExpertApplicationDetails> GetDetailsByIdAsync(long id);
+
         Task<int> AddAsync(ExpertApplication expertApplication, IReadOnlyCollection<int> areas);
 
         Task<bool> IsAppliedAsync(string address);
 
-        Task<bool> IsConfirmedAsync(string address);
-
         Task<int> UpdateWholeAsync(ExpertApplication expertApplication);
+
+        Task SetAcceptedAsync(ExpertApplicationDetails applicationDetails, List<int> areas);
+
+        Task SetRejectedAsync(ExpertApplicationDetails applicationDetails);
     }
 }

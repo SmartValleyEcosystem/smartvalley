@@ -12,8 +12,8 @@ using System;
 namespace SmartValley.Data.SQL.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20180219085547_Expert")]
-    partial class Expert
+    [Migration("20180216161650_ExpertApplicationApplyDate")]
+    partial class ExpertApplicationApplyDate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -59,21 +59,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("Applications");
                 });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.Area", b =>
-                {
-                    b.Property<int>("Id");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Areas");
-                });
-
             modelBuilder.Entity("SmartValley.Domain.Entities.EstimateComment", b =>
                 {
                     b.Property<long>("Id")
@@ -99,23 +84,14 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("EstimateComments");
                 });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.Expert", b =>
-                {
-                    b.Property<long>("UserId");
-
-                    b.Property<bool>("IsAvailable");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("Experts");
-                });
-
             modelBuilder.Entity("SmartValley.Domain.Entities.ExpertApplication", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<long>("ApplicantId");
+
+                    b.Property<DateTimeOffset>("ApplyDate");
 
                     b.Property<DateTime>("BirthDate");
 
@@ -161,6 +137,8 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<int>("Sex");
 
+                    b.Property<int>("Status");
+
                     b.Property<string>("Why")
                         .IsRequired()
                         .HasMaxLength(1500);
@@ -176,24 +154,30 @@ namespace SmartValley.Data.SQL.Migrations
                 {
                     b.Property<long>("ExpertApplicationId");
 
-                    b.Property<int>("AreaId");
+                    b.Property<int>("ExpertiseAreaId");
 
-                    b.HasKey("ExpertApplicationId", "AreaId");
+                    b.Property<int>("Status");
 
-                    b.HasIndex("AreaId");
+                    b.HasKey("ExpertApplicationId", "ExpertiseAreaId");
+
+                    b.HasIndex("ExpertiseAreaId");
 
                     b.ToTable("ExpertApplicationAreas");
                 });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.ExpertArea", b =>
+            modelBuilder.Entity("SmartValley.Domain.Entities.ExpertiseArea", b =>
                 {
-                    b.Property<long>("ExpertId");
+                    b.Property<int>("Id");
 
-                    b.Property<int>("AreaId");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
-                    b.HasKey("ExpertId", "AreaId");
+                    b.HasKey("Id");
 
-                    b.ToTable("ExpertAreas");
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("ExpertiseAreas");
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.Project", b =>
@@ -235,7 +219,7 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AreaType");
+                    b.Property<int>("ExpertiseAreaType");
 
                     b.Property<int>("MaxScore");
 
@@ -321,8 +305,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("About");
-
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasMaxLength(42);
@@ -331,8 +313,6 @@ namespace SmartValley.Data.SQL.Migrations
                         .IsRequired();
 
                     b.Property<bool>("IsEmailConfirmed");
-
-                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 
@@ -412,14 +392,6 @@ namespace SmartValley.Data.SQL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.Expert", b =>
-                {
-                    b.HasOne("SmartValley.Domain.Entities.User", "User")
-                        .WithOne("Expert")
-                        .HasForeignKey("SmartValley.Domain.Entities.Expert", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("SmartValley.Domain.Entities.ExpertApplication", b =>
                 {
                     b.HasOne("SmartValley.Domain.Entities.User", "Applicant")
@@ -430,22 +402,14 @@ namespace SmartValley.Data.SQL.Migrations
 
             modelBuilder.Entity("SmartValley.Domain.Entities.ExpertApplicationArea", b =>
                 {
-                    b.HasOne("SmartValley.Domain.Entities.Area")
-                        .WithMany("ExpertApplicationAreas")
-                        .HasForeignKey("AreaId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("SmartValley.Domain.Entities.ExpertApplication", "ExpertApplication")
                         .WithMany()
                         .HasForeignKey("ExpertApplicationId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.ExpertArea", b =>
-                {
-                    b.HasOne("SmartValley.Domain.Entities.Expert", "Expert")
-                        .WithMany("ExpertAreas")
-                        .HasForeignKey("ExpertId")
+                    b.HasOne("SmartValley.Domain.Entities.ExpertiseArea")
+                        .WithMany("ExpertApplicationAreas")
+                        .HasForeignKey("ExpertiseAreaId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

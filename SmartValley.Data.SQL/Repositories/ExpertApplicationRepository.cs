@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
+using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 
@@ -14,6 +15,26 @@ namespace SmartValley.Data.SQL.Repositories
         public ExpertApplicationRepository(IReadOnlyDataContext readContext, IEditableDataContext editContext)
             : base(readContext, editContext)
         {
+        }
+
+        public async Task<IReadOnlyCollection<ExpertApplication>> GetAllByStatusAsync(ExpertApplicationStatus status)
+        {
+            return await ReadContext.ExpertApplications.Where(e => e.Status == status).ToArrayAsync();
+        }
+
+        public async Task<ExpertApplicationDetails> GetDetailsByIdAsync(long id)
+        {
+            var expertApplication = await ReadContext.ExpertApplications.FirstOrDefaultAsync(e => e.Id == id);
+
+            var areas = await (from expertApplicationArea in ReadContext.ExpertApplicationAreas.Where(e => e.ExpertApplicationId == id)
+                               join expertiseArea in ReadContext.Areas on expertApplicationArea.AreaId equals expertiseArea.Id
+                               select expertiseArea).ToArrayAsync();
+
+            return new ExpertApplicationDetails
+                   {
+                       ExpertApplication = expertApplication,
+                       Areas = areas
+                   };
         }
 
         public Task<int> AddAsync(ExpertApplication expertApplication, IReadOnlyCollection<int> areas)
@@ -35,9 +56,49 @@ namespace SmartValley.Data.SQL.Repositories
                     select user).AnyAsync(i => i.Address.Equals(address, StringComparison.OrdinalIgnoreCase));
         }
 
-        public Task<bool> IsConfirmedAsync(string address)
+        public Task SetAcceptedAsync(ExpertApplicationDetails applicationDetails, List<int> areas)
         {
-            throw new System.NotImplementedException();
+            applicationDetails.ExpertApplication.Status = ExpertApplicationStatus.Accepted;
+
+            var applicationExpertAreas = applicationDetails.Areas.Select(s => new ExpertApplicationArea
+                                                                              {
+                                                                                  ExpertApplicationId = applicationDetails.ExpertApplication.Id,
+                                                                                  AreaId = s.Id
+                                                                              })
+                                                           .ToArray();
+
+            EditContext.ExpertApplicationAreas.AttachRange(applicationExpertAreas);
+
+            foreach (var applicationExpertArea in applicationExpertAreas)
+            {
+                applicationExpertArea.Status = ExpertApplicationStatus.Rejected;
+                if (areas.Contains((int) applicationExpertArea.AreaId))
+                {
+                    applicationExpertArea.Status = ExpertApplicationStatus.Accepted;
+                }
+            }
+
+            EditContext.ExpertApplications.Update(applicationDetails.ExpertApplication);
+            EditContext.ExpertApplicationAreas.UpdateRange(applicationExpertAreas);
+            return EditContext.SaveAsync();
+        }
+
+        public Task SetRejectedAsync(ExpertApplicationDetails applicationDetails)
+        {
+            applicationDetails.ExpertApplication.Status = ExpertApplicationStatus.Rejected;
+
+            var applicationExpertAreas = applicationDetails.Areas.Select(s => new ExpertApplicationArea
+                                                                              {
+                                                                                  ExpertApplicationId = applicationDetails.ExpertApplication.Id,
+                                                                                  AreaId = s.Id,
+                                                                                  Status = ExpertApplicationStatus.Rejected
+                                                                              })
+                                                           .ToList();
+
+            EditContext.ExpertApplicationAreas.AttachRange(applicationExpertAreas);
+            EditContext.ExpertApplications.Update(applicationDetails.ExpertApplication);
+            EditContext.ExpertApplicationAreas.UpdateRange(applicationExpertAreas);
+            return EditContext.SaveAsync();
         }
     }
 }

@@ -28,10 +28,6 @@ namespace SmartValley.Data.SQL.Migrations
                 table: "Questions");
 
             migrationBuilder.DropColumn(
-                name: "ExpertiseAreaType",
-                table: "ExpertApplicationAreas");
-
-            migrationBuilder.DropColumn(
                 name: "ExpertiseAreaId",
                 table: "ExpertApplicationAreas");
 
@@ -180,20 +176,15 @@ namespace SmartValley.Data.SQL.Migrations
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "ExpertiseAreaType",
+                name: "ExpertiseAreaId",
                 table: "ExpertApplicationAreas",
                 nullable: false,
                 defaultValue: 0);
 
-            migrationBuilder.AddColumn<int>(
-                name: "ExpertiseAreaId",
-                table: "ExpertApplicationAreas",
-                nullable: true);
-
             migrationBuilder.AddPrimaryKey(
                 name: "PK_ExpertApplicationAreas",
                 table: "ExpertApplicationAreas",
-                columns: new[] { "ExpertApplicationId", "ExpertiseAreaType" });
+                columns: new[] { "ExpertApplicationId", "ExpertiseAreaId" });
 
             migrationBuilder.CreateTable(
                 name: "ExpertiseAreas",
@@ -224,7 +215,7 @@ namespace SmartValley.Data.SQL.Migrations
                 column: "ExpertiseAreaId",
                 principalTable: "ExpertiseAreas",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Cascade);
         }
     }
 }

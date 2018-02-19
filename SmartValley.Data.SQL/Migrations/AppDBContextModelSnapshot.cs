@@ -116,6 +116,8 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<long>("ApplicantId");
 
+                    b.Property<DateTimeOffset>("ApplyDate");
+
                     b.Property<DateTime>("BirthDate");
 
                     b.Property<string>("City")
@@ -160,6 +162,8 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<int>("Sex");
 
+                    b.Property<int>("Status");
+
                     b.Property<string>("Why")
                         .IsRequired()
                         .HasMaxLength(1500);
@@ -176,6 +180,8 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("ExpertApplicationId");
 
                     b.Property<int>("AreaId");
+
+                    b.Property<int>("Status");
 
                     b.HasKey("ExpertApplicationId", "AreaId");
 

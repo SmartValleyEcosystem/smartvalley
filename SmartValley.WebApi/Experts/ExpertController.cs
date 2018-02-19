@@ -39,9 +39,44 @@ namespace SmartValley.WebApi.Experts
             return new GetExpertStatusResponse {IsConfirmed = isConfirmed, IsApplied = isApplied};
         }
 
+        [HttpGet("applications")]
+        [Authorize(Roles = nameof(RoleType.Admin))]
+        public async Task<CollectionResponse<PendingExpertApplicationsResponse>> GetPendingApplicationsAsync()
+        {
+            var applications = await _expertService.GetPendingApplicationsAsync();
+            return new CollectionResponse<PendingExpertApplicationsResponse>
+                   {
+                       Items = applications.Select(PendingExpertApplicationsResponse.Create).ToArray()
+                   };
+        }
+
+        [HttpGet("applications/{id}")]
+        [Authorize(Roles = nameof(RoleType.Admin))]
+        public async Task<ExpertApplicationResponse> GetApplicationByIdAsync(ExpertApplicationIdRequest request)
+        {
+            var applicationDetails = await _expertService.GetApplicationByIdAsync(request.Id);
+            return ExpertApplicationResponse.Create(applicationDetails);
+        }
+
+        [HttpPost("applications/{id}/accept")]
+        [Authorize(Roles = nameof(RoleType.Admin))]
+        public async Task<EmptyResponse> AcceptAsync(ExpertApplicationIdRequest idRequest, [FromBody] AcceptApplicationRequest request)
+        {
+            await _expertService.AcceptApplicationAsync(idRequest.Id, request.Areas);
+            return new EmptyResponse();
+        }
+
+        [HttpPost("applications/{id}/reject")]
+        [Authorize(Roles = nameof(RoleType.Admin))]
+        public async Task<EmptyResponse> RejectAsync(ExpertApplicationIdRequest request)
+        {
+            await _expertService.RejectApplicationAsync(request.Id);
+            return new EmptyResponse();
+        }
+       
         [HttpPost]
         [Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<IActionResult> Post([FromBody] ExpertRequest request)
+        public async Task<IActionResult> CreateExpertAsync([FromBody] ExpertRequest request)
         {
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
             await _expertService.AddAsync(request.Address);
@@ -50,7 +85,7 @@ namespace SmartValley.WebApi.Experts
 
         [HttpDelete]
         [Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<IActionResult> Delete(string address, string transactionHash)
+        public async Task<IActionResult> DeleteExpertAsync(string address, string transactionHash)
         {
             await _ethereumClient.WaitForConfirmationAsync(transactionHash);
             await _expertService.DeleteAsync(address);
@@ -77,7 +112,7 @@ namespace SmartValley.WebApi.Experts
         }
 
         [HttpPost, DisableRequestSizeLimit, Route("application")]
-        public async Task<EmptyResponse> CreateExpertApplicationAsync([FromForm] ExpertApplicationRequest request,
+        public async Task<EmptyResponse> CreateExpertApplicationAsync([FromForm] CreateExpertApplicationRequest request,
                                                                       IFormFile scan,
                                                                       IFormFile photo,
                                                                       IFormFile cv)
