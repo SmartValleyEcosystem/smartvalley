@@ -23,8 +23,9 @@ namespace SmartValley.Data.SQL.Migrations
                 name: "IX_ExpertApplicationAreas_ExpertiseAreaId",
                 table: "ExpertApplicationAreas");
 
-            migrationBuilder.DropColumn(
+            migrationBuilder.RenameColumn(
                 name: "ExpertiseAreaType",
+                newName: "AreaType",
                 table: "Questions");
 
             migrationBuilder.DropColumn(
@@ -44,13 +45,6 @@ namespace SmartValley.Data.SQL.Migrations
                 nullable: true);
 
             migrationBuilder.AddColumn<int>(
-                name: "AreaType",
-                table: "Questions",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<int>(
                 name: "AreaId",
                 table: "ExpertApplicationAreas",
                 type: "int",
@@ -60,55 +54,52 @@ namespace SmartValley.Data.SQL.Migrations
             migrationBuilder.AddPrimaryKey(
                 name: "PK_ExpertApplicationAreas",
                 table: "ExpertApplicationAreas",
-                columns: new[] { "ExpertApplicationId", "AreaId" });
+                columns: new[] {"ExpertApplicationId", "AreaId"});
 
             migrationBuilder.CreateTable(
                 name: "Areas",
                 columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Areas", x => x.Id);
-                });
+                                  {
+                                      Id = table.Column<int>(type: "int", nullable: false),
+                                      Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                                  },
+                constraints: table => { table.PrimaryKey("PK_Areas", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "Experts",
                 columns: table => new
-                {
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    IsAvailable = table.Column<bool>(type: "bit", nullable: false)
-                },
+                                  {
+                                      UserId = table.Column<long>(type: "bigint", nullable: false),
+                                      IsAvailable = table.Column<bool>(type: "bit", nullable: false)
+                                  },
                 constraints: table =>
-                {
-                    table.PrimaryKey("PK_Experts", x => x.UserId);
-                    table.ForeignKey(
-                        name: "FK_Experts_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                             {
+                                 table.PrimaryKey("PK_Experts", x => x.UserId);
+                                 table.ForeignKey(
+                                     name: "FK_Experts_Users_UserId",
+                                     column: x => x.UserId,
+                                     principalTable: "Users",
+                                     principalColumn: "Id",
+                                     onDelete: ReferentialAction.Cascade);
+                             });
 
             migrationBuilder.CreateTable(
                 name: "ExpertAreas",
                 columns: table => new
-                {
-                    ExpertId = table.Column<long>(type: "bigint", nullable: false),
-                    AreaId = table.Column<int>(type: "int", nullable: false)
-                },
+                                  {
+                                      ExpertId = table.Column<long>(type: "bigint", nullable: false),
+                                      AreaId = table.Column<int>(type: "int", nullable: false)
+                                  },
                 constraints: table =>
-                {
-                    table.PrimaryKey("PK_ExpertAreas", x => new { x.ExpertId, x.AreaId });
-                    table.ForeignKey(
-                        name: "FK_ExpertAreas_Experts_ExpertId",
-                        column: x => x.ExpertId,
-                        principalTable: "Experts",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                             {
+                                 table.PrimaryKey("PK_ExpertAreas", x => new {x.ExpertId, x.AreaId});
+                                 table.ForeignKey(
+                                     name: "FK_ExpertAreas_Experts_ExpertId",
+                                     column: x => x.ExpertId,
+                                     principalTable: "Experts",
+                                     principalColumn: "UserId",
+                                     onDelete: ReferentialAction.Cascade);
+                             });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ExpertApplicationAreas_AreaId",
@@ -161,19 +152,14 @@ namespace SmartValley.Data.SQL.Migrations
                 name: "Name",
                 table: "Users");
 
-            migrationBuilder.DropColumn(
+            migrationBuilder.RenameColumn(
                 name: "AreaType",
+                newName: "ExpertiseAreaType",
                 table: "Questions");
 
             migrationBuilder.DropColumn(
                 name: "AreaId",
                 table: "ExpertApplicationAreas");
-
-            migrationBuilder.AddColumn<int>(
-                name: "ExpertiseAreaType",
-                table: "Questions",
-                nullable: false,
-                defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
                 name: "ExpertiseAreaId",
@@ -184,19 +170,16 @@ namespace SmartValley.Data.SQL.Migrations
             migrationBuilder.AddPrimaryKey(
                 name: "PK_ExpertApplicationAreas",
                 table: "ExpertApplicationAreas",
-                columns: new[] { "ExpertApplicationId", "ExpertiseAreaId" });
+                columns: new[] {"ExpertApplicationId", "ExpertiseAreaId"});
 
             migrationBuilder.CreateTable(
                 name: "ExpertiseAreas",
                 columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ExpertiseAreas", x => x.Id);
-                });
+                                  {
+                                      Id = table.Column<int>(nullable: false),
+                                      Name = table.Column<string>(nullable: false)
+                                  },
+                constraints: table => { table.PrimaryKey("PK_ExpertiseAreas", x => x.Id); });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ExpertApplicationAreas_ExpertiseAreaId",

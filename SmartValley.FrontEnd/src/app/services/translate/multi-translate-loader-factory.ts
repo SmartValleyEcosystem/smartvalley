@@ -13,6 +13,7 @@ export function multiTranslateLoaderFactory() {
     'components/landing/landing.component',
     'components/voting/voting.component',
     'components/admin-panel/admin-panel.component',
+    'components/admin-panel/admin-expert-applications-list/admin-expert-applications-list.component',
     'components/become-expert/become-expert.component',
     'components/scoring/scoring.component',
     'components/register-expert/register-expert.component',

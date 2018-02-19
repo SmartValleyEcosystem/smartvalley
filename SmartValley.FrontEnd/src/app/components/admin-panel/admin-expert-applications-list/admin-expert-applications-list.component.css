@@ -1,0 +1,26 @@
+.applications{
+  padding-top: 2em;
+}
+
+.list-item{
+  width: 100%;
+  background-color: white;
+  border-radius: 0.25em;
+  padding: 1em;
+  border: 0.05em black solid;
+}
+
+.list-item div{
+  display: inline-block;
+  text-align: center;
+  padding: 0.5em;
+  margin: 0.2em 0;
+}
+
+.item-btn{
+  left: 1em;
+  float: right;
+  margin-right: 1em;
+  padding: 0.5em;
+  color: white !important;
+}

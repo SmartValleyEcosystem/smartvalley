@@ -101,6 +101,7 @@ import {CalendarModule} from 'primeng/calendar';
 import {BecomeExpertComponent} from './components/become-expert/become-expert.component';
 import {ExpertComponent} from './components/expert/expert.component';
 import {RegisterExpertComponent} from './components/register-expert/register-expert.component';
+import {AdminExpertApplicationsListComponent} from './components/admin-panel/admin-expert-applications-list/admin-expert-applications-list.component';
 
 @NgModule({
   declarations: [
@@ -143,7 +144,8 @@ import {RegisterExpertComponent} from './components/register-expert/register-exp
     ExpertComponent,
     RegisterExpertComponent,
     ConfirmEmailModalComponent,
-    ConfirmEmailComponent
+    ConfirmEmailComponent,
+    AdminExpertApplicationsListComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
