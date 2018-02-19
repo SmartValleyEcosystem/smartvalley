@@ -23,7 +23,8 @@ namespace SmartValley.Application.Contracts
         public async Task<int> GetDecimalsAsync()
         {
             if (!_decimals.HasValue)
-                _decimals = await _contractClient.CallFunctionAsync<int>(_contractAddress, _contractAbi, "decimals");
+                return (_decimals = await _contractClient.CallFunctionAsync<int>(_contractAddress, _contractAbi, "decimals")).Value;
+
             return _decimals.Value;
         }
     }

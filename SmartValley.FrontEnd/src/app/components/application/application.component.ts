@@ -220,7 +220,10 @@ export class ApplicationComponent implements OnInit {
 
   private async startScoringAsync(projectId: string): Promise<string> {
     try {
-      return await this.scoringManagerContractClient.startAsync(projectId);
+      // TODO
+      const areas = [1, 2, 3, 4];
+      const areaExpertCounts = [3, 3, 3, 3];
+      return await this.scoringManagerContractClient.startAsync(projectId, areas, areaExpertCounts);
     } catch (e) {
       return null;
     }

@@ -26,6 +26,7 @@ namespace SmartValley.WebApi.Experts
             ExpertApplicationsStorageProvider expertApplicationsStorageProvider,
             EthereumClient ethereumClient)
         {
+            _ethereumClient = ethereumClient;
             _expertService = expertService;
             _ethereumClient = ethereumClient;
         }
@@ -90,14 +91,17 @@ namespace SmartValley.WebApi.Experts
                 photo.Length > FileSizeLimitBytes ||
                 cv.Length < 0 ||
                 cv.Length > FileSizeLimitBytes)
+            {
                 throw new AppErrorException(ErrorCode.InvalidFileUploaded);
+            }
 
+            await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
             await _expertService.CreateApplicationAsync(request, CreateAzureFile(cv), CreateAzureFile(scan), CreateAzureFile(photo));
 
             return new EmptyResponse();
         }
 
-        private AzureFile CreateAzureFile(IFormFile formFile)
+        private static AzureFile CreateAzureFile(IFormFile formFile)
         {
             using (var stream = formFile.OpenReadStream())
             {

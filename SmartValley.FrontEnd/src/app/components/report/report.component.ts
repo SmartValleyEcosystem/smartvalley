@@ -131,11 +131,22 @@ export class ReportComponent implements AfterViewChecked, OnInit {
   }
 
   private async startScoringAsync(): Promise<string> {
+    // TODO
+    const areas = [1, 2, 3, 4];
+    const areaExpertCounts = [3, 3, 3, 3];
+
     try {
       if (this.details.votingStatus === VotingStatus.Accepted) {
-        return await this.scoringManagerContractClient.startForFreeAsync(this.details.externalId, this.details.votingAddress);
+        return await this.scoringManagerContractClient.startForFreeAsync(
+          this.details.externalId,
+          this.details.votingAddress,
+          areas,
+          areaExpertCounts);
       } else {
-        return await this.scoringManagerContractClient.startAsync(this.details.externalId);
+        return await this.scoringManagerContractClient.startAsync(
+          this.details.externalId,
+          areas,
+          areaExpertCounts);
       }
     } catch (e) {
       return null;

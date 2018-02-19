@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using SmartValley.Domain;
-using SmartValley.Domain.Entities;
 
-namespace SmartValley.WebApi.Scoring
+namespace SmartValley.WebApi.Projects.Scoring
 {
     public interface IScoringService
     {
-        Task StartAsync(Guid projectExternalId, string transactionHash);
+        Task StartAsync(Guid projectExternalId);
     }
 }

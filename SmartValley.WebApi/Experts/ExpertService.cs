@@ -11,7 +11,6 @@ namespace SmartValley.WebApi.Experts
 {
     public class ExpertService : IExpertService
     {
-        private readonly EthereumClient _ethereumClient;
         private readonly IUserRepository _userRepository;
         private readonly IExpertRepository _expertRepository;
         private readonly IExpertApplicationRepository _expertApplicationRepository;
@@ -23,7 +22,6 @@ namespace SmartValley.WebApi.Experts
                              ExpertApplicationsStorageProvider expertApplicationsStorageProvider,
                              IExpertRepository expertRepository)
         {
-            _ethereumClient = ethereumClient;
             _userRepository = userRepository;
             _expertRepository = expertRepository;
             _expertApplicationRepository = expertApplicationRepository;
@@ -32,8 +30,6 @@ namespace SmartValley.WebApi.Experts
 
         public async Task CreateApplicationAsync(ExpertApplicationRequest request, AzureFile cv, AzureFile scan, AzureFile photo)
         {
-            await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
-
             var user = await _userRepository.GetByAddressAsync(request.ApplicantAddress);
 
             var expertApplication = new ExpertApplication

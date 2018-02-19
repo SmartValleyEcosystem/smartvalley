@@ -14,26 +14,21 @@ namespace SmartValley.WebApi.Estimates
     public class EstimationService : IEstimationService
     {
         private readonly IEstimateCommentRepository _estimateCommentRepository;
-        private readonly EthereumClient _ethereumClient;
         private readonly IScoringContractClient _scoringContractClient;
         private readonly IScoringRepository _scoringRepository;
 
         public EstimationService(
             IEstimateCommentRepository estimateCommentRepository,
-            EthereumClient ethereumClient,
             IScoringContractClient scoringContractClient,
             IScoringRepository scoringRepository)
         {
             _estimateCommentRepository = estimateCommentRepository;
-            _ethereumClient = ethereumClient;
             _scoringContractClient = scoringContractClient;
             _scoringRepository = scoringRepository;
         }
 
         public async Task SubmitEstimatesAsync(SubmitEstimatesRequest request)
         {
-            await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
-
             await AddEstimateCommentsAsync(request);
 
             var scoring = await _scoringRepository.GetByProjectIdAsync(request.ProjectId);
@@ -42,7 +37,7 @@ namespace SmartValley.WebApi.Estimates
             await UpdateProjectScoringAsync(scoring, scoringStatistics);
         }
 
-        public async Task<ScoringStatisticsInArea> GetScoringStatisticsInAreaAsync(long projectId, Domain.Entities.AreaType areaType)
+        public async Task<ScoringStatisticsInArea> GetScoringStatisticsInAreaAsync(long projectId, AreaType areaType)
         {
             var scoring = await _scoringRepository.GetByProjectIdAsync(projectId);
             var scores = await _scoringContractClient.GetEstimatesAsync(scoring.ContractAddress);
@@ -54,7 +49,7 @@ namespace SmartValley.WebApi.Estimates
                                  equals new {score.QuestionId, ExpertAddress = score.ExpertAddress.ToUpper(CultureInfo.InvariantCulture)}
                              select CreateEstimate(score, comment)).ToArray();
 
-            var requiredSubmissionsInArea = (double) await _scoringContractClient.GetRequiredSubmissionsInAreaCountAsync(scoring.ContractAddress);
+            var requiredSubmissionsInArea = (double) await _scoringContractClient.GetRequiredSubmissionsInAreaCountAsync(scoring.ContractAddress, areaType);
             var averageScore = scoring.IsCompletedInArea(areaType)
                                    ? estimates.Sum(i => i.Score) / requiredSubmissionsInArea
                                    : (double?) null;
@@ -68,10 +63,11 @@ namespace SmartValley.WebApi.Estimates
         private Task UpdateProjectScoringAsync(Domain.Entities.Scoring scoring, ProjectScoringStatistics scoringStatistics)
         {
             scoring.Score = scoringStatistics.Score;
-            scoring.IsScoredByHr = scoringStatistics.IsScoredByHr;
-            scoring.IsScoredByAnalyst = scoringStatistics.IsScoredByAnalyst;
-            scoring.IsScoredByTechnical = scoringStatistics.IsScoredByTech;
-            scoring.IsScoredByLawyer = scoringStatistics.IsScoredByLawyer;
+
+            scoring.IsScoredByHr = scoringStatistics.IsScoredByHr();
+            scoring.IsScoredByAnalyst = scoringStatistics.IsScoredByAnalyst();
+            scoring.IsScoredByTechnical = scoringStatistics.IsScoredByTech();
+            scoring.IsScoredByLawyer = scoringStatistics.IsScoredByLawyer();
 
             return _scoringRepository.UpdateWholeAsync(scoring);
         }

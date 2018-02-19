@@ -31,20 +31,18 @@ namespace SmartValley.Application.Contracts.Scorings
 
         public async Task<ProjectScoringStatistics> GetScoringStatisticsAsync(string scoringAddress)
         {
-            var dto = await _contractClient.CallFunctionDeserializingToObjectAsync<ScoringStatisticsDto>(scoringAddress, _contractAbi, "getScoringInformation");
-            return new ProjectScoringStatistics
-                   {
-                       Score = dto.IsScored ? dto.Score : (int?) null,
-                       IsScoredByHr = dto.IsScoredByHr,
-                       IsScoredByAnalyst = dto.IsScoredByAnalyst,
-                       IsScoredByTech = dto.IsScoredByTech,
-                       IsScoredByLawyer = dto.IsScoredByLawyer
-                   };
+            var dto = await _contractClient.CallFunctionDeserializingToObjectAsync<ScoringStatisticsDto>(scoringAddress, _contractAbi, "getResults");
+            var scoredAreas = dto.Areas
+                                 .Where((t, i) => dto.AreaResults[i])
+                                 .Cast<AreaType>()
+                                 .ToList();
+
+            return new ProjectScoringStatistics(dto.IsScored ? dto.Score : (int?) null, scoredAreas);
         }
 
-        public Task<uint> GetRequiredSubmissionsInAreaCountAsync(string scoringAddress)
+        public Task<uint> GetRequiredSubmissionsInAreaCountAsync(string scoringAddress, AreaType areaType)
         {
-            return _contractClient.CallFunctionAsync<uint>(scoringAddress, _contractAbi, "REQUIRED_SUBMISSIONS_IN_AREA");
+            return _contractClient.CallFunctionAsync<uint>(scoringAddress, _contractAbi, "getRequiredSubmissionsInArea", (int) areaType);
         }
     }
 }
