@@ -25,5 +25,7 @@
         public VotingManagerContractOptions VotingManagerContract { get; set; }
 
         public ContractOptions ExpertsRegistryContract { get; set; }
+        
+        public ContractOptions ScoringExpertsManagerContract { get; set; }
     }
 }
