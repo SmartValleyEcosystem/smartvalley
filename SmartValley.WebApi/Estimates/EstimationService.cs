@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using SmartValley.Application;
 using SmartValley.Application.Contracts.Scorings;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
@@ -42,6 +41,7 @@ namespace SmartValley.WebApi.Estimates
             var scoring = await _scoringRepository.GetByProjectIdAsync(projectId);
             var scores = await _scoringContractClient.GetEstimatesAsync(scoring.ContractAddress);
             var comments = await _estimateCommentRepository.GetAsync(projectId, areaType);
+            var isCompletedInArea = await _scoringRepository.IsCompletedInAreaAsync(scoring.Id, areaType);
 
             var estimates = (from comment in comments
                              join score in scores
@@ -50,9 +50,7 @@ namespace SmartValley.WebApi.Estimates
                              select CreateEstimate(score, comment)).ToArray();
 
             var requiredSubmissionsInArea = (double) await _scoringContractClient.GetRequiredSubmissionsInAreaCountAsync(scoring.ContractAddress, areaType);
-            var averageScore = scoring.IsCompletedInArea(areaType)
-                                   ? estimates.Sum(i => i.Score) / requiredSubmissionsInArea
-                                   : (double?) null;
+            var averageScore = isCompletedInArea ? estimates.Sum(i => i.Score) / requiredSubmissionsInArea : (double?) null;
 
             return new ScoringStatisticsInArea(averageScore, estimates);
         }
@@ -60,16 +58,13 @@ namespace SmartValley.WebApi.Estimates
         private static Estimate CreateEstimate(EstimateScore score, EstimateComment comment)
             => new Estimate(comment.ProjectId, score.ExpertAddress, score.QuestionId, score.Score, comment.Comment);
 
-        private Task UpdateProjectScoringAsync(Domain.Entities.Scoring scoring, ProjectScoringStatistics scoringStatistics)
+        private async Task UpdateProjectScoringAsync(Domain.Entities.Scoring scoring, ProjectScoringStatistics scoringStatistics)
         {
             scoring.Score = scoringStatistics.Score;
 
-            scoring.IsScoredByHr = scoringStatistics.IsScoredByHr();
-            scoring.IsScoredByAnalyst = scoringStatistics.IsScoredByAnalyst();
-            scoring.IsScoredByTechnical = scoringStatistics.IsScoredByTech();
-            scoring.IsScoredByLawyer = scoringStatistics.IsScoredByLawyer();
+            await _scoringRepository.UpdateWholeAsync(scoring);
 
-            return _scoringRepository.UpdateWholeAsync(scoring);
+            await _scoringRepository.SetAreasCompletedAsync(scoring.Id, scoringStatistics.ScoredAreas);
         }
 
         private Task AddEstimateCommentsAsync(SubmitEstimatesRequest request)

@@ -1,8 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application;
-using SmartValley.WebApi.Scoring.Requests;
+using SmartValley.WebApi.Experts;
+using SmartValley.WebApi.Projects.Scoring.Requests;
 
 namespace SmartValley.WebApi.Projects.Scoring
 {
@@ -24,7 +26,9 @@ namespace SmartValley.WebApi.Projects.Scoring
         public async Task<IActionResult> StartAsync([FromBody] StartProjectScoringRequest request)
         {
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
-            await _scoringService.StartAsync(request.ProjectExternalId);
+
+            await _scoringService.StartAsync(request.ProjectExternalId, request.Areas);
+
             return NoContent();
         }
     }

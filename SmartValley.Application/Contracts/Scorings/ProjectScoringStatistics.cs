@@ -14,14 +14,6 @@ namespace SmartValley.Application.Contracts.Scorings
 
         public int? Score { get; }
         
-        private IReadOnlyCollection<AreaType> ScoredAreas { get; }
-
-        public bool IsScoredByHr() => ScoredAreas.Any(a => a == AreaType.Hr);
-
-        public bool IsScoredByAnalyst() => ScoredAreas.Any(a => a == AreaType.Analyst);
-
-        public bool IsScoredByTech() => ScoredAreas.Any(a => a == AreaType.Tech);
-
-        public bool IsScoredByLawyer() => ScoredAreas.Any(a => a == AreaType.Lawyer);
+        public IReadOnlyCollection<AreaType> ScoredAreas { get; }
     }
 }

@@ -84,8 +84,12 @@ export class ApplicationComponent implements OnInit {
       return;
     }
 
+    // TODO
+    const areas = [1, 2, 3, 4];
+    const areaExpertCounts = [3, 3, 3, 3];
+
     const request = this.createSubmitApplicationRequest();
-    const transactionHash = await this.startScoringAsync(request.projectId);
+    const transactionHash = await this.startScoringAsync(request.projectId, areas, areaExpertCounts);
     if (transactionHash == null) {
       this.notifyError();
       this.isProjectCreating = false;
@@ -98,7 +102,7 @@ export class ApplicationComponent implements OnInit {
     );
 
     await this.applicationApiClient.submitAsync(request);
-    await this.scoringApiClient.startAsync(request.projectId, transactionHash);
+    await this.scoringApiClient.startAsync(request.projectId, areas, areaExpertCounts, transactionHash);
     await this.balanceService.updateBalanceAsync();
 
     transactionDialog.close();
@@ -218,11 +222,8 @@ export class ApplicationComponent implements OnInit {
     };
   }
 
-  private async startScoringAsync(projectId: string): Promise<string> {
+  private async startScoringAsync(projectId: string, areas: number[], areaExpertCounts: number[]): Promise<string> {
     try {
-      // TODO
-      const areas = [1, 2, 3, 4];
-      const areaExpertCounts = [3, 3, 3, 3];
       return await this.scoringManagerContractClient.startAsync(projectId, areas, areaExpertCounts);
     } catch (e) {
       return null;

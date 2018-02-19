@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application.Contracts.Scorings;
+using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
+using SmartValley.WebApi.Experts;
+using SmartValley.WebApi.Projects.Scoring.Requests;
 
 namespace SmartValley.WebApi.Projects.Scoring
 {
@@ -22,7 +27,7 @@ namespace SmartValley.WebApi.Projects.Scoring
             _scoringManagerContractClient = scoringManagerContractClient;
         }
 
-        public async Task StartAsync(Guid projectExternalId)
+        public async Task StartAsync(Guid projectExternalId, IReadOnlyCollection<AreaRequest> areas)
         {
             var project = await _projectRepository.GetByExternalIdAsync(projectExternalId);
             var contractAddress = await _scoringManagerContractClient.GetScoringAddressAsync(projectExternalId);
@@ -33,6 +38,19 @@ namespace SmartValley.WebApi.Projects.Scoring
                           };
 
             await _scoringRepository.AddAsync(scoring);
+
+            var areaScorings = areas.Select(a => CreateAreaScoring(a, scoring.Id)).ToArray();
+            await _scoringRepository.AddAreasAsync(areaScorings);
+        }
+
+        private static AreaScoring CreateAreaScoring(AreaRequest areaRequest, long scoringId)
+        {
+            return new AreaScoring
+                   {
+                       AreaId = areaRequest.Area.ToDomain(),
+                       ScoringId = scoringId,
+                       ExpertsCount = areaRequest.ExpertsCount
+                   };
         }
     }
 }

@@ -33,7 +33,6 @@ using SmartValley.WebApi.ExceptionHandler;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.Projects.Scoring;
-using SmartValley.WebApi.Scoring;
 using SmartValley.WebApi.Users;
 using SmartValley.WebApi.Votings;
 using SmartValley.WebApi.WebApi;

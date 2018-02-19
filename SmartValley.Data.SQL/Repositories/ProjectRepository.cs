@@ -39,11 +39,9 @@ namespace SmartValley.Data.SQL.Repositories
             var scoredProjects = (from question in ReadContext.Questions
                                   join comment in ReadContext.EstimateComments on question.Id equals comment.QuestionId
                                   join scoring in ReadContext.Scorings on comment.ProjectId equals scoring.ProjectId
+                                  join areaScoring in ReadContext.AreaScorings on scoring.Id equals areaScoring.ScoringId
                                   where (comment.ExpertAddress.OrdinalEquals(expertAddress) && question.AreaType == areaType) ||
-                                        (areaType == AreaType.Analyst && scoring.IsScoredByAnalyst ||
-                                         areaType == AreaType.Hr && scoring.IsScoredByHr ||
-                                         areaType == AreaType.Lawyer && scoring.IsScoredByLawyer ||
-                                         areaType == AreaType.Tech && scoring.IsScoredByTechnical)
+                                        (areaScoring.AreaId == areaType && areaScoring.IsCompleted)
                                   select comment.ProjectId).Distinct();
 
             return await (from project in ReadContext.Projects
@@ -53,13 +51,9 @@ namespace SmartValley.Data.SQL.Repositories
         }
 
         public Task<Project> GetByExternalIdAsync(Guid externalId)
-        {
-            return ReadContext.Projects.FirstAsync(project => project.ExternalId == externalId);
-        }
+            => ReadContext.Projects.FirstAsync(project => project.ExternalId == externalId);
 
         public async Task<IReadOnlyCollection<Project>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds)
-        {
-            return await ReadContext.Projects.Where(project => externalIds.Contains(project.ExternalId)).ToArrayAsync();
-        }
+            => await ReadContext.Projects.Where(project => externalIds.Contains(project.ExternalId)).ToArrayAsync();
     }
 }

@@ -19,6 +19,8 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<Scoring> IReadOnlyDataContext.Scorings => Scorings.AsNoTracking();
 
+        IQueryable<AreaScoring> IReadOnlyDataContext.AreaScorings => AreaScorings.AsNoTracking();
+
         IQueryable<EstimateComment> IReadOnlyDataContext.EstimateComments => EstimateComments.AsNoTracking();
 
         IQueryable<TeamMember> IReadOnlyDataContext.TeamMembers => TeamMembers.AsNoTracking();
@@ -50,6 +52,8 @@ namespace SmartValley.Data.SQL.Core
         public DbSet<Project> Projects { get; set; }
 
         public DbSet<Scoring> Scorings { get; set; }
+
+        public DbSet<AreaScoring> AreaScorings { get; set; }
 
         public DbSet<EstimateComment> EstimateComments { get; set; }
 
@@ -115,18 +119,22 @@ namespace SmartValley.Data.SQL.Core
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Project>()
-                        .HasIndex(p => new { p.ExternalId })
+                        .HasIndex(p => new {p.ExternalId})
                         .IsUnique();
 
             modelBuilder.Entity<Scoring>()
-                        .HasIndex(p => new { p.ProjectId })
+                        .HasIndex(p => new {p.ProjectId})
                         .IsUnique();
 
-            modelBuilder.Entity<VotingProject>()
-                        .HasKey(v => new { v.ProjectId, v.VotingId });
+            modelBuilder.Entity<Scoring>()
+                        .HasMany(s => s.AreaScorings)
+                        .WithOne(a => a.Scoring);
 
             modelBuilder.Entity<VotingProject>()
-                        .HasIndex(v => new { v.ProjectId, v.VotingId });
+                        .HasKey(v => new {v.ProjectId, v.VotingId});
+
+            modelBuilder.Entity<VotingProject>()
+                        .HasIndex(v => new {v.ProjectId, v.VotingId});
 
             modelBuilder.Entity<User>()
                         .HasIndex(u => u.Email)
@@ -141,7 +149,7 @@ namespace SmartValley.Data.SQL.Core
                         .IsUnique();
 
             modelBuilder.Entity<UserRole>()
-                        .HasKey(u => new { u.UserId, u.RoleId });
+                        .HasKey(u => new {u.UserId, u.RoleId});
 
             modelBuilder.Entity<Area>()
                         .HasKey(r => r.Id);
@@ -155,13 +163,13 @@ namespace SmartValley.Data.SQL.Core
                         .IsUnique();
 
             modelBuilder.Entity<ExpertApplicationArea>()
-                        .HasKey(e => new { e.ExpertApplicationId, AreaType = e.AreaId });
+                        .HasKey(e => new {e.ExpertApplicationId, AreaType = e.AreaId});
 
             modelBuilder.Entity<Expert>()
                         .HasKey(r => r.UserId);
 
             modelBuilder.Entity<ExpertArea>()
-                        .HasKey(u => new { u.ExpertId, u.AreaId });
+                        .HasKey(u => new {u.ExpertId, u.AreaId});
 
             modelBuilder.Entity<Expert>()
                         .HasMany(c => c.ExpertAreas)
@@ -173,6 +181,11 @@ namespace SmartValley.Data.SQL.Core
                         .WithOne(r => r.User)
                         .HasForeignKey<Expert>(u => u.UserId);
 
+            modelBuilder.Entity<AreaScoring>()
+                        .HasKey(e => new {e.ScoringId, e.AreaId});
+
+            modelBuilder.Entity<AreaScoring>()
+                        .HasIndex(e => new {e.ScoringId, e.AreaId});
         }
     }
 }
