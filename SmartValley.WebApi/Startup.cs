@@ -32,7 +32,7 @@ using SmartValley.WebApi.Estimates;
 using SmartValley.WebApi.ExceptionHandler;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Projects;
-using SmartValley.WebApi.Scoring;
+using SmartValley.WebApi.Projects.Scoring;
 using SmartValley.WebApi.Users;
 using SmartValley.WebApi.Votings;
 using SmartValley.WebApi.WebApi;
@@ -139,6 +139,7 @@ namespace SmartValley.WebApi
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
+            services.AddTransient<IExpertRepository, ExpertRepository>();
             services.AddTransient<IExpertService, ExpertService>();
             services.AddTransient<IExpertApplicationRepository, ExpertApplicationRepository>();
         }

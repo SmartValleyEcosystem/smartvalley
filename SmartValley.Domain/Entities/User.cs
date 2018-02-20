@@ -17,6 +17,12 @@ namespace SmartValley.Domain.Entities
 
         public bool IsEmailConfirmed { get; set; }
 
+        public string Name { get; set; }
+
+        public string About { get; set; }
+
+        public Expert Expert { get; set; }
+
         public IEnumerable<UserRole> UserRoles { get; set; }
     }
 }

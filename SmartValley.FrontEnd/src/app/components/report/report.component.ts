@@ -110,7 +110,11 @@ export class ReportComponent implements AfterViewChecked, OnInit {
   }
 
   public async submitToScoringAsync(): Promise<void> {
-    const transactionHash = await this.startScoringAsync();
+    // TODO
+    const areas = [1, 2, 3, 4];
+    const areaExpertCounts = [3, 3, 3, 3];
+
+    const transactionHash = await this.startScoringAsync(areas, areaExpertCounts);
     if (transactionHash == null) {
       this.notificationsService.error(
         this.translateService.instant('Common.Error'),
@@ -123,19 +127,27 @@ export class ReportComponent implements AfterViewChecked, OnInit {
       transactionHash
     );
 
-    await this.scoringApiClient.startAsync(this.details.externalId, transactionHash);
+    await this.scoringApiClient.startAsync(this.details.externalId, areas, areaExpertCounts, transactionHash);
     await this.balanceService.updateBalanceAsync();
 
     transactionDialog.close();
     this.router.navigate([Paths.MyProjects]);
   }
 
-  private async startScoringAsync(): Promise<string> {
+  private async startScoringAsync(areas: Array<number>,
+                                  areaExpertCounts: Array<number>): Promise<string> {
     try {
       if (this.details.votingStatus === VotingStatus.Accepted) {
-        return await this.scoringManagerContractClient.startForFreeAsync(this.details.externalId, this.details.votingAddress);
+        return await this.scoringManagerContractClient.startForFreeAsync(
+          this.details.externalId,
+          this.details.votingAddress,
+          areas,
+          areaExpertCounts);
       } else {
-        return await this.scoringManagerContractClient.startAsync(this.details.externalId);
+        return await this.scoringManagerContractClient.startAsync(
+          this.details.externalId,
+          areas,
+          areaExpertCounts);
       }
     } catch (e) {
       return null;

@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SmartValley.Domain.Entities
 {
-    public class ExpertiseArea
+    public class Area
     {
-        public ExpertiseAreaType Id { get; set; }
+        public AreaType Id { get; set; }
 
         [Required]
         public string Name { get; set; }

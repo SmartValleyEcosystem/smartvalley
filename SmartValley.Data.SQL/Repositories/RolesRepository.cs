@@ -17,7 +17,7 @@ namespace SmartValley.Data.SQL.Repositories
 
         public Task<Role> GetByNameAsync(RoleType type)
         {
-            return _readContext.Roles.SingleOrDefaultAsync(i => i.Id == type);
+            return _readContext.Roles.FirstOrDefaultAsync(i => i.Id == type);
         }
     }
 }

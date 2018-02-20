@@ -1,51 +1,40 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using SmartValley.Application;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Experts.Requests;
 using System.Collections.Generic;
-using System;
-using System.IO;
+using System.Linq;
 using SmartValley.Application.AzureStorage;
+using SmartValley.Domain;
+using SmartValley.Domain.Exceptions;
 
 namespace SmartValley.WebApi.Experts
 {
-    class MockExpertStatus
-    {
-        public string Address { get; set; }
-        public bool IsConfirmed { get; set; }
-    }
-
     public class ExpertService : IExpertService
     {
-        private readonly EthereumClient _ethereumClient;
         private readonly IUserRepository _userRepository;
+        private readonly IExpertRepository _expertRepository;
         private readonly IExpertApplicationRepository _expertApplicationRepository;
         private readonly ExpertApplicationsStorageProvider _expertApplicationsStorageProvider;
-
-        // TODO 
-        List<MockExpertStatus> statuses = new List<MockExpertStatus>
-                                          {
-                                              new MockExpertStatus {Address = "0xb5662f4eD85C0a3eFc0704A592D487e9C50E3C67", IsConfirmed = false},
-                                              new MockExpertStatus {Address = "0xC2aC648a4d834576bEC79C94701560e677e21bd0", IsConfirmed = true}
-                                          };
+        private readonly IClock _clock;
 
         public ExpertService(EthereumClient ethereumClient,
                              IUserRepository userRepository,
                              IExpertApplicationRepository expertApplicationRepository,
-                             ExpertApplicationsStorageProvider expertApplicationsStorageProvider)
+                             IClock clock,
+                             ExpertApplicationsStorageProvider expertApplicationsStorageProvider,
+                             IExpertRepository expertRepository)
         {
-            _ethereumClient = ethereumClient;
             _userRepository = userRepository;
+            _expertRepository = expertRepository;
             _expertApplicationRepository = expertApplicationRepository;
             _expertApplicationsStorageProvider = expertApplicationsStorageProvider;
+            _clock = clock;
         }
 
-        public async Task CreateApplicationAsync(ExpertApplicationRequest request, AzureFile cv, AzureFile scan, AzureFile photo)
+        public async Task CreateApplicationAsync(CreateExpertApplicationRequest request, AzureFile cv, AzureFile scan, AzureFile photo)
         {
-            await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
-
             var user = await _userRepository.GetByAddressAsync(request.ApplicantAddress);
 
             var expertApplication = new ExpertApplication
@@ -62,8 +51,9 @@ namespace SmartValley.WebApi.Experts
                                         FacebookLink = request.FacebookLink,
                                         LinkedInLink = request.LinkedInLink,
                                         DocumentNumber = request.DocumentNumber,
-                                        DocumentType = request.DocumentType.ToDomain()
-                                    };
+                                        DocumentType = request.DocumentType.ToDomain(),
+                                        ApplyDate = _clock.UtcNow
+            };
 
             await _expertApplicationRepository.AddAsync(expertApplication, request.Areas);
 
@@ -84,19 +74,61 @@ namespace SmartValley.WebApi.Experts
             await _expertApplicationRepository.UpdateWholeAsync(expertApplication);
         }
 
+        public Task<ExpertApplicationDetails> GetApplicationByIdAsync(long id)
+        {
+            return _expertApplicationRepository.GetDetailsByIdAsync(id);
+        }
+
+        public Task<IReadOnlyCollection<ExpertApplication>> GetPendingApplicationsAsync()
+        {
+            return _expertApplicationRepository.GetAllByStatusAsync(ExpertApplicationStatus.Pending);
+        }
+
         public Task<bool> IsAppliedAsync(string address)
             => _expertApplicationRepository.IsAppliedAsync(address);
-
-        // TODO 
-        public Task<bool> IsConfirmedAsync(string address)
+        
+        public async Task<bool> IsConfirmedAsync(string address)
         {
-            return Task.Run(() =>
-                            {
-                                var status = statuses.FirstOrDefault(i => i.Address.Equals(address, StringComparison.OrdinalIgnoreCase));
-                                if (status == null)
-                                    return false;
-                                return status.IsConfirmed;
-                            });
+            var existExpert = await _expertRepository.GetByAddressAsync(address);
+            return existExpert != null;
         }
+
+        public async Task AddAsync(string address)
+        {
+            await _userRepository.AddRoleAsync(address, RoleType.Expert);
+            var user = await _userRepository.GetByAddressAsync(address);
+            await _expertRepository.AddAsync(new Expert { IsAvailable = true, UserId = user.Id });
+        }
+
+        public async Task DeleteAsync(string address)
+        {
+            await _userRepository.RemoveRoleAsync(address, RoleType.Expert);
+            var user = await _userRepository.GetByAddressAsync(address);
+            await _expertRepository.RemoveAsync(new Expert { IsAvailable = true, UserId = user.Id });
+        }
+
+        public async Task AcceptApplicationAsync(long id, IReadOnlyCollection<int> areas)
+        {
+            var application = await _expertApplicationRepository.GetDetailsByIdAsync(id);
+            if (application.ExpertApplication.Status != ExpertApplicationStatus.Pending)
+                throw new AppErrorException(ErrorCode.ExpertApplicationAlreadyProcessed);
+
+            await _expertApplicationRepository.SetAcceptedAsync(application, areas.ToList());
+        }
+
+        public async Task RejectApplicationAsync(long id)
+        {
+            var application = await _expertApplicationRepository.GetDetailsByIdAsync(id);
+            if (application.ExpertApplication.Status != ExpertApplicationStatus.Pending)
+                throw new AppErrorException(ErrorCode.ExpertApplicationAlreadyProcessed);
+
+            await _expertApplicationRepository.SetRejectedAsync(application);
+        }
+
+        public Task<IReadOnlyCollection<ExpertDetails>> GetAllExpertsDetailsAsync()
+            => _expertRepository.GetAllDetailsAsync();
+
+        public Task<bool> IsExpertAsync(string address)
+            => _userRepository.HasRoleAsync(address, RoleType.Expert);
     }
 }

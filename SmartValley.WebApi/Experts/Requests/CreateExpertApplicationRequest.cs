@@ -5,7 +5,7 @@ using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Experts.Requests
 {
-    public class ExpertApplicationRequest
+    public class CreateExpertApplicationRequest
     {
         [Required]
         public string TransactionHash { get; set; }
@@ -53,5 +53,6 @@ namespace SmartValley.WebApi.Experts.Requests
         [MaxLength(30)]
         public string DocumentNumber { get; set; }
 
-        public IReadOnlyCollection<int> Areas { get; set; }}
+        public IReadOnlyCollection<int> Areas { get; set; }
+    }
 }

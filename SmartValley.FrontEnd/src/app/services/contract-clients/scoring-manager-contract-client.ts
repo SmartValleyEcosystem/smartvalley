@@ -27,23 +27,31 @@ export class ScoringManagerContractClient implements ContractClient {
     this.address = scoringManagerContract.address;
   }
 
-  public startAsync(projectId: string): Promise<string> {
+  public startAsync(projectId: string,
+                    areas: Array<number>,
+                    areaExpertCounts: Array<number>): Promise<string> {
     const scoringManagerContract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.userContext.getCurrentUser().account;
 
     return scoringManagerContract.start(
       projectId.replace(/-/g, ''),
+      areas,
+      areaExpertCounts,
       {from: fromAddress});
   }
 
   public startForFreeAsync(projectId: string,
-                           sprintAddress: string): Promise<string> {
+                           sprintAddress: string,
+                           areas: Array<number>,
+                           areaExpertCounts: Array<number>): Promise<string> {
     const scoringManagerContract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.userContext.getCurrentUser().account;
 
     return scoringManagerContract.startForFree(
       projectId.replace(/-/g, ''),
       sprintAddress,
+      areas,
+      areaExpertCounts,
       {from: fromAddress});
   }
 

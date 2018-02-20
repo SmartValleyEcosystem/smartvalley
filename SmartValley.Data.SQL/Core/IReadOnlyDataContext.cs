@@ -9,6 +9,7 @@ namespace SmartValley.Data.SQL.Core
         IQueryable<Application> Applications { get; }
         IQueryable<Project> Projects { get; }
         IQueryable<Scoring> Scorings { get; }
+        IQueryable<AreaScoring> AreaScorings { get; }
         IQueryable<EstimateComment> EstimateComments { get; }
         IQueryable<TeamMember> TeamMembers { get; }
         IQueryable<Question> Questions { get; }
@@ -17,7 +18,9 @@ namespace SmartValley.Data.SQL.Core
         IQueryable<User> Users { get; }
         IQueryable<Role> Roles { get; }
         IQueryable<UserRole> UserRoles { get; }
-        IQueryable<ExpertiseArea> ExpertiseAreas { get; }
+        IQueryable<Area> Areas { get; }
+        IQueryable<Expert> Experts { get; }
+        IQueryable<ExpertArea> ExpertAreas { get; }
         IQueryable<ExpertApplication> ExpertApplications { get; }
         IQueryable<ExpertApplicationArea> ExpertApplicationAreas { get; }
 

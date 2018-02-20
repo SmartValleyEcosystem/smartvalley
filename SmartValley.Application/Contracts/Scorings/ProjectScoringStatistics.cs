@@ -1,15 +1,19 @@
-﻿namespace SmartValley.Application.Contracts.Scorings
+﻿using System.Collections.Generic;
+using System.Linq;
+using SmartValley.Domain.Entities;
+
+namespace SmartValley.Application.Contracts.Scorings
 {
     public class ProjectScoringStatistics
     {
-        public int? Score { get; set; }
+        public ProjectScoringStatistics(int? score, IReadOnlyCollection<AreaType> scoredAreas)
+        {
+            Score = score;
+            ScoredAreas = scoredAreas;
+        }
 
-        public bool IsScoredByHr { get; set; }
-
-        public bool IsScoredByAnalyst { get; set; }
-
-        public bool IsScoredByTech { get; set; }
-
-        public bool IsScoredByLawyer { get; set; }
+        public int? Score { get; }
+        
+        public IReadOnlyCollection<AreaType> ScoredAreas { get; }
     }
 }

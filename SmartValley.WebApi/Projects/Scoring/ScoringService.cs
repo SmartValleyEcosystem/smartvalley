@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using SmartValley.Application;
 using SmartValley.Application.Contracts.Scorings;
-using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
+using SmartValley.WebApi.Experts;
+using SmartValley.WebApi.Projects.Scoring.Requests;
 
-namespace SmartValley.WebApi.Scoring
+namespace SmartValley.WebApi.Projects.Scoring
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ScoringService : IScoringService
@@ -15,24 +16,19 @@ namespace SmartValley.WebApi.Scoring
         private readonly IProjectRepository _projectRepository;
         private readonly IScoringRepository _scoringRepository;
         private readonly IScoringManagerContractClient _scoringManagerContractClient;
-        private readonly EthereumClient _ethereumClient;
 
         public ScoringService(
             IProjectRepository projectRepository,
             IScoringRepository scoringRepository,
-            IScoringManagerContractClient scoringManagerContractClient,
-            EthereumClient ethereumClient)
+            IScoringManagerContractClient scoringManagerContractClient)
         {
             _projectRepository = projectRepository;
             _scoringRepository = scoringRepository;
             _scoringManagerContractClient = scoringManagerContractClient;
-            _ethereumClient = ethereumClient;
         }
 
-        public async Task StartAsync(Guid projectExternalId, string transactionHash)
+        public async Task StartAsync(Guid projectExternalId, IReadOnlyCollection<AreaRequest> areas)
         {
-            await _ethereumClient.WaitForConfirmationAsync(transactionHash);
-
             var project = await _projectRepository.GetByExternalIdAsync(projectExternalId);
             var contractAddress = await _scoringManagerContractClient.GetScoringAddressAsync(projectExternalId);
             var scoring = new Domain.Entities.Scoring
@@ -42,6 +38,19 @@ namespace SmartValley.WebApi.Scoring
                           };
 
             await _scoringRepository.AddAsync(scoring);
+
+            var areaScorings = areas.Select(a => CreateAreaScoring(a, scoring.Id)).ToArray();
+            await _scoringRepository.AddAreasAsync(areaScorings);
+        }
+
+        private static AreaScoring CreateAreaScoring(AreaRequest areaRequest, long scoringId)
+        {
+            return new AreaScoring
+                   {
+                       AreaId = areaRequest.Area.ToDomain(),
+                       ScoringId = scoringId,
+                       ExpertsCount = areaRequest.ExpertsCount
+                   };
         }
     }
 }

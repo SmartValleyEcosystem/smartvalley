@@ -21,6 +21,8 @@ namespace SmartValley.Domain.Entities
 
         public DateTime BirthDate { get; set; }
 
+        public DateTimeOffset ApplyDate { get; set; }
+
         public Sex Sex { get; set; }
 
         [Required]
@@ -49,15 +51,17 @@ namespace SmartValley.Domain.Entities
 
         [MaxLength(30)]
         public string DocumentNumber { get; set; }
-      
+
         [MaxLength(50)]
         public string ScanName { get; set; }
-      
+
         [MaxLength(50)]
         public string PhotoName { get; set; }
-    
+
         [MaxLength(50)]
         public string CvName { get; set; }
+
+        public ExpertApplicationStatus Status { get; set; }
 
         public User Applicant { get; set; }
     }

@@ -1,4 +1,7 @@
-﻿using Nethereum.ABI.FunctionEncoding.Attributes;
+﻿using System.Collections.Generic;
+using Nethereum.ABI.FunctionEncoding.Attributes;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable CollectionNeverUpdated.Global
 
 namespace SmartValley.Application.Contracts.Scorings.Dto
 {
@@ -11,16 +14,10 @@ namespace SmartValley.Application.Contracts.Scorings.Dto
         [Parameter("uint256", "_score", 2)]
         public int Score { get; set; }
 
-        [Parameter("bool", "_isScoredByHr", 3)]
-        public bool IsScoredByHr { get; set; }
+        [Parameter("uint256[]", "_areas", 3)]
+        public List<int> Areas { get; set; }
 
-        [Parameter("bool", "_isScoredByAnalyst", 4)]
-        public bool IsScoredByAnalyst { get; set; }
-
-        [Parameter("bool", "_isScoredByTech", 5)]
-        public bool IsScoredByTech { get; set; }
-
-        [Parameter("bool", "_isScoredByLawyer", 6)]
-        public bool IsScoredByLawyer { get; set; }
+        [Parameter("bool[]", "_areaResults", 4)]
+        public List<bool> AreaResults { get; set; }
     }
 }
