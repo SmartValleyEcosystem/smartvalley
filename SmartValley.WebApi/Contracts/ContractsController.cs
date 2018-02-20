@@ -16,6 +16,7 @@ namespace SmartValley.WebApi.Contracts
         }
 
         [Route("scoringManager")]
+        [HttpGet]
         public ContractResponse GetScoringManagerContract()
         {
             var contractOptions = _nethereumOptions.ScoringManagerContract;
@@ -27,6 +28,7 @@ namespace SmartValley.WebApi.Contracts
         }
 
         [Route("expertsRegistry")]
+        [HttpGet]
         public ContractResponse GetExpertsRegistryContract()
         {
             var contractOptions = _nethereumOptions.ExpertsRegistryContract;
@@ -38,6 +40,7 @@ namespace SmartValley.WebApi.Contracts
         }
 
         [Route("adminRegistry")]
+        [HttpGet]
         public ContractResponse GetAdminRegistryContract()
         {
             var contractOptions = _nethereumOptions.AdminRegistryContract;
@@ -49,6 +52,7 @@ namespace SmartValley.WebApi.Contracts
         }
 
         [Route("votingManager")]
+        [HttpGet]
         public ContractResponse GetVotingManagerContract()
         {
             var contractOptions = _nethereumOptions.VotingManagerContract;
@@ -60,6 +64,7 @@ namespace SmartValley.WebApi.Contracts
         }
 
         [Route("voting")]
+        [HttpGet]
         public ContractResponse GetVotingContract()
         {
             var contractOptions = _nethereumOptions.VotingSprintContract;
@@ -70,6 +75,7 @@ namespace SmartValley.WebApi.Contracts
         }
 
         [Route("token")]
+        [HttpGet]
         public ContractResponse GetTokenContract()
         {
             var contractOptions = _nethereumOptions.TokenContract;
@@ -81,6 +87,7 @@ namespace SmartValley.WebApi.Contracts
         }
 
         [Route("minter")]
+        [HttpGet]
         public ContractResponse GetMinterContract()
         {
             var contractOptions = _nethereumOptions.MinterContract;

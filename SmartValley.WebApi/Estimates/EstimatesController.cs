@@ -29,6 +29,7 @@ namespace SmartValley.WebApi.Estimates
         }
 
         [Authorize]
+        [HttpPost]
         public async Task<IActionResult> Post([FromBody] SubmitEstimatesRequest request)
         {
             await _estimationService.SubmitEstimatesAsync(request);
