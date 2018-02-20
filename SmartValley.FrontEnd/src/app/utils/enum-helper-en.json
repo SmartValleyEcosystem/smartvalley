@@ -1,0 +1,10 @@
+{
+  "EnumHelper": {
+    "Passport": "Passport",
+    "DriverLicense": "Driver license",
+    "Id": "Id",
+    "Other": "Other",
+    "Male": "Male",
+    "Female": "Female"
+  }
+}

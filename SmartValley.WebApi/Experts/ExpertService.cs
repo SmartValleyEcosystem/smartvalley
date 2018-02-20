@@ -53,7 +53,7 @@ namespace SmartValley.WebApi.Experts
                                         DocumentNumber = request.DocumentNumber,
                                         DocumentType = request.DocumentType.ToDomain(),
                                         ApplyDate = _clock.UtcNow
-            };
+                                    };
 
             await _expertApplicationRepository.AddAsync(expertApplication, request.Areas);
 
@@ -86,7 +86,7 @@ namespace SmartValley.WebApi.Experts
 
         public Task<bool> IsAppliedAsync(string address)
             => _expertApplicationRepository.IsAppliedAsync(address);
-        
+
         public async Task<bool> IsConfirmedAsync(string address)
         {
             var existExpert = await _expertRepository.GetByAddressAsync(address);
@@ -97,14 +97,14 @@ namespace SmartValley.WebApi.Experts
         {
             await _userRepository.AddRoleAsync(address, RoleType.Expert);
             var user = await _userRepository.GetByAddressAsync(address);
-            await _expertRepository.AddAsync(new Expert { IsAvailable = true, UserId = user.Id });
+            await _expertRepository.AddAsync(new Expert {IsAvailable = true, UserId = user.Id});
         }
 
         public async Task DeleteAsync(string address)
         {
             await _userRepository.RemoveRoleAsync(address, RoleType.Expert);
             var user = await _userRepository.GetByAddressAsync(address);
-            await _expertRepository.RemoveAsync(new Expert { IsAvailable = true, UserId = user.Id });
+            await _expertRepository.RemoveAsync(new Expert {IsAvailable = true, UserId = user.Id});
         }
 
         public async Task AcceptApplicationAsync(long id, IReadOnlyCollection<int> areas)
@@ -130,5 +130,8 @@ namespace SmartValley.WebApi.Experts
 
         public Task<bool> IsExpertAsync(string address)
             => _userRepository.HasRoleAsync(address, RoleType.Expert);
+
+        public Task<IReadOnlyCollection<Area>> GetAreasAsync()
+            => _expertRepository.GetAreasAsync();
     }
 }

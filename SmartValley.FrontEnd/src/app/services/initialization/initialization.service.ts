@@ -10,6 +10,7 @@ import {VotingContractClient} from '../contract-clients/voting-contract-client';
 import {AuthenticationService} from '../authentication/authentication-service';
 import {AdminContractClient} from '../contract-clients/admin-contract-client';
 import {ExpertContractClient} from '../contract-clients/expert-contract-client';
+import {AreaService} from '../expert/area.service';
 
 @Injectable()
 export class InitializationService {
@@ -25,7 +26,8 @@ export class InitializationService {
               private votingManagerContractClient: VotingManagerContractClient,
               private votingContractClient: VotingContractClient,
               private balanceService: BalanceService,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              private areaService: AreaService) {
   }
 
   public async initializeAppAsync(): Promise<void> {
@@ -48,7 +50,8 @@ export class InitializationService {
       this.votingManagerContractClient.initializeAsync(),
       this.votingContractClient.initializeAsync(),
       this.balanceService.updateBalanceAsync(),
-      this.expertContractClient.initializeAsync()
+      this.expertContractClient.initializeAsync(),
+      this.areaService.initializeAsync()
     ]);
   }
 

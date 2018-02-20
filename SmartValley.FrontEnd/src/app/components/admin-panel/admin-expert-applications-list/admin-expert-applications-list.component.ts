@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ExpertApiClient} from '../../../api/expert/expert-api-client';
 import * as moment from 'moment';
 import {AdminExpertApplicationItem} from './admin-expert-application-item';
+import {Router} from '@angular/router';
+import {Paths} from '../../../paths';
 
 @Component({
   selector: 'app-admin-expert-applications-list',
@@ -10,7 +12,8 @@ import {AdminExpertApplicationItem} from './admin-expert-application-item';
 })
 export class AdminExpertApplicationsListComponent implements OnInit {
 
-  constructor(private expertApiClient: ExpertApiClient) {
+  constructor(private expertApiClient: ExpertApiClient,
+              private router: Router) {
   }
 
   public applications: AdminExpertApplicationItem[];
@@ -29,7 +32,7 @@ export class AdminExpertApplicationsListComponent implements OnInit {
     }
   }
 
-  public viewForm() {
-
+  public viewForm(id: number) {
+    this.router.navigate([Paths.AdminExpertApplication + '/' + id]);
   }
 }

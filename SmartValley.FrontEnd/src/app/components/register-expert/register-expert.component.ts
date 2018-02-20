@@ -15,6 +15,8 @@ import {SelectItem} from 'primeng/api';
 import {UserContext} from '../../services/authentication/user-context';
 import * as moment from 'moment';
 import {NotificationsService} from 'angular2-notifications';
+import {AreaService} from '../../services/expert/area.service';
+import {EnumHelper} from '../../utils/enum-helper';
 
 const countries = <Country[]>require('../../../assets/countryList.json');
 
@@ -49,7 +51,9 @@ export class RegisterExpertComponent implements OnInit {
               private userContext: UserContext,
               private notificationsService: NotificationsService,
               private translateService: TranslateService,
-              private expertContactClient: ExpertContractClient) {
+              private expertContactClient: ExpertContractClient,
+              private areaService: AreaService,
+              private enumHelper: EnumHelper) {
   }
 
   public ngOnInit(): void {
@@ -68,24 +72,13 @@ export class RegisterExpertComponent implements OnInit {
   }
 
   private createForm() {
-    this.sex = [
-      {label: 'Male', value: SexEnum.Male},
-      {label: 'Female', value: SexEnum.Female}
-    ];
+    this.sex = this.enumHelper.getSexes();
+    this.documentTypes = this.enumHelper.getDocumentTypes();
 
-    this.documentTypes = [
-      {label: 'Passport', value: DocumentEnum.Passport},
-      {label: 'DriverLicense', value: DocumentEnum.DriverLicense},
-      {label: 'Id', value: DocumentEnum.Id},
-      {label: 'Other', value: DocumentEnum.Other}
-    ];
-
-    this.areas = [
-      {label: 'TechnicalExpert', value: ExpertiseArea.TechnicalExpert},
-      {label: 'Lawyer', value: ExpertiseArea.Lawyer},
-      {label: 'HR', value: ExpertiseArea.HR},
-      {label: 'Analyst', value: ExpertiseArea.Analyst}
-    ];
+    this.areas = this.areaService.areas.map(a => <SelectItem> {
+      label: a.name,
+      value: +a.areaType
+    });
 
     this.countries = [];
 

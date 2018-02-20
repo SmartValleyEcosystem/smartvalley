@@ -19,6 +19,7 @@
         EmailSendingFailed,
         InvalidFileUploaded,
         AddressAlreadyExists,
-        ExpertApplicationAlreadyProcessed
+        ExpertApplicationAlreadyProcessed,
+        ShouldCheckAreasToAccept
     }
 }

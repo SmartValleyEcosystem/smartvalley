@@ -29,6 +29,7 @@ import {ExpertComponent} from './components/expert/expert.component';
 import {BecomeExpertGuard} from './services/guards/become-expert.guard';
 import {RegisterExpertGuard} from './services/guards/register-expert.guard';
 import {RegisterExpertComponent} from './components/register-expert/register-expert.component';
+import {AdminExpertApplicationComponent} from './components/admin-panel/admin-expert-application/admin-expert-application.component';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -48,10 +49,12 @@ const appRoutes: Routes = [
         component: AdminPanelComponent,
         canActivate: [ShouldBeAdminGuard]
       },
+      {path: Paths.AdminExpertApplication + '/:id', pathMatch: 'full', component: AdminExpertApplicationComponent},
       {
         path: Paths.Voting + '/:id',
         pathMatch: 'full',
-        component: VotingCardComponent
+        component: VotingCardComponent,
+        canActivate: [ShouldBeAdminGuard]
       },
       {
         path: Paths.CompletedVoting + '/:address',

@@ -14,6 +14,7 @@ export function multiTranslateLoaderFactory() {
     'components/voting/voting.component',
     'components/admin-panel/admin-panel.component',
     'components/admin-panel/admin-expert-applications-list/admin-expert-applications-list.component',
+    'components/admin-panel/admin-expert-application/admin-expert-application.component',
     'components/become-expert/become-expert.component',
     'components/scoring/scoring.component',
     'components/register-expert/register-expert.component',

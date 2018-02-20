@@ -30,5 +30,7 @@ namespace SmartValley.WebApi.Experts
         Task<IReadOnlyCollection<ExpertDetails>> GetAllExpertsDetailsAsync();
 
         Task<bool> IsExpertAsync(string address);
+
+        Task<IReadOnlyCollection<Area>> GetAreasAsync();
     }
 }

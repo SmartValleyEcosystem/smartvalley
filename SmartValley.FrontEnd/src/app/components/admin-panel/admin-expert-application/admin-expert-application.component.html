@@ -1,0 +1,119 @@
+<div class="container" *ngIf="application">
+  <div class="row mx-auto">
+    <div class="col-6 sm-title">
+      <h2 class="">{{ 'AdminPanel.Title' | translate }}</h2>
+    </div>
+  </div>
+  <div style="display: inline-block; margin-right: 2em; color:white;margin-bottom: 1em;" *ngFor="let area of areas">
+    <p-checkbox [(ngModel)]="application.areaTypes" [(value)]="area.value" inputId="{{area.label}}"
+                disabled="true"></p-checkbox>
+    <span style="vertical-align: middle; margin-left: 1em;">{{area.label}}</span>
+  </div>
+  <div class="sw-card sw-content" style="padding: 2em;">
+    <div class="row">
+      <h3 class="col-10">{{ 'Application.BasicInformation' | translate }}</h3>
+    </div>
+    <div class="row">
+      <span class="col-2">{{ 'RegisterExpert.FirstName' | translate }}</span>
+      <span class=" col-4"> {{application.firstName}}</span>
+      <span class="col-2">{{ 'RegisterExpert.SecondName' | translate }}</span>
+      <span class=" col-4"> {{application.lastName}}</span>
+    </div>
+    <div class="row">
+      <span class="col-2">{{ 'RegisterExpert.BirthDate' | translate }}</span>
+      <span class=" col-4">{{application.birthDate | formatDate}}</span>
+      <span class="col-2">{{ 'RegisterExpert.Sex' | translate }}</span>
+      <span class=" col-4">{{application.sex}}</span>
+    </div>
+    <div class="row">
+      <span class="col-2">{{ 'RegisterExpert.Country' | translate }}</span>
+      <span class=" col-4"> {{application.country}}</span>
+      <span class="col-2">{{ 'RegisterExpert.City' | translate }}</span>
+      <span class=" col-4">{{application.city}}</span>
+    </div>
+    <div class="row">
+      <span class="col-2">{{ 'RegisterExpert.LinkedinLink' | translate }}</span>
+      <span class=" col-4">{{application.linkedInLink | dashIfEmpty}}</span>
+    </div>
+    <div class="row">
+      <span class="col-2">{{ 'RegisterExpert.FacebookLink' | translate }}</span>
+      <span class=" col-4"> {{application.facebookLink| dashIfEmpty}}</span>
+    </div>
+    <div class="row">
+      <span class="col-3">CV:</span>
+      <span class=" col-4"> {{application.cvName}}</span>
+    </div>
+  </div>
+  <div class="sw-card sw-content is-active" style="padding: 2em;">
+    <div class="row row-title">
+      <h3 class="col-10">{{ 'RegisterExpert.MotivationLetter' | translate }}</h3>
+    </div>
+    <div class="row-content">
+      <div class="row">
+        <span class="col-4">{{ 'RegisterExpert.Description' | translate }}</span>
+        <span class=" col-6"> {{application.description}}</span>
+      </div>
+      <div class="row">
+        <span class="col-4">{{ 'RegisterExpert.Why' | translate }}</span>
+        <span class=" col-6"> {{application.why}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="sw-card sw-content is-active" style="padding: 2em;">
+    <div class="row row-title">
+      <h3 class="col-10">{{ 'RegisterExpert.KYC' | translate }}</h3>
+    </div>
+    <div class="row-content">
+      <div class="row">
+        <span class="col-3">{{ 'RegisterExpert.DocumentType' | translate }}</span>
+        <span class=" col-4"> {{application.documentType}}</span>
+      </div>
+      <div class="row">
+        <span class="col-3">{{ 'RegisterExpert.DocumentNumber' | translate }}</span>
+        <span class=" col-4"> {{application.documentNumber}}</span>
+      </div>
+      <div class="row">
+        <span class="col-3">{{ 'RegisterExpert.UploadDocument' | translate }}:</span>
+        <span class=" col-4"> {{application.scanName}}</span>
+      </div>
+      <div class="row">
+        <span class="col-3">{{ 'RegisterExpert.UploadPhoto' | translate }}:</span>
+        <span class=" col-4"> {{application.photoName}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-5 action-panel">
+      <div class="row">
+        <div class="col-6">
+          <button (click)="accept()" class="btn accept-btn col-8">
+            {{ 'AdminExpertApplication.Accept' | translate }}
+          </button>
+        </div>
+        <div class="col-6">
+          <div *ngFor="let area of application.areas">
+            <div style="display: inline-block; color:white;">
+              <p-checkbox [(ngModel)]="areasToAccept" [(value)]="area.areaType"
+                          inputId="{{area.name}}"></p-checkbox>
+              <span style="vertical-align: middle; margin-left: 1em; color: black;">{{area.name}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-5 action-panel" style="margin-left: 16.6%">
+      <div class="row">
+        <div class="col-6">
+          <button (click)="reject()" class="col-4 btn  reject-btn col-8">
+            {{ 'AdminExpertApplication.Reject' | translate }}
+          </button>
+        </div>
+        <div class="col-6">
+         <textarea class="form-control col-8" style="height: 7em;" [(ngModel)]="rejectReason">
+
+         </textarea>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -134,7 +134,6 @@ export class AuthenticationService {
             signature: signature,
             signedText: AuthenticationService.MESSAGE_TO_SIGN
           });
-          console.log(response);
           await this.dialogService.showConfirmEmailDialogAsync(response.email);
       }
     }

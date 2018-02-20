@@ -19,5 +19,7 @@ namespace SmartValley.Domain.Interfaces
         Task<Expert> GetByEmailAsync(string email);
 
         Task<int> UpdateWholeAsync(Expert expert);
+
+        Task<IReadOnlyCollection<Area>> GetAreasAsync();
     }
 }

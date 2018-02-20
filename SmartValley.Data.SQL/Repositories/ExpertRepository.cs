@@ -50,6 +50,9 @@ namespace SmartValley.Data.SQL.Repositories
             return _editContext.SaveAsync();
         }
 
+        public async Task<IReadOnlyCollection<Area>> GetAreasAsync()
+            => await _readContext.Areas.ToArrayAsync();
+
         public Task AddAsync(Expert expert)
         {
             _editContext.Experts.AddAsync(expert);
@@ -63,16 +66,16 @@ namespace SmartValley.Data.SQL.Repositories
         {
             var expertAreas = await (from expertArea in _readContext.ExpertAreas
                                      join area in _readContext.Areas on expertArea.AreaId equals area.Id
-                                     select new { expertArea.ExpertId, area }).ToArrayAsync();
+                                     select new {expertArea.ExpertId, area}).ToArrayAsync();
 
             var expertUsers = await (from expert in _readContext.Experts
                                      join user in _readContext.Users on expert.UserId equals user.Id
-                                     select new { expert, user }).ToArrayAsync();
+                                     select new {expert, user}).ToArrayAsync();
 
             var lookUpAreas = expertAreas.ToLookup(k => k.ExpertId, v => v.area);
 
             return expertUsers.Select(expertUser => new ExpertDetails
-            {
+                                                    {
                                                         About = expertUser.user.About,
                                                         Address = expertUser.user.Address,
                                                         Email = expertUser.user.Email,

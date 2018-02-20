@@ -31,6 +31,16 @@ namespace SmartValley.WebApi.Experts
             _ethereumClient = ethereumClient;
         }
 
+        [HttpGet, Route("areas")]
+        public async Task<CollectionResponse<AreaResponse>> GetAreasAsync()
+        {
+            var areas = await _expertService.GetAreasAsync();
+            return new CollectionResponse<AreaResponse>
+                   {
+                       Items = areas.Select(AreaResponse.Create).ToArray()
+                   };
+        }
+
         [HttpGet, Route("{address}/status")]
         public async Task<GetExpertStatusResponse> GetExpertStatusAsync(string address)
         {
@@ -52,28 +62,31 @@ namespace SmartValley.WebApi.Experts
 
         [HttpGet("applications/{id}")]
         [Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<ExpertApplicationResponse> GetApplicationByIdAsync(ExpertApplicationIdRequest request)
+        public async Task<ExpertApplicationResponse> GetApplicationByIdAsync(long id)
         {
-            var applicationDetails = await _expertService.GetApplicationByIdAsync(request.Id);
+            var applicationDetails = await _expertService.GetApplicationByIdAsync(id);
             return ExpertApplicationResponse.Create(applicationDetails);
         }
 
         [HttpPost("applications/{id}/accept")]
         [Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<EmptyResponse> AcceptAsync(ExpertApplicationIdRequest idRequest, [FromBody] AcceptApplicationRequest request)
+        public async Task<EmptyResponse> AcceptAsync(long id, [FromBody] AcceptApplicationRequest request)
         {
-            await _expertService.AcceptApplicationAsync(idRequest.Id, request.Areas);
+            if (request.Areas.Count == 0)
+                throw new AppErrorException(ErrorCode.ShouldCheckAreasToAccept);
+
+            await _expertService.AcceptApplicationAsync(id, request.Areas);
             return new EmptyResponse();
         }
 
         [HttpPost("applications/{id}/reject")]
         [Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<EmptyResponse> RejectAsync(ExpertApplicationIdRequest request)
+        public async Task<EmptyResponse> RejectAsync(long id, [FromBody] RejectApplicationRequest request)
         {
-            await _expertService.RejectApplicationAsync(request.Id);
+            await _expertService.RejectApplicationAsync(id);
             return new EmptyResponse();
         }
-       
+
         [HttpPost]
         [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<IActionResult> CreateExpertAsync([FromBody] ExpertRequest request)

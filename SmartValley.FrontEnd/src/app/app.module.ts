@@ -102,6 +102,9 @@ import {BecomeExpertComponent} from './components/become-expert/become-expert.co
 import {ExpertComponent} from './components/expert/expert.component';
 import {RegisterExpertComponent} from './components/register-expert/register-expert.component';
 import {AdminExpertApplicationsListComponent} from './components/admin-panel/admin-expert-applications-list/admin-expert-applications-list.component';
+import {AdminExpertApplicationComponent} from './components/admin-panel/admin-expert-application/admin-expert-application.component';
+import {AreaService} from './services/expert/area.service';
+import {EnumHelper} from './utils/enum-helper';
 
 @NgModule({
   declarations: [
@@ -145,7 +148,8 @@ import {AdminExpertApplicationsListComponent} from './components/admin-panel/adm
     RegisterExpertComponent,
     ConfirmEmailModalComponent,
     ConfirmEmailComponent,
-    AdminExpertApplicationsListComponent
+    AdminExpertApplicationsListComponent,
+    AdminExpertApplicationComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -243,7 +247,9 @@ import {AdminExpertApplicationsListComponent} from './components/admin-panel/adm
     CompositeGuard,
     ExpertGuard,
     BecomeExpertGuard,
-    RegisterExpertGuard
+    RegisterExpertGuard,
+    AreaService,
+    EnumHelper
   ],
   bootstrap: [AppComponent]
 })
