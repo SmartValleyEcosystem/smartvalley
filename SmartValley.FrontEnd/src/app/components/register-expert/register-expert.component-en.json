@@ -1,7 +1,7 @@
 {
   "RegisterExpert": {
     "Title": "Apply to become an expert",
-    "ExpertTypeTitle": "Choose which type/s of expert you want to become",
+    "ExpertTypeTitle": "Choose which type/s of expert you want to become:",
     "Upload": "Upload",
     "UploadCv": "Please upload your CV",
     "BirthDate": "Birth date",
@@ -21,6 +21,8 @@
     "UploadDocument": "Upload document",
     "UploadPhoto": "Photo of your, holding the document",
     "CategoryNotSelectedError": "Category not selected",
-    "Dialog": "Your application is being processed. Please wait for completion of transaction."
+    "Dialog": "Your application is being processed. Please wait for completion of transaction.",
+    "NamePlaceholder": "John",
+    "SecondNamePlaceholder": "Smith"
   }
 }

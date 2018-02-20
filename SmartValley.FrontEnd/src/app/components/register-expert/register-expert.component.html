@@ -1,7 +1,8 @@
 <div class="container">
   <div class="row mx-auto">
-    <div class="col-7 sm-title">
-      <h2 class="">{{ 'RegisterExpert.Title' | translate }}</h2>
+    <div class="col-12 sm-title">
+      <h1 class="">{{ 'RegisterExpert.Title' | translate }}</h1>
+      <h3 style="margin-bottom: 0">{{ 'RegisterExpert.ExpertTypeTitle' | translate }}</h3>
     </div>
   </div>
   <div style="display: inline-block; margin-right: 2em; color:white;margin-bottom: 1em;" *ngFor="let area of areas">
@@ -11,15 +12,15 @@
   <form [formGroup]="registryForm" novalidate>
     <div class="sw-card sw-content" style="padding: 2em;">
       <div class="row">
-        <h3 class="col-10 offset-1">{{ 'Application.BasicInformation' | translate }}</h3>
+        <h3 class="col-10">{{ 'Application.BasicInformation' | translate }}</h3>
       </div>
       <div #name class="row">
         <span class="col-2">{{ 'RegisterExpert.FirstName' | translate }}</span>
         <input class="form-control col-4" formControlName="firstName"
-               placeholder="{{ 'Application.NamePlaceholder' | translate }}" #required>
+               placeholder="{{ 'RegisterExpert.NamePlaceholder' | translate }}" #required>
         <span class="col-2">{{ 'RegisterExpert.SecondName' | translate }}</span>
         <input class="form-control col-4" formControlName="secondName"
-               placeholder="{{ 'Application.NamePlaceholder' | translate }}" #required>
+               placeholder="{{ 'RegisterExpert.SecondNamePlaceholder' | translate }}" #required>
       </div>
       <div #birthDate class="row">
         <span class="col-2">{{ 'RegisterExpert.BirthDate' | translate }}</span>
@@ -31,18 +32,17 @@
         <span class="col-2">{{ 'RegisterExpert.Country' | translate }}</span>
         <p-dropdown class="col-4 padding-zero" [options]="countries" formControlName="country"></p-dropdown>
         <span class="col-2">{{ 'RegisterExpert.City' | translate }}</span>
-        <input class="form-control col-4" formControlName="city"
-               placeholder="{{ 'Application.NamePlaceholder' | translate }}">
+        <input class="form-control col-4" formControlName="city">
       </div>
       <div class="row">
         <span class="col-2">{{ 'RegisterExpert.LinkedinLink' | translate }}</span>
         <input class="form-control col-10" formControlName="linkedin"
-               placeholder="{{ 'Application.NamePlaceholder' | translate }}">
+               placeholder="https://">
       </div>
       <div class="row">
         <span class="col-2">{{ 'RegisterExpert.FacebookLink' | translate }}</span>
         <input class="form-control col-10" formControlName="facebook"
-               placeholder="{{ 'Application.NamePlaceholder' | translate }}" #required>
+               placeholder="https://" #required>
       </div>
       <div class="row">
         <span class="col-3">{{ 'RegisterExpert.UploadCv' | translate }}:</span>
@@ -57,19 +57,23 @@
       <button (click)="showNext()" class="col-3 btn btn-primary">{{ 'Application.Next' | translate }}
       </button>
     </div>
-    <div [ngClass]="isLetterShow ? 'is-active' : ''" class="sw-card sw-content">
-      <div class="row row-title">
-        <h3 class="col-10 offset-1">{{ 'RegisterExpert.MotivationLetter' | translate }}</h3>
+    <div [ngClass]="isLetterShow ? 'is-active' : ''" class="sw-card sw-content" style="padding: 2em;">
+      <div class="row">
+        <h3 class="col-10">{{ 'RegisterExpert.MotivationLetter' | translate }}</h3>
       </div>
       <div class="row-content">
         <div class="row">
-          <span class="col-2 offset-1">{{ 'RegisterExpert.Description' | translate }}</span>
-          <textarea class="form-control col-8" formControlName="description"
-                    placeholder="{{ 'Application.DescriptionPlaceholder' | translate }}" #required>
+          <span class="col-12">{{ 'RegisterExpert.Description' | translate }}</span>
+        </div>
+        <div class="row">
+          <textarea class="form-control col-10 offset-2" formControlName="description" #required>
         </textarea>
-          <span class="col-2 offset-1">{{ 'RegisterExpert.Why' | translate }}</span>
-          <textarea class="form-control col-8" formControlName="why"
-                    placeholder="{{ 'Application.DescriptionPlaceholder' | translate }}" #required>
+        </div>
+        <div class="row">
+          <span class="col-12">{{ 'RegisterExpert.Why' | translate }}</span>
+        </div>
+        <div>
+          <textarea class="form-control col-10 offset-2" formControlName="why" #required>
         </textarea>
         </div>
       </div>
@@ -80,7 +84,7 @@
     </div>
     <div [ngClass]="isKYCShow ? 'is-active' : ''" class="sw-card sw-content" style="padding: 2em;">
       <div class="row">
-        <h3 class="col-10 offset-1">{{ 'RegisterExpert.KYC' | translate }}</h3>
+        <h3 class="col-10">{{ 'RegisterExpert.KYC' | translate }}</h3>
       </div>
       <div class="row-content">
         <div class="row">
@@ -90,8 +94,7 @@
         </div>
         <div class="row">
           <span class="col-3">{{ 'RegisterExpert.DocumentNumber' | translate }}</span>
-          <input class="form-control col-9" formControlName="number"
-                 placeholder="{{ 'Application.NamePlaceholder' | translate }}" #required>
+          <input class="form-control col-9" formControlName="number" #required>
         </div>
         <div class="row">
           <span class="col-3">{{ 'RegisterExpert.UploadDocument' | translate }}:</span>
