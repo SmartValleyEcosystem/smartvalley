@@ -26,6 +26,7 @@ import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {NotificationsService} from 'angular2-notifications';
 import * as moment from 'moment';
 import {UserContext} from '../../services/authentication/user-context';
+import {AreaService} from '../../services/expert/area.service';
 
 @Component({
   selector: 'app-report',
@@ -70,7 +71,8 @@ export class ReportComponent implements AfterViewChecked, OnInit {
               private scoringApiClient: ScoringApiClient,
               private notificationsService: NotificationsService,
               private userContext: UserContext,
-              private scoringManagerContractClient: ScoringManagerContractClient) {
+              private scoringManagerContractClient: ScoringManagerContractClient,
+              private areaService: AreaService) {
   }
 
   public async ngOnInit() {
@@ -110,9 +112,8 @@ export class ReportComponent implements AfterViewChecked, OnInit {
   }
 
   public async submitToScoringAsync(): Promise<void> {
-    // TODO
-    const areas = [1, 2, 3, 4];
-    const areaExpertCounts = [3, 3, 3, 3];
+    const areas = this.areaService.areas.map(a => a.areaType);
+    const areaExpertCounts = await this.dialogService.showExpertsCountSelectionDialogAsync(areas);
 
     const transactionHash = await this.startScoringAsync(areas, areaExpertCounts);
     if (transactionHash == null) {

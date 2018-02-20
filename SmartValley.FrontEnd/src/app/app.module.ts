@@ -102,6 +102,7 @@ import {BecomeExpertComponent} from './components/become-expert/become-expert.co
 import {ExpertComponent} from './components/expert/expert.component';
 import {RegisterExpertComponent} from './components/register-expert/register-expert.component';
 import {AdminExpertApplicationsListComponent} from './components/admin-panel/admin-expert-applications-list/admin-expert-applications-list.component';
+import {ExpertsCountSelectionModalComponent} from './components/common/experts-count-selection-modal/experts-count-selection-modal.component';
 import {AdminExpertApplicationComponent} from './components/admin-panel/admin-expert-application/admin-expert-application.component';
 import {AreaService} from './services/expert/area.service';
 import {EnumHelper} from './utils/enum-helper';
@@ -149,6 +150,7 @@ import {EnumHelper} from './utils/enum-helper';
     ConfirmEmailModalComponent,
     ConfirmEmailComponent,
     AdminExpertApplicationsListComponent,
+    ExpertsCountSelectionModalComponent,
     AdminExpertApplicationComponent
   ],
   entryComponents: [
@@ -162,7 +164,8 @@ import {EnumHelper} from './utils/enum-helper';
     VoteModalComponent,
     RegisterModalComponent,
     AddAdminModalComponent,
-    ConfirmEmailModalComponent
+    ConfirmEmailModalComponent,
+    ExpertsCountSelectionModalComponent
   ],
   imports: [
     FileUploadModule,

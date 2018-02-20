@@ -19,6 +19,10 @@ import {RegisterModelData} from '../components/common/register-modal/register-mo
 import {RegisterModalComponent} from '../components/common/register-modal/register-modal.component';
 import {AddAdminModalComponent} from '../components/common/add-admin-modal/add-admin-modal.component';
 import {ConfirmEmailModalComponent} from '../components/common/confirm-email/confirm-email-modal.component';
+import {ExpertsCountSelectionModalComponent} from '../components/common/experts-count-selection-modal/experts-count-selection-modal.component';
+import {ExpertsCountSelectionModalData} from '../components/common/experts-count-selection-modal/experts-count-selection-modal-data';
+import {ExpertiseArea} from '../api/scoring/expertise-area.enum';
+import {AreaExpertsSettings} from '../components/common/experts-count-selection-modal/area-experts-settings';
 
 @Injectable()
 export class DialogService {
@@ -59,6 +63,15 @@ export class DialogService {
     return this.openModal(AddAdminModalComponent, {})
       .afterClosed()
       .toPromise<string>();
+  }
+
+  public showExpertsCountSelectionDialogAsync(areas: Array<ExpertiseArea>): Promise<Array<number>> {
+    const data = <ExpertsCountSelectionModalData>{
+      settings: areas.map(a => <AreaExpertsSettings>{area: a, expertsCount: 3})
+    };
+    return this.openModal(ExpertsCountSelectionModalComponent, data, true)
+      .afterClosed()
+      .toPromise<Array<number>>();
   }
 
   public showVoteDialogAsync(projectName: string,
