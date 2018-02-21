@@ -3,6 +3,7 @@ import {Paths} from '../../paths';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import {ExpertApiClient} from '../../api/expert/expert-api-client';
 import {UserContext} from '../authentication/user-context';
+import {ExpertApplicationStatus} from '../expert/expert-application-status.enum';
 
 @Injectable()
 export class ExpertGuard implements CanActivate {
@@ -14,14 +15,11 @@ export class ExpertGuard implements CanActivate {
   public async canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     const address = this.userContext.getCurrentUser().account;
     const expertStatusResponse = await this.expertApiClient.getExpertStatusAsync(address);
-    if (!expertStatusResponse.isApplied) {
-      this.router.navigate([Paths.BecomeExpert]);
-      return false;
-    } else if (!expertStatusResponse.isConfirmed) {
-      this.router.navigate([Paths.RegisterExpert]);
-      return false;
-    } else {
+    if (expertStatusResponse.status === ExpertApplicationStatus.Accepted) {
       return true;
+    } else {
+      this.router.navigate([Paths.ExpertStatus]);
+      return false;
     }
   }
 }

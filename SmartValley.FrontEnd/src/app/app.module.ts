@@ -64,7 +64,7 @@ import {AccountComponent} from './components/account/account.component';
 import {MatIconModule} from '@angular/material/icon';
 import {CompositeGuard} from './services/guards/composite.guard';
 import {ExpertGuard} from './services/guards/expert-guard';
-import {BecomeExpertGuard} from './services/guards/become-expert.guard';
+import {BecomeExpertGuard} from './services/guards/expert-status.guard';
 import {RegisterExpertGuard} from './services/guards/register-expert.guard';
 import {GuardFactory} from './services/guards/guard-factory';
 import {ShouldHaveSvtGuard} from './services/balance/should-have-svt.guard';
@@ -98,7 +98,7 @@ import {ConfirmEmailModalComponent} from './components/common/confirm-email/conf
 import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
 import {ExpertContractClient} from './services/contract-clients/expert-contract-client';
 import {CalendarModule} from 'primeng/calendar';
-import {BecomeExpertComponent} from './components/become-expert/become-expert.component';
+import {ExpertStatusComponent} from './components/expert-status/expert-status.component';
 import {ExpertComponent} from './components/expert/expert.component';
 import {RegisterExpertComponent} from './components/register-expert/register-expert.component';
 import {AdminExpertApplicationsListComponent} from './components/admin-panel/admin-expert-applications-list/admin-expert-applications-list.component';
@@ -144,7 +144,7 @@ import {EnumHelper} from './utils/enum-helper';
     FormatDatePipe,
     AdminPanelComponent,
     AddAdminModalComponent,
-    BecomeExpertComponent,
+    ExpertStatusComponent,
     ExpertComponent,
     RegisterExpertComponent,
     ConfirmEmailModalComponent,

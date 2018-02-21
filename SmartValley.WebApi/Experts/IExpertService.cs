@@ -16,10 +16,6 @@ namespace SmartValley.WebApi.Experts
 
         Task<IReadOnlyCollection<ExpertApplication>> GetPendingApplicationsAsync();
 
-        Task<bool> IsAppliedAsync(string address);
-
-        Task<bool> IsConfirmedAsync(string address);
-
         Task AcceptApplicationAsync(long id, IReadOnlyCollection<int> areas);
 
         Task RejectApplicationAsync(long id);
@@ -35,5 +31,7 @@ namespace SmartValley.WebApi.Experts
         Task<bool> IsExpertAsync(string address);
 
         Task<IReadOnlyCollection<Area>> GetAreasAsync();
+
+        Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(string address);
     }
 }
