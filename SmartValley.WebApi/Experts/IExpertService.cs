@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using SmartValley.Application.AzureStorage;
 using SmartValley.Domain;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.WebApi.Experts.Requests;
 
@@ -23,11 +24,13 @@ namespace SmartValley.WebApi.Experts
 
         Task RejectApplicationAsync(long id);
 
-        Task AddAsync(string address);
+        Task AddAsync(ExpertRequest request);
+
+        Task UpdateAsync(ExpertRequest request);
 
         Task DeleteAsync(string address);
 
-        Task<IReadOnlyCollection<ExpertDetails>> GetAllExpertsDetailsAsync();
+        Task<PagingList<ExpertDetails>> GetAllExpertsDetailsAsync(int page, int pageSize);
 
         Task<bool> IsExpertAsync(string address);
 

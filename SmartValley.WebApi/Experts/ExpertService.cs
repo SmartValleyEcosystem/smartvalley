@@ -6,7 +6,9 @@ using SmartValley.WebApi.Experts.Requests;
 using System.Collections.Generic;
 using System.Linq;
 using SmartValley.Application.AzureStorage;
+using SmartValley.Data.SQL.Core;
 using SmartValley.Domain;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Exceptions;
 
 namespace SmartValley.WebApi.Experts
@@ -93,11 +95,41 @@ namespace SmartValley.WebApi.Experts
             return existExpert != null;
         }
 
-        public async Task AddAsync(string address)
+        public async Task AddAsync(ExpertRequest request)
         {
-            await _userRepository.AddRoleAsync(address, RoleType.Expert);
-            var user = await _userRepository.GetByAddressAsync(address);
-            await _expertRepository.AddAsync(new Expert {IsAvailable = true, UserId = user.Id});
+            var user = await _userRepository.GetByAddressAsync(request.Address);
+            if (user == null)
+                throw new AppErrorException(ErrorCode.UserNotFound);
+
+            user.About = request.About;
+            user.Name = request.Name;
+            user.Email = request.Email;
+
+            await _userRepository.UpdateWholeAsync(user);
+            await _userRepository.AddRoleAsync(request.Address, RoleType.Expert);
+            await _expertRepository.AddAsync(new Expert
+                                             {
+                                                 IsAvailable = true,
+                                                 UserId = user.Id
+                                             }, request.Areas);
+        }
+
+        public async Task UpdateAsync(ExpertRequest request)
+        {
+            var user = await _userRepository.GetByAddressAsync(request.Address);
+            if (user == null)
+                throw new AppErrorException(ErrorCode.UserNotFound);
+
+            user.About = request.About;
+            user.Name = request.Name;
+            user.Email = request.Email;
+
+            await _userRepository.UpdateWholeAsync(user);
+            await _expertRepository.UpdateAsync(new Expert
+                                                {
+                                                    IsAvailable = request.IsAvailable,
+                                                    UserId = user.Id
+                                                }, request.Areas);
         }
 
         public async Task DeleteAsync(string address)
@@ -113,6 +145,27 @@ namespace SmartValley.WebApi.Experts
             if (application.ExpertApplication.Status != ExpertApplicationStatus.Pending)
                 throw new AppErrorException(ErrorCode.ExpertApplicationAlreadyProcessed);
 
+            var user = await _userRepository.GetByIdAsync(application.ExpertApplication.ApplicantId);
+            if (user == null)
+                throw new AppErrorException(ErrorCode.UserNotFound);
+
+            user.Name = $"{application.ExpertApplication.LastName} {application.ExpertApplication.FirstName}";
+            await _userRepository.UpdateWholeAsync(user);
+
+            var expert = await _expertRepository.GetByAddressAsync(user.Address);
+            if (expert != null)
+            {
+                await _expertRepository.UpdateAsync(expert, areas);
+            }
+            else
+            {
+                await _expertRepository.AddAsync(new Expert
+                                                 {
+                                                     UserId = user.Id,
+                                                     IsAvailable = true
+                                                 }, areas);
+            }
+
             await _expertApplicationRepository.SetAcceptedAsync(application, areas.ToList());
         }
 
@@ -125,8 +178,8 @@ namespace SmartValley.WebApi.Experts
             await _expertApplicationRepository.SetRejectedAsync(application);
         }
 
-        public Task<IReadOnlyCollection<ExpertDetails>> GetAllExpertsDetailsAsync()
-            => _expertRepository.GetAllDetailsAsync();
+        public Task<PagingList<ExpertDetails>> GetAllExpertsDetailsAsync(int page, int pageSize)
+            => _expertRepository.GetAllDetailsAsync(page, pageSize);
 
         public Task<bool> IsExpertAsync(string address)
             => _userRepository.HasRoleAsync(address, RoleType.Expert);

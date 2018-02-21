@@ -1,4 +1,6 @@
-﻿namespace SmartValley.WebApi.Experts.Requests
+﻿using System.Collections.Generic;
+
+namespace SmartValley.WebApi.Experts.Requests
 {
     public class ExpertRequest
     {
@@ -13,5 +15,7 @@
         public string About { get; set; }
 
         public bool IsAvailable { get; set; }
+
+        public IReadOnlyCollection<int> Areas { get; set; }
     }
 }

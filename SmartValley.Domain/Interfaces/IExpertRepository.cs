@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain.Interfaces
 {
     public interface IExpertRepository
     {
-        Task AddAsync(Expert expert);
-
         Task<IReadOnlyCollection<Expert>> GetAllAsync();
 
-        Task<IReadOnlyCollection<ExpertDetails>> GetAllDetailsAsync();
+        Task<PagingList<ExpertDetails>> GetAllDetailsAsync(int page, int pageSize);
 
         Task<int> RemoveAsync(Expert expert);
 
@@ -21,5 +20,9 @@ namespace SmartValley.Domain.Interfaces
         Task<int> UpdateWholeAsync(Expert expert);
 
         Task<IReadOnlyCollection<Area>> GetAreasAsync();
+
+        Task AddAsync(Expert expert, IReadOnlyCollection<int> areas);
+
+        Task UpdateAsync(Expert expert, IReadOnlyCollection<int> areas);
     }
 }
