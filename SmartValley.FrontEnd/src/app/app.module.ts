@@ -64,7 +64,6 @@ import {AccountComponent} from './components/account/account.component';
 import {MatIconModule} from '@angular/material/icon';
 import {CompositeGuard} from './services/guards/composite.guard';
 import {ExpertGuard} from './services/guards/expert-guard';
-import {BecomeExpertGuard} from './services/guards/expert-status.guard';
 import {RegisterExpertGuard} from './services/guards/register-expert.guard';
 import {GuardFactory} from './services/guards/guard-factory';
 import {ShouldHaveSvtGuard} from './services/balance/should-have-svt.guard';
@@ -106,6 +105,7 @@ import {ExpertsCountSelectionModalComponent} from './components/common/experts-c
 import {AdminExpertApplicationComponent} from './components/admin-panel/admin-expert-application/admin-expert-application.component';
 import {AreaService} from './services/expert/area.service';
 import {EnumHelper} from './utils/enum-helper';
+import {ExpertStatusGuard} from './services/guards/expert-status.guard';
 
 @NgModule({
   declarations: [
@@ -249,7 +249,7 @@ import {EnumHelper} from './utils/enum-helper';
     GuardFactory,
     CompositeGuard,
     ExpertGuard,
-    BecomeExpertGuard,
+    ExpertStatusGuard,
     RegisterExpertGuard,
     AreaService,
     EnumHelper
