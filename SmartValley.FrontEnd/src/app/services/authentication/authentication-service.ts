@@ -151,6 +151,7 @@ export class AuthenticationService {
         signedText: messageToSign,
         signature: signature
       });
+      await this.userContext.saveSignatureForAccount(account, signature);
       return true;
     } catch (e) {
       if (e.error.errorCode === ErrorCode.EmailSendingFailed) {
