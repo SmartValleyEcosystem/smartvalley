@@ -36,16 +36,16 @@ namespace SmartValley.WebApi.Experts
         {
             var areas = await _expertService.GetAreasAsync();
             return new CollectionResponse<AreaResponse>
-            {
-                Items = areas.Select(AreaResponse.Create).ToArray()
-            };
+                   {
+                       Items = areas.Select(AreaResponse.Create).ToArray()
+                   };
         }
 
         [HttpGet, Route("{address}/status")]
         public async Task<GetExpertStatusResponse> GetExpertStatusAsync(string address)
         {
             var status = await _expertService.GetExpertApplicationStatusAsync(address);
-            return new GetExpertStatusResponse { Status = status };
+            return new GetExpertStatusResponse {Status = status};
         }
 
         [HttpGet("applications")]
@@ -54,9 +54,9 @@ namespace SmartValley.WebApi.Experts
         {
             var applications = await _expertService.GetPendingApplicationsAsync();
             return new CollectionResponse<PendingExpertApplicationsResponse>
-            {
-                Items = applications.Select(PendingExpertApplicationsResponse.Create).ToArray()
-            };
+                   {
+                       Items = applications.Select(PendingExpertApplicationsResponse.Create).ToArray()
+                   };
         }
 
         [HttpGet("applications/{id}")]
@@ -97,9 +97,11 @@ namespace SmartValley.WebApi.Experts
 
         [HttpPut]
         [Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<IActionResult> UpdateExpertAsync([FromBody] ExpertRequest request)
+        public async Task<IActionResult> UpdateExpertAsync([FromBody] UpdateExpertRequest request)
         {
-            await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
+            if (!string.IsNullOrEmpty(request.TransactionHash))
+                await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
+
             await _expertService.UpdateAsync(request);
             return NoContent();
         }
@@ -119,18 +121,18 @@ namespace SmartValley.WebApi.Experts
         {
             var experts = await _expertService.GetAllExpertsDetailsAsync(request.Page, request.PageSize);
             return new CollectionResponse<ExpertResponse>
-            {
-                Items = experts.Select(i => new ExpertResponse
-                {
-                    Address = i.Address,
-                    Email = i.Email,
-                    About = i.About,
-                    IsAvailable = i.IsAvailable,
-                    Name = i.Name,
-                    Areas = i.Areas.Select(j => new AreaResponse { Id = j.Id.FromDomain(), Name = j.Name }).ToArray()
-                }).ToArray(),
-                TotalCount = experts.TotalCount
-            };
+                   {
+                       Items = experts.Select(i => new ExpertResponse
+                                                   {
+                                                       Address = i.Address,
+                                                       Email = i.Email,
+                                                       About = i.About,
+                                                       IsAvailable = i.IsAvailable,
+                                                       Name = i.Name,
+                                                       Areas = i.Areas.Select(j => new AreaResponse {Id = j.Id.FromDomain(), Name = j.Name}).ToArray()
+                                                   }).ToArray(),
+                       TotalCount = experts.TotalCount
+                   };
         }
 
         [HttpPost, DisableRequestSizeLimit, Route("applications")]

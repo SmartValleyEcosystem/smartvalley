@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SmartValley.WebApi.Experts.Requests
 {
-    public class ExpertRequest
+    public class UpdateExpertRequest
     {
-        [Required]
         public string TransactionHash { get; set; }
 
         [Required]

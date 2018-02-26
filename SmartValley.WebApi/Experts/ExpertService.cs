@@ -108,7 +108,7 @@ namespace SmartValley.WebApi.Experts
             }, request.Areas);
         }
 
-        public async Task UpdateAsync(ExpertRequest request)
+        public async Task UpdateAsync(UpdateExpertRequest request)
         {
             var user = await _userRepository.GetByAddressAsync(request.Address);
             if (user == null)
