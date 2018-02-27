@@ -94,11 +94,11 @@ export class RegisterExpertComponent implements OnInit {
       why: ['', [Validators.required, Validators.maxLength(1500)]],
       description: ['', [Validators.required, Validators.maxLength(1500)]],
       country: [this.countries[0].value],
-      city: ['', Validators.maxLength(100)],
+      city: ['', Validators.maxLength(50)],
       selectedSex: [SexEnum.Male],
       selectedDocumentType: [DocumentEnum.Passport],
       birthDate: ['', Validators.maxLength(100)],
-      number: ['', Validators.maxLength(100)],
+      number: ['', Validators.maxLength(30)],
       document: ['', Validators.maxLength(100)],
       photo: ['', Validators.maxLength(100)]
     });
