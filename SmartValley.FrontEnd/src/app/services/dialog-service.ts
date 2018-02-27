@@ -22,7 +22,7 @@ import {AddAdminModalComponent} from '../components/common/add-admin-modal/add-a
 import {ConfirmEmailModalComponent} from '../components/common/confirm-email/confirm-email-modal.component';
 import {ExpertsCountSelectionModalComponent} from '../components/common/experts-count-selection-modal/experts-count-selection-modal.component';
 import {ExpertsCountSelectionModalData} from '../components/common/experts-count-selection-modal/experts-count-selection-modal-data';
-import {ExpertiseArea} from '../api/scoring/expertise-area.enum';
+import {AreaType} from '../api/scoring/area-type.enum';
 import {AreaExpertsSettings} from '../components/common/experts-count-selection-modal/area-experts-settings';
 import {SetExpertsModalComponent} from '../components/common/set-experts-modal/set-experts-modal.component';
 
@@ -73,7 +73,7 @@ export class DialogService {
       .toPromise<string>();
   }
 
-  public showExpertsCountSelectionDialogAsync(areas: Array<ExpertiseArea>): Promise<Array<number>> {
+  public showExpertsCountSelectionDialogAsync(areas: Array<AreaType>): Promise<Array<number>> {
     const data = <ExpertsCountSelectionModalData>{
       settings: areas.map(a => <AreaExpertsSettings>{area: a, expertsCount: 3})
     };

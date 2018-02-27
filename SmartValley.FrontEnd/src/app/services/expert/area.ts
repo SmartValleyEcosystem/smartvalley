@@ -1,6 +1,6 @@
-import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
+import {AreaType} from '../../api/scoring/area-type.enum';
 
 export interface Area {
-  areaType: ExpertiseArea;
+  areaType: AreaType;
   name: string;
 }

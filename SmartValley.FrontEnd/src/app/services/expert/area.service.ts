@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ExpertApiClient} from '../../api/expert/expert-api-client';
 import {Area} from './area';
+import {AreaType} from '../../api/scoring/area-type.enum';
 
 @Injectable()
 export class AreaService {
@@ -18,5 +19,9 @@ export class AreaService {
         areaType: a.id
       };
     });
+  }
+
+  public getAreaTypeByIndex(index: number): AreaType {
+    return this.areas[index].areaType;
   }
 }

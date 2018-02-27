@@ -97,7 +97,7 @@ namespace SmartValley.WebApi.Projects
         [Route("forscoring")]
         public async Task<CollectionResponse<ProjectResponse>> GetForScoringAsync([FromQuery] GetProjectsForScoringRequest request)
         {
-            var projects = await _projectService.GetForScoringAsync(request.ExpertiseArea.ToDomain(), User.Identity.Name);
+            var projects = await _projectService.GetForScoringAsync(request.AreaType.ToDomain(), User.Identity.Name);
             return new CollectionResponse<ProjectResponse>
             {
                 Items = projects.Select(ProjectResponse.Create).ToArray()

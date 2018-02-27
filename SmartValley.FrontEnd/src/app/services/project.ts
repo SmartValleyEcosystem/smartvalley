@@ -1,4 +1,4 @@
-import {ExpertiseArea} from '../api/scoring/expertise-area.enum';
+import {AreaType} from '../api/scoring/area-type.enum';
 import {VotingStatus} from './voting-status.enum';
 
 export class Project {
@@ -9,7 +9,7 @@ export class Project {
   area: string;
   description: string;
   score: number;
-  expertiseArea: ExpertiseArea;
+  areaType: AreaType;
   address: string;
   author: string;
   isVotedByMe: boolean;

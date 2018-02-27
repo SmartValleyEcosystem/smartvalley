@@ -6,8 +6,7 @@ import {CollectionResponse} from '../collection-response';
 import {ProjectDetailsResponse} from './project-details-response';
 import {GetScoringProjectsRequest} from './get-scoring-projects-request';
 import {MyProjectsItemResponse} from './my-projects-item-response';
-import {ScoringProjectResponse} from './scoring-project-response';
-import {ExpertiseArea} from '../scoring/expertise-area.enum';
+import {AreaType} from '../scoring/area-type.enum';
 
 @Injectable()
 export class ProjectApiClient extends BaseApiClient {

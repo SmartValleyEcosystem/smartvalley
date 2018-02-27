@@ -3,7 +3,7 @@ import {Web3Service} from '../web3-service';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {ContractClient} from './contract-client';
 import {UserContext} from '../authentication/user-context';
-import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
+import {AreaType} from '../../api/scoring/area-type.enum';
 
 @Injectable()
 export class ExpertContractClient implements ContractClient {
@@ -22,7 +22,7 @@ export class ExpertContractClient implements ContractClient {
     this.address = tokenContract.address;
   }
 
-  public applyAsync(expertiseAreas: Array<ExpertiseArea>): Promise<string> {
+  public applyAsync(expertiseAreas: Array<AreaType>): Promise<string> {
     const contract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.userContext.getCurrentUser().account;
 

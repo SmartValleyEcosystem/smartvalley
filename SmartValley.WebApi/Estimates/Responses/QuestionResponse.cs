@@ -8,7 +8,7 @@ namespace SmartValley.WebApi.Estimates.Responses
     {
         public long Id { get; set; }
 
-        public AreaType ExpertiseArea { get; set; }
+        public AreaType AreaType { get; set; }
 
         public int MinScore { get; set; }
 
@@ -19,7 +19,7 @@ namespace SmartValley.WebApi.Estimates.Responses
             return new QuestionResponse
                    {
                        Id = question.Id,
-                       ExpertiseArea = question.AreaType.FromDomain(),
+                       AreaType = question.AreaType.FromDomain(),
                        MaxScore = question.MaxScore,
                        MinScore = question.MinScore
                    };

@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {BaseApiClient} from '../base-api-client';
 import {SubmitEstimatesRequest} from './submit-estimates-request';
 import {CollectionResponse} from '../collection-response';
-import {ExpertiseArea} from '../scoring/expertise-area.enum';
+import {AreaType} from '../scoring/area-type.enum';
 import {GetEstimatesResponse} from './get-estimates-response';
 import {QuestionResponse} from './question-response';
 
@@ -17,10 +17,10 @@ export class EstimatesApiClient extends BaseApiClient {
     await this.http.post(this.baseApiUrl + '/estimates', request).toPromise();
   }
 
-  async getAsync(projectId: number, expertiseArea: ExpertiseArea): Promise<GetEstimatesResponse> {
+  async getAsync(projectId: number, areaType: AreaType): Promise<GetEstimatesResponse> {
     const parameters = new HttpParams()
       .append('projectId', projectId.toString())
-      .append('expertiseArea', expertiseArea.toString());
+      .append('areaType', areaType.toString());
 
     return this.http
       .get<GetEstimatesResponse>(this.baseApiUrl + '/estimates', {params: parameters})

@@ -1,12 +1,13 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
-import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
+import {AreaType} from '../../api/scoring/area-type.enum';
 import {isNullOrUndefined} from 'util';
 import {Subscription} from 'rxjs/Subscription';
 import {ProjectCardType} from '../../services/project-card-type';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ProjectCardData} from '../common/project-card/project-card-data';
 import {UserContext} from '../../services/authentication/user-context';
+import {AreaService} from '../../services/expert/area.service';
 
 @Component({
   selector: 'app-scoring',
@@ -23,7 +24,8 @@ export class ScoringComponent implements OnDestroy, OnInit {
   private accountChangedSubscription: Subscription;
 
   constructor(private projectApiClient: ProjectApiClient,
-              private userContext: UserContext) {
+              private userContext: UserContext,
+              private areaService: AreaService) {
     this.accountChangedSubscription = this.userContext.userContextChanged.subscribe(
       () => this.reloadProjectsForScoringAsync());
   }
@@ -44,21 +46,8 @@ export class ScoringComponent implements OnDestroy, OnInit {
   }
 
   private async reloadProjectsForScoringAsync(): Promise<void> {
-    const expertiseArea = this.getExpertiseAreaByIndex(this.selectedTabIndex);
-    const response = await this.projectApiClient.getForScoringAsync(expertiseArea);
-    this.projects = response.items.map(p => ProjectCardData.fromProjectResponse(p, expertiseArea));
-  }
-
-  private getExpertiseAreaByIndex(index: number): ExpertiseArea {
-    switch (index) {
-      case 1 :
-        return ExpertiseArea.Lawyer;
-      case 2 :
-        return ExpertiseArea.Analyst;
-      case 3 :
-        return ExpertiseArea.TechnicalExpert;
-      default:
-        return ExpertiseArea.HR;
-    }
+    const areaType = this.areaService.getAreaTypeByIndex(this.selectedTabIndex);
+    const response = await this.projectApiClient.getForScoringAsync(areaType);
+    this.projects = response.items.map(p => ProjectCardData.fromProjectResponse(p, areaType));
   }
 }
