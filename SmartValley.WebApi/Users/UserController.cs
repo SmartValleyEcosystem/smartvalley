@@ -45,5 +45,21 @@ namespace SmartValley.WebApi.Users
                        Email = email
                    };
         }
+
+        [Authorize]
+        [HttpPut("{address}")]
+        public async Task<EmptyResponse> UpdateUserAsync([FromBody] UpdateUserRequest request)
+        {
+            await _userService.UpdateAsync(User.Identity.Name, request.Name, request.About);
+            return new EmptyResponse();
+        }
+
+        [Authorize]
+        [HttpPut("{address}/email")]
+        public async Task<EmptyResponse> ChangeEmailAsync([FromBody] ChangeEmailRequest request)
+        {
+            await _authenticationService.ChangeEmailAsync(User.Identity.Name, request.Email);
+            return new EmptyResponse();
+        }
     }
 }

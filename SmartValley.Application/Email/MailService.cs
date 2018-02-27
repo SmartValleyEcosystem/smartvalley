@@ -36,15 +36,15 @@ namespace SmartValley.Application.Email
             await _mailSender.SendAsync(email, "Email confirmation", template);
         }
 
-        public async Task SendUpdateEmailAsync(string email, string newEmail)
+        public async Task SendUpdateEmailAsync(string address, string email)
         {
-            var token = _mailTokenService.EncryptToken(newEmail);
+            var token = _mailTokenService.EncryptEmailConfirmationToken(address, email);
             var template = await _templateProvider.GetEmailTemplateAsync();
 
             //TODO https://rassvet-capital.atlassian.net/browse/ILT-605
             template = template
                        .Replace("{SUBJECT}", "Password change")
-                       .Replace("{BODY}", $"Click on the button below to change your email {email} to {newEmail}")
+                       .Replace("{BODY}", $"Click on the button below to change your email ")
                        .Replace("{BUTTON}", "Update email")
                        .Replace("{BUTTONHREF}", _siteUrls.GetChangeEmail(token));
             await _mailSender.SendAsync(email, "Email changing", template);

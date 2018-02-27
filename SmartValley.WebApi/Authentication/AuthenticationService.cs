@@ -24,6 +24,7 @@ namespace SmartValley.WebApi.Authentication
         private readonly MailService _mailService;
         private readonly MailTokenService _mailTokenService;
         private readonly IMemoryCache _memoryCache;
+        private double emailCooldownMinutes;
         private const string MemoryCacheEmailKey = "emailsended";
 
         public AuthenticationService(EthereumMessageSigner ethereumMessageSigner,
@@ -99,17 +100,18 @@ namespace SmartValley.WebApi.Authentication
             return (_clock.UtcNow - issueDate).TotalMinutes >= AuthenticationOptions.LifetimeInMinutes;
         }
 
-        public async Task ConfirmEmailAsync(string address, string token)
+        public async Task ConfirmEmailAsync(string address, string token, string email)
         {
             var user = await _userRepository.GetByAddressAsync(address);
-            if (user == null || user.IsEmailConfirmed || !_mailTokenService.CheckEmailConfirmationToken(address, user.Email, token))
+            if (user == null || user.IsEmailConfirmed || !_mailTokenService.CheckEmailConfirmationToken(address, email, token))
                 throw new AppErrorException(ErrorCode.IncorrectData);
 
             user.IsEmailConfirmed = true;
+            user.Email = email;
             await _userRepository.UpdateWholeAsync(user);
         }
 
-        public async Task ReSendEmailAsync(string address)
+        public async Task ResendEmailAsync(string address)
         {
             if (_memoryCache.TryGetValue(MemoryCacheEmailKey + address, out bool isEmailSended))
                 throw new AppErrorException(ErrorCode.EmailAlreadySent);
@@ -120,6 +122,23 @@ namespace SmartValley.WebApi.Authentication
 
             var cacheEntryOptions = new MemoryCacheEntryOptions()
                 .SetSlidingExpiration(TimeSpan.FromMinutes(1));
+
+            _memoryCache.Set(MemoryCacheEmailKey + address, true, cacheEntryOptions);
+        }
+
+        public async Task ChangeEmailAsync(string address, string email)
+        {
+            if (_memoryCache.TryGetValue(MemoryCacheEmailKey + address, out bool isEmailSent))
+                throw new AppErrorException(ErrorCode.EmailAlreadySent);
+
+            var user = await _userRepository.GetByEmailAsync(email);
+            if (user != null)
+                throw new AppErrorException(ErrorCode.EmailAlreadyExists);
+
+            await _mailService.SendUpdateEmailAsync(address, email);
+
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromMinutes(emailCooldownMinutes));
 
             _memoryCache.Set(MemoryCacheEmailKey + address, true, cacheEntryOptions);
         }
