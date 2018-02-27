@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Domain.Entities;
-using SmartValley.Domain.Interfaces;
-using System.Linq;
 using SmartValley.Domain.Exceptions;
+using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
 {
@@ -18,10 +18,17 @@ namespace SmartValley.Data.SQL.Repositories
         }
 
         public Task<User> GetByAddressAsync(string address)
-        => ReadContext.Users.FirstOrDefaultAsync(u => u.Address.Equals(address, StringComparison.OrdinalIgnoreCase));
+            => ReadContext.Users.FirstOrDefaultAsync(u => u.Address.Equals(address, StringComparison.OrdinalIgnoreCase));
+
+        public async Task<IReadOnlyCollection<User>> GetIdsByAddressesAsync(IReadOnlyCollection<string> addresses)
+        {
+            return await ReadContext.Users
+                         .Where(user => addresses.Contains(user.Address, StringComparer.OrdinalIgnoreCase))
+                         .ToArrayAsync();
+        }
 
         public Task<User> GetByEmailAsync(string email)
-        => ReadContext.Users.FirstOrDefaultAsync(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+            => ReadContext.Users.FirstOrDefaultAsync(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
 
         public async Task AddRoleAsync(string address, RoleType type)
         {
@@ -33,7 +40,7 @@ namespace SmartValley.Data.SQL.Repositories
             if (role == null)
                 throw new AppErrorException(ErrorCode.RoleNotFound, $"Role '{type}' not found.");
 
-            await EditContext.UserRoles.AddAsync(new UserRole { RoleId = role.Id, UserId = user.Id });
+            await EditContext.UserRoles.AddAsync(new UserRole {RoleId = role.Id, UserId = user.Id});
             await EditContext.SaveAsync();
         }
 

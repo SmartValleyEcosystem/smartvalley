@@ -3,12 +3,13 @@ using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Application.Email
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class MailService
     {
         private readonly MailSender _mailSender;
         private readonly EmailUrls _siteUrls;
         private readonly MailTokenService _mailTokenService;
-        private ITemplateProvider _templateProvider;
+        private readonly ITemplateProvider _templateProvider;
 
         public MailService(SiteOptions siteOptions,
                            MailTokenService mailTokenService,
@@ -48,6 +49,19 @@ namespace SmartValley.Application.Email
                        .Replace("{BUTTON}", "Update email")
                        .Replace("{BUTTONHREF}", _siteUrls.GetChangeEmail(token));
             await _mailSender.SendAsync(email, "Email changing", template);
+        }
+
+        public async Task SendOfferEmailAsync(string email)
+        {
+            var template = await _templateProvider.GetEmailTemplateAsync();
+
+            template = template
+                       .Replace("{SUBJECT}", "Project scoring offer")
+                       .Replace("{BODY}", "Click on the button below to view an offer.")
+                       .Replace("{BUTTON}", "My Offers")
+                       .Replace("{BUTTONHREF}", null); //TODO https://rassvet-capital.atlassian.net/browse/ILT-579
+
+            await _mailSender.SendAsync(email, "Email confirmation", template);
         }
     }
 }
