@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using SmartValley.Domain;
-using System.Numerics;
 
 namespace SmartValley.Application.Contracts.Votings
 {

@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.WebApi.Authentication.Requests;
 using SmartValley.WebApi.Authentication.Responses;
