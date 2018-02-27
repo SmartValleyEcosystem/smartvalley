@@ -75,6 +75,7 @@ import {VotingService} from './services/voting/voting-service';
 import {VotingComponent} from './components/voting/voting.component';
 import {VotingCardComponent} from './components/voting-card/voting-card.component';
 import {VotingManagerContractClient} from './services/contract-clients/voting-manager-contract-client';
+import {ScoringExpertsManagerContractClient} from './services/contract-clients/scoring-experts-manager-contract-client';
 import {FreeScoringConfirmationModalComponent} from './components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component';
 import {VotingContractClient} from './services/contract-clients/voting-contract-client';
 import {VoteModalComponent} from './components/common/vote-modal/vote-modal.component';
@@ -106,6 +107,8 @@ import {AdminExpertApplicationComponent} from './components/admin-panel/admin-ex
 import {AreaService} from './services/expert/area.service';
 import {EnumHelper} from './utils/enum-helper';
 import {ExpertStatusGuard} from './services/guards/expert-status.guard';
+import {AdminScoringProjectsComponent} from './components/admin-panel/admin-scoring-projects/admin-scoring-projects.component';
+import { SetExpertsModalComponent } from './components/common/set-experts-modal/set-experts-modal.component';
 
 @NgModule({
   declarations: [
@@ -151,7 +154,9 @@ import {ExpertStatusGuard} from './services/guards/expert-status.guard';
     ConfirmEmailComponent,
     AdminExpertApplicationsListComponent,
     ExpertsCountSelectionModalComponent,
-    AdminExpertApplicationComponent
+    AdminExpertApplicationComponent,
+    AdminScoringProjectsComponent,
+    SetExpertsModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -165,7 +170,8 @@ import {ExpertStatusGuard} from './services/guards/expert-status.guard';
     RegisterModalComponent,
     AddAdminModalComponent,
     ConfirmEmailModalComponent,
-    ExpertsCountSelectionModalComponent
+    ExpertsCountSelectionModalComponent,
+    SetExpertsModalComponent
   ],
   imports: [
     FileUploadModule,
@@ -224,6 +230,7 @@ import {ExpertStatusGuard} from './services/guards/expert-status.guard';
     EstimatesApiClient,
     ExpertApiClient,
     ExpertContractClient,
+    ScoringExpertsManagerContractClient,
     AdminApiClient,
     VotingApiClient,
     AuthenticationApiClient,

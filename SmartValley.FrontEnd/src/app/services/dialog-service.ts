@@ -12,6 +12,7 @@ import {MetamaskManualModalComponent} from '../components/common/metamask-manual
 import {TranslateService} from '@ngx-translate/core';
 import {AlertModalComponent} from '../components/common/alert-modal/alert-modal.component';
 import {AlertModalData} from '../components/common/alert-modal/alert-modal-data';
+import {Area} from './expert/area';
 import {FreeScoringConfirmationModalComponent} from '../components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component';
 import {VoteModalData} from '../components/common/vote-modal/vote-modal-data';
 import {VoteModalComponent} from '../components/common/vote-modal/vote-modal.component';
@@ -23,6 +24,7 @@ import {ExpertsCountSelectionModalComponent} from '../components/common/experts-
 import {ExpertsCountSelectionModalData} from '../components/common/experts-count-selection-modal/experts-count-selection-modal-data';
 import {ExpertiseArea} from '../api/scoring/expertise-area.enum';
 import {AreaExpertsSettings} from '../components/common/experts-count-selection-modal/area-experts-settings';
+import {SetExpertsModalComponent} from '../components/common/set-experts-modal/set-experts-modal.component';
 
 @Injectable()
 export class DialogService {
@@ -43,6 +45,12 @@ export class DialogService {
 
   public async showGetTokenDialogAsync(): Promise<boolean> {
     return this.openModalAsync(ReceiveSvtModalComponent, {canReceive: true});
+  }
+
+  public showSetExpertsDialogAsync(areas: Array<Area>): Promise<any> {
+    return this.openModal(SetExpertsModalComponent, {areas: areas})
+      .afterClosed()
+      .toPromise<any>();
   }
 
   public showTransactionDialog(message: string, transactionHash: string): MatDialogRef<TransactionAwaitingModalComponent> {

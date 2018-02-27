@@ -1,0 +1,22 @@
+<div style="max-height: 60vh;">
+  <h2 mat-mat-title>Set experts</h2>
+  <hr>
+  <p>
+    Enter address/es
+  </p>
+  <form [formGroup]="form" novalidate>
+    <div *ngFor="let member of form.get('categories')['controls']">
+      <div [formGroup]="member">
+        <div class="row">
+          <span class="col-1">{{member.value.title}}</span>
+          <input style="margin-bottom: 1em;" class="form-control col-8 offset-1" formControlName="address">
+        </div>
+      </div>
+    </div>
+    <mat-dialog-actions class="d-flex justify-content-center">
+      <button mat-raised-button (click)="setExperts(form)" class="col-6 sv-default-btn btn-space">
+        Set experts
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>
