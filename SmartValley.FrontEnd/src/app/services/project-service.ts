@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import {QuestionService} from './questions/question-service';
 import {AreaType} from '../api/scoring/area-type.enum';
+import {ScoringProjectStatus} from './scoring-project-status.enum';
 
 @Injectable()
 export class ProjectService {

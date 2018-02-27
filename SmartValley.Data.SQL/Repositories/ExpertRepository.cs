@@ -25,6 +25,7 @@ namespace SmartValley.Data.SQL.Repositories
 
         public Task<int> RemoveAsync(Expert expert)
         {
+            _editContext.Experts.Attach(expert);
             _editContext.Experts.Remove(expert);
             return _editContext.SaveAsync();
         }
