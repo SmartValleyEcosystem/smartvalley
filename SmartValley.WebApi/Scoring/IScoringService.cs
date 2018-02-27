@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SmartValley.Domain.Entities;
-using SmartValley.WebApi.Projects.Scoring.Requests;
+using SmartValley.WebApi.Scoring.Requests;
 
-namespace SmartValley.WebApi.Projects.Scoring
+namespace SmartValley.WebApi.Scoring
 {
     public interface IScoringService
     {

@@ -7,17 +7,13 @@ namespace SmartValley.Domain.Interfaces
 {
     public interface IExpertRepository
     {
-        Task<IReadOnlyCollection<Expert>> GetAllAsync();
-
         Task<PagingList<ExpertDetails>> GetAllDetailsAsync(int page, int pageSize);
 
         Task<int> RemoveAsync(Expert expert);
 
         Task<Expert> GetByAddressAsync(string address);
 
-        Task<Expert> GetByEmailAsync(string email);
-
-        Task<int> UpdateWholeAsync(Expert expert);
+        Task<IDictionary<string, long>> GetIdsByAddressesAsync(IReadOnlyCollection<string> addresses);
 
         Task<IReadOnlyCollection<Area>> GetAreasAsync();
 

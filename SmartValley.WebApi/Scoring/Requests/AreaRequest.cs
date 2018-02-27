@@ -1,6 +1,6 @@
 ﻿using SmartValley.WebApi.Experts;
 
-namespace SmartValley.WebApi.Projects.Scoring.Requests
+namespace SmartValley.WebApi.Scoring.Requests
 {
     public class AreaRequest
     {

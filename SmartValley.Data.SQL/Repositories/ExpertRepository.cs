@@ -11,6 +11,7 @@ using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ExpertRepository : IExpertRepository
     {
         private readonly IReadOnlyDataContext _readContext;
@@ -36,19 +37,13 @@ namespace SmartValley.Data.SQL.Repositories
                     select expert).FirstOrDefaultAsync();
         }
 
-        public Task<Expert> GetByEmailAsync(string email)
+        public async Task<IDictionary<string, long>> GetIdsByAddressesAsync(IReadOnlyCollection<string> addresses)
         {
-            return (from expert in _readContext.Experts
-                    join user in _readContext.Users on expert.UserId equals user.Id
-                    where user.Email.Equals(email, StringComparison.OrdinalIgnoreCase)
-                    select expert).FirstOrDefaultAsync();
-        }
-
-        public Task<int> UpdateWholeAsync(Expert expert)
-        {
-            _editContext.Experts.Attach(expert);
-            _editContext.Entity(expert).State = EntityState.Modified;
-            return _editContext.SaveAsync();
+            return await (from expert in _readContext.Experts
+                          join user in _readContext.Users on expert.UserId equals user.Id
+                          where addresses.Contains(user.Address, StringComparer.OrdinalIgnoreCase)
+                          select new {Id = expert.UserId, user.Address})
+                       .ToDictionaryAsync(e => e.Address, e => e.Id);
         }
 
         public async Task<IReadOnlyCollection<Area>> GetAreasAsync()
@@ -82,9 +77,6 @@ namespace SmartValley.Data.SQL.Repositories
                                                    .ToArray());
             await _editContext.SaveAsync();
         }
-
-        public async Task<IReadOnlyCollection<Expert>> GetAllAsync()
-            => await _readContext.Experts.ToArrayAsync();
 
         public async Task<PagingList<ExpertDetails>> GetAllDetailsAsync(int page, int pageSize)
         {
