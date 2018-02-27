@@ -64,7 +64,6 @@ import {AccountComponent} from './components/account/account.component';
 import {MatIconModule} from '@angular/material/icon';
 import {CompositeGuard} from './services/guards/composite.guard';
 import {ExpertGuard} from './services/guards/expert-guard';
-import {BecomeExpertGuard} from './services/guards/become-expert.guard';
 import {RegisterExpertGuard} from './services/guards/register-expert.guard';
 import {GuardFactory} from './services/guards/guard-factory';
 import {ShouldHaveSvtGuard} from './services/balance/should-have-svt.guard';
@@ -76,6 +75,7 @@ import {VotingService} from './services/voting/voting-service';
 import {VotingComponent} from './components/voting/voting.component';
 import {VotingCardComponent} from './components/voting-card/voting-card.component';
 import {VotingManagerContractClient} from './services/contract-clients/voting-manager-contract-client';
+import {ScoringExpertsManagerContractClient} from './services/contract-clients/scoring-experts-manager-contract-client';
 import {FreeScoringConfirmationModalComponent} from './components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component';
 import {VotingContractClient} from './services/contract-clients/voting-contract-client';
 import {VoteModalComponent} from './components/common/vote-modal/vote-modal.component';
@@ -98,13 +98,17 @@ import {ConfirmEmailModalComponent} from './components/common/confirm-email/conf
 import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
 import {ExpertContractClient} from './services/contract-clients/expert-contract-client';
 import {CalendarModule} from 'primeng/calendar';
-import {BecomeExpertComponent} from './components/become-expert/become-expert.component';
+import {ExpertStatusComponent} from './components/expert-status/expert-status.component';
 import {ExpertComponent} from './components/expert/expert.component';
 import {RegisterExpertComponent} from './components/register-expert/register-expert.component';
 import {AdminExpertApplicationsListComponent} from './components/admin-panel/admin-expert-applications-list/admin-expert-applications-list.component';
+import {ExpertsCountSelectionModalComponent} from './components/common/experts-count-selection-modal/experts-count-selection-modal.component';
 import {AdminExpertApplicationComponent} from './components/admin-panel/admin-expert-application/admin-expert-application.component';
 import {AreaService} from './services/expert/area.service';
 import {EnumHelper} from './utils/enum-helper';
+import {ExpertStatusGuard} from './services/guards/expert-status.guard';
+import {AdminScoringProjectsComponent} from './components/admin-panel/admin-scoring-projects/admin-scoring-projects.component';
+import { SetExpertsModalComponent } from './components/common/set-experts-modal/set-experts-modal.component';
 
 @NgModule({
   declarations: [
@@ -143,13 +147,16 @@ import {EnumHelper} from './utils/enum-helper';
     FormatDatePipe,
     AdminPanelComponent,
     AddAdminModalComponent,
-    BecomeExpertComponent,
+    ExpertStatusComponent,
     ExpertComponent,
     RegisterExpertComponent,
     ConfirmEmailModalComponent,
     ConfirmEmailComponent,
     AdminExpertApplicationsListComponent,
-    AdminExpertApplicationComponent
+    ExpertsCountSelectionModalComponent,
+    AdminExpertApplicationComponent,
+    AdminScoringProjectsComponent,
+    SetExpertsModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -162,7 +169,9 @@ import {EnumHelper} from './utils/enum-helper';
     VoteModalComponent,
     RegisterModalComponent,
     AddAdminModalComponent,
-    ConfirmEmailModalComponent
+    ConfirmEmailModalComponent,
+    ExpertsCountSelectionModalComponent,
+    SetExpertsModalComponent
   ],
   imports: [
     FileUploadModule,
@@ -221,6 +230,7 @@ import {EnumHelper} from './utils/enum-helper';
     EstimatesApiClient,
     ExpertApiClient,
     ExpertContractClient,
+    ScoringExpertsManagerContractClient,
     AdminApiClient,
     VotingApiClient,
     AuthenticationApiClient,
@@ -246,7 +256,7 @@ import {EnumHelper} from './utils/enum-helper';
     GuardFactory,
     CompositeGuard,
     ExpertGuard,
-    BecomeExpertGuard,
+    ExpertStatusGuard,
     RegisterExpertGuard,
     AreaService,
     EnumHelper

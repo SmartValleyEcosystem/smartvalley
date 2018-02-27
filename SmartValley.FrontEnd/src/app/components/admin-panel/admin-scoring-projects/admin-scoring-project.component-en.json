@@ -1,0 +1,17 @@
+{
+  "AdminScoringProject": {
+    "All": "All",
+    "InProgress": "InProgress",
+    "Rejected": "Rejected",
+    "AcceptedAndDoNotEstimate": "Accepted and do not estimate",
+    "DontEstimateStatus": "Expert/s accept and don't estimate",
+    "InProgressStatus": "In progress",
+    "RejectedStatus": "Expert/s reject scoring",
+    "StartDate":"Start date",
+    "SetExperts": "Set experts",
+    "ReLaunch": "ReLaunch",
+    "WaitExperts": "Wait experts till",
+    "Dialog": "Restarting the selection of experts. Please wait for completion of transaction.",
+    "Status": "Status"
+  }
+}

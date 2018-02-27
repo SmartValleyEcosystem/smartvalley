@@ -5,6 +5,7 @@ export class Paths {
   public static readonly Scoring = 'scoring';
   public static readonly Expert = 'expert';
   public static readonly BecomeExpert = 'expert/become';
+  public static readonly ExpertStatus = 'expert/status';
   public static readonly RegisterExpert = 'expert/register';
   public static readonly Report = 'report';
   public static readonly Initialization = 'initialization';

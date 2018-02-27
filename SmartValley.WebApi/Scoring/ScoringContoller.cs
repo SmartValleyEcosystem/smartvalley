@@ -1,12 +1,10 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application;
-using SmartValley.WebApi.Experts;
-using SmartValley.WebApi.Projects.Scoring.Requests;
+using SmartValley.WebApi.Scoring.Requests;
 
-namespace SmartValley.WebApi.Projects.Scoring
+namespace SmartValley.WebApi.Scoring
 {
     [Route("api/scoring")]
     [Authorize]

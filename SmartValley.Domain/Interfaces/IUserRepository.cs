@@ -27,5 +27,7 @@ namespace SmartValley.Domain.Interfaces
         Task RemoveRoleAsync(string address, RoleType type);
 
         Task<IReadOnlyCollection<Role>> GetRolesByUserIdAsync(long userId);
+
+        Task<User> GetByIdAsync(long userId);
     }
 }

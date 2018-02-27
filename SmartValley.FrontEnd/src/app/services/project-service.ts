@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import {QuestionService} from './questions/question-service';
 import {ExpertiseArea} from '../api/scoring/expertise-area.enum';
+import {ScoringProjectStatus} from './scoring-project-status.enum';
 
 @Injectable()
 export class ProjectService {
@@ -37,6 +38,24 @@ export class ProjectService {
     }
 
     return this.getColorInRange(score, minScore, maxScore);
+  }
+
+  public colorOfProjectStatus(status: ScoringProjectStatus): string {
+    if (isNullOrUndefined(status)) {
+      return '';
+    }
+    return this.getColorByStatus(status);
+  }
+
+  private getColorByStatus(status: ScoringProjectStatus): string {
+    switch (status) {
+      case ScoringProjectStatus.InProgress:
+        return 'high_rate';
+      case ScoringProjectStatus.AcceptedAndDoNotEstimate:
+        return 'low_rate';
+      case ScoringProjectStatus.Rejected:
+        return 'medium_rate';
+    }
   }
 
   public colorOfProjectRate(score: number): string {

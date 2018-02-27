@@ -87,6 +87,8 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.HasIndex("AreaId");
 
+                    b.HasIndex("ScoringId", "AreaId");
+
                     b.ToTable("AreaScorings");
                 });
 
@@ -304,6 +306,29 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("Scorings");
                 });
 
+            modelBuilder.Entity("SmartValley.Domain.Entities.ScoringOffer", b =>
+                {
+                    b.Property<long>("ScoringId");
+
+                    b.Property<int>("AreaId");
+
+                    b.Property<long>("ExpertId");
+
+                    b.Property<int>("Status");
+
+                    b.Property<DateTimeOffset>("Timestamp");
+
+                    b.HasKey("ScoringId", "AreaId", "ExpertId");
+
+                    b.HasIndex("AreaId");
+
+                    b.HasIndex("ExpertId");
+
+                    b.HasIndex("ScoringId", "AreaId", "ExpertId");
+
+                    b.ToTable("ScoringOffers");
+                });
+
             modelBuilder.Entity("SmartValley.Domain.Entities.TeamMember", b =>
                 {
                     b.Property<long>("Id")
@@ -481,6 +506,24 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasOne("SmartValley.Domain.Entities.Project", "Project")
                         .WithMany()
                         .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.Entities.ScoringOffer", b =>
+                {
+                    b.HasOne("SmartValley.Domain.Entities.Area", "Area")
+                        .WithMany()
+                        .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SmartValley.Domain.Entities.Expert", "Expert")
+                        .WithMany()
+                        .HasForeignKey("ExpertId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SmartValley.Domain.Entities.Scoring", "Scoring")
+                        .WithMany()
+                        .HasForeignKey("ScoringId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Domain;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ExpertRepository : IExpertRepository
     {
         private readonly IReadOnlyDataContext _readContext;
@@ -35,55 +37,74 @@ namespace SmartValley.Data.SQL.Repositories
                     select expert).FirstOrDefaultAsync();
         }
 
-        public Task<Expert> GetByEmailAsync(string email)
+        public async Task<IDictionary<string, long>> GetIdsByAddressesAsync(IReadOnlyCollection<string> addresses)
         {
-            return (from expert in _readContext.Experts
-                    join user in _readContext.Users on expert.UserId equals user.Id
-                    where user.Email.Equals(email, StringComparison.OrdinalIgnoreCase)
-                    select expert).FirstOrDefaultAsync();
-        }
-
-        public Task<int> UpdateWholeAsync(Expert expert)
-        {
-            _editContext.Experts.Attach(expert);
-            _editContext.Entity(expert).State = EntityState.Modified;
-            return _editContext.SaveAsync();
+            return await (from expert in _readContext.Experts
+                          join user in _readContext.Users on expert.UserId equals user.Id
+                          where addresses.Contains(user.Address, StringComparer.OrdinalIgnoreCase)
+                          select new {Id = expert.UserId, user.Address})
+                       .ToDictionaryAsync(e => e.Address, e => e.Id);
         }
 
         public async Task<IReadOnlyCollection<Area>> GetAreasAsync()
             => await _readContext.Areas.ToArrayAsync();
 
-        public Task AddAsync(Expert expert)
+        public Task AddAsync(Expert expert, IReadOnlyCollection<int> areas)
         {
             _editContext.Experts.AddAsync(expert);
+            var expertAreas = areas.Select(s => new ExpertArea
+                                                {
+                                                    Expert = expert,
+                                                    AreaId = (AreaType) s
+                                                })
+                                   .ToArray();
+
+            _editContext.ExpertAreas.AddRange(expertAreas);
             return _editContext.SaveAsync();
         }
 
-        public async Task<IReadOnlyCollection<Expert>> GetAllAsync()
-            => await _readContext.Experts.ToArrayAsync();
-
-        public async Task<IReadOnlyCollection<ExpertDetails>> GetAllDetailsAsync()
+        public async Task UpdateAsync(Expert expert, IReadOnlyCollection<int> areas)
         {
-            var expertAreas = await (from expertArea in _readContext.ExpertAreas
+            _editContext.Experts.Attach(expert).Property(e => e).IsModified = true;
+
+            var expertAreas = await _editContext.ExpertAreas.Where(e => e.ExpertId == expert.UserId).ToArrayAsync();
+            _editContext.ExpertAreas.RemoveRange(expertAreas);
+            _editContext.ExpertAreas.AddRange(areas.Select(s => new ExpertArea
+                                                                {
+                                                                    Expert = expert,
+                                                                    AreaId = (AreaType) s
+                                                                })
+                                                   .ToArray());
+            await _editContext.SaveAsync();
+        }
+
+        public async Task<PagingList<ExpertDetails>> GetAllDetailsAsync(int page, int pageSize)
+        {
+            var expertUsersQuery = (from expert in _readContext.Experts
+                                    join user in _readContext.Users on expert.UserId equals user.Id
+                                    select new {expert, user})
+                                   .Skip(page * pageSize)
+                                   .Take(pageSize);
+
+            var expertAreas = await (from expertUser in expertUsersQuery
+                                     join expertArea in _readContext.ExpertAreas on expertUser.user.Id equals expertArea.ExpertId
                                      join area in _readContext.Areas on expertArea.AreaId equals area.Id
                                      select new {expertArea.ExpertId, area}).ToArrayAsync();
 
-            var expertUsers = await (from expert in _readContext.Experts
-                                     join user in _readContext.Users on expert.UserId equals user.Id
-                                     select new {expert, user}).ToArrayAsync();
-
             var lookUpAreas = expertAreas.ToLookup(k => k.ExpertId, v => v.area);
 
-            return expertUsers.Select(expertUser => new ExpertDetails
-                                                    {
-                                                        About = expertUser.user.About,
-                                                        Address = expertUser.user.Address,
-                                                        Email = expertUser.user.Email,
-                                                        IsAvailable = expertUser.expert.IsAvailable,
-                                                        Name = expertUser.user.Name,
-                                                        Areas = lookUpAreas[expertUser.expert.UserId].ToArray()
-                                                    })
-                              .ToArray();
+            var count = await _readContext.Experts.CountAsync();
+            var expertUsers = await expertUsersQuery.ToArrayAsync();
+
+            return new PagingList<ExpertDetails>(count, expertUsers.Select(expertUser => new ExpertDetails
+                                                                                         {
+                                                                                             About = expertUser.user.About,
+                                                                                             Address = expertUser.user.Address,
+                                                                                             Email = expertUser.user.Email,
+                                                                                             IsAvailable = expertUser.expert.IsAvailable,
+                                                                                             Name = expertUser.user.Name,
+                                                                                             Areas = lookUpAreas[expertUser.expert.UserId].ToArray()
+                                                                                         }));
         }
     }
 }

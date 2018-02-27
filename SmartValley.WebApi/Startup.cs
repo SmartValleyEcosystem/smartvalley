@@ -32,7 +32,7 @@ using SmartValley.WebApi.Estimates;
 using SmartValley.WebApi.ExceptionHandler;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Projects;
-using SmartValley.WebApi.Projects.Scoring;
+using SmartValley.WebApi.Scoring;
 using SmartValley.WebApi.Users;
 using SmartValley.WebApi.Votings;
 using SmartValley.WebApi.WebApi;
@@ -103,6 +103,8 @@ namespace SmartValley.WebApi
                 provider => new EtherManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().EtherManagerContract));
             services.AddSingleton<IScoringManagerContractClient, ScoringManagerContractClient>(
                 provider => new ScoringManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringManagerContract));
+            services.AddSingleton<IScoringExpertsManagerContractClient, ScoringExpertsManagerContractClient>(
+                provider => new ScoringExpertsManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringExpertsManagerContract));
 
             services.AddMemoryCache();
 
@@ -123,6 +125,7 @@ namespace SmartValley.WebApi
             services.AddTransient<IApplicationRepository, ApplicationRepository>();
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IScoringRepository, ScoringRepository>();
+            services.AddTransient<IScoringOffersRepository, ScoringOffersRepository>();
             services.AddTransient<IEstimateCommentRepository, EstimateCommentRepository>();
             services.AddTransient<IApplicationService, ApplicationService>();
             services.AddTransient<IVotingService, VotingService>();

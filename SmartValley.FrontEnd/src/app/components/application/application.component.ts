@@ -16,6 +16,7 @@ import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {VotingManagerContractClient} from '../../services/contract-clients/voting-manager-contract-client';
 import {Web3Service} from '../../services/web3-service';
 import {UserContext} from '../../services/authentication/user-context';
+import {AreaService} from '../../services/expert/area.service';
 
 @Component({
   selector: 'app-application',
@@ -46,7 +47,8 @@ export class ApplicationComponent implements OnInit {
               private translateService: TranslateService,
               private balanceService: BalanceService,
               private scoringApiClient: ScoringApiClient,
-              private web3Service: Web3Service) {
+              private web3Service: Web3Service,
+              private areaService: AreaService) {
   }
 
   public ngOnInit(): void {
@@ -84,9 +86,8 @@ export class ApplicationComponent implements OnInit {
       return;
     }
 
-    // TODO
-    const areas = [1, 2, 3, 4];
-    const areaExpertCounts = [3, 3, 3, 3];
+    const areas = this.areaService.areas.map(a => a.areaType);
+    const areaExpertCounts = await this.dialogService.showExpertsCountSelectionDialogAsync(areas);
 
     const request = this.createSubmitApplicationRequest();
     const transactionHash = await this.startScoringAsync(request.projectId, areas, areaExpertCounts);
