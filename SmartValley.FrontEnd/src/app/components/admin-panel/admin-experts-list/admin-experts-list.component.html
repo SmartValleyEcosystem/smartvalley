@@ -6,7 +6,7 @@
         <th class="list-item" *ngFor="let col of columns">
           {{col.header}}
         </th>
-        <th>Actions</th>
+        <th>{{ 'AdminExpertList.Actions' | translate }}</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
@@ -27,7 +27,7 @@
     <ng-template pTemplate="summary" let-rowData>
       <tr class="list-row">
         <div style="text-align:left">
-          <button type="button" pButton icon="fa-plus" (click)="showDialogToCreateNewExpert()" label="Create new"></button>
+          <button type="button" pButton icon="fa-plus" (click)="showDialogToCreateNewExpert()" label="{{ 'AdminExpertList.CreateNew' | translate }}"></button>
         </div>
       </tr>
     </ng-template>

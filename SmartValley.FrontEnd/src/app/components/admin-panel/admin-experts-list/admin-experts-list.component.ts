@@ -9,6 +9,7 @@ import {AdminExpertResponse} from './admin-expert-response';
 import {DialogService} from '../../../services/dialog-service';
 import {ExpertContractClient} from '../../../services/contract-clients/expert-contract-client';
 import {DeleteExpertRequest} from '../../../api/expert/delete-expert-request';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
     selector: 'app-admin-experts-list',
@@ -21,7 +22,7 @@ export class AdminExpertsListComponent implements OnInit {
     private cols: AdminExpertsListItem[];
     private currentPage = 0;
     private pageSize = 10;
-    public expertsResponse: AdminExpertResponse;
+    public expertsResponse: any;
     public experts: AdminExpertItem[] = [];
     public transactionHash: string;
     public deleteExpertRequest: DeleteExpertRequest;
@@ -29,7 +30,8 @@ export class AdminExpertsListComponent implements OnInit {
     constructor(private expertApiClient: ExpertApiClient,
                 private expertContractClient: ExpertContractClient,
                 private dialogService: DialogService,
-                private areaService: AreaService) {
+                private areaService: AreaService,
+                private translateService: TranslateService) {
     }
     public async getExpertList(event: LazyLoadEvent) {
         this.currentPage = (event.first / event.rows);
@@ -65,16 +67,16 @@ export class AdminExpertsListComponent implements OnInit {
 
         this.loading = false;
         this.cols = [
-            {field: 'address', header: 'Address'},
-            {field: 'email', header: 'e-mail'},
-            {field: 'name', header: 'Name'},
-            {field: 'about', header: 'About'},
-            {field: 'isAvailable', header: 'Available'},
-            {field: 'areas', header: 'Categories'},
+            {field: 'address', header: this.translateService.instant('AdminExpertList.Address')},
+            {field: 'email', header: this.translateService.instant('AdminExpertList.Email')},
+            {field: 'name', header: this.translateService.instant('AdminExpertList.Name')},
+            {field: 'about', header: this.translateService.instant('AdminExpertList.About')},
+            {field: 'isAvailable', header: this.translateService.instant('AdminExpertList.Available')},
+            {field: 'areas', header: this.translateService.instant('AdminExpertList.Categories')}
         ];
     }
     public async deleteExpertAsync (address, areas) {
-        const areasId = this.areaService.getAreasIdByTypes(areas);
+        const areasId = this.areaService.getAreasIdByNames(areas);
         this.transactionHash = ( await this.expertContractClient.addSync(address, areasId) );
         this.deleteExpertRequest = {
             transactionHash: this.transactionHash,

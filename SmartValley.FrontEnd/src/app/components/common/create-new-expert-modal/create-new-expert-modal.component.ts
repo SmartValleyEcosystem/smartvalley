@@ -8,6 +8,7 @@ import {ExpertContractClient} from '../../../services/contract-clients/expert-co
 import {UserApiClient} from '../../../api/user/user-api-client';
 import {NotificationsService} from 'angular2-notifications';
 import {TranslateService} from '@ngx-translate/core';
+import {AreaService} from '../../../services/expert/area.service';
 
 @Component({
     selector: 'app-create-new-expert-modal.component',
@@ -22,6 +23,7 @@ export class CreateNewExpertModalComponent implements OnInit {
     public transactionHash: string;
     public selectedCategories: number [] = [];
     public email: string;
+    public areas: Area[];
 
     constructor(private expertApiClient: ExpertApiClient,
                 private userApiClient: UserApiClient,
@@ -30,18 +32,21 @@ export class CreateNewExpertModalComponent implements OnInit {
                 private dialogCreateExpert: MatDialogRef<CreateNewExpertModalComponent>,
                 private notificationsService: NotificationsService,
                 private expertContractClient: ExpertContractClient,
-                private translateService: TranslateService) {
+                private translateService: TranslateService,
+                private areaService: AreaService) {
     }
     async ngOnInit() {
-        this.form = this.formBuilder.group({
+        this.areas = this.areaService.areas;
+        let formGroupInputs = {
             address: ['', [Validators.required, AddAdminModalComponent.validateWalletAddress]],
             available: [''],
-            category1: [''],
-            category2: [''],
-            category3: [''],
-            category4: [''],
-            category5: ['']
+        };
+        const categoryFormElements = this.areas.map((a, i, ar) => {
+            const currentField: {} = {};
+            currentField['category' + a.areaType] = [''];
+            formGroupInputs = Object.assign(formGroupInputs, currentField);
         });
+        this.form = this.formBuilder.group(formGroupInputs);
     }
 
     async submit(form) {
@@ -74,7 +79,7 @@ export class CreateNewExpertModalComponent implements OnInit {
             areas: this.selectedCategories
         };
 
-        this.newExpertResponse = (await this.expertApiClient.createNewExpertsAsync(this.newExpertRequest));
+        this.newExpertResponse = await this.expertApiClient.createNewExpertsAsync(this.newExpertRequest);
         this.dialogCreateExpert.close();
     }
 }

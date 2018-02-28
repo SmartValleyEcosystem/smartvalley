@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ExpertApiClient} from '../../api/expert/expert-api-client';
 import {Area} from './area';
-import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
 import {AreaType} from '../../api/scoring/area-type.enum';
 
 @Injectable()
@@ -21,11 +20,11 @@ export class AreaService {
         });
     }
 
-    public getAreasByTypes(types: any[]): Area[] {
+    public getAreasByTypes(types: Area[]): string[] {
         return types.map(a => a.name);
     }
 
-    public getAreasIdByTypes(types: string[]) {
+    public getAreasIdByNames(types: string[]) {
         const areasId: number[] = [];
         for (let k = 0; types.length > k; k++) {
             for (let i = 0; this.areas.length > i; i++) {
@@ -33,7 +32,7 @@ export class AreaService {
                     areasId.push(i);
                 }
             }
-        };
+        }
         return areasId;
     }
 

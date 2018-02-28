@@ -2,11 +2,6 @@
   "CreateNewExpertModalComponent": {
     "Title": "Enter address",
     "AvailableForWork": "Available for work",
-    "Create": "Create",
-    "Category1": "Category 1",
-    "Category2": "Category 2",
-    "Category3": "Category 3",
-    "Category4": "Category 4",
-    "Category5": "Category 5"
+    "Create": "Create"
   }
 }

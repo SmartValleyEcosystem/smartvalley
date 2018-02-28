@@ -8,7 +8,7 @@
               {{ 'EditExpertModalComponent.Address' | translate }}
           </span>
           <mat-form-field class="col-8 example-full-width">
-              <input placeholder="Address" matInput formControlName="address" name="address" [(ngModel)]="data.address" [(value)]="data.address" #required>
+              <input placeholder="{{ 'EditExpertModalComponent.Address' | translate }}" matInput formControlName="address" name="address" [(ngModel)]="data.address" [(value)]="data.address" #required>
           </mat-form-field>
       </div>
       <div class="row">
@@ -16,7 +16,7 @@
               {{ 'EditExpertModalComponent.Email' | translate }}
           </span>
           <mat-form-field class="col-8 example-full-width">
-              <input placeholder="Email" matInput formControlName="email" name="email" [(ngModel)]="data.email" [(value)]="data.email" #required>
+              <input placeholder="{{ 'EditExpertModalComponent.Email' | translate }}" matInput formControlName="email" name="email" [(ngModel)]="data.email" [(value)]="data.email" #required>
           </mat-form-field>
       </div>
       <div class="row">
@@ -24,7 +24,7 @@
               {{ 'EditExpertModalComponent.Name' | translate }}
           </span>
           <mat-form-field class="col-8 example-full-width">
-              <input placeholder="Name" matInput formControlName="name" name="name" #required [(ngModel)]="data.name" [(value)]="data.name">
+              <input placeholder="{{ 'EditExpertModalComponent.Name' | translate }}" matInput formControlName="name" name="name" #required [(ngModel)]="data.name" [(value)]="data.name">
           </mat-form-field>
       </div>
       <div class="row">
@@ -32,7 +32,7 @@
               {{ 'EditExpertModalComponent.About' | translate }}
           </span>
           <mat-form-field class="col-8 example-full-width">
-              <textarea matInput placeholder="About" formControlName="about" name="about" [(ngModel)]="data.about" [(value)]="data.about"></textarea>
+              <textarea matInput placeholder="{{ 'EditExpertModalComponent.About' | translate }}" formControlName="about" name="about" [(ngModel)]="data.about" [(value)]="data.about"></textarea>
           </mat-form-field>
       </div>
       <div class="row submit-row">
@@ -54,37 +54,15 @@
           </mat-checkbox>
         </span>
       </div>
-      <div class="row">
+      <div *ngFor="let area of areas" class="row">
         <span class="col-6">
-          <mat-checkbox align="start" name="category1" formControlName="category1" [(ngModel)]="categoriesModel" (change)="categoryChange($event)" [value]="isCategotySelected(1)">
-            {{ 'EditExpertModalComponent.Category1' | translate }}
-          </mat-checkbox>
-        </span>
-        <span class="col-6">
-          <mat-checkbox align="start" name="category2" formControlName="category2" (change)="categoryChange($event)" [value]="isCategotySelected(2)">
-            {{ 'EditExpertModalComponent.Category2' | translate }}
+          <mat-checkbox align="start" name="{{'category' + area.areaType}}" formControlName="{{'category' + area.areaType}}" [(ngModel)]="selectedCategories[area.areaType]">
+            {{ area.name }}
           </mat-checkbox>
         </span>
       </div>
-      <div class="row">
-        <span class="col-6">
-          <mat-checkbox align="start" name="category3" formControlName="category3" (change)="categoryChange($event)" [value]="isCategotySelected(3)">
-            {{ 'EditExpertModalComponent.Category3' | translate }}
-          </mat-checkbox>
-        </span>
-        <span class="col-6">
-          <mat-checkbox align="start" name="category4" formControlName="category4" (change)="categoryChange($event)" [value]="isCategotySelected(4)">
-            {{ 'EditExpertModalComponent.Category4' | translate }}
-          </mat-checkbox>
-        </span>
-      </div>
-      <div class="row">
-        <span class="col-6">
-          <mat-checkbox align="start" name="category5" formControlName="category5" (change)="categoryChange($event)" [value]="isCategotySelected(5)">
-            {{ 'EditExpertModalComponent.Category5' | translate }}
-          </mat-checkbox>
-        </span>
-      </div>
+
+
       <div class="row submit-row">
         <span class="offset-6 col-6">
           <button mat-raised-button (click)="submit(saveBlockchainForm)" [disabled]="saveBackendForm.invalid" class="sv-default-btn btn-space">

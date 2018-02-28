@@ -6,6 +6,7 @@ import {AreaService} from '../../../services/expert/area.service';
 import {FormGroup, Validators, FormBuilder} from '@angular/forms';
 import {ExpertContractClient} from '../../../services/contract-clients/expert-contract-client';
 import {EditExpertRequest} from '../../../api/expert/edit-expert-request';
+import {Area} from '../../../services/expert/area';
 
 @Component({
   selector: 'app-edit-expert-modal',
@@ -14,11 +15,11 @@ import {EditExpertRequest} from '../../../api/expert/edit-expert-request';
 })
 export class EditExpertModalComponent implements OnInit {
 
-    public selectedCategories: number[];
-    public categoriesModel = true;
+    public selectedCategories = [];
     public saveBackendForm: FormGroup;
     public saveBlockchainForm: FormGroup;
     public editExpertRequest: EditExpertRequest;
+    public areas: Area[] = this.areaService.areas;
 
     constructor(private expertApiClient: ExpertApiClient,
                 private userApiClient: UserApiClient,
@@ -34,43 +35,42 @@ export class EditExpertModalComponent implements OnInit {
             address: ['', [Validators.required, Validators.minLength(8)]],
             email: ['', Validators.required],
             name: ['', Validators.required],
-            about: ['', Validators.required]
+            about: ['']
+            about: ['']
         });
-
-        this.saveBlockchainForm = this.formBuilder.group({
+        let blockchainFormInputs = {
             available: [''],
-            category1: [''],
-            category2: [''],
-            category3: [''],
-            category4: [''],
-            category5: ['']
+        };
+        const categoryBlockchainElements = this.areas.map((a, i, ar) => {
+            const currentField: {} = {};
+            currentField['category' + a.areaType] = [''];
+            blockchainFormInputs = Object.assign(blockchainFormInputs, currentField);
         });
-        this.selectedCategories = this.areaService.getAreasIdByTypes(this.data.areas);
-    }
-
-    public isCategotySelected(id) {
-      return this.selectedCategories.includes(id);
-    }
-
-    public categoryChange(event) {
-      const categoryId =  parseInt(event.source.name.match(/category([0-9].*)/)[1]);
-      if (event.checked && !this.selectedCategories.includes(categoryId)) {
-          this.selectedCategories.push(categoryId);
-          return;
-      }
-      this.selectedCategories = this.selectedCategories.filter(e => e !== categoryId);
+        this.saveBlockchainForm = this.formBuilder.group(blockchainFormInputs);
+        const areasId = this.areaService.getAreasIdByNames(this.data.areas);
+        for (const i = 0; areasId.length >= i; i++) {
+            if ( areasId.includes(i) ) {
+                this.selectedCategories[i] = true;
+            }
+        }
     }
 
     public SaveBlockchain() {
         this.dialogCreateExpert.close();
     }
 
-    async submit(form, blockChainRequest = true) {
+    async submit(form, needToUpdateInfoInBlockchain = true) {
         const address = this.saveBackendForm.value.address;
         const email = this.saveBackendForm.value.email;
         const name = this.saveBackendForm.value.name;
         const about = this.saveBackendForm.value.about;
         const isAvailable = this.saveBlockchainForm.value.available || false;
+        const categoriesToRequest: number[] = [];
+        this.selectedCategories.map( (value, index) => {
+            if (value === true) {
+                categoriesToRequest.push(index);
+            }
+        });
 
         this.editExpertRequest = {
             address: address,
@@ -78,11 +78,11 @@ export class EditExpertModalComponent implements OnInit {
             name: name,
             about: about,
             isAvailable: isAvailable,
-            areas: this.selectedCategories
+            areas: categoriesToRequest
         };
 
-        if (blockChainRequest) {
-            const transactionHash = ( await this.expertContractClient.addSync(address, this.selectedCategories) );
+        if (needToUpdateInfoInBlockchain) {
+            const transactionHash = ( await this.expertContractClient.addSync(address, categoriesToRequest) );
             this.editExpertRequest.transactionHash = transactionHash;
         }
 

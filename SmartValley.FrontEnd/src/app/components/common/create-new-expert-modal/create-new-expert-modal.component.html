@@ -13,34 +13,10 @@
           {{ 'CreateNewExpertModalComponent.AvailableForWork' | translate }}
         </mat-checkbox>
       </div>
-      <div class="row">
+      <div *ngFor="let area of areas" class="row">
         <span class="col-6">
-          <mat-checkbox align="start" formControlName="category1" style="margin-top: 1em">
-            {{ 'CreateNewExpertModalComponent.Category1' | translate }}
-          </mat-checkbox>
-        </span>
-        <span class="col-6">
-          <mat-checkbox align="start" formControlName="category2" style="margin-top: 1em">
-            {{ 'CreateNewExpertModalComponent.Category2' | translate }}
-          </mat-checkbox>
-        </span>
-      </div>
-      <div class="row">
-        <span class="col-6">
-          <mat-checkbox align="start" formControlName="category3" style="margin-top: 1em">
-            {{ 'CreateNewExpertModalComponent.Category3' | translate }}
-          </mat-checkbox>
-        </span>
-        <span class="col-6">
-          <mat-checkbox align="start" formControlName="category4" style="margin-top: 1em">
-            {{ 'CreateNewExpertModalComponent.Category4' | translate }}
-          </mat-checkbox>
-        </span>
-      </div>
-      <div class="row">
-        <span class="col-6">
-          <mat-checkbox align="start" formControlName="category5" style="margin-top: 1em">
-            {{ 'CreateNewExpertModalComponent.Category5' | translate }}
+          <mat-checkbox align="start" name="{{'category' + area.areaType}}" formControlName="{{'category' + area.areaType}}" style="margin-top: 1em">
+            {{ area.name }}
           </mat-checkbox>
         </span>
       </div>
