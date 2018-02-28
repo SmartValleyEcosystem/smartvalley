@@ -36,7 +36,6 @@ export class EditExpertModalComponent implements OnInit {
             email: ['', Validators.required],
             name: ['', Validators.required],
             about: ['']
-            about: ['']
         });
         let blockchainFormInputs = {
             available: [''],
