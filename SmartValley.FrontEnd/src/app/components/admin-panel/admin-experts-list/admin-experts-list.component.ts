@@ -19,10 +19,9 @@ import {TranslateService} from '@ngx-translate/core';
 export class AdminExpertsListComponent implements OnInit {
     private totalRecords: number;
     private loading: boolean;
-    private cols: AdminExpertsListItem[];
     private currentPage = 0;
     private pageSize = 10;
-    public expertsResponse: any;
+    public expertsResponse: AdminExpertResponse;
     public experts: AdminExpertItem[] = [];
     public transactionHash: string;
     public deleteExpertRequest: DeleteExpertRequest;
@@ -64,16 +63,7 @@ export class AdminExpertsListComponent implements OnInit {
         this.expertsResponse = (await this.expertApiClient.getExpertsListAsync(this.currentPage, this.pageSize));
         this.totalRecords = this.expertsResponse.totalCount;
         this.renderTableRows(this.expertsResponse.items);
-
         this.loading = false;
-        this.cols = [
-            {field: 'address', header: this.translateService.instant('AdminExpertList.Address')},
-            {field: 'email', header: this.translateService.instant('AdminExpertList.Email')},
-            {field: 'name', header: this.translateService.instant('AdminExpertList.Name')},
-            {field: 'about', header: this.translateService.instant('AdminExpertList.About')},
-            {field: 'isAvailable', header: this.translateService.instant('AdminExpertList.Available')},
-            {field: 'areas', header: this.translateService.instant('AdminExpertList.Categories')}
-        ];
     }
     public async deleteExpertAsync (address, areas) {
         const areasId = this.areaService.getAreasIdByNames(areas);
