@@ -48,11 +48,11 @@
               <button mat-menu-item (click)="navigateToMyProjects()" class="btn btn-link">
                 {{ 'Header.MyProjects' | translate }}
               </button>
-              <button mat-menu-item (click)="logout()" class="btn btn-link" style="padding-right: 0">
-                {{'Header.Logout' | translate }}
-              </button>
               <button *ngIf="isAdmin" mat-menu-item (click)="navigateToAdminPanel()" class="btn btn-link" style="padding-right: 0">
                 {{'Header.Admin' | translate }}
+              </button>
+              <button mat-menu-item (click)="logout()" class="btn btn-link" style="padding-right: 0">
+                {{'Header.Logout' | translate }}
               </button>
             </mat-menu>
           </span>

@@ -4,7 +4,7 @@ import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {ConverterHelper} from '../converter-helper';
 import {TokenContractClient} from './token-contract-client';
 import {ContractClient} from './contract-client';
-import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
+import {AreaType} from '../../api/scoring/area-type.enum';
 import {Estimate} from '../estimate';
 import {Md5} from 'ts-md5';
 import {UserContext} from '../authentication/user-context';
@@ -62,7 +62,7 @@ export class ScoringManagerContractClient implements ContractClient {
   }
 
   public async submitEstimatesAsync(scoringAddress: string,
-                                    expertiseArea: ExpertiseArea,
+                                    expertiseArea: AreaType,
                                     estimates: Array<Estimate>): Promise<string> {
     const contract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.userContext.getCurrentUser().account;

@@ -11,6 +11,7 @@ namespace SmartValley.Data.SQL.Core
         DbSet<Application> Applications { get; }
         DbSet<Project> Projects { get; }
         DbSet<Scoring> Scorings { get; }
+        DbSet<ScoringOffer> ScoringOffers { get; }
         DbSet<AreaScoring> AreaScorings { get; }
         DbSet<EstimateComment> EstimateComments { get; }
         DbSet<TeamMember> TeamMembers { get; }

@@ -24,7 +24,7 @@
       </div>
       <div #birthDate class="row">
         <span class="col-2">{{ 'RegisterExpert.BirthDate' | translate }}</span>
-        <p-calendar [showIcon]="true" class="padding-zero col-4" formControlName="birthDate"></p-calendar>
+        <p-calendar [showIcon]="true" class="padding-zero col-4" formControlName="birthDate" #required></p-calendar>
         <span class="col-2">{{ 'RegisterExpert.Sex' | translate }}</span>
         <p-dropdown class="col-4 padding-zero" [options]="sex" formControlName="selectedSex"></p-dropdown>
       </div>
@@ -32,12 +32,12 @@
         <span class="col-2">{{ 'RegisterExpert.Country' | translate }}</span>
         <p-dropdown class="col-4 padding-zero" [options]="countries" formControlName="country"></p-dropdown>
         <span class="col-2">{{ 'RegisterExpert.City' | translate }}</span>
-        <input class="form-control col-4" formControlName="city">
+        <input class="form-control col-4" formControlName="city" #required>
       </div>
       <div class="row">
         <span class="col-2">{{ 'RegisterExpert.LinkedinLink' | translate }}</span>
         <input class="form-control col-10" formControlName="linkedin"
-               placeholder="https://">
+               placeholder="https://" #required>
       </div>
       <div class="row">
         <span class="col-2">{{ 'RegisterExpert.FacebookLink' | translate }}</span>

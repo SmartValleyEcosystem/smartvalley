@@ -1,4 +1,4 @@
-﻿namespace SmartValley.Application
+﻿namespace SmartValley.Application.AzureStorage
 {
     public class AzureStorageOptions
     {

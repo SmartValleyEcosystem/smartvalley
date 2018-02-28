@@ -15,7 +15,8 @@ export function multiTranslateLoaderFactory() {
     'components/admin-panel/admin-panel.component',
     'components/admin-panel/admin-expert-applications-list/admin-expert-applications-list.component',
     'components/admin-panel/admin-expert-application/admin-expert-application.component',
-    'components/become-expert/become-expert.component',
+    'components/admin-panel/admin-scoring-projects/admin-scoring-project.component',
+    'components/expert-status/expert-status.component',
     'components/scoring/scoring.component',
     'components/register-expert/register-expert.component',
     'components/estimate/estimate.component',
@@ -38,6 +39,7 @@ export function multiTranslateLoaderFactory() {
     'components/completed-voting/completed-voting.component',
     'components/common/create-new-expert-modal/create-new-expert-modal.component',
     'components/admin-panel/admin-experts-list/admin-expert-list.component',
-    'components/common/edit-expert-modal/edit-expert-modal.component'
+    'components/common/edit-expert-modal/edit-expert-modal.component',
+    'components/common/experts-count-selection-modal/experts-count-selection-modal.component'
   ]);
 }

@@ -5,7 +5,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ExpertApiClient} from '../../api/expert/expert-api-client';
 import {CreateExpertApplicationRequest} from '../../api/expert/expert-applitacion-request';
 import {ExpertContractClient} from '../../services/contract-clients/expert-contract-client';
-import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
+import {AreaType} from '../../api/scoring/area-type.enum';
 import {DialogService} from '../../services/dialog-service';
 import {SexEnum} from './sex.enum';
 import {DocumentEnum} from './document.enum';
@@ -17,6 +17,7 @@ import * as moment from 'moment';
 import {NotificationsService} from 'angular2-notifications';
 import {AreaService} from '../../services/expert/area.service';
 import {EnumHelper} from '../../utils/enum-helper';
+import {isUndefined} from 'util';
 
 const countries = <Country[]>require('../../../assets/countryList.json');
 
@@ -36,7 +37,7 @@ export class RegisterExpertComponent implements OnInit {
   public documentTypes: SelectItem[];
   public countries: SelectItem[];
   public areas: SelectItem[];
-  public selectedAreas: ExpertiseArea[] = [];
+  public selectedAreas: AreaType[] = [];
 
   @ViewChildren('required') public requiredFields: QueryList<any>;
 
@@ -89,18 +90,16 @@ export class RegisterExpertComponent implements OnInit {
     this.registryForm = this.formBuilder.group({
       firstName: ['', [Validators.required, Validators.maxLength(50)]],
       secondName: ['', [Validators.required, Validators.maxLength(50)]],
-      linkedin: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
-      facebook: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
+      linkedin: ['', [Validators.required, Validators.maxLength(400), Validators.pattern('https?://.+')]],
+      facebook: ['', [Validators.required, Validators.maxLength(400), Validators.pattern('https?://.+')]],
       why: ['', [Validators.required, Validators.maxLength(1500)]],
       description: ['', [Validators.required, Validators.maxLength(1500)]],
       country: [this.countries[0].value],
-      city: ['', Validators.maxLength(100)],
+      city: ['', [Validators.required, Validators.maxLength(50)]],
       selectedSex: [SexEnum.Male],
       selectedDocumentType: [DocumentEnum.Passport],
-      birthDate: ['', Validators.maxLength(100)],
-      number: ['', Validators.maxLength(100)],
-      document: ['', Validators.maxLength(100)],
-      photo: ['', Validators.maxLength(100)]
+      birthDate: ['', [Validators.required, Validators.maxLength(100)]],
+      number: ['', [Validators.required, Validators.maxLength(30)]]
     });
   }
 
@@ -137,12 +136,18 @@ export class RegisterExpertComponent implements OnInit {
       return true;
     }
 
-    const invalidElements = this.requiredFields.filter(i => i.nativeElement.classList.contains('ng-invalid'));
+    const invalidElements = this.requiredFields.filter(
+      i => i.el !== undefined ?
+        i.el.nativeElement.classList.contains('ng-invalid')
+        : i.nativeElement.classList.contains('ng-invalid'));
+
     if (invalidElements.length > 0) {
       for (let a = 0; a < invalidElements.length; a++) {
-        this.setInvalid(invalidElements[a]);
+        const element = invalidElements[a].el !== undefined ? invalidElements[a].el : invalidElements[a];
+        this.setInvalid(element);
       }
-      this.scrollToElement(invalidElements[0]);
+      const firstElement = invalidElements[0].el !== undefined ? invalidElements[0].el : invalidElements[0];
+      this.scrollToElement(firstElement);
     }
     return false;
   }
@@ -153,7 +158,7 @@ export class RegisterExpertComponent implements OnInit {
     window.scrollTo({left: 0, top: offsetTop1 + offsetTop3, behavior: 'smooth'});
   }
 
-  private createExpertApplicationRequest(transactionHash: string, areas: Array<ExpertiseArea>): CreateExpertApplicationRequest {
+  private createExpertApplicationRequest(transactionHash: string, areas: Array<AreaType>): CreateExpertApplicationRequest {
     const user = this.userContext.getCurrentUser();
     const form = this.registryForm.value;
     const input = new FormData();
@@ -187,6 +192,18 @@ export class RegisterExpertComponent implements OnInit {
       this.notificationsService.error(this.translateService.instant('RegisterExpert.CategoryNotSelectedError'));
       return false;
     }
+    if (isUndefined(this.document)) {
+      this.notificationsService.error(this.translateService.instant('RegisterExpert.DocumentNotUploadedError'));
+      return false;
+    }
+    if (isUndefined(this.photo)) {
+      this.notificationsService.error(this.translateService.instant('RegisterExpert.PhotoNotUploadedError'));
+      return false;
+    }
+    if (isUndefined(this.cv)) {
+      this.notificationsService.error(this.translateService.instant('RegisterExpert.CVNotUploadedError'));
+      return false;
+    }
     const transactionHash = await this.applyToContractAsync(areas);
     if (transactionHash == null) {
       return false;
@@ -205,7 +222,7 @@ export class RegisterExpertComponent implements OnInit {
     return true;
   }
 
-  private async applyToContractAsync(areas: Array<ExpertiseArea>): Promise<string> {
+  private async applyToContractAsync(areas: Array<AreaType>): Promise<string> {
     try {
       return await this.expertContactClient.applyAsync(areas);
     } catch (e) {

@@ -12,12 +12,11 @@ namespace SmartValley.Domain.Interfaces
 
         Task<int> AddAsync(ExpertApplication expertApplication, IReadOnlyCollection<int> areas);
 
-        Task<bool> IsAppliedAsync(string address);
-
         Task<int> UpdateWholeAsync(ExpertApplication expertApplication);
 
         Task SetAcceptedAsync(ExpertApplicationDetails applicationDetails, List<int> areas);
 
         Task SetRejectedAsync(ExpertApplicationDetails applicationDetails);
+        Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(string address);
     }
 }

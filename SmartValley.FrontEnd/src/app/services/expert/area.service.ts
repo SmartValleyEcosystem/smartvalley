@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {ExpertApiClient} from '../../api/expert/expert-api-client';
 import {Area} from './area';
 import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
+import {AreaType} from '../../api/scoring/area-type.enum';
 
 @Injectable()
 export class AreaService {
@@ -10,7 +11,6 @@ export class AreaService {
     }
 
     public areas: Area[];
-
     public async initializeAsync() {
         const response = await this.expertApiClient.getAreasAsync();
         this.areas = response.items.map(a => {
@@ -35,5 +35,9 @@ export class AreaService {
             }
         };
         return areasId;
+    }
+
+    public getAreaTypeByIndex(index: number): AreaType {
+        return this.areas[index].areaType;
     }
 }

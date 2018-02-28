@@ -1,28 +1,28 @@
 import {Injectable} from '@angular/core';
-import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
+import {AreaType} from '../../api/scoring/area-type.enum';
 import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';
 import {QuestionResponse} from '../../api/estimates/question-response';
 import {TranslateService} from '@ngx-translate/core';
 
 @Injectable()
 export class QuestionService {
-  private questions: { [expertiseArea: number]: Array<QuestionResponse>; } = {};
+  private questions: { [areaType: number]: Array<QuestionResponse>; } = {};
 
   constructor(private estimatesClient: EstimatesApiClient,
               private translateService: TranslateService) {
   }
 
-  public getByExpertiseArea(expertiseArea: ExpertiseArea): Array<QuestionResponse> {
-    return this.questions[expertiseArea];
+  public getByAreaType(areaType: AreaType): Array<QuestionResponse> {
+    return this.questions[areaType];
   }
 
-  public getMaxScoreForExpertiseArea(expertiseArea: ExpertiseArea): number {
-    const categoryQuestions = this.questions[expertiseArea];
+  public getMaxScoreForArea(areaType: AreaType): number {
+    const categoryQuestions = this.questions[areaType];
     return categoryQuestions.map(q => q.maxScore).reduce((previous, current) => previous + current);
   }
 
-  public getMinScoreForExpertiseArea(expertiseArea: ExpertiseArea): number {
-    const categoryQuestions = this.questions[expertiseArea];
+  public getMinScoreForArea(areaType: AreaType): number {
+    const categoryQuestions = this.questions[areaType];
     return categoryQuestions.map(q => q.minScore).reduce((previous, current) => previous + current);
   }
 
@@ -32,9 +32,9 @@ export class QuestionService {
       question.name = await this.translateService.get('QuestionsNames.' + question.id).toPromise();
       question.description = await this.translateService.get('QuestionsDescriptions.' + question.id).toPromise();
     }
-    for (const item in ExpertiseArea) {
+    for (const item in AreaType) {
       if (Number(item)) {
-        this.questions[item] = allQuestions.items.filter(i => i.expertiseArea === parseInt(item, 0));
+        this.questions[item] = allQuestions.items.filter(i => i.areaType === parseInt(item, 0));
       }
     }
   }

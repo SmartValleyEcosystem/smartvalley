@@ -1,5 +1,5 @@
 import {Estimate} from '../estimate';
-import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
+import {AreaType} from '../../api/scoring/area-type.enum';
 
 export interface Question {
   name: string;
@@ -8,6 +8,6 @@ export interface Question {
   maxScore: number;
   minScore: number;
   comments: string;
-  expertiseArea: ExpertiseArea;
+  areaType: AreaType;
   estimates: Array<Estimate>;
 }

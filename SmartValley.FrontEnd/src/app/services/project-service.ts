@@ -1,32 +1,17 @@
 import {Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import {QuestionService} from './questions/question-service';
-import {ExpertiseArea} from '../api/scoring/expertise-area.enum';
+import {AreaType} from '../api/scoring/area-type.enum';
+import {ScoringProjectStatus} from './scoring-project-status.enum';
 
 @Injectable()
 export class ProjectService {
   constructor(private questionService: QuestionService) {
   }
 
-  public colorOfHrScore(score: number): string {
-    return this.colorOfExpertiseAreaScore(score, ExpertiseArea.HR);
-  }
-
-  public colorOfTechnicalScore(score: number): string {
-    return this.colorOfExpertiseAreaScore(score, ExpertiseArea.TechnicalExpert);
-  }
-
-  public colorOfLawyerScore(score: number): string {
-    return this.colorOfExpertiseAreaScore(score, ExpertiseArea.Lawyer);
-  }
-
-  public colorOfAnalystScore(score: number): string {
-    return this.colorOfExpertiseAreaScore(score, ExpertiseArea.Analyst);
-  }
-
-  public colorOfExpertiseAreaScore(score: number, expertiseArea: ExpertiseArea): string {
-    const maxScore = this.questionService.getMaxScoreForExpertiseArea(expertiseArea);
-    const minScore = this.questionService.getMinScoreForExpertiseArea(expertiseArea);
+  public colorOfAreaScore(score: number, areaType: AreaType): string {
+    const maxScore = this.questionService.getMaxScoreForArea(areaType);
+    const minScore = this.questionService.getMinScoreForArea(areaType);
 
     return this.getColorInRange(score, minScore, maxScore);
   }
@@ -37,6 +22,24 @@ export class ProjectService {
     }
 
     return this.getColorInRange(score, minScore, maxScore);
+  }
+
+  public colorOfProjectStatus(status: ScoringProjectStatus): string {
+    if (isNullOrUndefined(status)) {
+      return '';
+    }
+    return this.getColorByStatus(status);
+  }
+
+  private getColorByStatus(status: ScoringProjectStatus): string {
+    switch (status) {
+      case ScoringProjectStatus.InProgress:
+        return 'high_rate';
+      case ScoringProjectStatus.AcceptedAndDoNotEstimate:
+        return 'low_rate';
+      case ScoringProjectStatus.Rejected:
+        return 'medium_rate';
+    }
   }
 
   public colorOfProjectRate(score: number): string {

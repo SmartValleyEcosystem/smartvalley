@@ -32,6 +32,8 @@ export class ExpertContractClient implements ContractClient {
     public addSync(expertAddress: string, expertiseAreas: Array<ExpertiseArea>): Promise<string> {
         const contract = this.web3Service.getContract(this.abi, this.address);
         const fromAddress = this.userContext.getCurrentUser().account;
+        console.log(fromAddress);
+        console.log(expertiseAreas);
 
         return contract.add(expertAddress, expertiseAreas, {from: fromAddress});
     }

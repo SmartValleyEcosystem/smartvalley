@@ -21,6 +21,9 @@
     "UploadDocument": "Upload document",
     "UploadPhoto": "Photo of your, holding the document",
     "CategoryNotSelectedError": "Category not selected",
+    "DocumentNotUploadedError": "Document not uploaded",
+    "PhotoNotUploadedError": "Photo not uploaded",
+    "CVNotUploadedError": "CV not uploaded",
     "Dialog": "Your application is being processed. Please wait for completion of transaction.",
     "NamePlaceholder": "John",
     "SecondNamePlaceholder": "Smith"

@@ -1,6 +1,6 @@
-import {ExpertiseArea} from './expertise-area.enum';
+import {AreaType} from './area-type.enum';
 
 export interface AreaRequest {
-  area: ExpertiseArea;
+  area: AreaType;
   expertsCount: number;
 }

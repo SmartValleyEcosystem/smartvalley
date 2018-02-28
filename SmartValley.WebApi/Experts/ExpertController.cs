@@ -44,9 +44,8 @@ namespace SmartValley.WebApi.Experts
         [HttpGet, Route("{address}/status")]
         public async Task<GetExpertStatusResponse> GetExpertStatusAsync(string address)
         {
-            var isApplied = await _expertService.IsAppliedAsync(address);
-            var isConfirmed = await _expertService.IsConfirmedAsync(address);
-            return new GetExpertStatusResponse {IsConfirmed = isConfirmed, IsApplied = isApplied};
+            var status = await _expertService.GetExpertApplicationStatusAsync(address);
+            return new GetExpertStatusResponse {Status = status};
         }
 
         [HttpGet("applications")]
@@ -92,7 +91,18 @@ namespace SmartValley.WebApi.Experts
         public async Task<IActionResult> CreateExpertAsync([FromBody] ExpertRequest request)
         {
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
-            await _expertService.AddAsync(request.Address);
+            await _expertService.AddAsync(request);
+            return NoContent();
+        }
+
+        [HttpPut]
+        [Authorize(Roles = nameof(RoleType.Admin))]
+        public async Task<IActionResult> UpdateExpertAsync([FromBody] UpdateExpertRequest request)
+        {
+            if (!string.IsNullOrEmpty(request.TransactionHash))
+                await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
+
+            await _expertService.UpdateAsync(request);
             return NoContent();
         }
 
@@ -107,24 +117,25 @@ namespace SmartValley.WebApi.Experts
 
         [HttpGet]
         [Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<IActionResult> GetAllExperts()
+        public async Task<CollectionResponse<ExpertResponse>> GetAllExperts(AllExpertsRequest request)
         {
-            var experts = await _expertService.GetAllExpertsDetailsAsync();
-            return Ok(new CollectionResponse<ExpertResponse>
-                      {
-                          Items = experts.Select(i => new ExpertResponse
-                                                      {
-                                                          Address = i.Address,
-                                                          Email = i.Email,
-                                                          About = i.About,
-                                                          IsAvailable = i.IsAvailable,
-                                                          Name = i.Name,
-                                                          Areas = i.Areas.Select(j => new AreaResponse {Id = j.Id.FromDomain(), Name = j.Name}).ToArray()
-                                                      }).ToArray()
-                      });
+            var experts = await _expertService.GetAllExpertsDetailsAsync(request.Page, request.PageSize);
+            return new CollectionResponse<ExpertResponse>
+                   {
+                       Items = experts.Select(i => new ExpertResponse
+                                                   {
+                                                       Address = i.Address,
+                                                       Email = i.Email,
+                                                       About = i.About,
+                                                       IsAvailable = i.IsAvailable,
+                                                       Name = i.Name,
+                                                       Areas = i.Areas.Select(j => new AreaResponse {Id = j.Id.FromDomain(), Name = j.Name}).ToArray()
+                                                   }).ToArray(),
+                       TotalCount = experts.TotalCount
+                   };
         }
 
-        [HttpPost, DisableRequestSizeLimit, Route("application")]
+        [HttpPost, DisableRequestSizeLimit, Route("applications")]
         public async Task<EmptyResponse> CreateExpertApplicationAsync([FromForm] CreateExpertApplicationRequest request,
                                                                       IFormFile scan,
                                                                       IFormFile photo,

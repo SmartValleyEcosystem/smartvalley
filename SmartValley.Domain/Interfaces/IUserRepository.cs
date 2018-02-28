@@ -8,11 +8,9 @@ namespace SmartValley.Domain.Interfaces
     {
         Task<int> AddAsync(User user);
 
-        Task<IReadOnlyCollection<User>> GetAllAsync();
-
-        Task<int> RemoveAsync(User entity);
-
         Task<User> GetByAddressAsync(string address);
+
+        Task<IReadOnlyCollection<User>> GetIdsByAddressesAsync(IReadOnlyCollection<string> addresses);
 
         Task<User> GetByEmailAsync(string ademaildress);
 
@@ -27,5 +25,7 @@ namespace SmartValley.Domain.Interfaces
         Task RemoveRoleAsync(string address, RoleType type);
 
         Task<IReadOnlyCollection<Role>> GetRolesByUserIdAsync(long userId);
+
+        Task<User> GetByIdAsync(long userId);
     }
 }

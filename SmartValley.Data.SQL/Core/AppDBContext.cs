@@ -19,6 +19,8 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<Scoring> IReadOnlyDataContext.Scorings => Scorings.AsNoTracking();
 
+        IQueryable<ScoringOffer> IReadOnlyDataContext.ScoringOffers => ScoringOffers.AsNoTracking();
+
         IQueryable<AreaScoring> IReadOnlyDataContext.AreaScorings => AreaScorings.AsNoTracking();
 
         IQueryable<EstimateComment> IReadOnlyDataContext.EstimateComments => EstimateComments.AsNoTracking();
@@ -52,6 +54,8 @@ namespace SmartValley.Data.SQL.Core
         public DbSet<Project> Projects { get; set; }
 
         public DbSet<Scoring> Scorings { get; set; }
+
+        public DbSet<ScoringOffer> ScoringOffers { get; set; }
 
         public DbSet<AreaScoring> AreaScorings { get; set; }
 
@@ -186,6 +190,12 @@ namespace SmartValley.Data.SQL.Core
 
             modelBuilder.Entity<AreaScoring>()
                         .HasIndex(e => new {e.ScoringId, e.AreaId});
+
+            modelBuilder.Entity<ScoringOffer>()
+                        .HasKey(e => new {e.ScoringId, e.AreaId, e.ExpertId});
+
+            modelBuilder.Entity<ScoringOffer>()
+                        .HasIndex(e => new {e.ScoringId, e.AreaId, e.ExpertId});
         }
     }
 }

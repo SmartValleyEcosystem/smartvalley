@@ -24,12 +24,12 @@ import {CompletedVotingComponent} from './components/completed-voting/completed-
 import {AdminPanelComponent} from './components/admin-panel/admin-panel.component';
 import {CompletedVotingsComponent} from './components/completed-votings/completed-votings.component';
 import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
-import {BecomeExpertComponent} from './components/become-expert/become-expert.component';
+import {ExpertStatusComponent} from './components/expert-status/expert-status.component';
 import {ExpertComponent} from './components/expert/expert.component';
-import {BecomeExpertGuard} from './services/guards/become-expert.guard';
 import {RegisterExpertGuard} from './services/guards/register-expert.guard';
 import {RegisterExpertComponent} from './components/register-expert/register-expert.component';
 import {AdminExpertApplicationComponent} from './components/admin-panel/admin-expert-application/admin-expert-application.component';
+import {ExpertStatusGuard} from './services/guards/expert-status.guard';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -79,7 +79,7 @@ const appRoutes: Routes = [
         }
       },
       {path: Paths.Report + '/:id', pathMatch: 'full', component: ReportComponent},
-      {path: Paths.BecomeExpert, canActivate: [BecomeExpertGuard], component: BecomeExpertComponent},
+      {path: Paths.ExpertStatus, canActivate: [ExpertStatusGuard], component: ExpertStatusComponent},
       {path: Paths.RegisterExpert, canActivate: [RegisterExpertGuard], component: RegisterExpertComponent},
       {path: Paths.Expert, component: ExpertComponent, canActivate: [ExpertGuard]},
       {path: Paths.Scoring + '/:id', pathMatch: 'full', component: EstimateComponent, canActivate: [ShouldHaveEthGuard]},

@@ -6,7 +6,7 @@ import {QuestionService} from '../../services/questions/question-service';
 import {Question} from '../../services/questions/question';
 import {Estimate} from '../../services/estimate';
 import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';
-import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
+import {AreaType} from '../../api/scoring/area-type.enum';
 import {ProjectService} from '../../services/project-service';
 import {BlockiesService} from '../../services/blockies-service';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
@@ -26,6 +26,8 @@ import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {NotificationsService} from 'angular2-notifications';
 import * as moment from 'moment';
 import {UserContext} from '../../services/authentication/user-context';
+import {AreaService} from '../../services/expert/area.service';
+import {Area} from '../../services/expert/area';
 
 @Component({
   selector: 'app-report',
@@ -44,16 +46,17 @@ export class ReportComponent implements AfterViewChecked, OnInit {
 
   public questions: Array<Question>;
   public details: ProjectDetailsResponse;
-  public expertiseAreaAverageScore: number;
+  public areaAverageScore: number;
   public expertiseMaxScore: number;
   public projectImageUrl: string;
   public currentAccount: string;
+  public areas: Area[];
 
   private projectId: number;
   @ViewChild('reportTabSet')
   private reportTabSet: NgbTabset;
   private selectedReportTab: string;
-  private selectedExpertiseTabIndex: number;
+  private selectedAreaTabIndex: number;
   private knownTabs = [Constants.ReportFormTab, Constants.ReportEstimatesTab];
 
   constructor(private projectApiClient: ProjectApiClient,
@@ -70,10 +73,12 @@ export class ReportComponent implements AfterViewChecked, OnInit {
               private scoringApiClient: ScoringApiClient,
               private notificationsService: NotificationsService,
               private userContext: UserContext,
-              private scoringManagerContractClient: ScoringManagerContractClient) {
+              private scoringManagerContractClient: ScoringManagerContractClient,
+              private areaService: AreaService) {
   }
 
   public async ngOnInit() {
+    this.selectedAreaTabIndex = 0;
     await this.loadInitialDataAsync();
     const currentUser = this.userContext.getCurrentUser();
     if (!isNullOrUndefined(currentUser)) {
@@ -96,8 +101,8 @@ export class ReportComponent implements AfterViewChecked, OnInit {
     await this.router.navigate([Paths.Report + '/' + this.projectId], {queryParams: queryParams, replaceUrl: true});
   }
 
-  public async onExpertiseTabIndexChanged(index: number) {
-    this.selectedExpertiseTabIndex = index;
+  public async onAreaTabIndexChanged(index: number) {
+    this.selectedAreaTabIndex = index;
     await this.reloadExpertEstimatesAsync();
   }
 
@@ -110,9 +115,8 @@ export class ReportComponent implements AfterViewChecked, OnInit {
   }
 
   public async submitToScoringAsync(): Promise<void> {
-    // TODO
-    const areas = [1, 2, 3, 4];
-    const areaExpertCounts = [3, 3, 3, 3];
+    const areas = this.areaService.areas.map(a => a.areaType);
+    const areaExpertCounts = await this.dialogService.showExpertsCountSelectionDialogAsync(areas);
 
     const transactionHash = await this.startScoringAsync(areas, areaExpertCounts);
     if (transactionHash == null) {
@@ -155,6 +159,7 @@ export class ReportComponent implements AfterViewChecked, OnInit {
   }
 
   private async loadInitialDataAsync(): Promise<void> {
+    this.areas = this.areaService.areas;
     this.projectId = +this.route.snapshot.paramMap.get('id');
     this.details = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
     this.projectImageUrl = this.getImageUrl();
@@ -186,12 +191,12 @@ export class ReportComponent implements AfterViewChecked, OnInit {
   }
 
   private async reloadExpertEstimatesAsync(): Promise<void> {
-    const expertiseArea = this.getExpertiseAreaByIndex(this.selectedExpertiseTabIndex);
-    const estimatesResponse = await this.estimatesApiClient.getAsync(this.projectId, expertiseArea);
-    const questionsInArea = this.questionService.getByExpertiseArea(expertiseArea);
+    const areaType = this.areaService.getAreaTypeByIndex(this.selectedAreaTabIndex);
+    const estimatesResponse = await this.estimatesApiClient.getAsync(this.projectId, areaType);
+    const questionsInArea = this.questionService.getByAreaType(areaType);
 
-    this.expertiseAreaAverageScore = estimatesResponse.averageScore;
-    this.expertiseMaxScore = this.questionService.getMaxScoreForExpertiseArea(expertiseArea);
+    this.areaAverageScore = estimatesResponse.averageScore;
+    this.expertiseMaxScore = this.questionService.getMaxScoreForArea(areaType);
     this.questions = estimatesResponse.questions.map(q => this.createQuestion(questionsInArea, q));
   }
 
@@ -210,18 +215,5 @@ export class ReportComponent implements AfterViewChecked, OnInit {
         comments: j.comment
       })
     };
-  }
-
-  private getExpertiseAreaByIndex(index: number): ExpertiseArea {
-    switch (index) {
-      case 1 :
-        return ExpertiseArea.Lawyer;
-      case 2 :
-        return ExpertiseArea.Analyst;
-      case 3 :
-        return ExpertiseArea.TechnicalExpert;
-      default:
-        return ExpertiseArea.HR;
-    }
   }
 }

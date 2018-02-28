@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using SmartValley.Application;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Experts.Requests;
@@ -7,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SmartValley.Application.AzureStorage;
 using SmartValley.Domain;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Exceptions;
 
 namespace SmartValley.WebApi.Experts
@@ -19,8 +19,7 @@ namespace SmartValley.WebApi.Experts
         private readonly ExpertApplicationsStorageProvider _expertApplicationsStorageProvider;
         private readonly IClock _clock;
 
-        public ExpertService(EthereumClient ethereumClient,
-                             IUserRepository userRepository,
+        public ExpertService(IUserRepository userRepository,
                              IExpertApplicationRepository expertApplicationRepository,
                              IClock clock,
                              ExpertApplicationsStorageProvider expertApplicationsStorageProvider,
@@ -38,22 +37,22 @@ namespace SmartValley.WebApi.Experts
             var user = await _userRepository.GetByAddressAsync(request.ApplicantAddress);
 
             var expertApplication = new ExpertApplication
-                                    {
-                                        FirstName = request.FirstName,
-                                        LastName = request.LastName,
-                                        Sex = request.Sex,
-                                        ApplicantId = user.Id,
-                                        BirthDate = request.BirthDate,
-                                        Country = request.CountryIsoCode,
-                                        City = request.City,
-                                        Description = request.Description,
-                                        Why = request.Why,
-                                        FacebookLink = request.FacebookLink,
-                                        LinkedInLink = request.LinkedInLink,
-                                        DocumentNumber = request.DocumentNumber,
-                                        DocumentType = request.DocumentType.ToDomain(),
-                                        ApplyDate = _clock.UtcNow
-                                    };
+            {
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Sex = request.Sex,
+                ApplicantId = user.Id,
+                BirthDate = request.BirthDate,
+                Country = request.CountryIsoCode,
+                City = request.City,
+                Description = request.Description,
+                Why = request.Why,
+                FacebookLink = request.FacebookLink,
+                LinkedInLink = request.LinkedInLink,
+                DocumentNumber = request.DocumentNumber,
+                DocumentType = request.DocumentType.ToDomain(),
+                ApplyDate = _clock.UtcNow
+            };
 
             await _expertApplicationRepository.AddAsync(expertApplication, request.Areas);
 
@@ -84,27 +83,51 @@ namespace SmartValley.WebApi.Experts
             return _expertApplicationRepository.GetAllByStatusAsync(ExpertApplicationStatus.Pending);
         }
 
-        public Task<bool> IsAppliedAsync(string address)
-            => _expertApplicationRepository.IsAppliedAsync(address);
+        public Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(string address)
+            => _expertApplicationRepository.GetExpertApplicationStatusAsync(address);
 
-        public async Task<bool> IsConfirmedAsync(string address)
+        public async Task AddAsync(ExpertRequest request)
         {
-            var existExpert = await _expertRepository.GetByAddressAsync(address);
-            return existExpert != null;
+            var user = await _userRepository.GetByAddressAsync(request.Address);
+            if (user == null)
+                throw new AppErrorException(ErrorCode.UserNotFound);
+
+            user.About = request.About;
+            user.Name = request.Name;
+            user.Email = request.Email;
+
+            await _userRepository.UpdateWholeAsync(user);
+            await _userRepository.AddRoleAsync(request.Address, RoleType.Expert);
+            await _expertRepository.AddAsync(new Expert
+            {
+                IsAvailable = true,
+                UserId = user.Id
+            }, request.Areas);
         }
 
-        public async Task AddAsync(string address)
+        public async Task UpdateAsync(UpdateExpertRequest request)
         {
-            await _userRepository.AddRoleAsync(address, RoleType.Expert);
-            var user = await _userRepository.GetByAddressAsync(address);
-            await _expertRepository.AddAsync(new Expert {IsAvailable = true, UserId = user.Id});
+            var user = await _userRepository.GetByAddressAsync(request.Address);
+            if (user == null)
+                throw new AppErrorException(ErrorCode.UserNotFound);
+
+            user.About = request.About;
+            user.Name = request.Name;
+            user.Email = request.Email;
+
+            await _userRepository.UpdateWholeAsync(user);
+            await _expertRepository.UpdateAsync(new Expert
+            {
+                IsAvailable = request.IsAvailable,
+                UserId = user.Id
+            }, request.Areas);
         }
 
         public async Task DeleteAsync(string address)
         {
             await _userRepository.RemoveRoleAsync(address, RoleType.Expert);
             var user = await _userRepository.GetByAddressAsync(address);
-            await _expertRepository.RemoveAsync(new Expert {IsAvailable = true, UserId = user.Id});
+            await _expertRepository.RemoveAsync(new Expert { IsAvailable = true, UserId = user.Id });
         }
 
         public async Task AcceptApplicationAsync(long id, IReadOnlyCollection<int> areas)
@@ -112,6 +135,27 @@ namespace SmartValley.WebApi.Experts
             var application = await _expertApplicationRepository.GetDetailsByIdAsync(id);
             if (application.ExpertApplication.Status != ExpertApplicationStatus.Pending)
                 throw new AppErrorException(ErrorCode.ExpertApplicationAlreadyProcessed);
+
+            var user = await _userRepository.GetByIdAsync(application.ExpertApplication.ApplicantId);
+            if (user == null)
+                throw new AppErrorException(ErrorCode.UserNotFound);
+
+            user.Name = $"{application.ExpertApplication.LastName} {application.ExpertApplication.FirstName}";
+            await _userRepository.UpdateWholeAsync(user);
+
+            var expert = await _expertRepository.GetByAddressAsync(user.Address);
+            if (expert != null)
+            {
+                await _expertRepository.UpdateAsync(expert, areas);
+            }
+            else
+            {
+                await _expertRepository.AddAsync(new Expert
+                {
+                    UserId = user.Id,
+                    IsAvailable = true
+                }, areas);
+            }
 
             await _expertApplicationRepository.SetAcceptedAsync(application, areas.ToList());
         }
@@ -125,8 +169,8 @@ namespace SmartValley.WebApi.Experts
             await _expertApplicationRepository.SetRejectedAsync(application);
         }
 
-        public Task<IReadOnlyCollection<ExpertDetails>> GetAllExpertsDetailsAsync()
-            => _expertRepository.GetAllDetailsAsync();
+        public Task<PagingList<ExpertDetails>> GetAllExpertsDetailsAsync(int page, int pageSize)
+            => _expertRepository.GetAllDetailsAsync(page, pageSize);
 
         public Task<bool> IsExpertAsync(string address)
             => _userRepository.HasRoleAsync(address, RoleType.Expert);

@@ -1,4 +1,4 @@
-import {ExpertiseArea} from '../../../api/scoring/expertise-area.enum';
+import {AreaType} from '../../../api/scoring/area-type.enum';
 import {ProjectResponse} from '../../../api/project/project-response';
 import {MyProjectsItemResponse} from '../../../api/project/my-projects-item-response';
 import {VotingStatus} from '../../../services/voting-status.enum';
@@ -15,7 +15,7 @@ export class ProjectCardData {
   area: string;
   description: string;
   score: number;
-  expertiseArea: ExpertiseArea;
+  areaType: AreaType;
   address: string;
   author: string;
   scoringStatus: ScoringStatus;
@@ -44,7 +44,7 @@ export class ProjectCardData {
   }
 
   public static fromProjectResponse(response: ProjectResponse,
-                                    expertiseArea: ExpertiseArea = ExpertiseArea.HR): ProjectCardData {
+                                    areaType: AreaType = AreaType.HR): ProjectCardData {
     return <ProjectCardData>{
       id: response.id,
       name: response.name,
@@ -54,7 +54,7 @@ export class ProjectCardData {
       description: response.description,
       address: response.address,
       author: response.author,
-      expertiseArea: expertiseArea,
+      areaType: areaType,
       scoringStatus: response.score ? ScoringStatus.Finished : ScoringStatus.InProgress
     };
   }

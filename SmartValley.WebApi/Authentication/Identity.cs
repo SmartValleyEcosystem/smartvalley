@@ -1,7 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Security.Principal;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace SmartValley.WebApi.Authentication
 {

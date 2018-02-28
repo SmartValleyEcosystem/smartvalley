@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SmartValley.Application.Contracts;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application.Contracts.Options;
+using SmartValley.Domain.Entities;
 using SmartValley.WebApi.Contracts.Responses;
 
 namespace SmartValley.WebApi.Contracts
@@ -13,6 +14,17 @@ namespace SmartValley.WebApi.Contracts
         public ContractsController(NethereumOptions nethereumOptions)
         {
             _nethereumOptions = nethereumOptions;
+        }
+        
+        [HttpGet("scoringExpertsManager"), Authorize(Roles = nameof(RoleType.Admin))]
+        public ContractResponse GetScoringExpertsManagerContract()
+        {
+            var contractOptions = _nethereumOptions.ScoringExpertsManagerContract;
+            return new ContractResponse
+                   {
+                       Address = contractOptions.Address,
+                       Abi = contractOptions.Abi,
+                   };
         }
 
         [Route("scoringManager")]
