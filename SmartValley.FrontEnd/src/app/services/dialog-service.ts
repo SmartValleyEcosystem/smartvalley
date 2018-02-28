@@ -19,6 +19,8 @@ import {RegisterModelData} from '../components/common/register-modal/register-mo
 import {RegisterModalComponent} from '../components/common/register-modal/register-modal.component';
 import {AddAdminModalComponent} from '../components/common/add-admin-modal/add-admin-modal.component';
 import {ConfirmEmailModalComponent} from '../components/common/confirm-email/confirm-email-modal.component';
+import {CreateNewExpertModalComponent} from '../components/common/create-new-expert-modal/create-new-expert-modal.component';
+import {EditExpertModalComponent} from '../components/common/edit-expert-modal/edit-expert-modal.component';
 
 @Injectable()
 export class DialogService {
@@ -131,5 +133,11 @@ export class DialogService {
     return this.openModal(componentType, data, disableClose)
       .afterClosed()
       .toPromise<boolean>();
+  }
+  public showCreateNewExpertModal(): MatDialogRef<CreateNewExpertModalComponent> {
+      return this.openModal(CreateNewExpertModalComponent, {});
+  }
+  public showEditExpertModal(expertData: any): MatDialogRef<EditExpertModalComponent> {
+      return this.openModal(EditExpertModalComponent, expertData);
   }
 }

@@ -105,6 +105,9 @@ import {AdminExpertApplicationsListComponent} from './components/admin-panel/adm
 import {AdminExpertApplicationComponent} from './components/admin-panel/admin-expert-application/admin-expert-application.component';
 import {AreaService} from './services/expert/area.service';
 import {EnumHelper} from './utils/enum-helper';
+import {AdminExpertsListComponent} from './components/admin-panel/admin-experts-list/admin-experts-list.component';
+import {CreateNewExpertModalComponent} from './components/common/create-new-expert-modal/create-new-expert-modal.component';
+import {EditExpertModalComponent} from './components/common/edit-expert-modal/edit-expert-modal.component';
 
 @NgModule({
   declarations: [
@@ -149,7 +152,10 @@ import {EnumHelper} from './utils/enum-helper';
     ConfirmEmailModalComponent,
     ConfirmEmailComponent,
     AdminExpertApplicationsListComponent,
-    AdminExpertApplicationComponent
+    AdminExpertApplicationComponent,
+    AdminExpertsListComponent,
+    CreateNewExpertModalComponent,
+    EditExpertModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -162,7 +168,9 @@ import {EnumHelper} from './utils/enum-helper';
     VoteModalComponent,
     RegisterModalComponent,
     AddAdminModalComponent,
-    ConfirmEmailModalComponent
+    ConfirmEmailModalComponent,
+    CreateNewExpertModalComponent,
+    EditExpertModalComponent
   ],
   imports: [
     FileUploadModule,
