@@ -11,7 +11,6 @@ export class Web3Service {
   }
 
   private readonly rinkebyNetworkId = '4';
-  private readonly metamaskProviderName = 'MetamaskInpageProvider';
   private _transactionReceiptPollingInterval = 1000;
 
   private _eth: EthJs;
@@ -30,7 +29,7 @@ export class Web3Service {
   }
 
   public get isMetamaskInstalled(): boolean {
-    return (!isNullOrUndefined(window['web3']) && window['web3'].currentProvider.constructor.name === this.metamaskProviderName);
+    return (!isNullOrUndefined(window['web3']) && window['web3'].currentProvider.isMetaMask);
   }
 
   public async getCurrentAccountAsync(): Promise<string> {
