@@ -1,0 +1,75 @@
+<div>
+  <h2 mat-mat-title>{{'EditExpertModalComponent.Title' | translate}}</h2>
+  <mat-dialog-content>
+    <h3 class="sub-header">{{'EditExpertModalComponent.Backend' | translate}}</h3>
+    <form [formGroup]="saveBackendForm">
+      <div class="row">
+          <span class="col-4">
+              {{ 'EditExpertModalComponent.Address' | translate }}
+          </span>
+          <mat-form-field class="col-8 example-full-width">
+              <input placeholder="{{ 'EditExpertModalComponent.Address' | translate }}" matInput formControlName="address" name="address" [(ngModel)]="data.address" [(value)]="data.address" #required>
+          </mat-form-field>
+      </div>
+      <div class="row">
+          <span class="col-4">
+              {{ 'EditExpertModalComponent.Email' | translate }}
+          </span>
+          <mat-form-field class="col-8 example-full-width">
+              <input placeholder="{{ 'EditExpertModalComponent.Email' | translate }}" matInput formControlName="email" name="email" [(ngModel)]="data.email" [(value)]="data.email" #required>
+          </mat-form-field>
+      </div>
+      <div class="row">
+          <span class="col-4">
+              {{ 'EditExpertModalComponent.Name' | translate }}
+          </span>
+          <mat-form-field class="col-8 example-full-width">
+              <input placeholder="{{ 'EditExpertModalComponent.Name' | translate }}" matInput formControlName="name" name="name" #required [(ngModel)]="data.name" [(value)]="data.name">
+          </mat-form-field>
+      </div>
+      <div class="row">
+          <span class="col-4">
+              {{ 'EditExpertModalComponent.About' | translate }}
+          </span>
+          <mat-form-field class="col-8 example-full-width">
+              <textarea matInput placeholder="{{ 'EditExpertModalComponent.About' | translate }}" formControlName="about" name="about" [(ngModel)]="data.about" [(value)]="data.about"></textarea>
+          </mat-form-field>
+      </div>
+      <div class="row submit-row">
+        <span class="offset-6 col-6">
+          <mat-dialog-actions class="d-flex justify-content-center">
+            <button mat-raised-button (click)="submit(saveBackendForm, false)" [disabled]="saveBackendForm.invalid" class="sv-default-btn btn-space">
+              {{'EditExpertModalComponent.SaveBackend' | translate}}
+            </button>
+          </mat-dialog-actions>
+        </span>
+      </div>
+    </form>
+    <h3 class="sub-header">{{'EditExpertModalComponent.Blockchain' | translate}}</h3>
+    <form [formGroup]="saveBlockchainForm">
+      <div class="row">
+        <span class="col-6">
+          <mat-checkbox align="start" name="available" formControlName="available" [(ngModel)]="data.isAvailable" [(value)]="data.isAvailable">
+            {{ 'EditExpertModalComponent.AvailableForWork' | translate }}
+          </mat-checkbox>
+        </span>
+      </div>
+      <div *ngFor="let area of areas" class="row">
+        <span class="col-6">
+          <mat-checkbox align="start" name="{{'category' + area.areaType}}" formControlName="{{'category' + area.areaType}}" [(ngModel)]="selectedCategories[area.areaType]">
+            {{ area.name }}
+          </mat-checkbox>
+        </span>
+      </div>
+
+
+      <div class="row submit-row">
+        <span class="offset-6 col-6">
+          <button mat-raised-button (click)="submit(saveBlockchainForm)" [disabled]="saveBackendForm.invalid" class="sv-default-btn btn-space">
+              {{'EditExpertModalComponent.SaveBlockchain' | translate}}
+            </button>
+        </span>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>

@@ -37,6 +37,9 @@ export function multiTranslateLoaderFactory() {
     'components/common/confirm-email/confirm-email.component',
     'components/common/confirm-email/confirm-email-modal.component',
     'components/completed-voting/completed-voting.component',
+    'components/common/create-new-expert-modal/create-new-expert-modal.component',
+    'components/admin-panel/admin-experts-list/admin-expert-list.component',
+    'components/common/edit-expert-modal/edit-expert-modal.component',
     'components/common/experts-count-selection-modal/experts-count-selection-modal.component'
   ]);
 }

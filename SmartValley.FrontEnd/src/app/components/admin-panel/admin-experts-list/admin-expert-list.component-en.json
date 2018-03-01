@@ -1,0 +1,14 @@
+{
+  "AdminExpertList": {
+    "Edit": "Edit",
+    "Delete": "Delete",
+    "Actions": "Actions",
+    "CreateNew": "Create new",
+    "Address": "Address",
+    "Email": "Email",
+    "Name": "Name",
+    "About": "About",
+    "Available": "Available",
+    "Categories": "Categories"
+  }
+}
