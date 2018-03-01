@@ -1,6 +1,7 @@
 {
   "AdminExpertApplication": {
     "Accept": "Accept",
-    "Reject": "Reject"
+    "Reject": "Reject",
+    "Subtitle": "Expert application Form"
   }
 }
