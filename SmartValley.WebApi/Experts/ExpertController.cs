@@ -19,6 +19,7 @@ namespace SmartValley.WebApi.Experts
     {
         private readonly IExpertService _expertService;
         private readonly EthereumClient _ethereumClient;
+        private readonly ExpertApplicationsStorageProvider _expertApplicationsStorageProvider;
         private const int FileSizeLimitBytes = 5242880;
 
         public ExpertController(
@@ -27,6 +28,7 @@ namespace SmartValley.WebApi.Experts
             EthereumClient ethereumClient)
         {
             _ethereumClient = ethereumClient;
+            _expertApplicationsStorageProvider = expertApplicationsStorageProvider;
             _expertService = expertService;
             _ethereumClient = ethereumClient;
         }
@@ -133,6 +135,14 @@ namespace SmartValley.WebApi.Experts
                                                    }).ToArray(),
                        TotalCount = experts.TotalCount
                    };
+        }
+
+        [HttpGet("applications/file")]
+        [Authorize(Roles = nameof(RoleType.Admin))]
+        public async Task<IActionResult> GetFileAsync(string fileName)
+        {
+            var file = await _expertApplicationsStorageProvider.DowndloadAsync(fileName);
+            return File(file.Data, file.FileName);
         }
 
         [HttpPost, DisableRequestSizeLimit, Route("applications")]
