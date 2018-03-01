@@ -47,7 +47,7 @@ namespace SmartValley.WebApi.Estimates
             if (!await _projectService.IsAuthorizedToSeeEstimatesAsync(User.Identity.Name, request.ProjectId))
                 return Unauthorized();
 
-            var scoringStatistics = await _estimationService.GetScoringStatisticsInAreaAsync(request.ProjectId, request.ExpertiseArea.ToDomain());
+            var scoringStatistics = await _estimationService.GetScoringStatisticsInAreaAsync(request.ProjectId, request.AreaType.ToDomain());
             return Ok(GetQuestionsWithEstimatesResponse.Create(scoringStatistics));
         }
 

@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
-using SmartValley.WebApi.Estimates;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Projects.Requests;
 using SmartValley.WebApi.Projects.Responses;
@@ -97,7 +96,7 @@ namespace SmartValley.WebApi.Projects
         [Route("forscoring")]
         public async Task<CollectionResponse<ProjectResponse>> GetForScoringAsync([FromQuery] GetProjectsForScoringRequest request)
         {
-            var projects = await _projectService.GetForScoringAsync(request.ExpertiseArea.ToDomain(), User.Identity.Name);
+            var projects = await _projectService.GetForScoringAsync(request.AreaType.ToDomain(), User.Identity.Name);
             return new CollectionResponse<ProjectResponse>
             {
                 Items = projects.Select(ProjectResponse.Create).ToArray()

@@ -1,0 +1,25 @@
+.mat-dialog-content {
+    overflow: visible;
+}
+h2, h3 {
+    text-align: center;
+    width: 470px;
+}
+.sub-header {
+    text-align: left;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 10px;
+}
+input.mat-input-element {
+    margin-top: -.0625em;
+    width: 100%;
+}
+.row {
+    margin-top: 10px;
+}
+textarea {
+    width: 100%;
+}
+.submit-row {
+    text-align: right;
+}

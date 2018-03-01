@@ -5,7 +5,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ExpertApiClient} from '../../api/expert/expert-api-client';
 import {CreateExpertApplicationRequest} from '../../api/expert/expert-applitacion-request';
 import {ExpertContractClient} from '../../services/contract-clients/expert-contract-client';
-import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
+import {AreaType} from '../../api/scoring/area-type.enum';
 import {DialogService} from '../../services/dialog-service';
 import {SexEnum} from './sex.enum';
 import {DocumentEnum} from './document.enum';
@@ -37,7 +37,7 @@ export class RegisterExpertComponent implements OnInit {
   public documentTypes: SelectItem[];
   public countries: SelectItem[];
   public areas: SelectItem[];
-  public selectedAreas: ExpertiseArea[] = [];
+  public selectedAreas: AreaType[] = [];
 
   @ViewChildren('required') public requiredFields: QueryList<any>;
 
@@ -158,7 +158,7 @@ export class RegisterExpertComponent implements OnInit {
     window.scrollTo({left: 0, top: offsetTop1 + offsetTop3, behavior: 'smooth'});
   }
 
-  private createExpertApplicationRequest(transactionHash: string, areas: Array<ExpertiseArea>): CreateExpertApplicationRequest {
+  private createExpertApplicationRequest(transactionHash: string, areas: Array<AreaType>): CreateExpertApplicationRequest {
     const user = this.userContext.getCurrentUser();
     const form = this.registryForm.value;
     const input = new FormData();
@@ -222,7 +222,7 @@ export class RegisterExpertComponent implements OnInit {
     return true;
   }
 
-  private async applyToContractAsync(areas: Array<ExpertiseArea>): Promise<string> {
+  private async applyToContractAsync(areas: Array<AreaType>): Promise<string> {
     try {
       return await this.expertContactClient.applyAsync(areas);
     } catch (e) {

@@ -4,6 +4,6 @@ namespace SmartValley.WebApi.Projects.Requests
 {
     public class GetProjectsForScoringRequest
     {
-        public AreaType ExpertiseArea { get; set; }
+        public AreaType AreaType { get; set; }
     }
 }

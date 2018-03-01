@@ -25,6 +25,7 @@ namespace SmartValley.Data.SQL.Repositories
 
         public Task<int> RemoveAsync(Expert expert)
         {
+            _editContext.Experts.Attach(expert);
             _editContext.Experts.Remove(expert);
             return _editContext.SaveAsync();
         }
@@ -35,15 +36,6 @@ namespace SmartValley.Data.SQL.Repositories
                     join user in _readContext.Users on expert.UserId equals user.Id
                     where user.Address.Equals(address, StringComparison.OrdinalIgnoreCase)
                     select expert).FirstOrDefaultAsync();
-        }
-
-        public async Task<IDictionary<string, long>> GetIdsByAddressesAsync(IReadOnlyCollection<string> addresses)
-        {
-            return await (from expert in _readContext.Experts
-                          join user in _readContext.Users on expert.UserId equals user.Id
-                          where addresses.Contains(user.Address, StringComparer.OrdinalIgnoreCase)
-                          select new {Id = expert.UserId, user.Address})
-                       .ToDictionaryAsync(e => e.Address, e => e.Id);
         }
 
         public async Task<IReadOnlyCollection<Area>> GetAreasAsync()

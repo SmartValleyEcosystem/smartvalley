@@ -17,7 +17,8 @@
           </div>
         </div>
         <div class="main-info col-4">
-          <div class="col-12" *ngIf="details.scoringStatus == ScoringStatus.Pending && details.votingStatus != VotingStatus.InProgress && details.authorAddress === currentAccount">
+          <div class="col-12"
+               *ngIf="details.scoringStatus == ScoringStatus.Pending && details.votingStatus != VotingStatus.InProgress && details.authorAddress === currentAccount">
             <span>
               {{details.votingStatus == VotingStatus.Accepted
               ? ('Report.SubmitForFree' | translate)
@@ -122,59 +123,26 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab id="estimates" title="{{ 'Report.ExpertEstimates' | translate }}" *ngIf="details.scoringStatus !== ScoringStatus.Pending">
+      <ngb-tab id="estimates" title="{{ 'Report.ExpertEstimates' | translate }}"
+               *ngIf="details.scoringStatus !== ScoringStatus.Pending">
         <ng-template ngbTabContent>
           <div class="content sw-card sw-content">
-            <mat-tab-group [selectedIndex]="selectedExpertiseTabIndex"
-                           (selectedIndexChange)="onExpertiseTabIndexChanged($event)">
-              <mat-tab label="{{ 'Common.Hr' | translate }}">
-                <span>{{ 'Report.HrAvg' | translate }}:</span>
-                <span *ngIf="expertiseAreaAverageScore != null; else elseBlock"
-                      class="{{projectService.colorOfHrScore(expertiseAreaAverageScore)}}">
-                  {{expertiseAreaAverageScore.toFixed(2)}}
+            <mat-tab-group [selectedIndex]="selectedAreaTabIndex"
+                           (selectedIndexChange)="onAreaTabIndexChanged($event)">
+              <div *ngFor="let area of areas">
+                <mat-tab label="{{area.name}}">
+                  <span>{{ 'Report.Avg' | translate }}:</span>
+                  <span *ngIf="areaAverageScore != null; else elseBlock"
+                        class="{{projectService.colorOfAreaScore(areaAverageScore, area.areaType)}}">
+                  {{areaAverageScore.toFixed(2)}}
                 </span>
-                <span *ngIf="expertiseAreaAverageScore != null">
+                  <span *ngIf="areaAverageScore != null">
                   {{ 'Report.OutOf' | translate }} <strong>{{expertiseMaxScore.toFixed(2)}}</strong>
                 </span>
-                <ng-template #elseBlock><span>{{ 'Report.InProgressLower' | translate }}</span></ng-template>
-                <app-questions [questions]="questions"></app-questions>
-              </mat-tab>
-              <mat-tab label="{{ 'Common.Lawyer' | translate }}">
-                <span>{{ 'Report.LawyerAvg' | translate }}:</span>
-                <span *ngIf="expertiseAreaAverageScore != null; else elseBlock"
-                      class="{{projectService.colorOfLawyerScore(expertiseAreaAverageScore)}}">
-                    {{expertiseAreaAverageScore.toFixed(2)}}
-                </span>
-                <span *ngIf="expertiseAreaAverageScore != null">
-                  {{ 'Report.OutOf' | translate }} <strong>{{expertiseMaxScore.toFixed(2)}}</strong>
-                </span>
-                <ng-template #elseBlock><span>{{ 'Report.InProgressLower' | translate }}</span></ng-template>
-                <app-questions [questions]="questions"></app-questions>
-              </mat-tab>
-              <mat-tab label="{{ 'Common.Analyst' | translate }}">
-                <span>{{ 'Report.AnalystAvg' | translate }}:</span>
-                <span *ngIf="expertiseAreaAverageScore != null; else elseBlock"
-                      class="{{projectService.colorOfAnalystScore(expertiseAreaAverageScore)}}">
-                  {{expertiseAreaAverageScore.toFixed(2)}}
-                </span>
-                <span *ngIf="expertiseAreaAverageScore != null">
-                  {{ 'Report.OutOf' | translate }} <strong>{{expertiseMaxScore.toFixed(2)}}</strong>
-                </span>
-                <ng-template #elseBlock><span>{{ 'Report.InProgressLower' | translate }}</span></ng-template>
-                <app-questions [questions]="questions"></app-questions>
-              </mat-tab>
-              <mat-tab label="{{ 'Common.TechnicalExpert' | translate }}">
-                <span>{{ 'Report.TechnicalExpertAvg' | translate }}:</span>
-                <span *ngIf="expertiseAreaAverageScore != null; else elseBlock"
-                      class="{{projectService.colorOfTechnicalScore(expertiseAreaAverageScore)}}">
-                  {{expertiseAreaAverageScore.toFixed(2)}}
-                </span>
-                <span *ngIf="expertiseAreaAverageScore != null">
-                  {{ 'Report.OutOf' | translate }} <strong>{{expertiseMaxScore.toFixed(2)}}</strong>
-                </span>
-                <ng-template #elseBlock><span>{{ 'Report.InProgressLower' | translate }}</span></ng-template>
-                <app-questions [questions]="questions"></app-questions>
-              </mat-tab>
+                  <ng-template #elseBlock><span>{{ 'Report.InProgressLower' | translate }}</span></ng-template>
+                  <app-questions [questions]="questions"></app-questions>
+                </mat-tab>
+              </div>
             </mat-tab-group>
           </div>
           <div style="margin-left: calc(4em - 5px); margin-top: 1em" class="submit-button row">

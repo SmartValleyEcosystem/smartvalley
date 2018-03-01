@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Numerics;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 
 namespace SmartValley.Application.Contracts.Scorings.Dto

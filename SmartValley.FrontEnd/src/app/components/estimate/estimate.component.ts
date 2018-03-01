@@ -7,7 +7,7 @@ import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';
 import {EstimateCommentRequest} from '../../api/estimates/estimate-comment-request';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {ProjectApiClient} from '../../api/project/project-api-client';
-import {ExpertiseArea} from '../../api/scoring/expertise-area.enum';
+import {AreaType} from '../../api/scoring/area-type.enum';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {DialogService} from '../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
@@ -24,7 +24,7 @@ import {UserContext} from '../../services/authentication/user-context';
 })
 export class EstimateComponent implements OnInit {
   public hidden: boolean;
-  public expertiseArea: ExpertiseArea;
+  public areaType: AreaType;
   public projectId: number;
   public projectDetails: ProjectDetailsResponse;
   public estimateForm: FormGroup;
@@ -121,7 +121,7 @@ export class EstimateComponent implements OnInit {
     try {
       return await this.scoringContractClient.submitEstimatesAsync(
         this.projectDetails.scoringContractAddress,
-        this.expertiseArea,
+        this.areaType,
         estimates);
     } catch (e) {
       return null;
@@ -150,9 +150,9 @@ export class EstimateComponent implements OnInit {
 
   private async loadProjectDetailsAsync(): Promise<void> {
     this.projectId = +this.route.snapshot.paramMap.get('id');
-    this.expertiseArea = +this.route.snapshot.queryParamMap.get('expertiseArea');
+    this.areaType = +this.route.snapshot.queryParamMap.get('areaType');
 
-    const questions = this.questionService.getByExpertiseArea(this.expertiseArea);
+    const questions = this.questionService.getByAreaType(this.areaType);
     const questionsFormGroups = questions.map(q => this.createQuestionFormGroup(q));
     this.estimateForm = this.formBuilder.group({questions: this.formBuilder.array(questionsFormGroups)});
     this.projectDetails = await this.projectApiClient.getDetailsByIdAsync(this.projectId);

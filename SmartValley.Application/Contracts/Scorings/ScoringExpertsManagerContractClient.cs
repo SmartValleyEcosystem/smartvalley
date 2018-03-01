@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Threading.Tasks;
 using SmartValley.Application.Contracts.Options;
 using SmartValley.Application.Contracts.Scorings.Dto;

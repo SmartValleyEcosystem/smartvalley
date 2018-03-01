@@ -1,7 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ExpertsCountSelectionModalData} from './experts-count-selection-modal-data';
-import {ExpertiseArea} from '../../../api/scoring/expertise-area.enum';
+import {AreaType} from '../../../api/scoring/area-type.enum';
 
 @Component({
   selector: 'app-experts-count-selection-modal',
@@ -10,7 +10,7 @@ import {ExpertiseArea} from '../../../api/scoring/expertise-area.enum';
 })
 export class ExpertsCountSelectionModalComponent {
 
-  public ExpertiseAreaType: typeof ExpertiseArea = ExpertiseArea;
+  public ExpertiseAreaType: typeof AreaType = AreaType;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: ExpertsCountSelectionModalData,
               private dialogRef: MatDialogRef<ExpertsCountSelectionModalComponent>) {

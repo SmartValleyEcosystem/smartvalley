@@ -106,6 +106,9 @@ import {ExpertsCountSelectionModalComponent} from './components/common/experts-c
 import {AdminExpertApplicationComponent} from './components/admin-panel/admin-expert-application/admin-expert-application.component';
 import {AreaService} from './services/expert/area.service';
 import {EnumHelper} from './utils/enum-helper';
+import {AdminExpertsListComponent} from './components/admin-panel/admin-experts-list/admin-experts-list.component';
+import {CreateNewExpertModalComponent} from './components/common/create-new-expert-modal/create-new-expert-modal.component';
+import {EditExpertModalComponent} from './components/common/edit-expert-modal/edit-expert-modal.component';
 import {ExpertStatusGuard} from './services/guards/expert-status.guard';
 import {AdminScoringProjectsComponent} from './components/admin-panel/admin-scoring-projects/admin-scoring-projects.component';
 import { SetExpertsModalComponent } from './components/common/set-experts-modal/set-experts-modal.component';
@@ -153,6 +156,10 @@ import { SetExpertsModalComponent } from './components/common/set-experts-modal/
     ConfirmEmailModalComponent,
     ConfirmEmailComponent,
     AdminExpertApplicationsListComponent,
+    AdminExpertApplicationComponent,
+    AdminExpertsListComponent,
+    CreateNewExpertModalComponent,
+    EditExpertModalComponent,
     ExpertsCountSelectionModalComponent,
     AdminExpertApplicationComponent,
     AdminScoringProjectsComponent,
@@ -170,6 +177,8 @@ import { SetExpertsModalComponent } from './components/common/set-experts-modal/
     RegisterModalComponent,
     AddAdminModalComponent,
     ConfirmEmailModalComponent,
+    CreateNewExpertModalComponent,
+    EditExpertModalComponent,
     ExpertsCountSelectionModalComponent,
     SetExpertsModalComponent
   ],

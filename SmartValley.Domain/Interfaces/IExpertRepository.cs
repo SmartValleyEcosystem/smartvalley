@@ -13,8 +13,6 @@ namespace SmartValley.Domain.Interfaces
 
         Task<Expert> GetByAddressAsync(string address);
 
-        Task<IDictionary<string, long>> GetIdsByAddressesAsync(IReadOnlyCollection<string> addresses);
-
         Task<IReadOnlyCollection<Area>> GetAreasAsync();
 
         Task AddAsync(Expert expert, IReadOnlyCollection<int> areas);

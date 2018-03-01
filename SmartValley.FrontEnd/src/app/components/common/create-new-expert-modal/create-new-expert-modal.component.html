@@ -1,0 +1,30 @@
+<div>
+  <h2 class="create-expert-modal-title">{{'CreateNewExpertModalComponent.Title' | translate}}</h2>
+  <hr>
+  <mat-dialog-content>
+    <form [formGroup]="form">
+      <div class="row">
+        <mat-form-field class="col-12">
+          <input placeholder="address" matInput formControlName="address" #required>
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-checkbox class="col-6" align="start" formControlName="available" style="margin-top: 1em">
+          {{ 'CreateNewExpertModalComponent.AvailableForWork' | translate }}
+        </mat-checkbox>
+      </div>
+      <div *ngFor="let area of areas" class="row">
+        <span class="col-6">
+          <mat-checkbox align="start" name="{{'category' + area.areaType}}" formControlName="{{'category' + area.areaType}}" style="margin-top: 1em">
+            {{ area.name }}
+          </mat-checkbox>
+        </span>
+      </div>
+      <mat-dialog-actions class="d-flex justify-content-center">
+        <button mat-raised-button (click)="submit(form)" [disabled]="form.invalid" class="col-2 sv-default-btn btn-space">
+          {{'CreateNewExpertModalComponent.Create' | translate}}
+        </button>
+      </mat-dialog-actions>
+    </form>
+  </mat-dialog-content>
+</div>

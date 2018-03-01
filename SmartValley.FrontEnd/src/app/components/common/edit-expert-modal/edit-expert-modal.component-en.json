@@ -1,0 +1,18 @@
+{
+  "EditExpertModalComponent": {
+    "Title": "Experts edit",
+    "Backend": "Backend",
+    "Blockchain": "Blockchain",
+    "Address": "Address",
+    "Email": "Email",
+    "Name": "Name",
+    "About": "About",
+    "SaveBackend": "Save changes in backend",
+    "SaveBlockchain": "Save changes in blockchain",
+    "AvailableForWork": "Available for work",
+    "Category1": "HR",
+    "Category2": "Analyst",
+    "Category3": "TechnicalExpert",
+    "Category4": "Lawyer"
+  }
+}

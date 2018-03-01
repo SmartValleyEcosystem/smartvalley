@@ -1,12 +1,10 @@
 ﻿using System.Threading.Tasks;
-using SmartValley.Application;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Experts.Requests;
 using System.Collections.Generic;
 using System.Linq;
 using SmartValley.Application.AzureStorage;
-using SmartValley.Data.SQL.Core;
 using SmartValley.Domain;
 using SmartValley.Domain.Core;
 using SmartValley.Domain.Exceptions;
@@ -21,8 +19,7 @@ namespace SmartValley.WebApi.Experts
         private readonly ExpertApplicationsStorageProvider _expertApplicationsStorageProvider;
         private readonly IClock _clock;
 
-        public ExpertService(EthereumClient ethereumClient,
-                             IUserRepository userRepository,
+        public ExpertService(IUserRepository userRepository,
                              IExpertApplicationRepository expertApplicationRepository,
                              IClock clock,
                              ExpertApplicationsStorageProvider expertApplicationsStorageProvider,

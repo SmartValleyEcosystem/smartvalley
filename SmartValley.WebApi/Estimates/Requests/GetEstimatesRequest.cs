@@ -6,6 +6,6 @@ namespace SmartValley.WebApi.Estimates.Requests
     {
         public long ProjectId { get; set; }
 
-        public AreaType ExpertiseArea { get; set; }
+        public AreaType AreaType { get; set; }
     }
 }

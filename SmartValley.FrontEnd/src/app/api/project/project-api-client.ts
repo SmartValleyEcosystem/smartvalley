@@ -6,8 +6,8 @@ import {CollectionResponse} from '../collection-response';
 import {ProjectDetailsResponse} from './project-details-response';
 import {GetScoringProjectsRequest} from './get-scoring-projects-request';
 import {MyProjectsItemResponse} from './my-projects-item-response';
+import {AreaType} from '../scoring/area-type.enum';
 import {ScoringProjectResponse} from './scoring-project-response';
-import {ExpertiseArea} from '../scoring/expertise-area.enum';
 
 @Injectable()
 export class ProjectApiClient extends BaseApiClient {
@@ -33,8 +33,8 @@ export class ProjectApiClient extends BaseApiClient {
       .toPromise();
   }
 
-  public async getForScoringAsync(expertiseArea: ExpertiseArea): Promise<CollectionResponse<ProjectResponse>> {
-    const parameters = new HttpParams().append('expertiseArea', expertiseArea.toString());
+  public async getForScoringAsync(areaType: AreaType): Promise<CollectionResponse<ProjectResponse>> {
+    const parameters = new HttpParams().append('expertiseArea', areaType.toString());
 
     return this.http
       .get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/projects/forscoring', {params: parameters})
