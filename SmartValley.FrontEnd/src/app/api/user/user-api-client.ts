@@ -4,6 +4,8 @@ import {BaseApiClient} from '../base-api-client';
 import {UserResponse} from './user-response';
 import {EmailRequest} from './email-request';
 import {EmailResponse} from './email-response';
+import {ConfirmEmailRequest} from '../authentication/confirm-email-request';
+import {UpdateUserRequest} from './update-user-request';
 
 @Injectable()
 export class UserApiClient extends BaseApiClient {
@@ -21,5 +23,9 @@ export class UserApiClient extends BaseApiClient {
       .append('signature', request.signature);
 
     return this.http.get<EmailResponse>(this.baseApiUrl + '/users/' + request.address + '/email', {params: parameters}).toPromise();
+  }
+
+  public async updateAsync(request: UpdateUserRequest): Promise<void> {
+    await this.http.put(this.baseApiUrl + '/users/' + request.address, request).toPromise();
   }
 }

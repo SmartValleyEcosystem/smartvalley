@@ -1,47 +1,56 @@
 <div class="container">
   <div class="row mx-auto">
-    <div class="col-7 sm-title">
-      <h1>Account</h1>
+    <div class="col-10 sm-title">
+      <h1 class="">{{ 'Account.Title' | translate }}</h1>
+      <img src="{{accountImgUrl}}" style="width: 128px;"/>
+      <span style="margin-left: 2em; font-family: 'AvenirNextCyr-Bold', sans-serif; font-size: 1.4em;">{{accountAddress}}</span>
     </div>
   </div>
-  <div class="sw-card sw-content">
-    <div class="row row-title">
-      <div class="col-10 offset-1">
-        <img src="{{accountImgUrl}}" style="width: 128px;"/>
-        <span style="margin-left: 2em; font-family: 'AvenirNextCyr-Bold', sans-serif; font-size: 1.4em;">{{accountAddress}}</span>
+
+  <mat-tab-group>
+    <mat-tab label="{{ 'Account.BasicInformation' | translate }}">
+      <div style="color: white">
+        <form [formGroup]="userForm" novalidate>
+          <div class="row">
+            <span class="col-2 offset-1">{{ 'Account.Name' | translate }}:</span>
+            <input class="form-control col-4" formControlName="name" #required>
+          </div>
+          <div class="row" style="padding-top: 1em">
+            <span class="col-2 offset-1">{{ 'Account.About' | translate }}</span>
+            <textarea class="form-control col-4" formControlName="about" #required>
+        </textarea>
+          </div>
+          <div class="col-8 offset-5" style="padding-top: 1em">
+            <button (click)="saveChangesAsync()" class="col-3 btn btn-primary">
+              {{ 'Account.SaveChanges' | translate }}
+            </button>
+          </div>
+        </form>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-10 underline"></div>
-    </div>
-    <div class="row">
-      <strong class="col-10 offset-1" style="margin-bottom: 0.5em; margin-top: 0.5em;">{{ 'Account.AvailableBalances' | translate }}</strong>
-    </div>
-    <div class="row">
-      <span class="col-2 offset-1">ETH: {{currentBalance}}</span>
-      <span class="col-3 offset-1">SVT: {{currentTokens}}
-        <div class="account-tooltip" [matTooltip]="'Account.SVTBalanceTooltip' | translate" matTooltipPosition="above">
-          <i class="material-icons">help_outline</i>
+    </mat-tab>
+    <mat-tab label="{{ 'Account.Balances' | translate }}">
+      <div style="color: white;">
+        <div class="row">
+          <strong class="col-10" style="margin-bottom: 0.5em; margin-top: 0.5em;">{{
+            'Account.AvailableBalances' | translate }}</strong>
         </div>
-        </span>
-    </div>
-    <div class="row" style="margin-top: 1em;">
-        <span class="col-3 offset-4">{{ 'Account.TransferableSVT' | translate }} {{transferableTokens}}
-        <div class="account-tooltip" [matTooltip]="'Account.TransferedTooltip' | translate" matTooltipPosition="above">
-          <i class="material-icons">help_outline</i>
+        <div class="row">
+          <span class="col-2">ETH: {{currentBalance}} </span>
+          <span class="col-2">SVT: </span>
+          <span class="col-6">{{currentTokens}} - {{'Account.SVTBalanceTooltip' | translate}} </span>
         </div>
+        <div class="row" style="margin-top: 1em;">
+          <span class="col-2 offset-2">{{ 'Account.TransferableSVT' | translate }} </span>
+          <span class="col-6"> {{transferableTokens}} - {{"Account.TransferedTooltip" | translate}}
         </span>
-    </div>
-    <div class="row">
-        <span class="col-3 offset-4">{{ 'Account.FreezedSVT' | translate }} {{frozenTokens}}
-        <div class="account-tooltip" [matTooltip]="'Account.FreezedTooltip' | translate" matTooltipPosition="above">
-          <i class="material-icons">help_outline</i>
         </div>
+        <div class="row" style="margin-top: 1em;">
+          <span class="col-2 offset-2">{{ 'Account.FreezedSVT' | translate }} </span>
+          <span class="col-6"> {{frozenTokens}} - {{"Account.FreezedTooltip" | translate}}
         </span>
-    </div>
-    <div class="row">
-      <div class="col-10 underline"></div>
-    </div>
-  </div>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
 </div>
 

@@ -31,6 +31,8 @@ namespace SmartValley.WebApi.Users
                    {
                        Address = user?.Address,
                        Email = user?.Email,
+                       Name = user?.Name,
+                       About = user?.About,
                        IsEmailConfirmed = user != null && user.IsEmailConfirmed
                    };
         }
