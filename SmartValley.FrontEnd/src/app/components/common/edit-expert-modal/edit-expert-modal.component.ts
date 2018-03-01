@@ -47,7 +47,7 @@ export class EditExpertModalComponent implements OnInit {
         });
         this.saveBlockchainForm = this.formBuilder.group(blockchainFormInputs);
         const areasId = this.areaService.getAreasIdByNames(this.data.areas);
-        for (const i = 0; areasId.length >= i; i++) {
+        for (let i = 0; areasId.length >= i; i++) {
             if ( areasId.includes(i) ) {
                 this.selectedCategories[i] = true;
             }
@@ -81,7 +81,7 @@ export class EditExpertModalComponent implements OnInit {
         };
 
         if (needToUpdateInfoInBlockchain) {
-            const transactionHash = ( await this.expertContractClient.addSync(address, categoriesToRequest) );
+            const transactionHash = ( await this.expertContractClient.addAsync(address, categoriesToRequest) );
             this.editExpertRequest.transactionHash = transactionHash;
         }
 

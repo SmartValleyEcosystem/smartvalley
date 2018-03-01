@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ExpertApiClient} from '../../../api/expert/expert-api-client';
 import {AdminExpertsListItem} from './admin-experts-list-item';
 import {LazyLoadEvent} from 'primeng/api';
-import {PendingExpertListResponse} from '../../../api/expert/pending-expert-list-response';
 import {AdminExpertItem} from './admin-expert-item';
 import {AreaService} from '../../../services/expert/area.service';
 import {AdminExpertResponse} from './admin-expert-response';
@@ -10,6 +9,8 @@ import {DialogService} from '../../../services/dialog-service';
 import {ExpertContractClient} from '../../../services/contract-clients/expert-contract-client';
 import {DeleteExpertRequest} from '../../../api/expert/delete-expert-request';
 import {TranslateService} from '@ngx-translate/core';
+import {CollectionResponse} from '../../../api/collection-response';
+import {PendingExpertListResponse} from '../../../api/expert/pending-expert-list-response';
 
 @Component({
     selector: 'app-admin-experts-list',
@@ -21,7 +22,7 @@ export class AdminExpertsListComponent implements OnInit {
     private loading: boolean;
     private currentPage = 0;
     private pageSize = 10;
-    public expertsResponse: AdminExpertResponse;
+    public expertsResponse: CollectionResponse<PendingExpertListResponse>;
     public experts: AdminExpertItem[] = [];
     public transactionHash: string;
     public deleteExpertRequest: DeleteExpertRequest;
@@ -67,7 +68,7 @@ export class AdminExpertsListComponent implements OnInit {
     }
     public async deleteExpertAsync (address, areas) {
         const areasId = this.areaService.getAreasIdByNames(areas);
-        this.transactionHash = ( await this.expertContractClient.addSync(address, areasId) );
+        this.transactionHash = ( await this.expertContractClient.addAsync(address, areasId) );
         this.deleteExpertRequest = {
             transactionHash: this.transactionHash,
             address: address

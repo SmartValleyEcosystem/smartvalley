@@ -9,6 +9,7 @@ import {UserApiClient} from '../../../api/user/user-api-client';
 import {NotificationsService} from 'angular2-notifications';
 import {TranslateService} from '@ngx-translate/core';
 import {AreaService} from '../../../services/expert/area.service';
+import {Area} from '../../../services/expert/area';
 
 @Component({
     selector: 'app-create-new-expert-modal.component',
@@ -68,7 +69,7 @@ export class CreateNewExpertModalComponent implements OnInit {
             }
         }
 
-        this.transactionHash = ( await this.expertContractClient.addSync(form.value.address, [1]) );
+        this.transactionHash = ( await this.expertContractClient.addAsync(form.value.address, [1]) );
         this.newExpertRequest = {
             transactionHash: this.transactionHash,
             address: form.value.address,
