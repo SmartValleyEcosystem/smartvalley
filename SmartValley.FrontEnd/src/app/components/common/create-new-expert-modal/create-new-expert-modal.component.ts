@@ -4,12 +4,12 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AddAdminModalComponent} from '../add-admin-modal/add-admin-modal.component';
 import {ExpertApiClient} from '../../../api/expert/expert-api-client';
 import {NewExpertRequest} from '../../../api/expert/new-expert-request';
-import {ExpertContractClient} from '../../../services/contract-clients/expert-contract-client';
 import {UserApiClient} from '../../../api/user/user-api-client';
 import {NotificationsService} from 'angular2-notifications';
 import {TranslateService} from '@ngx-translate/core';
 import {AreaService} from '../../../services/expert/area.service';
 import {Area} from '../../../services/expert/area';
+import {ExpertsRegistryContractClient} from '../../../services/contract-clients/experts-registry-contract-client';
 
 @Component({
     selector: 'app-create-new-expert-modal.component',
@@ -32,7 +32,7 @@ export class CreateNewExpertModalComponent implements OnInit {
                 @Inject(MAT_DIALOG_DATA) public data: any,
                 private dialogCreateExpert: MatDialogRef<CreateNewExpertModalComponent>,
                 private notificationsService: NotificationsService,
-                private expertContractClient: ExpertContractClient,
+                private expertsRegistryContractClient: ExpertsRegistryContractClient,
                 private translateService: TranslateService,
                 private areaService: AreaService) {
     }
@@ -68,7 +68,7 @@ export class CreateNewExpertModalComponent implements OnInit {
                 }
             }
         }
-        this.transactionHash = ( await this.expertContractClient.addAsync(form.value.address, [1]) );
+        this.transactionHash = ( await this.expertsRegistryContractClient.addAsync(form.value.address, [1]) );
         this.newExpertRequest = {
             transactionHash: this.transactionHash,
             address: form.value.address,
