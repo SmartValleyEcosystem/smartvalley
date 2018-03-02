@@ -26,10 +26,9 @@ export class ProjectApiClient extends BaseApiClient {
   }
 
   async getScoringProjectsByCategoriesAsync(request: GetScoringProjectsRequest): Promise<CollectionResponse<ScoringProjectResponse>> {
-    const statusesQuery = request.statuses.map(i => i.StatusId).join(',');
-    const params = new HttpParams().append('queryStatuses', statusesQuery);
+    const statusesQuery = request.statuses.map(i => 'statuses=' + i.StatusId).join('&');
 
-    return this.http.get<CollectionResponse<ScoringProjectResponse>>(this.baseApiUrl + '/projects/scoring', {params: params})
+    return this.http.get<CollectionResponse<ScoringProjectResponse>>(this.baseApiUrl + '/projects/scoring/?' + statusesQuery)
       .toPromise();
   }
 

@@ -177,5 +177,6 @@ namespace SmartValley.WebApi.Experts
 
         public Task<IReadOnlyCollection<Area>> GetAreasAsync()
             => _expertRepository.GetAreasAsync();
+
     }
 }

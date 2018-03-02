@@ -34,6 +34,8 @@ namespace SmartValley.Application.Contracts.Scorings
 
             return offersDto.Experts.Select((e, i) => CreateOfferInfo(projectExternalId, e, offersDto.Areas[i], offersDto.States[i])).ToArray();
         }
+        public Task<uint> GetOfferExpirationPeriodAsync()
+            => _contractClient.CallFunctionAsync<uint>(_contractAddress, _contractAbi, "offerExpirationPeriod");
 
         private static ScoringOfferInfo CreateOfferInfo(Guid projectExternalId, string expertAddress, int area, long offerState)
         {

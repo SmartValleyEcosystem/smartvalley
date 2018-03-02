@@ -1,6 +1,7 @@
-import {Area} from '../../services/expert/area';
+import {AreaType} from '../scoring/area-type.enum';
 
 export interface AreaExpertResponse {
-  area: Area;
-  addresses: Array<string>;
+  areaType: AreaType;
+  acceptedCount: number;
+  requiredCount: number;
 }

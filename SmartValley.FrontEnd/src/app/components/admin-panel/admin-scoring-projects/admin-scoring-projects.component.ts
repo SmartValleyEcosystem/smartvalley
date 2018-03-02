@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ScoringProjectStatus} from '../../../services/scoring-project-status.enum';
 import {AdminScoringProjectItem} from './admin-scoring-project-item';
+import {AdminScoringProjectAreaExpertItem} from './admin-scoring-project-area-expert-item';
+import {Area} from '../../../services/expert/area';
 import {SelectItem} from 'primeng/api';
 import {ProjectApiClient} from '../../../api/project/project-api-client';
 import {BlockiesService} from '../../../services/blockies-service';
@@ -13,6 +15,7 @@ import {DialogService} from '../../../services/dialog-service';
 import {isNullOrUndefined} from 'util';
 import {TranslateService} from '@ngx-translate/core';
 import {ScoringApiClient} from '../../../api/scoring/scoring-api-client';
+import {AreaService} from '../../../services/expert/area.service';
 
 @Component({
   selector: 'app-admin-scoring-projects',
@@ -32,7 +35,8 @@ export class AdminScoringProjectsComponent implements OnInit {
               private dialogService: DialogService,
               private scorintExpertsManagerContractClient: ScoringExpertsManagerContractClient,
               private translateService: TranslateService,
-              private scoringApiClient: ScoringApiClient) {
+              private scoringApiClient: ScoringApiClient,
+              private areaService: AreaService) {
 
     this.categories = [
       {label: this.translateService.instant('AdminScoringProject.All'), value: ScoringProjectStatus.All},
@@ -51,16 +55,23 @@ export class AdminScoringProjectsComponent implements OnInit {
     this.projects = projectsResponse.items.map(i => <AdminScoringProjectItem>{
       projectId: i.projectId,
       imageUrl: this.blockiesService.getImageForAddress(i.address),
-      startDate: moment(i.startDate).format('MMMM D, Y'),
-      endDate: moment(i.endDate).format('MMMM D, Y'),
+      startDate: isNullOrUndefined(i.startDate) ? '' : moment(i.startDate).format('MMMM D, Y'),
+      endDate: isNullOrUndefined(i.endDate) ? '' : moment(i.endDate).format('MMMM D, Y'),
       status: this.setStatusText(i.status),
       statusCode: i.status,
       title: i.name,
-      areasExperts: i.areasExperts
+      areasExperts: i.areasExperts.map(j => <AdminScoringProjectAreaExpertItem>{
+        area: <Area>{
+          areaType: j.areaType,
+          name: this.areaService.areas[j.areaType - 1].name
+        },
+        acceptedCount: j.acceptedCount,
+        requiredCount: j.requiredCount
+      })
     });
   }
 
-  async relaunchAsync (projectId: string) {
+  async relaunchAsync(projectId: string) {
     const transactionHash = await this.scorintExpertsManagerContractClient.selectMissingExpertsAsync(projectId);
     if (transactionHash == null) {
       return;
@@ -89,7 +100,7 @@ export class AdminScoringProjectsComponent implements OnInit {
 
   async setExpertsAsync(projectId: string) {
     const project = this.projects.find(i => i.projectId === projectId);
-    const areas = project.areasExperts.filter(i => i.addresses.length < 3).map(i => i.area);
+    const areas = project.areasExperts.filter(i => i.acceptedCount < i.requiredCount).map(i => i.area);
     const areaExperts = await this.dialogService.showSetExpertsDialogAsync(areas);
     if (isNullOrUndefined(areaExperts)) {
       return;

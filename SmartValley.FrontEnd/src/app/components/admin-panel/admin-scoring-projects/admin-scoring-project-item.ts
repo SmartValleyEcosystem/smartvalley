@@ -5,8 +5,8 @@ export interface AdminScoringProjectItem {
   projectId: string;
   title: string;
   imageUrl: string;
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  endDate?: string;
   status: string;
   statusCode: ScoringProjectStatus;
   areasExperts: Array<AdminScoringProjectAreaExpertItem>;

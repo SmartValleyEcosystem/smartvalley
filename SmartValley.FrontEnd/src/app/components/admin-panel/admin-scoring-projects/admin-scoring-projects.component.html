@@ -1,7 +1,7 @@
 <div style="display: inline-block; margin-right: 2em; color:white;margin-bottom: 1em;"
      *ngFor="let category of categories">
   <p-checkbox [(ngModel)]="selectedCategories" value="{{category.value}}" (onChange)="onCheckAsync()"></p-checkbox>
-  <span style="vertical-align: middle; margin-left: 1em;">{{category.label}}</span>
+  <span style="display: inline-block; vertical-align: middle; margin-left: 1em;">{{category.label}}</span>
 </div>
 <div class="white-box card-block scoring-card-block" *ngFor="let project of projects">
   <div class="row">
@@ -15,19 +15,19 @@
       <div class="row" style="padding-bottom: 3em;">
         <div class="description col-8">
           <span class="big-size {{projectService.colorOfProjectStatus(project.statusCode)}}">{{ 'AdminScoringProject.Status' | translate }}: {{project.status}}</span>
-          <span style="padding-right: 2em;" *ngFor="let areaExpert of project.areasExperts">{{areaExpert.area.name}}: {{areaExpert.addresses.length}}/3</span>
+          <span style="padding-right: 2em;" *ngFor="let areaExpert of project.areasExperts">{{areaExpert.area.name}}: {{areaExpert.acceptedCount}}/{{areaExpert.requiredCount}}</span>
         </div>
         <div class="col-4 text-right">
           <a *ngIf="project.statusCode !== ScoringProjectStatus.InProgress" class="col-10 sv-default-btn btn btn-primary"
              (click)="relaunchAsync (project.projectId)">
             {{ 'AdminScoringProject.ReLaunch' | translate }}
           </a>
-          <span *ngIf="project.statusCode === ScoringProjectStatus.InProgress" class="big-size high_rate">{{ 'AdminScoringProject.WaitExperts' | translate }} {{project.tillDate}}</span>
+          <span *ngIf="project.statusCode === ScoringProjectStatus.InProgress" class="big-size high_rate">{{ 'AdminScoringProject.WaitExperts' | translate }} {{project.endDate}}</span>
         </div>
       </div>
       <div class="row">
         <div class="col-8">
-          <span class="big-size medium_rate">{{ 'AdminScoringProject.StartDate' | translate }}: {{project.startDate}}</span>
+          <span *ngIf="project.startDate !== ''" class="big-size medium_rate">{{ 'AdminScoringProject.StartDate' | translate }}: {{project.startDate}}</span>
         </div>
         <div class="col-4 text-right">
           <a *ngIf="project.statusCode !== ScoringProjectStatus.InProgress" class="col-10 sv-default-btn btn btn-primary"

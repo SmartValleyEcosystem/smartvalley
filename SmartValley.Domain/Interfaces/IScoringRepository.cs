@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SmartValley.Domain.Entities;
 
@@ -17,5 +18,9 @@ namespace SmartValley.Domain.Interfaces
         Task SetAreasCompletedAsync(long scoringId, IReadOnlyCollection<AreaType> areas);
 
         Task AddAreasAsync(IReadOnlyCollection<AreaScoring> areaScorings);
+
+        Task<IReadOnlyCollection<ScoringProjectDetails>> GetScoringProjectsDetailsByScoringIdsAsync(IEnumerable<long> ids, uint offerExpirationPeriod);
+
+        Task<IReadOnlyCollection<ScoringAreaStatistic>> GetIncompletedScoringAreaStatisticsAsync(DateTimeOffset tillDate);
     }
 }

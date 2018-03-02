@@ -64,7 +64,7 @@ export class CreateNewExpertModalComponent implements OnInit {
         for ( const control in form.controls ) {
             if ( (/category/i).test(control) ) {
                 if ( form.value[control] ) {
-                    this.selectedCategories.push( parseInt(control.match(/category([0-9].*)/)[1]) );
+                    this.selectedCategories.push( parseInt(control.match(/category([0-9].*)/)[1], 0) );
                 }
             }
         }

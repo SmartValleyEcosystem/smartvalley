@@ -1,4 +1,6 @@
+import {AreaType} from '../scoring/area-type.enum';
+
 export interface AreaResponse {
-  id: number;
+  id: AreaType;
   name: string;
 }

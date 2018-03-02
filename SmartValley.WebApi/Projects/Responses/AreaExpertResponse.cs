@@ -5,8 +5,10 @@ namespace SmartValley.WebApi.Projects.Responses
 {
     public class AreaExpertResponse
     {
-        public Area Area { get; set; }
+        public AreaType AreaType { get; set; }
 
-        public IEnumerable<string> Addresses { get; set; }
+        public int AcceptedCount { get; set; }
+
+        public int RequiredCount { get; set; }
     }
 }

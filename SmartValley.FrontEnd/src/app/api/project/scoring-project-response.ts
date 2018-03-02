@@ -5,8 +5,8 @@ export interface ScoringProjectResponse {
   projectId: string;
   name: string;
   address: string;
-  startDate: Date;
-  endDate: Date;
+  startDate?: Date;
+  endDate?: Date;
   status: ScoringProjectStatus;
   areasExperts: Array<AreaExpertResponse>;
 }

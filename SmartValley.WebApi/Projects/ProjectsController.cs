@@ -9,6 +9,7 @@ using SmartValley.Domain.Entities;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Projects.Requests;
 using SmartValley.WebApi.Projects.Responses;
+using SmartValley.WebApi.Scoring;
 using SmartValley.WebApi.Votings;
 using SmartValley.WebApi.WebApi;
 using AreaType = SmartValley.Domain.Entities.AreaType;
@@ -21,11 +22,13 @@ namespace SmartValley.WebApi.Projects
         private readonly IProjectService _projectService;
         private readonly IVotingService _votingService;
         private readonly IClock _clock;
+        private readonly IScoringService _scoringService;
 
-        public ProjectsController(IProjectService projectService, IVotingService votingService, IClock clock)
+        public ProjectsController(IProjectService projectService, IVotingService votingService, IClock clock, IScoringService scoringService)
         {
             _projectService = projectService;
             _votingService = votingService;
+            _scoringService = scoringService;
             _clock = clock;
         }
 
@@ -53,32 +56,24 @@ namespace SmartValley.WebApi.Projects
         }
 
         [HttpGet("scoring"), Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<CollectionResponse<ScoringProjectResponse>> GetScoringProjectsAsync([FromQuery] string queryStatuses)
+        public async Task<CollectionResponse<ScoringProjectResponse>> GetScoringProjectsAsync([FromQuery] IEnumerable<ScoringProjectStatus> statuses)
         {
-            var statuses = queryStatuses?.Split(',').Select(i => (ScoringProjectStatus) int.Parse(i));
+            var projects = await _scoringService.GetScoringProjectsAsync(statuses);
 
-            var experts = new List<AreaExpertResponse>
+            var items = projects.Select(i => new ScoringProjectResponse
             {
-                new AreaExpertResponse{Addresses = new List<string>{ "asdasdas" , "asdasdas" }, Area = new Area{Id = AreaType.Analyst, Name = "Аналитик"}},
-                new AreaExpertResponse{Addresses = new List<string>{ "asdasdas" }, Area = new Area{Id = AreaType.Lawyer, Name = "Юрист"}},
-                new AreaExpertResponse{Addresses = new List<string>{ "asdasdas" , "asdasdas" , "asdasdas" }, Area = new Area{Id = AreaType.Tech, Name = "Айтишник"}},
-                new AreaExpertResponse{Addresses = new List<string>{ "asdasdas" , "asdasdas" , "asdasdas" }, Area = new Area{Id = AreaType.Hr, Name = "HR"}}
+                Address = i.Address,
+                Name = i.Name,
+                ProjectId = i.ProjectId.ToString(),
+                StartDate = i.StartDate?.Date,
+                EndDate = i.EndDate?.Date,
+                Status = i.Status,
+                AreasExperts = i.AreaCounts.Select(j => new AreaExpertResponse { AreaType = j.AreaType, AcceptedCount = j.AcceptedCount, RequiredCount = j.RequeiredCount})
+            }).ToArray();
 
-            };
-            var items = new List<ScoringProjectResponse>()
-                        {
-                new ScoringProjectResponse(){Address = "123", Name = "dfsd", ProjectId = "asdas", StartDate = DateTime.Now, EndDate = DateTime.Now + TimeSpan.FromDays(5), Status = ScoringProjectStatus.InProgress, AreasExperts = experts},
-                new ScoringProjectResponse(){Address = "123", Name = "zxczx", ProjectId = "dfdf", StartDate = DateTime.Now + TimeSpan.FromDays(1), EndDate = DateTime.Now + TimeSpan.FromDays(5),  Status = ScoringProjectStatus.Rejected, AreasExperts = experts},
-                new ScoringProjectResponse(){Address = "123", Name = "qweqwe", ProjectId = "zxczx", StartDate = DateTime.Now + TimeSpan.FromDays(3), EndDate = DateTime.Now + TimeSpan.FromDays(5),  Status = ScoringProjectStatus.AcceptedAndDoNotEstimate, AreasExperts = experts}
-                        };
-
-            if (queryStatuses == null || statuses.Any(i => i == ScoringProjectStatus.All))
-            {
-                return new CollectionResponse<ScoringProjectResponse> { Items = items };
-            }
-            return new CollectionResponse<ScoringProjectResponse> { Items = items.Where(i => statuses.Contains(i.Status)).ToArray() };
+            return new CollectionResponse<ScoringProjectResponse> { Items = items };
         }
-
+        
         [HttpGet]
         [Route("my")]
         public async Task<CollectionResponse<MyProjectsItemResponse>> GetMyProjectsAsync()
