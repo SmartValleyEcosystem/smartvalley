@@ -2,6 +2,7 @@
   "AdminExpertApplication": {
     "Accept": "Accept",
     "Reject": "Reject",
-    "Subtitle": "Expert application Form"
+    "Subtitle": "Expert application Form",
+    "Dialog": "Please wait for completion of transaction.",
   }
 }

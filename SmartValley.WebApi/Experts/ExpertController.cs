@@ -17,10 +17,10 @@ namespace SmartValley.WebApi.Experts
     [Route("api/experts")]
     public class ExpertController : Controller
     {
+        private const int FileSizeLimitBytes = 5242880;
         private readonly IExpertService _expertService;
         private readonly EthereumClient _ethereumClient;
         private readonly ExpertApplicationsStorageProvider _expertApplicationsStorageProvider;
-        private const int FileSizeLimitBytes = 5242880;
 
         public ExpertController(
             IExpertService expertService,
@@ -73,10 +73,13 @@ namespace SmartValley.WebApi.Experts
         [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<EmptyResponse> AcceptAsync(long id, [FromBody] AcceptApplicationRequest request)
         {
+            await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
+
             if (request.Areas.Count == 0)
                 throw new AppErrorException(ErrorCode.ShouldCheckAreasToAccept);
 
             await _expertService.AcceptApplicationAsync(id, request.Areas);
+
             return new EmptyResponse();
         }
 
@@ -84,7 +87,10 @@ namespace SmartValley.WebApi.Experts
         [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<EmptyResponse> RejectAsync(long id, [FromBody] RejectApplicationRequest request)
         {
+            await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
+
             await _expertService.RejectApplicationAsync(id);
+
             return new EmptyResponse();
         }
 

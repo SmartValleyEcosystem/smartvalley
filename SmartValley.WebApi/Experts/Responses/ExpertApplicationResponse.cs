@@ -10,6 +10,8 @@ namespace SmartValley.WebApi.Experts.Responses
     {
         public long Id { get; set; }
 
+        public string Address { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -47,6 +49,7 @@ namespace SmartValley.WebApi.Experts.Responses
             return new ExpertApplicationResponse
                    {
                        Id = applicationDetails.ExpertApplication.Id,
+                       Address = applicationDetails.Address,
                        DocumentType = applicationDetails.ExpertApplication.DocumentType.FromDomain(),
                        Sex = applicationDetails.ExpertApplication.Sex,
                        Areas = applicationDetails.Areas.Select(s => (int) s.Id).ToArray(),

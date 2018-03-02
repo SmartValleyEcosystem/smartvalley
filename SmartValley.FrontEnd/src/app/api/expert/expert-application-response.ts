@@ -3,6 +3,7 @@ import {DocumentEnum} from '../../components/register-expert/document.enum';
 
 export interface ExpertApplicationResponse {
   id: number;
+  address: string;
   firstName: string;
   lastName: string;
   birthDate: string;

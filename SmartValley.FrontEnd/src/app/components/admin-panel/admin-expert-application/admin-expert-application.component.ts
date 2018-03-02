@@ -11,6 +11,9 @@ import {Area} from '../../../services/expert/area';
 import {NotificationsService} from 'angular2-notifications';
 import {Paths} from '../../../paths';
 import {isNullOrUndefined} from 'util';
+import {ExpertsRegistryContractClient} from '../../../services/contract-clients/experts-registry-contract-client';
+import {DialogService} from '../../../services/dialog-service';
+import {TranslateService} from '@ngx-translate/core';
 
 const countries = <Country[]>require('../../../../assets/countryList.json');
 
@@ -26,7 +29,10 @@ export class AdminExpertApplicationComponent implements OnInit {
               private areaService: AreaService,
               private enumHelper: EnumHelper,
               private notificationService: NotificationsService,
-              private router: Router) {
+              private router: Router,
+              private expertsRegistryContractClient: ExpertsRegistryContractClient,
+              private dialogService: DialogService,
+              private translateService: TranslateService) {
   }
 
   public areas: SelectItem[] = [];
@@ -45,6 +51,7 @@ export class AdminExpertApplicationComponent implements OnInit {
     const response = await this.expertApiClient.getApplicationByIdAsync(+id);
     this.application = <AdminExpertApplicationData>{
       id: response.id,
+      address: response.address,
       firstName: response.firstName,
       lastName: response.lastName,
       birthDate: moment(response.birthDate).toDate(),
@@ -70,22 +77,57 @@ export class AdminExpertApplicationComponent implements OnInit {
     };
   }
 
-  public async accept() {
+  public async acceptAsync(): Promise<void> {
     if (this.areasToAccept.length === 0) {
       this.notificationService.error('Error', 'Areas to accept should be selected');
       return;
     }
-    await this.expertApiClient.acceptExpertApplicationAsync(this.application.id, this.areasToAccept);
-    this.router.navigate([Paths.Admin]);
+
+    const transactionHash = await await this.expertsRegistryContractClient.approveAsync(this.application.address, this.areasToAccept);
+    if (transactionHash == null) {
+      this.notificationService.error(
+        this.translateService.instant('Common.Error'),
+        this.translateService.instant('Common.TryAgain'));
+
+      return;
+    }
+
+    const transactionDialog = this.dialogService.showTransactionDialog(
+      this.translateService.instant('AdminExpertApplication.Dialog'),
+      transactionHash
+    );
+
+    await this.expertApiClient.acceptExpertApplicationAsync(this.application.id, this.areasToAccept, transactionHash);
+
+    transactionDialog.close();
+
+    await this.router.navigate([Paths.Admin]);
   }
 
-
-  public async reject() {
+  public async rejectAsync(): Promise<void> {
     if (isNullOrUndefined(this.rejectReason)) {
       this.notificationService.error('Error', 'Enter reason');
       return;
     }
-    await this.expertApiClient.rejectExpertApplicationAsync(this.application.id, this.rejectReason);
-    this.router.navigate([Paths.Admin]);
+
+    const transactionHash = await this.expertsRegistryContractClient.rejectAsync(this.application.address);
+    if (transactionHash == null) {
+      this.notificationService.error(
+        this.translateService.instant('Common.Error'),
+        this.translateService.instant('Common.TryAgain'));
+
+      return;
+    }
+
+    const transactionDialog = this.dialogService.showTransactionDialog(
+      this.translateService.instant('AdminExpertApplication.Dialog'),
+      transactionHash
+    );
+
+    await this.expertApiClient.rejectExpertApplicationAsync(this.application.id, this.rejectReason, transactionHash);
+
+    transactionDialog.close();
+
+    await this.router.navigate([Paths.Admin]);
   }
 }

@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ExpertApiClient} from '../../api/expert/expert-api-client';
 import {CreateExpertApplicationRequest} from '../../api/expert/expert-applitacion-request';
-import {ExpertContractClient} from '../../services/contract-clients/expert-contract-client';
+import {ExpertsRegistryContractClient} from '../../services/contract-clients/experts-registry-contract-client';
 import {AreaType} from '../../api/scoring/area-type.enum';
 import {DialogService} from '../../services/dialog-service';
 import {SexEnum} from './sex.enum';
@@ -52,7 +52,7 @@ export class RegisterExpertComponent implements OnInit {
               private userContext: UserContext,
               private notificationsService: NotificationsService,
               private translateService: TranslateService,
-              private expertContactClient: ExpertContractClient,
+              private expertsRegistryContractClient: ExpertsRegistryContractClient,
               private areaService: AreaService,
               private enumHelper: EnumHelper) {
   }
@@ -224,7 +224,7 @@ export class RegisterExpertComponent implements OnInit {
 
   private async applyToContractAsync(areas: Array<AreaType>): Promise<string> {
     try {
-      return await this.expertContactClient.applyAsync(areas);
+      return await this.expertsRegistryContractClient.applyAsync(areas);
     } catch (e) {
       return null;
     }

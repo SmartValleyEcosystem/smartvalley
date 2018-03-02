@@ -96,7 +96,7 @@ import {DataTableModule} from 'primeng/primeng';
 import {DropdownModule} from 'primeng/dropdown';
 import {ConfirmEmailModalComponent} from './components/common/confirm-email/confirm-email-modal.component';
 import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
-import {ExpertContractClient} from './services/contract-clients/expert-contract-client';
+import {ExpertsRegistryContractClient} from './services/contract-clients/experts-registry-contract-client';
 import {CalendarModule} from 'primeng/calendar';
 import {ExpertStatusComponent} from './components/expert-status/expert-status.component';
 import {ExpertComponent} from './components/expert/expert.component';
@@ -238,7 +238,7 @@ import { SetExpertsModalComponent } from './components/common/set-experts-modal/
     ScoringApiClient,
     EstimatesApiClient,
     ExpertApiClient,
-    ExpertContractClient,
+    ExpertsRegistryContractClient,
     ScoringExpertsManagerContractClient,
     AdminApiClient,
     VotingApiClient,

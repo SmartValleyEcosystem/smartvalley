@@ -26,25 +26,29 @@ namespace SmartValley.Data.SQL.Repositories
         {
             var expertApplication = await ReadContext.ExpertApplications.FirstOrDefaultAsync(e => e.Id == id);
 
-            var areas = await (from expertApplicationArea in ReadContext.ExpertApplicationAreas.Where(e => e.ExpertApplicationId == id)
+            var areas = await (from expertApplicationArea in ReadContext.ExpertApplicationAreas
                                join expertiseArea in ReadContext.Areas on expertApplicationArea.AreaId equals expertiseArea.Id
+                               where expertApplicationArea.ExpertApplicationId == id
                                select expertiseArea).ToArrayAsync();
 
+            var applicant = await ReadContext.Users.FirstAsync(user => user.Id == expertApplication.ApplicantId);
+
             return new ExpertApplicationDetails
-            {
-                ExpertApplication = expertApplication,
-                Areas = areas
-            };
+                   {
+                       Address = applicant.Address,
+                       ExpertApplication = expertApplication,
+                       Areas = areas
+                   };
         }
 
         public Task<int> AddAsync(ExpertApplication expertApplication, IReadOnlyCollection<int> areas)
         {
             EditContext.ExpertApplications.Add(expertApplication);
             EditContext.ExpertApplicationAreas.AddRange(areas.Select(area => new ExpertApplicationArea
-            {
-                ExpertApplication = expertApplication,
-                AreaId = (AreaType)area
-            }));
+                                                                             {
+                                                                                 ExpertApplication = expertApplication,
+                                                                                 AreaId = (AreaType) area
+                                                                             }));
 
             return EditContext.SaveAsync();
         }
@@ -54,10 +58,10 @@ namespace SmartValley.Data.SQL.Repositories
             applicationDetails.ExpertApplication.Status = ExpertApplicationStatus.Accepted;
 
             var applicationExpertAreas = applicationDetails.Areas.Select(s => new ExpertApplicationArea
-            {
-                ExpertApplicationId = applicationDetails.ExpertApplication.Id,
-                AreaId = s.Id
-            })
+                                                                              {
+                                                                                  ExpertApplicationId = applicationDetails.ExpertApplication.Id,
+                                                                                  AreaId = s.Id
+                                                                              })
                                                            .ToArray();
 
             EditContext.ExpertApplicationAreas.AttachRange(applicationExpertAreas);
@@ -65,7 +69,7 @@ namespace SmartValley.Data.SQL.Repositories
             foreach (var applicationExpertArea in applicationExpertAreas)
             {
                 applicationExpertArea.Status = ExpertApplicationStatus.Rejected;
-                if (areas.Contains((int)applicationExpertArea.AreaId))
+                if (areas.Contains((int) applicationExpertArea.AreaId))
                 {
                     applicationExpertArea.Status = ExpertApplicationStatus.Accepted;
                 }
@@ -81,11 +85,11 @@ namespace SmartValley.Data.SQL.Repositories
             applicationDetails.ExpertApplication.Status = ExpertApplicationStatus.Rejected;
 
             var applicationExpertAreas = applicationDetails.Areas.Select(s => new ExpertApplicationArea
-            {
-                ExpertApplicationId = applicationDetails.ExpertApplication.Id,
-                AreaId = s.Id,
-                Status = ExpertApplicationStatus.Rejected
-            })
+                                                                              {
+                                                                                  ExpertApplicationId = applicationDetails.ExpertApplication.Id,
+                                                                                  AreaId = s.Id,
+                                                                                  Status = ExpertApplicationStatus.Rejected
+                                                                              })
                                                            .ToList();
 
             EditContext.ExpertApplicationAreas.AttachRange(applicationExpertAreas);

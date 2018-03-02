@@ -2,6 +2,7 @@ import {Area} from '../../../services/expert/area';
 
 export interface AdminExpertApplicationData {
   id: number;
+  address: string;
   firstName: string;
   lastName: string;
   birthDate: Date;

@@ -5,8 +5,10 @@ namespace SmartValley.Domain
 {
     public class ExpertApplicationDetails
     {
-        public ExpertApplication ExpertApplication { get; set; }
+        public string Address { get; set; }
 
+        public ExpertApplication ExpertApplication { get; set; }
+        
         public IReadOnlyCollection<Area> Areas { get; set; }
     }
 }

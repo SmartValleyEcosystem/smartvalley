@@ -9,7 +9,7 @@ import {VotingManagerContractClient} from '../contract-clients/voting-manager-co
 import {VotingContractClient} from '../contract-clients/voting-contract-client';
 import {AuthenticationService} from '../authentication/authentication-service';
 import {AdminContractClient} from '../contract-clients/admin-contract-client';
-import {ExpertContractClient} from '../contract-clients/expert-contract-client';
+import {ExpertsRegistryContractClient} from '../contract-clients/experts-registry-contract-client';
 import {AreaService} from '../expert/area.service';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class InitializationService {
               private minterContractClient: MinterContractClient,
               private adminContractClient: AdminContractClient,
               private tokenContractClient: TokenContractClient,
-              private expertContractClient: ExpertContractClient,
+              private expertContractClient: ExpertsRegistryContractClient,
               private scoringManagerContractClient: ScoringManagerContractClient,
               private votingManagerContractClient: VotingManagerContractClient,
               private votingContractClient: VotingContractClient,
