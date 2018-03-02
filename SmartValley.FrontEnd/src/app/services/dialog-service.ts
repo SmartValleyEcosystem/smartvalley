@@ -16,7 +16,7 @@ import {Area} from './expert/area';
 import {FreeScoringConfirmationModalComponent} from '../components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component';
 import {VoteModalData} from '../components/common/vote-modal/vote-modal-data';
 import {VoteModalComponent} from '../components/common/vote-modal/vote-modal.component';
-import {RegisterModelData} from '../components/common/register-modal/register-modal-data';
+import {RegisterModalData} from '../components/common/register-modal/register-modal-data';
 import {RegisterModalComponent} from '../components/common/register-modal/register-modal.component';
 import {AddAdminModalComponent} from '../components/common/add-admin-modal/add-admin-modal.component';
 import {ConfirmEmailModalComponent} from '../components/common/confirm-email/confirm-email-modal.component';
@@ -27,6 +27,7 @@ import {ExpertsCountSelectionModalData} from '../components/common/experts-count
 import {AreaType} from '../api/scoring/area-type.enum';
 import {AreaExpertsSettings} from '../components/common/experts-count-selection-modal/area-experts-settings';
 import {SetExpertsModalComponent} from '../components/common/set-experts-modal/set-experts-modal.component';
+import {ChangeEmailModalComponent} from '../components/common/change-email-modal/change-email-modal.component';
 
 @Injectable()
 export class DialogService {
@@ -101,10 +102,16 @@ export class DialogService {
   }
 
   public async showRegisterDialogAsync() {
-    const data = <RegisterModelData>{
+    const data = <RegisterModalData>{
       email: ''
     };
     return this.openModal(RegisterModalComponent, data)
+      .afterClosed()
+      .toPromise<string>();
+  }
+
+  public async showChangeEmailDialogAsync(): Promise<string> {
+    return this.openModal(ChangeEmailModalComponent, {})
       .afterClosed()
       .toPromise<string>();
   }

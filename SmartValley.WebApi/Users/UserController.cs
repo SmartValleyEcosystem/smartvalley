@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Domain.Entities;
@@ -23,7 +24,6 @@ namespace SmartValley.WebApi.Users
 
         [HttpGet]
         [Route("{address}")]
-        [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<GetUserResponse> GetByAddressAsync(string address)
         {
             var user = await _userService.GetByAddressAsync(address);
@@ -50,18 +50,21 @@ namespace SmartValley.WebApi.Users
 
         [Authorize]
         [HttpPut("{address}")]
-        public async Task<EmptyResponse> UpdateUserAsync([FromBody] UpdateUserRequest request)
+        public async Task<EmptyResponse> UpdateUserAsync(string address, [FromBody] UpdateUserRequest request)
         {
-            await _userService.UpdateAsync(User.Identity.Name, request.Name, request.About);
+            await _userService.UpdateAsync(address, request.Name, request.About);
             return new EmptyResponse();
         }
 
         [Authorize]
         [HttpPut("{address}/email")]
-        public async Task<EmptyResponse> ChangeEmailAsync([FromBody] ChangeEmailRequest request)
+        public async Task<IActionResult> ChangeEmailAsync(string address, [FromBody] ChangeEmailRequest request)
         {
-            await _authenticationService.ChangeEmailAsync(User.Identity.Name, request.Email);
-            return new EmptyResponse();
+            if (!address.Equals(User.Identity.Name, StringComparison.InvariantCultureIgnoreCase))
+                return Unauthorized();
+
+            await _authenticationService.ChangeEmailAsync(address, request.Email);
+            return Ok(new EmptyResponse());
         }
     }
 }

@@ -15,8 +15,12 @@ using SmartValley.WebApi.Authentication.Requests;
 
 namespace SmartValley.WebApi.Authentication
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class AuthenticationService : IAuthenticationService
     {
+        private const double EmailCooldownMinutes = 1;
+        private const string MemoryCacheEmailKey = "emailsent";
+
         private readonly IUserRepository _userRepository;
         private readonly EthereumMessageSigner _ethereumMessageSigner;
         private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
@@ -24,8 +28,6 @@ namespace SmartValley.WebApi.Authentication
         private readonly MailService _mailService;
         private readonly MailTokenService _mailTokenService;
         private readonly IMemoryCache _memoryCache;
-        private double emailCooldownMinutes;
-        private const string MemoryCacheEmailKey = "emailsended";
 
         public AuthenticationService(EthereumMessageSigner ethereumMessageSigner,
                                      IClock clock,
@@ -138,7 +140,7 @@ namespace SmartValley.WebApi.Authentication
             await _mailService.SendUpdateEmailAsync(address, email);
 
             var cacheEntryOptions = new MemoryCacheEntryOptions()
-                .SetSlidingExpiration(TimeSpan.FromMinutes(emailCooldownMinutes));
+                .SetSlidingExpiration(TimeSpan.FromMinutes(EmailCooldownMinutes));
 
             _memoryCache.Set(MemoryCacheEmailKey + address, true, cacheEntryOptions);
         }
@@ -153,13 +155,11 @@ namespace SmartValley.WebApi.Authentication
             return user.Email;
         }
 
-        private ClaimsIdentity CreateClaimsIdentity(string address, IReadOnlyCollection<Role> roles)
+        private static ClaimsIdentity CreateClaimsIdentity(string address, IReadOnlyCollection<Role> roles)
         {
-            var claims = new List<Claim>
-                         {
-                             new Claim(ClaimsIdentity.DefaultNameClaimType, address)
-                         };
+            var claims = new List<Claim> {new Claim(ClaimsIdentity.DefaultNameClaimType, address)};
             claims.AddRange(roles.Select(r => new Claim(ClaimsIdentity.DefaultRoleClaimType, r.Name)));
+
             return new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
         }
 
@@ -170,25 +170,21 @@ namespace SmartValley.WebApi.Authentication
             var claimsIdentity = CreateClaimsIdentity(user.Address, roles);
 
             var jwtSecurityToken = new JwtSecurityToken(
-                AuthenticationOptions.Issuer,
-                AuthenticationOptions.Audience,
-                claimsIdentity.Claims,
-                now.UtcDateTime,
-                now.UtcDateTime.Add(TimeSpan.FromMinutes(AuthenticationOptions.LifetimeInMinutes)),
-                new SigningCredentials(AuthenticationOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+                                       AuthenticationOptions.Issuer,
+                                       AuthenticationOptions.Audience,
+                                       claimsIdentity.Claims,
+                                       now.UtcDateTime,
+                                       now.UtcDateTime.Add(TimeSpan.FromMinutes(AuthenticationOptions.LifetimeInMinutes)),
+                                       new SigningCredentials(AuthenticationOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256)) {Payload = {["TokenIssueDate"] = now}};
 
-            jwtSecurityToken.Payload["TokenIssueDate"] = now;
-
-            var jwt = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-            return new Identity(user.Address, true, jwt, roles.Select(r => r.Name).ToArray());
+            var token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            return new Identity(user.Address, user.Email, true, token, roles.Select(r => r.Name).ToArray());
         }
 
         private bool IsSignedMessageValid(string address, string signedText, string signature)
         {
             if (string.IsNullOrEmpty(signedText) || string.IsNullOrEmpty(signature))
-            {
                 return false;
-            }
 
             var publicKey = _ethereumMessageSigner.EncodeUTF8AndEcRecover(signedText, signature);
             return publicKey.Equals(address, StringComparison.OrdinalIgnoreCase);

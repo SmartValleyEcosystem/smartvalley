@@ -111,7 +111,8 @@ import {CreateNewExpertModalComponent} from './components/common/create-new-expe
 import {EditExpertModalComponent} from './components/common/edit-expert-modal/edit-expert-modal.component';
 import {ExpertStatusGuard} from './services/guards/expert-status.guard';
 import {AdminScoringProjectsComponent} from './components/admin-panel/admin-scoring-projects/admin-scoring-projects.component';
-import { SetExpertsModalComponent } from './components/common/set-experts-modal/set-experts-modal.component';
+import {SetExpertsModalComponent} from './components/common/set-experts-modal/set-experts-modal.component';
+import {ChangeEmailModalComponent} from './components/common/change-email-modal/change-email-modal.component';
 
 @NgModule({
   declarations: [
@@ -163,7 +164,8 @@ import { SetExpertsModalComponent } from './components/common/set-experts-modal/
     ExpertsCountSelectionModalComponent,
     AdminExpertApplicationComponent,
     AdminScoringProjectsComponent,
-    SetExpertsModalComponent
+    SetExpertsModalComponent,
+    ChangeEmailModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -180,7 +182,8 @@ import { SetExpertsModalComponent } from './components/common/set-experts-modal/
     CreateNewExpertModalComponent,
     EditExpertModalComponent,
     ExpertsCountSelectionModalComponent,
-    SetExpertsModalComponent
+    SetExpertsModalComponent,
+    ChangeEmailModalComponent
   ],
   imports: [
     FileUploadModule,

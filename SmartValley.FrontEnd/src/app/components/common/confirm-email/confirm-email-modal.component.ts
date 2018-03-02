@@ -5,8 +5,6 @@ import {NotificationsService} from 'angular2-notifications';
 import {TranslateService} from '@ngx-translate/core';
 import {isNullOrUndefined} from 'util';
 import {MAT_DIALOG_DATA} from '@angular/material';
-import {RegisterModelData} from '../register-modal/register-modal-data';
-
 
 @Component({
   selector: 'app-confirm-email-modal',

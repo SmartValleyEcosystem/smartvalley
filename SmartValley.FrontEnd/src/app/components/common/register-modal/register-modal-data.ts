@@ -1,3 +1,3 @@
-export interface RegisterModelData {
+export interface RegisterModalData {
   email: string;
 }

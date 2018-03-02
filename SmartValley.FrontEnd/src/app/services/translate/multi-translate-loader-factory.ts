@@ -34,6 +34,7 @@ export function multiTranslateLoaderFactory() {
     'components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component',
     'components/common/vote-modal/vote-modal.component',
     'components/common/register-modal/register-modal.component',
+    'components/common/change-email-modal/change-email-modal.component',
     'components/common/confirm-email/confirm-email.component',
     'components/common/confirm-email/confirm-email-modal.component',
     'components/completed-voting/completed-voting.component',

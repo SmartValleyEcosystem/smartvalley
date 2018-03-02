@@ -12,6 +12,7 @@
     "Error": "Error",
     "TryAgain": "Please try again later",
     "Success": "Success",
-    "UserNotFound": "User not found."
+    "UserNotFound": "User not found.",
+    "EmailSendingErrorTitle": "Failed to send email"
   }
 }

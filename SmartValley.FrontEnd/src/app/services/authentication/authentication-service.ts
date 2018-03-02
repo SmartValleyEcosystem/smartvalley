@@ -1,4 +1,4 @@
-import {EventEmitter, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import {Web3Service} from '../web3-service';
 import {Router} from '@angular/router';
@@ -21,7 +21,6 @@ import {AuthenticationRequest} from '../../api/authentication/authentication-req
 import {UserApiClient} from '../../api/user/user-api-client';
 import {EmailRequest} from '../../api/user/email-request';
 import {TranslateService} from '@ngx-translate/core';
-
 
 @Injectable()
 export class AuthenticationService {
@@ -48,7 +47,6 @@ export class AuthenticationService {
       }
     });
   }
-
 
   public async initializeAsync(): Promise<void> {
     if (this.web3Service.isMetamaskInstalled && this.userContext.getCurrentUser() != null) {
@@ -113,6 +111,7 @@ export class AuthenticationService {
       });
 
       return <User>{
+        email: response.email,
         account: account,
         signature: signature,
         token: response.token,
@@ -156,8 +155,8 @@ export class AuthenticationService {
     } catch (e) {
       if (e.error.errorCode === ErrorCode.EmailSendingFailed) {
         this.notificationsService.error(
-          this.translateService.instant('Authentication.EmailSendingErrorTitle'),
-          this.translateService.instant('Authentication.EmailSendingErrorMessage')
+          this.translateService.instant('Common.EmailSendingErrorTitle'),
+          this.translateService.instant('Common.TryAgain')
         );
       }
       return false;
@@ -237,15 +236,5 @@ export class AuthenticationService {
     } else {
       this.userContext.deleteCurrentUser();
     }
-  }
-
-  private async getEmailBySignatureAsync(address: string, signature: string): Promise<string> {
-    const response = await this.userApiClient.getEmailBySignatureAsync(<EmailRequest>{
-      address: address,
-      signature: signature,
-      signedText: AuthenticationService.MESSAGE_TO_SIGN
-    });
-
-    return response.email;
   }
 }

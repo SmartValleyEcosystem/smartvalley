@@ -5,6 +5,11 @@ import {BlockiesService} from '../../services/blockies-service';
 import {Router} from '@angular/router';
 import {UserContext} from '../../services/authentication/user-context';
 import {UserApiClient} from '../../api/user/user-api-client';
+import {DialogService} from '../../services/dialog-service';
+import {isNullOrUndefined} from 'util';
+import {ErrorCode} from '../../shared/error-code.enum';
+import {NotificationsService} from 'angular2-notifications';
+import {TranslateService} from '@ngx-translate/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UpdateUserRequest} from '../../api/user/update-user-request';
 
@@ -21,6 +26,7 @@ export class AccountComponent implements OnInit {
   public frozenTokens: number;
   public accountAddress: string;
   public accountImgUrl: string;
+  public accountEmail: string;
   public userForm: FormGroup;
   private currentUser: User;
 
@@ -29,16 +35,37 @@ export class AccountComponent implements OnInit {
               private blockiesService: BlockiesService,
               private userContext: UserContext,
               private userApiClient: UserApiClient,
+              private dialogService: DialogService,
+              private notificationsService: NotificationsService,
+              private translateService: TranslateService,
               private formBuilder: FormBuilder) {
-
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalances(balance));
-    this.userContext.userContextChanged.subscribe((user) => this.updateAccount(user));
+    this.userContext.userContextChanged.subscribe((user) => this.updateAccountAsync(user));
   }
 
-  private updateAccount(user: User): void {
+  public async changeEmailAsync(): Promise<void> {
+    const address = this.userContext.getCurrentUser().account;
+    const newEmail = await this.dialogService.showChangeEmailDialogAsync();
+
+    try {
+      if (!isNullOrUndefined(newEmail)) {
+        await this.userApiClient.changeEmailAsync(address, newEmail);
+      }
+    } catch (e) {
+      if (e.error.errorCode === ErrorCode.EmailSendingFailed) {
+        this.notificationsService.error(
+          this.translateService.instant('Common.EmailSendingErrorTitle'),
+          this.translateService.instant('Common.TryAgain')
+        );
+      }
+    }
+  }
+
+  private async updateAccountAsync(user: User): Promise<void> {
     if (user) {
       this.accountAddress = user.account;
       this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
+      this.accountEmail = user.email;
     }
   }
 
@@ -51,8 +78,8 @@ export class AccountComponent implements OnInit {
     await this.balanceService.updateBalanceAsync();
     this.currentUser = this.userContext.getCurrentUser();
 
-    this.updateAccount(this.currentUser);
-    this.updateInfo();
+    await this.updateAccountAsync(this.currentUser);
+    await this.updateInfoAsync();
   }
 
   public async saveChangesAsync() {
@@ -62,7 +89,7 @@ export class AccountComponent implements OnInit {
       name: this.userForm.value.name
     });
 
-    this.updateInfo();
+    await this.updateInfoAsync();
   }
 
   private updateBalances(balance: Balance): void {
@@ -74,7 +101,7 @@ export class AccountComponent implements OnInit {
     }
   }
 
-  private async updateInfo() {
+  private async updateInfoAsync(): Promise<void> {
     const userResponse = await this.userApiClient.getByAddressAsync(this.currentUser.account);
     this.userForm.setValue({
       name: userResponse.name,

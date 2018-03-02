@@ -32,7 +32,7 @@ namespace SmartValley.Application.Email
                        .Replace("{SUBJECT}", "Welcome to the Smart Valley!")
                        .Replace("{BODY}", "Click on the button below to complete your registration.")
                        .Replace("{BUTTON}", "COMPLETE REGISTRATION")
-                       .Replace("{BUTTONHREF}", _siteUrls.GetConfirmRegistration(address, token));
+                       .Replace("{BUTTONHREF}", _siteUrls.GetConfirmEmail(address, token));
 
             await _mailSender.SendAsync(email, "Email confirmation", template);
         }
@@ -47,7 +47,7 @@ namespace SmartValley.Application.Email
                        .Replace("{SUBJECT}", "Password change")
                        .Replace("{BODY}", $"Click on the button below to change your email ")
                        .Replace("{BUTTON}", "Update email")
-                       .Replace("{BUTTONHREF}", _siteUrls.GetChangeEmail(token));
+                       .Replace("{BUTTONHREF}", _siteUrls.GetConfirmEmail(address, token));
             await _mailSender.SendAsync(email, "Email changing", template);
         }
 
