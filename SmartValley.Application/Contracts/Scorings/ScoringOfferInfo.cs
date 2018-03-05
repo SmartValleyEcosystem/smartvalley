@@ -5,13 +5,18 @@ namespace SmartValley.Application.Contracts.Scorings
 {
     public class ScoringOfferInfo
     {
-        public ScoringOfferInfo(Guid projectExternalId, string expertAddress, AreaType area, ScoringOfferStatus status, DateTimeOffset? timestamp)
+        public ScoringOfferInfo(
+            Guid projectExternalId,
+            string expertAddress,
+            AreaType area,
+            ScoringOfferStatus status,
+            DateTimeOffset? expirationTimestamp)
         {
             ProjectExternalId = projectExternalId;
             ExpertAddress = expertAddress;
             Area = area;
             Status = status;
-            Timestamp = timestamp;
+            ExpirationTimestamp = expirationTimestamp;
         }
 
         public Guid ProjectExternalId { get; }
@@ -22,6 +27,6 @@ namespace SmartValley.Application.Contracts.Scorings
 
         public ScoringOfferStatus Status { get; }
 
-        public DateTimeOffset? Timestamp { get; }
+        public DateTimeOffset? ExpirationTimestamp { get; }
     }
 }

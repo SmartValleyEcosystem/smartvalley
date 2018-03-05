@@ -5,7 +5,7 @@ using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain
 {
-    public class ScoringAreaStatistic
+    public class ScoringAreaStatistics
     {
         public AreaType AreaId { get; set; }
 

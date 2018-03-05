@@ -10,6 +10,6 @@ namespace SmartValley.WebApi.Scoring
     {
         Task StartAsync(Guid projectExternalId, IReadOnlyCollection<AreaRequest> areas);
 
-        Task<IReadOnlyCollection<ScoringProjectDetailsWithCounts>> GetScoringProjectsAsync(IEnumerable<ScoringProjectStatus> statuses);
+        Task<IReadOnlyCollection<ScoringProjectDetailsWithCounts>> GetScoringProjectsAsync(IReadOnlyCollection<ScoringProjectStatus> statuses);
     }
 }

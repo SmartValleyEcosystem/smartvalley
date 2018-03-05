@@ -56,7 +56,7 @@ namespace SmartValley.WebApi.Projects
         }
 
         [HttpGet("scoring"), Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<CollectionResponse<ScoringProjectResponse>> GetScoringProjectsAsync([FromQuery] IEnumerable<ScoringProjectStatus> statuses)
+        public async Task<CollectionResponse<ScoringProjectResponse>> GetScoringProjectsAsync([FromQuery] IReadOnlyCollection<ScoringProjectStatus> statuses)
         {
             var projects = await _scoringService.GetScoringProjectsAsync(statuses);
 

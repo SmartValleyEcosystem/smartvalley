@@ -7,7 +7,5 @@ namespace SmartValley.Application.Contracts.Scorings
     public interface IScoringExpertsManagerContractClient
     {
         Task<IReadOnlyCollection<ScoringOfferInfo>> GetOffersAsync(Guid projectExternalId);
-
-        Task<uint> GetOfferExpirationPeriodAsync();
     }
 }
