@@ -106,6 +106,7 @@ export class EstimateComponent implements OnInit {
     const submitEstimatesRequest = <SubmitEstimatesRequest>{
       transactionHash: transactionHash,
       projectId: this.projectId,
+      areaType: this.areaType,
       expertAddress: this.userContext.getCurrentUser().account,
       estimateComments: estimates.map(e => <EstimateCommentRequest>{
         questionId: e.questionId,

@@ -20,6 +20,7 @@
         InvalidFileUploaded,
         AddressAlreadyExists,
         ExpertApplicationAlreadyProcessed,
-        ShouldCheckAreasToAccept
+        ShouldCheckAreasToAccept,
+        AcceptedOfferNotFound
     }
 }

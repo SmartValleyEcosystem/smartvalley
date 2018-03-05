@@ -31,6 +31,15 @@ namespace SmartValley.Data.SQL.Repositories
         public Task RejectAsync(long scoringId, long expertId, AreaType area)
             => SetStatusAsync(scoringId, expertId, area, ScoringOfferStatus.Rejected);
 
+        public Task FinishAsync(long scoringId, long expertId, AreaType area)
+            => SetStatusAsync(scoringId, expertId, area, ScoringOfferStatus.Finished);
+
+        public async Task<bool> IsAcceptedAsync(long scoringId, long expertId, AreaType area)
+        {
+            var offer = await _readContext.ScoringOffers.FirstOrDefaultAsync(o => o.ScoringId == scoringId && o.AreaId == area && o.ExpertId == expertId);
+            return offer?.Status == ScoringOfferStatus.Accepted;
+        }
+
         private Task SetStatusAsync(long scoringId, long expertId, AreaType area, ScoringOfferStatus status)
         {
             var scoringOffer = new ScoringOffer

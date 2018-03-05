@@ -62,7 +62,7 @@ export class ScoringManagerContractClient implements ContractClient {
   }
 
   public async submitEstimatesAsync(scoringAddress: string,
-                                    expertiseArea: AreaType,
+                                    areaType: AreaType,
                                     estimates: Array<Estimate>): Promise<string> {
     const contract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.userContext.getCurrentUser().account;
@@ -80,7 +80,7 @@ export class ScoringManagerContractClient implements ContractClient {
 
     return await contract.submitEstimates(
       scoringAddress,
-      <number>expertiseArea,
+      <number>areaType,
       questionIds,
       scores,
       commentHashes,
