@@ -27,6 +27,7 @@ import {ExpertsCountSelectionModalData} from '../components/common/experts-count
 import {AreaType} from '../api/scoring/area-type.enum';
 import {AreaExpertsSettings} from '../components/common/experts-count-selection-modal/area-experts-settings';
 import {SetExpertsModalComponent} from '../components/common/set-experts-modal/set-experts-modal.component';
+import {ConfirmEmailModalData} from '../components/common/confirm-email/confirm-email-modal-data';
 import {ChangeEmailModalComponent} from '../components/common/change-email-modal/change-email-modal.component';
 
 @Injectable()
@@ -116,8 +117,14 @@ export class DialogService {
       .toPromise<string>();
   }
 
-  public showConfirmEmailDialogAsync(email: string) {
-    this.dialog.open(ConfirmEmailModalComponent, {data: email, width: '30em'});
+  public showConfirmEmailDialogAsync(email: string): Promise<boolean> {
+    return this.dialog.open(ConfirmEmailModalComponent, {
+      data: <ConfirmEmailModalData>{
+        email: email
+      }, width: '30em'
+    })
+      .afterClosed()
+      .toPromise<boolean>();
   }
 
   public showRinkebyAlert(): MatDialogRef<MetamaskManualModalComponent> {
@@ -162,10 +169,12 @@ export class DialogService {
       .afterClosed()
       .toPromise<boolean>();
   }
+
   public showCreateNewExpertModal(): MatDialogRef<CreateNewExpertModalComponent> {
-      return this.openModal(CreateNewExpertModalComponent, {});
+    return this.openModal(CreateNewExpertModalComponent, {});
   }
+
   public showEditExpertModal(expertData: any): MatDialogRef<EditExpertModalComponent> {
-      return this.openModal(EditExpertModalComponent, expertData);
+    return this.openModal(EditExpertModalComponent, expertData);
   }
 }

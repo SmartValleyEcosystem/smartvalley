@@ -12,7 +12,9 @@ namespace SmartValley.Domain.Interfaces
 
         Task<IReadOnlyCollection<User>> GetIdsByAddressesAsync(IReadOnlyCollection<string> addresses);
 
-        Task<User> GetByEmailAsync(string ademaildress);
+        Task<User> GetByEmailAsync(string email);
+
+        Task<User> GetByConfirmedEmailAsync(string email);
 
         Task<int> UpdateWholeAsync(User user);
 
