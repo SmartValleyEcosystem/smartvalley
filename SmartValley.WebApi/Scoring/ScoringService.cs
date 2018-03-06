@@ -14,6 +14,7 @@ using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.Scoring.Requests;
+using AreaType = SmartValley.Domain.Entities.AreaType;
 
 namespace SmartValley.WebApi.Scoring
 {
@@ -160,6 +161,23 @@ namespace SmartValley.WebApi.Scoring
             }
 
             return result;
+        }
+
+        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetPendingScoringOfferDetailsAsync(string expertAddress)
+        {
+            return _scoringOffersRepository.GetAllPendingByExpertAddressAsync(expertAddress);
+        }
+
+        public async Task AcceptOfferAsync(long scoringId, long areaId, string expertAddress)
+        {
+            var expert = await _userRepository.GetByAddressAsync(expertAddress);
+            await _scoringOffersRepository.AcceptAsync(scoringId, expert.Id, (AreaType) areaId);
+        }
+
+        public async Task RejectOfferAsync(long scoringId, long areaId, string expertAddress)
+        {
+            var expert = await _userRepository.GetByAddressAsync(expertAddress);
+            await _scoringOffersRepository.RejectAsync(scoringId, expert.Id, (AreaType) areaId);
         }
 
         private async Task<IEnumerable<ScoringProjectDetailsWithCounts>> ConvertAreaStatisticsToProjectDetailsAsync(
