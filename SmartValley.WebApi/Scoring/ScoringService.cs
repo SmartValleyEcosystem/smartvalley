@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application;
-using SmartValley.Application.Contracts.Options;
 using SmartValley.Application.Contracts.Scorings;
 using SmartValley.Application.Email;
 using SmartValley.Data.SQL.Repositories;
@@ -63,9 +62,7 @@ namespace SmartValley.WebApi.Scoring
             var offersEndDate = offerInfos.Max(i => i.ExpirationTimestamp);
 
             if (offersEndDate == null)
-            {
                 throw new AppErrorException(ErrorCode.OffersNotFound);
-            }
 
             var scoringId = await AddScoringAsync(project.Id, contractAddress, offersEndDate.Value);
 
@@ -104,12 +101,12 @@ namespace SmartValley.WebApi.Scoring
         private async Task<long> AddScoringAsync(long projectId, string contractAddress, DateTimeOffset offersEndDate)
         {
             var scoring = new Domain.Entities.Scoring
-            {
-                ProjectId = projectId,
-                ContractAddress = contractAddress,
-                CreationDate = _clock.UtcNow,
-                OffersEndDate = offersEndDate
-            };
+                          {
+                              ProjectId = projectId,
+                              ContractAddress = contractAddress,
+                              CreationDate = _clock.UtcNow,
+                              OffersEndDate = offersEndDate
+                          };
 
             await _scoringRepository.AddAsync(scoring);
             return scoring.Id;
@@ -124,23 +121,23 @@ namespace SmartValley.WebApi.Scoring
         private static ScoringOffer CreateOffer(long scoringId, long expertId, ScoringOfferInfo offerInfo)
         {
             return new ScoringOffer
-            {
-                AreaId = offerInfo.Area,
-                ExpertId = expertId,
-                ScoringId = scoringId,
-                Status = ScoringOfferStatus.Pending,
-                ExpirationTimestamp = offerInfo.ExpirationTimestamp.Value
-            };
+                   {
+                       AreaId = offerInfo.Area,
+                       ExpertId = expertId,
+                       ScoringId = scoringId,
+                       Status = ScoringOfferStatus.Pending,
+                       ExpirationTimestamp = offerInfo.ExpirationTimestamp.Value
+                   };
         }
 
         private static AreaScoring CreateAreaScoring(AreaRequest areaRequest, long scoringId)
         {
             return new AreaScoring
-            {
-                AreaId = areaRequest.Area.ToDomain(),
-                ScoringId = scoringId,
-                ExpertsCount = areaRequest.ExpertsCount
-            };
+                   {
+                       AreaId = areaRequest.Area.ToDomain(),
+                       ScoringId = scoringId,
+                       ExpertsCount = areaRequest.ExpertsCount
+                   };
         }
 
         public async Task<IReadOnlyCollection<ScoringProjectDetailsWithCounts>> GetScoringProjectsAsync(IReadOnlyCollection<ScoringProjectStatus> statuses)
@@ -163,10 +160,11 @@ namespace SmartValley.WebApi.Scoring
             return result;
         }
 
-        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetPendingScoringOfferDetailsAsync(string expertAddress)
-        {
-            return _scoringOffersRepository.GetAllPendingByExpertAddressAsync(expertAddress);
-        }
+        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetPendingOfferDetailsAsync(string expertAddress)
+            => _scoringOffersRepository.GetAllPendingByExpertAsync(expertAddress);
+
+        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetAcceptedOfferDetailsAsync(string expertAddress)
+            => _scoringOffersRepository.GetAllAcceptedByExpertAsync(expertAddress);
 
         public async Task AcceptOfferAsync(long scoringId, long areaId, string expertAddress)
         {
@@ -187,22 +185,22 @@ namespace SmartValley.WebApi.Scoring
             var areasByScoringId = statistics.ToLookup(
                 o => o.ScoringId,
                 k => new AreaCount
-                {
-                    AreaType = k.AreaId,
-                    AcceptedCount = k.AcceptedCount,
-                    RequeiredCount = k.RequiredCount
-                });
+                     {
+                         AreaType = k.AreaId,
+                         AcceptedCount = k.AcceptedCount,
+                         RequeiredCount = k.RequiredCount
+                     });
             var scoringDetails = await _scoringRepository.GetScoringProjectsDetailsByScoringIdsAsync(areasByScoringId.Select(o => o.Key).ToArray());
             return scoringDetails.Select(i => new ScoringProjectDetailsWithCounts
-            {
-                ProjectId = i.ProjectId,
-                CreationDate = i.CreationDate,
-                OffersEndDate = i.OffersEndDate,
-                Address = i.Address,
-                Name = i.Name,
-                Status = status,
-                AreaCounts = areasByScoringId[i.ScoringId]
-            });
+                                              {
+                                                  ProjectId = i.ProjectId,
+                                                  CreationDate = i.CreationDate,
+                                                  OffersEndDate = i.OffersEndDate,
+                                                  Address = i.Address,
+                                                  Name = i.Name,
+                                                  Status = status,
+                                                  AreaCounts = areasByScoringId[i.ScoringId]
+                                              });
         }
     }
 }

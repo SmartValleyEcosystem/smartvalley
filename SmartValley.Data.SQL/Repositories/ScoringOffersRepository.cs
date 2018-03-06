@@ -21,10 +21,6 @@ namespace SmartValley.Data.SQL.Repositories
             _editContext = editContext;
         }
 
-        public Task<ScoringOffer> GetAsync(long scoringId, AreaType areaId, long expertId)
-            => _readContext.ScoringOffers.FirstOrDefaultAsync(s => s.ScoringId == scoringId && s.AreaId == areaId && s.ExpertId == expertId);
-
-
         public Task AddAsync(IReadOnlyCollection<ScoringOffer> offers)
         {
             _editContext.ScoringOffers.AddRange(offers);
@@ -60,20 +56,23 @@ namespace SmartValley.Data.SQL.Repositories
             return _editContext.SaveAsync();
         }
 
-        public async Task<IReadOnlyCollection<ScoringOffer>> GetByScoringAsync(long scoringId)
-            => await _readContext.ScoringOffers.Where(offer => offer.ScoringId == scoringId).ToArrayAsync();
+        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllPendingByExpertAsync(string expertAddress)
+            => GetAllForExpertByStatusAsync(expertAddress, ScoringOfferStatus.Pending);
 
-        public async Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllPendingByExpertAddressAsync(string address)
+        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllAcceptedByExpertAsync(string expertAddress)
+            => GetAllForExpertByStatusAsync(expertAddress, ScoringOfferStatus.Accepted);
+
+        private async Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllForExpertByStatusAsync(string expertAddress, ScoringOfferStatus status)
         {
             return await (from scoringOffer in _readContext.ScoringOffers
                           join scoring in _readContext.Scorings on scoringOffer.ScoringId equals scoring.Id
                           join project in _readContext.Projects on scoring.ProjectId equals project.Id
                           join user in _readContext.Users on scoringOffer.ExpertId equals user.Id
-                          where scoringOffer.Status == ScoringOfferStatus.Pending && user.Address.Equals(address, StringComparison.OrdinalIgnoreCase)
+                          where scoringOffer.Status == status && user.Address.Equals(expertAddress, StringComparison.OrdinalIgnoreCase)
                           select new ScoringOfferDetails
                                  {
                                      ScoringOfferStatus = scoringOffer.Status,
-                                     ScoringOfferTimeStamp = scoringOffer.ExpirationTimestamp,
+                                     ScoringOfferTimestamp = scoringOffer.ExpirationTimestamp,
                                      AreaType = scoringOffer.AreaId,
                                      Name = project.Name,
                                      ProjectArea = project.ProjectArea,

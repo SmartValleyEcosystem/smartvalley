@@ -7,7 +7,7 @@ namespace SmartValley.Domain
     {
         public ScoringOfferStatus ScoringOfferStatus { get; set; }
 
-        public DateTimeOffset ScoringOfferTimeStamp { get; set; }
+        public DateTimeOffset ScoringOfferTimestamp { get; set; }
 
         public string ScoringContractAddress { get; set; }
 

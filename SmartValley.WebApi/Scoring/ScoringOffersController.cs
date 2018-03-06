@@ -9,23 +9,34 @@ using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Scoring
 {
-    [Route("api/scoring/offer")]
+    [Route("api/scoring/offers")]
     [Authorize]
-    public class ScoringOfferController : Controller
+    public class ScoringOffersController : Controller
     {
         private readonly IScoringService _scoringService;
         private readonly EthereumClient _ethereumClient;
 
-        public ScoringOfferController(IScoringService scoringService, EthereumClient ethereumClient)
+        public ScoringOffersController(IScoringService scoringService, EthereumClient ethereumClient)
         {
             _scoringService = scoringService;
             _ethereumClient = ethereumClient;
         }
 
-        [HttpGet]
+        [HttpGet("pending")]
         public async Task<CollectionResponse<ScoringOfferResponse>> GetAllPendingAsync()
         {
-            var offers = await _scoringService.GetPendingScoringOfferDetailsAsync(User.Identity.Name);
+            var offers = await _scoringService.GetPendingOfferDetailsAsync(User.Identity.Name);
+
+            return new CollectionResponse<ScoringOfferResponse>
+                   {
+                       Items = offers.Select(ScoringOfferResponse.Create).ToArray()
+                   };
+        }
+
+        [HttpGet("accepted")]
+        public async Task<CollectionResponse<ScoringOfferResponse>> GetAllAcceptedAsync()
+        {
+            var offers = await _scoringService.GetAcceptedOfferDetailsAsync(User.Identity.Name);
 
             return new CollectionResponse<ScoringOfferResponse>
                    {

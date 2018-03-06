@@ -21,7 +21,7 @@ namespace SmartValley.WebApi.Scoring.Responses
 
         public Guid ProjectExternalId { get; set; }
 
-        public DateTimeOffset ScoringOfferTimeStamp { get; set; }
+        public DateTimeOffset ScoringOfferTimestamp { get; set; }
 
         public static ScoringOfferResponse Create(ScoringOfferDetails scoringOffer)
         {
@@ -35,7 +35,7 @@ namespace SmartValley.WebApi.Scoring.Responses
                        Country = scoringOffer.Country,
                        ScoringId = scoringOffer.ScoringId,
                        ProjectExternalId = scoringOffer.ProjectExternalId,
-                       ScoringOfferTimeStamp = scoringOffer.ScoringOfferTimeStamp
+                       ScoringOfferTimestamp = scoringOffer.ScoringOfferTimestamp
                    };
         }
     }
