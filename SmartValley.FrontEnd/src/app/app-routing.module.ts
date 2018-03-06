@@ -81,6 +81,7 @@ const appRoutes: Routes = [
       {path: Paths.Report + '/:id', pathMatch: 'full', component: ReportComponent},
       {path: Paths.ExpertStatus, canActivate: [ExpertStatusGuard], component: ExpertStatusComponent},
       {path: Paths.RegisterExpert, canActivate: [RegisterExpertGuard], component: RegisterExpertComponent},
+      {path: Paths.Expert + '/:tab', component: ExpertComponent, canActivate: [ExpertGuard]},
       {path: Paths.Expert, component: ExpertComponent, canActivate: [ExpertGuard]},
       {path: Paths.Scoring + '/:id', pathMatch: 'full', component: EstimateComponent, canActivate: [ShouldHaveEthGuard]},
       {path: Paths.ConfirmEmail, component: ConfirmEmailComponent}

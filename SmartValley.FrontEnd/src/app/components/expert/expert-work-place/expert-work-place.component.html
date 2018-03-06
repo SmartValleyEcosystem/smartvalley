@@ -1,0 +1,23 @@
+<div class="expert-score-items-wrapper">
+  <div *ngFor="let scoringItem of expertScoring" class="expert-score-item">
+    <div class="name">
+      <p>
+        <img class="project-image" src="{{scoringItem.projectImage}}" alt="{{scoringItem.description}}">
+      </p>
+      <p class="project-name-description">{{scoringItem.name}}</p>
+      <p class="project-name-description">{{scoringItem.country}}</p>
+      <p class="project-name-description">{{getAreaName(scoringItem.area)}}</p>
+    </div>
+    <div class="description">
+      {{scoringItem.description}}
+    </div>
+    <div class="scoring-control">
+      <p>{{ 'ExpertWorkPlace.Till' | translate }} {{scoringItem.endDate}}</p>
+      <p>
+        <button mat-raised-button (click)="estimateOffer(scoringItem.id, scoringItem.area )" class="sv-default-btn btn-space">
+          {{ 'ExpertWorkPlace.EstimateAs' | translate }}{{getAreaName(scoringItem.area)}}
+        </button>
+      </p>
+    </div>
+  </div>
+</div>

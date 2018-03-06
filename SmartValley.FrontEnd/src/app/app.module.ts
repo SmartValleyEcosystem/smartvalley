@@ -113,6 +113,7 @@ import {ExpertStatusGuard} from './services/guards/expert-status.guard';
 import {AdminScoringProjectsComponent} from './components/admin-panel/admin-scoring-projects/admin-scoring-projects.component';
 import {SetExpertsModalComponent} from './components/common/set-experts-modal/set-experts-modal.component';
 import {ChangeEmailModalComponent} from './components/common/change-email-modal/change-email-modal.component';
+import { ExpertWorkPlaceComponent } from './components/expert/expert-work-place/expert-work-place.component';
 
 @NgModule({
   declarations: [
@@ -165,7 +166,8 @@ import {ChangeEmailModalComponent} from './components/common/change-email-modal/
     AdminExpertApplicationComponent,
     AdminScoringProjectsComponent,
     SetExpertsModalComponent,
-    ChangeEmailModalComponent
+    ChangeEmailModalComponent,
+    ExpertWorkPlaceComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,

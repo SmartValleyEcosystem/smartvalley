@@ -13,6 +13,9 @@ import {PendingExpertListResponse} from './pending-expert-list-response';
 import {NewExpertRequest} from './new-expert-request';
 import {DeleteExpertRequest} from './delete-expert-request';
 import {EditExpertRequest} from './edit-expert-request';
+import {ExpertScoring} from  './expert-scoring';
+import {Observable} from 'rxjs/Observable';
+import {of} from 'rxjs/observable/of';
 
 @Injectable()
 export class ExpertApiClient extends BaseApiClient {
@@ -76,5 +79,37 @@ export class ExpertApiClient extends BaseApiClient {
 
   public async editExpertAsync(editExpertData: EditExpertRequest) {
     await this.http.put(this.baseApiUrl + '/experts/', editExpertData).toPromise();
+  }
+
+  public getMockExpertScoringAsync(): Observable<ExpertScoring[]> {
+      return of([
+          {
+              id: 1,
+              name: "Project",
+              description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquet nisl enim. Suspendisse et pharetra enim. Phasellus mattis nulla nec pharetra suscipit. Suspendisse tristique varius dui eget commodo. Vivamus elementum in ante vitae iaculis. Etiam faucibus leo sed sodales tincidunt. In pharetra augue non feugiat posuere. Nulla ullamcorper eget velit tempor facilisis. Praesent euismod vitae augue ac tincidunt. Donec iaculis felis ac nibh pharetra, et consectetur risus lobortis. Proin et neque a est eleifend fermentum vitae egestas dolor. Duis pretium interdum tristique. Vestibulum lectus felis, varius egestas sapien eget, porta congue felis. Aenean et ultrices odio. In eget feugiat lacus`,
+              country: "Russia",
+              area: 1,
+              endDate: "02.10.18",
+              projectImage: "http://via.placeholder.com/150x150"
+          },
+          {
+              id: 2,
+              name: "Project1",
+              description: "description 1",
+              country: "Russia",
+              area: 2,
+              endDate: "02.10.18",
+              projectImage: "http://via.placeholder.com/250x150"
+          },
+          {
+              id: 3,
+              name: "Project 3",
+              description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquet nisl enim. Suspendisse et pharetra enim. Phasellus mattis nulla nec pharetra suscipit. Suspendisse tristique varius dui eget commodo. Vivamus elementum in ante vitae iaculis. Etiam faucibus leo sed sodales tincidunt. In pharetra augue non feugiat posuere. Nulla ullamcorper eget velit tempor facilisis. Praesent euismod vitae augue ac tincidunt. Donec iaculis felis ac nibh pharetra, et consectetur risus lobortis. Proin et neque a est eleifend fermentum vitae egestas dolor. Duis pretium interdum tristique.`,
+              country: "Russia",
+              area: 3,
+              endDate: "02.10.18",
+              projectImage: "http://via.placeholder.com/150x150"
+          }
+      ]);
   }
 }
