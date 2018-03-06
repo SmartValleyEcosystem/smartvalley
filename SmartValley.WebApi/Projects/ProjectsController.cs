@@ -65,8 +65,8 @@ namespace SmartValley.WebApi.Projects
                 Address = i.Address,
                 Name = i.Name,
                 ProjectId = i.ProjectId.ToString(),
-                StartDate = i.StartDate?.Date,
-                EndDate = i.EndDate?.Date,
+                StartDate = i.CreationDate.Date,
+                EndDate = i.OffersEndDate.Date,
                 Status = i.Status,
                 AreasExperts = i.AreaCounts.Select(j => new AreaExpertResponse { AreaType = j.AreaType, AcceptedCount = j.AcceptedCount, RequiredCount = j.RequeiredCount})
             }).ToArray();

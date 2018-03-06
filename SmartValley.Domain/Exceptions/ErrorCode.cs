@@ -21,6 +21,7 @@
         AddressAlreadyExists,
         ExpertApplicationAlreadyProcessed,
         ShouldCheckAreasToAccept,
-        AcceptedOfferNotFound
+        AcceptedOfferNotFound,
+        OffersNotFound
     }
 }

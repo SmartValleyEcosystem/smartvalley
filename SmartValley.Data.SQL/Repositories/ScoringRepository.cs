@@ -31,7 +31,7 @@ namespace SmartValley.Data.SQL.Repositories
         {
             foreach (var area in areas)
             {
-                var areaScoring = new AreaScoring {ScoringId = scoringId, AreaId = area, IsCompleted = true};
+                var areaScoring = new AreaScoring { ScoringId = scoringId, AreaId = area, IsCompleted = true };
                 EditContext.AreaScorings.Attach(areaScoring).Property(s => s.IsCompleted).IsModified = true;
             }
 
@@ -49,42 +49,42 @@ namespace SmartValley.Data.SQL.Repositories
             var requiredCounts = await (from areaScoring in ReadContext.AreaScorings
                                         where !areaScoring.IsCompleted
                                         select new
-                                               {
-                                                   areaScoring.ScoringId,
-                                                   AreaType = areaScoring.AreaId,
-                                                   Count = areaScoring.ExpertsCount
-                                               }).ToArrayAsync();
+                                        {
+                                            areaScoring.ScoringId,
+                                            AreaType = areaScoring.AreaId,
+                                            Count = areaScoring.ExpertsCount
+                                        }).ToArrayAsync();
 
             var acceptedCounts = await (from areaScoring in ReadContext.AreaScorings
                                         join scoringOffer in ReadContext.ScoringOffers
-                                            on new {areaScoring.ScoringId, areaScoring.AreaId}
-                                            equals new {scoringOffer.ScoringId, scoringOffer.AreaId}
+                                            on new { areaScoring.ScoringId, areaScoring.AreaId }
+                                            equals new { scoringOffer.ScoringId, scoringOffer.AreaId }
                                         where scoringOffer.Status == ScoringOfferStatus.Accepted
                                         where !areaScoring.IsCompleted
-                                        group scoringOffer by new {scoringOffer.ScoringId, scoringOffer.AreaId}
+                                        group scoringOffer by new { scoringOffer.ScoringId, scoringOffer.AreaId }
                                         into scoringAreaGroup
                                         select new
-                                               {
-                                                   scoringAreaGroup.Key.ScoringId,
-                                                   AreaType = scoringAreaGroup.Key.AreaId,
-                                                   Count = scoringAreaGroup.Count()
-                                               }).ToArrayAsync();
+                                        {
+                                            scoringAreaGroup.Key.ScoringId,
+                                            AreaType = scoringAreaGroup.Key.AreaId,
+                                            Count = scoringAreaGroup.Count()
+                                        }).ToArrayAsync();
 
             var pendingCounts = await (from areaScoring in ReadContext.AreaScorings
                                        join scoringOffer in ReadContext.ScoringOffers
-                                           on new {areaScoring.ScoringId, areaScoring.AreaId}
-                                           equals new {scoringOffer.ScoringId, scoringOffer.AreaId}
+                                           on new { areaScoring.ScoringId, areaScoring.AreaId }
+                                           equals new { scoringOffer.ScoringId, scoringOffer.AreaId }
                                        where scoringOffer.Status == ScoringOfferStatus.Pending
                                        where !areaScoring.IsCompleted
                                        where scoringOffer.ExpirationTimestamp <= tillDate
-                                       group scoringOffer by new {scoringOffer.ScoringId, scoringOffer.AreaId}
+                                       group scoringOffer by new { scoringOffer.ScoringId, scoringOffer.AreaId }
                                        into scoringAreaGroup
                                        select new
-                                              {
-                                                  scoringAreaGroup.Key.ScoringId,
-                                                  AreaType = scoringAreaGroup.Key.AreaId,
-                                                  Count = scoringAreaGroup.Count()
-                                              }).ToArrayAsync();
+                                       {
+                                           scoringAreaGroup.Key.ScoringId,
+                                           AreaType = scoringAreaGroup.Key.AreaId,
+                                           Count = scoringAreaGroup.Count()
+                                       }).ToArrayAsync();
 
             return requiredCounts.Select(i =>
                                              new ScoringAreaStatistics
@@ -103,13 +103,14 @@ namespace SmartValley.Data.SQL.Repositories
                           join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
                           where scoringIds.Any(i => i.Equals(scoring.Id))
                           select new ScoringProjectDetails
-                                 {
-                                     ProjectId = project.Id,
-                                     ScoringId = scoring.Id,
-                                     Address = scoring.ContractAddress,
-                                     Name = project.Name
-                                 })
-                       .ToArrayAsync();
+                          {
+                              ProjectId = project.Id,
+                              ScoringId = scoring.Id,
+                              Address = scoring.ContractAddress,
+                              Name = project.Name,
+                              CreationDate = scoring.CreationDate,
+                              OffersEndDate = scoring.OffersEndDate
+                          }).ToArrayAsync();
         }
     }
 }

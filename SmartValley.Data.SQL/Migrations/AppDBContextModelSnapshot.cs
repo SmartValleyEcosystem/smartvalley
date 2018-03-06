@@ -294,9 +294,17 @@ namespace SmartValley.Data.SQL.Migrations
                         .IsRequired()
                         .HasMaxLength(42);
 
+                    b.Property<DateTimeOffset>("CreationDate");
+
+                    b.Property<DateTimeOffset>("OffersEndDate");
+
                     b.Property<long>("ProjectId");
 
                     b.Property<double?>("Score");
+
+                    b.Property<DateTimeOffset?>("ScoringEndDate");
+
+                    b.Property<DateTimeOffset?>("ScoringStartDate");
 
                     b.HasKey("Id");
 
