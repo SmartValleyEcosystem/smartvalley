@@ -13,7 +13,8 @@ import {PendingExpertListResponse} from './pending-expert-list-response';
 import {NewExpertRequest} from './new-expert-request';
 import {DeleteExpertRequest} from './delete-expert-request';
 import {EditExpertRequest} from './edit-expert-request';
-import {ExpertScoring} from  './expert-scoring';
+import {ExpertScoring} from './expert-scoring';
+import {ExpertHistoryOffer} from './expert-history-offer';
 import {Observable} from 'rxjs/Observable';
 import {of} from 'rxjs/observable/of';
 
@@ -109,6 +110,31 @@ export class ExpertApiClient extends BaseApiClient {
               area: 3,
               endDate: "02.10.18",
               projectImage: "http://via.placeholder.com/150x150"
+          }
+      ]);
+  }
+  public getMockHestoryOffersListAsync (): Observable<ExpertHistoryOffer[]> {
+      return of([
+          {
+              id: 1,
+              name: 'offer 1',
+              date: '01.02.2015',
+              status: 1,
+              earned: 100
+          },
+          {
+              id: 2,
+              name: 'offer 2',
+              date: '01.02.2016',
+              status: 2,
+              earned: 200
+          },
+          {
+              id: 3,
+              name: 'offer 3',
+              date: '01.02.2017',
+              status: 3,
+              earned: 300
           }
       ]);
   }

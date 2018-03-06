@@ -1,0 +1,28 @@
+<div class="admin-experts-list">
+  <p-table [value]="offers">
+    <ng-template pTemplate="header" let-columns>
+      <tr class="list-row list-row__header">
+        <th class="list-item">{{ 'ExpertOffersHistory.Name' | translate }}</th>
+        <th class="list-item">{{ 'ExpertOffersHistory.Date' | translate }}</th>
+        <th class="list-item">{{ 'ExpertOffersHistory.Status' | translate }}</th>
+        <th class="list-item">{{ 'ExpertOffersHistory.Earned' | translate }}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr class="list-row">
+        <td class="list-item">
+          {{rowData.name}}
+        </td>
+        <td class="list-item">
+          {{rowData.date}}
+        </td>
+        <td class="list-item">
+          {{getExpertOfferStatusById(rowData.status)}}
+        </td>
+        <td class="list-item">
+          {{rowData.earned}}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

@@ -114,6 +114,7 @@ import {AdminScoringProjectsComponent} from './components/admin-panel/admin-scor
 import {SetExpertsModalComponent} from './components/common/set-experts-modal/set-experts-modal.component';
 import {ChangeEmailModalComponent} from './components/common/change-email-modal/change-email-modal.component';
 import { ExpertWorkPlaceComponent } from './components/expert/expert-work-place/expert-work-place.component';
+import { ExpertOffersHistoryComponent } from './components/expert/expert-offers-history/expert-offers-history.component';
 
 @NgModule({
   declarations: [
@@ -167,7 +168,8 @@ import { ExpertWorkPlaceComponent } from './components/expert/expert-work-place/
     AdminScoringProjectsComponent,
     SetExpertsModalComponent,
     ChangeEmailModalComponent,
-    ExpertWorkPlaceComponent
+    ExpertWorkPlaceComponent,
+    ExpertOffersHistoryComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
