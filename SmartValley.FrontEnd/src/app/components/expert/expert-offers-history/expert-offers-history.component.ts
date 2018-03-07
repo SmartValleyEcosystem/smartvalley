@@ -12,6 +12,8 @@ export class ExpertOffersHistoryComponent implements OnInit {
 
     public offers: ExpertHistoryOffer[] = [];
 
+    constructor(private offersApiClient: OffersApiClient) { }
+
     public renderTableRows(historyOfferItems: ExpertHistoryOffer[]) {
         this.offers = [];
         for (const offer of historyOfferItems) {
@@ -25,8 +27,6 @@ export class ExpertOffersHistoryComponent implements OnInit {
             this.offers.push(historyOffer);
         }
     }
-
-    constructor(private offersApiClient: OffersApiClient) { }
 
     public getExpertOfferStatusById(id) {
       return ExpertOfferStatus[id];
