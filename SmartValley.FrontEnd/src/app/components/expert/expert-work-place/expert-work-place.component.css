@@ -1,0 +1,28 @@
+.expert-score-item {
+    background: #fff;
+    display: flex;
+    color: #000;
+    padding: 10px;
+    margin-bottom: 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+.project-image {
+    height: 100px;
+    width: 100px;
+    border-radius: 100px;
+}
+.project-name-description {
+    padding-left: 10px;
+}
+.name {
+    width: 10%;
+}
+.scoring-control {
+    width: 15%;
+    padding-right: 10px;
+}
+.description {
+    padding: 0 20px;
+    width: 70%;
+}
