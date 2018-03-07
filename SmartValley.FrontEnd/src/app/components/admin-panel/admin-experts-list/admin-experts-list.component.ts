@@ -15,10 +15,10 @@ import {ExpertsRegistryContractClient} from '../../../services/contract-clients/
   styleUrls: ['./admin-experts-list.component.css']
 })
 export class AdminExpertsListComponent implements OnInit {
-  private totalRecords: number;
-  private loading: boolean;
-  private currentPage = 0;
-  private pageSize = 10;
+  public totalRecords: number;
+  public loading: boolean;
+  public currentPage = 0;
+  public pageSize = 10;
   public expertsResponse: CollectionResponse<PendingExpertListResponse>;
   public experts: AdminExpertItem[] = [];
   public transactionHash: string;
