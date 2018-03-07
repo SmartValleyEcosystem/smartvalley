@@ -1,7 +1,12 @@
 export interface ExpertHistoryOffer {
-    id: number;
+    scoringId: number;
+    areaId: number;
     name: string;
-    date: string;
-    status: number;
-    earned: number;
+    scoringContractAddress: string;
+    country: string;
+    projectArea: string;
+    description: string;
+    offerStatus: number;
+    projectExternalId: string;
+    scoringOfferTimestamp: string;
 }

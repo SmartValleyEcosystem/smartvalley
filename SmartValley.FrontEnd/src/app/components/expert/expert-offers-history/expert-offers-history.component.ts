@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {LazyLoadEvent} from 'primeng/api';
-import {ExpertApiClient} from '../../../api/expert/expert-api-client';
+import {OffersApiClient} from '../../../api/expert/offers-api-client';
 import {ExpertHistoryOffer} from '../../../api/expert/expert-history-offer';
 import {ExpertOfferStatus} from '../../../services/expert/expert-offer-status.enum';
 
@@ -11,30 +10,31 @@ import {ExpertOfferStatus} from '../../../services/expert/expert-offer-status.en
 })
 export class ExpertOffersHistoryComponent implements OnInit {
 
-    public offers: ExpertHistoryOffer[];
+    public offers: ExpertHistoryOffer[] = [];
 
     public renderTableRows(historyOfferItems: ExpertHistoryOffer[]) {
         this.offers = [];
         for (const offer of historyOfferItems) {
             const historyOffer = <ExpertHistoryOffer>{
-                id: offer.id,
+                scoringId: offer.scoringId,
                 name: offer.name,
-                date: offer.date,
-                status: offer.status,
-                earned: offer.earned
+                scoringOfferTimestamp: offer.scoringOfferTimestamp,
+                offerStatus: offer.offerStatus,
+                description: offer.description
             };
             this.offers.push(historyOffer);
         }
     }
 
-    constructor(private expertApiClient: ExpertApiClient) { }
+    constructor(private offersApiClient: OffersApiClient) { }
 
     public getExpertOfferStatusById(id) {
       return ExpertOfferStatus[id];
     }
 
-    ngOnInit() {
-        this.expertApiClient.getMockHestoryOffersListAsync().subscribe(offers => this.offers = offers);
+    async ngOnInit() {
+        let offersResponse = await this.offersApiClient.getHistoryOffersListAsync();
+        this.offers = offersResponse.items;
         this.renderTableRows(this.offers);
     }
 
