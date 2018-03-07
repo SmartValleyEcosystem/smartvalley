@@ -66,21 +66,28 @@ namespace SmartValley.WebApi.Authentication
             if (!IsSignedMessageValid(request.Address, request.SignedText, request.Signature))
                 throw new AppErrorException(ErrorCode.InvalidSignature);
 
-            var user = await _userRepository.GetByEmailAsync(request.Email);
+            var user = await _userRepository.GetByConfirmedEmailAsync(request.Email);
             if (user != null)
                 throw new AppErrorException(ErrorCode.EmailAlreadyExists);
 
             user = await _userRepository.GetByAddressAsync(request.Address);
             if (user != null)
-                throw new AppErrorException(ErrorCode.AddressAlreadyExists);
+            {
+                if (user.IsEmailConfirmed)
+                    throw new AppErrorException(ErrorCode.AddressAlreadyExists);
 
-            user = new User
-                   {
-                       Address = request.Address,
-                       Email = request.Email
-                   };
-
-            await _userRepository.AddAsync(user);
+                user.Email = request.Email;
+                await _userRepository.UpdateWholeAsync(user);
+            }
+            else
+            {
+                user = new User
+                       {
+                           Address = request.Address,
+                           Email = request.Email
+                       };
+                await _userRepository.AddAsync(user);
+            }
 
             await _mailService.SendConfirmRegistrationAsync(user.Address, user.Email);
         }
@@ -102,10 +109,11 @@ namespace SmartValley.WebApi.Authentication
             return (_clock.UtcNow - issueDate).TotalMinutes >= AuthenticationOptions.LifetimeInMinutes;
         }
 
-        public async Task ConfirmEmailAsync(string address, string token, string email)
+        public async Task ConfirmEmailAsync(string address, string token)
         {
             var user = await _userRepository.GetByAddressAsync(address);
-            if (user == null || user.IsEmailConfirmed || !_mailTokenService.CheckEmailConfirmationToken(address, email, token))
+            string email = _mailTokenService.DecryptToken(token).Split(' ')[1];
+            if (user == null || !_mailTokenService.CheckEmailConfirmationToken(address, email, token))
                 throw new AppErrorException(ErrorCode.IncorrectData);
 
             user.IsEmailConfirmed = true;

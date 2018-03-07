@@ -13,10 +13,10 @@ namespace SmartValley.Application.Email
         }
 
         public string EncryptEmailConfirmationToken(string address, string email) =>
-            _dataProtector.Protect(address + email);
+            _dataProtector.Protect(address + " " + email);
 
         public bool CheckEmailConfirmationToken(string address, string email, string token) =>
-            _dataProtector.Unprotect(token) == address + email;
+            _dataProtector.Unprotect(token) == address + " " + email;
 
         public string EncryptToken(string data) => _dataProtector.Protect(data);
 

@@ -23,12 +23,16 @@ namespace SmartValley.Data.SQL.Repositories
         public async Task<IReadOnlyCollection<User>> GetIdsByAddressesAsync(IReadOnlyCollection<string> addresses)
         {
             return await ReadContext.Users
-                         .Where(user => addresses.Contains(user.Address, StringComparer.OrdinalIgnoreCase))
-                         .ToArrayAsync();
+                                    .Where(user => addresses.Contains(user.Address, StringComparer.OrdinalIgnoreCase))
+                                    .ToArrayAsync();
         }
 
         public Task<User> GetByEmailAsync(string email)
             => ReadContext.Users.FirstOrDefaultAsync(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+
+
+        public Task<User> GetByConfirmedEmailAsync(string email)
+            => ReadContext.Users.FirstOrDefaultAsync(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase) && u.IsEmailConfirmed);
 
         public async Task AddRoleAsync(string address, RoleType type)
         {

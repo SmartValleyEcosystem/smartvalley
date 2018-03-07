@@ -2,10 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application.Contracts.Scorings;
+using SmartValley.Data.SQL.Repositories;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
+using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Estimates.Requests;
+using SmartValley.WebApi.Experts;
+using AreaType = SmartValley.Domain.Entities.AreaType;
 
 namespace SmartValley.WebApi.Estimates
 {
@@ -15,25 +19,39 @@ namespace SmartValley.WebApi.Estimates
         private readonly IEstimateCommentRepository _estimateCommentRepository;
         private readonly IScoringContractClient _scoringContractClient;
         private readonly IScoringRepository _scoringRepository;
+        private readonly IScoringOffersRepository _scoringOffersRepository;
+        private readonly IExpertRepository _expertRepository;
 
         public EstimationService(
             IEstimateCommentRepository estimateCommentRepository,
             IScoringContractClient scoringContractClient,
-            IScoringRepository scoringRepository)
+            IScoringRepository scoringRepository,
+            IScoringOffersRepository scoringOffersRepository,
+            IExpertRepository expertRepository)
         {
             _estimateCommentRepository = estimateCommentRepository;
             _scoringContractClient = scoringContractClient;
             _scoringRepository = scoringRepository;
+            _scoringOffersRepository = scoringOffersRepository;
+            _expertRepository = expertRepository;
         }
 
         public async Task SubmitEstimatesAsync(SubmitEstimatesRequest request)
         {
+            var scoring = await _scoringRepository.GetByProjectIdAsync(request.ProjectId);
+            var expert = await _expertRepository.GetByAddressAsync(request.ExpertAddress);
+
+            var isOfferAccepted = await _scoringOffersRepository.IsAcceptedAsync(scoring.Id, expert.UserId, request.AreaType.ToDomain());
+            if (!isOfferAccepted)
+                throw new AppErrorException(ErrorCode.AcceptedOfferNotFound);
+
             await AddEstimateCommentsAsync(request);
 
-            var scoring = await _scoringRepository.GetByProjectIdAsync(request.ProjectId);
             var scoringStatistics = await _scoringContractClient.GetScoringStatisticsAsync(scoring.ContractAddress);
 
             await UpdateProjectScoringAsync(scoring, scoringStatistics);
+
+            await _scoringOffersRepository.FinishAsync(scoring.Id, expert.UserId, request.AreaType.ToDomain());
         }
 
         public async Task<ScoringStatisticsInArea> GetScoringStatisticsInAreaAsync(long projectId, AreaType areaType)

@@ -103,7 +103,7 @@ namespace SmartValley.Data.SQL.Repositories
             var existExpertApplitacion = await (from explertApplication in ReadContext.ExpertApplications
                                                 join user in ReadContext.Users on explertApplication.ApplicantId equals user.Id
                                                 where user.Address.Equals(address, StringComparison.OrdinalIgnoreCase)
-                                                orderby explertApplication.ApplyDate
+                                                orderby explertApplication.ApplyDate descending
                                                 select explertApplication).FirstOrDefaultAsync();
 
             return existExpertApplitacion?.Status ?? ExpertApplicationStatus.None;

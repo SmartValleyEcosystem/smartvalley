@@ -133,7 +133,11 @@ export class AuthenticationService {
             signature: signature,
             signedText: AuthenticationService.MESSAGE_TO_SIGN
           });
-          await this.dialogService.showConfirmEmailDialogAsync(response.email);
+
+          const isNewEmailSpecified = await this.dialogService.showConfirmEmailDialogAsync(response.email);
+          if (isNewEmailSpecified) {
+            await this.registerAsync(account, signature, messageToSign);
+          }
       }
     }
   }

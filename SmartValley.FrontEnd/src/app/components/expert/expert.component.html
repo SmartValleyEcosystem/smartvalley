@@ -1,3 +1,14 @@
-<p>
-  expert works!
-</p>
+<div class="container">
+  <h1>{{ 'Expert.Title' | translate }}</h1>
+  <mat-tab-group (selectedTabChange)="changeTab($event)" [selectedIndex]="selectedTab">
+    <mat-tab label="{{ 'Expert.WorkPlace' | translate }}">
+      <app-expert-work-place></app-expert-work-place>
+    </mat-tab>
+    <mat-tab label="{{ 'Expert.Offers' | translate }}">
+      Offers
+    </mat-tab>
+    <mat-tab label="{{ 'Expert.OffersHistory' | translate }}">
+      Offers History
+    </mat-tab>
+  </mat-tab-group>
+</div>

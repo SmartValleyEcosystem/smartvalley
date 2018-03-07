@@ -39,4 +39,8 @@ export class AreaService {
     public getAreaTypeByIndex(index: number): AreaType {
         return this.areas[index].areaType;
     }
+
+    public getAreaNameByIndex(index: number): string {
+        return this.areas[index].name;
+    }
 }

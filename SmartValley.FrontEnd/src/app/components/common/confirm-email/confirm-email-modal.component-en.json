@@ -6,6 +6,7 @@
     "InSeconds": "in {{seconds}} seconds",
     "SendEmail": "Send",
     "ErrorTitle": "Failed to send email",
-    "ErrorBody": "Please try again later"
+    "ErrorBody": "Please try again later",
+    "Specify": " or specify new"
   }
 }
