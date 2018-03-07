@@ -15,21 +15,26 @@ namespace SmartValley.WebApi.Scoring
     {
         private readonly IScoringService _scoringService;
         private readonly EthereumClient _ethereumClient;
+        private readonly IClock _clock;
 
-        public ScoringOffersController(IScoringService scoringService, EthereumClient ethereumClient)
+        public ScoringOffersController(
+            IScoringService scoringService,
+            EthereumClient ethereumClient,
+            IClock clock)
         {
             _scoringService = scoringService;
             _ethereumClient = ethereumClient;
+            _clock = clock;
         }
 
         [HttpGet("pending")]
         public async Task<CollectionResponse<ScoringOfferResponse>> GetAllPendingAsync()
         {
             var offers = await _scoringService.GetPendingOfferDetailsAsync(User.Identity.Name);
-
+            var now = _clock.UtcNow;
             return new CollectionResponse<ScoringOfferResponse>
                    {
-                       Items = offers.Select(ScoringOfferResponse.Create).ToArray()
+                       Items = offers.Select(o => ScoringOfferResponse.Create(o, now)).ToArray()
                    };
         }
 
@@ -37,10 +42,21 @@ namespace SmartValley.WebApi.Scoring
         public async Task<CollectionResponse<ScoringOfferResponse>> GetAllAcceptedAsync()
         {
             var offers = await _scoringService.GetAcceptedOfferDetailsAsync(User.Identity.Name);
-
+            var now = _clock.UtcNow;
             return new CollectionResponse<ScoringOfferResponse>
                    {
-                       Items = offers.Select(ScoringOfferResponse.Create).ToArray()
+                       Items = offers.Select(o => ScoringOfferResponse.Create(o, now)).ToArray()
+                   };
+        }
+
+        [HttpGet("history")]
+        public async Task<CollectionResponse<ScoringOfferResponse>> GetHistoryAsync()
+        {
+            var now = _clock.UtcNow;
+            var offers = await _scoringService.GetExpertOffersHistoryAsync(User.Identity.Name, now);
+            return new CollectionResponse<ScoringOfferResponse>
+                   {
+                       Items = offers.Select(o => ScoringOfferResponse.Create(o, now)).ToArray()
                    };
         }
 

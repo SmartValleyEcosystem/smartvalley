@@ -62,6 +62,31 @@ namespace SmartValley.Data.SQL.Repositories
         public Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllAcceptedByExpertAsync(string expertAddress)
             => GetAllForExpertByStatusAsync(expertAddress, ScoringOfferStatus.Accepted);
 
+        public async Task<IReadOnlyCollection<ScoringOfferDetails>> GetExpertOffersHistoryAsync(string expertAddress, DateTimeOffset now)
+        {
+            return await (from scoringOffer in _readContext.ScoringOffers
+                          join scoring in _readContext.Scorings on scoringOffer.ScoringId equals scoring.Id
+                          join project in _readContext.Projects on scoring.ProjectId equals project.Id
+                          join user in _readContext.Users on scoringOffer.ExpertId equals user.Id
+                          where scoringOffer.Status != ScoringOfferStatus.Pending || scoringOffer.ExpirationTimestamp < now
+                          where user.Address.Equals(expertAddress, StringComparison.OrdinalIgnoreCase)
+                          select new ScoringOfferDetails
+                                 {
+                                     ScoringOfferStatus = scoringOffer.Status,
+                                     ScoringOfferTimestamp = scoringOffer.ExpirationTimestamp,
+                                     AreaType = scoringOffer.AreaId,
+                                     Name = project.Name,
+                                     ProjectArea = project.ProjectArea,
+                                     Description = project.Description,
+                                     ProjectExternalId = project.ExternalId,
+                                     Country = project.Country,
+                                     ScoringContractAddress = scoring.ContractAddress,
+                                     ExpertId = user.Id,
+                                     ScoringId = scoring.Id
+                                 })
+                       .ToArrayAsync();
+        }
+
         private async Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllForExpertByStatusAsync(string expertAddress, ScoringOfferStatus status)
         {
             return await (from scoringOffer in _readContext.ScoringOffers

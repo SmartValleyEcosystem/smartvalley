@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
@@ -20,5 +21,7 @@ namespace SmartValley.Data.SQL.Repositories
         Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllPendingByExpertAsync(string expertAddress);
 
         Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllAcceptedByExpertAsync(string expertAddress);
+
+        Task<IReadOnlyCollection<ScoringOfferDetails>> GetExpertOffersHistoryAsync(string expertAddress, DateTimeOffset now);
     }
 }

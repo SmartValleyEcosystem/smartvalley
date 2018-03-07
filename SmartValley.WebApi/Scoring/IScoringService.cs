@@ -17,6 +17,8 @@ namespace SmartValley.WebApi.Scoring
 
         Task<IReadOnlyCollection<ScoringOfferDetails>> GetAcceptedOfferDetailsAsync(string expertAddress);
 
+        Task<IReadOnlyCollection<ScoringOfferDetails>> GetExpertOffersHistoryAsync(string expertAddress, DateTimeOffset now);
+
         Task AcceptOfferAsync(long scoringId, long areaId, string expertAddress);
 
         Task RejectOfferAsync(long scoringId, long areaId, string expertAddress);

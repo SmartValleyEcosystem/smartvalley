@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using SmartValley.Application;
 using SmartValley.Application.Contracts.Scorings;
 using SmartValley.Application.Email;
 using SmartValley.Data.SQL.Repositories;
@@ -29,8 +28,6 @@ namespace SmartValley.WebApi.Scoring
         private readonly IClock _clock;
         private readonly IUserRepository _userRepository;
 
-        private readonly int _daysToEndScoring;
-
         public ScoringService(
             IProjectRepository projectRepository,
             IScoringRepository scoringRepository,
@@ -39,8 +36,7 @@ namespace SmartValley.WebApi.Scoring
             IScoringExpertsManagerContractClient scoringExpertsManagerContractClient,
             MailService mailService,
             IUserRepository userRepository,
-            IClock clock,
-            ScoringOptions scoringOptions)
+            IClock clock)
         {
             _projectRepository = projectRepository;
             _scoringRepository = scoringRepository;
@@ -50,7 +46,6 @@ namespace SmartValley.WebApi.Scoring
             _mailService = mailService;
             _userRepository = userRepository;
             _clock = clock;
-            _daysToEndScoring = scoringOptions.DaysToEndScoring;
         }
 
         public async Task StartAsync(Guid projectExternalId, IReadOnlyCollection<AreaRequest> areas)
@@ -165,6 +160,9 @@ namespace SmartValley.WebApi.Scoring
 
         public Task<IReadOnlyCollection<ScoringOfferDetails>> GetAcceptedOfferDetailsAsync(string expertAddress)
             => _scoringOffersRepository.GetAllAcceptedByExpertAsync(expertAddress);
+
+        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetExpertOffersHistoryAsync(string expertAddress, DateTimeOffset now)
+            => _scoringOffersRepository.GetExpertOffersHistoryAsync(expertAddress, now);
 
         public async Task AcceptOfferAsync(long scoringId, long areaId, string expertAddress)
         {
