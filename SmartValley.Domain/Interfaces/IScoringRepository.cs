@@ -19,8 +19,8 @@ namespace SmartValley.Domain.Interfaces
 
         Task AddAreasAsync(IReadOnlyCollection<AreaScoring> areaScorings);
 
-        Task<IReadOnlyCollection<ScoringProjectDetails>> GetScoringProjectsDetailsByScoringIdsAsync(IEnumerable<long> ids, uint offerExpirationPeriod);
+        Task<IReadOnlyCollection<ScoringProjectDetails>> GetScoringProjectsDetailsByScoringIdsAsync(IReadOnlyCollection<long> scoringIds);
 
-        Task<IReadOnlyCollection<ScoringAreaStatistic>> GetIncompletedScoringAreaStatisticsAsync(DateTimeOffset tillDate);
+        Task<IReadOnlyCollection<ScoringAreaStatistics>> GetIncompletedScoringAreaStatisticsAsync(DateTimeOffset tillDate);
     }
 }

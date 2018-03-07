@@ -34,8 +34,6 @@ namespace SmartValley.Application.Contracts.Scorings
 
             return offersDto.Experts.Select((e, i) => CreateOfferInfo(projectExternalId, e, offersDto.Areas[i], offersDto.States[i])).ToArray();
         }
-        public Task<uint> GetOfferExpirationPeriodAsync()
-            => _contractClient.CallFunctionAsync<uint>(_contractAddress, _contractAbi, "offerExpirationPeriod");
 
         private static ScoringOfferInfo CreateOfferInfo(Guid projectExternalId, string expertAddress, int area, long offerState)
         {
@@ -52,8 +50,8 @@ namespace SmartValley.Application.Contracts.Scorings
                 status = offerState == 1 ? ScoringOfferStatus.Accepted : ScoringOfferStatus.Rejected;
                 timestamp = null;
             }
-            
-            return new ScoringOfferInfo(projectExternalId, expertAddress, (AreaType)area, status, timestamp);
+
+            return new ScoringOfferInfo(projectExternalId, expertAddress, (AreaType) area, status, timestamp);
         }
     }
 }

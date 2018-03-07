@@ -12,9 +12,10 @@ using System;
 namespace SmartValley.Data.SQL.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20180305140233_RenamedOfferTimestamp")]
+    partial class RenamedOfferTimestamp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -294,17 +295,9 @@ namespace SmartValley.Data.SQL.Migrations
                         .IsRequired()
                         .HasMaxLength(42);
 
-                    b.Property<DateTimeOffset>("CreationDate");
-
-                    b.Property<DateTimeOffset>("OffersEndDate");
-
                     b.Property<long>("ProjectId");
 
                     b.Property<double?>("Score");
-
-                    b.Property<DateTimeOffset?>("ScoringEndDate");
-
-                    b.Property<DateTimeOffset?>("ScoringStartDate");
 
                     b.HasKey("Id");
 

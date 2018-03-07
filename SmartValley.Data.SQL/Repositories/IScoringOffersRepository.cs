@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.Data.SQL.Repositories
@@ -12,6 +14,14 @@ namespace SmartValley.Data.SQL.Repositories
 
         Task RejectAsync(long scoringId, long expertId, AreaType area);
 
-        Task<IReadOnlyCollection<ScoringOffer>> GetByScoringAsync(long projectId);
+        Task FinishAsync(long scoringId, long expertId, AreaType area);
+
+        Task<bool> IsAcceptedAsync(long scoringId, long expertId, AreaType area);
+
+        Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllPendingByExpertAsync(string expertAddress);
+
+        Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllAcceptedByExpertAsync(string expertAddress);
+
+        Task<IReadOnlyCollection<ScoringOfferDetails>> GetExpertOffersHistoryAsync(string expertAddress, DateTimeOffset now);
     }
 }

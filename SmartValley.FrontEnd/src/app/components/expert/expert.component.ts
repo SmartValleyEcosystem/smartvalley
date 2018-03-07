@@ -25,6 +25,5 @@ export class ExpertComponent {
 
     public changeTab(event) {
       this.router.navigate([ Paths.Expert, { tab: this.tabItems[event.index] }]);
-      console.log(this.tabItems[event.index]);
     }
 }

@@ -13,7 +13,7 @@ namespace SmartValley.WebApi.Authentication
 
         bool ShouldRefreshToken(string token);
 
-        Task ConfirmEmailAsync(string address, string token, string email);
+        Task ConfirmEmailAsync(string address, string token);
 
         Task ResendEmailAsync(string address);
 

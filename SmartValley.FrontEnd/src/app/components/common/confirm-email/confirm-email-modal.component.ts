@@ -4,21 +4,24 @@ import {Web3Service} from '../../../services/web3-service';
 import {NotificationsService} from 'angular2-notifications';
 import {TranslateService} from '@ngx-translate/core';
 import {isNullOrUndefined} from 'util';
-import {MAT_DIALOG_DATA} from '@angular/material';
+import {ConfirmEmailModalData} from './confirm-email-modal-data';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-confirm-email-modal',
-  templateUrl: './confirm-email-modal.component.html'
+  templateUrl: './confirm-email-modal.component.html',
+  styleUrls: ['./confirm-email-modal.component.css']
 })
 export class ConfirmEmailModalComponent implements OnInit {
 
   private secondsKey = 'resendEmailCooldown';
 
-  constructor(@Inject(MAT_DIALOG_DATA) public email: string,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmEmailModalData,
               private authenticationApiClient: AuthenticationApiClient,
               private web3Service: Web3Service,
               private notificationService: NotificationsService,
-              private translateService: TranslateService) {
+              private translateService: TranslateService,
+              private dialogRef: MatDialogRef<ConfirmEmailModalComponent>) {
   }
 
   public seconds: number;
@@ -50,5 +53,9 @@ export class ConfirmEmailModalComponent implements OnInit {
       this.seconds--;
       localStorage.setItem(this.secondsKey, this.seconds.toString());
     }
+  }
+
+  public resetEmail() {
+    this.dialogRef.close(true);
   }
 }

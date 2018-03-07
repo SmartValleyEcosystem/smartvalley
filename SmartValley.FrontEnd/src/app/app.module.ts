@@ -113,8 +113,9 @@ import {ExpertStatusGuard} from './services/guards/expert-status.guard';
 import {AdminScoringProjectsComponent} from './components/admin-panel/admin-scoring-projects/admin-scoring-projects.component';
 import {SetExpertsModalComponent} from './components/common/set-experts-modal/set-experts-modal.component';
 import {ChangeEmailModalComponent} from './components/common/change-email-modal/change-email-modal.component';
-import { ExpertWorkPlaceComponent } from './components/expert/expert-work-place/expert-work-place.component';
 import { ExpertOffersHistoryComponent } from './components/expert/expert-offers-history/expert-offers-history.component';
+import {ExpertWorkPlaceComponent} from './components/expert/expert-work-place/expert-work-place.component';
+import {OffersApiClient} from './api/expert/offers-api-client';
 
 @NgModule({
   declarations: [
@@ -275,7 +276,8 @@ import { ExpertOffersHistoryComponent } from './components/expert/expert-offers-
     ExpertStatusGuard,
     RegisterExpertGuard,
     AreaService,
-    EnumHelper
+    EnumHelper,
+    OffersApiClient
   ],
   bootstrap: [AppComponent]
 })
