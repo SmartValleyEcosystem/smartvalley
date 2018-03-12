@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application.Contracts.Scorings;
 using SmartValley.Data.SQL.Repositories;
@@ -88,9 +87,9 @@ namespace SmartValley.WebApi.Estimates
         private Task AddEstimateCommentsAsync(SubmitEstimatesRequest request)
         {
             var estimates = request
-                            .EstimateComments
-                            .Select(e => CreateEstimateComment(e, request.ProjectId, request.ExpertAddress))
-                            .ToArray();
+                .EstimateComments
+                .Select(e => CreateEstimateComment(e, request.ProjectId, request.ExpertAddress))
+                .ToArray();
 
             return _estimateCommentRepository.AddRangeAsync(estimates);
         }
