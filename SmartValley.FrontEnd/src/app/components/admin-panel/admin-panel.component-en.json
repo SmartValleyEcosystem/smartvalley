@@ -5,6 +5,7 @@
     "Title": "Admin panel",
     "AdminsTab": "Admins",
     "ExpertsTab": "Experts",
-    "ScoringTab": "Scoring"
+    "ScoringTab": "Scoring",
+    "AlreadyAdmin": "Entered address is admin already"
   }
 }
