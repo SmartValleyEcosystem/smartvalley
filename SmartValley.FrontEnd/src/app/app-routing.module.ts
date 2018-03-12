@@ -15,7 +15,6 @@ import {AccountComponent} from './components/account/account.component';
 import {CompositeGuard} from './services/guards/composite.guard';
 import {GuardType} from './services/guards/guard-type.enum';
 import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-authenticated.guard';
-import {ExpertGuard} from './services/guards/expert-guard';
 import {ShouldBeAdminGuard} from './services/authentication/should-be-admin.guard';
 import {MyProjectsComponent} from './components/my-projects/my-projects.component';
 import {VotingComponent} from './components/voting/voting.component';
@@ -26,10 +25,11 @@ import {CompletedVotingsComponent} from './components/completed-votings/complete
 import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
 import {ExpertStatusComponent} from './components/expert-status/expert-status.component';
 import {ExpertComponent} from './components/expert/expert.component';
-import {RegisterExpertGuard} from './services/guards/register-expert.guard';
 import {RegisterExpertComponent} from './components/register-expert/register-expert.component';
 import {AdminExpertApplicationComponent} from './components/admin-panel/admin-expert-application/admin-expert-application.component';
 import {ExpertStatusGuard} from './services/guards/expert-status.guard';
+import {ExpertApplicationStatus} from './services/expert/expert-application-status.enum';
+import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-assigned.guard';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -79,11 +79,51 @@ const appRoutes: Routes = [
         }
       },
       {path: Paths.Report + '/:id', pathMatch: 'full', component: ReportComponent},
-      {path: Paths.ExpertStatus, canActivate: [ExpertStatusGuard], component: ExpertStatusComponent},
-      {path: Paths.RegisterExpert, canActivate: [RegisterExpertGuard], component: RegisterExpertComponent},
-      {path: Paths.Expert + '/:tab', component: ExpertComponent, canActivate: [ExpertGuard]},
-      {path: Paths.Expert, component: ExpertComponent, canActivate: [ExpertGuard]},
-      {path: Paths.Scoring + '/:id', pathMatch: 'full', component: EstimateComponent, canActivate: [ShouldHaveEthGuard]},
+      {
+        path: Paths.ExpertStatus,
+        canActivate: [ExpertStatusGuard],
+        component: ExpertStatusComponent,
+        data: {
+          expertStatuses: [
+            ExpertApplicationStatus.None,
+            ExpertApplicationStatus.Rejected,
+            ExpertApplicationStatus.Pending
+          ]
+        }
+      },
+      {
+        path: Paths.RegisterExpert,
+        canActivate: [ExpertStatusGuard],
+        component: RegisterExpertComponent,
+        data: {
+          expertStatuses: [
+            ExpertApplicationStatus.None,
+            ExpertApplicationStatus.Rejected
+          ]
+        }
+      },
+      {
+        path: Paths.Expert + '/:tab',
+        component: ExpertComponent,
+        canActivate: [ExpertStatusGuard],
+        data: {
+          expertStatuses: [ExpertApplicationStatus.Accepted]
+        }
+      },
+      {
+        path: Paths.Expert,
+        component: ExpertComponent,
+        canActivate: [ExpertStatusGuard],
+        data: {
+          expertStatuses: [ExpertApplicationStatus.Accepted]
+        }
+      },
+      {
+        path: Paths.Scoring + '/:id',
+        pathMatch: 'full',
+        component: EstimateComponent,
+        canActivate: [ShouldHaveEthGuard, ExpertShouldBeAssignedGuard]
+      },
       {path: Paths.ConfirmEmail, component: ConfirmEmailComponent}
     ]
   },

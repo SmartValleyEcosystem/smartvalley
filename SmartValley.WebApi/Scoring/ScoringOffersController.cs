@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application;
-using SmartValley.WebApi.Authentication;
+using SmartValley.Domain.Entities;
+using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Scoring.Requests;
 using SmartValley.WebApi.Scoring.Responses;
@@ -76,6 +78,33 @@ namespace SmartValley.WebApi.Scoring
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
             await _scoringService.RejectOfferAsync(request.ScoringId, request.AreaId, User.GetUserId());
             return new EmptyResponse();
+        }
+
+        [HttpGet("status")]
+        public async Task<ScoringOfferStatusResponse> GetOfferStatusAsync(GetScoringOfferStatusRequest request)
+        {
+            var offer = await _scoringService.GetOfferAsync(request.ProjectId, request.AreaType.ToDomain(), User.GetUserId());
+            return new ScoringOfferStatusResponse {Status = GetOfferStatus(offer, _clock.UtcNow)};
+        }
+
+        private static OfferStatus GetOfferStatus(ScoringOffer offer, DateTimeOffset now)
+        {
+            if (offer == null)
+                return OfferStatus.None;
+
+            switch (offer.Status)
+            {
+                case ScoringOfferStatus.Pending:
+                    return offer.ExpirationTimestamp < now ? OfferStatus.Timeout : OfferStatus.Pending;
+                case ScoringOfferStatus.Accepted:
+                    return OfferStatus.Accepted;
+                case ScoringOfferStatus.Rejected:
+                    return OfferStatus.Rejected;
+                case ScoringOfferStatus.Finished:
+                    return OfferStatus.Finished;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }

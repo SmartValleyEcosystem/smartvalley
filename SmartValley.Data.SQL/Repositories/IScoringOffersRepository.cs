@@ -8,6 +8,8 @@ namespace SmartValley.Data.SQL.Repositories
 {
     public interface IScoringOffersRepository
     {
+        Task<ScoringOffer> GetAsync(long projectId, AreaType areaType, long expertId);
+
         Task AddAsync(IReadOnlyCollection<ScoringOffer> offers);
 
         Task AcceptAsync(long scoringId, long expertId, AreaType area);

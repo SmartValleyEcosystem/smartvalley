@@ -53,6 +53,9 @@ namespace SmartValley.WebApi.Scoring
             _daysToEndScoring = scoringOptions.DaysToEndScoring;
         }
 
+        public Task<ScoringOffer> GetOfferAsync(long projectId, AreaType areaType, long expertId)
+            => _scoringOffersRepository.GetAsync(projectId, areaType, expertId);
+
         public async Task StartAsync(Guid projectExternalId, IReadOnlyCollection<AreaRequest> areas)
         {
             var project = await _projectRepository.GetByExternalIdAsync(projectExternalId);
@@ -68,7 +71,7 @@ namespace SmartValley.WebApi.Scoring
 
             await AddAreasAsync(areas, scoringId);
 
-            var expertAddresses = offerInfos.Select(o => (Address)o.ExpertAddress).Distinct().ToArray();
+            var expertAddresses = offerInfos.Select(o => (Address) o.ExpertAddress).Distinct().ToArray();
             var experts = await _userRepository.GetIdsByAddressesAsync(expertAddresses);
 
             var offers = await AddScoringOffersAsync(offerInfos, scoringId, experts);
@@ -90,8 +93,8 @@ namespace SmartValley.WebApi.Scoring
         {
             var expertsDictionary = experts.ToDictionary(e => e.Address);
             var offers = offerInfos
-                .Select(o => CreateOffer(scoringId, expertsDictionary[o.ExpertAddress].Id, o))
-                .ToArray();
+                         .Select(o => CreateOffer(scoringId, expertsDictionary[o.ExpertAddress].Id, o))
+                         .ToArray();
 
             await _scoringOffersRepository.AddAsync(offers);
 
@@ -101,12 +104,12 @@ namespace SmartValley.WebApi.Scoring
         private async Task<long> AddScoringAsync(long projectId, string contractAddress, DateTimeOffset offersEndDate)
         {
             var scoring = new Domain.Entities.Scoring
-            {
-                ProjectId = projectId,
-                ContractAddress = contractAddress,
-                CreationDate = _clock.UtcNow,
-                OffersEndDate = offersEndDate
-            };
+                          {
+                              ProjectId = projectId,
+                              ContractAddress = contractAddress,
+                              CreationDate = _clock.UtcNow,
+                              OffersEndDate = offersEndDate
+                          };
 
             await _scoringRepository.AddAsync(scoring);
             return scoring.Id;
@@ -121,23 +124,23 @@ namespace SmartValley.WebApi.Scoring
         private static ScoringOffer CreateOffer(long scoringId, long expertId, ScoringOfferInfo offerInfo)
         {
             return new ScoringOffer
-            {
-                AreaId = offerInfo.Area,
-                ExpertId = expertId,
-                ScoringId = scoringId,
-                Status = ScoringOfferStatus.Pending,
-                ExpirationTimestamp = offerInfo.ExpirationTimestamp.Value
-            };
+                   {
+                       AreaId = offerInfo.Area,
+                       ExpertId = expertId,
+                       ScoringId = scoringId,
+                       Status = ScoringOfferStatus.Pending,
+                       ExpirationTimestamp = offerInfo.ExpirationTimestamp.Value
+                   };
         }
 
         private static AreaScoring CreateAreaScoring(AreaRequest areaRequest, long scoringId)
         {
             return new AreaScoring
-            {
-                AreaId = areaRequest.Area.ToDomain(),
-                ScoringId = scoringId,
-                ExpertsCount = areaRequest.ExpertsCount
-            };
+                   {
+                       AreaId = areaRequest.Area.ToDomain(),
+                       ScoringId = scoringId,
+                       ExpertsCount = areaRequest.ExpertsCount
+                   };
         }
 
         public async Task<IReadOnlyCollection<ScoringProjectDetailsWithCounts>> GetScoringProjectsAsync(IReadOnlyCollection<ScoringProjectStatus> statuses)
@@ -177,14 +180,11 @@ namespace SmartValley.WebApi.Scoring
 
         public async Task AcceptOfferAsync(long scoringId, long areaId, long expertId)
         {
-            await _scoringOffersRepository.AcceptAsync(scoringId, expertId, (AreaType)areaId);
+            await _scoringOffersRepository.AcceptAsync(scoringId, expertId, (AreaType) areaId);
 
             var expertsIsReady = await _scoringRepository.HasEnoughExpertsAsync(scoringId);
-
             if (expertsIsReady)
-            {
                 await UpdateScoringDatesAsync(scoringId);
-            }
         }
 
         private async Task UpdateScoringDatesAsync(long scoringId)
@@ -194,9 +194,7 @@ namespace SmartValley.WebApi.Scoring
         }
 
         public Task RejectOfferAsync(long scoringId, long areaId, long expertId)
-        {
-            return _scoringOffersRepository.RejectAsync(scoringId, expertId, (AreaType)areaId);
-        }
+            => _scoringOffersRepository.RejectAsync(scoringId, expertId, (AreaType) areaId);
 
         private async Task<IEnumerable<ScoringProjectDetailsWithCounts>> ConvertAreaStatisticsToProjectDetailsAsync(
             ScoringProjectStatus status,
@@ -205,22 +203,22 @@ namespace SmartValley.WebApi.Scoring
             var areasByScoringId = statistics.ToLookup(
                 o => o.ScoringId,
                 k => new AreaCount
-                {
-                    AreaType = k.AreaId,
-                    AcceptedCount = k.AcceptedCount,
-                    RequeiredCount = k.RequiredCount
-                });
+                     {
+                         AreaType = k.AreaId,
+                         AcceptedCount = k.AcceptedCount,
+                         RequeiredCount = k.RequiredCount
+                     });
             var scoringDetails = await _scoringRepository.GetScoringProjectsDetailsByScoringIdsAsync(areasByScoringId.Select(o => o.Key).ToArray());
             return scoringDetails.Select(i => new ScoringProjectDetailsWithCounts
-            {
-                ProjectId = i.ProjectId,
-                CreationDate = i.CreationDate,
-                OffersEndDate = i.OffersEndDate,
-                Address = i.Address,
-                Name = i.Name,
-                Status = status,
-                AreaCounts = areasByScoringId[i.ScoringId]
-            });
+                                              {
+                                                  ProjectId = i.ProjectId,
+                                                  CreationDate = i.CreationDate,
+                                                  OffersEndDate = i.OffersEndDate,
+                                                  Address = i.Address,
+                                                  Name = i.Name,
+                                                  Status = status,
+                                                  AreaCounts = areasByScoringId[i.ScoringId]
+                                              });
         }
     }
 }

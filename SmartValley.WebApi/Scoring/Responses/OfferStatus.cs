@@ -2,10 +2,11 @@
 {
     public enum OfferStatus
     {
-        Pending,
-        Accepted,
-        Rejected,
-        Finished,
-        Timeout
+        None = 0,
+        Pending = 1,
+        Accepted = 2,
+        Rejected = 3,
+        Finished = 4,
+        Timeout = 5
     }
 }

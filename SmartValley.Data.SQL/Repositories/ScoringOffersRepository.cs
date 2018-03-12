@@ -21,6 +21,17 @@ namespace SmartValley.Data.SQL.Repositories
             _editContext = editContext;
         }
 
+        public Task<ScoringOffer> GetAsync(long projectId, AreaType areaType, long expertId)
+        {
+            return (from offer in _readContext.ScoringOffers
+                    join scoring in _readContext.Scorings on offer.ScoringId equals scoring.Id
+                    where scoring.ProjectId == projectId
+                    where offer.AreaId == areaType
+                    where offer.ExpertId == expertId
+                    select offer)
+                .FirstOrDefaultAsync();
+        }
+
         public Task AddAsync(IReadOnlyCollection<ScoringOffer> offers)
         {
             _editContext.ScoringOffers.AddRange(offers);

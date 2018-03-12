@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
-import {AreaType} from '../../api/scoring/area-type.enum';
 import {isNullOrUndefined} from 'util';
 import {Subscription} from 'rxjs/Subscription';
 import {ProjectCardType} from '../../services/project-card-type';
