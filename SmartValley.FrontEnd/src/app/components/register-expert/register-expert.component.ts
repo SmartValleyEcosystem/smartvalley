@@ -18,6 +18,7 @@ import {NotificationsService} from 'angular2-notifications';
 import {AreaService} from '../../services/expert/area.service';
 import {EnumHelper} from '../../utils/enum-helper';
 import {isUndefined} from 'util';
+import {Md5} from 'ts-md5';
 
 const countries = <Country[]>require('../../../assets/countryList.json');
 
@@ -204,7 +205,10 @@ export class RegisterExpertComponent implements OnInit {
       this.notificationsService.error(this.translateService.instant('RegisterExpert.CVNotUploadedError'));
       return false;
     }
-    const transactionHash = await this.applyToContractAsync(areas);
+
+    const applicationHash = this.getApplicationHash(areas);
+
+    const transactionHash = await this.applyToContractAsync(areas, applicationHash);
     if (transactionHash == null) {
       return false;
     }
@@ -222,11 +226,30 @@ export class RegisterExpertComponent implements OnInit {
     return true;
   }
 
-  private async applyToContractAsync(areas: Array<AreaType>): Promise<string> {
+  private async applyToContractAsync(areas: Array<AreaType>, applicationHash: string): Promise<string> {
     try {
-      return await this.expertsRegistryContractClient.applyAsync(areas);
+      return await this.expertsRegistryContractClient.applyAsync(areas, applicationHash);
     } catch (e) {
       return null;
     }
+  }
+
+  private getApplicationHash(areas: Array<AreaType>): string {
+    const form = this.registryForm.value;
+    const applicationStr = (<number>form.selectedSex).toString() +
+      moment(form.birthDate).toISOString() +
+      form.city +
+      form.country.code +
+      form.number +
+      form.selectedDocumentType +
+      form.facebook +
+      form.linkedin +
+      form.firstName +
+      form.secondName +
+      form.description +
+      form.why;
+
+    areas.forEach(a => applicationStr.concat(a.toString()));
+    return '0x' + Md5.hashStr(applicationStr, false).toString();
   }
 }
