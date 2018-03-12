@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain
 {
     public class ExpertDetails
     {
-        public string Address { get; set; }
+        public Address Address { get; set; }
 
         public string Email { get; set; }
 

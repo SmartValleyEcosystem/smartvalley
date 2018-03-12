@@ -83,7 +83,7 @@ namespace SmartValley.WebApi.Experts
             return _expertApplicationRepository.GetAllByStatusAsync(ExpertApplicationStatus.Pending);
         }
 
-        public Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(string address)
+        public Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(Address address)
             => _expertApplicationRepository.GetExpertApplicationStatusAsync(address);
 
         public async Task AddAsync(ExpertRequest request)
@@ -123,7 +123,7 @@ namespace SmartValley.WebApi.Experts
             }, request.Areas);
         }
 
-        public async Task DeleteAsync(string address)
+        public async Task DeleteAsync(Address address)
         {
             await _userRepository.RemoveRoleAsync(address, RoleType.Expert);
             var user = await _userRepository.GetByAddressAsync(address);
@@ -172,7 +172,7 @@ namespace SmartValley.WebApi.Experts
         public Task<PagingList<ExpertDetails>> GetAllExpertsDetailsAsync(int page, int pageSize)
             => _expertRepository.GetAllDetailsAsync(page, pageSize);
 
-        public Task<bool> IsExpertAsync(string address)
+        public Task<bool> IsExpertAsync(Address address)
             => _userRepository.HasRoleAsync(address, RoleType.Expert);
 
         public Task<IReadOnlyCollection<Area>> GetAreasAsync()

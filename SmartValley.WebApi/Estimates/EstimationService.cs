@@ -63,8 +63,8 @@ namespace SmartValley.WebApi.Estimates
 
             var estimates = (from comment in comments
                              join score in scores
-                                 on new {comment.QuestionId, ExpertAddress = comment.ExpertAddress.ToUpper(CultureInfo.InvariantCulture)}
-                                 equals new {score.QuestionId, ExpertAddress = score.ExpertAddress.ToUpper(CultureInfo.InvariantCulture)}
+                                 on new {comment.QuestionId, comment.ExpertAddress}
+                                 equals new {score.QuestionId, score.ExpertAddress}
                              select CreateEstimate(score, comment)).ToArray();
 
             var requiredSubmissionsInArea = (double) await _scoringContractClient.GetRequiredSubmissionsInAreaCountAsync(scoring.ContractAddress, areaType);

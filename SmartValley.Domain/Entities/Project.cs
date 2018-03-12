@@ -13,7 +13,7 @@ namespace SmartValley.Domain.Entities
 
         [Required]
         [MaxLength(42)]
-        public string AuthorAddress { get; set; }
+        public Address AuthorAddress { get; set; }
 
         [Required]
         [MaxLength(50)]

@@ -11,7 +11,7 @@ namespace SmartValley.Domain.Interfaces
 
         Task<int> RemoveAsync(Expert expert);
 
-        Task<Expert> GetByAddressAsync(string address);
+        Task<Expert> GetByAddressAsync(Address address);
 
         Task<IReadOnlyCollection<Area>> GetAreasAsync();
 

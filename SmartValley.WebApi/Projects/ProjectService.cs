@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SmartValley.Domain;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
@@ -41,18 +42,18 @@ namespace SmartValley.WebApi.Projects
         public Task<IReadOnlyCollection<ProjectScoring>> GetAllScoredAsync()
             => _projectRepository.GetAllScoredAsync();
 
-        public Task<IReadOnlyCollection<ProjectScoring>> GetByAuthorAsync(string authorAddress)
+        public Task<IReadOnlyCollection<ProjectScoring>> GetByAuthorAsync(Address authorAddress)
             => _projectRepository.GetByAuthorAsync(authorAddress);
 
-        public Task<IReadOnlyCollection<ProjectScoring>> GetForScoringAsync(AreaType areaType, string expertAddress)
+        public Task<IReadOnlyCollection<ProjectScoring>> GetForScoringAsync(AreaType areaType, Address expertAddress)
             => _projectRepository.GetForScoringAsync(expertAddress, areaType);
 
-        public async Task<bool> IsAuthorizedToSeeEstimatesAsync(string account, long projectId)
+        public async Task<bool> IsAuthorizedToSeeEstimatesAsync(Address account, long projectId)
         {
             var project = await FindAsync(projectId);
             var projectScoring = await _scoringRepository.GetByProjectIdAsync(projectId);
 
-            return projectScoring.Score != null || project.AuthorAddress.Equals(account, StringComparison.InvariantCultureIgnoreCase);
+            return projectScoring.Score != null || project.AuthorAddress == account;
         }
 
         public Task<IReadOnlyCollection<Project>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds)

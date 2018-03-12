@@ -1,4 +1,5 @@
 ﻿using System;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain
@@ -9,7 +10,7 @@ namespace SmartValley.Domain
 
         public DateTimeOffset ScoringOfferTimestamp { get; set; }
 
-        public string ScoringContractAddress { get; set; }
+        public Address ScoringContractAddress { get; set; }
 
         public long ScoringId { get; set; }
 

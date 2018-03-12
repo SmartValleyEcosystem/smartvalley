@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using SmartValley.Domain.Core;
 using SmartValley.WebApi.Authentication.Requests;
 
 namespace SmartValley.WebApi.Authentication
@@ -9,16 +10,16 @@ namespace SmartValley.WebApi.Authentication
 
         Task RegisterAsync(RegistrationRequest request);
 
-        Task<Identity> RefreshAccessTokenAsync(string address);
+        Task<Identity> RefreshAccessTokenAsync(Address address);
 
         bool ShouldRefreshToken(string token);
 
-        Task ConfirmEmailAsync(string address, string token);
+        Task ConfirmEmailAsync(Address address, string token);
 
-        Task ResendEmailAsync(string address);
+        Task ResendEmailAsync(Address address);
 
-        Task ChangeEmailAsync(string address, string email);
+        Task ChangeEmailAsync(Address address, string email);
 
-        Task<string> GetEmailBySignatureAsync(string address, string signature, string signedText);
+        Task<string> GetEmailBySignatureAsync(Address address, string signature, string signedText);
     }
 }

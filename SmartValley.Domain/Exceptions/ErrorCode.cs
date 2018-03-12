@@ -22,6 +22,7 @@
         ExpertApplicationAlreadyProcessed,
         ShouldCheckAreasToAccept,
         AcceptedOfferNotFound,
-        OffersNotFound
+        OffersNotFound,
+        AuthenticationError
     }
 }
