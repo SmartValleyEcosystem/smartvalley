@@ -13,6 +13,6 @@ export class ExpertStatusGuard implements CanActivate {
   public async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     const address = this.userContext.getCurrentUser().account;
     const expertStatusResponse = await this.expertApiClient.getExpertStatusAsync(address);
-    return route.data.expertStatuses.contains(expertStatusResponse.status);
+    return route.data.expertStatuses.includes(expertStatusResponse.status);
   }
 }
