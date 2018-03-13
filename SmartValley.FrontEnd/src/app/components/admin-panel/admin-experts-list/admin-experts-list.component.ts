@@ -66,9 +66,8 @@ export class AdminExpertsListComponent implements OnInit {
     this.loading = false;
   }
 
-  public async deleteExpertAsync(address, areas) {
-    const areasId = this.areaService.getAreasIdByNames(areas);
-    this.transactionHash = (await this.expertsRegistryContractClient.addAsync(address, areasId));
+  public async deleteExpertAsync(address) {
+    this.transactionHash = (await this.expertsRegistryContractClient.removeAsync(address));
     this.deleteExpertRequest = {
       transactionHash: this.transactionHash,
       address: address

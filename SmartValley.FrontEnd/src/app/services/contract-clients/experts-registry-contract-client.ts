@@ -57,4 +57,25 @@ export class ExpertsRegistryContractClient implements ContractClient {
 
     return contract.add(expertAddress, expertiseAreas, {from: fromAddress});
   }
+
+  public removeAsync(expertAddress: string): Promise<string> {
+    const contract = this.web3Service.getContract(this.abi, this.address);
+    const fromAddress = this.userContext.getCurrentUser().account;
+
+    return contract.remove(expertAddress, {from: fromAddress});
+  }
+
+  public enableAsync(expertAddress: string): Promise<string> {
+    const contract = this.web3Service.getContract(this.abi, this.address);
+    const fromAddress = this.userContext.getCurrentUser().account;
+
+    return contract.enable(expertAddress, {from: fromAddress});
+  }
+
+  public disableAsync(expertAddress: string): Promise<string> {
+    const contract = this.web3Service.getContract(this.abi, this.address);
+    const fromAddress = this.userContext.getCurrentUser().account;
+
+    return contract.disable(expertAddress, {from: fromAddress});
+  }
 }
