@@ -82,7 +82,12 @@ export class EditExpertModalComponent implements OnInit {
     };
 
     if (needToUpdateInfoInBlockchain) {
-      const transactionHash = (await this.expertsRegistryContractClient.addAsync(address, categoriesToRequest));
+      let transactionHash: string;
+      if (isAvailable) {
+        transactionHash = (await this.expertsRegistryContractClient.enableAsync(address));
+      } else {
+        transactionHash = (await this.expertsRegistryContractClient.disableAsync(address));
+      }
       this.editExpertRequest.transactionHash = transactionHash;
     }
 
