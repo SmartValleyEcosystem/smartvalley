@@ -13,6 +13,10 @@ import {PendingExpertListResponse} from './pending-expert-list-response';
 import {NewExpertRequest} from './new-expert-request';
 import {DeleteExpertRequest} from './delete-expert-request';
 import {EditExpertRequest} from './edit-expert-request';
+import {ExpertScoring} from './expert-scoring';
+import {ExpertHistoryOffer} from './expert-history-offer';
+import {Observable} from 'rxjs/Observable';
+import {of} from 'rxjs/observable/of';
 
 @Injectable()
 export class ExpertApiClient extends BaseApiClient {

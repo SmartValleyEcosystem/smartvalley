@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ExpertScoring} from '../../../api/expert/expert-scoring';
 import {ExpertScoringOffer} from '../../../api/expert/expert-scoring-offer';
 import {AreaService} from '../../../services/expert/area.service';
 import {Router} from '@angular/router';
@@ -11,6 +12,7 @@ import {OffersApiClient} from '../../../api/expert/offers-api-client';
   styleUrls: ['./expert-work-place.component.css']
 })
 export class ExpertWorkPlaceComponent implements OnInit {
+
   public expertScoring: ExpertScoringOffer[] = [];
 
   constructor(private offersApiClient: OffersApiClient,
@@ -21,6 +23,7 @@ export class ExpertWorkPlaceComponent implements OnInit {
       let offersResponse = await this.offersApiClient.getExpertOffersAsync();
       this.expertScoring = offersResponse.items;
   }
+
   public getAreaName(id) {
     return this.areaService.getAreaNameByIndex(id);
   }

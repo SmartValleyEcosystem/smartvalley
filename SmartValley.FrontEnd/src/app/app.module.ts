@@ -111,6 +111,7 @@ import {ExpertStatusGuard} from './services/guards/expert-status.guard';
 import {AdminScoringProjectsComponent} from './components/admin-panel/admin-scoring-projects/admin-scoring-projects.component';
 import {SetExpertsModalComponent} from './components/common/set-experts-modal/set-experts-modal.component';
 import {ChangeEmailModalComponent} from './components/common/change-email-modal/change-email-modal.component';
+import { ExpertOffersHistoryComponent } from './components/expert/expert-offers-history/expert-offers-history.component';
 import {ExpertWorkPlaceComponent} from './components/expert/expert-work-place/expert-work-place.component';
 import {OffersApiClient} from './api/expert/offers-api-client';
 
@@ -166,7 +167,8 @@ import {OffersApiClient} from './api/expert/offers-api-client';
     AdminScoringProjectsComponent,
     SetExpertsModalComponent,
     ChangeEmailModalComponent,
-    ExpertWorkPlaceComponent
+    ExpertWorkPlaceComponent,
+    ExpertOffersHistoryComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
