@@ -73,13 +73,13 @@ namespace SmartValley.Data.SQL.Repositories
         public Task<Expert> GetAsync(long expertId)
             => _readContext.Experts.FirstOrDefaultAsync(e => e.UserId == expertId);
 
-        public async Task SwitchAvailabilityAsync(long expertId)
+        public async Task SetAvailabilityAsync(long expertId, bool isAvailable)
         {
             var expert = await _editContext.Experts.FirstOrDefaultAsync(e => e.UserId == expertId);
             if (expert == null)
                 throw new AppErrorException(ErrorCode.ExpertNotFound);
 
-            expert.IsAvailable = !expert.IsAvailable;
+            expert.IsAvailable = isAvailable;
             await _editContext.SaveAsync();
         }
 

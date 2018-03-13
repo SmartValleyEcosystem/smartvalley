@@ -34,6 +34,6 @@ namespace SmartValley.WebApi.Experts
 
         Task<Expert> GetAsync(long expertId);
 
-        Task SwitchAvailabilityAsync(long expertId);
+        Task SetAvailabilityAsync(long expertId, bool isAvailable);
     }
 }

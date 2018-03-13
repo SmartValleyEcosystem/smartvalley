@@ -155,11 +155,13 @@ namespace SmartValley.WebApi.Experts
             return new ExpertAvailabilityResponse {IsAvailable = expert.IsAvailable};
         }
 
-        [HttpPut("availability/switch")]
+        [HttpPut("availability")]
         [Authorize(Roles = nameof(RoleType.Expert))]
-        public async Task<IActionResult> SwitchAvailabilityAsync()
+        public async Task<IActionResult> SetAvailabilityAsync([FromBody] SetAvailabilityRequest request)
         {
-            await _expertService.SwitchAvailabilityAsync(User.GetUserId());
+            await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
+
+            await _expertService.SetAvailabilityAsync(User.GetUserId(), request.Value);
             return NoContent();
         }
 

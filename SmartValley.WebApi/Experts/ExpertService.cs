@@ -86,8 +86,8 @@ namespace SmartValley.WebApi.Experts
         public Task<Expert> GetAsync(long expertId)
             => _expertRepository.GetAsync(expertId);
 
-        public Task SwitchAvailabilityAsync(long expertId)
-            => _expertRepository.SwitchAvailabilityAsync(expertId);
+        public Task SetAvailabilityAsync(long expertId, bool isAvailable)
+            => _expertRepository.SetAvailabilityAsync(expertId, isAvailable);
 
         public async Task AddAsync(ExpertRequest request)
         {
