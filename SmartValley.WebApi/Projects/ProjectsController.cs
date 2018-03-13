@@ -41,18 +41,35 @@ namespace SmartValley.WebApi.Projects
             return ProjectDetailsResponse.Create(details, votingDetails, _clock.UtcNow);
         }
 
+        [HttpGet("search")]
+        public async Task<CollectionResponse<ProjectSearchResponse>> SearchProjectAsync(ProjectSearchRequest request)
+        {
+            var projects = await _projectService.GetProjectsByNameAsync(request.SearchString);
+            return new CollectionResponse<ProjectSearchResponse>
+                   {
+                       Items = projects.Select(p => new ProjectSearchResponse
+                                                    {
+                                                        Id = p.Id,
+                                                        Name = p.Name,
+                                                        Country = p.Country,
+                                                        Category = p.ProjectArea
+                                                    })
+                                       .ToArray()
+                   };
+        }
+
         [HttpGet]
         [Route("scored")]
         public async Task<CollectionResponse<ProjectResponse>> GetAllScoredAsync()
         {
             var scoredProjects = await _projectService.GetAllScoredAsync();
             return new CollectionResponse<ProjectResponse>
-            {
-                Items = scoredProjects
+                   {
+                       Items = scoredProjects
                                .Select(ProjectResponse.Create)
                                .OrderByDescending(p => p.Score)
                                .ToArray()
-            };
+                   };
         }
 
         [HttpGet("scoring"), Authorize(Roles = nameof(RoleType.Admin))]
@@ -61,19 +78,19 @@ namespace SmartValley.WebApi.Projects
             var projects = await _scoringService.GetScoringProjectsAsync(statuses);
 
             var items = projects.Select(i => new ScoringProjectResponse
-            {
-                Address = i.Address,
-                Name = i.Name,
-                ProjectId = i.ProjectId.ToString(),
-                StartDate = i.CreationDate.Date,
-                EndDate = i.OffersEndDate.Date,
-                Status = i.Status,
-                AreasExperts = i.AreaCounts.Select(j => new AreaExpertResponse { AreaType = j.AreaType, AcceptedCount = j.AcceptedCount, RequiredCount = j.RequeiredCount})
-            }).ToArray();
+                                             {
+                                                 Address = i.Address,
+                                                 Name = i.Name,
+                                                 ProjectId = i.ProjectId.ToString(),
+                                                 StartDate = i.CreationDate.Date,
+                                                 EndDate = i.OffersEndDate.Date,
+                                                 Status = i.Status,
+                                                 AreasExperts = i.AreaCounts.Select(j => new AreaExpertResponse {AreaType = j.AreaType, AcceptedCount = j.AcceptedCount, RequiredCount = j.RequeiredCount})
+                                             }).ToArray();
 
-            return new CollectionResponse<ScoringProjectResponse> { Items = items };
+            return new CollectionResponse<ScoringProjectResponse> {Items = items};
         }
-        
+
         [HttpGet]
         [Route("my")]
         public async Task<CollectionResponse<MyProjectsItemResponse>> GetMyProjectsAsync()
@@ -84,7 +101,7 @@ namespace SmartValley.WebApi.Projects
             foreach (var projectScoring in projectScorings)
                 items.Add(await CreateMyProjectsItemResponseAsync(projectScoring));
 
-            return new CollectionResponse<MyProjectsItemResponse> { Items = items };
+            return new CollectionResponse<MyProjectsItemResponse> {Items = items};
         }
 
         [HttpGet]
@@ -93,9 +110,9 @@ namespace SmartValley.WebApi.Projects
         {
             var projects = await _projectService.GetForScoringAsync(request.AreaType.ToDomain(), User.Identity.Name);
             return new CollectionResponse<ProjectResponse>
-            {
-                Items = projects.Select(ProjectResponse.Create).ToArray()
-            };
+                   {
+                       Items = projects.Select(ProjectResponse.Create).ToArray()
+                   };
         }
 
         private async Task<MyProjectsItemResponse> CreateMyProjectsItemResponseAsync(ProjectScoring projectScoring)

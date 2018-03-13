@@ -128,6 +128,9 @@ namespace SmartValley.Data.SQL.Core
                         .IsUnique();
 
             modelBuilder.Entity<Project>()
+                        .HasIndex(p => new {p.Name});
+
+            modelBuilder.Entity<Project>()
                         .Property(b => b.AuthorAddress)
                         .HasConversion(
                             v => v.ToString(),

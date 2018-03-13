@@ -61,6 +61,9 @@ namespace SmartValley.WebApi.Projects
             return _projectRepository.GetByExternalIdsAsync(externalIds);
         }
 
+        public Task<IReadOnlyCollection<Project>> GetProjectsByNameAsync(string projectName)
+            => _projectRepository.GetAllByNameAsync(projectName);
+
         private async Task<Project> FindAsync(long projectId)
         {
             var project = await _projectRepository.GetByIdAsync(projectId);

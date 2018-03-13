@@ -56,5 +56,8 @@ namespace SmartValley.Data.SQL.Repositories
 
         public async Task<IReadOnlyCollection<Project>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds)
             => await ReadContext.Projects.Where(project => externalIds.Contains(project.ExternalId)).ToArrayAsync();
+
+        public async Task<IReadOnlyCollection<Project>> GetAllByNameAsync(string projectName)
+            => await ReadContext.Projects.Where(project => project.Name.Contains(projectName)).ToArrayAsync();
     }
 }

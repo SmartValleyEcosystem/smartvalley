@@ -3,8 +3,14 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Storage.Converters;
+using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SmartValley.Data.SQL.Core;
+using SmartValley.Domain.Core;
+using SmartValley.Domain.Entities;
 
 namespace SmartValley.Data.SQL.Migrations
 {
@@ -15,7 +21,7 @@ namespace SmartValley.Data.SQL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.0-rtm-26452")
+                .HasAnnotation("ProductVersion", "2.1.0-preview1-28290")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("SmartValley.Domain.Entities.Application", b =>
@@ -97,8 +103,8 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<string>("Comment")
                         .IsRequired();
 
-                    b.Property<string>("ExpertAddress")
-                        .IsRequired()
+                    b.Property<Address>("ExpertAddress")
+                        .HasConversion(new ValueConverter<Address, string>(v => default(string), v => default(Address)))
                         .HasMaxLength(42);
 
                     b.Property<long>("ProjectId");
@@ -222,8 +228,8 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("AuthorAddress")
-                        .IsRequired()
+                    b.Property<Address>("AuthorAddress")
+                        .HasConversion(new ValueConverter<Address, string>(v => default(string), v => default(Address)))
                         .HasMaxLength(42);
 
                     b.Property<string>("Country")
@@ -247,6 +253,8 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.HasIndex("ExternalId")
                         .IsUnique();
+
+                    b.HasIndex("Name");
 
                     b.ToTable("Projects");
                 });
@@ -287,8 +295,8 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ContractAddress")
-                        .IsRequired()
+                    b.Property<Address>("ContractAddress")
+                        .HasConversion(new ValueConverter<Address, string>(v => default(string), v => default(Address)))
                         .HasMaxLength(42);
 
                     b.Property<DateTimeOffset>("CreationDate");
@@ -367,8 +375,8 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<string>("About");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
+                    b.Property<Address>("Address")
+                        .HasConversion(new ValueConverter<Address, string>(v => default(string), v => default(Address)))
                         .HasMaxLength(42);
 
                     b.Property<string>("Email")
@@ -411,8 +419,8 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<DateTimeOffset>("StartDate");
 
-                    b.Property<string>("VotingAddress")
-                        .IsRequired()
+                    b.Property<Address>("VotingAddress")
+                        .HasConversion(new ValueConverter<Address, string>(v => default(string), v => default(Address)))
                         .HasMaxLength(42);
 
                     b.HasKey("Id");

@@ -20,5 +20,7 @@ namespace SmartValley.WebApi.Projects
         Task<IReadOnlyCollection<ProjectScoring>> GetForScoringAsync(AreaType areaType, Address expertAddress);
 
         Task<IReadOnlyCollection<Project>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds);
+
+        Task<IReadOnlyCollection<Project>> GetProjectsByNameAsync(string projectName);
     }
 }

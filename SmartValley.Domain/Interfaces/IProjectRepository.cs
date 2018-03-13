@@ -21,5 +21,7 @@ namespace SmartValley.Domain.Interfaces
         Task<Project> GetByExternalIdAsync(Guid externalId);
 
         Task<IReadOnlyCollection<Project>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds);
+
+        Task<IReadOnlyCollection<Project>> GetAllByNameAsync(string projectName);
     }
 }
