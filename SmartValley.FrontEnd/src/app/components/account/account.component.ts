@@ -83,6 +83,13 @@ export class AccountComponent implements OnInit {
   }
 
   public async saveChangesAsync() {
+    if (this.userForm.invalid) {
+      this.notificationsService.error(
+        this.translateService.instant('Common.Error'),
+        this.translateService.instant('Account.InvalidData')
+      );
+      return;
+    }
     await this.userApiClient.updateAsync(<UpdateUserRequest>{
       address: this.currentUser.account,
       about: this.userForm.value.about,
@@ -90,6 +97,10 @@ export class AccountComponent implements OnInit {
     });
 
     await this.updateInfoAsync();
+    this.notificationsService.success(
+      this.translateService.instant('Common.Success'),
+      this.translateService.instant('Account.DataSaved')
+    );
   }
 
   private updateBalances(balance: Balance): void {

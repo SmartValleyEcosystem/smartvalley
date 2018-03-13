@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
+using SmartValley.Domain.Core;
 
 namespace SmartValley.Application.Email
 {
@@ -12,10 +13,10 @@ namespace SmartValley.Application.Email
             _dataProtector = dataProtectionProvider.CreateProtector(MailTokenProtectorPurpose);
         }
 
-        public string EncryptEmailConfirmationToken(string address, string email) =>
+        public string EncryptEmailConfirmationToken(Address address, string email) =>
             _dataProtector.Protect(address + " " + email);
 
-        public bool CheckEmailConfirmationToken(string address, string email, string token) =>
+        public bool CheckEmailConfirmationToken(Address address, string email, string token) =>
             _dataProtector.Unprotect(token) == address + " " + email;
 
         public string EncryptToken(string data) => _dataProtector.Protect(data);

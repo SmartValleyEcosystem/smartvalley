@@ -21,6 +21,17 @@ namespace SmartValley.Data.SQL.Repositories
             _editContext = editContext;
         }
 
+        public Task<ScoringOffer> GetAsync(long projectId, AreaType areaType, long expertId)
+        {
+            return (from offer in _readContext.ScoringOffers
+                    join scoring in _readContext.Scorings on offer.ScoringId equals scoring.Id
+                    where scoring.ProjectId == projectId
+                    where offer.AreaId == areaType
+                    where offer.ExpertId == expertId
+                    select offer)
+                .FirstOrDefaultAsync();
+        }
+
         public Task AddAsync(IReadOnlyCollection<ScoringOffer> offers)
         {
             _editContext.ScoringOffers.AddRange(offers);
@@ -56,20 +67,20 @@ namespace SmartValley.Data.SQL.Repositories
             return _editContext.SaveAsync();
         }
 
-        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllPendingByExpertAsync(string expertAddress)
-            => GetAllForExpertByStatusAsync(expertAddress, ScoringOfferStatus.Pending);
+        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllPendingByExpertAsync(long expertId)
+            => GetAllForExpertByStatusAsync(expertId, ScoringOfferStatus.Pending);
 
-        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllAcceptedByExpertAsync(string expertAddress)
-            => GetAllForExpertByStatusAsync(expertAddress, ScoringOfferStatus.Accepted);
+        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllAcceptedByExpertAsync(long expertId)
+            => GetAllForExpertByStatusAsync(expertId, ScoringOfferStatus.Accepted);
 
-        public async Task<IReadOnlyCollection<ScoringOfferDetails>> GetExpertOffersHistoryAsync(string expertAddress, DateTimeOffset now)
+        public async Task<IReadOnlyCollection<ScoringOfferDetails>> GetExpertOffersHistoryAsync(long expertId, DateTimeOffset now)
         {
             return await (from scoringOffer in _readContext.ScoringOffers
                           join scoring in _readContext.Scorings on scoringOffer.ScoringId equals scoring.Id
                           join project in _readContext.Projects on scoring.ProjectId equals project.Id
                           join user in _readContext.Users on scoringOffer.ExpertId equals user.Id
                           where scoringOffer.Status != ScoringOfferStatus.Pending || scoringOffer.ExpirationTimestamp < now
-                          where user.Address.Equals(expertAddress, StringComparison.OrdinalIgnoreCase)
+                          where user.Id == expertId
                           select new ScoringOfferDetails
                                  {
                                      ScoringOfferStatus = scoringOffer.Status,
@@ -87,13 +98,14 @@ namespace SmartValley.Data.SQL.Repositories
                        .ToArrayAsync();
         }
 
-        private async Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllForExpertByStatusAsync(string expertAddress, ScoringOfferStatus status)
+        private async Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllForExpertByStatusAsync(long expertId, ScoringOfferStatus status)
         {
             return await (from scoringOffer in _readContext.ScoringOffers
                           join scoring in _readContext.Scorings on scoringOffer.ScoringId equals scoring.Id
                           join project in _readContext.Projects on scoring.ProjectId equals project.Id
                           join user in _readContext.Users on scoringOffer.ExpertId equals user.Id
-                          where scoringOffer.Status == status && user.Address.Equals(expertAddress, StringComparison.OrdinalIgnoreCase)
+                          where scoringOffer.Status == status
+                          where user.Id == expertId
                           select new ScoringOfferDetails
                                  {
                                      ScoringOfferStatus = scoringOffer.Status,

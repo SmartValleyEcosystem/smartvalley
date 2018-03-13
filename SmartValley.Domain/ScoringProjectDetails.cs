@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain
@@ -10,7 +11,7 @@ namespace SmartValley.Domain
 
         public long ScoringId { get; set; }
 
-        public string Address { get; set; }
+        public Address Address { get; set; }
 
         public string Name { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain.Interfaces
@@ -13,9 +14,9 @@ namespace SmartValley.Domain.Interfaces
 
         Task<int> AddAsync(Project project);
 
-        Task<IReadOnlyCollection<ProjectScoring>> GetByAuthorAsync(string authorAddress);
+        Task<IReadOnlyCollection<ProjectScoring>> GetByAuthorAsync(Address authorAddress);
 
-        Task<IReadOnlyCollection<ProjectScoring>> GetForScoringAsync(string expertAddress, AreaType areaType);
+        Task<IReadOnlyCollection<ProjectScoring>> GetForScoringAsync(Address expertAddress, AreaType areaType);
 
         Task<Project> GetByExternalIdAsync(Guid externalId);
 

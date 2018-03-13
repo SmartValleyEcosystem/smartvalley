@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain
 {
     public class VotingSprintDetails
     {
         public VotingSprintDetails(
-            string address,
+            Address address,
             DateTimeOffset startDate,
             DateTimeOffset endDate,
             int acceptanceThreshold,
@@ -33,7 +34,7 @@ namespace SmartValley.Domain
 
         public IReadOnlyCollection<Guid> ProjectsExternalIds { get; }
 
-        public string Address { get; }
+        public Address Address { get; }
 
         public int Number { get; }
     }

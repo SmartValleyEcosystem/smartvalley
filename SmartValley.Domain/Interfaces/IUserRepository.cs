@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain.Interfaces
@@ -8,9 +9,9 @@ namespace SmartValley.Domain.Interfaces
     {
         Task<int> AddAsync(User user);
 
-        Task<User> GetByAddressAsync(string address);
+        Task<User> GetByAddressAsync(Address address);
 
-        Task<IReadOnlyCollection<User>> GetIdsByAddressesAsync(IReadOnlyCollection<string> addresses);
+        Task<IReadOnlyCollection<User>> GetIdsByAddressesAsync(IReadOnlyCollection<Address> addresses);
 
         Task<User> GetByEmailAsync(string email);
 
@@ -20,11 +21,11 @@ namespace SmartValley.Domain.Interfaces
 
         Task<IReadOnlyCollection<User>> GetByRoleAsync(RoleType type);
 
-        Task AddRoleAsync(string address, RoleType type);
+        Task AddRoleAsync(Address address, RoleType type);
 
-        Task<bool> HasRoleAsync(string address, RoleType type);
+        Task<bool> HasRoleAsync(Address address, RoleType type);
 
-        Task RemoveRoleAsync(string address, RoleType type);
+        Task RemoveRoleAsync(Address address, RoleType type);
 
         Task<IReadOnlyCollection<Role>> GetRolesByUserIdAsync(long userId);
 

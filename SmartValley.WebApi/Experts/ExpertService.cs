@@ -1,13 +1,13 @@
-﻿using System.Threading.Tasks;
-using SmartValley.Domain.Entities;
-using SmartValley.Domain.Interfaces;
-using SmartValley.WebApi.Experts.Requests;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using SmartValley.Application.AzureStorage;
 using SmartValley.Domain;
 using SmartValley.Domain.Core;
+using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
+using SmartValley.Domain.Interfaces;
+using SmartValley.WebApi.Experts.Requests;
 
 namespace SmartValley.WebApi.Experts
 {
@@ -37,22 +37,22 @@ namespace SmartValley.WebApi.Experts
             var user = await _userRepository.GetByAddressAsync(request.ApplicantAddress);
 
             var expertApplication = new ExpertApplication
-            {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Sex = request.Sex,
-                ApplicantId = user.Id,
-                BirthDate = request.BirthDate,
-                Country = request.CountryIsoCode,
-                City = request.City,
-                Description = request.Description,
-                Why = request.Why,
-                FacebookLink = request.FacebookLink,
-                LinkedInLink = request.LinkedInLink,
-                DocumentNumber = request.DocumentNumber,
-                DocumentType = request.DocumentType.ToDomain(),
-                ApplyDate = _clock.UtcNow
-            };
+                                    {
+                                        FirstName = request.FirstName,
+                                        LastName = request.LastName,
+                                        Sex = request.Sex,
+                                        ApplicantId = user.Id,
+                                        BirthDate = request.BirthDate,
+                                        Country = request.CountryIsoCode,
+                                        City = request.City,
+                                        Description = request.Description,
+                                        Why = request.Why,
+                                        FacebookLink = request.FacebookLink,
+                                        LinkedInLink = request.LinkedInLink,
+                                        DocumentNumber = request.DocumentNumber,
+                                        DocumentType = request.DocumentType.ToDomain(),
+                                        ApplyDate = _clock.UtcNow
+                                    };
 
             await _expertApplicationRepository.AddAsync(expertApplication, request.Areas);
 
@@ -83,7 +83,7 @@ namespace SmartValley.WebApi.Experts
             return _expertApplicationRepository.GetAllByStatusAsync(ExpertApplicationStatus.Pending);
         }
 
-        public Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(string address)
+        public Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(Address address)
             => _expertApplicationRepository.GetExpertApplicationStatusAsync(address);
 
         public async Task AddAsync(ExpertRequest request)
@@ -99,10 +99,10 @@ namespace SmartValley.WebApi.Experts
             await _userRepository.UpdateWholeAsync(user);
             await _userRepository.AddRoleAsync(request.Address, RoleType.Expert);
             await _expertRepository.AddAsync(new Expert
-            {
-                IsAvailable = true,
-                UserId = user.Id
-            }, request.Areas);
+                                             {
+                                                 IsAvailable = true,
+                                                 UserId = user.Id
+                                             }, request.Areas);
         }
 
         public async Task UpdateAsync(UpdateExpertRequest request)
@@ -117,17 +117,17 @@ namespace SmartValley.WebApi.Experts
 
             await _userRepository.UpdateWholeAsync(user);
             await _expertRepository.UpdateAsync(new Expert
-            {
-                IsAvailable = request.IsAvailable,
-                UserId = user.Id
-            }, request.Areas);
+                                                {
+                                                    IsAvailable = request.IsAvailable,
+                                                    UserId = user.Id
+                                                }, request.Areas);
         }
 
-        public async Task DeleteAsync(string address)
+        public async Task DeleteAsync(Address address)
         {
             await _userRepository.RemoveRoleAsync(address, RoleType.Expert);
             var user = await _userRepository.GetByAddressAsync(address);
-            await _expertRepository.RemoveAsync(new Expert { IsAvailable = true, UserId = user.Id });
+            await _expertRepository.RemoveAsync(new Expert {IsAvailable = true, UserId = user.Id});
         }
 
         public async Task AcceptApplicationAsync(long id, IReadOnlyCollection<int> areas)
@@ -151,10 +151,10 @@ namespace SmartValley.WebApi.Experts
             else
             {
                 await _expertRepository.AddAsync(new Expert
-                {
-                    UserId = user.Id,
-                    IsAvailable = true
-                }, areas);
+                                                 {
+                                                     UserId = user.Id,
+                                                     IsAvailable = true
+                                                 }, areas);
             }
 
             await _expertApplicationRepository.SetAcceptedAsync(application, areas.ToList());
@@ -172,11 +172,10 @@ namespace SmartValley.WebApi.Experts
         public Task<PagingList<ExpertDetails>> GetAllExpertsDetailsAsync(int page, int pageSize)
             => _expertRepository.GetAllDetailsAsync(page, pageSize);
 
-        public Task<bool> IsExpertAsync(string address)
+        public Task<bool> IsExpertAsync(Address address)
             => _userRepository.HasRoleAsync(address, RoleType.Expert);
 
         public Task<IReadOnlyCollection<Area>> GetAreasAsync()
             => _expertRepository.GetAreasAsync();
-
     }
 }

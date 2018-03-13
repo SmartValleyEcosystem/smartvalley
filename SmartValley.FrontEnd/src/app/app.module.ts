@@ -63,8 +63,6 @@ import {ProjectInformationComponent} from './components/common/project-informati
 import {AccountComponent} from './components/account/account.component';
 import {MatIconModule} from '@angular/material/icon';
 import {CompositeGuard} from './services/guards/composite.guard';
-import {ExpertGuard} from './services/guards/expert-guard';
-import {RegisterExpertGuard} from './services/guards/register-expert.guard';
 import {GuardFactory} from './services/guards/guard-factory';
 import {ShouldHaveSvtGuard} from './services/balance/should-have-svt.guard';
 import {DashIfEmptyPipe} from './utils/dash-if-empty.pipe';
@@ -272,9 +270,7 @@ import {OffersApiClient} from './api/expert/offers-api-client';
     ShouldBeAdminGuard,
     GuardFactory,
     CompositeGuard,
-    ExpertGuard,
     ExpertStatusGuard,
-    RegisterExpertGuard,
     AreaService,
     EnumHelper,
     OffersApiClient

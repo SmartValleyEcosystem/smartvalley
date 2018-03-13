@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Domain;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 
@@ -98,11 +99,11 @@ namespace SmartValley.Data.SQL.Repositories
             return EditContext.SaveAsync();
         }
 
-        public async Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(string address)
+        public async Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(Address address)
         {
             var existExpertApplitacion = await (from explertApplication in ReadContext.ExpertApplications
                                                 join user in ReadContext.Users on explertApplication.ApplicantId equals user.Id
-                                                where user.Address.Equals(address, StringComparison.OrdinalIgnoreCase)
+                                                where user.Address == address
                                                 orderby explertApplication.ApplyDate descending
                                                 select explertApplication).FirstOrDefaultAsync();
 

@@ -24,14 +24,14 @@ namespace SmartValley.WebApi.Experts
 
         Task UpdateAsync(UpdateExpertRequest request);
 
-        Task DeleteAsync(string address);
+        Task DeleteAsync(Address address);
 
         Task<PagingList<ExpertDetails>> GetAllExpertsDetailsAsync(int page, int pageSize);
 
-        Task<bool> IsExpertAsync(string address);
+        Task<bool> IsExpertAsync(Address address);
 
         Task<IReadOnlyCollection<Area>> GetAreasAsync();
 
-        Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(string address);
+        Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(Address address);
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using SmartValley.Domain.Core;
 
 namespace SmartValley.WebApi.Authentication
 {
     public class Identity
     {
-        public string Address { get; }
+        public Address Address { get; }
 
         public string Email { get; }
 
@@ -15,7 +16,7 @@ namespace SmartValley.WebApi.Authentication
         public IReadOnlyCollection<string> Roles { get; set; }
 
 
-        public Identity(string address, string email, bool isAuthenticated, string token, IReadOnlyCollection<string> roles)
+        public Identity(Address address, string email, bool isAuthenticated, string token, IReadOnlyCollection<string> roles)
         {
             Address = address;
             Email = email;

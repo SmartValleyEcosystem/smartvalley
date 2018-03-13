@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Domain;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 
@@ -26,22 +27,22 @@ namespace SmartValley.Data.SQL.Repositories
                           select new ProjectScoring(project, scoring)).ToArrayAsync();
         }
 
-        public async Task<IReadOnlyCollection<ProjectScoring>> GetByAuthorAsync(string authorAddress)
+        public async Task<IReadOnlyCollection<ProjectScoring>> GetByAuthorAsync(Address authorAddress)
         {
             return await (from project in ReadContext.Projects
                           from scoring in ReadContext.Scorings.Where(s => s.ProjectId == project.Id).DefaultIfEmpty()
-                          where project.AuthorAddress.OrdinalEquals(authorAddress)
+                          where project.AuthorAddress == authorAddress
                           select new ProjectScoring(project, scoring)).ToArrayAsync();
         }
 
-        public async Task<IReadOnlyCollection<ProjectScoring>> GetForScoringAsync(string expertAddress, AreaType areaType)
+        public async Task<IReadOnlyCollection<ProjectScoring>> GetForScoringAsync(Address expertAddress, AreaType areaType)
         {
             var scoredProjects = (from question in ReadContext.Questions
                                   join comment in ReadContext.EstimateComments on question.Id equals comment.QuestionId
                                   join scoring in ReadContext.Scorings on comment.ProjectId equals scoring.ProjectId
                                   join areaScoring in ReadContext.AreaScorings on scoring.Id equals areaScoring.ScoringId
-                                  where (comment.ExpertAddress.OrdinalEquals(expertAddress) && question.AreaType == areaType) ||
-                                        (areaScoring.AreaId == areaType && areaScoring.IsCompleted)
+                                  where comment.ExpertAddress == expertAddress && question.AreaType == areaType ||
+                                        areaScoring.AreaId == areaType && areaScoring.IsCompleted
                                   select comment.ProjectId).Distinct();
 
             return await (from project in ReadContext.Projects

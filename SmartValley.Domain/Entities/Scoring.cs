@@ -13,7 +13,7 @@ namespace SmartValley.Domain.Entities
 
         [Required]
         [MaxLength(42)]
-        public string ContractAddress { get; set; }
+        public Address ContractAddress { get; set; }
 
         public double? Score { get; set; }
 

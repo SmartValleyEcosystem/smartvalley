@@ -13,6 +13,8 @@
     "TransferedTooltip": "Amount of SVT, which you can transfer or pay for scoring",
     "FreezedTooltip": "Amount of SVT, which you vote for free scoring. You can't transfer it until voting isn't finished",
     "Email": "E-mail",
-    "Change": "Change"
+    "Change": "Change",
+    "InvalidData": "Entered data is invalid",
+    "DataSaved": "Account information updated"
   }
 }

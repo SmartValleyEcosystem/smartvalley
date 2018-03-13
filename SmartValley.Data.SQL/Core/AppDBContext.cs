@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.Data.SQL.Core
@@ -126,6 +127,12 @@ namespace SmartValley.Data.SQL.Core
                         .HasIndex(p => new {p.ExternalId})
                         .IsUnique();
 
+            modelBuilder.Entity<Project>()
+                        .Property(b => b.AuthorAddress)
+                        .HasConversion(
+                            v => v.ToString(),
+                            v => new Address(v));
+
             modelBuilder.Entity<Scoring>()
                         .HasIndex(p => new {p.ProjectId})
                         .IsUnique();
@@ -134,11 +141,23 @@ namespace SmartValley.Data.SQL.Core
                         .HasMany(s => s.AreaScorings)
                         .WithOne(a => a.Scoring);
 
+            modelBuilder.Entity<Scoring>()
+                        .Property(b => b.ContractAddress)
+                        .HasConversion(
+                            v => v.ToString(),
+                            v => new Address(v));
+
             modelBuilder.Entity<VotingProject>()
                         .HasKey(v => new {v.ProjectId, v.VotingId});
 
             modelBuilder.Entity<VotingProject>()
                         .HasIndex(v => new {v.ProjectId, v.VotingId});
+
+            modelBuilder.Entity<Voting>()
+                        .Property(b => b.VotingAddress)
+                        .HasConversion(
+                            v => v.ToString(),
+                            v => new Address(v));
 
             modelBuilder.Entity<User>()
                         .HasIndex(u => u.Email)
@@ -147,6 +166,12 @@ namespace SmartValley.Data.SQL.Core
             modelBuilder.Entity<User>()
                         .HasIndex(u => u.Address)
                         .IsUnique();
+
+            modelBuilder.Entity<User>()
+                        .Property(b => b.Address)
+                        .HasConversion(
+                            v => v.ToString(),
+                            v => new Address(v));
 
             modelBuilder.Entity<Role>()
                         .HasIndex(r => r.Name)
@@ -196,6 +221,12 @@ namespace SmartValley.Data.SQL.Core
 
             modelBuilder.Entity<ScoringOffer>()
                         .HasIndex(e => new {e.ScoringId, e.AreaId, e.ExpertId});
+
+            modelBuilder.Entity<EstimateComment>()
+                        .Property(b => b.ExpertAddress)
+                        .HasConversion(
+                            v => v.ToString(),
+                            v => new Address(v));
         }
     }
 }

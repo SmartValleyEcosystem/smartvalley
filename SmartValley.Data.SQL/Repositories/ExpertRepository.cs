@@ -30,11 +30,11 @@ namespace SmartValley.Data.SQL.Repositories
             return _editContext.SaveAsync();
         }
 
-        public Task<Expert> GetByAddressAsync(string address)
+        public Task<Expert> GetByAddressAsync(Address address)
         {
             return (from expert in _readContext.Experts
                     join user in _readContext.Users on expert.UserId equals user.Id
-                    where user.Address.Equals(address, StringComparison.OrdinalIgnoreCase)
+                    where user.Address == address
                     select expert).FirstOrDefaultAsync();
         }
 
@@ -45,10 +45,10 @@ namespace SmartValley.Data.SQL.Repositories
         {
             _editContext.Experts.AddAsync(expert);
             var expertAreas = areas.Select(s => new ExpertArea
-            {
-                Expert = expert,
-                AreaId = (AreaType)s
-            })
+                                                {
+                                                    Expert = expert,
+                                                    AreaId = (AreaType) s
+                                                })
                                    .ToArray();
 
             _editContext.ExpertAreas.AddRange(expertAreas);
@@ -62,10 +62,10 @@ namespace SmartValley.Data.SQL.Repositories
             var expertAreas = await _editContext.ExpertAreas.Where(e => e.ExpertId == expert.UserId).ToArrayAsync();
             _editContext.ExpertAreas.RemoveRange(expertAreas);
             _editContext.ExpertAreas.AddRange(areas.Select(s => new ExpertArea
-            {
-                Expert = expert,
-                AreaId = (AreaType)s
-            }).ToArray());
+                                                                {
+                                                                    Expert = expert,
+                                                                    AreaId = (AreaType) s
+                                                                }).ToArray());
             await _editContext.SaveAsync();
         }
 
@@ -73,14 +73,14 @@ namespace SmartValley.Data.SQL.Repositories
         {
             var expertUsersQuery = (from expert in _readContext.Experts
                                     join user in _readContext.Users on expert.UserId equals user.Id
-                                    select new { expert, user })
+                                    select new {expert, user})
                                    .Skip(page * pageSize)
                                    .Take(pageSize);
 
             var expertAreas = await (from expertUser in expertUsersQuery
                                      join expertArea in _readContext.ExpertAreas on expertUser.user.Id equals expertArea.ExpertId
                                      join area in _readContext.Areas on expertArea.AreaId equals area.Id
-                                     select new { expertArea.ExpertId, area }).ToArrayAsync();
+                                     select new {expertArea.ExpertId, area}).ToArrayAsync();
 
             var lookUpAreas = expertAreas.ToLookup(k => k.ExpertId, v => v.area);
 
@@ -88,14 +88,14 @@ namespace SmartValley.Data.SQL.Repositories
             var expertUsers = await expertUsersQuery.ToArrayAsync();
 
             return new PagingList<ExpertDetails>(count, expertUsers.Select(expertUser => new ExpertDetails
-            {
-                About = expertUser.user.About,
-                Address = expertUser.user.Address,
-                Email = expertUser.user.Email,
-                IsAvailable = expertUser.expert.IsAvailable,
-                Name = expertUser.user.Name,
-                Areas = lookUpAreas[expertUser.expert.UserId].ToArray()
-            }));
+                                                                                         {
+                                                                                             About = expertUser.user.About,
+                                                                                             Address = expertUser.user.Address,
+                                                                                             Email = expertUser.user.Email,
+                                                                                             IsAvailable = expertUser.expert.IsAvailable,
+                                                                                             Name = expertUser.user.Name,
+                                                                                             Areas = lookUpAreas[expertUser.expert.UserId].ToArray()
+                                                                                         }));
         }
     }
 }

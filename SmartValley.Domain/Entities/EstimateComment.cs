@@ -11,7 +11,7 @@ namespace SmartValley.Domain.Entities
 
         [Required]
         [MaxLength(42)]
-        public string ExpertAddress { get; set; }
+        public Address ExpertAddress { get; set; }
 
         public long QuestionId { get; set; }
 

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using Nethereum.Signer;
 using SmartValley.Application.Email;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
@@ -92,7 +93,7 @@ namespace SmartValley.WebApi.Authentication
             await _mailService.SendConfirmRegistrationAsync(user.Address, user.Email);
         }
 
-        public async Task<Identity> RefreshAccessTokenAsync(string address)
+        public async Task<Identity> RefreshAccessTokenAsync(Address address)
         {
             var user = await _userRepository.GetByAddressAsync(address);
             return await GenerateJwtAsync(user);
@@ -109,7 +110,7 @@ namespace SmartValley.WebApi.Authentication
             return (_clock.UtcNow - issueDate).TotalMinutes >= AuthenticationOptions.LifetimeInMinutes;
         }
 
-        public async Task ConfirmEmailAsync(string address, string token)
+        public async Task ConfirmEmailAsync(Address address, string token)
         {
             var user = await _userRepository.GetByAddressAsync(address);
             string email = _mailTokenService.DecryptToken(token).Split(' ')[1];
@@ -121,7 +122,7 @@ namespace SmartValley.WebApi.Authentication
             await _userRepository.UpdateWholeAsync(user);
         }
 
-        public async Task ResendEmailAsync(string address)
+        public async Task ResendEmailAsync(Address address)
         {
             if (_memoryCache.TryGetValue(MemoryCacheEmailKey + address, out bool isEmailSended))
                 throw new AppErrorException(ErrorCode.EmailAlreadySent);
@@ -136,7 +137,7 @@ namespace SmartValley.WebApi.Authentication
             _memoryCache.Set(MemoryCacheEmailKey + address, true, cacheEntryOptions);
         }
 
-        public async Task ChangeEmailAsync(string address, string email)
+        public async Task ChangeEmailAsync(Address address, string email)
         {
             if (_memoryCache.TryGetValue(MemoryCacheEmailKey + address, out bool isEmailSent))
                 throw new AppErrorException(ErrorCode.EmailAlreadySent);
@@ -153,7 +154,7 @@ namespace SmartValley.WebApi.Authentication
             _memoryCache.Set(MemoryCacheEmailKey + address, true, cacheEntryOptions);
         }
 
-        public async Task<string> GetEmailBySignatureAsync(string address, string signature, string signedText)
+        public async Task<string> GetEmailBySignatureAsync(Address address, string signature, string signedText)
         {
             var user = await _userRepository.GetByAddressAsync(address);
 
@@ -163,9 +164,13 @@ namespace SmartValley.WebApi.Authentication
             return user.Email;
         }
 
-        private static ClaimsIdentity CreateClaimsIdentity(string address, IReadOnlyCollection<Role> roles)
+        private static ClaimsIdentity CreateClaimsIdentity(User user, IReadOnlyCollection<Role> roles)
         {
-            var claims = new List<Claim> {new Claim(ClaimsIdentity.DefaultNameClaimType, address)};
+            var claims = new List<Claim>
+                         {
+                             new Claim(ClaimsIdentity.DefaultNameClaimType, user.Address),
+                             new Claim("UserId", user.Id.ToString())
+                         };
             claims.AddRange(roles.Select(r => new Claim(ClaimsIdentity.DefaultRoleClaimType, r.Name)));
 
             return new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
@@ -175,7 +180,7 @@ namespace SmartValley.WebApi.Authentication
         {
             var now = _clock.UtcNow;
             var roles = await _userRepository.GetRolesByUserIdAsync(user.Id);
-            var claimsIdentity = CreateClaimsIdentity(user.Address, roles);
+            var claimsIdentity = CreateClaimsIdentity(user, roles);
 
             var jwtSecurityToken = new JwtSecurityToken(
                                        AuthenticationOptions.Issuer,
@@ -189,13 +194,13 @@ namespace SmartValley.WebApi.Authentication
             return new Identity(user.Address, user.Email, true, token, roles.Select(r => r.Name).ToArray());
         }
 
-        private bool IsSignedMessageValid(string address, string signedText, string signature)
+        private bool IsSignedMessageValid(Address address, string signedText, string signature)
         {
             if (string.IsNullOrEmpty(signedText) || string.IsNullOrEmpty(signature))
                 return false;
 
-            var publicKey = _ethereumMessageSigner.EncodeUTF8AndEcRecover(signedText, signature);
-            return publicKey.Equals(address, StringComparison.OrdinalIgnoreCase);
+            var publicKey = (Address) _ethereumMessageSigner.EncodeUTF8AndEcRecover(signedText, signature);
+            return publicKey == address;
         }
     }
 }

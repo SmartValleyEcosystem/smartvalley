@@ -1,4 +1,6 @@
-﻿namespace SmartValley.Domain.Entities
+﻿using SmartValley.Domain.Core;
+
+namespace SmartValley.Domain.Entities
 {
     public class EstimateScore
     {
@@ -13,6 +15,6 @@
 
         public int Score { get; }
 
-        public string ExpertAddress { get; }
+        public Address ExpertAddress { get; }
     }
 }

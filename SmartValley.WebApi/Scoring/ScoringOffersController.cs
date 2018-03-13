@@ -1,8 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application;
+using SmartValley.Domain.Entities;
+using SmartValley.WebApi.Experts;
+using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Scoring.Requests;
 using SmartValley.WebApi.Scoring.Responses;
 using SmartValley.WebApi.WebApi;
@@ -30,7 +34,7 @@ namespace SmartValley.WebApi.Scoring
         [HttpGet("pending")]
         public async Task<CollectionResponse<ScoringOfferResponse>> GetAllPendingAsync()
         {
-            var offers = await _scoringService.GetPendingOfferDetailsAsync(User.Identity.Name);
+            var offers = await _scoringService.GetPendingOfferDetailsAsync(User.GetUserId());
             var now = _clock.UtcNow;
             return new CollectionResponse<ScoringOfferResponse>
                    {
@@ -41,7 +45,7 @@ namespace SmartValley.WebApi.Scoring
         [HttpGet("accepted")]
         public async Task<CollectionResponse<ScoringOfferResponse>> GetAllAcceptedAsync()
         {
-            var offers = await _scoringService.GetAcceptedOfferDetailsAsync(User.Identity.Name);
+            var offers = await _scoringService.GetAcceptedOfferDetailsAsync(User.GetUserId());
             var now = _clock.UtcNow;
             return new CollectionResponse<ScoringOfferResponse>
                    {
@@ -53,7 +57,7 @@ namespace SmartValley.WebApi.Scoring
         public async Task<CollectionResponse<ScoringOfferResponse>> GetHistoryAsync()
         {
             var now = _clock.UtcNow;
-            var offers = await _scoringService.GetExpertOffersHistoryAsync(User.Identity.Name, now);
+            var offers = await _scoringService.GetExpertOffersHistoryAsync(User.GetUserId(), now);
             return new CollectionResponse<ScoringOfferResponse>
                    {
                        Items = offers.Select(o => ScoringOfferResponse.Create(o, now)).ToArray()
@@ -64,7 +68,7 @@ namespace SmartValley.WebApi.Scoring
         public async Task<EmptyResponse> AcceptAsync(AcceptRejectOfferRequest request)
         {
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
-            await _scoringService.AcceptOfferAsync(request.ScoringId, request.AreaId, User.Identity.Name);
+            await _scoringService.AcceptOfferAsync(request.ScoringId, request.AreaId, User.GetUserId());
             return new EmptyResponse();
         }
 
@@ -72,8 +76,35 @@ namespace SmartValley.WebApi.Scoring
         public async Task<EmptyResponse> RejectAsync(AcceptRejectOfferRequest request)
         {
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
-            await _scoringService.RejectOfferAsync(request.ScoringId, request.AreaId, User.Identity.Name);
+            await _scoringService.RejectOfferAsync(request.ScoringId, request.AreaId, User.GetUserId());
             return new EmptyResponse();
+        }
+
+        [HttpGet("status")]
+        public async Task<ScoringOfferStatusResponse> GetOfferStatusAsync(GetScoringOfferStatusRequest request)
+        {
+            var offer = await _scoringService.GetOfferAsync(request.ProjectId, request.AreaType.ToDomain(), User.GetUserId());
+            return new ScoringOfferStatusResponse {Status = GetOfferStatus(offer, _clock.UtcNow)};
+        }
+
+        private static OfferStatus GetOfferStatus(ScoringOffer offer, DateTimeOffset now)
+        {
+            if (offer == null)
+                return OfferStatus.None;
+
+            switch (offer.Status)
+            {
+                case ScoringOfferStatus.Pending:
+                    return offer.ExpirationTimestamp < now ? OfferStatus.Timeout : OfferStatus.Pending;
+                case ScoringOfferStatus.Accepted:
+                    return OfferStatus.Accepted;
+                case ScoringOfferStatus.Rejected:
+                    return OfferStatus.Rejected;
+                case ScoringOfferStatus.Finished:
+                    return OfferStatus.Finished;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }

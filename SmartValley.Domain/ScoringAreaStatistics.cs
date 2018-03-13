@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain
@@ -16,5 +14,11 @@ namespace SmartValley.Domain
         public int AcceptedCount { get; set; }
 
         public int PendingCount { get; set; }
+
+        public int FinishedCount { get; set; }
+
+        public DateTimeOffset? ScoringEndDate { get; set; }
+
+        public DateTimeOffset OffersEndDate { get; set; }
     }
 }

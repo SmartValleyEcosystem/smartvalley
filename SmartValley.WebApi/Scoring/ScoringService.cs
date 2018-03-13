@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SmartValley.Application;
 using SmartValley.Application.Contracts.Scorings;
 using SmartValley.Application.Email;
 using SmartValley.Data.SQL.Repositories;
 using SmartValley.Domain;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
@@ -27,6 +29,7 @@ namespace SmartValley.WebApi.Scoring
         private readonly MailService _mailService;
         private readonly IClock _clock;
         private readonly IUserRepository _userRepository;
+        private readonly int _daysToEndScoring;
 
         public ScoringService(
             IProjectRepository projectRepository,
@@ -36,6 +39,7 @@ namespace SmartValley.WebApi.Scoring
             IScoringExpertsManagerContractClient scoringExpertsManagerContractClient,
             MailService mailService,
             IUserRepository userRepository,
+            ScoringOptions scoringOptions,
             IClock clock)
         {
             _projectRepository = projectRepository;
@@ -46,7 +50,11 @@ namespace SmartValley.WebApi.Scoring
             _mailService = mailService;
             _userRepository = userRepository;
             _clock = clock;
+            _daysToEndScoring = scoringOptions.DaysToEndScoring;
         }
+
+        public Task<ScoringOffer> GetOfferAsync(long projectId, AreaType areaType, long expertId)
+            => _scoringOffersRepository.GetAsync(projectId, areaType, expertId);
 
         public async Task StartAsync(Guid projectExternalId, IReadOnlyCollection<AreaRequest> areas)
         {
@@ -63,7 +71,7 @@ namespace SmartValley.WebApi.Scoring
 
             await AddAreasAsync(areas, scoringId);
 
-            var expertAddresses = offerInfos.Select(o => o.ExpertAddress).Distinct().ToArray();
+            var expertAddresses = offerInfos.Select(o => (Address) o.ExpertAddress).Distinct().ToArray();
             var experts = await _userRepository.GetIdsByAddressesAsync(expertAddresses);
 
             var offers = await AddScoringOffersAsync(offerInfos, scoringId, experts);
@@ -142,7 +150,7 @@ namespace SmartValley.WebApi.Scoring
             var result = new List<ScoringProjectDetailsWithCounts>();
             if (!statuses.Any() || statuses.Contains(ScoringProjectStatus.All) || statuses.Contains(ScoringProjectStatus.Rejected))
             {
-                var rejectedStatistics = statistics.Where(i => i.RequiredCount > i.AcceptedCount + i.PendingCount);
+                var rejectedStatistics = statistics.Where(i => i.RequiredCount > i.AcceptedCount && !i.ScoringEndDate.HasValue && i.OffersEndDate < _clock.UtcNow);
                 result.AddRange(await ConvertAreaStatisticsToProjectDetailsAsync(ScoringProjectStatus.Rejected, rejectedStatistics));
             }
 
@@ -152,29 +160,41 @@ namespace SmartValley.WebApi.Scoring
                 result.AddRange(await ConvertAreaStatisticsToProjectDetailsAsync(ScoringProjectStatus.InProgress, pendingStatistics));
             }
 
+            if (!statuses.Any() || statuses.Contains(ScoringProjectStatus.All) || statuses.Contains(ScoringProjectStatus.AcceptedAndDoNotEstimate))
+            {
+                var acceptedAndDoNotEstimateStatistics = statistics.Where(i => i.AcceptedCount > i.FinishedCount && i.ScoringEndDate?.Date < _clock.UtcNow);
+                result.AddRange(await ConvertAreaStatisticsToProjectDetailsAsync(ScoringProjectStatus.AcceptedAndDoNotEstimate, acceptedAndDoNotEstimateStatistics));
+            }
+
             return result;
         }
 
-        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetPendingOfferDetailsAsync(string expertAddress)
-            => _scoringOffersRepository.GetAllPendingByExpertAsync(expertAddress);
+        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetPendingOfferDetailsAsync(long expertId)
+            => _scoringOffersRepository.GetAllPendingByExpertAsync(expertId);
 
-        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetAcceptedOfferDetailsAsync(string expertAddress)
-            => _scoringOffersRepository.GetAllAcceptedByExpertAsync(expertAddress);
+        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetAcceptedOfferDetailsAsync(long expertId)
+            => _scoringOffersRepository.GetAllAcceptedByExpertAsync(expertId);
 
-        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetExpertOffersHistoryAsync(string expertAddress, DateTimeOffset now)
-            => _scoringOffersRepository.GetExpertOffersHistoryAsync(expertAddress, now);
+        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetExpertOffersHistoryAsync(long expertId, DateTimeOffset now)
+            => _scoringOffersRepository.GetExpertOffersHistoryAsync(expertId, now);
 
-        public async Task AcceptOfferAsync(long scoringId, long areaId, string expertAddress)
+        public async Task AcceptOfferAsync(long scoringId, long areaId, long expertId)
         {
-            var expert = await _userRepository.GetByAddressAsync(expertAddress);
-            await _scoringOffersRepository.AcceptAsync(scoringId, expert.Id, (AreaType) areaId);
+            await _scoringOffersRepository.AcceptAsync(scoringId, expertId, (AreaType) areaId);
+
+            var expertsIsReady = await _scoringRepository.HasEnoughExpertsAsync(scoringId);
+            if (expertsIsReady)
+                await UpdateScoringDatesAsync(scoringId);
         }
 
-        public async Task RejectOfferAsync(long scoringId, long areaId, string expertAddress)
+        private async Task UpdateScoringDatesAsync(long scoringId)
         {
-            var expert = await _userRepository.GetByAddressAsync(expertAddress);
-            await _scoringOffersRepository.RejectAsync(scoringId, expert.Id, (AreaType) areaId);
+            var utcNow = _clock.UtcNow;
+            await _scoringRepository.SetDatesAsync(scoringId, utcNow, utcNow + TimeSpan.FromDays(_daysToEndScoring));
         }
+
+        public Task RejectOfferAsync(long scoringId, long areaId, long expertId)
+            => _scoringOffersRepository.RejectAsync(scoringId, expertId, (AreaType) areaId);
 
         private async Task<IEnumerable<ScoringProjectDetailsWithCounts>> ConvertAreaStatisticsToProjectDetailsAsync(
             ScoringProjectStatus status,

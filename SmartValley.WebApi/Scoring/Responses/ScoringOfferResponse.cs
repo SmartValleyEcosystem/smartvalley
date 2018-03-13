@@ -45,6 +45,9 @@ namespace SmartValley.WebApi.Scoring.Responses
 
         private static OfferStatus GetStatus(ScoringOfferDetails scoringOffer, DateTimeOffset now)
         {
+            if (scoringOffer == null)
+                return OfferStatus.None;
+
             switch (scoringOffer.ScoringOfferStatus)
             {
                 case ScoringOfferStatus.Pending:

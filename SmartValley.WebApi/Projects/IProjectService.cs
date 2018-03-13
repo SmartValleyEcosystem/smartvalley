@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SmartValley.Domain;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Projects
@@ -12,11 +13,11 @@ namespace SmartValley.WebApi.Projects
 
         Task<IReadOnlyCollection<ProjectScoring>> GetAllScoredAsync();
 
-        Task<bool> IsAuthorizedToSeeEstimatesAsync(string account, long projectId);
+        Task<bool> IsAuthorizedToSeeEstimatesAsync(Address account, long projectId);
 
-        Task<IReadOnlyCollection<ProjectScoring>> GetByAuthorAsync(string authorAddress);
+        Task<IReadOnlyCollection<ProjectScoring>> GetByAuthorAsync(Address authorAddress);
 
-        Task<IReadOnlyCollection<ProjectScoring>> GetForScoringAsync(AreaType areaType, string expertAddress);
+        Task<IReadOnlyCollection<ProjectScoring>> GetForScoringAsync(AreaType areaType, Address expertAddress);
 
         Task<IReadOnlyCollection<Project>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds);
     }

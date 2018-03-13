@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IcoLab.Common.Utils;
 using SmartValley.Application;
 using SmartValley.Application.Contracts.Votings;
 using SmartValley.Application.Extensions;
 using SmartValley.Domain;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
@@ -39,13 +41,13 @@ namespace SmartValley.WebApi.Votings
             _ethereumClient = ethereumClient;
         }
 
-        public Task<VotingSprintDetails> GetSprintDetailsByAddressAsync(string address)
+        public Task<VotingSprintDetails> GetSprintDetailsByAddressAsync(Address address)
             => _votingSprintContractClient.GetDetailsAsync(address);
 
         public async Task<InvestorVotesDetails> GetVotesAsync(
-            string sprintAddress,
+            Address sprintAddress,
             IReadOnlyCollection<Guid> sprintProjectExternalIds,
-            string investorAddress)
+            Address investorAddress)
         {
             if (string.IsNullOrEmpty(investorAddress))
                 return null;
@@ -81,7 +83,7 @@ namespace SmartValley.WebApi.Votings
         {
             var lastSprintAddress = await _votingManagerContractClient.GetLastSprintAddressAsync();
 
-            if (lastSprintAddress.IsAddressEmpty())
+            if (lastSprintAddress.IsEmpty())
                 return null;
 
             return await _votingSprintContractClient.GetDetailsAsync(lastSprintAddress);

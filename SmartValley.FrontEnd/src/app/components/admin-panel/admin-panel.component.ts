@@ -37,10 +37,19 @@ export class AdminPanelComponent implements OnInit {
   }
 
   async createAsync() {
-      const address = await this.dialogService.showCreateAdminDialogAsync();
-      if (isNullOrUndefined(address)) {
-          return;
-      }
+    const address = await this.dialogService.showCreateAdminDialogAsync();
+    if (isNullOrUndefined(address)) {
+      return;
+    }
+
+    const isAddressIsAdmin = await this.adminContractClient.isAdminAsync(address);
+    if (isAddressIsAdmin) {
+      this.notificationsService.warn(
+        this.translateService.instant('Common.Error'),
+        this.translateService.instant('AdminPanel.AlreadyAdmin'));
+      return;
+    }
+
     const user = await this.userApiClient.getByAddressAsync(address);
     if (user.address == null) {
       this.notificationsService.error(

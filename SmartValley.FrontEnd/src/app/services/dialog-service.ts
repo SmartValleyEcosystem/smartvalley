@@ -156,6 +156,14 @@ export class DialogService {
     return this.openModal(AlertModalComponent, data);
   }
 
+  public showCreateNewExpertModal(): MatDialogRef<CreateNewExpertModalComponent> {
+    return this.openModal(CreateNewExpertModalComponent, {});
+  }
+
+  public showEditExpertModal(expertData: any): MatDialogRef<EditExpertModalComponent> {
+    return this.openModal(EditExpertModalComponent, expertData);
+  }
+
   private openModal<TComponent, TData>(componentType: ComponentType<TComponent>,
                                        data: TData,
                                        disableClose: boolean = false): MatDialogRef<TComponent> {
@@ -168,13 +176,5 @@ export class DialogService {
     return this.openModal(componentType, data, disableClose)
       .afterClosed()
       .toPromise<boolean>();
-  }
-
-  public showCreateNewExpertModal(): MatDialogRef<CreateNewExpertModalComponent> {
-    return this.openModal(CreateNewExpertModalComponent, {});
-  }
-
-  public showEditExpertModal(expertData: any): MatDialogRef<EditExpertModalComponent> {
-    return this.openModal(EditExpertModalComponent, expertData);
   }
 }

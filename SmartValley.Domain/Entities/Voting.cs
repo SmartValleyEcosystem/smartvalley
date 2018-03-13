@@ -10,7 +10,7 @@ namespace SmartValley.Domain.Entities
 
         [Required]
         [MaxLength(42)]
-        public string VotingAddress { get; set; }
+        public Address VotingAddress { get; set; }
 
         public DateTimeOffset StartDate { get; set; }
 

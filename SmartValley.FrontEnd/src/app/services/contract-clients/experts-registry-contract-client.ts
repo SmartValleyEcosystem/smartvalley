@@ -22,11 +22,11 @@ export class ExpertsRegistryContractClient implements ContractClient {
     this.address = tokenContract.address;
   }
 
-  public applyAsync(areas: Array<AreaType>): Promise<string> {
+  public applyAsync(areas: Array<AreaType>, applicationHash: string): Promise<string> {
     const contract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.userContext.getCurrentUser().account;
 
-    return contract.apply(areas, {from: fromAddress});
+    return contract.apply(areas, applicationHash, {from: fromAddress});
   }
 
   public approveAsync(expert: string, areas: Array<AreaType>): Promise<string> {
