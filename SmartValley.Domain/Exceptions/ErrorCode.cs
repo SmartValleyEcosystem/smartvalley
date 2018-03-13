@@ -23,6 +23,7 @@
         ShouldCheckAreasToAccept,
         AcceptedOfferNotFound,
         OffersNotFound,
-        AuthenticationError
+        AuthenticationError,
+        ExpertNotFound
     }
 }

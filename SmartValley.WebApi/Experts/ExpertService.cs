@@ -11,6 +11,7 @@ using SmartValley.WebApi.Experts.Requests;
 
 namespace SmartValley.WebApi.Experts
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ExpertService : IExpertService
     {
         private readonly IUserRepository _userRepository;
@@ -74,17 +75,19 @@ namespace SmartValley.WebApi.Experts
         }
 
         public Task<ExpertApplicationDetails> GetApplicationByIdAsync(long id)
-        {
-            return _expertApplicationRepository.GetDetailsByIdAsync(id);
-        }
+            => _expertApplicationRepository.GetDetailsByIdAsync(id);
 
         public Task<IReadOnlyCollection<ExpertApplication>> GetPendingApplicationsAsync()
-        {
-            return _expertApplicationRepository.GetAllByStatusAsync(ExpertApplicationStatus.Pending);
-        }
+            => _expertApplicationRepository.GetAllByStatusAsync(ExpertApplicationStatus.Pending);
 
         public Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(Address address)
             => _expertApplicationRepository.GetExpertApplicationStatusAsync(address);
+
+        public Task<Expert> GetAsync(long expertId)
+            => _expertRepository.GetAsync(expertId);
+
+        public Task SwitchAvailabilityAsync(long expertId)
+            => _expertRepository.SwitchAvailabilityAsync(expertId);
 
         public async Task AddAsync(ExpertRequest request)
         {
@@ -98,11 +101,7 @@ namespace SmartValley.WebApi.Experts
 
             await _userRepository.UpdateWholeAsync(user);
             await _userRepository.AddRoleAsync(request.Address, RoleType.Expert);
-            await _expertRepository.AddAsync(new Expert
-                                             {
-                                                 IsAvailable = true,
-                                                 UserId = user.Id
-                                             }, request.Areas);
+            await _expertRepository.AddAsync(user.Id, request.Areas);
         }
 
         public async Task UpdateAsync(UpdateExpertRequest request)
@@ -145,17 +144,9 @@ namespace SmartValley.WebApi.Experts
 
             var expert = await _expertRepository.GetByAddressAsync(user.Address);
             if (expert != null)
-            {
                 await _expertRepository.UpdateAsync(expert, areas);
-            }
             else
-            {
-                await _expertRepository.AddAsync(new Expert
-                                                 {
-                                                     UserId = user.Id,
-                                                     IsAvailable = true
-                                                 }, areas);
-            }
+                await _expertRepository.AddAsync(user.Id, areas);
 
             await _expertApplicationRepository.SetAcceptedAsync(application, areas.ToList());
         }
@@ -171,9 +162,6 @@ namespace SmartValley.WebApi.Experts
 
         public Task<PagingList<ExpertDetails>> GetAllExpertsDetailsAsync(int page, int pageSize)
             => _expertRepository.GetAllDetailsAsync(page, pageSize);
-
-        public Task<bool> IsExpertAsync(Address address)
-            => _userRepository.HasRoleAsync(address, RoleType.Expert);
 
         public Task<IReadOnlyCollection<Area>> GetAreasAsync()
             => _expertRepository.GetAreasAsync();

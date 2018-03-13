@@ -10,6 +10,7 @@ using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.WebApi.Experts.Requests;
 using SmartValley.WebApi.Experts.Responses;
+using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Experts
@@ -141,6 +142,25 @@ namespace SmartValley.WebApi.Experts
                                                    }).ToArray(),
                        TotalCount = experts.TotalCount
                    };
+        }
+
+        [HttpGet("availability")]
+        [Authorize(Roles = nameof(RoleType.Expert))]
+        public async Task<ExpertAvailabilityResponse> GetAvailabilityAsync()
+        {
+            var expert = await _expertService.GetAsync(User.GetUserId());
+            if (expert == null)
+                throw new AppErrorException(ErrorCode.ExpertNotFound);
+
+            return new ExpertAvailabilityResponse {IsAvailable = expert.IsAvailable};
+        }
+
+        [HttpPut("availability/switch")]
+        [Authorize(Roles = nameof(RoleType.Expert))]
+        public async Task<IActionResult> SwitchAvailabilityAsync()
+        {
+            await _expertService.SwitchAvailabilityAsync(User.GetUserId());
+            return NoContent();
         }
 
         [HttpGet("applications/file")]

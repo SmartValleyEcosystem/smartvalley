@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +6,7 @@ using SmartValley.Data.SQL.Core;
 using SmartValley.Domain;
 using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
+using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
@@ -41,8 +41,9 @@ namespace SmartValley.Data.SQL.Repositories
         public async Task<IReadOnlyCollection<Area>> GetAreasAsync()
             => await _readContext.Areas.ToArrayAsync();
 
-        public Task AddAsync(Expert expert, IReadOnlyCollection<int> areas)
+        public Task AddAsync(long expertId, IReadOnlyCollection<int> areas)
         {
+            var expert = new Expert {UserId = expertId, IsAvailable = true};
             _editContext.Experts.AddAsync(expert);
             var expertAreas = areas.Select(s => new ExpertArea
                                                 {
@@ -66,6 +67,19 @@ namespace SmartValley.Data.SQL.Repositories
                                                                     Expert = expert,
                                                                     AreaId = (AreaType) s
                                                                 }).ToArray());
+            await _editContext.SaveAsync();
+        }
+
+        public Task<Expert> GetAsync(long expertId)
+            => _readContext.Experts.FirstOrDefaultAsync(e => e.UserId == expertId);
+
+        public async Task SwitchAvailabilityAsync(long expertId)
+        {
+            var expert = await _editContext.Experts.FirstOrDefaultAsync(e => e.UserId == expertId);
+            if (expert == null)
+                throw new AppErrorException(ErrorCode.ExpertNotFound);
+
+            expert.IsAvailable = !expert.IsAvailable;
             await _editContext.SaveAsync();
         }
 

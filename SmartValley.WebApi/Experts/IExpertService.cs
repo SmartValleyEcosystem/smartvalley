@@ -28,10 +28,12 @@ namespace SmartValley.WebApi.Experts
 
         Task<PagingList<ExpertDetails>> GetAllExpertsDetailsAsync(int page, int pageSize);
 
-        Task<bool> IsExpertAsync(Address address);
-
         Task<IReadOnlyCollection<Area>> GetAreasAsync();
 
         Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(Address address);
+
+        Task<Expert> GetAsync(long expertId);
+
+        Task SwitchAvailabilityAsync(long expertId);
     }
 }
