@@ -44,6 +44,7 @@ export function multiTranslateLoaderFactory() {
     'components/common/experts-count-selection-modal/experts-count-selection-modal.component',
     'components/expert/expert.component',
     'components/expert/expert-work-place/expert-work-place.component',
+    'components/expert/expert-offers/expert-offers.component',
     'components/expert/expert-offers-history/expert-offers-history.component'
   ]);
 }

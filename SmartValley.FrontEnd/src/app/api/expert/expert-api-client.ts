@@ -17,6 +17,8 @@ import {ExpertScoring} from './expert-scoring';
 import {ExpertHistoryOffer} from './expert-history-offer';
 import {Observable} from 'rxjs/Observable';
 import {of} from 'rxjs/observable/of';
+import {ExpertScoringOffer} from './expert-scoring-offer';
+import {ExpertAvailabilityStatusResponse} from './expert-availability-status-response';
 
 @Injectable()
 export class ExpertApiClient extends BaseApiClient {
@@ -78,7 +80,19 @@ export class ExpertApiClient extends BaseApiClient {
     await this.http.delete(this.baseApiUrl + '/experts/' + queryString).toPromise();
   }
 
-  public async editExpertAsync(editExpertData: EditExpertRequest) {
-    await this.http.put(this.baseApiUrl + '/experts/', editExpertData).toPromise();
+  public editExpertAsync(editExpertData: EditExpertRequest) {
+    return this.http.put(this.baseApiUrl + '/experts/', editExpertData).toPromise();
   }
+
+  public getExpertAvailabilityStatusAsync(): Promise<ExpertAvailabilityStatusResponse> {
+    return this.http.get<ExpertAvailabilityStatusResponse>(`${this.baseApiUrl}/experts/availability`).toPromise();
+  }
+
+  public async switchExpertAvailabilityAsync(transactionHash, value) {
+    await this.http.put(this.baseApiUrl + '/experts/availability', {
+      transactionHash: transactionHash,
+      value: value
+    }).toPromise();
+  }
+
 }

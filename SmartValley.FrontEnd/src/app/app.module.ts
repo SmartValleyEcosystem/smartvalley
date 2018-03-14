@@ -114,6 +114,7 @@ import {ChangeEmailModalComponent} from './components/common/change-email-modal/
 import { ExpertOffersHistoryComponent } from './components/expert/expert-offers-history/expert-offers-history.component';
 import {ExpertWorkPlaceComponent} from './components/expert/expert-work-place/expert-work-place.component';
 import {OffersApiClient} from './api/expert/offers-api-client';
+import { ExpertOffersComponent } from './components/expert/expert-offers/expert-offers.component';
 
 @NgModule({
   declarations: [
@@ -168,6 +169,7 @@ import {OffersApiClient} from './api/expert/offers-api-client';
     SetExpertsModalComponent,
     ChangeEmailModalComponent,
     ExpertWorkPlaceComponent,
+    ExpertOffersComponent,
     ExpertOffersHistoryComponent
   ],
   entryComponents: [
