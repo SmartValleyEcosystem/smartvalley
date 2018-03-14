@@ -8,6 +8,9 @@
     "GetEther": "Get Ether",
     "GetSVT": "Get SVT",
     "Login": "Register / Login",
-    "Admin": "Admin"
+    "Admin": "Admin",
+    "GetScoreForMyProject": "Get score for my project",
+    "BecomeAnExpert": "Become an expert",
+    "Projects": "Projects"
   }
 }

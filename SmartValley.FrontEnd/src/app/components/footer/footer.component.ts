@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Paths} from '../../paths';
 
 @Component({
   selector: 'app-footer',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
+  public projectsLink: string;
+
   constructor() { }
 
   ngOnInit() {
+    this.projectsLink = Paths.MyProjects;
   }
 
 }

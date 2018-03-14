@@ -6,11 +6,17 @@
   flex: 1 1 auto;
 }
 
+.header-wrapper {
+  width: 100%;
+}
+
 .sm-header{
-  color: white;
-  height: 1em;
-  padding-top: 50px;
-  padding-bottom: 74px;
+  color: #a4a2bo;
+  height: 80px;
+  margin: 0 auto;
+  margin-bottom: 40px;
+  padding: 20px 0;
+  width: 1180px;
 }
 .sm-header a{
   text-decoration: none;
@@ -23,10 +29,6 @@
 .sm-header__nav > a{
   padding-left: 1em;}
 
-a, button, span {
-  color: rgb(70, 137, 232);
-  font-size: 0.7em;
-}
 .login-button{
   margin-top: 24px;
 }
@@ -56,7 +58,52 @@ button.mat-menu-item:hover {
   overflow: hidden;
   white-space: nowrap;
 }
+
 button:focus {
    outline: initial;
    outline: initial;
  }
+
+.header-avatar-wrapper {
+  text-align:right;
+  margin-left: 1em;
+}
+
+.header-avatar {
+  width: 5em;
+  border-radius: 1em;
+}
+.header-content {
+  align-items: center;
+  width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  height: 100px;
+  margin-bottom: 20px;
+  font-family: Roboto-Bold;
+  font-size: 14px;
+  font-weight: bold;
+}
+.header-nav {
+  width: 400px;
+  margin: 0 40px;
+}
+.header-nav__link {
+  color: #a4a2b0;
+  text-decoration: none;
+  display: inline-block;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.header-nav__link_selected {
+  color: #fff;
+}
+.get-score-btn {
+  margin-right: 8px;
+}
+.header-nav__login-logout {
+  color: #a4a2b0;
+  display: inline-block;
+  margin-left: 30px;
+  cursor: pointer;
+}

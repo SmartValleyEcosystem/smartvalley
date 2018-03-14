@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49 (51002) - http://www.bohemiancoding.com/sketch -->
+    <title>ic/24/telegram</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M10,0.3125 C4.47580645,0.3125 0,4.6484375 0,10 C0,15.3515625 4.47580645,19.6875 10,19.6875 C15.5241935,19.6875 20,15.3515625 20,10 C20,4.6484375 15.5241935,0.3125 10,0.3125 Z M14.9112903,6.94921875 L13.2701613,14.4414063 C13.1491935,14.9726563 12.8225806,15.1015625 12.3669355,14.8515625 L9.86693548,13.0664063 L8.66129032,14.1914063 C8.52822581,14.3203125 8.41532258,14.4296875 8.15725806,14.4296875 L8.33467742,11.9648438 L12.9677419,7.91015625 C13.1693548,7.73828125 12.9233871,7.640625 12.6572581,7.8125 L6.93145161,11.3046875 L4.46370968,10.5585938 C3.92741935,10.3945313 3.91532258,10.0390625 4.5766129,9.7890625 L14.2177419,6.1875 C14.6653226,6.03125 15.0564516,6.29296875 14.9112903,6.94921875 Z" id="path-1"></path>
+    </defs>
+    <g id="Один-проект" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="About_project" transform="translate(-344.000000, -1229.000000)">
+            <g id="ic/24/telegram" transform="translate(342.000000, 1227.000000)">
+                <g>
+                    <g transform="translate(2.000000, 2.000000)">
+                        <mask id="mask-2" fill="white">
+                            <use xlink:href="#path-1"></use>
+                        </mask>
+                        <use id="telegram" fill="#231A5D" fill-rule="nonzero" xlink:href="#path-1"></use>
+                    </g>
+                    <rect id="Rectangle-2" fill-opacity="0" fill="#D8D8D8" x="0" y="0" width="24" height="24"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

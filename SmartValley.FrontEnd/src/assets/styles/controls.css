@@ -1,0 +1,17 @@
+.main-btn {
+  width: 193px;
+  height: 36px;
+  border-radius: 18px;
+  background-color: #5d49f2;
+  border: solid 1px #5d49f2;
+  font-family: Roboto-Regular;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  text-align: center;
+  color: #ffffff;
+  cursor: pointer;
+}

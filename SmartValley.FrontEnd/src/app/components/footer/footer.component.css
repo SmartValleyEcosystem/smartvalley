@@ -1,27 +1,50 @@
 @import "~font-awesome/css/font-awesome.css";
 
 .sm-footer {
-  color: white;
+  border-top: #a4a2b0 1px solid;
+  width: 1180px;
+  color: #000;
   height: 100px;
-  padding-top: 45px;
+  padding-top: 20px;
   padding-bottom: 45px;
+  display: flex;
 }
-.sm-footer a{
-  text-decoration: none;
+.footer-menu-list, .footer-menu-list a {
+  list-style: none;
+  text-align: left;
+  font-size: 14px;
+  font-weight: bold;
+  color: #5d49f2;
 }
-.sm-footer a > i{
-  font-size: 1.5em;
+.footer-col {
+  width: 350px;
+  margin: 0 100px 0 0;
 }
-.sm-terms{
-  text-align: center;
+.footer-col__menu {
+  width: 370px;
+  margin: 0;
 }
-.sm-copyright{
-  font-size: 0.9em;
-}
-.sm-social-icons{
-  letter-spacing: 0.4em;
+.social-icon {
+  width: 23px;
+  height: 23px;
+  margin-right: 8px;
+  background-position: center;
+  -webkit-background-size: cover;
+  background-size: cover;
   display: inline-block;
-  right: 0;
-  position: absolute;
-  padding: 0;
+}
+.social-icon:last-child {
+  margin-right: 0;
+}
+.social-icon__facebook {
+  background-image: url(/assets/img/social-icons/Fb.svg);
+}
+.social-icon__instagram {
+  background-image: url(/assets/img/social-icons/Instagram.svg);
+}
+.social-icon__telegram {
+  background-image: url(/assets/img/social-icons/telegram.svg);
+}
+.social-icon__bitcointalk {
+  background-image: url(/assets/img/social-icons/Bitcointalk.svg);
 }

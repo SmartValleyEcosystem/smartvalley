@@ -23,6 +23,9 @@ export class HeaderComponent implements OnInit {
   public isAdmin: boolean;
   public accountAddress: string;
   public accountImgUrl: string;
+  public projectsLink: string;
+  public accountLink: string;
+  public adminPanelLink: string;
 
   constructor(private router: Router,
               private balanceService: BalanceService,
@@ -37,6 +40,9 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     const currentUser = this.userContext.getCurrentUser();
     this.updateAccount(currentUser);
+    this.projectsLink = Paths.MyProjects;
+    this.accountLink = Paths.Account;
+    this.adminPanelLink = Paths.Admin;
   }
 
   private updateAccount(user: User): void {
@@ -95,6 +101,18 @@ export class HeaderComponent implements OnInit {
     const isOk = await this.authenticationService.authenticateAsync();
     if (isOk) {
       await this.router.navigate([Paths.MyProjects]);
+    }
+  }
+
+  async navigateToScoring() {
+    if (await this.authenticationService.authenticateAsync()) {
+      await this.router.navigate([Paths.Expert]);
+    }
+  }
+
+  async navigateToApplication() {
+    if (await this.authenticationService.authenticateAsync()) {
+      await this.router.navigate([Paths.Application]);
     }
   }
 }

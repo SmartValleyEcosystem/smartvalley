@@ -1,65 +1,18 @@
-<mat-toolbar class="sm-header">
-  <mat-toolbar-row>
-    <div class="container">
-      <div class="row">
-        <div class="col-2">
-          <a [routerLink]="['/']"><img src="/assets/img/logo.png" alt="Smart valley"></a>
-        </div>
-        <div class="col-3" style="margin-top: 24px;">
-          <a target="_blank" href="https://www.youtube.com/watch?v=mNIHWk1KsZw&list=PLT-hvZ_jkN7AegglvE0Ovo4He1jyHh2fx"
-             class="btn btn-link">MVP Instruction</a>
-        </div>
-
-        <div class="col-3" style="margin-top: 24px;">
-          <div *ngIf="isAuthenticated">
-            <span style="color: #aaaaaa;">{{ 'Header.Balance' | translate }}: {{currentBalance}} ETH / {{currentTokens}} SVT  <span
-              *ngIf="frozenTokens !==0">({{frozenTokens}} {{'Header.OnFreeze' | translate}})</span></span>
-          </div>
-        </div>
-        <div class="col-4 sm-header__nav text-right">
-          <button *ngIf="showReceiveEtherButton && isAuthenticated"
-                  (click)="receiveEth()"
-                  class="btn btn-link"
-                  angulartics2On="click"
-                  angularticsAction="GetEtherClick"
-                  angularticsCategory="UserActions">
-            {{ 'Header.GetEther' | translate }}
-          </button>
-          <button *ngIf="showReceiveSVTButton && isAuthenticated"
-                  (click)="receiveSVT()"
-                  class="btn btn-link"
-                  angulartics2On="click"
-                  angularticsAction="GetSVTClick"
-                  angularticsCategory="UserActions">
-            {{ 'Header.GetSVT' | translate }}
-          </button>
-          <span *ngIf="isAuthenticated" style="text-align:right; margin-left: 1em;">
-            <button mat-icon-button disableRipple [matMenuTriggerFor]="menu" class="btn btn-link">
-              <img src="{{accountImgUrl}}" style="width: 5em; border-radius: 1em;"/>
-              <mat-icon><i class="material-icons">expand_more</i></mat-icon>
-            </button>
-            <mat-menu [overlapTrigger]="false" #menu="matMenu" align="end" yPosition="above">
-              <button mat-menu-item (click)="navigateToAccount()" class="btn btn-link">
-                {{'Header.Account' | translate }}
-              </button>
-              <button mat-menu-item (click)="navigateToMyProjects()" class="btn btn-link">
-                {{ 'Header.MyProjects' | translate }}
-              </button>
-              <button *ngIf="isAdmin" mat-menu-item (click)="navigateToAdminPanel()" class="btn btn-link" style="padding-right: 0">
-                {{'Header.Admin' | translate }}
-              </button>
-              <button mat-menu-item (click)="logout()" class="btn btn-link" style="padding-right: 0">
-                {{'Header.Logout' | translate }}
-              </button>
-            </mat-menu>
-          </span>
-          <button *ngIf="!isAuthenticated"
-                  (click)="loginAsync()"
-                  class="btn btn-link">
-            {{'Header.Login' | translate }}
-          </button>
-        </div>
-      </div>
-    </div>
-  </mat-toolbar-row>
-</mat-toolbar>
+<div class="header-wrapper">
+  <div class="header-content">
+    <a [routerLink]="['/']"><img class="logo" src="/assets/img/logo.png" alt="Smart valley"></a>
+    <nav class="header-nav">
+      <a class="header-nav__link" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + projectsLink">{{'Header.Projects' | translate }}</a>
+      <a *ngIf="isAuthenticated" class="header-nav__link" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + accountLink">{{'Header.Account' | translate }}</a>
+      <a *ngIf="isAdmin" class="header-nav__link" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + adminPanelLink">{{'Header.Admin' | translate }}</a>
+    </nav>
+    <button class="main-btn get-score-btn" (click)="navigateToScoring()">{{ 'Header.GetScoreForMyProject' | translate }}</button>
+    <button class="main-btn" (click)="navigateToApplication()">{{ 'Header.BecomeAnExpert' | translate }}</button>
+    <span *ngIf="isAuthenticated" class="header-nav__login-logout" (click)="logout()">
+      {{'Header.Logout' | translate }}
+    </span>
+    <span *ngIf="!isAuthenticated" class="header-nav__login-logout" (click)="loginAsync()">
+      {{'Header.Login' | translate }}
+    </span>
+  </div>
+</div>

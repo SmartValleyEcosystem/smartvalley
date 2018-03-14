@@ -1,35 +1,24 @@
-<div class="container sm-footer">
-  <div class="row">
-    <div class="col-3 sm-copyright">
-      {{ 'Footer.Copyright' | translate }}
-    </div>
-    <div class="col-6 sm-terms">
-      <!--<a href="#">-->
-        <!--Term of use-->
-      <!--</a>-->
-    </div>
-    <div class="col-3 sm-social-icons">
-      <!--<a href="#">-->
-        <!--<i class="fa fa-vk" aria-hidden="true"></i>-->
-      <!--</a>-->
-      <!--<a href="#">-->
-        <!--<i class="fa fa-facebook" aria-hidden="true"></i>-->
-      <!--</a>-->
-      <!--<a href="#">-->
-        <!--<i class="fa fa-instagram" aria-hidden="true"></i>-->
-      <!--</a>-->
-      <!--<a href="#">-->
-        <!--<i class="fa fa-twitter" aria-hidden="true"></i>-->
-      <!--</a>-->
-      <!--<a href="#">-->
-        <!--<i class="fa fa-telegram" aria-hidden="true"></i>-->
-      <!--</a>-->
-      <!--<a href="#">-->
-        <!--<i class="fa fa-google-plus" aria-hidden="true"></i>-->
-      <!--</a>-->
-      <!--<a href="#">-->
-        <!--<i class="fa fa-youtube-play" aria-hidden="true"></i>-->
-      <!--</a>-->
+<div class="content sm-footer">
+  <div class="footer-col footer-col__copyright">
+    {{ 'Footer.Copyright' | translate }}
+  </div>
+  <div class="footer-col footer-col__menu">
+    <ul class="footer-menu-list">
+      <li><a [routerLink]="'/' + projectsLink">{{ 'Footer.Projects' | translate }}</a></li>
+      <li>{{ 'Footer.WhitePaper' | translate }}</li>
+      <li>{{ 'Footer.UserAgreement' | translate }}</li>
+    </ul>
+  </div>
+  <div class="footer-col footer-col__social-icons">
+    <p>
+      {{ 'Footer.CallUs' | translate }} <strong>{{ 'Footer.PhoneNumber' | translate}}</strong>
+    </p>
+    <div>
+      {{ 'Footer.Socials' | translate }}
+      <a target="_blank" href="https://www.facebook.com/SmartValley.io/" class="social-icon social-icon__facebook"></a>
+      <a target="_blank" href="https://www.instagram.com/smartvalley/" class="social-icon social-icon__instagram"></a>
+      <a target="_blank" href="https://t.me/joinchat/BhcurkQ7TEADvuyQ1anYhA" class="social-icon social-icon__telegram"></a>
+      <a target="_blank" href="https://bitcointalk.org/index.php?topic=2239642" class="social-icon social-icon__bitcointalk"></a>
     </div>
   </div>
 </div>
