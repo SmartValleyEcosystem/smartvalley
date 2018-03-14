@@ -19,12 +19,16 @@ namespace SmartValley.Data.SQL.Repositories
         {
         }
 
-        public async Task<IReadOnlyCollection<ProjectScoring>> GetAllScoredAsync()
+        public async Task<IReadOnlyCollection<ProjectScoring>> GetScoredAsync(int page, int pageSize)
         {
             return await (from project in ReadContext.Projects
                           join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
                           where scoring.Score.HasValue
-                          select new ProjectScoring(project, scoring)).ToArrayAsync();
+                          orderby scoring.ScoringEndDate descending
+                          select new ProjectScoring(project, scoring))
+                         .Skip(page * pageSize)
+                         .Take(pageSize)
+                         .ToArrayAsync();
         }
 
         public async Task<IReadOnlyCollection<ProjectScoring>> GetByAuthorAsync(Address authorAddress)

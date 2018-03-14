@@ -13,8 +13,6 @@ namespace SmartValley.Domain.Interfaces
 
         Task<int> UpdateWholeAsync(Scoring scoring);
 
-        Task SetDatesAsync(long scoringId, DateTimeOffset scoringStartDate, DateTimeOffset scoringEndDate);
-
         Task<Scoring> GetByProjectIdAsync(long projectId);
 
         Task<bool> IsCompletedInAreaAsync(long scoringId, AreaType areaType);

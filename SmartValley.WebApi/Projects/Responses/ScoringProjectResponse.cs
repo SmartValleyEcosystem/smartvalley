@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using SmartValley.WebApi.Scoring;
 
 namespace SmartValley.WebApi.Projects.Responses
 {
@@ -18,5 +20,19 @@ namespace SmartValley.WebApi.Projects.Responses
         public ScoringProjectStatus Status { get; set; }
 
         public IEnumerable<AreaExpertResponse> AreasExperts { get; set; }
+
+        public static ScoringProjectResponse Create(ScoringProjectDetailsWithCounts details)
+        {
+            return new ScoringProjectResponse
+                   {
+                       Address = details.Address,
+                       Name = details.Name,
+                       ProjectId = details.ProjectId.ToString(),
+                       StartDate = details.CreationDate.Date,
+                       EndDate = details.OffersEndDate.Date,
+                       Status = details.Status,
+                       AreasExperts = details.AreaCounts.Select(AreaExpertResponse.Create).ToArray()
+                   };
+        }
     }
 }

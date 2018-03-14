@@ -44,15 +44,6 @@ namespace SmartValley.Data.SQL.Repositories
             return EditContext.SaveAsync();
         }
 
-        public Task SetDatesAsync(long scoringId, DateTimeOffset scoringStartDate, DateTimeOffset scoringEndDate)
-        {
-            var scoring = new Scoring { Id = scoringId, ScoringStartDate = scoringStartDate, ScoringEndDate = scoringEndDate };
-            var entity = EditContext.Scorings.Attach(scoring);
-            entity.Property(s => s.ScoringStartDate).IsModified = true;
-            entity.Property(s => s.ScoringEndDate).IsModified = true;
-            return EditContext.SaveAsync();
-        }
-
         public async Task<IReadOnlyCollection<ScoringAreaStatistics>> GetIncompletedScoringAreaStatisticsAsync(DateTimeOffset tillDate)
         {
             var requiredCounts = await (from areaScoring in ReadContext.AreaScorings
@@ -60,8 +51,8 @@ namespace SmartValley.Data.SQL.Repositories
                                         where !areaScoring.IsCompleted
                                         select new
                                                {
-                                                   OffersEndDate = scoring.OffersEndDate,
-                                                   ScoringEndDate = scoring.ScoringEndDate,
+                                                   OffersEndDate = scoring.OffersDueDate,
+                                                   ScoringEndDate = scoring.EstimatesDueDate,
                                                    areaScoring.ScoringId,
                                                    AreaType = areaScoring.AreaId,
                                                    Count = areaScoring.ExpertsCount
@@ -159,7 +150,7 @@ namespace SmartValley.Data.SQL.Repositories
                                      Address = scoring.ContractAddress,
                                      Name = project.Name,
                                      CreationDate = scoring.CreationDate,
-                                     OffersEndDate = scoring.OffersEndDate
+                                     OffersEndDate = scoring.OffersDueDate
                                  }).ToArrayAsync();
         }
     }

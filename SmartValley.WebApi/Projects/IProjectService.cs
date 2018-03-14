@@ -11,7 +11,7 @@ namespace SmartValley.WebApi.Projects
     {
         Task<ProjectDetails> GetDetailsAsync(long projectId);
 
-        Task<IReadOnlyCollection<ProjectScoring>> GetAllScoredAsync();
+        Task<IReadOnlyCollection<ProjectScoring>> GetScoredAsync(int page, int pageSize);
 
         Task<bool> IsAuthorizedToSeeEstimatesAsync(Address account, long projectId);
 

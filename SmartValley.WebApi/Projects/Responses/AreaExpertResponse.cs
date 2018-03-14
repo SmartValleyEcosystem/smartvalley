@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Projects.Responses
@@ -10,5 +10,15 @@ namespace SmartValley.WebApi.Projects.Responses
         public int AcceptedCount { get; set; }
 
         public int RequiredCount { get; set; }
+
+        public static AreaExpertResponse Create(AreaCount area)
+        {
+            return new AreaExpertResponse
+                   {
+                       AreaType = area.AreaType,
+                       AcceptedCount = area.AcceptedCount,
+                       RequiredCount = area.RequeiredCount
+                   };
+        }
     }
 }

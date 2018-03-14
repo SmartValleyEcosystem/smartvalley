@@ -141,6 +141,9 @@ namespace SmartValley.Data.SQL.Core
                         .IsUnique();
 
             modelBuilder.Entity<Scoring>()
+                        .HasIndex(p => new {p.ScoringEndDate});
+
+            modelBuilder.Entity<Scoring>()
                         .HasMany(s => s.AreaScorings)
                         .WithOne(a => a.Scoring);
 

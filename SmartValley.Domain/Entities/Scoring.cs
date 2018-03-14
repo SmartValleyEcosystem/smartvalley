@@ -21,7 +21,9 @@ namespace SmartValley.Domain.Entities
 
         public DateTimeOffset CreationDate { get; set; }
 
-        public DateTimeOffset OffersEndDate { get; set; }
+        public DateTimeOffset OffersDueDate { get; set; }
+
+        public DateTimeOffset? EstimatesDueDate { get; set; }
 
         public DateTimeOffset? ScoringEndDate { get; set; }
 

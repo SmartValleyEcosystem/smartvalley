@@ -1,4 +1,5 @@
-﻿using SmartValley.Domain;
+﻿using System;
+using SmartValley.Domain;
 
 namespace SmartValley.WebApi.Projects.Responses
 {
@@ -20,6 +21,8 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public double? Score { get; set; }
 
+        public DateTimeOffset? ScoringEndDate { get; set; }
+
         public static ProjectResponse Create(ProjectScoring projectScoring)
         {
             return new ProjectResponse
@@ -31,7 +34,8 @@ namespace SmartValley.WebApi.Projects.Responses
                        Description = projectScoring.Project.Description,
                        Author = projectScoring.Project.AuthorAddress,
                        Address = projectScoring.Scoring?.ContractAddress,
-                       Score = projectScoring.Scoring?.Score
+                       Score = projectScoring.Scoring?.Score,
+                       ScoringEndDate = projectScoring.Scoring?.ScoringEndDate
                    };
         }
     }

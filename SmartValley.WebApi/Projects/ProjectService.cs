@@ -39,8 +39,8 @@ namespace SmartValley.WebApi.Projects
             return new ProjectDetails(project, projectScoring, application, teamMembers);
         }
 
-        public Task<IReadOnlyCollection<ProjectScoring>> GetAllScoredAsync()
-            => _projectRepository.GetAllScoredAsync();
+        public Task<IReadOnlyCollection<ProjectScoring>> GetScoredAsync(int page, int pageSize)
+            => _projectRepository.GetScoredAsync(page, pageSize);
 
         public Task<IReadOnlyCollection<ProjectScoring>> GetByAuthorAsync(Address authorAddress)
             => _projectRepository.GetByAuthorAsync(authorAddress);

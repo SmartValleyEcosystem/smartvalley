@@ -108,7 +108,7 @@ namespace SmartValley.WebApi.Scoring
                               ProjectId = projectId,
                               ContractAddress = contractAddress,
                               CreationDate = _clock.UtcNow,
-                              OffersEndDate = offersEndDate
+                              OffersDueDate = offersEndDate
                           };
 
             await _scoringRepository.AddAsync(scoring);
@@ -189,8 +189,15 @@ namespace SmartValley.WebApi.Scoring
 
         private async Task UpdateScoringDatesAsync(long scoringId)
         {
+            var scoring = await _scoringRepository.GetByIdAsync(scoringId);
+
             var utcNow = _clock.UtcNow;
-            await _scoringRepository.SetDatesAsync(scoringId, utcNow, utcNow + TimeSpan.FromDays(_daysToEndScoring));
+            scoring.EstimatesDueDate = utcNow + TimeSpan.FromDays(_daysToEndScoring);
+
+            if (!scoring.ScoringStartDate.HasValue)
+                scoring.ScoringStartDate = utcNow;
+
+            await _scoringRepository.UpdateWholeAsync(scoring);
         }
 
         public Task RejectOfferAsync(long scoringId, long areaId, long expertId)
