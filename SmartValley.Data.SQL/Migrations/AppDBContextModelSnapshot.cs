@@ -3,9 +3,14 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Converters;
+using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Domain.Core;
+using SmartValley.Domain.Entities;
 
 namespace SmartValley.Data.SQL.Migrations
 {
@@ -339,18 +344,18 @@ namespace SmartValley.Data.SQL.Migrations
 
             modelBuilder.Entity("SmartValley.Domain.Entities.ProjectSocialMedia", b =>
                 {
-                    b.Property<int>("SocialId");
+                    b.Property<int>("SocialMediaId");
 
                     b.Property<long>("ProjectId");
 
                     b.Property<string>("Url")
                         .IsRequired();
 
-                    b.HasKey("SocialId", "ProjectId");
+                    b.HasKey("SocialMediaId", "ProjectId");
 
                     b.HasIndex("ProjectId");
 
-                    b.HasIndex("SocialId", "ProjectId");
+                    b.HasIndex("SocialMediaId", "ProjectId");
 
                     b.ToTable("ProjectSocialMedias");
                 });
@@ -715,9 +720,9 @@ namespace SmartValley.Data.SQL.Migrations
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SmartValley.Domain.Entities.SocialMedia", "Social")
+                    b.HasOne("SmartValley.Domain.Entities.SocialMedia", "SocialMedia")
                         .WithMany("ProjectSocialMedias")
-                        .HasForeignKey("SocialId")
+                        .HasForeignKey("SocialMediaId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
