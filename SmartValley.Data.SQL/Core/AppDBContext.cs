@@ -26,7 +26,9 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<EstimateComment> IReadOnlyDataContext.EstimateComments => EstimateComments.AsNoTracking();
 
-        IQueryable<TeamMember> IReadOnlyDataContext.TeamMembers => TeamMembers.AsNoTracking();
+        IQueryable<ApplicationTeamMember> IReadOnlyDataContext.ApplicationTeamMembers => ApplicationTeamMembers.AsNoTracking();
+
+        IQueryable<ProjectTeamMember> IReadOnlyDataContext.ProjectTeamMembers => ProjectTeamMembers.AsNoTracking();
 
         IQueryable<Question> IReadOnlyDataContext.Questions => Questions.AsNoTracking();
 
@@ -50,6 +52,36 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<ExpertApplicationArea> IReadOnlyDataContext.ExpertApplicationAreas => ExpertApplicationAreas.AsNoTracking();
 
+        IQueryable<Country> IReadOnlyDataContext.Countries => Countries.AsNoTracking();
+
+        IQueryable<Category> IReadOnlyDataContext.Categories => Categories.AsNoTracking();
+
+        IQueryable<ProjectSocialMedia> IReadOnlyDataContext.ProjectSocialMedias => ProjectSocialMedias.AsNoTracking();
+
+        IQueryable<SocialMedia> IReadOnlyDataContext.SocialMedias => SocialMedias.AsNoTracking();
+
+        IQueryable<ProjectTeamMemberSocialMedia> IReadOnlyDataContext.ProjectTeamMemberSocialMedias => ProjectTeamMemberSocialMedias.AsNoTracking();
+
+        IQueryable<ApplicationTeamMemberSocialMedia> IReadOnlyDataContext.ApplicationTeamMemberSocialMedias => ApplicationTeamMemberSocialMedias.AsNoTracking();
+
+        IQueryable<Stage> IReadOnlyDataContext.Stages => Stages.AsNoTracking();
+
+        public DbSet<ProjectTeamMemberSocialMedia> ProjectTeamMemberSocialMedias { get; set; }
+
+        public DbSet<ApplicationTeamMemberSocialMedia> ApplicationTeamMemberSocialMedias { get; set; }
+
+        public DbSet<Stage> Stages { get; set; }
+
+        public DbSet<ProjectSocialMedia> ProjectSocialMedias { get; set; }
+
+        public DbSet<SocialMedia> SocialMedias { get; set; }
+
+        public DbSet<ProjectTeamMember> ProjectTeamMembers { get; set; }
+
+        public DbSet<Category> Categories { get; set; }
+
+        public DbSet<Country> Countries { get; set; }
+
         public DbSet<Application> Applications { get; set; }
 
         public DbSet<Project> Projects { get; set; }
@@ -62,7 +94,7 @@ namespace SmartValley.Data.SQL.Core
 
         public DbSet<EstimateComment> EstimateComments { get; set; }
 
-        public DbSet<TeamMember> TeamMembers { get; set; }
+        public DbSet<ApplicationTeamMember> ApplicationTeamMembers { get; set; }
 
         public DbSet<Question> Questions { get; set; }
 
@@ -215,6 +247,40 @@ namespace SmartValley.Data.SQL.Core
                         .HasOne(r => r.Expert)
                         .WithOne(r => r.User)
                         .HasForeignKey<Expert>(u => u.UserId);
+
+            modelBuilder.Entity<Stage>()
+                        .HasIndex(u => u.Name)
+                        .IsUnique();
+
+            modelBuilder.Entity<SocialMedia>()
+                        .HasIndex(u => u.Name)
+                        .IsUnique();
+
+            modelBuilder.Entity<Country>()
+                        .HasIndex(u => u.Code)
+                        .IsUnique();
+
+            modelBuilder.Entity<Category>()
+                        .HasIndex(u => u.Name)
+                        .IsUnique();
+
+            modelBuilder.Entity<ProjectSocialMedia>()
+                        .HasKey(e => new {SocialId = e.SocialMediaId, e.ProjectId});
+
+            modelBuilder.Entity<ProjectSocialMedia>()
+                        .HasIndex(e => new {SocialId = e.SocialMediaId, e.ProjectId});
+
+            modelBuilder.Entity<ProjectTeamMemberSocialMedia>()
+                        .HasKey(e => new {SocialId = e.SocialMediaId, e.TeamMemberId});
+
+            modelBuilder.Entity<ProjectTeamMemberSocialMedia>()
+                        .HasIndex(e => new {SocialId = e.SocialMediaId, e.TeamMemberId});
+
+            modelBuilder.Entity<ApplicationTeamMemberSocialMedia>()
+                        .HasKey(e => new {SocialId = e.SocialMediaId, e.TeamMemberId});
+
+            modelBuilder.Entity<ApplicationTeamMemberSocialMedia>()
+                        .HasIndex(e => new {SocialId = e.SocialMediaId, e.TeamMemberId});
 
             modelBuilder.Entity<AreaScoring>()
                         .HasKey(e => new {e.ScoringId, e.AreaId});

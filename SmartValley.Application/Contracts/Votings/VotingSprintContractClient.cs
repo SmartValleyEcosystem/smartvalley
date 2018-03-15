@@ -52,11 +52,7 @@ namespace SmartValley.Application.Contracts.Votings
         {
             var dto = await _contractClient.CallFunctionDeserializingToObjectAsync<InvestorVotesDto>(sprintAddress, _contractAbi, "getInvestorVotes", investorAddress);
             var decimals = await _tokenContractClient.GetDecimalsAsync();
-            return new InvestorVotes
-            {
-                ProjectsExternalIds = dto.ProjectExternalIds.Select(p => p.ToGuid()).ToArray(),
-                TokenAmount = dto.TokenAmount.FromWei(decimals)
-            };
+            return new InvestorVotes(dto.TokenAmount.FromWei(decimals), dto.ProjectExternalIds.Select(p => p.ToGuid()).ToArray());
         }
 
         public async Task<double> GetVoteAsync(string sprintAddress, string investorAddress, Guid projectId)

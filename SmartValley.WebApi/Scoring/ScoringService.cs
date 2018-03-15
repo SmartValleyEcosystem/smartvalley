@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using SmartValley.Application;
 using SmartValley.Application.Contracts.Scorings;
 using SmartValley.Application.Email;
-using SmartValley.Data.SQL.Repositories;
 using SmartValley.Domain;
 using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
@@ -93,8 +92,8 @@ namespace SmartValley.WebApi.Scoring
         {
             var expertsDictionary = experts.ToDictionary(e => e.Address);
             var offers = offerInfos
-                         .Select(o => CreateOffer(scoringId, expertsDictionary[o.ExpertAddress].Id, o))
-                         .ToArray();
+                .Select(o => CreateOffer(scoringId, expertsDictionary[o.ExpertAddress].Id, o))
+                .ToArray();
 
             await _scoringOffersRepository.AddAsync(offers);
 
@@ -209,23 +208,10 @@ namespace SmartValley.WebApi.Scoring
         {
             var areasByScoringId = statistics.ToLookup(
                 o => o.ScoringId,
-                k => new AreaCount
-                     {
-                         AreaType = k.AreaId,
-                         AcceptedCount = k.AcceptedCount,
-                         RequeiredCount = k.RequiredCount
-                     });
+                k => new AreaCount(k.AreaId, k.AcceptedCount, k.RequiredCount));
+
             var scoringDetails = await _scoringRepository.GetScoringProjectsDetailsByScoringIdsAsync(areasByScoringId.Select(o => o.Key).ToArray());
-            return scoringDetails.Select(i => new ScoringProjectDetailsWithCounts
-                                              {
-                                                  ProjectId = i.ProjectId,
-                                                  CreationDate = i.CreationDate,
-                                                  OffersEndDate = i.OffersEndDate,
-                                                  Address = i.Address,
-                                                  Name = i.Name,
-                                                  Status = status,
-                                                  AreaCounts = areasByScoringId[i.ScoringId]
-                                              });
+            return scoringDetails.Select(i => new ScoringProjectDetailsWithCounts(status, areasByScoringId[i.ScoringId], i.ProjectId, i.ScoringId, i.Address, i.Name, i.CreationDate, i.OffersEndDate));
         }
     }
 }

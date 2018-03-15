@@ -4,10 +4,10 @@ using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain.Interfaces
 {
-    public interface ITeamMemberRepository
+    public interface IApplicationTeamMemberRepository
     {
-        Task<int> AddRangeAsync(IEnumerable<TeamMember> teamMembers);
+        Task<int> AddRangeAsync(IEnumerable<ApplicationTeamMember> teamMembers);
 
-        Task<IReadOnlyCollection<TeamMember>> GetAllByApplicationIdAsync(long applicationId);
+        Task<IReadOnlyCollection<ApplicationTeamMember>> GetAllByApplicationIdAsync(long applicationId);
     }
 }

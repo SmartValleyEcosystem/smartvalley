@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
+using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
 {
@@ -79,22 +80,22 @@ namespace SmartValley.Data.SQL.Repositories
                           join scoring in _readContext.Scorings on scoringOffer.ScoringId equals scoring.Id
                           join project in _readContext.Projects on scoring.ProjectId equals project.Id
                           join user in _readContext.Users on scoringOffer.ExpertId equals user.Id
+                          join category in _readContext.Categories on project.CategoryId equals category.Id
+                          join country in _readContext.Countries on project.CountryId equals country.Id
                           where scoringOffer.Status != ScoringOfferStatus.Pending || scoringOffer.ExpirationTimestamp < now
                           where user.Id == expertId
-                          select new ScoringOfferDetails
-                                 {
-                                     ScoringOfferStatus = scoringOffer.Status,
-                                     ScoringOfferTimestamp = scoringOffer.ExpirationTimestamp,
-                                     AreaType = scoringOffer.AreaId,
-                                     Name = project.Name,
-                                     ProjectArea = project.ProjectArea,
-                                     Description = project.Description,
-                                     ProjectExternalId = project.ExternalId,
-                                     Country = project.Country,
-                                     ScoringContractAddress = scoring.ContractAddress,
-                                     ExpertId = user.Id,
-                                     ScoringId = scoring.Id
-                                 })
+                          select new ScoringOfferDetails(
+                              scoringOffer.Status,
+                              scoringOffer.ExpirationTimestamp,
+                              scoring.ContractAddress,
+                              scoring.Id,
+                              user.Id,
+                              project.Name,
+                              country.Code,
+                              category.Name,
+                              project.Description,
+                              scoringOffer.AreaId,
+                              project.ExternalId))
                        .ToArrayAsync();
         }
 
@@ -104,22 +105,22 @@ namespace SmartValley.Data.SQL.Repositories
                           join scoring in _readContext.Scorings on scoringOffer.ScoringId equals scoring.Id
                           join project in _readContext.Projects on scoring.ProjectId equals project.Id
                           join user in _readContext.Users on scoringOffer.ExpertId equals user.Id
+                          join category in _readContext.Categories on project.CategoryId equals category.Id
+                          join country in _readContext.Countries on project.CountryId equals country.Id
                           where scoringOffer.Status == status
                           where user.Id == expertId
-                          select new ScoringOfferDetails
-                                 {
-                                     ScoringOfferStatus = scoringOffer.Status,
-                                     ScoringOfferTimestamp = scoringOffer.ExpirationTimestamp,
-                                     AreaType = scoringOffer.AreaId,
-                                     Name = project.Name,
-                                     ProjectArea = project.ProjectArea,
-                                     Description = project.Description,
-                                     ProjectExternalId = project.ExternalId,
-                                     Country = project.Country,
-                                     ScoringContractAddress = scoring.ContractAddress,
-                                     ExpertId = user.Id,
-                                     ScoringId = scoring.Id
-                                 })
+                          select new ScoringOfferDetails(
+                              scoringOffer.Status,
+                              scoringOffer.ExpirationTimestamp,
+                              scoring.ContractAddress,
+                              scoring.Id,
+                              user.Id,
+                              project.Name,
+                              country.Code,
+                              category.Name,
+                              project.Description,
+                              scoringOffer.AreaId,
+                              project.ExternalId))
                        .ToArrayAsync();
         }
     }

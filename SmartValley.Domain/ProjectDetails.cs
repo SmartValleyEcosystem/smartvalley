@@ -9,20 +9,22 @@ namespace SmartValley.Domain
             Project project,
             Scoring scoring,
             Application application,
-            IReadOnlyCollection<TeamMember> teamMembers)
+            Country country)
         {
             Project = project;
             Scoring = scoring;
             Application = application;
-            TeamMembers = teamMembers;
+            Country = country;
         }
 
         public Project Project { get; }
+
+        public Country Country { get; }
 
         public Scoring Scoring { get; }
 
         public Application Application { get; }
 
-        public IReadOnlyCollection<TeamMember> TeamMembers { get; }
+        public IReadOnlyCollection<ApplicationTeamMember> TeamMembers { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace SmartValley.WebApi.Applications.Requests
 
         public string AuthorAddress { get; set; }
 
-        public string ProjectArea { get; set; }
+        public int CategoryType { get; set; }
 
         public string ProjectId { get; set; }
 
@@ -22,7 +22,7 @@ namespace SmartValley.WebApi.Applications.Requests
 
         public string BlockChainType { get; set; }
 
-        public string Country { get; set; }
+        public string CountryCode { get; set; }
 
         public string FinanceModelLink { get; set; }
 

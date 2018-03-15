@@ -14,7 +14,7 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public string AuthorAddress { get; set; }
 
-        public string Area { get; set; }
+        public int CategoryId { get; set; }
 
         public string ScoringContractAddress { get; set; }
 
@@ -48,7 +48,7 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public DateTimeOffset? VotingEndDate { get; set; }
 
-        public IReadOnlyCollection<TeamMemberResponse> TeamMembers { get; set; }
+        public IReadOnlyCollection<ApplicationTeamMemberResponse> TeamMembers { get; set; }
 
         public static ProjectDetailsResponse Create(ProjectDetails details, VotingProjectDetails votingDetails, DateTimeOffset now)
         {
@@ -62,8 +62,8 @@ namespace SmartValley.WebApi.Projects.Responses
                        ExternalId = details.Project.ExternalId.ToString(),
                        Description = details.Project.Description,
                        AuthorAddress = details.Project.AuthorAddress,
-                       Country = details.Project.Country,
-                       Area = details.Project.ProjectArea,
+                       Country = details.Country.Code,
+                       CategoryId = (int) details.Project.CategoryId,
                        Score = details.Scoring?.Score,
                        ScoringContractAddress = details.Scoring?.ContractAddress,
                        AttractedInvestments = details.Application.InvestmentsAreAttracted,
@@ -74,7 +74,7 @@ namespace SmartValley.WebApi.Projects.Responses
                        MvpLink = details.Application.MvpLink,
                        Status = details.Application.ProjectStatus,
                        WhitePaperLink = details.Application.WhitePaperLink,
-                       TeamMembers = details.TeamMembers.Select(TeamMemberResponse.Create).ToList(),
+                       TeamMembers = details.TeamMembers.Select(ApplicationTeamMemberResponse.Create).ToList(),
                        ScoringStatus = scoringStatus,
                        VotingStatus = details.Scoring == null ? (votingDetails?.GetVotingStatus(now) ?? VotingStatus.InProgress) : VotingStatus.None,
                        VotingEndDate = votingDetails?.Voting?.EndDate,

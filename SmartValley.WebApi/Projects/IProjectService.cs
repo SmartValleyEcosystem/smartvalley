@@ -11,16 +11,16 @@ namespace SmartValley.WebApi.Projects
     {
         Task<ProjectDetails> GetDetailsAsync(long projectId);
 
-        Task<IReadOnlyCollection<ProjectScoring>> GetScoredAsync(int page, int pageSize);
+        Task<IReadOnlyCollection<ProjectDetails>> GetScoredAsync(int page, int pageSize);
 
         Task<bool> IsAuthorizedToSeeEstimatesAsync(Address account, long projectId);
 
-        Task<IReadOnlyCollection<ProjectScoring>> GetByAuthorAsync(Address authorAddress);
+        Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorAsync(Address authorAddress);
 
-        Task<IReadOnlyCollection<ProjectScoring>> GetForScoringAsync(AreaType areaType, Address expertAddress);
+        Task<IReadOnlyCollection<ProjectDetails>> GetForScoringAsync(AreaType areaType, Address expertAddress);
 
-        Task<IReadOnlyCollection<Project>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds);
+        Task<IReadOnlyCollection<ProjectDetails>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds);
 
-        Task<IReadOnlyCollection<Project>> GetProjectsByNameAsync(string projectName);
+        Task<IReadOnlyCollection<ProjectDetails>> GetProjectsByNameAsync(string projectName);
     }
 }

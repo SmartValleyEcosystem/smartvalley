@@ -34,12 +34,7 @@ namespace SmartValley.Data.SQL.Repositories
 
             var applicant = await ReadContext.Users.FirstAsync(user => user.Id == expertApplication.ApplicantId);
 
-            return new ExpertApplicationDetails
-                   {
-                       Address = applicant.Address,
-                       ExpertApplication = expertApplication,
-                       Areas = areas
-                   };
+            return new ExpertApplicationDetails(applicant.Address, expertApplication, areas);
         }
 
         public Task<int> AddAsync(ExpertApplication expertApplication, IReadOnlyCollection<int> areas)

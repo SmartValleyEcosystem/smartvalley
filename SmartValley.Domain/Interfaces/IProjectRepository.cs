@@ -10,18 +10,18 @@ namespace SmartValley.Domain.Interfaces
     {
         Task<Project> GetByIdAsync(long id);
 
-        Task<IReadOnlyCollection<ProjectScoring>> GetScoredAsync(int page, int pageSize);
+        Task<IReadOnlyCollection<ProjectDetails>> GetScoredAsync(int page, int pageSize);
 
         Task<int> AddAsync(Project project);
 
-        Task<IReadOnlyCollection<ProjectScoring>> GetByAuthorAsync(Address authorAddress);
+        Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorAsync(Address authorAddress);
 
-        Task<IReadOnlyCollection<ProjectScoring>> GetForScoringAsync(Address expertAddress, AreaType areaType);
+        Task<IReadOnlyCollection<ProjectDetails>> GetForScoringAsync(Address expertAddress, AreaType areaType);
 
         Task<Project> GetByExternalIdAsync(Guid externalId);
 
-        Task<IReadOnlyCollection<Project>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds);
+        Task<IReadOnlyCollection<ProjectDetails>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds);
 
-        Task<IReadOnlyCollection<Project>> GetAllByNameAsync(string projectName);
+        Task<IReadOnlyCollection<ProjectDetails>> GetAllByNameAsync(string projectName);
     }
 }

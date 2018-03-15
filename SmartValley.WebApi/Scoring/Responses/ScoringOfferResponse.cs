@@ -35,7 +35,7 @@ namespace SmartValley.WebApi.Scoring.Responses
                        Name = scoringOffer.Name,
                        Description = scoringOffer.Description,
                        AreaId = (long) scoringOffer.AreaType,
-                       Country = scoringOffer.Country,
+                       Country = scoringOffer.CountryCode,
                        ScoringId = scoringOffer.ScoringId,
                        ProjectExternalId = scoringOffer.ProjectExternalId,
                        ScoringOfferTimestamp = scoringOffer.ScoringOfferTimestamp,

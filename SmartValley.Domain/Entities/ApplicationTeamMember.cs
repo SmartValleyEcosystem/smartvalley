@@ -3,7 +3,7 @@ using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
 {
-    public class TeamMember : IEntityWithId
+    public class ApplicationTeamMember : IEntityWithId
     {
         public long Id { get; set; }
 
@@ -13,16 +13,16 @@ namespace SmartValley.Domain.Entities
         [MaxLength(100)]
         public string FullName { get; set; }
 
-        [Url]
-        [MaxLength(200)]
-        public string FacebookLink { get; set; }
+        [Required]
+        [MaxLength(100)]
+        public string Role { get; set; }
 
-        [Url]
-        [MaxLength(200)]
-        public string LinkedInLink { get; set; }
+        [MaxLength(500)]
+        public string About { get; set; }
 
-        public TeamMemberType Type { get; set; }
-        
+        [MaxLength(50)]
+        public string PhotoName { get; set; }
+
         public Application Application { get; set; }
     }
 }

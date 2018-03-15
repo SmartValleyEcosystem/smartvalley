@@ -14,7 +14,8 @@ namespace SmartValley.Data.SQL.Core
         DbSet<ScoringOffer> ScoringOffers { get; }
         DbSet<AreaScoring> AreaScorings { get; }
         DbSet<EstimateComment> EstimateComments { get; }
-        DbSet<TeamMember> TeamMembers { get; }
+        DbSet<ApplicationTeamMember> ApplicationTeamMembers { get; }
+        DbSet<ProjectTeamMember> ProjectTeamMembers { get; }
         DbSet<Question> Questions { get; }
         DbSet<Voting> Votings { get; }
         DbSet<VotingProject> VotingProjects { get; }
@@ -26,7 +27,14 @@ namespace SmartValley.Data.SQL.Core
         DbSet<ExpertArea> ExpertAreas { get; }
         DbSet<ExpertApplication> ExpertApplications { get; }
         DbSet<ExpertApplicationArea> ExpertApplicationAreas { get; }
-        
+        DbSet<Country> Countries { get; }
+        DbSet<Category> Categories { get; }
+        DbSet<ProjectSocialMedia> ProjectSocialMedias { get; }
+        DbSet<SocialMedia> SocialMedias { get; }
+        DbSet<ProjectTeamMemberSocialMedia> ProjectTeamMemberSocialMedias { get; }
+        DbSet<ApplicationTeamMemberSocialMedia> ApplicationTeamMemberSocialMedias { get; }
+        DbSet<Stage> Stages { get; }
+
         Task<int> SaveAsync();
         EntityEntry<T> Entity<T>(T x) where T : class;
         DbSet<T> DbSet<T>() where T : class;

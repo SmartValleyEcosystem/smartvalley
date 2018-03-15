@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Domain.Entities;
-using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Applications.Requests;
 
@@ -13,16 +12,19 @@ namespace SmartValley.WebApi.Applications
     {
         private readonly IApplicationRepository _applicationRepository;
         private readonly IProjectRepository _projectRepository;
-        private readonly ITeamMemberRepository _teamRepository;
+        private readonly IApplicationTeamMemberRepository _teamRepository;
+        private readonly ICountryRepository _countryRepository;
 
         public ApplicationService(
             IApplicationRepository applicationRepository,
             IProjectRepository projectRepository,
-            ITeamMemberRepository teamRepository)
+            IApplicationTeamMemberRepository teamRepository,
+            ICountryRepository countryRepository)
         {
             _applicationRepository = applicationRepository;
             _projectRepository = projectRepository;
             _teamRepository = teamRepository;
+            _countryRepository = countryRepository;
         }
 
         public async Task CreateAsync(ApplicationRequest applicationRequest)
@@ -45,24 +47,15 @@ namespace SmartValley.WebApi.Applications
             return _teamRepository.AddRangeAsync(teamMembers);
         }
 
-        private static TeamMember CreateTeamMember(TeamMemberRequest memberRequest, long applicationId)
+        private static ApplicationTeamMember CreateTeamMember(TeamMemberRequest memberRequest, long applicationId)
         {
-            return new TeamMember
+            return new ApplicationTeamMember
                    {
                        ApplicationId = applicationId,
                        FullName = memberRequest.FullName,
-                       Type = ToMemberType(memberRequest.MemberType),
-                       FacebookLink = memberRequest.FacebookLink,
-                       LinkedInLink = memberRequest.LinkedInLink
+                       About = memberRequest.About,
+                       Role = memberRequest.Role
                    };
-        }
-
-        private static TeamMemberType ToMemberType(string memberType)
-        {
-            if (Enum.TryParse(memberType, out TeamMemberType result))
-                return result;
-
-            throw new AppErrorException(ErrorCode.ValidatationError, $"Unknown team member type: '{memberType}'");
         }
 
         private async Task<long> AddApplicationAsync(ApplicationRequest request, long projectId)
@@ -86,11 +79,13 @@ namespace SmartValley.WebApi.Applications
 
         private async Task<long> AddProjectAsync(ApplicationRequest request)
         {
+            var country = await _countryRepository.GetByCodeAsync(request.CountryCode);
+
             var project = new Project
                           {
                               Name = request.Name,
-                              Country = request.Country,
-                              ProjectArea = request.ProjectArea,
+                              CountryId = country.Id,
+                              CategoryId = (CategoryType) request.CategoryType,
                               Description = request.Description,
                               AuthorAddress = request.AuthorAddress,
                               ExternalId = Guid.Parse(request.ProjectId)

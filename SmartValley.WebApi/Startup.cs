@@ -13,7 +13,6 @@ using Microsoft.IdentityModel.Tokens;
 using Nethereum.JsonRpc.IpcClient;
 using Nethereum.Signer;
 using Nethereum.Web3;
-using Newtonsoft.Json;
 using SmartValley.Application;
 using SmartValley.Application.AzureStorage;
 using SmartValley.Application.Contracts;
@@ -47,13 +46,13 @@ namespace SmartValley.WebApi
 
         private readonly IHostingEnvironment _currentEnvironment;
 
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration, IHostingEnvironment currentEnvironment)
         {
             Configuration = configuration;
             _currentEnvironment = currentEnvironment;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // ReSharper disable once UnusedMember.Global
@@ -122,7 +121,7 @@ namespace SmartValley.WebApi
             services.AddDbContext<AppDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient(x => AppDBContext.CreateEditable(dbOptions));
             services.AddTransient(x => AppDBContext.CreateReadOnly(dbOptions));
-            services.AddTransient<ITeamMemberRepository, TeamMemberRepository>();
+            services.AddTransient<IApplicationTeamMemberRepository, ApplicationTeamMemberRepository>();
             services.AddTransient<IApplicationRepository, ApplicationRepository>();
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IScoringRepository, ScoringRepository>();
@@ -145,6 +144,8 @@ namespace SmartValley.WebApi
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IExpertRepository, ExpertRepository>();
             services.AddTransient<IExpertService, ExpertService>();
+            services.AddTransient<IExpertApplicationRepository, ExpertApplicationRepository>();
+            services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<IExpertApplicationRepository, ExpertApplicationRepository>();
         }
 

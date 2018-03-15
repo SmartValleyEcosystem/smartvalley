@@ -92,16 +92,16 @@ namespace SmartValley.WebApi.Projects
                    };
         }
 
-        private async Task<MyProjectsItemResponse> CreateMyProjectsItemResponseAsync(ProjectScoring projectScoring)
+        private async Task<MyProjectsItemResponse> CreateMyProjectsItemResponseAsync(ProjectDetails projectDetails)
         {
-            var project = projectScoring.Project;
-            var scoring = projectScoring.Scoring;
+            var project = projectDetails.Project;
+            var scoring = projectDetails.Scoring;
 
             if (scoring != null)
-                return MyProjectsItemResponse.Create(project, scoring);
+                return MyProjectsItemResponse.Create(projectDetails);
 
             var votingDetails = await _votingService.GetVotingProjectDetailsAsync(project.Id);
-            return MyProjectsItemResponse.Create(project, votingDetails, _clock.UtcNow);
+            return MyProjectsItemResponse.Create(projectDetails, votingDetails, _clock.UtcNow);
         }
     }
 }

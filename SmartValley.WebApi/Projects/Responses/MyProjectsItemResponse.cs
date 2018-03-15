@@ -1,6 +1,5 @@
 ﻿using System;
 using SmartValley.Domain;
-using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Projects.Responses
 {
@@ -16,7 +15,7 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public string Country { get; set; }
 
-        public string Area { get; set; }
+        public int CategoryId { get; set; }
 
         public string Description { get; set; }
 
@@ -28,34 +27,34 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public DateTimeOffset? VotingEndDate { get; set; }
 
-        public static MyProjectsItemResponse Create(Project project, Domain.Entities.Scoring scoring)
+        public static MyProjectsItemResponse Create(ProjectDetails projectDetails)
         {
             return new MyProjectsItemResponse
                    {
-                       Id = project.Id,
-                       Area = project.ProjectArea,
-                       Author = project.AuthorAddress,
-                       Country = project.Country,
-                       Description = project.Description,
-                       Name = project.Name,
-                       Address = scoring.ContractAddress,
-                       Score = scoring.Score,
-                       ScoringStatus = scoring.Score.HasValue ? ScoringStatus.Finished : ScoringStatus.InProgress,
+                       Id = projectDetails.Project.Id,
+                       CategoryId = (int) projectDetails.Project.CategoryId,
+                       Author = projectDetails.Project.AuthorAddress,
+                       Country = projectDetails.Country.Code,
+                       Description = projectDetails.Project.Description,
+                       Name = projectDetails.Project.Name,
+                       Address = projectDetails.Scoring.ContractAddress,
+                       Score = projectDetails.Scoring.Score,
+                       ScoringStatus = projectDetails.Scoring.Score.HasValue ? ScoringStatus.Finished : ScoringStatus.InProgress,
                        VotingStatus = VotingStatus.None,
                        VotingEndDate = null
                    };
         }
 
-        public static MyProjectsItemResponse Create(Project project, VotingProjectDetails votingDetails, DateTimeOffset now)
+        public static MyProjectsItemResponse Create(ProjectDetails projectDetails, VotingProjectDetails votingDetails, DateTimeOffset now)
         {
             return new MyProjectsItemResponse
                    {
-                       Id = project.Id,
-                       Area = project.ProjectArea,
-                       Author = project.AuthorAddress,
-                       Country = project.Country,
-                       Description = project.Description,
-                       Name = project.Name,
+                       Id = projectDetails.Project.Id,
+                       CategoryId = (int) projectDetails.Project.CategoryId,
+                       Author = projectDetails.Project.AuthorAddress,
+                       Country = projectDetails.Country.Code,
+                       Description = projectDetails.Project.Description,
+                       Name = projectDetails.Project.Name,
                        Address = null,
                        Score = null,
                        ScoringStatus = ScoringStatus.Pending,

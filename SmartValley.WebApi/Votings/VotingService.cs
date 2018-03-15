@@ -58,20 +58,11 @@ namespace SmartValley.WebApi.Votings
             {
                 var investorProjectTokenAmount = investorVotes.ProjectsExternalIds.Contains(projectExternalId) ? investorVotes.TokenAmount : 0;
                 var totalProjectVotingAmount = await _votingSprintContractClient.GetProjectTotalTokensAsync(sprintAddress, projectExternalId);
-                var investorProjectVote = new InvestorProjectVote
-                                          {
-                                              ProjectExternalId = projectExternalId,
-                                              InvestorTokenVote = investorProjectTokenAmount,
-                                              TotalTokenVote = totalProjectVotingAmount
-                                          };
+                var investorProjectVote = new InvestorProjectVote(projectExternalId, investorProjectTokenAmount, totalProjectVotingAmount);
                 result.Add(investorProjectVote);
             }
 
-            return new InvestorVotesDetails
-                   {
-                       InvestorProjectVotes = result,
-                       InvestorVoteBalance = investorVotes.TokenAmount
-                   };
+            return new InvestorVotesDetails(investorVotes.TokenAmount, result);
         }
 
         public Task<IReadOnlyCollection<Voting>> GetCompletedSprintsAsync()
@@ -143,7 +134,7 @@ namespace SmartValley.WebApi.Votings
         private async Task SaveVotingProjectsAsync(IReadOnlyCollection<Guid> projectExternalIds, long votingId)
         {
             var projects = await _projectRepository.GetByExternalIdsAsync(projectExternalIds);
-            var votingProjects = projects.Select(p => new VotingProject {ProjectId = p.Id, VotingId = votingId});
+            var votingProjects = projects.Select(p => new VotingProject {ProjectId = p.Project.Id, VotingId = votingId});
             await _votingProjectRepository.AddRangeAsync(votingProjects);
         }
 

@@ -4,8 +4,17 @@ namespace SmartValley.Domain
 {
     public class AreaCount
     {
-        public AreaType AreaType { get; set; }
-        public int AcceptedCount { get; set; }
-        public int RequeiredCount { get; set; }
+        public AreaCount(AreaType areaType, int acceptedCount, int requeiredCount)
+        {
+            AreaType = areaType;
+            AcceptedCount = acceptedCount;
+            RequeiredCount = requeiredCount;
+        }
+
+        public AreaType AreaType { get; }
+
+        public int AcceptedCount { get; }
+
+        public int RequeiredCount { get; }
     }
 }

@@ -15,18 +15,21 @@ namespace SmartValley.WebApi.Projects
         private readonly IApplicationRepository _applicationRepository;
         private readonly IProjectRepository _projectRepository;
         private readonly IScoringRepository _scoringRepository;
-        private readonly ITeamMemberRepository _teamRepository;
+        private readonly IApplicationTeamMemberRepository _teamRepository;
+        private readonly ICountryRepository _countryRepository;
 
         public ProjectService(
             IApplicationRepository applicationRepository,
             IProjectRepository projectRepository,
             IScoringRepository scoringRepository,
-            ITeamMemberRepository teamRepository)
+            IApplicationTeamMemberRepository teamRepository,
+            ICountryRepository countryRepository)
         {
             _applicationRepository = applicationRepository;
             _projectRepository = projectRepository;
             _scoringRepository = scoringRepository;
             _teamRepository = teamRepository;
+            _countryRepository = countryRepository;
         }
 
         public async Task<ProjectDetails> GetDetailsAsync(long projectId)
@@ -35,17 +38,18 @@ namespace SmartValley.WebApi.Projects
             var projectScoring = await _scoringRepository.GetByProjectIdAsync(projectId);
             var application = await _applicationRepository.GetByProjectIdAsync(projectId);
             var teamMembers = await _teamRepository.GetAllByApplicationIdAsync(application.Id);
-
-            return new ProjectDetails(project, projectScoring, application, teamMembers);
+            var country = await _countryRepository.GetByIdAsync(project.CountryId);
+            var details = new ProjectDetails(project, projectScoring, application, country) {TeamMembers = teamMembers};
+            return details;
         }
 
-        public Task<IReadOnlyCollection<ProjectScoring>> GetScoredAsync(int page, int pageSize)
+        public Task<IReadOnlyCollection<ProjectDetails>> GetScoredAsync(int page, int pageSize)
             => _projectRepository.GetScoredAsync(page, pageSize);
 
-        public Task<IReadOnlyCollection<ProjectScoring>> GetByAuthorAsync(Address authorAddress)
+        public Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorAsync(Address authorAddress)
             => _projectRepository.GetByAuthorAsync(authorAddress);
 
-        public Task<IReadOnlyCollection<ProjectScoring>> GetForScoringAsync(AreaType areaType, Address expertAddress)
+        public Task<IReadOnlyCollection<ProjectDetails>> GetForScoringAsync(AreaType areaType, Address expertAddress)
             => _projectRepository.GetForScoringAsync(expertAddress, areaType);
 
         public async Task<bool> IsAuthorizedToSeeEstimatesAsync(Address account, long projectId)
@@ -56,12 +60,10 @@ namespace SmartValley.WebApi.Projects
             return projectScoring.Score != null || project.AuthorAddress == account;
         }
 
-        public Task<IReadOnlyCollection<Project>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds)
-        {
-            return _projectRepository.GetByExternalIdsAsync(externalIds);
-        }
+        public Task<IReadOnlyCollection<ProjectDetails>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds)
+            => _projectRepository.GetByExternalIdsAsync(externalIds);
 
-        public Task<IReadOnlyCollection<Project>> GetProjectsByNameAsync(string projectName)
+        public Task<IReadOnlyCollection<ProjectDetails>> GetProjectsByNameAsync(string projectName)
             => _projectRepository.GetAllByNameAsync(projectName);
 
         private async Task<Project> FindAsync(long projectId)

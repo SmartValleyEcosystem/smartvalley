@@ -4,10 +4,17 @@ namespace SmartValley.Domain
 {
     public class InvestorProjectVote
     {
-        public Guid ProjectExternalId { get; set; }
+        public Guid ProjectExternalId { get; }
 
-        public double InvestorTokenVote { get; set; }
+        public double InvestorTokenVote { get; }
 
-        public double TotalTokenVote { get; set; }
+        public double TotalTokenVote { get; }
+
+        public InvestorProjectVote(Guid projectExternalId, double investorTokenVote, double totalTokenVote)
+        {
+            ProjectExternalId = projectExternalId;
+            InvestorTokenVote = investorTokenVote;
+            TotalTokenVote = totalTokenVote;
+        }
     }
 }

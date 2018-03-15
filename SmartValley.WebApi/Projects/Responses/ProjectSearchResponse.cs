@@ -1,4 +1,4 @@
-﻿using SmartValley.Domain.Entities;
+﻿using SmartValley.Domain;
 
 namespace SmartValley.WebApi.Projects.Responses
 {
@@ -10,16 +10,16 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public string Country { get; set; }
 
-        public string Category { get; set; }
+        public int CategoryId { get; set; }
 
-        public static ProjectSearchResponse Create(Project project)
+        public static ProjectSearchResponse Create(ProjectDetails projectDetails)
         {
             return new ProjectSearchResponse
                    {
-                       Id = project.Id,
-                       Name = project.Name,
-                       Country = project.Country,
-                       Category = project.ProjectArea
+                       Id = projectDetails.Project.Id,
+                       Name = projectDetails.Project.Name,
+                       Country = projectDetails.Country.Code,
+                       CategoryId = (int) projectDetails.Project.CategoryId
                    };
         }
     }

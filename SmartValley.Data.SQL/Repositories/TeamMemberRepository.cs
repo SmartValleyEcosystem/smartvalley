@@ -8,15 +8,15 @@ using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
 {
-    public class TeamMemberRepository : EntityCrudRepository<TeamMember>, ITeamMemberRepository
+    public class ApplicationTeamMemberRepository : EntityCrudRepository<ApplicationTeamMember>, IApplicationTeamMemberRepository
     {
-        public TeamMemberRepository(IReadOnlyDataContext readContext, IEditableDataContext editContext)
+        public ApplicationTeamMemberRepository(IReadOnlyDataContext readContext, IEditableDataContext editContext)
             : base(readContext, editContext)
         {
         }
 
-        public async Task<IReadOnlyCollection<TeamMember>> GetAllByApplicationIdAsync(long applicationId) =>
-            await ReadContext.TeamMembers
+        public async Task<IReadOnlyCollection<ApplicationTeamMember>> GetAllByApplicationIdAsync(long applicationId) =>
+            await ReadContext.ApplicationTeamMembers
                              .Where(t => t.ApplicationId == applicationId)
                              .ToArrayAsync();
     }

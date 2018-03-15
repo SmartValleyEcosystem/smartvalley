@@ -105,17 +105,16 @@ namespace SmartValley.Data.SQL.Repositories
                                               }).ToArrayAsync();
 
             return requiredCounts.Select(i =>
-                                             new ScoringAreaStatistics
-                                             {
-                                                 OffersEndDate = i.OffersEndDate,
-                                                 ScoringEndDate = i.ScoringEndDate,
-                                                 RequiredCount = i.Count,
-                                                 FinishedCount = finishedCounts.FirstOrDefault(j => j.ScoringId == i.ScoringId && j.AreaType == i.AreaType)?.Count ?? 0,
-                                                 AcceptedCount = acceptedCounts.FirstOrDefault(j => j.ScoringId == i.ScoringId && j.AreaType == i.AreaType)?.Count ?? 0,
-                                                 PendingCount = pendingCounts.FirstOrDefault(j => j.ScoringId == i.ScoringId && j.AreaType == i.AreaType)?.Count ?? 0,
-                                                 ScoringId = i.ScoringId,
-                                                 AreaId = i.AreaType
-                                             }).ToArray();
+                                             new ScoringAreaStatistics(
+                                                 i.AreaType,
+                                                 i.ScoringId,
+                                                 i.Count,
+                                                 acceptedCounts.FirstOrDefault(j => j.ScoringId == i.ScoringId && j.AreaType == i.AreaType)?.Count ?? 0,
+                                                 pendingCounts.FirstOrDefault(j => j.ScoringId == i.ScoringId && j.AreaType == i.AreaType)?.Count ?? 0,
+                                                 finishedCounts.FirstOrDefault(j => j.ScoringId == i.ScoringId && j.AreaType == i.AreaType)?.Count ?? 0,
+                                                 i.ScoringEndDate,
+                                                 i.OffersEndDate
+                                             )).ToArray();
         }
 
         public async Task<bool> HasEnoughExpertsAsync(long scoringId)
@@ -143,15 +142,7 @@ namespace SmartValley.Data.SQL.Repositories
             return await (from project in ReadContext.Projects
                           join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
                           where scoringIds.Any(i => i.Equals(scoring.Id))
-                          select new ScoringProjectDetails
-                                 {
-                                     ProjectId = project.Id,
-                                     ScoringId = scoring.Id,
-                                     Address = scoring.ContractAddress,
-                                     Name = project.Name,
-                                     CreationDate = scoring.CreationDate,
-                                     OffersEndDate = scoring.OffersDueDate
-                                 }).ToArrayAsync();
+                          select new ScoringProjectDetails(project.Id, scoring.Id, scoring.ContractAddress, project.Name, scoring.CreationDate, scoring.OffersDueDate)).ToArrayAsync();
         }
     }
 }

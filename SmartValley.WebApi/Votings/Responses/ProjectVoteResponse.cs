@@ -1,5 +1,4 @@
 ﻿using SmartValley.Domain;
-using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Votings.Responses
 {
@@ -15,7 +14,7 @@ namespace SmartValley.WebApi.Votings.Responses
 
         public string Country { get; set; }
 
-        public string Area { get; set; }
+        public int CategoryId { get; set; }
 
         public string Description { get; set; }
 
@@ -27,17 +26,17 @@ namespace SmartValley.WebApi.Votings.Responses
 
         public VotingStatus VotingStatus { get; set; }
 
-        public static ProjectVoteResponse Create(Project project, bool isVotingInProgress, InvestorProjectVote investorVotes)
+        public static ProjectVoteResponse Create(ProjectDetails projectDetails, bool isVotingInProgress, InvestorProjectVote investorVotes)
         {
             return new ProjectVoteResponse
                    {
-                       Id = project.Id,
-                       Name = project.Name,
-                       ExternalId = project.ExternalId.ToString(),
-                       Country = project.Country,
-                       Area = project.ProjectArea,
-                       Description = project.Description,
-                       Author = project.AuthorAddress,
+                       Id = projectDetails.Project.Id,
+                       Name = projectDetails.Project.Name,
+                       ExternalId = projectDetails.Project.ExternalId.ToString(),
+                       Country = projectDetails.Country.Code,
+                       CategoryId = (int) projectDetails.Project.CategoryId,
+                       Description = projectDetails.Project.Description,
+                       Author = projectDetails.Project.AuthorAddress,
                        MyVoteTokenAmount = investorVotes?.InvestorTokenVote,
                        IsVotedByMe = investorVotes?.InvestorTokenVote > 0,
                        TotalTokenAmount = investorVotes?.TotalTokenVote,

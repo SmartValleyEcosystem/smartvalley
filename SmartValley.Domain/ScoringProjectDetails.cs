@@ -1,22 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
 using SmartValley.Domain.Core;
-using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain
 {
     public class ScoringProjectDetails
     {
-        public long ProjectId { get; set; }
+        public long ProjectId { get; }
 
-        public long ScoringId { get; set; }
+        public long ScoringId { get; }
 
-        public Address Address { get; set; }
+        public Address Address { get; }
 
-        public string Name { get; set; }
+        public string Name { get; }
 
-        public DateTimeOffset CreationDate { get; set; }
+        public DateTimeOffset CreationDate { get; }
 
-        public DateTimeOffset OffersEndDate { get; set; }
+        public DateTimeOffset OffersEndDate { get; }
+
+        public ScoringProjectDetails(long projectId, long scoringId, Address address, string name, DateTimeOffset creationDate, DateTimeOffset offersEndDate)
+        {
+            ProjectId = projectId;
+            ScoringId = scoringId;
+            Address = address;
+            Name = name;
+            CreationDate = creationDate;
+            OffersEndDate = offersEndDate;
+        }
     }
 }

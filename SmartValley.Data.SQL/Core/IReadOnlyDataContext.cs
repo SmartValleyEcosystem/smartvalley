@@ -12,7 +12,8 @@ namespace SmartValley.Data.SQL.Core
         IQueryable<ScoringOffer> ScoringOffers { get; }
         IQueryable<AreaScoring> AreaScorings { get; }
         IQueryable<EstimateComment> EstimateComments { get; }
-        IQueryable<TeamMember> TeamMembers { get; }
+        IQueryable<ApplicationTeamMember> ApplicationTeamMembers { get; }
+        IQueryable<ProjectTeamMember> ProjectTeamMembers { get; }
         IQueryable<Question> Questions { get; }
         IQueryable<Voting> Votings { get; }
         IQueryable<VotingProject> VotingProjects { get; }
@@ -24,6 +25,13 @@ namespace SmartValley.Data.SQL.Core
         IQueryable<ExpertArea> ExpertAreas { get; }
         IQueryable<ExpertApplication> ExpertApplications { get; }
         IQueryable<ExpertApplicationArea> ExpertApplicationAreas { get; }
+        IQueryable<Country> Countries { get; }
+        IQueryable<Category> Categories { get; }
+        IQueryable<ProjectSocialMedia> ProjectSocialMedias { get; }
+        IQueryable<SocialMedia> SocialMedias { get; }
+        IQueryable<ProjectTeamMemberSocialMedia> ProjectTeamMemberSocialMedias { get; }
+        IQueryable<ApplicationTeamMemberSocialMedia> ApplicationTeamMemberSocialMedias { get; }
+        IQueryable<Stage> Stages { get; }
 
         IQueryable<T> GetAll<T>() where T : class;
     }

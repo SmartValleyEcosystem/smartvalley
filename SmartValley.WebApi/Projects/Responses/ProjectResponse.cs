@@ -15,7 +15,7 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public string Country { get; set; }
 
-        public string Area { get; set; }
+        public int CategoryId { get; set; }
 
         public string Description { get; set; }
 
@@ -23,19 +23,19 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public DateTimeOffset? ScoringEndDate { get; set; }
 
-        public static ProjectResponse Create(ProjectScoring projectScoring)
+        public static ProjectResponse Create(ProjectDetails projectDetails)
         {
             return new ProjectResponse
                    {
-                       Id = projectScoring.Project.Id,
-                       Name = projectScoring.Project.Name,
-                       Country = projectScoring.Project.Country,
-                       Area = projectScoring.Project.ProjectArea,
-                       Description = projectScoring.Project.Description,
-                       Author = projectScoring.Project.AuthorAddress,
-                       Address = projectScoring.Scoring?.ContractAddress,
-                       Score = projectScoring.Scoring?.Score,
-                       ScoringEndDate = projectScoring.Scoring?.ScoringEndDate
+                       Id = projectDetails.Project.Id,
+                       Name = projectDetails.Project.Name,
+                       Country = projectDetails.Country.Code,
+                       CategoryId = (int) projectDetails.Project.CategoryId,
+                       Description = projectDetails.Project.Description,
+                       Author = projectDetails.Project.AuthorAddress,
+                       Address = projectDetails.Scoring?.ContractAddress,
+                       Score = projectDetails.Scoring?.Score,
+                       ScoringEndDate = projectDetails.Scoring?.ScoringEndDate
                    };
         }
     }

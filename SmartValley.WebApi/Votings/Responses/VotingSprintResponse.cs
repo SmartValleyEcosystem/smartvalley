@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using SmartValley.Domain;
-using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Votings.Responses
 {
@@ -26,7 +25,7 @@ namespace SmartValley.WebApi.Votings.Responses
 
         public static VotingSprintResponse Create(
             VotingSprintDetails votingSprint,
-            IReadOnlyCollection<Project> projects,
+            IReadOnlyCollection<ProjectDetails> projectDetails,
             InvestorVotesDetails details,
             DateTimeOffset now)
         {
@@ -36,7 +35,7 @@ namespace SmartValley.WebApi.Votings.Responses
                        StartDate = votingSprint.StartDate,
                        EndDate = votingSprint.EndDate,
                        Number = votingSprint.Number,
-                       Projects = SelectProjects(projects, details, votingSprint.EndDate > now),
+                       Projects = SelectProjects(projectDetails, details, votingSprint.EndDate > now),
                        VoteBalance = details?.InvestorVoteBalance ?? 0,
                        MaximumScore = votingSprint.MaximumScore,
                        AcceptanceThreshold = votingSprint.AcceptanceThreshold
@@ -44,15 +43,15 @@ namespace SmartValley.WebApi.Votings.Responses
         }
 
         private static IReadOnlyCollection<ProjectVoteResponse> SelectProjects(
-            IReadOnlyCollection<Project> projects,
+            IReadOnlyCollection<ProjectDetails> projectDetails,
             InvestorVotesDetails details,
             bool isVotingInProgress)
         {
-            return projects.Select(project => ProjectVoteResponse.Create(
-                                       project,
-                                       isVotingInProgress,
-                                       details?.InvestorProjectVotes.FirstOrDefault(i => i.ProjectExternalId == project.ExternalId)))
-                           .ToArray();
+            return projectDetails.Select(p => ProjectVoteResponse.Create(
+                                             p,
+                                             isVotingInProgress,
+                                             details?.InvestorProjectVotes.FirstOrDefault(i => i.ProjectExternalId == p.Project.ExternalId)))
+                                 .ToArray();
         }
     }
 }
