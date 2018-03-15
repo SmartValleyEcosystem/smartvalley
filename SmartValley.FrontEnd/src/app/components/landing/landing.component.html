@@ -15,7 +15,7 @@
         <td>{{project.country}}</td>
         <td>{{project.area}}</td>
         <td>{{project.scoringEndDate}}</td>
-        <td class="scoring-col">{{project.score | roundNumber}}/100</td>
+        <td class="scoring-col">{{project.score | roundNumberPipe}}/100</td>
       </tr>
     </ng-template>
     <ng-template pTemplate="footer" let-columns>
