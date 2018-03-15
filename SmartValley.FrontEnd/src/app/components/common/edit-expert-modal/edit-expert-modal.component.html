@@ -2,7 +2,7 @@
   <h2 mat-mat-title>{{'EditExpertModalComponent.Title' | translate}}</h2>
   <mat-dialog-content>
     <h3 class="sub-header">{{'EditExpertModalComponent.Backend' | translate}}</h3>
-    <form [formGroup]="saveBackendForm">
+    <form [formGroup]="backendForm">
       <div class="row">
           <span class="col-4">
               {{ 'EditExpertModalComponent.Address' | translate }}
@@ -40,7 +40,7 @@
       <div class="row submit-row">
         <span class="offset-6 col-6">
           <mat-dialog-actions class="d-flex justify-content-center">
-            <button mat-raised-button (click)="submit(saveBackendForm, false)" [disabled]="saveBackendForm.invalid"
+            <button mat-raised-button (click)="submitAsync()" [disabled]="backendForm.invalid"
                     class="sv-default-btn btn-space">
               {{'EditExpertModalComponent.SaveBackend' | translate}}
             </button>
@@ -49,34 +49,31 @@
       </div>
     </form>
     <h3 class="sub-header">{{'EditExpertModalComponent.Blockchain' | translate}}</h3>
-    <form [formGroup]="saveBlockchainForm">
-      <div class="row">
+
+    <div class="row">
         <span class="col-6">
-          <mat-checkbox align="start" name="available" formControlName="available" [(ngModel)]="data.isAvailable"
+          <mat-checkbox align="start" name="available" [(ngModel)]="isAvailable"
                         [(value)]="data.isAvailable">
             {{ 'EditExpertModalComponent.AvailableForWork' | translate }}
           </mat-checkbox>
         </span>
-      </div>
-      <div *ngFor="let area of areas" class="row">
+    </div>
+    <div *ngFor="let area of areas" class="row">
         <span class="col-6">
           <mat-checkbox align="start" name="{{'category' + area.areaType}}"
-                        formControlName="{{'category' + area.areaType}}"
                         [(ngModel)]="selectedCategories[area.areaType]">
             {{ area.name }}
           </mat-checkbox>
         </span>
-      </div>
-
-
-      <div class="row submit-row">
+    </div>
+    <div class="row submit-row">
         <span class="offset-6 col-6">
-          <button mat-raised-button (click)="submit(saveBlockchainForm)" [disabled]="saveBackendForm.invalid"
+          <button mat-raised-button (click)="submitAsync(true)" [disabled]="backendForm.invalid"
                   class="sv-default-btn btn-space">
               {{'EditExpertModalComponent.SaveBlockchain' | translate}}
             </button>
         </span>
-      </div>
-    </form>
+    </div>
+
   </mat-dialog-content>
 </div>

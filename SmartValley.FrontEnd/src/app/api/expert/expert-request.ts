@@ -1,4 +1,4 @@
-export interface NewExpertRequest {
+export interface ExpertRequest {
     transactionHash: string;
     address: string;
     email: string;

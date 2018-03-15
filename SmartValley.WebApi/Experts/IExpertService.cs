@@ -22,7 +22,7 @@ namespace SmartValley.WebApi.Experts
 
         Task AddAsync(ExpertRequest request);
 
-        Task UpdateAsync(UpdateExpertRequest request);
+        Task UpdateAsync(ExpertUpdateRequest request);
 
         Task DeleteAsync(Address address);
 
@@ -33,6 +33,8 @@ namespace SmartValley.WebApi.Experts
         Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(Address address);
 
         Task<Expert> GetAsync(long expertId);
+
+        Task<ExpertDetails> GetDetailsAsync(Address address);
 
         Task SetAvailabilityAsync(long expertId, bool isAvailable);
     }

@@ -28,7 +28,7 @@ export class ExpertOffersComponent implements OnInit {
   async ngOnInit() {
       let pendingOffers = await this.offersApiClient.getExpertPendingOffersAsync();
       this.expertOffers = pendingOffers.items;
-      let availabilityStatusResponse: ExpertAvailabilityStatusResponse = await this.expertApiClient.getExpertAvailabilityStatusAsync();
+      let availabilityStatusResponse: ExpertAvailabilityStatusResponse = await this.expertApiClient.getAvailabilityStatusAsync();
       this.isAvailable = availabilityStatusResponse.isAvailable;
 
   }
@@ -54,10 +54,10 @@ export class ExpertOffersComponent implements OnInit {
   public async toggleAvailabilityAsync(event) {
     if ( event.checked ) {
       let transactionHash = await this.expertsRegistryContractClient.expertEnableAsync();
-      await this.expertApiClient.switchExpertAvailabilityAsync(transactionHash, true);
+      await this.expertApiClient.switchAvailabilityAsync(transactionHash, true);
     } else {
       let transactionHash = await this.expertsRegistryContractClient.expertDisableAsync();
-      await this.expertApiClient.switchExpertAvailabilityAsync(transactionHash, false);
+      await this.expertApiClient.switchAvailabilityAsync(transactionHash, false);
     }
   }
 

@@ -86,6 +86,9 @@ namespace SmartValley.WebApi.Experts
         public Task<Expert> GetAsync(long expertId)
             => _expertRepository.GetAsync(expertId);
 
+        public Task<ExpertDetails> GetDetailsAsync(Address address)
+            => _expertRepository.GetDetailsAsync(address);
+
         public Task SetAvailabilityAsync(long expertId, bool isAvailable)
             => _expertRepository.SetAvailabilityAsync(expertId, isAvailable);
 
@@ -104,7 +107,7 @@ namespace SmartValley.WebApi.Experts
             await _expertRepository.AddAsync(user.Id, request.Areas);
         }
 
-        public async Task UpdateAsync(UpdateExpertRequest request)
+        public async Task UpdateAsync(ExpertUpdateRequest request)
         {
             var user = await _userRepository.GetByAddressAsync(request.Address);
             if (user == null)
@@ -115,11 +118,16 @@ namespace SmartValley.WebApi.Experts
             user.Email = request.Email;
 
             await _userRepository.UpdateWholeAsync(user);
-            await _expertRepository.UpdateAsync(new Expert
-                                                {
-                                                    IsAvailable = request.IsAvailable,
-                                                    UserId = user.Id
-                                                }, request.Areas);
+
+            //  https://rassvet-capital.atlassian.net/browse/ILT-730
+            //if (!string.IsNullOrEmpty(request.TransactionHash))
+            //{
+            //    await _expertRepository.UpdateAsync(new Expert
+            //                                        {
+            //                                            IsAvailable = request.IsAvailable,
+            //                                            UserId = user.Id
+            //                                        }, request.Areas);
+            //}
         }
 
         public async Task DeleteAsync(Address address)

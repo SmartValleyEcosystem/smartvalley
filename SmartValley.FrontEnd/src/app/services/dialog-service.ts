@@ -29,6 +29,7 @@ import {AreaExpertsSettings} from '../components/common/experts-count-selection-
 import {SetExpertsModalComponent} from '../components/common/set-experts-modal/set-experts-modal.component';
 import {ConfirmEmailModalData} from '../components/common/confirm-email/confirm-email-modal-data';
 import {ChangeEmailModalComponent} from '../components/common/change-email-modal/change-email-modal.component';
+import {EditExpertModalData} from "../components/common/edit-expert-modal/edit-expert-modal-data";
 
 @Injectable()
 export class DialogService {
@@ -160,8 +161,8 @@ export class DialogService {
     return this.openModal(CreateNewExpertModalComponent, {});
   }
 
-  public showEditExpertModal(expertData: any): MatDialogRef<EditExpertModalComponent> {
-    return this.openModal(EditExpertModalComponent, expertData);
+  public showEditExpertModal(expertData: EditExpertModalData): Promise<boolean> {
+    return this.openModalAsync(EditExpertModalComponent, expertData);
   }
 
   private openModal<TComponent, TData>(componentType: ComponentType<TComponent>,

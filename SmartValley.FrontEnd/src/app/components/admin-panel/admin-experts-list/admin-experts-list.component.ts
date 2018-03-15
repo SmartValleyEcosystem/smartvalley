@@ -4,10 +4,11 @@ import {LazyLoadEvent} from 'primeng/api';
 import {AdminExpertItem} from './admin-expert-item';
 import {AreaService} from '../../../services/expert/area.service';
 import {DialogService} from '../../../services/dialog-service';
-import {DeleteExpertRequest} from '../../../api/expert/delete-expert-request';
+import {ExpertDeleteRequest} from '../../../api/expert/expert-delete-request';
 import {CollectionResponse} from '../../../api/collection-response';
-import {PendingExpertListResponse} from '../../../api/expert/pending-expert-list-response';
+import {ExpertResponse} from '../../../api/expert/expert-response';
 import {ExpertsRegistryContractClient} from '../../../services/contract-clients/experts-registry-contract-client';
+import {EditExpertModalData} from "../../common/edit-expert-modal/edit-expert-modal-data";
 
 @Component({
   selector: 'app-admin-experts-list',
@@ -19,10 +20,10 @@ export class AdminExpertsListComponent implements OnInit {
   public loading: boolean;
   public currentPage = 0;
   public pageSize = 10;
-  public expertsResponse: CollectionResponse<PendingExpertListResponse>;
+  public expertsResponse: CollectionResponse<ExpertResponse>;
   public experts: AdminExpertItem[] = [];
   public transactionHash: string;
-  public deleteExpertRequest: DeleteExpertRequest;
+  public deleteExpertRequest: ExpertDeleteRequest;
 
   constructor(private expertApiClient: ExpertApiClient,
               private expertsRegistryContractClient: ExpertsRegistryContractClient,
@@ -39,7 +40,7 @@ export class AdminExpertsListComponent implements OnInit {
 
   }
 
-  public renderTableRows(expertResponseItems: PendingExpertListResponse[]) {
+  public renderTableRows(expertResponseItems: ExpertResponse[]) {
     this.experts = [];
     for (const expert of expertResponseItems) {
       const expertItem = <AdminExpertItem>{
@@ -59,6 +60,10 @@ export class AdminExpertsListComponent implements OnInit {
   }
 
   async ngOnInit() {
+    await this.loadExperts();
+  }
+
+  private async loadExperts() {
     this.loading = true;
     this.expertsResponse = (await this.expertApiClient.getExpertsListAsync(this.currentPage, this.pageSize));
     this.totalRecords = this.expertsResponse.totalCount;
@@ -72,10 +77,13 @@ export class AdminExpertsListComponent implements OnInit {
       transactionHash: this.transactionHash,
       address: address
     };
-    await this.expertApiClient.deleteExpertAsync(this.deleteExpertRequest);
+    await this.expertApiClient.deleteAsync(this.deleteExpertRequest);
   }
 
-  public async showDialogToEditExpert(rowData: any) {
-    await this.dialogService.showEditExpertModal(rowData);
+  public async showExpertEditDialog(rowData: any) {
+    await this.dialogService.showEditExpertModal(<EditExpertModalData> {
+      address: rowData.address
+    });
+    await this.loadExperts();
   }
 }

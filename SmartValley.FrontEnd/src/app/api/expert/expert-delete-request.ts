@@ -1,4 +1,4 @@
-export interface DeleteExpertRequest {
+export interface ExpertDeleteRequest {
     transactionHash: string;
     address: string;
 }

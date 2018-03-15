@@ -24,18 +24,6 @@ export class AreaService {
         return types.map(a => a.name);
     }
 
-    public getAreasIdByNames(types: string[]) {
-        const areasId: number[] = [];
-        for (let k = 0; types.length > k; k++) {
-            for (let i = 0; this.areas.length > i; i++) {
-                if (this.areas[i].name === types[k]) {
-                    areasId.push(i);
-                }
-            }
-        }
-        return areasId;
-    }
-
     public getAreaTypeByIndex(index: number): AreaType {
         return this.areas[index].areaType;
     }

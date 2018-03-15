@@ -44,6 +44,13 @@ namespace SmartValley.WebApi.Experts
                    };
         }
 
+        [HttpGet]
+        public async Task<ExpertResponse> GetExpertAsync(string address)
+        {
+            var expertDetails = await _expertService.GetDetailsAsync(address);
+            return ExpertResponse.Create(expertDetails);
+        }
+
         [HttpGet, Route("{address}/status")]
         public async Task<GetExpertStatusResponse> GetExpertStatusAsync(string address)
         {
@@ -106,7 +113,7 @@ namespace SmartValley.WebApi.Experts
 
         [HttpPut]
         [Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<IActionResult> UpdateExpertAsync([FromBody] UpdateExpertRequest request)
+        public async Task<IActionResult> UpdateExpertAsync([FromBody] ExpertUpdateRequest request)
         {
             if (!string.IsNullOrEmpty(request.TransactionHash))
                 await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
@@ -117,29 +124,21 @@ namespace SmartValley.WebApi.Experts
 
         [HttpDelete]
         [Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<IActionResult> DeleteExpertAsync(string address, string transactionHash)
+        public async Task<IActionResult> DeleteExpertAsync([FromBody] ExpertDeleteRequest request)
         {
-            await _ethereumClient.WaitForConfirmationAsync(transactionHash);
-            await _expertService.DeleteAsync(address);
+            await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
+            await _expertService.DeleteAsync(request.Address);
             return NoContent();
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<CollectionResponse<ExpertResponse>> GetAllExperts(AllExpertsRequest request)
         {
             var experts = await _expertService.GetAllExpertsDetailsAsync(request.Page, request.PageSize);
             return new CollectionResponse<ExpertResponse>
                    {
-                       Items = experts.Select(i => new ExpertResponse
-                                                   {
-                                                       Address = i.Address,
-                                                       Email = i.Email,
-                                                       About = i.About,
-                                                       IsAvailable = i.IsAvailable,
-                                                       Name = i.Name,
-                                                       Areas = i.Areas.Select(j => new AreaResponse {Id = j.Id.FromDomain(), Name = j.Name}).ToArray()
-                                                   }).ToArray(),
+                       Items = experts.Select(ExpertResponse.Create).ToArray(),
                        TotalCount = experts.TotalCount
                    };
         }

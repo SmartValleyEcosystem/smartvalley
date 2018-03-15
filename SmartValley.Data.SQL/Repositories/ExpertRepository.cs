@@ -58,7 +58,7 @@ namespace SmartValley.Data.SQL.Repositories
 
         public async Task UpdateAsync(Expert expert, IReadOnlyCollection<int> areas)
         {
-            _editContext.Experts.Attach(expert).Property(e => e).IsModified = true;
+            _editContext.Experts.Attach(expert).State = EntityState.Modified;
 
             var expertAreas = await _editContext.ExpertAreas.Where(e => e.ExpertId == expert.UserId).ToArrayAsync();
             _editContext.ExpertAreas.RemoveRange(expertAreas);
@@ -81,6 +81,31 @@ namespace SmartValley.Data.SQL.Repositories
 
             expert.IsAvailable = isAvailable;
             await _editContext.SaveAsync();
+        }
+
+        public async Task<ExpertDetails> GetDetailsAsync(Address address)
+        {
+            var expertUser = await (from expert in _readContext.Experts
+                                    join user in _readContext.Users on expert.UserId equals user.Id
+                                    where user.Address == address
+                                    select new {expert, user})
+                                 .FirstOrDefaultAsync();
+
+            var expertAreas = await (from expertArea in _readContext.ExpertAreas
+                                     join area in _readContext.Areas on expertArea.AreaId equals area.Id
+                                     where expertArea.ExpertId == expertUser.user.Id
+                                     select area)
+                                  .ToArrayAsync();
+
+            return new ExpertDetails
+                   {
+                       Address = expertUser.user.Address,
+                       Email = expertUser.user.Email,
+                       Name = expertUser.user.Name,
+                       About = expertUser.user.About,
+                       IsAvailable = expertUser.expert.IsAvailable,
+                       Areas = expertAreas
+                   };
         }
 
         public async Task<PagingList<ExpertDetails>> GetAllDetailsAsync(int page, int pageSize)

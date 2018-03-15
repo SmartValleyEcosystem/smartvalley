@@ -1,6 +1,6 @@
-import {PendingExpertListResponse} from '../../../api/expert/pending-expert-list-response';
+import {ExpertResponse} from '../../../api/expert/expert-response';
 
 export interface AdminExpertResponse {
-    items: PendingExpertListResponse[];
+    items: ExpertResponse[];
     totalCount: number;
 }

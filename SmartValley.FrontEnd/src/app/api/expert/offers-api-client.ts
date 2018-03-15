@@ -4,7 +4,6 @@ import {BaseApiClient} from '../base-api-client';
 import {CollectionResponse} from '../collection-response';
 import {ExpertScoringOffer} from './expert-scoring-offer';
 import {AreaType} from '../scoring/area-type.enum';
-import {EditExpertRequest} from './edit-expert-request';
 import {ExpertHistoryOffer} from './expert-history-offer';
 import {ScoringOfferStatusResponse} from './scoring-offer-status-response';
 

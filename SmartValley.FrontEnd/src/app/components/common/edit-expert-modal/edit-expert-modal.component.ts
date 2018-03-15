@@ -4,9 +4,11 @@ import {ExpertApiClient} from '../../../api/expert/expert-api-client';
 import {UserApiClient} from '../../../api/user/user-api-client';
 import {AreaService} from '../../../services/expert/area.service';
 import {FormGroup, Validators, FormBuilder} from '@angular/forms';
-import {EditExpertRequest} from '../../../api/expert/edit-expert-request';
+import {ExpertUpdateRequest} from '../../../api/expert/expert-update-request';
 import {Area} from '../../../services/expert/area';
 import {ExpertsRegistryContractClient} from '../../../services/contract-clients/experts-registry-contract-client';
+import {ExpertResponse} from "../../../api/expert/expert-response";
+import {EditExpertModalData} from "./edit-expert-modal-data";
 
 @Component({
   selector: 'app-edit-expert-modal',
@@ -16,55 +18,51 @@ import {ExpertsRegistryContractClient} from '../../../services/contract-clients/
 export class EditExpertModalComponent implements OnInit {
 
   public selectedCategories = [];
-  public saveBackendForm: FormGroup;
-  public saveBlockchainForm: FormGroup;
-  public editExpertRequest: EditExpertRequest;
+  public backendForm: FormGroup;
   public areas: Area[] = this.areaService.areas;
+  public expertDetails: ExpertResponse;
+  public isAvailable: boolean;
 
   constructor(private expertApiClient: ExpertApiClient,
-              private userApiClient: UserApiClient,
-              @Inject(MAT_DIALOG_DATA) public data: any,
+              @Inject(MAT_DIALOG_DATA) public data: EditExpertModalData,
               private areaService: AreaService,
               private formBuilder: FormBuilder,
               private dialogCreateExpert: MatDialogRef<EditExpertModalComponent>,
               private expertsRegistryContractClient: ExpertsRegistryContractClient) {
   }
 
-  ngOnInit() {
-    this.saveBackendForm = this.formBuilder.group({
+  async ngOnInit() {
+    this.backendForm = this.formBuilder.group({
       address: ['', [Validators.required, Validators.minLength(8)]],
       email: ['', Validators.required],
       name: ['', Validators.required],
       about: ['']
     });
-    let blockchainFormInputs = {
-      available: [''],
-    };
-    const categoryBlockchainElements = this.areas.map((a, i, ar) => {
-      const currentField: {} = {};
-      currentField['category' + a.areaType] = [''];
-      blockchainFormInputs = Object.assign(blockchainFormInputs, currentField);
-    });
-    this.saveBlockchainForm = this.formBuilder.group(blockchainFormInputs);
-    const areasId = this.areaService.getAreasIdByNames(this.data.areas);
 
-    for (let i = 0; areasId.length >= i; i++) {
-      if (areasId.includes(i)) {
-        this.selectedCategories[i] = true;
-      }
+    this.expertDetails = await this.expertApiClient.getAsync(this.data.address);
+
+    this.backendForm.setValue({
+      address: this.expertDetails.address,
+      name: this.expertDetails.name,
+      about: this.expertDetails.about,
+      email: this.expertDetails.email
+    });
+
+    this.isAvailable = this.expertDetails.isAvailable;
+    const areasId = this.expertDetails.areas.map(a => a.id);
+
+    for (const areaId of areasId) {
+      this.selectedCategories[areaId] = true;
     }
   }
 
-  public SaveBlockchain() {
-    this.dialogCreateExpert.close();
-  }
+  async submitAsync(needToUpdateInBlockchain: boolean) {
+    const address = this.backendForm.value.address;
+    const email = this.backendForm.value.email;
+    const name = this.backendForm.value.name;
+    const about = this.backendForm.value.about;
+    const isAvailable = this.isAvailable || false;
 
-  async submit(form, needToUpdateInfoInBlockchain = true) {
-    const address = this.saveBackendForm.value.address;
-    const email = this.saveBackendForm.value.email;
-    const name = this.saveBackendForm.value.name;
-    const about = this.saveBackendForm.value.about;
-    const isAvailable = this.saveBlockchainForm.value.available || false;
     const categoriesToRequest: number[] = [];
     this.selectedCategories.map((value, index) => {
       if (value === true) {
@@ -72,7 +70,7 @@ export class EditExpertModalComponent implements OnInit {
       }
     });
 
-    this.editExpertRequest = {
+    const editExpertRequest = <ExpertUpdateRequest> {
       address: address,
       email: email,
       name: name,
@@ -81,17 +79,18 @@ export class EditExpertModalComponent implements OnInit {
       areas: categoriesToRequest
     };
 
-    if (needToUpdateInfoInBlockchain) {
-      let transactionHash: string;
-      if (isAvailable) {
-        transactionHash = (await this.expertsRegistryContractClient.enableAsync(address));
-      } else {
-        transactionHash = (await this.expertsRegistryContractClient.disableAsync(address));
-      }
-      this.editExpertRequest.transactionHash = transactionHash;
-    }
+    // https://rassvet-capital.atlassian.net/browse/ILT-730
+    // if (needToUpdateInBlockchain) {
+    //   let transactionHash: string;
+    //   if (isAvailable) {
+    //     transactionHash = (await this.expertsRegistryContractClient.enableAsync(address));
+    //   } else {
+    //     transactionHash = (await this.expertsRegistryContractClient.disableAsync(address));
+    //   }
+    //   editExpertRequest.transactionHash = transactionHash;
+    // }
 
-    await this.expertApiClient.editExpertAsync(this.editExpertRequest);
+    await this.expertApiClient.updateAsync(editExpertRequest);
     this.dialogCreateExpert.close();
   }
 }

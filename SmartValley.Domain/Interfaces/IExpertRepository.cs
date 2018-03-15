@@ -9,6 +9,8 @@ namespace SmartValley.Domain.Interfaces
     {
         Task<PagingList<ExpertDetails>> GetAllDetailsAsync(int page, int pageSize);
 
+        Task<ExpertDetails> GetDetailsAsync(Address address);
+
         Task<int> RemoveAsync(Expert expert);
 
         Task<Expert> GetByAddressAsync(Address address);

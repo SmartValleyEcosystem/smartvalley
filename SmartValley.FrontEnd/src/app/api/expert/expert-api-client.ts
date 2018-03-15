@@ -9,10 +9,10 @@ import {ExpertApplicationResponse} from './expert-application-response';
 import {AreaResponse} from './area-response';
 import {AcceptExpertApplicationRequest} from './accept-expert-application-request';
 import {RejectApplicationRequest} from './reject-application-request';
-import {PendingExpertListResponse} from './pending-expert-list-response';
-import {NewExpertRequest} from './new-expert-request';
-import {DeleteExpertRequest} from './delete-expert-request';
-import {EditExpertRequest} from './edit-expert-request';
+import {ExpertResponse} from './expert-response';
+import {ExpertRequest} from './expert-request';
+import {ExpertDeleteRequest} from './expert-delete-request';
+import {ExpertUpdateRequest} from './expert-update-request';
 import {ExpertScoring} from './expert-scoring';
 import {ExpertHistoryOffer} from './expert-history-offer';
 import {Observable} from 'rxjs/Observable';
@@ -61,38 +61,46 @@ export class ExpertApiClient extends BaseApiClient {
     }).toPromise();
   }
 
-  public async getExpertsListAsync(page: number, pageSize: number): Promise<CollectionResponse<PendingExpertListResponse>> {
+  public async getExpertsListAsync(page: number, pageSize: number): Promise<CollectionResponse<ExpertResponse>> {
     const parameters = new HttpParams()
       .append('page', page.toString())
       .append('pageSize', pageSize.toString());
 
-    return await this.http.get<CollectionResponse<PendingExpertListResponse>>(`${this.baseApiUrl}/experts/`, {
+    return await this.http.get<CollectionResponse<ExpertResponse>>(`${this.baseApiUrl}/experts/all/`, {
       params: parameters
     }).toPromise();
   }
 
-  public async createNewExpertsAsync(createExpertData: NewExpertRequest) {
-    await this.http.post(`${this.baseApiUrl}/experts/`, createExpertData).toPromise();
+  public async getAsync(address: string): Promise<ExpertResponse> {
+    const parameters = new HttpParams()
+      .append('address', address);
+
+    return await this.http.get<ExpertResponse>(`${this.baseApiUrl}/experts/`, {
+      params: parameters
+    }).toPromise();
   }
 
-  public async deleteExpertAsync(deleteExpertData: DeleteExpertRequest) {
-    const queryString = '?address=' + deleteExpertData.address + '&transactionHash=' + deleteExpertData.transactionHash;
-    await this.http.delete(this.baseApiUrl + '/experts/' + queryString).toPromise();
+  public createAsync(expertRequest: ExpertRequest) {
+    return this.http.post(`${this.baseApiUrl}/experts/`, expertRequest).toPromise();
   }
 
-  public editExpertAsync(editExpertData: EditExpertRequest) {
-    return this.http.put(this.baseApiUrl + '/experts/', editExpertData).toPromise();
+  public updateAsync(updateRequest: ExpertUpdateRequest) {
+    return this.http.put(this.baseApiUrl + '/experts/', updateRequest).toPromise();
   }
 
-  public getExpertAvailabilityStatusAsync(): Promise<ExpertAvailabilityStatusResponse> {
+  public deleteAsync(deleteRequest: ExpertDeleteRequest) {
+    const queryString = '?address=' + deleteRequest.address + '&transactionHash=' + deleteRequest.transactionHash;
+    return this.http.delete(this.baseApiUrl + '/experts/' + queryString).toPromise();
+  }
+
+  public getAvailabilityStatusAsync(): Promise<ExpertAvailabilityStatusResponse> {
     return this.http.get<ExpertAvailabilityStatusResponse>(`${this.baseApiUrl}/experts/availability`).toPromise();
   }
 
-  public async switchExpertAvailabilityAsync(transactionHash, value) {
+  public async switchAvailabilityAsync(transactionHash, value) {
     await this.http.put(this.baseApiUrl + '/experts/availability', {
       transactionHash: transactionHash,
       value: value
     }).toPromise();
   }
-
 }
