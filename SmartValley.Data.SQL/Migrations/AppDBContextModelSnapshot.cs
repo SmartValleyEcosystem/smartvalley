@@ -3,14 +3,9 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Converters;
-using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Domain.Core;
-using SmartValley.Domain.Entities;
 
 namespace SmartValley.Data.SQL.Migrations
 {
@@ -181,15 +176,15 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<string>("Comment")
                         .IsRequired();
 
-                    b.Property<Address>("ExpertAddress")
-                        .HasConversion(new ValueConverter<Address, string>(v => default(string), v => default(Address)))
-                        .HasMaxLength(42);
+                    b.Property<long>("ExpertId");
 
                     b.Property<long>("ProjectId");
 
                     b.Property<long>("QuestionId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ExpertId");
 
                     b.HasIndex("ProjectId");
 
@@ -642,6 +637,11 @@ namespace SmartValley.Data.SQL.Migrations
 
             modelBuilder.Entity("SmartValley.Domain.Entities.EstimateComment", b =>
                 {
+                    b.HasOne("SmartValley.Domain.Entities.Expert", "Expert")
+                        .WithMany()
+                        .HasForeignKey("ExpertId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("SmartValley.Domain.Entities.Project", "Project")
                         .WithMany()
                         .HasForeignKey("ProjectId")

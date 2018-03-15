@@ -295,10 +295,7 @@ namespace SmartValley.Data.SQL.Core
                         .HasIndex(e => new {e.ScoringId, e.AreaId, e.ExpertId});
 
             modelBuilder.Entity<EstimateComment>()
-                        .Property(b => b.ExpertAddress)
-                        .HasConversion(
-                            v => v.ToString(),
-                            v => new Address(v));
+                        .HasOne(x => x.Expert);
         }
     }
 }

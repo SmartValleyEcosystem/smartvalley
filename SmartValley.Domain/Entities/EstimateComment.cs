@@ -6,13 +6,11 @@ namespace SmartValley.Domain.Entities
     public class EstimateComment : IEntityWithId
     {
         public long Id { get; set; }
-
+        
         public long ProjectId { get; set; }
-
-        [Required]
-        [MaxLength(42)]
-        public Address ExpertAddress { get; set; }
-
+        
+        public long ExpertId { get; set; }
+        
         public long QuestionId { get; set; }
 
         [Required]
@@ -21,5 +19,7 @@ namespace SmartValley.Domain.Entities
         public Project Project { get; set; }
 
         public Question Question { get; set; }
+
+        public Expert Expert { get; set; }
     }
 }

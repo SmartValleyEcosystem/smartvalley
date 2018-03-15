@@ -13,5 +13,7 @@ namespace SmartValley.Domain
         public double? AverageScore { get; }
 
         public IReadOnlyCollection<Estimate> Estimates { get; }
+
+        public static ScoringStatisticsInArea Empty => new ScoringStatisticsInArea(null, new Estimate[0]);
     }
 }

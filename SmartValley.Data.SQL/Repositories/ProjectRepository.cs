@@ -43,13 +43,13 @@ namespace SmartValley.Data.SQL.Repositories
                           select new ProjectDetails(project, scoring, application, country)).ToArrayAsync();
         }
 
-        public async Task<IReadOnlyCollection<ProjectDetails>> GetForScoringAsync(Address expertAddress, AreaType areaType)
+        public async Task<IReadOnlyCollection<ProjectDetails>> GetForScoringAsync(AreaType areaType, long expertId)
         {
             var scoredProjects = (from question in ReadContext.Questions
                                   join comment in ReadContext.EstimateComments on question.Id equals comment.QuestionId
                                   join scoring in ReadContext.Scorings on comment.ProjectId equals scoring.ProjectId
                                   join areaScoring in ReadContext.AreaScorings on scoring.Id equals areaScoring.ScoringId
-                                  where comment.ExpertAddress == expertAddress && question.AreaType == areaType ||
+                                  where comment.ExpertId == expertId && question.AreaType == areaType ||
                                         areaScoring.AreaId == areaType && areaScoring.IsCompleted
                                   select comment.ProjectId).Distinct();
 
