@@ -7,7 +7,7 @@
           <span class="col-4">
               {{ 'EditExpertModalComponent.Address' | translate }}
           </span>
-        <span class="col-8 example-full-width">{{data.address}}</span>
+        <span class="col-8 example-full-width">{{expertDetails.address}}</span>
 
       </div>
       <div class="row">
@@ -16,7 +16,7 @@
           </span>
         <mat-form-field class="col-8 example-full-width">
           <input placeholder="{{ 'EditExpertModalComponent.Email' | translate }}" matInput formControlName="email"
-                 name="email" [(ngModel)]="data.email" [(value)]="data.email" #required>
+                 name="email" [(ngModel)]="expertDetails.email" [(value)]="expertDetails.email" #required>
         </mat-form-field>
       </div>
       <div class="row">
@@ -25,7 +25,7 @@
           </span>
         <mat-form-field class="col-8 example-full-width">
           <input placeholder="{{ 'EditExpertModalComponent.Name' | translate }}" matInput formControlName="name"
-                 name="name" #required [(ngModel)]="data.name" [(value)]="data.name">
+                 name="name" #required [(ngModel)]="expertDetails.name" [(value)]="expertDetails.name">
         </mat-form-field>
       </div>
       <div class="row">
@@ -34,13 +34,13 @@
           </span>
         <mat-form-field class="col-8 example-full-width">
           <textarea matInput placeholder="{{ 'EditExpertModalComponent.About' | translate }}" formControlName="about"
-                    name="about" [(ngModel)]="data.about" [(value)]="data.about"></textarea>
+                    name="about" [(ngModel)]="expertDetails.about" [(value)]="expertDetails.about"></textarea>
         </mat-form-field>
       </div>
       <div class="row submit-row">
         <span class="offset-6 col-6">
           <mat-dialog-actions class="d-flex justify-content-center">
-            <button mat-raised-button (click)="submitAsync()" [disabled]="backendForm.invalid"
+            <button mat-raised-button (click)="submitAsync(false)" [disabled]="backendForm.invalid"
                     class="sv-default-btn btn-space">
               {{'EditExpertModalComponent.SaveBackend' | translate}}
             </button>
@@ -53,7 +53,7 @@
     <div class="row">
         <span class="col-6">
           <mat-checkbox align="start" name="available" [(ngModel)]="isAvailable"
-                        [(value)]="data.isAvailable">
+                        [(value)]="isAvailable">
             {{ 'EditExpertModalComponent.AvailableForWork' | translate }}
           </mat-checkbox>
         </span>

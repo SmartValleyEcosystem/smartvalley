@@ -98,14 +98,14 @@ namespace SmartValley.Data.SQL.Repositories
                                   .ToArrayAsync();
 
             return new ExpertDetails
-                   {
-                       Address = expertUser.user.Address,
-                       Email = expertUser.user.Email,
-                       Name = expertUser.user.Name,
-                       About = expertUser.user.About,
-                       IsAvailable = expertUser.expert.IsAvailable,
-                       Areas = expertAreas
-                   };
+            (
+                expertUser.user.Address,
+                expertUser.user.Email,
+                expertUser.user.Name,
+                expertUser.user.About,
+                expertUser.expert.IsAvailable,
+                expertAreas
+            );
         }
 
         public async Task<PagingList<ExpertDetails>> GetAllDetailsAsync(int page, int pageSize)
@@ -126,8 +126,8 @@ namespace SmartValley.Data.SQL.Repositories
             var count = await _readContext.Experts.CountAsync();
             var expertUsers = await expertUsersQuery.ToArrayAsync();
 
-            return new PagingList<ExpertDetails>(count, expertUsers.Select(expertUser 
-                => new ExpertDetails(expertUser.user.Address, expertUser.user.Email, expertUser.user.Name, expertUser.user.About, expertUser.expert.IsAvailable, lookUpAreas[expertUser.expert.UserId].ToArray())));
+            return new PagingList<ExpertDetails>(count, expertUsers.Select(expertUser
+                                                                               => new ExpertDetails(expertUser.user.Address, expertUser.user.Email, expertUser.user.Name, expertUser.user.About, expertUser.expert.IsAvailable, lookUpAreas[expertUser.expert.UserId].ToArray())));
         }
     }
 }
