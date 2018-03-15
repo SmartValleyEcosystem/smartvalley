@@ -115,6 +115,7 @@ import { ExpertOffersHistoryComponent } from './components/expert/expert-offers-
 import {ExpertWorkPlaceComponent} from './components/expert/expert-work-place/expert-work-place.component';
 import {OffersApiClient} from './api/expert/offers-api-client';
 import { ExpertOffersComponent } from './components/expert/expert-offers/expert-offers.component';
+import {roundNumberPipe} from './utils/round-number.pipe';
 
 @NgModule({
   declarations: [
@@ -170,7 +171,8 @@ import { ExpertOffersComponent } from './components/expert/expert-offers/expert-
     ChangeEmailModalComponent,
     ExpertWorkPlaceComponent,
     ExpertOffersComponent,
-    ExpertOffersHistoryComponent
+    ExpertOffersHistoryComponent,
+    roundNumberPipe
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,

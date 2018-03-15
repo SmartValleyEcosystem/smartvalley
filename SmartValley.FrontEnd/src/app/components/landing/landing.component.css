@@ -1,3 +1,5 @@
+@import "/assets/styles/table.css";
+
 .sw-list-projects{
   margin-top: 50px;
   flex: inherit;
@@ -102,4 +104,20 @@
 
 .sv-description > h2 {
   margin: 0;
+}
+.bottom-link {
+  border-top: solid 2px #eeedf5;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  padding-left: 0 !important;
+}
+.scoring-col {
+  font-size: 24px;
+  font-weight: bold;
+  color: #a4a2b0;
+}
+.project-name {
+  font-size: 14px;
+  font-weight: bold;
 }

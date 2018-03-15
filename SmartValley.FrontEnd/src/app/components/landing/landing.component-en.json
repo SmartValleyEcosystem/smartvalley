@@ -3,6 +3,12 @@
     "ScoredProjects": "Scored Projects:",
     "BecomeAnExpert": "Become an expert",
     "ApplyProject": "Apply project for scoring",
-    "VoteForFreeScoring": "Vote for free scoring"
+    "VoteForFreeScoring": "Vote for free scoring",
+    "RecentlyScored": "Recently scored",
+    "Country": "Country",
+    "ProjectArea": "Project area",
+    "ScoringDate": "Scoring date",
+    "ScoringRating": "Scoring rating",
+    "SeeAll": "See all >"
   }
 }

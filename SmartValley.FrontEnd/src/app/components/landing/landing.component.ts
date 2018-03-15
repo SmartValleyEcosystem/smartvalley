@@ -3,9 +3,10 @@ import {Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {ProjectCardType} from '../../services/project-card-type';
 import {ProjectApiClient} from '../../api/project/project-api-client';
-import {ProjectCardData} from '../common/project-card/project-card-data';
 import {VotingService} from '../../services/voting/voting-service';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
+import {ScoredProject} from '../../api/expert/scored-project';
+import {roundNumberPipe} from '../../utils/round-number.pipe';
 
 @Component({
   selector: 'app-root',
@@ -14,9 +15,9 @@ import {AuthenticationService} from '../../services/authentication/authenticatio
 })
 export class LandingComponent implements OnInit {
 
-  public scoredProjects: Array<ProjectCardData>;
   public ProjectCardType = ProjectCardType;
-  public canVote: boolean;
+  public scoredProjects: ScoredProject[];
+  public projectsLink: string;
 
   constructor(private router: Router,
               private projectApiClient: ProjectApiClient,
@@ -24,29 +25,19 @@ export class LandingComponent implements OnInit {
               private authenticationService: AuthenticationService) {
   }
 
-  async ngOnInit(): Promise<void> {
-    await this.initializeProjectsCollection();
+  public async ngOnInit() {
+    this.projectsLink = Paths.MyProjects;
+    let projectResponse = await this.projectApiClient.getScoredProjectAsync(0, 10);
+    this.scoredProjects = projectResponse.items;
   }
 
-  async navigateToVoting() {
-    await this.router.navigate([Paths.Voting]);
+  public getProjectLink(id) {
+    return this.router.createUrlTree([Paths.Report], {queryParams: {id: id}}).toString();
   }
 
-  async navigateToScoring() {
+  public async navigateToScoring() {
     if (await this.authenticationService.authenticateAsync()) {
       await this.router.navigate([Paths.Expert]);
     }
-  }
-
-  async createProject() {
-    if (await this.authenticationService.authenticateAsync()) {
-      await this.router.navigate([Paths.Application]);
-    }
-  }
-
-  private async initializeProjectsCollection() {
-    const response = await this.projectApiClient.getScoredProjectsAsync();
-    this.canVote = await this.sprintService.hasActiveSprintAsync();
-    this.scoredProjects = response.items.map(p => ProjectCardData.fromProjectResponse(p));
   }
 }

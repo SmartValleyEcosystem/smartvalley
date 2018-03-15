@@ -1,30 +1,27 @@
-<div class="container">
-  <div class="row mx-auto">
-    <div class="col-8 sm-title">
-      <h1>{{ 'Common.Title' | translate }}</h1>
-    </div>
-  </div>
-  <div class="row mx-auto">
-    <div class="col-3 sv-description d-flex align-items-end">
-      <h2>{{ 'Landing.ScoredProjects' | translate }}</h2>
-    </div>
-    <div class="col-9 btn-grp text-right">
-      <button *ngIf="canVote" mat-raised-button class="col-3 sm-btn-primary btn-space" (click)="navigateToVoting()">{{
-        'Landing.VoteForFreeScoring' | translate }}
-      </button>
-      <button mat-raised-button class="col-3 sm-btn-primary btn-space" (click)="navigateToScoring()">{{
-        'Landing.BecomeAnExpert' | translate }}
-      </button>
-      <button mat-raised-button class="col-3 sm-btn-primary btn-space" (click)="createProject()">{{
-        'Landing.ApplyProject' | translate }}
-      </button>
-    </div>
-  </div>
-  <div class="row mx-auto">
-    <div class="sw-list-projects">
-      <div class="card_no_shdw col-12 sw-card" style="margin: 0 0 20px 0" *ngFor="let project of scoredProjects;">
-        <app-project-card [data]="project" [type]="ProjectCardType.General"></app-project-card>
-      </div>
-    </div>
-  </div>
+<div class="content">
+  <p-table [value]="scoredProjects">
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="table__main-col">{{ 'Landing.RecentlyScored' | translate }}</th>
+        <th>{{ 'Landing.Country' | translate }}</th>
+        <th>{{ 'Landing.ProjectArea' | translate }}</th>
+        <th>{{ 'Landing.ScoringDate' | translate }}</th>
+        <th>{{ 'Landing.ScoringRating' | translate }}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-project>
+      <tr>
+        <td class="project-name"><a [routerLink]="getProjectLink(project.id)" >{{project.name}}</a></td>
+        <td>{{project.country}}</td>
+        <td>{{project.area}}</td>
+        <td>{{project.scoringEndDate}}</td>
+        <td class="scoring-col">{{project.score | roundNumber}}/100</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="footer" let-columns>
+      <tr>
+        <td class="bottom-link" colspan="5"><a [routerLink]="'/' + projectsLink">{{ 'Landing.SeeAll' | translate }}</a></td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>

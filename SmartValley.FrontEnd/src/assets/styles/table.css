@@ -1,0 +1,33 @@
+.ui-table-wrapper table {
+  margin: 20px 0;
+  font-family: Roboto-Regular;
+  font-size: 12px;
+  text-align: left;
+  color: #231a5d;
+  background: #fff;
+}
+.ui-table-wrapper table th {
+  background: #635d90;
+  padding: 16px 0 16px 40px !important;
+  color: #a4a2b0;
+}
+.ui-table-wrapper table td {
+  cursor: pointer;
+  padding: 18px 0 18px 40px !important;
+}
+.table__main-col {
+  font-size: 24px;
+  font-weight: bold;
+}
+.ui-table-wrapper table tr {
+  border-bottom: solid 2px #eeedf5;
+}
+.ui-table-wrapper table tr:last-child {
+  border-bottom: none;
+}
+.ui-table-wrapper table tr:hover {
+  background: #f6f6f6;
+}
+.ui-table-wrapper table a {
+   color: #5d49f2;
+ }

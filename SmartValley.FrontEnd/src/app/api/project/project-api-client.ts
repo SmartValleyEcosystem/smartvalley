@@ -8,6 +8,7 @@ import {GetScoringProjectsRequest} from './get-scoring-projects-request';
 import {MyProjectsItemResponse} from './my-projects-item-response';
 import {AreaType} from '../scoring/area-type.enum';
 import {ScoringProjectResponse} from './scoring-project-response';
+import {ScoredProject} from '../expert/scored-project';
 
 @Injectable()
 export class ProjectApiClient extends BaseApiClient {
@@ -43,6 +44,15 @@ export class ProjectApiClient extends BaseApiClient {
   public async getMyProjectsAsync(): Promise<CollectionResponse<MyProjectsItemResponse>> {
     return this.http
       .get<CollectionResponse<MyProjectsItemResponse>>(this.baseApiUrl + '/projects/my')
+      .toPromise();
+  }
+
+  public getScoredProjectAsync(page: number, pageSize: number): Promise<CollectionResponse<ScoredProject>> {
+    const parameters = new HttpParams().append('Page', page.toString())
+      .append('PageSize', pageSize.toString());
+
+    return this.http
+      .get<CollectionResponse<ScoredProject>>(this.baseApiUrl + '/projects/scored', {params: parameters})
       .toPromise();
   }
 }
