@@ -43,6 +43,7 @@ export function multiTranslateLoaderFactory() {
     'components/expert/expert.component',
     'components/expert/expert-work-place/expert-work-place.component',
     'components/expert/expert-offers/expert-offers.component',
-    'components/expert/expert-offers-history/expert-offers-history.component'
+    'components/expert/expert-offers-history/expert-offers-history.component',
+    'components/search-with-autocomplete/search-with-autocomplete.component'
   ]);
 }

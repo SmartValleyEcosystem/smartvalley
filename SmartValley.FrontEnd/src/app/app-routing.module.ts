@@ -30,6 +30,7 @@ import {AdminExpertApplicationComponent} from './components/admin-panel/admin-ex
 import {ExpertStatusGuard} from './services/guards/expert-status.guard';
 import {ExpertApplicationStatus} from './services/expert/expert-application-status.enum';
 import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-assigned.guard';
+import {ProjectListComponent} from './components/project-list/project-list.component';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -124,7 +125,9 @@ const appRoutes: Routes = [
         component: EstimateComponent,
         canActivate: [ShouldHaveEthGuard, ExpertShouldBeAssignedGuard]
       },
-      {path: Paths.ConfirmEmail, component: ConfirmEmailComponent}
+      {path: Paths.ConfirmEmail, component: ConfirmEmailComponent},
+      {path: Paths.ProjectList, component: ProjectListComponent},
+      {path: Paths.ProjectList + '/:search', component: ProjectListComponent}
     ]
   },
   {path: '**', redirectTo: Paths.Root}

@@ -9,6 +9,7 @@ import {MyProjectsItemResponse} from './my-projects-item-response';
 import {AreaType} from '../scoring/area-type.enum';
 import {ScoringProjectResponse} from './scoring-project-response';
 import {ScoredProject} from '../expert/scored-project';
+import {SearchProjectResponse} from './search-projects-response';
 import {CreateProjectRequest} from './create-project-request';
 
 @Injectable()
@@ -58,6 +59,14 @@ export class ProjectApiClient extends BaseApiClient {
 
     return this.http
       .get<CollectionResponse<ScoredProject>>(this.baseApiUrl + '/projects/scored', {params: parameters})
+      .toPromise();
+  }
+
+  public getProjectsBySearchString(searchString: string): Promise<CollectionResponse<SearchProjectResponse>> {
+    const parameters = new HttpParams().append('SearchString', searchString);
+
+    return this.http
+      .get<CollectionResponse<SearchProjectResponse>>(this.baseApiUrl + '/projects/search', {params: parameters})
       .toPromise();
   }
 }

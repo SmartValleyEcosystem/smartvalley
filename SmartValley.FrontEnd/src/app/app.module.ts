@@ -111,6 +111,8 @@ import {ExpertWorkPlaceComponent} from './components/expert/expert-work-place/ex
 import {OffersApiClient} from './api/expert/offers-api-client';
 import {ExpertOffersComponent} from './components/expert/expert-offers/expert-offers.component';
 import {roundNumberPipe} from './utils/round-number.pipe';
+import { SearchWithAutocompleteComponent } from './components/search-with-autocomplete/search-with-autocomplete.component';
+import { ProjectListComponent } from './components/project-list/project-list.component';
 
 @NgModule({
   declarations: [
@@ -165,7 +167,9 @@ import {roundNumberPipe} from './utils/round-number.pipe';
     ExpertWorkPlaceComponent,
     ExpertOffersComponent,
     ExpertOffersHistoryComponent,
-    roundNumberPipe
+    roundNumberPipe,
+    SearchWithAutocompleteComponent,
+    ProjectListComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,

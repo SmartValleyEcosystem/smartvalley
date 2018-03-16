@@ -354,6 +354,9 @@ mat-dialog-actions .mat-button {
   border-color: rgb(72, 138, 232);
   color: white !important;
 }
+.hidden {
+  display: none;
+}
 
 @font-face {
   font-family: "AvenirNextCyr-Bold";

@@ -4,6 +4,8 @@ import {Paths} from '../../paths';
 import {ProjectCardType} from '../../services/project-card-type';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ScoredProject} from '../../api/expert/scored-project';
+import {roundNumberPipe} from '../../utils/round-number.pipe';
+import {Constants} from '../../constants';
 
 @Component({
   selector: 'app-root',
@@ -21,12 +23,14 @@ export class LandingComponent implements OnInit {
   }
 
   public async ngOnInit() {
-    this.projectsLink = Paths.MyProjects;
-    const projectResponse = await this.projectApiClient.getScoredProjectAsync(0, 10);
+    this.projectsLink = Paths.ProjectList;
+    let projectResponse = await this.projectApiClient.getScoredProjectAsync(0, 10);
     this.scoredProjects = projectResponse.items;
   }
 
   public getProjectLink(id) {
-    return this.router.createUrlTree([Paths.Report], {queryParams: {id: id}}).toString();
+    return decodeURIComponent(
+      this.router.createUrlTree([Paths.Report + '/' + id]).toString()
+    );
   }
 }
