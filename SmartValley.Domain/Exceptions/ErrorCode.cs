@@ -24,6 +24,7 @@
         AcceptedOfferNotFound,
         OffersNotFound,
         AuthenticationError,
-        ExpertNotFound
+        ExpertNotFound,
+        CountryNotFound
     }
 }

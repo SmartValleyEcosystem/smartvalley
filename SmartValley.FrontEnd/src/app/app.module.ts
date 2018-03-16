@@ -36,7 +36,7 @@ import {EstimatesApiClient} from './api/estimates/estimates-api-client';
 import {VotingApiClient} from './api/voting/voting-api-client';
 import {UserApiClient} from './api/user/user-api-client';
 import {QuestionsComponent} from './components/report/questions/questions.component';
-import {ProjectService} from './services/project-service';
+import {ProjectService} from './services/project/project-service';
 import {NgProgressInterceptor, NgProgressModule} from 'ngx-progressbar';
 import {TransactionAwaitingModalComponent} from './components/common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 import {BlockiesService} from './services/blockies-service';

@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Paths} from '../../../paths';
-import {ProjectService} from '../../../services/project-service';
+import {ProjectService} from '../../../services/project/project-service';
 import {BlockiesService} from '../../../services/blockies-service';
 import {Constants} from '../../../constants';
 import {ProjectCardType} from '../../../services/project-card-type';

@@ -48,7 +48,7 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public DateTimeOffset? VotingEndDate { get; set; }
 
-        public IReadOnlyCollection<ApplicationTeamMemberResponse> TeamMembers { get; set; }
+        public IReadOnlyCollection<ProjectTeamMemberResponse> TeamMembers { get; set; }
 
         public static ProjectDetailsResponse Create(ProjectDetails details, VotingProjectDetails votingDetails, DateTimeOffset now)
         {
@@ -74,7 +74,7 @@ namespace SmartValley.WebApi.Projects.Responses
                        MvpLink = details.Application.MvpLink,
                        Status = details.Application.ProjectStatus,
                        WhitePaperLink = details.Application.WhitePaperLink,
-                       TeamMembers = details.TeamMembers.Select(ApplicationTeamMemberResponse.Create).ToList(),
+                       TeamMembers = details.TeamMembers.Select(ProjectTeamMemberResponse.Create).ToList(),
                        ScoringStatus = scoringStatus,
                        VotingStatus = details.Scoring == null ? (votingDetails?.GetVotingStatus(now) ?? VotingStatus.InProgress) : VotingStatus.None,
                        VotingEndDate = votingDetails?.Voting?.EndDate,

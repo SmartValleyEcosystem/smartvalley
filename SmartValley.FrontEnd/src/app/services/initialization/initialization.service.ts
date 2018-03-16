@@ -38,7 +38,8 @@ export class InitializationService {
   private async initializeAppInternalAsync(): Promise<void> {
     await Promise.all([
       this.authenticationService.initializeAsync(),
-      this.questionService.initializeAsync(),
+      //this.questionService.initializeAsync(),
+      this.minterContractClient.initializeAsync(),
       this.adminContractClient.initializeAsync(),
       this.scoringManagerContractClient.initializeAsync(),
       this.votingManagerContractClient.initializeAsync(),

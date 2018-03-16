@@ -1,5 +1,5 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {Project} from '../project';
+import {Project} from '../project/project';
 import {VotingSprint} from './voting-sprint';
 import {VotingApiClient} from '../../api/voting/voting-api-client';
 import * as moment from 'moment';

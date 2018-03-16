@@ -8,7 +8,7 @@ import {ProjectApiClient} from '../../../api/project/project-api-client';
 import {BlockiesService} from '../../../services/blockies-service';
 import * as moment from 'moment';
 import {ScoringExpertsManagerContractClient} from '../../../services/contract-clients/scoring-experts-manager-contract-client';
-import {ProjectService} from '../../../services/project-service';
+import {ProjectService} from '../../../services/project/project-service';
 import {GetScoringProjectsRequest} from '../../../api/project/get-scoring-projects-request';
 import {StatusRequest} from '../../../api/project/status-request';
 import {DialogService} from '../../../services/dialog-service';

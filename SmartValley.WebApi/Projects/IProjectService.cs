@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using SmartValley.Domain;
 using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
+using SmartValley.WebApi.Projects.Requests;
 
 namespace SmartValley.WebApi.Projects
 {
@@ -22,5 +23,7 @@ namespace SmartValley.WebApi.Projects
         Task<IReadOnlyCollection<ProjectDetails>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds);
 
         Task<IReadOnlyCollection<ProjectDetails>> GetProjectsByNameAsync(string projectName);
+
+        Task CreateAsync(CreateProjectRequest request);
     }
 }

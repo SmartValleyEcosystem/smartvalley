@@ -1,5 +1,5 @@
-import {AreaType} from '../api/scoring/area-type.enum';
-import {VotingStatus} from './voting-status.enum';
+import {AreaType} from '../../api/scoring/area-type.enum';
+import {VotingStatus} from '../voting-status.enum';
 
 export class Project {
   id: number;

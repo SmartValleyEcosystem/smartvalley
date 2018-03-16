@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application;
 using SmartValley.Application.AzureStorage;
+using SmartValley.Application.Extensions;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.WebApi.Experts.Requests;
@@ -192,21 +193,9 @@ namespace SmartValley.WebApi.Experts
             }
 
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
-            await _expertService.CreateApplicationAsync(request, CreateAzureFile(cv), CreateAzureFile(scan), CreateAzureFile(photo));
+            await _expertService.CreateApplicationAsync(request, cv.ToAzureFile(), scan.ToAzureFile(), photo.ToAzureFile());
 
             return new EmptyResponse();
-        }
-
-        private static AzureFile CreateAzureFile(IFormFile formFile)
-        {
-            using (var stream = formFile.OpenReadStream())
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    stream.CopyTo(memoryStream);
-                    return new AzureFile(formFile.FileName, memoryStream.GetBuffer());
-                }
-            }
         }
     }
 }

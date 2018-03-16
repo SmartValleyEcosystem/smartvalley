@@ -312,6 +312,9 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<int>("CategoryId");
 
+                    b.Property<string>("ContactEmail")
+                        .HasMaxLength(50);
+
                     b.Property<long>("CountryId");
 
                     b.Property<string>("Description")
@@ -320,11 +323,19 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<Guid>("ExternalId");
 
+                    b.Property<DateTimeOffset?>("IcoDate");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50);
 
                     b.Property<int>("StageId");
+
+                    b.Property<string>("Website")
+                        .HasMaxLength(200);
+
+                    b.Property<string>("WhitePaperLink")
+                        .HasMaxLength(200);
 
                     b.HasKey("Id");
 

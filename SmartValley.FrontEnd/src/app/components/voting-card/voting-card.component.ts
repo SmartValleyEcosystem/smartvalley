@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ProjectService} from '../../services/project-service';
+import {ProjectService} from '../../services/project/project-service';
 import {BlockiesService} from '../../services/blockies-service';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {Paths} from '../../paths';

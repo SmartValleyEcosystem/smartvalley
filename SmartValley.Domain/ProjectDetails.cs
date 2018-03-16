@@ -25,6 +25,6 @@ namespace SmartValley.Domain
 
         public Application Application { get; }
 
-        public IReadOnlyCollection<ApplicationTeamMember> TeamMembers { get; set; }
+        public IReadOnlyCollection<ProjectTeamMember> TeamMembers { get; set; }
     }
 }

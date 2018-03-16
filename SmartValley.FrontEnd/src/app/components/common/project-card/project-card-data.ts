@@ -3,7 +3,7 @@ import {ProjectResponse} from '../../../api/project/project-response';
 import {MyProjectsItemResponse} from '../../../api/project/my-projects-item-response';
 import {VotingStatus} from '../../../services/voting-status.enum';
 import {ScoringStatus} from '../../../services/scoring-status.enum';
-import {Project} from '../../../services/project';
+import {Project} from '../../../services/project/project';
 import * as moment from 'moment';
 import {isNullOrUndefined} from 'util';
 

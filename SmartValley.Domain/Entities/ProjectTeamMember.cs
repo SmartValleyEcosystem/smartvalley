@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
 {
-    public class ProjectTeamMember
+    public class ProjectTeamMember: IEntityWithId
     {
         public long Id { get; set; }
 

@@ -7,7 +7,7 @@ import {Question} from '../../services/questions/question';
 import {Estimate} from '../../services/estimate';
 import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';
 import {AreaType} from '../../api/scoring/area-type.enum';
-import {ProjectService} from '../../services/project-service';
+import {ProjectService} from '../../services/project/project-service';
 import {BlockiesService} from '../../services/blockies-service';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 import {Paths} from '../../paths';

@@ -1,8 +1,8 @@
-import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
+import {SocialMediaRequest} from './social-media-request';
 
 export interface TeamMemberRequest {
-  memberType: EnumTeamMemberType;
   fullName: string;
-  facebookLink: string;
-  linkedInLink: string;
+  role: string;
+  about: string;
+  socialMedias: Array<SocialMediaRequest>;
 }

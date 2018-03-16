@@ -7,17 +7,27 @@
   <form [formGroup]="applicationForm" novalidate>
     <div class="sw-card sw-content">
       <div class="row row-title">
-        <h3 class="col-10 offset-1">{{ 'Application.BasicInformation' | translate }}</h3>
+        <h3 class="col-10 offset-1">{{ 'Application.CommonInformation' | translate }}</h3>
       </div>
       <div #name class="row">
         <span class="col-2 offset-1">{{ 'Application.Name' | translate }}</span>
         <input class="form-control col-8" formControlName="name"
                placeholder="{{ 'Application.NamePlaceholder' | translate }}" #required>
       </div>
-      <div #area class="row">
+      <div #projectArea class="row">
         <span class="col-2 offset-1">{{ 'Application.ProjectArea' | translate }}</span>
-        <input class="form-control col-8" formControlName="projectArea"
-               placeholder="{{ 'Application.ProjectAreaPlaceholder' | translate }}" #required>
+        <p-dropdown class="form-control col-8" placeholder="{{ 'Application.ProjectAreaPlaceholder' | translate }}"
+                    [options]="projectAreas" formControlName="projectArea" #required></p-dropdown>
+      </div>
+      <div #stage class="row">
+        <span class="col-2 offset-1">{{ 'Application.Stage' | translate }}</span>
+        <p-dropdown class="form-control col-8" placeholder="{{ 'Application.ProjectAreaPlaceholder' | translate }}"
+                    [options]="stages" formControlName="stage" #required></p-dropdown>
+      </div>
+      <div #country class="row">
+        <span class="col-2 offset-1">{{ 'Application.Country' | translate }}</span>
+        <p-dropdown class="form-control col-8" placeholder="{{ 'Application.ProjectAreaPlaceholder' | translate }}"
+                    [options]="countries" formControlName="country" #required></p-dropdown>
       </div>
       <div #description class="row">
         <span class="col-2 offset-1">{{ 'Application.Description' | translate }}</span>
@@ -25,111 +35,59 @@
                   placeholder="{{ 'Application.DescriptionPlaceholder' | translate }}" #required>
         </textarea>
       </div>
-      <div class="row">
-        <span class="col-2 offset-1">{{ 'Application.Status' | translate }}</span>
-        <textarea class="form-control col-8" formControlName="projectStatus"
-                  placeholder="{{ 'Application.StatusPlaceholder' | translate }}">
-        </textarea>
+      <div #webSite class="row" style="margin-bottom: 3em;">
+        <span class="col-2 offset-1">{{ 'Application.Website' | translate }}</span>
+        <input class="form-control col-8" formControlName="website"
+               title="Include http://" placeholder="http://">
       </div>
-      <div class="wp-link row" style="margin-bottom: 3em;">
+      <div class="row" style="margin-bottom: 3em;">
         <span class="col-2 offset-1">{{ 'Application.WhitePaperLink' | translate }}</span>
         <input class="form-control col-8" formControlName="whitePaperLink"
                title="Include http://" placeholder="http://">
       </div>
+      <div class="row" style="margin-bottom: 3em;">
+        <span class="col-2 offset-1">{{ 'Application.IcoDate' | translate }}</span>
+        <p-calendar [showIcon]="true" class="padding-zero col-4" formControlName="icoDate" #required></p-calendar>
+      </div>
+      <div #contactEmail class="wp-link  row">
+        <span class="col-2 offset-1">{{ 'Application.ContactEmail' | translate }}</span>
+        <input class="form-control col-8" formControlName="contactEmail"
+               placeholder="{{ 'Application.ContactEmailPlaceholder' | translate }}" #required>
+      </div>
     </div>
-    <div [ngClass]="!isTeamShow ? '' : 'main-btn'" class="row">
-      <button (click)="showNext()" class="col-3 btn btn-primary">{{ 'Application.Next' | translate }}
-      </button>
+    <div class="sw-card sw-content">
+      <div class="row row-title">
+        <h3 class="col-10 offset-1">{{ 'Application.SocialMedia' | translate }}</h3>
+      </div>
+      <div class="row">
+        <span class="col-2 offset-1">{{ 'Application.Network' | translate }}</span>
+        <p-dropdown class="form-control col-8" placeholder="{{ 'Application.ProjectAreaPlaceholder' | translate }}"
+                    [options]="socials" formControlName="social"></p-dropdown>
+      </div>
+      <div class="row" style="margin-bottom: 3em;">
+        <button>
+          +{{ 'Application.AddMore' | translate }}
+        </button>
+      </div>
     </div>
-
-    <div [ngClass]="isTeamShow ? 'is-active' : ''" class="sw-card sw-content">
+    <div class="sw-card sw-content">
       <div class="row row-title">
         <h3 class="col-10 offset-1">{{ 'Application.Team' | translate }}</h3>
       </div>
-      <div class="row-content sw-members">
-        <div *ngFor="let member of applicationForm.get('teamMembers')['controls']">
-          <div [formGroup]="member">
-            <div class="row">
-              <span class="col-1 offset-1">{{member.value.title}}</span>
-              <input class="form-control col-9" formControlName="fullName">
-            </div>
-            <div class="row">
-              <span class="col-1 offset-1" style="font-size: 0.8em; padding-top: 1.2em;">Facebook</span>
-              <input class="form-control col-4" formControlName="facebookLink">
-              <span class="col-1" style="font-size: 0.8em; padding-top: 1.2em;">LinkedIn</span>
-              <input class="form-control col-4" formControlName="linkedInLink">
-            </div>
-          </div>
-        </div>
+      <div class="row">
+        <span class="col-2 offset-1">{{ 'Application.Network' | translate }}</span>
+        <p-dropdown class="form-control col-8" placeholder="{{ 'Application.ProjectAreaPlaceholder' | translate }}"
+                    [options]="socials" formControlName="social"></p-dropdown>
+      </div>
+      <div class="row" style="margin-bottom: 3em;">
+        <button>
+          +{{ 'Application.AddMore' | translate }}
+        </button>
       </div>
     </div>
-    <div [ngClass]="isTeamShow && !isLegalShow ? '' : 'team-btn'" class="row">
-      <button (click)="showNext()" class="col-3 btn btn-primary">{{ 'Application.Next' | translate }}
-      </button>
-    </div>
-    <div [ngClass]="isLegalShow ? 'is-active' : ''" class="sw-card sw-content">
-      <div class="row row-title">
-        <h3 class="col-10 offset-1">{{ 'Application.LegalPart' | translate }}</h3>
-      </div>
-      <div class="row-content">
-        <div class="row">
-          <span class="col-4 offset-1">{{ 'Application.Incorporation' | translate }}</span>
-          <input class="form-control col-6" style="margin-bottom: 1em;" formControlName="country"
-                 placeholder="{{ 'Application.IncorporationPlaceholder' | translate }}">
-        </div>
-      </div>
-    </div>
-    <div [ngClass]="isLegalShow && !isFinanceShow ? '' : 'legal-btn'" class="row">
-      <button (click)="showNext()" class="col-3 btn btn-primary">{{ 'Application.Next' | translate }}
-      </button>
-    </div>
-    <div [ngClass]="isFinanceShow ? 'is-active' : ''" class="sw-card sw-content">
-      <div class="row row-title">
-        <h3 class="col-10 offset-1">{{ 'Application.Finance' | translate }}</h3>
-      </div>
-      <div class="row-content">
-        <div class="row">
-          <label class="col-10 offset-1">{{ 'Application.Money' | translate }}</label>
-        </div>
-        <div class="row">
-          <span class="col-1 offset-1" style="padding-right: 0;">{{ 'Application.SoftCap' | translate }}</span>
-          <input class="form-control col-3" formControlName="softCap">
-          <span class="col-1 offset-1" style="padding-right: 0;">{{ 'Application.HardCap' | translate }}</span>
-          <input class="form-control col-4" formControlName="hardCap">
-        </div>
-        <div class="row">
-          <span class="col-3 offset-1">{{ 'Application.FinancialModelLink' | translate }}</span>
-          <input class="form-control col-7" formControlName="financeModelLink" placeholder="http://">
-        </div>
-        <div class="row">
-          <mat-checkbox class="col-6 offset-1" labelPosition="before" style="margin-bottom: 1em;" formControlName="attractedInvestments">
-            {{ 'Application.AttractedInvestments' | translate }}
-          </mat-checkbox>
-        </div>
-      </div>
-    </div>
-    <div [ngClass]="isFinanceShow && !isTechShow ? '' : 'finance-btn'" class="row">
-      <button (click)="showNext()" class="col-3 btn btn-primary">{{ 'Application.Next' | translate }}
-      </button>
-    </div>
-    <div [ngClass]="isTechShow ? 'is-active' : ''" class="sw-card sw-content">
-      <div class="row row-title">
-        <h3 class="col-10 offset-1">{{ 'Application.Tech' | translate }}</h3>
-      </div>
-      <div class="row-content">
-        <div class="row">
-          <span class="col-3 offset-1" style="padding-right: 0">{{ 'Application.Blockchain' | translate }}</span>
-          <input class="form-control col-7" formControlName="blockChainType">
-        </div>
-        <div class="row">
-          <span class="col-3 offset-1" style="padding-right: 0">{{ 'Application.MvpLink' | translate }}</span>
-          <input class="form-control col-7" style="margin-bottom: 1em;" formControlName="mvpLink" placeholder="http://">
-        </div>
-      </div>
-    </div>
-    <div [ngClass]="isTechShow ? '' : 'submit-btn'" class="row">
-      <button (click)="onSubmitAsync()" [disabled]="isProjectCreating" class="col-3 btn btn-primary">
-        {{ 'Application.Submit' | translate }}
+    <div class="row">
+      <button (click)="onSaveAsync()" [disabled]="isProjectCreating" class="col-3 btn btn-primary">
+        {{ 'Application.Save' | translate }}
       </button>
     </div>
   </form>

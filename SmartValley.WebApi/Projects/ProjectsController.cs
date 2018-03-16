@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
+using SmartValley.Domain.Exceptions;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Projects.Requests;
@@ -18,6 +19,7 @@ namespace SmartValley.WebApi.Projects
     [Route("api/projects")]
     public class ProjectsController : Controller
     {
+        private const int FileSizeLimitBytes = 5242880;
         private readonly IProjectService _projectService;
         private readonly IVotingService _votingService;
         private readonly IClock _clock;
@@ -29,6 +31,23 @@ namespace SmartValley.WebApi.Projects
             _votingService = votingService;
             _scoringService = scoringService;
             _clock = clock;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] CreateProjectRequest request)
+        {
+            if (request.TeamMembers == null || 
+                !request.TeamMembers.Any() || 
+                request.TeamMembers.Any(i=>
+                i.Photo == null || 
+                i.Photo.Length < 0 || 
+                i.Photo.Length > FileSizeLimitBytes))
+            {
+               // throw new AppErrorException(ErrorCode.InvalidFileUploaded);
+            }
+
+            await _projectService.CreateAsync(request);
+            return NoContent();
         }
 
         [HttpGet]

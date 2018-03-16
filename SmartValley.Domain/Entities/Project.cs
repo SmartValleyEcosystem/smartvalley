@@ -9,6 +9,9 @@ namespace SmartValley.Domain.Entities
     {
         public long Id { get; set; }
 
+        [Required, MaxLength(50)]
+        public string Name { get; set; }
+
         [Required]
         public Guid ExternalId { get; set; }
 
@@ -26,12 +29,19 @@ namespace SmartValley.Domain.Entities
         public Address AuthorAddress { get; set; }
 
         [Required]
-        [MaxLength(50)]
-        public string Name { get; set; }
-
-        [Required]
         [MaxLength(1000)]
         public string Description { get; set; }
+        
+        [MaxLength(200)]
+        public string Website { get; set; }
+
+        [MaxLength(200)]
+        public string WhitePaperLink { get; set; }
+        
+        public DateTimeOffset? IcoDate { get; set; }
+
+        [Url, MaxLength(50)]
+        public string ContactEmail { get; set; }
 
         public Country Country { get; set; }
 

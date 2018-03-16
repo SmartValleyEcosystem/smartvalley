@@ -2,13 +2,13 @@
 {
     public enum SocialMediaType
     {
-        Facebook = 1,
-        BitcoinTalk = 2,
-        Medium = 3,
-        Reddit = 4,
-        Telegram = 5,
-        Twitter = 6,
-        Github = 7,
-        LinkedIn = 8
+        Facebook = 0,
+        BitcoinTalk = 1,
+        Medium = 2,
+        Reddit = 3,
+        Telegram = 4,
+        Twitter = 5,
+        Github = 6,
+        LinkedIn = 7
     }
 }

@@ -9,11 +9,16 @@ import {MyProjectsItemResponse} from './my-projects-item-response';
 import {AreaType} from '../scoring/area-type.enum';
 import {ScoringProjectResponse} from './scoring-project-response';
 import {ScoredProject} from '../expert/scored-project';
+import {CreateProjectRequest} from './create-project-request';
 
 @Injectable()
 export class ProjectApiClient extends BaseApiClient {
   constructor(private http: HttpClient) {
     super();
+  }
+
+  public async createAsync(request: CreateProjectRequest): Promise<void> {
+    await this.http.post(this.baseApiUrl + '/projects', request).toPromise();
   }
 
   async getScoredProjectsAsync(): Promise<CollectionResponse<ProjectResponse>> {

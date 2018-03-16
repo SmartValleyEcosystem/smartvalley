@@ -1,8 +1,5 @@
 import {Component, ViewChild, ElementRef, ViewChildren, QueryList, OnInit} from '@angular/core';
-import {ApplicationApiClient} from '../../api/application/application-api.client';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {SubmitApplicationRequest} from '../../api/application/submit-application-request';
-import {EnumTeamMemberType} from '../../services/enumTeamMemberType';
 import {v4 as uuid} from 'uuid';
 import {ScoringManagerContractClient} from '../../services/contract-clients/scoring-manager-contract-client';
 import {Router} from '@angular/router';
@@ -11,12 +8,12 @@ import {NotificationsService} from 'angular2-notifications';
 import {DialogService} from '../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
 import {BalanceService} from '../../services/balance/balance.service';
-import {isNullOrUndefined} from 'util';
-import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {VotingManagerContractClient} from '../../services/contract-clients/voting-manager-contract-client';
-import {Web3Service} from '../../services/web3-service';
 import {UserContext} from '../../services/authentication/user-context';
-import {AreaService} from '../../services/expert/area.service';
+import {SelectItem} from 'primeng/api';
+import {CreateProjectRequest} from '../../api/project/create-project-request';
+import {ProjectApiClient} from '../../api/project/project-api-client';
+import {ProjectService} from '../../services/project/project-service';
 
 @Component({
   selector: 'app-application',
@@ -25,11 +22,11 @@ import {AreaService} from '../../services/expert/area.service';
 })
 export class ApplicationComponent implements OnInit {
   public applicationForm: FormGroup;
-  public isTeamShow = false;
-  public isLegalShow = false;
-  public isFinanceShow = false;
-  public isTechShow = false;
   public isProjectCreating: boolean;
+  projectAreas: SelectItem[];
+  stages: SelectItem[];
+  countries: SelectItem[];
+  socials: SelectItem[];
 
   @ViewChild('name') public nameRow: ElementRef;
   @ViewChild('area') public areaRow: ElementRef;
@@ -43,62 +40,45 @@ export class ApplicationComponent implements OnInit {
               private router: Router,
               private notificationsService: NotificationsService,
               private dialogService: DialogService,
-              private applicationApiClient: ApplicationApiClient,
+              private projectApiClient: ProjectApiClient,
               private translateService: TranslateService,
               private balanceService: BalanceService,
-              private scoringApiClient: ScoringApiClient,
-              private web3Service: Web3Service,
-              private areaService: AreaService) {
+              private projectService: ProjectService) {
+
+    this.projectAreas = this.projectService.getProjectAreas().map(i => <SelectItem>{
+      label: i.name,
+      value: i.projectAreaType
+    });
+
+    this.socials = this.projectService.getSocialMedias().map(i => <SelectItem>{
+      label: i.name,
+      value: i.socialMediaType
+    });
+
+    this.stages = this.projectService.getStages().map(i => <SelectItem>{
+      label: i.name,
+      value: i.stageType
+    });
+
+    this.countries = [
+      {label: 'Select City', value: null},
+      {label: 'New York', value: 'RU'},
+      {label: 'Rome', value: 'UK'}
+    ];
   }
 
   public ngOnInit(): void {
     this.createForm();
   }
 
-  public showNext() {
-    if (this.isTeamShow === false) {
-      this.isTeamShow = true;
-      return;
-    }
-    if (this.isLegalShow === false) {
-      this.isLegalShow = true;
-      return;
-    }
-    if (this.isFinanceShow === false) {
-      this.isFinanceShow = true;
-      return;
-    }
-    if (this.isTechShow === false) {
-      this.isTechShow = true;
-    }
-  }
-
-  public async onSubmitAsync() {
+  public async onSaveAsync() {
     if (!this.validateForm()) {
       return;
     }
-
-    const areas = this.areaService.areas.map(a => a.areaType);
-    const areaExpertCounts = await this.dialogService.showExpertsCountSelectionDialogAsync(areas);
-
     const request = this.createSubmitApplicationRequest();
-    const transactionHash = await this.startScoringAsync(request.projectId, areas, areaExpertCounts);
-    if (transactionHash == null) {
-      this.notifyError();
-      this.isProjectCreating = false;
-      return;
-    }
 
-    const transactionDialog = this.dialogService.showTransactionDialog(
-      this.translateService.instant('Application.Dialog'),
-      transactionHash
-    );
-
-    await this.applicationApiClient.submitAsync(request);
-    await this.scoringApiClient.startAsync(request.projectId, areas, areaExpertCounts, transactionHash);
+    await this.projectApiClient.createAsync(request);
     await this.balanceService.updateBalanceAsync();
-
-    transactionDialog.close();
 
     await this.router.navigate([Paths.MyProjects]);
     this.notifyProjectCreated();
@@ -111,72 +91,38 @@ export class ApplicationComponent implements OnInit {
     );
   }
 
-  private notifyError() {
-    this.notificationsService.error(
-      this.translateService.instant('Common.Error'),
-      this.translateService.instant('Common.TryAgain'));
-  }
-
   private createForm() {
-    const teamMembers = [];
-    for (const item in EnumTeamMemberType) {
-      if (typeof EnumTeamMemberType[item] === 'number') {
-        const group = this.formBuilder.group({
-          memberType: EnumTeamMemberType[item],
-          title: item,
-          fullName: ['', Validators.maxLength(100)],
-          facebookLink: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
-          linkedInLink: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
-        });
-        teamMembers.push(group);
-      }
-    }
-
     this.applicationForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
+      description: ['', [Validators.required, Validators.maxLength(2000)]],
+      website: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
       whitePaperLink: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
-      projectArea: ['', [Validators.required, Validators.maxLength(100)]],
-      description: ['', [Validators.required, Validators.maxLength(1000)]],
-      projectStatus: ['', Validators.maxLength(100)],
-      softCap: ['', Validators.maxLength(40)],
-      hardCap: ['', Validators.maxLength(40)],
-      financeModelLink: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
-      country: ['', Validators.maxLength(100)],
-      attractedInvestments: false,
-      blockChainType: ['', Validators.maxLength(100)],
-      mvpLink: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
-      teamMembers: this.formBuilder.array(teamMembers)
+      contactEmail: ['', Validators.maxLength(100)],
+      icoDate: ['', [Validators.required, Validators.maxLength(100)]],
+      projectArea: [this.projectAreas[0].value],
+      country: [this.countries[0].value],
+      stage: [this.stages[0].value],
+      social: [this.socials[0].value],
+      teamMember: []
     });
   }
 
-  private createSubmitApplicationRequest(): SubmitApplicationRequest {
+  private createSubmitApplicationRequest(): CreateProjectRequest {
     const user = this.userContext.getCurrentUser();
     const form = this.applicationForm.value;
-    return <SubmitApplicationRequest>{
-      attractedInvestments: form.attractedInvestments,
-      blockChainType: form.blockChainType,
-      country: form.country,
-      financeModelLink: form.financeModelLink,
-      hardCap: form.hardCap,
-      mvpLink: form.mvpLink,
+    return <CreateProjectRequest>{
+      contactEmail: form.contactEmail,
+      countryCode: form.country,
       name: form.name,
       description: form.description,
-      projectArea: form.projectArea,
-      projectStatus: form.projectStatus,
-      softCap: form.softCap,
+      icoDate: form.icoDate,
+      projectAreaId: form.projectArea,
       whitePaperLink: form.whitePaperLink,
       projectId: uuid(),
       authorAddress: user.account,
-      teamMembers: form.teamMembers.filter(m => !isNullOrUndefined(m.fullName))
+      website: form.website
+      //teamMembers: form.teamMembers.filter(m => !isNullOrUndefined(m.fullName))
     };
-  }
-
-  private async startScoringAsync(projectId: string, areas: number[], areaExpertCounts: number[]): Promise<string> {
-    try {
-      return await this.scoringManagerContractClient.startAsync(projectId, areas, areaExpertCounts);
-    } catch (e) {
-      return null;
-    }
   }
 
   private validateForm(): boolean {

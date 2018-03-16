@@ -88,6 +88,7 @@ namespace SmartValley.WebApi
             services.AddSingleton<MailTokenService>();
             services.AddSingleton<MailSender>();
             services.AddSingleton<ITemplateProvider, TemplateProvider>();
+            services.AddSingleton<TeamMemberPhotosStorageProvider>();
             services.AddSingleton<ExpertApplicationsStorageProvider>();
             services.AddSingleton<ITokenContractClient, TokenContractClient>(
                 provider => new TokenContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().TokenContract));
@@ -147,6 +148,9 @@ namespace SmartValley.WebApi
             services.AddTransient<IExpertApplicationRepository, ExpertApplicationRepository>();
             services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<IExpertApplicationRepository, ExpertApplicationRepository>();
+            services.AddTransient<IProjectTeamMemberRepository, ProjectTeamMemberRepository>();
+            services.AddTransient<IProjectSocialMediaRepository, ProjectSocialMediaRepository>();
+            services.AddTransient<IProjectTeamMemberSocialMediaRepository, ProjectTeamMemberSocialMediaRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
