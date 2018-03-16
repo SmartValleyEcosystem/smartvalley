@@ -42,19 +42,8 @@ export class Web3Service {
     return this.eth.personal_sign(EthJs.fromUtf8(message), address);
   }
 
-  public fromWei(weiNumber: number, unit: string | number): number {
-    if (typeof unit === 'number') {
-      return weiNumber * Math.pow(10, -unit);
-    }
-
-    return EthJs.fromWei(weiNumber, unit);
-  }
-
-  public toWei(value: number, unit: string | number): BigNumber {
-    if (typeof unit === 'number') {
-      return new BigNumber(value * Math.pow(10, unit));
-    }
-    return EthJs.toWei(value, unit);
+  public fromWei(weiNumber: number): number {
+    return EthJs.fromWei(weiNumber, 'ether');
   }
 
   public recoverSignature(message: string, signature: string): Promise<string> {

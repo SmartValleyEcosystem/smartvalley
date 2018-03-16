@@ -76,7 +76,7 @@ export class AuthenticationService {
     }
 
     if (!await this.web3Service.checkNetworkAsync()) {
-      this.dialogService.showRinkebyAlert();
+      this.dialogService.showMetamaskManualAlert();
       return false;
     }
 

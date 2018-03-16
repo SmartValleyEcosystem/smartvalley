@@ -15,10 +15,7 @@ import {UserContext} from '../../services/authentication/user-context';
 export class HeaderComponent implements OnInit {
 
   public currentBalance: number;
-  public currentTokens: number;
-  public frozenTokens: number;
   public showReceiveEtherButton: boolean;
-  public showReceiveSVTButton: boolean;
   public isAuthenticated: boolean;
   public isAdmin: boolean;
   public accountAddress: string;
@@ -34,7 +31,6 @@ export class HeaderComponent implements OnInit {
               private userContext: UserContext) {
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
     this.userContext.userContextChanged.subscribe((user) => this.updateAccount(user));
-
   }
 
   ngOnInit(): void {
@@ -68,40 +64,14 @@ export class HeaderComponent implements OnInit {
   private updateBalance(balance: Balance): void {
     if (balance != null) {
       this.currentBalance = balance.ethBalance;
-      this.currentTokens = balance.svtBalance;
-      this.frozenTokens = +(balance.svtBalance - balance.availableBalance).toFixed(3);
       this.showReceiveEtherButton = !balance.wasEtherReceived;
-      this.showReceiveSVTButton = balance.canReceiveSvt;
     } else {
       this.showReceiveEtherButton = false;
-      this.showReceiveSVTButton = false;
     }
   }
 
   async receiveEth() {
     await this.balanceService.receiveEtherAsync();
-  }
-
-  async receiveSVT() {
-    await this.balanceService.receiveSvtAsync();
-  }
-
-  async navigateToAdminPanel() {
-    await this.router.navigate([Paths.Admin]);
-  }
-
-  async navigateToAccount() {
-    const isOk = await this.authenticationService.authenticateAsync();
-    if (isOk) {
-      await this.router.navigate([Paths.Account]);
-    }
-  }
-
-  async navigateToMyProjects() {
-    const isOk = await this.authenticationService.authenticateAsync();
-    if (isOk) {
-      await this.router.navigate([Paths.MyProjects]);
-    }
   }
 
   async navigateToScoring() {

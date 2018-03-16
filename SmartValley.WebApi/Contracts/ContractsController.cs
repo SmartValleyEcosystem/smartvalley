@@ -15,7 +15,7 @@ namespace SmartValley.WebApi.Contracts
         {
             _nethereumOptions = nethereumOptions;
         }
-        
+
         [HttpGet("scoringExpertsManager"), Authorize(Roles = nameof(RoleType.Admin))]
         public ContractResponse GetScoringExpertsManagerContract()
         {
@@ -83,30 +83,6 @@ namespace SmartValley.WebApi.Contracts
             return new ContractResponse
                    {
                        Abi = contractOptions.Abi
-                   };
-        }
-
-        [Route("token")]
-        [HttpGet]
-        public ContractResponse GetTokenContract()
-        {
-            var contractOptions = _nethereumOptions.TokenContract;
-            return new ContractResponse
-                   {
-                       Address = contractOptions.Address,
-                       Abi = contractOptions.Abi,
-                   };
-        }
-
-        [Route("minter")]
-        [HttpGet]
-        public ContractResponse GetMinterContract()
-        {
-            var contractOptions = _nethereumOptions.MinterContract;
-            return new ContractResponse
-                   {
-                       Address = contractOptions.Address,
-                       Abi = contractOptions.Abi,
                    };
         }
     }

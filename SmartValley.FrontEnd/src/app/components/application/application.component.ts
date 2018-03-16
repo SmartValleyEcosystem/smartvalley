@@ -73,16 +73,8 @@ export class ApplicationComponent implements OnInit {
     }
   }
 
-  public async onSubmitForTokensAsync() {
+  public async onSubmitAsync() {
     if (!this.validateForm()) {
-      return;
-    }
-
-    if (!await this.balanceService.checkSvtForScoringAsync()) {
-      return;
-    }
-
-    if (!await this.confirmSvtWithdrawalAsync()) {
       return;
     }
 
@@ -112,45 +104,6 @@ export class ApplicationComponent implements OnInit {
     this.notifyProjectCreated();
   }
 
-  public async onSubmitForFreeAsync() {
-    if (!this.validateForm()) {
-      return;
-    }
-
-    if (!await await this.dialogService.showFreeScoringConfirmationDialogAsync()) {
-      return;
-    }
-
-    const request = await this.createSubmitApplicationRequest();
-    const transactionHash = await this.enqueueProjectForVotingAsync(request.projectId);
-    if (transactionHash == null) {
-      this.notifyError();
-      this.isProjectCreating = false;
-      return;
-    }
-
-    const transactionDialog = this.dialogService.showTransactionDialog(
-      this.translateService.instant('Application.Dialog'),
-      transactionHash
-    );
-
-    await this.web3Service.waitForConfirmationAsync(transactionHash);
-    await this.applicationApiClient.submitAsync(request);
-    await this.balanceService.updateBalanceAsync();
-
-    transactionDialog.close();
-
-    await this.router.navigate([Paths.MyProjects]);
-    this.notifyProjectEnqueuedForVoting();
-  }
-
-  private notifyProjectEnqueuedForVoting() {
-    this.notificationsService.success(
-      this.translateService.instant('Common.Success'),
-      this.translateService.instant('Application.ProjectEnqueuedForVoting')
-    );
-  }
-
   private notifyProjectCreated() {
     this.notificationsService.success(
       this.translateService.instant('Common.Success'),
@@ -162,11 +115,6 @@ export class ApplicationComponent implements OnInit {
     this.notificationsService.error(
       this.translateService.instant('Common.Error'),
       this.translateService.instant('Common.TryAgain'));
-  }
-
-  private async confirmSvtWithdrawalAsync(): Promise<boolean> {
-    const projectCreationCost = await this.scoringManagerContractClient.getScoringCostAsync();
-    return await this.dialogService.showSvtWithdrawalConfirmationDialogAsync(projectCreationCost);
   }
 
   private createForm() {
@@ -226,14 +174,6 @@ export class ApplicationComponent implements OnInit {
   private async startScoringAsync(projectId: string, areas: number[], areaExpertCounts: number[]): Promise<string> {
     try {
       return await this.scoringManagerContractClient.startAsync(projectId, areas, areaExpertCounts);
-    } catch (e) {
-      return null;
-    }
-  }
-
-  private async enqueueProjectForVotingAsync(projectId: string): Promise<string> {
-    try {
-      return await this.votingManagerContractClient.enqueueProjectAsync(projectId);
     } catch (e) {
       return null;
     }

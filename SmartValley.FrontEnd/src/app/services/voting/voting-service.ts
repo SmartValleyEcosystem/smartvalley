@@ -111,7 +111,7 @@ export class VotingService {
 
     return await this.dialogService.showVoteDialogAsync(
       projectName,
-      this.balanceService.balance.availableBalance,
+      0,
       currentVoteBalance,
       currentSprintEndDate);
   }

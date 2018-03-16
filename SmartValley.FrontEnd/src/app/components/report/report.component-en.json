@@ -25,6 +25,6 @@
     "Minutes": "Min",
     "Seconds": "Sec",
     "SubmitForFree": "Submit for free scoring",
-    "SubmitForTokens": "Submit to scoring for {{scoringCost}} SVT"
+    "SubmitForTokens": "Submit to scoring"
   }
 }

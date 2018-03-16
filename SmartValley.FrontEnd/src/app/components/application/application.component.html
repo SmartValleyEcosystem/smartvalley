@@ -128,11 +128,8 @@
       </div>
     </div>
     <div [ngClass]="isTechShow ? '' : 'submit-btn'" class="row">
-      <button (click)="onSubmitForTokensAsync()" [disabled]="isProjectCreating" class="col-3 btn btn-primary">
+      <button (click)="onSubmitAsync()" [disabled]="isProjectCreating" class="col-3 btn btn-primary">
         {{ 'Application.Submit' | translate }}
-      </button>
-      <button (click)="onSubmitForFreeAsync()" [disabled]="isProjectCreating" class="col-3 btn btn-primary" style="margin-left: 1em">
-        {{ 'Application.SubmitForFree' | translate }}
       </button>
     </div>
   </form>

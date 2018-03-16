@@ -3,9 +3,6 @@ import {TransactionAwaitingModalData} from '../components/common/transaction-awa
 import {TransactionAwaitingModalComponent} from '../components/common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {ReceiveEtherModalComponent} from '../components/common/receive-ether-modal/receive-ether-modal.component';
-import {ReceiveSvtModalComponent} from '../components/common/receive-svt-modal/receive-svt-modal.component';
-import {SvtWithdrawalConfirmationModalComponent} from '../components/common/svt-withdrawal-confirmation-modal/svt-withdrawal-confirmation-modal.component';
-import {SvtWithdrawalConfirmationModalData} from '../components/common/svt-withdrawal-confirmation-modal/svt-withdrawal-confirmation-modal-data';
 import {ComponentType} from '@angular/cdk/portal';
 import {MetamaskManualModalData} from '../components/common/metamask-manual-modal/metamask-manual-modal-data';
 import {MetamaskManualModalComponent} from '../components/common/metamask-manual-modal/metamask-manual-modal.component';
@@ -36,20 +33,8 @@ export class DialogService {
   constructor(private dialog: MatDialog, private translateService: TranslateService) {
   }
 
-  public showGetEtherDialogAsync(): Promise<boolean> {
-    return this.openModalAsync(ReceiveEtherModalComponent, {canReceive: true});
-  }
-
-  public async showRinkeByDialogAsync(): Promise<boolean> {
-    return this.openModalAsync(ReceiveEtherModalComponent, {canReceive: false});
-  }
-
-  public async showSvtDialogAsync(date: string): Promise<boolean> {
-    return this.openModalAsync(ReceiveSvtModalComponent, {canReceive: false, date: date});
-  }
-
-  public async showGetTokenDialogAsync(): Promise<boolean> {
-    return this.openModalAsync(ReceiveSvtModalComponent, {canReceive: true});
+  public showGetEtherDialogAsync(alreadyReceived: boolean): Promise<boolean> {
+    return this.openModalAsync(ReceiveEtherModalComponent, {canReceive: !alreadyReceived});
   }
 
   public showSetExpertsDialogAsync(areas: Array<Area>): Promise<any> {
@@ -61,11 +46,6 @@ export class DialogService {
   public showTransactionDialog(message: string, transactionHash: string): MatDialogRef<TransactionAwaitingModalComponent> {
     const data = <TransactionAwaitingModalData>{message: message, transactionHash: transactionHash};
     return this.openModal(TransactionAwaitingModalComponent, data, true);
-  }
-
-  public showSvtWithdrawalConfirmationDialogAsync(amountToWithdraw: number): Promise<boolean> {
-    const data = <SvtWithdrawalConfirmationModalData>{amount: amountToWithdraw};
-    return this.openModalAsync(SvtWithdrawalConfirmationModalComponent, data);
   }
 
   public showFreeScoringConfirmationDialogAsync(): Promise<boolean> {
@@ -128,7 +108,7 @@ export class DialogService {
       .toPromise<boolean>();
   }
 
-  public showRinkebyAlert(): MatDialogRef<MetamaskManualModalComponent> {
+  public showMetamaskManualAlert(): MatDialogRef<MetamaskManualModalComponent> {
     const data = <MetamaskManualModalData>{
       title: this.translateService.instant('Authentication.WrongNetworkTitle'),
       message: this.translateService.instant('Authentication.WrongNetworkMessage'),

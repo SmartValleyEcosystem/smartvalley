@@ -1,12 +1,10 @@
 {
   "Header": {
     "Balance": "Balance",
-    "OnFreeze": "on freeze",
     "MyProjects": "My projects",
     "Account": "Account",
     "Logout": "Logout",
     "GetEther": "Get Ether",
-    "GetSVT": "Get SVT",
     "Login": "Register / Login",
     "Admin": "Admin",
     "GetScoreForMyProject": "Get score for my project",

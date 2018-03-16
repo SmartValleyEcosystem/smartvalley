@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {Web3Service} from '../web3-service';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {ConverterHelper} from '../converter-helper';
-import {TokenContractClient} from './token-contract-client';
 import {ContractClient} from './contract-client';
 import {AreaType} from '../../api/scoring/area-type.enum';
 import {Estimate} from '../estimate';
@@ -17,8 +16,7 @@ export class ScoringManagerContractClient implements ContractClient {
 
   constructor(private userContext: UserContext,
               private web3Service: Web3Service,
-              private contractClient: ContractApiClient,
-              private tokenClient: TokenContractClient) {
+              private contractClient: ContractApiClient) {
   }
 
   public async initializeAsync(): Promise<void> {
@@ -27,17 +25,21 @@ export class ScoringManagerContractClient implements ContractClient {
     this.address = scoringManagerContract.address;
   }
 
-  public startAsync(projectId: string,
-                    areas: Array<number>,
-                    areaExpertCounts: Array<number>): Promise<string> {
+  public async startAsync(projectId: string,
+                          areas: Array<number>,
+                          areaExpertCounts: Array<number>): Promise<string> {
     const scoringManagerContract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.userContext.getCurrentUser().account;
+    const scoringCost = await this.getScoringCostAsync();
 
-    return scoringManagerContract.start(
+    return await scoringManagerContract.start(
       projectId.replace(/-/g, ''),
       areas,
       areaExpertCounts,
-      {from: fromAddress});
+      {
+        from: fromAddress,
+        value: scoringCost
+      });
   }
 
   public startForFreeAsync(projectId: string,
@@ -57,8 +59,7 @@ export class ScoringManagerContractClient implements ContractClient {
 
   public async getScoringCostAsync(): Promise<number> {
     const scoringManager = this.web3Service.getContract(this.abi, this.address);
-    const cost = ConverterHelper.extractNumberValue(await scoringManager.scoringCostWEI());
-    return this.web3Service.fromWei(cost, await this.tokenClient.getDecimalsAsync());
+    return ConverterHelper.extractNumberValue(await scoringManager.scoringCostWEI());
   }
 
   public async submitEstimatesAsync(scoringAddress: string,

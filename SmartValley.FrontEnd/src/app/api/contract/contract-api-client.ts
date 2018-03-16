@@ -38,14 +38,4 @@ export class ContractApiClient extends BaseApiClient {
     return await this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/voting')
       .toPromise();
   }
-
-  async getTokenContractAsync(): Promise<ContractResponse> {
-    return await this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/token')
-      .toPromise();
-  }
-
-  async getMinterContractAsync(): Promise<ContractResponse> {
-    return await this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/minter')
-      .toPromise();
-  }
 }

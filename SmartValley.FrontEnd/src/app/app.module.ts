@@ -27,9 +27,7 @@ import {EstimateComponent} from './components/estimate/estimate.component';
 import {QuestionService} from './services/questions/question-service';
 import {ContractApiClient} from './api/contract/contract-api-client';
 import {ErrorInterceptor} from './api/error-interceptor';
-import {TokenContractClient} from './services/contract-clients/token-contract-client';
 import {AdminContractClient} from './services/contract-clients/admin-contract-client';
-import {MinterContractClient} from './services/contract-clients/minter-contract-client';
 import {ScoringApiClient} from './api/scoring/scoring-api-client';
 import {ProjectCardComponent} from './components/common/project-card/project-card.component';
 import {ProjectApiClient} from './api/project/project-api-client';
@@ -57,17 +55,14 @@ import {InitializationService} from './services/initialization/initialization.se
 import {InitializationGuard} from './services/initialization/initialization.guard';
 import {RootComponent} from './components/root/root.component';
 import {ReceiveEtherModalComponent} from './components/common/receive-ether-modal/receive-ether-modal.component';
-import {ReceiveSvtModalComponent} from './components/common/receive-svt-modal/receive-svt-modal.component';
 import {ShouldHaveEthGuard} from './services/balance/should-have-eth.guard';
 import {ProjectInformationComponent} from './components/common/project-information/project-information.component';
 import {AccountComponent} from './components/account/account.component';
 import {MatIconModule} from '@angular/material/icon';
 import {CompositeGuard} from './services/guards/composite.guard';
 import {GuardFactory} from './services/guards/guard-factory';
-import {ShouldHaveSvtGuard} from './services/balance/should-have-svt.guard';
 import {DashIfEmptyPipe} from './utils/dash-if-empty.pipe';
 import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-authenticated.guard';
-import {SvtWithdrawalConfirmationModalComponent} from './components/common/svt-withdrawal-confirmation-modal/svt-withdrawal-confirmation-modal.component';
 import {MyProjectsComponent} from './components/my-projects/my-projects.component';
 import {VotingService} from './services/voting/voting-service';
 import {VotingComponent} from './components/voting/voting.component';
@@ -111,10 +106,10 @@ import {ExpertStatusGuard} from './services/guards/expert-status.guard';
 import {AdminScoringProjectsComponent} from './components/admin-panel/admin-scoring-projects/admin-scoring-projects.component';
 import {SetExpertsModalComponent} from './components/common/set-experts-modal/set-experts-modal.component';
 import {ChangeEmailModalComponent} from './components/common/change-email-modal/change-email-modal.component';
-import { ExpertOffersHistoryComponent } from './components/expert/expert-offers-history/expert-offers-history.component';
+import {ExpertOffersHistoryComponent} from './components/expert/expert-offers-history/expert-offers-history.component';
 import {ExpertWorkPlaceComponent} from './components/expert/expert-work-place/expert-work-place.component';
 import {OffersApiClient} from './api/expert/offers-api-client';
-import { ExpertOffersComponent } from './components/expert/expert-offers/expert-offers.component';
+import {ExpertOffersComponent} from './components/expert/expert-offers/expert-offers.component';
 import {roundNumberPipe} from './utils/round-number.pipe';
 
 @NgModule({
@@ -139,11 +134,9 @@ import {roundNumberPipe} from './utils/round-number.pipe';
     InitializationComponent,
     RootComponent,
     ReceiveEtherModalComponent,
-    ReceiveSvtModalComponent,
     ProjectInformationComponent,
     AccountComponent,
     DashIfEmptyPipe,
-    SvtWithdrawalConfirmationModalComponent,
     MyProjectsComponent,
     VotingCardComponent,
     FreeScoringConfirmationModalComponent,
@@ -179,8 +172,6 @@ import {roundNumberPipe} from './utils/round-number.pipe';
     AlertModalComponent,
     MetamaskManualModalComponent,
     ReceiveEtherModalComponent,
-    ReceiveSvtModalComponent,
-    SvtWithdrawalConfirmationModalComponent,
     FreeScoringConfirmationModalComponent,
     VoteModalComponent,
     RegisterModalComponent,
@@ -242,8 +233,6 @@ import {roundNumberPipe} from './utils/round-number.pipe';
     ApplicationApiClient,
     ContractApiClient,
     AdminContractClient,
-    TokenContractClient,
-    MinterContractClient,
     ProjectApiClient,
     ScoringApiClient,
     EstimatesApiClient,
@@ -269,7 +258,6 @@ import {roundNumberPipe} from './utils/round-number.pipe';
     UserApiClient,
     InitializationGuard,
     ShouldHaveEthGuard,
-    ShouldHaveSvtGuard,
     ShouldBeAuthenticatedGuard,
     ShouldBeAdminGuard,
     GuardFactory,

@@ -21,9 +21,6 @@ import {UpdateUserRequest} from '../../api/user/update-user-request';
 export class AccountComponent implements OnInit {
 
   public currentBalance: number;
-  public currentTokens: number;
-  public transferableTokens: number;
-  public frozenTokens: number;
   public accountAddress: string;
   public accountImgUrl: string;
   public accountEmail: string;
@@ -106,9 +103,6 @@ export class AccountComponent implements OnInit {
   private updateBalances(balance: Balance): void {
     if (balance != null) {
       this.currentBalance = balance.ethBalance;
-      this.currentTokens = balance.svtBalance;
-      this.transferableTokens = balance.availableBalance;
-      this.frozenTokens = +(balance.svtBalance - balance.availableBalance).toFixed(3);
     }
   }
 

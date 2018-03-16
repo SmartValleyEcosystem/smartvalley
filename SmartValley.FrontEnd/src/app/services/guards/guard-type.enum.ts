@@ -1,4 +1,3 @@
 export enum GuardType {
-  ShouldHaveEth,
-  ShouldHaveSvt
+  ShouldHaveEth
 }
