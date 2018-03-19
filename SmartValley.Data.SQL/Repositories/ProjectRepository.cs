@@ -19,18 +19,53 @@ namespace SmartValley.Data.SQL.Repositories
         {
         }
 
-        public async Task<IReadOnlyCollection<ProjectDetails>> GetScoredAsync(int page, int pageSize)
+        private IQueryable<ProjectDetails> GetScoredQueryable(SearchProjectsQuery projectsQuery)
         {
-            return await (from project in ReadContext.Projects
-                          join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
-                          join application in ReadContext.Applications on project.Id equals application.ProjectId
-                          join country in ReadContext.Countries on project.CountryId equals country.Id
-                          where scoring.Score.HasValue
-                          orderby scoring.ScoringEndDate descending
-                          select new ProjectDetails(project, scoring, application, country))
-                       .Skip(page * pageSize)
-                       .Take(pageSize)
+            var query = from project in ReadContext.Projects
+                        join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
+                        join application in ReadContext.Applications on project.Id equals application.ProjectId
+                        join country in ReadContext.Countries on project.CountryId equals country.Id
+                        where scoring.Score.HasValue
+                        where !projectsQuery.StageType.HasValue || project.StageId == projectsQuery.StageType.Value
+                        where string.IsNullOrEmpty(projectsQuery.SearchString) || project.Name.ToUpper().Contains(projectsQuery.SearchString.ToUpper())
+                        where string.IsNullOrEmpty(projectsQuery.CountryCode) || country.Code == projectsQuery.CountryCode.ToUpper()
+                        where !projectsQuery.CategoryType.HasValue || project.CategoryId == projectsQuery.CategoryType.Value
+                        where !projectsQuery.MinimumScore.HasValue || scoring.Score >= projectsQuery.MinimumScore.Value
+                        where !projectsQuery.MaximumScore.HasValue || scoring.Score <= projectsQuery.MaximumScore.Value
+                        select new ProjectDetails(project, scoring, application, country);
+            return AddSorting(query, projectsQuery.OrderBy, projectsQuery.Direction);
+        }
+
+        public async Task<IReadOnlyCollection<ProjectDetails>> GetScoredAsync(SearchProjectsQuery projectsQuery)
+        {
+            return await GetScoredQueryable(projectsQuery)
+                       .Skip(projectsQuery.Offset)
+                       .Take(projectsQuery.Count)
                        .ToArrayAsync();
+        }
+
+        public Task<int> GetScoredTotalCountAsync(SearchProjectsQuery projectsQuery)
+        {
+            return GetScoredQueryable(projectsQuery).CountAsync();
+        }
+
+        private IQueryable<ProjectDetails> AddSorting(IQueryable<ProjectDetails> details, ProjectsOrderBy orderBy, SortDirection direction)
+        {
+            switch (orderBy)
+            {
+                case ProjectsOrderBy.Name:
+                    return @direction == SortDirection.Descending 
+                        ? details.OrderByDescending(i => i.Project.Name) 
+                        : details.OrderBy(i => i.Project.Name);
+                case ProjectsOrderBy.ScoringRating:
+                    return @direction == SortDirection.Descending 
+                        ? details.OrderByDescending(i => i.Scoring.Score) 
+                        : details.OrderBy(i => i.Scoring.Score);
+                default:
+                    return @direction == SortDirection.Descending 
+                        ? details.OrderByDescending(i => i.Scoring.ScoringEndDate) 
+                        : details.OrderBy(i => i.Scoring.ScoringEndDate);
+            }
         }
 
         public async Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorAsync(Address authorAddress)

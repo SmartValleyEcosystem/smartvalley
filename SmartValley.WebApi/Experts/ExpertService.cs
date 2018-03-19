@@ -92,6 +92,8 @@ namespace SmartValley.WebApi.Experts
         public Task SetAvailabilityAsync(long expertId, bool isAvailable)
             => _expertRepository.SetAvailabilityAsync(expertId, isAvailable);
 
+        public Task<int> GetTotalCountExpertsAsync() => _expertRepository.GetTotalCountExpertsAsync();
+
         public async Task AddAsync(ExpertRequest request)
         {
             var user = await _userRepository.GetByAddressAsync(request.Address);
@@ -168,8 +170,8 @@ namespace SmartValley.WebApi.Experts
             await _expertApplicationRepository.SetRejectedAsync(application);
         }
 
-        public Task<PagingList<ExpertDetails>> GetAllExpertsDetailsAsync(int page, int pageSize)
-            => _expertRepository.GetAllDetailsAsync(page, pageSize);
+        public Task<IReadOnlyCollection<ExpertDetails>> GetAllExpertsDetailsAsync(int offset, int count)
+            => _expertRepository.GetAllDetailsAsync(offset, count);
 
         public Task<IReadOnlyCollection<Area>> GetAreasAsync()
             => _expertRepository.GetAreasAsync();

@@ -55,8 +55,11 @@ namespace SmartValley.WebApi.Projects
             return details;
         }
 
-        public Task<IReadOnlyCollection<ProjectDetails>> GetScoredAsync(int page, int pageSize)
-            => _projectRepository.GetScoredAsync(page, pageSize);
+        public Task<IReadOnlyCollection<ProjectDetails>> GetScoredAsync(SearchProjectsQuery projectsQuery)
+            => _projectRepository.GetScoredAsync(projectsQuery);
+
+        public Task<int> GetScoredTotalCountAsync(SearchProjectsQuery projectsQuery)
+            => _projectRepository.GetScoredTotalCountAsync(projectsQuery);
 
         public Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorAsync(Address authorAddress)
             => _projectRepository.GetByAuthorAsync(authorAddress);

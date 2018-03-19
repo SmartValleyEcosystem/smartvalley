@@ -83,6 +83,9 @@ namespace SmartValley.Data.SQL.Repositories
             await _editContext.SaveAsync();
         }
 
+        public Task<int> GetTotalCountExpertsAsync() 
+            => _readContext.Experts.CountAsync();
+
         public async Task<ExpertDetails> GetDetailsAsync(Address address)
         {
             var expertUser = await (from expert in _readContext.Experts
@@ -108,13 +111,13 @@ namespace SmartValley.Data.SQL.Repositories
             );
         }
 
-        public async Task<PagingList<ExpertDetails>> GetAllDetailsAsync(int page, int pageSize)
+        public async Task<IReadOnlyCollection<ExpertDetails>> GetAllDetailsAsync(int offset, int count)
         {
             var expertUsersQuery = (from expert in _readContext.Experts
                                     join user in _readContext.Users on expert.UserId equals user.Id
                                     select new {expert, user})
-                                   .Skip(page * pageSize)
-                                   .Take(pageSize);
+                .Skip(offset)
+                .Take(count);
 
             var expertAreas = await (from expertUser in expertUsersQuery
                                      join expertArea in _readContext.ExpertAreas on expertUser.user.Id equals expertArea.ExpertId
@@ -123,11 +126,13 @@ namespace SmartValley.Data.SQL.Repositories
 
             var lookUpAreas = expertAreas.ToLookup(k => k.ExpertId, v => v.area);
 
-            var count = await _readContext.Experts.CountAsync();
-            var expertUsers = await expertUsersQuery.ToArrayAsync();
-
-            return new PagingList<ExpertDetails>(count, expertUsers.Select(expertUser
-                                                                               => new ExpertDetails(expertUser.user.Address, expertUser.user.Email, expertUser.user.Name, expertUser.user.About, expertUser.expert.IsAvailable, lookUpAreas[expertUser.expert.UserId].ToArray())));
+            return await expertUsersQuery.Select(expertUser =>
+                                          new ExpertDetails(expertUser.user.Address,
+                                                            expertUser.user.Email,
+                                                            expertUser.user.Name,
+                                                            expertUser.user.About,
+                                                            expertUser.expert.IsAvailable,
+                                                            lookUpAreas[expertUser.expert.UserId].ToArray())).ToArrayAsync();
         }
     }
 }

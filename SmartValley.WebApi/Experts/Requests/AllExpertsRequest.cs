@@ -1,9 +1,17 @@
-﻿namespace SmartValley.WebApi.Experts.Requests
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SmartValley.WebApi.Experts.Requests
 {
     public class AllExpertsRequest
     {
-        public int Page { get; set; }
+        public AllExpertsRequest()
+        {
+            Count = 100;
+        }
 
-        public int PageSize { get; set; }
+        public int Offset { get; set; }
+
+        [Range(1, 100)]
+        public int Count { get; set; }
     }
 }

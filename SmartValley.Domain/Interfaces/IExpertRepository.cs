@@ -7,7 +7,7 @@ namespace SmartValley.Domain.Interfaces
 {
     public interface IExpertRepository
     {
-        Task<PagingList<ExpertDetails>> GetAllDetailsAsync(int page, int pageSize);
+        Task<IReadOnlyCollection<ExpertDetails>> GetAllDetailsAsync(int offset, int count);
 
         Task<ExpertDetails> GetDetailsAsync(Address address);
 
@@ -24,5 +24,7 @@ namespace SmartValley.Domain.Interfaces
         Task<Expert> GetAsync(long expertId);
 
         Task SetAvailabilityAsync(long expertId, bool isAvailable);
+
+        Task<int> GetTotalCountExpertsAsync();
     }
 }

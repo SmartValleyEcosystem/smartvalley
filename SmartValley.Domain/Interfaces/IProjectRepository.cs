@@ -10,7 +10,9 @@ namespace SmartValley.Domain.Interfaces
     {
         Task<Project> GetByIdAsync(long id);
 
-        Task<IReadOnlyCollection<ProjectDetails>> GetScoredAsync(int page, int pageSize);
+        Task<IReadOnlyCollection<ProjectDetails>> GetScoredAsync(SearchProjectsQuery projectsQuery);
+
+        Task<int> GetScoredTotalCountAsync(SearchProjectsQuery projectsQuery);
 
         Task<int> AddAsync(Project project);
 

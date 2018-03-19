@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Domain;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
-using SmartValley.Domain.Exceptions;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Projects.Requests;
@@ -36,14 +36,14 @@ namespace SmartValley.WebApi.Projects
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateProjectRequest request)
         {
-            if (request.TeamMembers == null || 
-                !request.TeamMembers.Any() || 
-                request.TeamMembers.Any(i=>
-                i.Photo == null || 
-                i.Photo.Length < 0 || 
-                i.Photo.Length > FileSizeLimitBytes))
+            if (request.TeamMembers == null ||
+                !request.TeamMembers.Any() ||
+                request.TeamMembers.Any(i =>
+                                            i.Photo == null ||
+                                            i.Photo.Length < 0 ||
+                                            i.Photo.Length > FileSizeLimitBytes))
             {
-               // throw new AppErrorException(ErrorCode.InvalidFileUploaded);
+                // throw new AppErrorException(ErrorCode.InvalidFileUploaded);
             }
 
             await _projectService.CreateAsync(request);
@@ -71,12 +71,27 @@ namespace SmartValley.WebApi.Projects
 
         [HttpGet]
         [Route("scored")]
-        public async Task<CollectionResponse<ProjectResponse>> GetScoredAsync([FromQuery] GetScoredProjectsRequest request)
+        public async Task<PartialCollectionResponse<ProjectResponse>> GetScoredAsync([FromQuery] GetScoredProjectsRequest request)
         {
-            var projects = await _projectService.GetScoredAsync(request.Page, request.PageSize);
+            var projectsQuery = new SearchProjectsQuery(
+                request.Offset,
+                request.Count,
+                request.SearchString,
+                request.StageType,
+                request.CountryCode,
+                request.CategoryType,
+                request.MinimumScore,
+                request.MaximumScore,
+                request.OrderBy,
+                request.Direction
+            );
+            var projects = await _projectService.GetScoredAsync(projectsQuery);
+
+            var totalCount = await _projectService.GetScoredTotalCountAsync(projectsQuery);
+
             var projectResponses = projects.Select(ProjectResponse.Create).ToArray();
 
-            return new CollectionResponse<ProjectResponse> {Items = projectResponses};
+            return new PartialCollectionResponse<ProjectResponse>(request.Offset, projectResponses.Length, totalCount, projectResponses);
         }
 
         [HttpGet("scoring"), Authorize(Roles = nameof(RoleType.Admin))]

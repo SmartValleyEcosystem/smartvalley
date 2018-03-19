@@ -18,7 +18,7 @@ import {EditExpertModalData} from "../../common/edit-expert-modal/edit-expert-mo
 export class AdminExpertsListComponent implements OnInit {
   public totalRecords: number;
   public loading: boolean;
-  public currentPage = 0;
+  public offset = 0;
   public pageSize = 10;
   public expertsResponse: CollectionResponse<ExpertResponse>;
   public experts: AdminExpertItem[] = [];
@@ -32,12 +32,8 @@ export class AdminExpertsListComponent implements OnInit {
   }
 
   public async getExpertList(event: LazyLoadEvent) {
-    this.currentPage = (event.first / event.rows);
-    this.loading = true;
-    this.expertsResponse = await this.expertApiClient.getExpertsListAsync(this.currentPage, this.pageSize);
-    this.renderTableRows(this.expertsResponse.items);
-    this.loading = false;
-
+    this.offset = event.first;
+    await this.loadExpertsAsync();
   }
 
   public renderTableRows(expertResponseItems: ExpertResponse[]) {
@@ -60,12 +56,12 @@ export class AdminExpertsListComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.loadExperts();
+    await this.loadExpertsAsync();
   }
 
-  private async loadExperts() {
+  private async loadExpertsAsync(): Promise<void> {
     this.loading = true;
-    this.expertsResponse = (await this.expertApiClient.getExpertsListAsync(this.currentPage, this.pageSize));
+    this.expertsResponse = (await this.expertApiClient.getExpertsListAsync(this.offset, this.pageSize));
     this.totalRecords = this.expertsResponse.totalCount;
     this.renderTableRows(this.expertsResponse.items);
     this.loading = false;
@@ -84,6 +80,6 @@ export class AdminExpertsListComponent implements OnInit {
     await this.dialogService.showEditExpertModal(<EditExpertModalData> {
       address: rowData.address
     });
-    await this.loadExperts();
+    await this.loadExpertsAsync();
   }
 }

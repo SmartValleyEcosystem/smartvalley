@@ -39,7 +39,6 @@ export class InitializationService {
     await Promise.all([
       this.authenticationService.initializeAsync(),
       //this.questionService.initializeAsync(),
-      this.minterContractClient.initializeAsync(),
       this.adminContractClient.initializeAsync(),
       this.scoringManagerContractClient.initializeAsync(),
       this.votingManagerContractClient.initializeAsync(),

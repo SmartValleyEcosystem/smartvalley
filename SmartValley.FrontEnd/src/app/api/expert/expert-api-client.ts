@@ -61,10 +61,10 @@ export class ExpertApiClient extends BaseApiClient {
     }).toPromise();
   }
 
-  public async getExpertsListAsync(page: number, pageSize: number): Promise<CollectionResponse<ExpertResponse>> {
+  public async getExpertsListAsync(offset: number, count: number): Promise<CollectionResponse<ExpertResponse>> {
     const parameters = new HttpParams()
-      .append('page', page.toString())
-      .append('pageSize', pageSize.toString());
+      .append('offset', offset.toString())
+      .append('count', count.toString());
 
     return await this.http.get<CollectionResponse<ExpertResponse>>(`${this.baseApiUrl}/experts/all/`, {
       params: parameters

@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -134,14 +133,12 @@ namespace SmartValley.WebApi.Experts
 
         [HttpGet("all")]
         [Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<CollectionResponse<ExpertResponse>> GetAllExperts(AllExpertsRequest request)
+        public async Task<PartialCollectionResponse<ExpertResponse>> GetAllExperts(AllExpertsRequest request)
         {
-            var experts = await _expertService.GetAllExpertsDetailsAsync(request.Page, request.PageSize);
-            return new CollectionResponse<ExpertResponse>
-                   {
-                       Items = experts.Select(ExpertResponse.Create).ToArray(),
-                       TotalCount = experts.TotalCount
-                   };
+            var experts = await _expertService.GetAllExpertsDetailsAsync(request.Offset, request.Count);
+            var totalCount = await _expertService.GetTotalCountExpertsAsync();
+            return new PartialCollectionResponse<ExpertResponse>(
+                request.Offset, experts.Count, totalCount, experts.Select(ExpertResponse.Create).ToArray());
         }
 
         [HttpGet("availability")]
