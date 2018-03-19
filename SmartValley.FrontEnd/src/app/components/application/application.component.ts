@@ -107,8 +107,7 @@ export class ApplicationComponent implements OnInit {
     });
   }
 
-  private createSubmitApplicationRequest(): CreateProjectRequest {
-    const user = this.userContext.getCurrentUser();
+  private createSubmitApplicationRequest(): CreateProjectRequest {   ;
     const form = this.applicationForm.value;
     return <CreateProjectRequest>{
       contactEmail: form.contactEmail,
@@ -116,10 +115,9 @@ export class ApplicationComponent implements OnInit {
       name: form.name,
       description: form.description,
       icoDate: form.icoDate,
-      projectAreaId: form.projectArea,
+      categoryId: form.projectArea,
       whitePaperLink: form.whitePaperLink,
       projectId: uuid(),
-      authorAddress: user.account,
       website: form.website
       //teamMembers: form.teamMembers.filter(m => !isNullOrUndefined(m.fullName))
     };

@@ -88,7 +88,8 @@ namespace SmartValley.WebApi
             services.AddSingleton<MailTokenService>();
             services.AddSingleton<MailSender>();
             services.AddSingleton<ITemplateProvider, TemplateProvider>();
-            services.AddSingleton<TeamMemberPhotosStorageProvider>();
+            services.AddSingleton<ProjectTeamMembersStorageProvider>();
+            services.AddSingleton<ApplicationTeamMembersStorageProvider>();
             services.AddSingleton<ExpertApplicationsStorageProvider>();
             services.AddSingleton<ITokenContractClient, TokenContractClient>(
                 provider => new TokenContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().TokenContract));

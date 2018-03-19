@@ -18,9 +18,9 @@ namespace SmartValley.WebApi.Projects
         private readonly IApplicationRepository _applicationRepository;
         private readonly IProjectRepository _projectRepository;
         private readonly IScoringRepository _scoringRepository;
-        private readonly IProjectTeamMemberRepository _teamRepository;
+        private readonly IProjectTeamMemberRepository _teamMemberRepository;
         private readonly ICountryRepository _countryRepository;
-        private readonly TeamMemberPhotosStorageProvider _teamMemberPhotosStorageProvide;
+        private readonly ProjectTeamMembersStorageProvider _projectTeamMembersStorageProvider;
         private readonly IProjectSocialMediaRepository _socialMediaRepository;
         private readonly IProjectTeamMemberSocialMediaRepository _projectTeamMemberSocialMediaRepository;
 
@@ -28,18 +28,18 @@ namespace SmartValley.WebApi.Projects
             IApplicationRepository applicationRepository,
             IProjectRepository projectRepository,
             IScoringRepository scoringRepository,
-            IProjectTeamMemberRepository teamRepository,
+            IProjectTeamMemberRepository teamMemberRepository,
             ICountryRepository countryRepository,
-            TeamMemberPhotosStorageProvider teamMemberPhotosStorageProvide,
+            ProjectTeamMembersStorageProvider projectTeamMembersStorageProvider,
             IProjectSocialMediaRepository socialMediaRepository,
             IProjectTeamMemberSocialMediaRepository projectTeamMemberSocialMediaRepository)
         {
             _applicationRepository = applicationRepository;
             _projectRepository = projectRepository;
             _scoringRepository = scoringRepository;
-            _teamRepository = teamRepository;
+            _teamMemberRepository = teamMemberRepository;
             _countryRepository = countryRepository;
-            _teamMemberPhotosStorageProvide = teamMemberPhotosStorageProvide;
+            _projectTeamMembersStorageProvider = projectTeamMembersStorageProvider;
             _socialMediaRepository = socialMediaRepository;
             _projectTeamMemberSocialMediaRepository = projectTeamMemberSocialMediaRepository;
         }
@@ -49,7 +49,7 @@ namespace SmartValley.WebApi.Projects
             var project = await FindAsync(projectId);
             var projectScoring = await _scoringRepository.GetByProjectIdAsync(projectId);
             var application = await _applicationRepository.GetByProjectIdAsync(projectId);
-            var teamMembers = await _teamRepository.GetAllByProjectIdAsync(projectId);
+            var teamMembers = await _teamMemberRepository.GetAllByProjectIdAsync(projectId);
             var country = await _countryRepository.GetByIdAsync(project.CountryId);
             var details = new ProjectDetails(project, projectScoring, application, country) {TeamMembers = teamMembers};
             return details;
@@ -60,6 +60,13 @@ namespace SmartValley.WebApi.Projects
 
         public Task<int> GetScoredTotalCountAsync(SearchProjectsQuery projectsQuery)
             => _projectRepository.GetScoredTotalCountAsync(projectsQuery);
+
+        public async Task<bool> IsAuthorizedToEditProjectTeamMemberAsync(Address account, long projectTeamMemberId)
+        {
+            var projectTeamMember = await _teamMemberRepository.GetByIdAsync(projectTeamMemberId);
+            var project = await FindAsync(projectTeamMember.ProjectId);
+            return project.AuthorAddress == account;
+        }
 
         public Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorAsync(Address authorAddress)
             => _projectRepository.GetByAuthorAsync(authorAddress);
@@ -81,12 +88,12 @@ namespace SmartValley.WebApi.Projects
         public Task<IReadOnlyCollection<ProjectDetails>> GetProjectsByNameAsync(string projectName)
             => _projectRepository.GetAllByNameAsync(projectName);
 
-        public async Task CreateAsync(CreateProjectRequest request)
+        public async Task CreateAsync(CreateProjectRequest request, Address author)
         {
             if (request == null)
                 throw new ArgumentNullException();
 
-            var projectId = await AddProjectAsync(request);
+            var projectId = await AddProjectAsync(request, author);
             if (request.SocialMedias != null && request.SocialMedias.Any())
                 await AddSocialMediasAsync(request, projectId);
 
@@ -94,21 +101,17 @@ namespace SmartValley.WebApi.Projects
             {
                 var teamMembers = await AddTeamMembersAsync(request, projectId);
                 await AddTeamMembersSocialMediasAsync(request, teamMembers);
-
-                //TODO ILT-693
-                //var downloads = new List<Task>();
-                //foreach (var member in request.TeamMembers)
-                //{
-                //    var azureFile = member.Photo.ToAzureFile();
-                //    var azureFileName = $"project-{projectId}/member-{member}/photo{azureFile.Extension}";
-                //    downloads.Add(_teamMemberPhotosStorageProvide.UploadAsync(azureFileName, azureFile));
-                //}
-
-                //await Task.WhenAll(downloads);
             }
         }
 
-        private async Task<long> AddProjectAsync(CreateProjectRequest request)
+        public async Task UpdateTeamMemberPhotoAsync(long projectTeamMemberId, AzureFile photo)
+        {
+            var photoName = $"project-{projectTeamMemberId}/photo{photo.Extension}";
+            await _projectTeamMembersStorageProvider.UploadAsync(photoName, photo);
+            await _teamMemberRepository.UpdatePhotoNameAsync(projectTeamMemberId, photoName);
+        }
+
+        private async Task<long> AddProjectAsync(CreateProjectRequest request, Address author)
         {
             var country = await _countryRepository.GetByCodeAsync(request.CountryCode);
             if (country == null)
@@ -120,7 +123,7 @@ namespace SmartValley.WebApi.Projects
                               CountryId = country.Id,
                               CategoryId = (CategoryType) request.CategoryId,
                               Description = request.Description,
-                              AuthorAddress = request.AuthorAddress,
+                              AuthorAddress = author,
                               ExternalId = Guid.Parse(request.ProjectId),
                               ContactEmail = request.ContactEmail,
                               IcoDate = request.IcoDate,
@@ -133,7 +136,7 @@ namespace SmartValley.WebApi.Projects
             return project.Id;
         }
 
-        private ProjectTeamMember CreateTeamMember(TeamMemberRequest memberRequest, long projectId)
+        private ProjectTeamMember CreateTeamMember(ProjectTeamMemberRequest memberRequest, long projectId)
         {
             return new ProjectTeamMember
                    {
@@ -167,9 +170,9 @@ namespace SmartValley.WebApi.Projects
         private async Task<ProjectSocialMedia[]> AddSocialMediasAsync(CreateProjectRequest request, long projectId)
         {
             var socialMedias = request
-                .SocialMedias
-                .Select(s => CreateProjectSocialMedia(s, projectId))
-                .ToArray();
+                               .SocialMedias
+                               .Select(s => CreateProjectSocialMedia(s, projectId))
+                               .ToArray();
             await _socialMediaRepository.AddRangeAsync(socialMedias);
             return socialMedias;
         }
@@ -206,10 +209,10 @@ namespace SmartValley.WebApi.Projects
         private async Task<ProjectTeamMember[]> AddTeamMembersAsync(CreateProjectRequest request, long projectId)
         {
             var teamMembers = request
-                .TeamMembers
-                .Select(m => CreateTeamMember(m, projectId))
-                .ToArray();
-            await _teamRepository.AddRangeAsync(teamMembers);
+                              .TeamMembers
+                              .Select(m => CreateTeamMember(m, projectId))
+                              .ToArray();
+            await _teamMemberRepository.AddRangeAsync(teamMembers);
             return teamMembers;
         }
 

@@ -27,9 +27,11 @@ namespace SmartValley.Application.AzureStorage
             }
         }
 
-        public Task UploadAsync(string fileName, AzureFile file)
+        public async Task UploadAsync(string fileName, AzureFile file)
         {
-            return _container.GetBlockBlobReference(fileName).UploadFromByteArrayAsync(file.Data, 0, file.Data.Length);
+            var blockBlob = _container.GetBlockBlobReference(fileName);
+            await blockBlob.DeleteIfExistsAsync();
+            await blockBlob.UploadFromByteArrayAsync(file.Data, 0, file.Data.Length);
         }
     }
 }

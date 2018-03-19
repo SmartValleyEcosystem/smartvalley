@@ -34,6 +34,6 @@ namespace SmartValley.WebApi.Applications.Requests
 
         public bool AttractedInvestments { get; set; }
 
-        public IEnumerable<TeamMemberRequest> TeamMembers { get; set; }
+        public IEnumerable<ApplicationTeamMemberRequest> TeamMembers { get; set; }
     }
 }

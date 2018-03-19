@@ -2,10 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SmartValley.Application.Extensions;
 using SmartValley.Domain;
 using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
+using SmartValley.Domain.Exceptions;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Projects.Requests;
@@ -34,19 +37,28 @@ namespace SmartValley.WebApi.Projects
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Post([FromBody] CreateProjectRequest request)
         {
-            if (request.TeamMembers == null ||
-                !request.TeamMembers.Any() ||
-                request.TeamMembers.Any(i =>
-                                            i.Photo == null ||
-                                            i.Photo.Length < 0 ||
-                                            i.Photo.Length > FileSizeLimitBytes))
+            await _projectService.CreateAsync(request, User.Identity.Name);
+            return NoContent();
+        }
+
+        [HttpPut("teammember")]
+        [Authorize]
+        public async Task<IActionResult> UploadTeamMemberPhotoAsync([FromForm] AddProjectTeamMemberPhotoRequest request, IFormFile photo)
+        {
+            if (photo == null ||
+                photo.Length < 0 ||
+                photo.Length > FileSizeLimitBytes)
             {
-                // throw new AppErrorException(ErrorCode.InvalidFileUploaded);
+                throw new AppErrorException(ErrorCode.InvalidFileUploaded);
             }
 
-            await _projectService.CreateAsync(request);
+            if (!await _projectService.IsAuthorizedToEditProjectTeamMemberAsync(User.Identity.Name, request.ProjectTeamMemberId))
+                return Unauthorized();
+
+            await _projectService.UpdateTeamMemberPhotoAsync(request.ProjectTeamMemberId, photo.ToAzureFile());
             return NoContent();
         }
 

@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 
 namespace SmartValley.WebApi.Projects.Requests
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class TeamMemberRequest
+    public class ProjectTeamMemberRequest
     {
         public string FullName { get; set; }
 
@@ -11,10 +12,10 @@ namespace SmartValley.WebApi.Projects.Requests
 
         public string About { get; set; }
 
-        public IFormFile Photo { get; set; }
-
         public string FacebookLink { get; set; }
 
         public string LinkedInLink { get; set; }
+
+        public IReadOnlyCollection<SocialMediaRequest> SocialMedias { get; set; }
     }
 }

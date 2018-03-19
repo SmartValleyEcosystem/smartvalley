@@ -60,7 +60,7 @@ namespace SmartValley.WebApi.Applications
             return _teamRepository.AddRangeAsync(teamMembers);
         }
 
-        private static ApplicationTeamMember CreateTeamMember(TeamMemberRequest memberRequest, long applicationId)
+        private static ApplicationTeamMember CreateTeamMember(ApplicationTeamMemberRequest memberRequest, long applicationId)
         {
             return new ApplicationTeamMember
                    {

@@ -9,5 +9,9 @@ namespace SmartValley.Domain.Interfaces
         Task<int> AddRangeAsync(IEnumerable<ProjectTeamMember> teamMembers);
 
         Task<IReadOnlyCollection<ProjectTeamMember>> GetAllByProjectIdAsync(long projectId);
+        
+        Task UpdatePhotoNameAsync(long id, string photoName);
+
+        Task<ProjectTeamMember> GetByIdAsync(long id);
     }
 }

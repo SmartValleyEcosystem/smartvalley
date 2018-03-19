@@ -8,8 +8,6 @@ namespace SmartValley.WebApi.Projects.Requests
     {
         public string Name { get; set; }
 
-        public string AuthorAddress { get; set; }
-
         public int CategoryId { get; set; }
 
         public int StageId { get; set; }
@@ -33,6 +31,6 @@ namespace SmartValley.WebApi.Projects.Requests
 
         public IReadOnlyCollection<SocialMediaRequest> SocialMedias { get; set; }
 
-        public IReadOnlyCollection<TeamMemberRequest> TeamMembers { get; set; }
+        public IReadOnlyCollection<ProjectTeamMemberRequest> TeamMembers { get; set; }
     }
 }

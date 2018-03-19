@@ -19,5 +19,18 @@ namespace SmartValley.Data.SQL.Repositories
             await ReadContext.ProjectTeamMembers
                              .Where(t => t.ProjectId == projectId)
                              .ToArrayAsync();
+
+        public Task UpdatePhotoNameAsync(long id, string photoName)
+        {
+            var projectTeamMember = new ProjectTeamMember
+                                    {
+                                        Id = id,
+                                        PhotoName = photoName
+                                    };
+
+            EditContext.ProjectTeamMembers.Attach(projectTeamMember);
+            EditContext.Entity(projectTeamMember).Property(p => p.PhotoName).IsModified = true;
+            return EditContext.SaveAsync();
+        }
     }
 }

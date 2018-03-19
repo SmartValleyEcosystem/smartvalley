@@ -3,8 +3,7 @@ import {SocialMediaRequest} from '../application/social-media-request';
 
 export interface CreateProjectRequest {
   name: string;
-  authorAddress: string;
-  projectAreaId: number;
+  categoryId: number;
   stageId: number;
   projectId: string;
   description: string;
