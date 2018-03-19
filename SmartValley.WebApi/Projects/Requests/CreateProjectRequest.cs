@@ -10,7 +10,7 @@ namespace SmartValley.WebApi.Projects.Requests
 
         public string AuthorAddress { get; set; }
 
-        public int ProjectAreaId { get; set; }
+        public int CategoryId { get; set; }
 
         public int StageId { get; set; }
 

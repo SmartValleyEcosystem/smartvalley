@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Domain.Entities;
@@ -36,6 +37,18 @@ namespace SmartValley.WebApi.Applications
             var applicationId = await AddApplicationAsync(applicationRequest, projectId);
             await AddTeamMembersAsync(applicationRequest, applicationId);
         }
+
+        public Task<IReadOnlyCollection<Country>> GetCountriesAsync()
+            => _countryRepository.GetAllAsync();
+
+        public Task<IReadOnlyCollection<Category>> GetCategoriesAsync()
+            => _applicationRepository.GetCategoriesAsync();
+
+        public Task<IReadOnlyCollection<Stage>> GetStagesAsync()
+            => _applicationRepository.GetStagesAsync();
+
+        public Task<IReadOnlyCollection<SocialMedia>> GetSocialMediasAsync()
+            => _applicationRepository.GetSocialMediasAsync();
 
         private Task AddTeamMembersAsync(ApplicationRequest applicationRequest, long applicationId)
         {

@@ -118,7 +118,7 @@ namespace SmartValley.WebApi.Projects
                           {
                               Name = request.Name,
                               CountryId = country.Id,
-                              CategoryId = (CategoryType) request.ProjectAreaId,
+                              CategoryId = (CategoryType) request.CategoryId,
                               Description = request.Description,
                               AuthorAddress = request.AuthorAddress,
                               ExternalId = Guid.Parse(request.ProjectId),
