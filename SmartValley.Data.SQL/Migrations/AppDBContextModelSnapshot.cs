@@ -183,17 +183,17 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<long>("ExpertId");
 
-                    b.Property<long>("ProjectId");
-
                     b.Property<long>("QuestionId");
+
+                    b.Property<long>("ScoringId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ExpertId");
 
-                    b.HasIndex("ProjectId");
-
                     b.HasIndex("QuestionId");
+
+                    b.HasIndex("ScoringId");
 
                     b.ToTable("EstimateComments");
                 });
@@ -658,14 +658,14 @@ namespace SmartValley.Data.SQL.Migrations
                         .HasForeignKey("ExpertId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SmartValley.Domain.Entities.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("SmartValley.Domain.Entities.Question", "Question")
                         .WithMany()
                         .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SmartValley.Domain.Entities.Scoring", "Scoring")
+                        .WithMany()
+                        .HasForeignKey("ScoringId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

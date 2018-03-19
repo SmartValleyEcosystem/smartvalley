@@ -7,7 +7,7 @@ namespace SmartValley.Domain.Entities
     {
         public long Id { get; set; }
         
-        public long ProjectId { get; set; }
+        public long ScoringId { get; set; }
         
         public long ExpertId { get; set; }
         
@@ -16,7 +16,7 @@ namespace SmartValley.Domain.Entities
         [Required]
         public string Comment { get; set; }
 
-        public Project Project { get; set; }
+        public Scoring Scoring { get; set; }
 
         public Question Question { get; set; }
 

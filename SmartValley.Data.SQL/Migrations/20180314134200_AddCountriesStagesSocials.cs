@@ -575,7 +575,8 @@ namespace SmartValley.Data.SQL.Migrations
                 unique: true,
                 filter: "[Name] IS NOT NULL");
 
-            migrationBuilder.Sql(@"delete from  Projects");
+            migrationBuilder.Sql(@"update Projects set CountryId = 1");
+            migrationBuilder.Sql(@"update Projects set StageId = 1");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Projects_Categories_CategoryId",

@@ -82,17 +82,17 @@ namespace SmartValley.Data.SQL.Repositories
         {
             var scoredProjects = (from question in ReadContext.Questions
                                   join comment in ReadContext.EstimateComments on question.Id equals comment.QuestionId
-                                  join scoring in ReadContext.Scorings on comment.ProjectId equals scoring.ProjectId
+                                  join scoring in ReadContext.Scorings on comment.ScoringId equals scoring.Id
                                   join areaScoring in ReadContext.AreaScorings on scoring.Id equals areaScoring.ScoringId
                                   where comment.ExpertId == expertId && question.AreaType == areaType ||
                                         areaScoring.AreaId == areaType && areaScoring.IsCompleted
-                                  select comment.ProjectId).Distinct();
+                                  select comment.ScoringId).Distinct();
 
             return await (from project in ReadContext.Projects
-                          where !scoredProjects.Contains(project.Id)
                           join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
                           join application in ReadContext.Applications on project.Id equals application.ProjectId
                           join country in ReadContext.Countries on project.CountryId equals country.Id
+                          where !scoredProjects.Contains(scoring.Id)
                           select new ProjectDetails(project, scoring, application, country)).ToArrayAsync();
         }
 

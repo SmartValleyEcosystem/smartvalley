@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application.Contracts.Scorings;
 using SmartValley.Domain;
@@ -50,7 +51,7 @@ namespace SmartValley.WebApi.Estimates
             if (!isOfferAccepted)
                 throw new AppErrorException(ErrorCode.AcceptedOfferNotFound);
 
-            await AddEstimateCommentsAsync(expert.UserId, request);
+            await AddEstimateCommentsAsync(expert.UserId, request.EstimateComments, scoring.Id);
 
             await UpdateProjectScoringAsync(scoring);
 
@@ -64,16 +65,16 @@ namespace SmartValley.WebApi.Estimates
                 return ScoringStatisticsInArea.Empty;
 
             var estimateScores = await _scoringContractClient.GetEstimatesAsync(scoring.ContractAddress);
-            var comments = await _estimateCommentRepository.GetAsync(projectId, areaType);
+            var comments = await _estimateCommentRepository.GetByProjectIdAsync(projectId, areaType);
             var users = await _userRepository.GetIdsByAddressesAsync(estimateScores.Select(x => x.ExpertAddress).ToArray());
-            
+
             var estimates = (from user in users
                              join comment in comments
                                  on user.Id equals comment.ExpertId
                              join score in estimateScores
-                                 on new { QuestionId = comment.QuestionId, Address = user.Address }
-                                 equals new { QuestionId = score.QuestionId, Address = score.ExpertAddress}
-                             select CreateEstimate(score, comment, user.Address)).ToArray();
+                                 on new {QuestionId = comment.QuestionId, Address = user.Address}
+                                 equals new {QuestionId = score.QuestionId, Address = score.ExpertAddress}
+                             select CreateEstimate(score, comment)).ToArray();
 
             var requiredSubmissionsInArea = (double) await _scoringContractClient.GetRequiredSubmissionsInAreaCountAsync(scoring.ContractAddress, areaType);
             var isCompletedInArea = await _scoringRepository.IsCompletedInAreaAsync(scoring.Id, areaType);
@@ -82,8 +83,8 @@ namespace SmartValley.WebApi.Estimates
             return new ScoringStatisticsInArea(averageScore, estimates);
         }
 
-        private static Estimate CreateEstimate(EstimateScore score, EstimateComment comment, Address address)
-            => new Estimate(comment.ProjectId, address, score.QuestionId, score.Score, comment.Comment);
+        private static Estimate CreateEstimate(EstimateScore score, EstimateComment comment)
+            => new Estimate(score.QuestionId, score.Score, comment.Comment);
 
         private async Task UpdateProjectScoringAsync(Domain.Entities.Scoring scoring)
         {
@@ -99,11 +100,10 @@ namespace SmartValley.WebApi.Estimates
             await _scoringRepository.SetAreasCompletedAsync(scoring.Id, scoringStatistics.ScoredAreas);
         }
 
-        private Task AddEstimateCommentsAsync(long expertUserId, SubmitEstimatesRequest request)
+        private Task AddEstimateCommentsAsync(long expertUserId, IReadOnlyCollection<EstimateCommentRequest> estimateComments, long scoringId)
         {
-            var estimates = request
-                            .EstimateComments
-                            .Select(e => CreateEstimateComment(e, request.ProjectId, expertUserId))
+            var estimates = estimateComments
+                            .Select(e => CreateEstimateComment(e, scoringId, expertUserId))
                             .ToArray();
 
             return _estimateCommentRepository.AddRangeAsync(estimates);
@@ -111,12 +111,12 @@ namespace SmartValley.WebApi.Estimates
 
         private static EstimateComment CreateEstimateComment(
             EstimateCommentRequest estimateComment,
-            long projectId,
+            long scoringId,
             long expertId)
         {
             return new EstimateComment
                    {
-                       ProjectId = projectId,
+                       ScoringId = scoringId,
                        ExpertId = expertId,
                        QuestionId = estimateComment.QuestionId,
                        Comment = estimateComment.Comment
