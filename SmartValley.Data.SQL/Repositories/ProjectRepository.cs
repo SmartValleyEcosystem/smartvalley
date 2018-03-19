@@ -72,7 +72,7 @@ namespace SmartValley.Data.SQL.Repositories
         {
             return await (from project in ReadContext.Projects
                           from scoring in ReadContext.Scorings.Where(s => s.ProjectId == project.Id).DefaultIfEmpty()
-                          join application in ReadContext.Applications on project.Id equals application.ProjectId
+                          from application in ReadContext.Applications.Where(a => a.ProjectId == project.Id).DefaultIfEmpty()
                           join country in ReadContext.Countries on project.CountryId equals country.Id
                           where project.AuthorAddress == authorAddress
                           select new ProjectDetails(project, scoring, application, country)).ToArrayAsync();

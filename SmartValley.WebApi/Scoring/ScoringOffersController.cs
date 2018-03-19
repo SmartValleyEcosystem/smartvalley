@@ -65,7 +65,7 @@ namespace SmartValley.WebApi.Scoring
         }
 
         [HttpPut("accept")]
-        public async Task<EmptyResponse> AcceptAsync(AcceptRejectOfferRequest request)
+        public async Task<EmptyResponse> AcceptAsync([FromBody] AcceptRejectOfferRequest request)
         {
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
             await _scoringService.AcceptOfferAsync(request.ScoringId, request.AreaId, User.GetUserId());
@@ -73,7 +73,7 @@ namespace SmartValley.WebApi.Scoring
         }
 
         [HttpPut("reject")]
-        public async Task<EmptyResponse> RejectAsync(AcceptRejectOfferRequest request)
+        public async Task<EmptyResponse> RejectAsync([FromBody] AcceptRejectOfferRequest request)
         {
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
             await _scoringService.RejectOfferAsync(request.ScoringId, request.AreaId, User.GetUserId());

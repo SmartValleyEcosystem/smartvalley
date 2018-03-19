@@ -57,29 +57,29 @@ namespace SmartValley.WebApi.Projects.Responses
                                     : (details.Scoring.Score.HasValue ? ScoringStatus.Finished : ScoringStatus.InProgress);
 
             return new ProjectDetailsResponse
-                   {
-                       Name = details.Project.Name,
-                       ExternalId = details.Project.ExternalId.ToString(),
-                       Description = details.Project.Description,
-                       AuthorAddress = details.Project.AuthorAddress,
-                       Country = details.Country.Code,
-                       CategoryId = (int) details.Project.CategoryId,
-                       Score = details.Scoring?.Score,
-                       ScoringContractAddress = details.Scoring?.ContractAddress,
-                       AttractedInvestments = details.Application.InvestmentsAreAttracted,
-                       BlockChainType = details.Application.BlockchainType,
-                       FinanceModelLink = details.Application.FinancialModelLink,
-                       HardCap = details.Application.HardCap,
-                       SoftCap = details.Application.SoftCap,
-                       MvpLink = details.Application.MvpLink,
-                       Status = details.Application.ProjectStatus,
-                       WhitePaperLink = details.Application.WhitePaperLink,
-                       TeamMembers = details.TeamMembers.Select(ProjectTeamMemberResponse.Create).ToList(),
-                       ScoringStatus = scoringStatus,
-                       VotingStatus = details.Scoring == null ? (votingDetails?.GetVotingStatus(now) ?? VotingStatus.InProgress) : VotingStatus.None,
-                       VotingEndDate = votingDetails?.Voting?.EndDate,
-                       VotingAddress = votingDetails?.Voting?.VotingAddress
-                   };
+            {
+                Name = details.Project.Name,
+                ExternalId = details.Project.ExternalId.ToString(),
+                Description = details.Project.Description,
+                AuthorAddress = details.Project.AuthorAddress,
+                Country = details.Country.Code,
+                CategoryId = (int)details.Project.CategoryId,
+                Score = details.Scoring?.Score,
+                ScoringContractAddress = details.Scoring?.ContractAddress,
+                AttractedInvestments = details.Application?.InvestmentsAreAttracted ?? false,
+                BlockChainType = details.Application?.BlockchainType,
+                FinanceModelLink = details.Application?.FinancialModelLink,
+                HardCap = details.Application?.HardCap,
+                SoftCap = details.Application?.SoftCap,
+                MvpLink = details.Application?.MvpLink,
+                Status = details.Application?.ProjectStatus,
+                WhitePaperLink = details.Application?.WhitePaperLink,
+                TeamMembers = details.TeamMembers.Select(ProjectTeamMemberResponse.Create).ToList(),
+                ScoringStatus = scoringStatus,
+                VotingStatus = details.Scoring == null ? (votingDetails?.GetVotingStatus(now) ?? VotingStatus.InProgress) : VotingStatus.None,
+                VotingEndDate = votingDetails?.Voting?.EndDate,
+                VotingAddress = votingDetails?.Voting?.VotingAddress
+            };
         }
     }
 }

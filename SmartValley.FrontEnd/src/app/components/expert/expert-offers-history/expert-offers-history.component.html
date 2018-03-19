@@ -5,7 +5,6 @@
         <th class="list-item">{{ 'ExpertOffersHistory.Name' | translate }}</th>
         <th class="list-item">{{ 'ExpertOffersHistory.Date' | translate }}</th>
         <th class="list-item">{{ 'ExpertOffersHistory.Status' | translate }}</th>
-        <th class="list-item">{{ 'ExpertOffersHistory.Earned' | translate }}</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
@@ -18,9 +17,6 @@
         </td>
         <td class="list-item">
           {{getExpertOfferStatusById(rowData.offerStatus)}}
-        </td>
-        <td class="list-item">
-          {{rowData.description}}
         </td>
       </tr>
     </ng-template>

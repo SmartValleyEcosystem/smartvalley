@@ -6,6 +6,7 @@ import {ExpertScoringOffer} from './expert-scoring-offer';
 import {AreaType} from '../scoring/area-type.enum';
 import {ExpertHistoryOffer} from './expert-history-offer';
 import {ScoringOfferStatusResponse} from './scoring-offer-status-response';
+import {ChangeStatusExpertOfferRequest} from './change-status-expert-offer-request';
 
 @Injectable()
 export class OffersApiClient extends BaseApiClient {
@@ -24,7 +25,7 @@ export class OffersApiClient extends BaseApiClient {
   }
 
   public getHistoryOffersListAsync(): Promise<CollectionResponse<ExpertHistoryOffer>> {
-     return this.http.get<CollectionResponse<ExpertHistoryOffer>>(`${this.baseApiUrl}/scoring/offers/history`).toPromise();
+    return this.http.get<CollectionResponse<ExpertHistoryOffer>>(`${this.baseApiUrl}/scoring/offers/history`).toPromise();
   }
 
   public getExpertOffersAsync(): Promise<CollectionResponse<ExpertScoringOffer>> {
@@ -36,18 +37,18 @@ export class OffersApiClient extends BaseApiClient {
   }
 
   public async acceptExpertOfferAsync(transactionHash: string, scoringId: number, areaId: AreaType) {
-    await this.http.put(this.baseApiUrl + '/scoring/offers/accept/', {
-      TransactionHash: transactionHash,
-      ScoringId: scoringId,
-      AreaId: AreaType
+    await this.http.put(this.baseApiUrl + '/scoring/offers/accept/', <ChangeStatusExpertOfferRequest> {
+      transactionHash: transactionHash,
+      scoringId: scoringId,
+      areaId: areaId
     }).toPromise();
   }
 
   public async declineExpertOfferAsync(transactionHash: string, scoringId: number, areaId: AreaType) {
-    await this.http.put(this.baseApiUrl + '/scoring/offers/reject/', {
-      TransactionHash: transactionHash,
-      ScoringId: scoringId,
-      AreaId: AreaType
+    await this.http.put(this.baseApiUrl + '/scoring/offers/reject/', <ChangeStatusExpertOfferRequest>{
+      transactionHash: transactionHash,
+      scoringId: scoringId,
+      areaId: areaId
     }).toPromise();
   }
 

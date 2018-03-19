@@ -16,7 +16,7 @@ namespace SmartValley.Data.SQL.Repositories
 
         public Task<Application> GetByProjectIdAsync(long projectId)
         {
-            return ReadContext.Applications.FirstAsync(a => a.ProjectId == projectId);
+            return ReadContext.Applications.FirstOrDefaultAsync(a => a.ProjectId == projectId);
         }
 
         public async Task<IReadOnlyCollection<Category>> GetCategoriesAsync()

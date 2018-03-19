@@ -7,8 +7,8 @@ import {FormGroup, Validators, FormBuilder} from '@angular/forms';
 import {ExpertUpdateRequest} from '../../../api/expert/expert-update-request';
 import {Area} from '../../../services/expert/area';
 import {ExpertsRegistryContractClient} from '../../../services/contract-clients/experts-registry-contract-client';
-import {ExpertResponse} from "../../../api/expert/expert-response";
-import {EditExpertModalData} from "./edit-expert-modal-data";
+import {ExpertResponse} from '../../../api/expert/expert-response';
+import {EditExpertModalData} from './edit-expert-modal-data';
 
 @Component({
   selector: 'app-edit-expert-modal',
@@ -20,7 +20,14 @@ export class EditExpertModalComponent implements OnInit {
   public selectedCategories = [];
   public backendForm: FormGroup;
   public areas: Area[] = this.areaService.areas;
-  public expertDetails: ExpertResponse;
+  public expertDetails: ExpertResponse = <ExpertResponse> {
+    about: '',
+    address: '',
+    areas: [],
+    email: '',
+    isAvailable: true,
+    name: ''
+  };
   public isAvailable: boolean;
 
   constructor(private expertApiClient: ExpertApiClient,

@@ -21,8 +21,7 @@ export class ExpertOffersHistoryComponent implements OnInit {
                 scoringId: offer.scoringId,
                 name: offer.name,
                 scoringOfferTimestamp: offer.scoringOfferTimestamp,
-                offerStatus: offer.offerStatus,
-                description: offer.description
+                offerStatus: offer.offerStatus
             };
             this.offers.push(historyOffer);
         }

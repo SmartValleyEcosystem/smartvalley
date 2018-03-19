@@ -7,6 +7,8 @@ import {ExpertApiClient} from '../../../api/expert/expert-api-client';
 import {ExpertAvailabilityStatusResponse} from '../../../api/expert/expert-availability-status-response';
 import {ExpertsRegistryContractClient} from '../../../services/contract-clients/experts-registry-contract-client';
 import {BlockiesService} from '../../../services/blockies-service';
+import {ProjectService} from '../../../services/project/project-service';
+import {ProjectAreaTypeEnum} from '../../../services/project/project-area-type.enum';
 
 @Component({
   selector: 'app-expert-offers',
@@ -37,17 +39,13 @@ export class ExpertOffersComponent implements OnInit {
     return this.blockiesService.getImageForAddress(address);
   }
 
-  public getAreaName(id) {
-      return this.areaService.getAreaNameByIndex(id);
-  }
-
   public async acceptOffer(projectId, scoringId, areaId) {
       let transactionHash = (await this.scoringExpertsManagerContractClient.acceptOfferAsync(projectId, areaId));
       await this.offersApiClient.acceptExpertOfferAsync(transactionHash, scoringId, areaId);
   }
 
   public async declineOffer(projectId, scoringId, areaId) {
-      let transactionHash = (await this.scoringExpertsManagerContractClient.rejectOfferAsync(projectId, areaId));
+      let transactionHash =  (await this.scoringExpertsManagerContractClient.rejectOfferAsync(projectId, areaId));
       await this.offersApiClient.declineExpertOfferAsync(transactionHash, scoringId, areaId);
   }
 

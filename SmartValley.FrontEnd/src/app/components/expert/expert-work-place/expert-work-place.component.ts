@@ -5,6 +5,8 @@ import {AreaService} from '../../../services/expert/area.service';
 import {Router} from '@angular/router';
 import {Paths} from '../../../paths';
 import {OffersApiClient} from '../../../api/expert/offers-api-client';
+import {ProjectAreaTypeEnum} from '../../../services/project/project-area-type.enum';
+import {ProjectService} from '../../../services/project/project-service';
 
 @Component({
   selector: 'app-expert-work-place',
@@ -22,10 +24,6 @@ export class ExpertWorkPlaceComponent implements OnInit {
   async ngOnInit() {
       let offersResponse = await this.offersApiClient.getExpertOffersAsync();
       this.expertScoring = offersResponse.items;
-  }
-
-  public getAreaName(id) {
-    return this.areaService.getAreaNameByIndex(id);
   }
 
   public navigateToEstimate(id: number) {
