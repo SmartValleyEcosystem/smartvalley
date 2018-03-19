@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using SmartValley.Domain;
-using SmartValley.WebApi.Applications.Responses;
 
 namespace SmartValley.WebApi.Projects.Responses
 {
@@ -11,8 +10,6 @@ namespace SmartValley.WebApi.Projects.Responses
         public string Name { get; set; }
 
         public string ExternalId { get; set; }
-
-        public string AuthorAddress { get; set; }
 
         public int CategoryId { get; set; }
 
@@ -61,7 +58,6 @@ namespace SmartValley.WebApi.Projects.Responses
                 Name = details.Project.Name,
                 ExternalId = details.Project.ExternalId.ToString(),
                 Description = details.Project.Description,
-                AuthorAddress = details.Project.AuthorAddress,
                 Country = details.Country.Code,
                 CategoryId = (int)details.Project.CategoryId,
                 Score = details.Scoring?.Score,

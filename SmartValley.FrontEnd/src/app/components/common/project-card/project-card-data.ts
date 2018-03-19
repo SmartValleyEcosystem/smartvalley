@@ -17,7 +17,6 @@ export class ProjectCardData {
   score: number;
   areaType: AreaType;
   address: string;
-  author: string;
   scoringStatus: ScoringStatus;
   votingStatus: VotingStatus;
   votingEndDate: Date;
@@ -35,7 +34,6 @@ export class ProjectCardData {
       score: project.score,
       description: project.description,
       address: project.address,
-      author: project.author,
       myVoteTokensAmount: project.myVoteTokensAmount,
       isVotedByMe: project.isVotedByMe,
       projectVote: project.totalTokenVote,
@@ -53,7 +51,6 @@ export class ProjectCardData {
       score: response.score,
       description: response.description,
       address: response.address,
-      author: response.author,
       areaType: areaType,
       scoringStatus: response.score ? ScoringStatus.Finished : ScoringStatus.InProgress
     };
@@ -68,7 +65,6 @@ export class ProjectCardData {
       score: response.score,
       description: response.description,
       address: response.address,
-      author: response.author,
       scoringStatus: response.scoringStatus,
       votingStatus: response.votingStatus,
       votingEndDate: !isNullOrUndefined(response.votingEndDate) ? moment(response.votingEndDate).toDate() : null

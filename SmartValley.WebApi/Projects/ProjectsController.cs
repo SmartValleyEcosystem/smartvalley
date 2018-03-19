@@ -40,7 +40,7 @@ namespace SmartValley.WebApi.Projects
         [Authorize]
         public async Task<IActionResult> Post([FromBody] CreateProjectRequest request)
         {
-            await _projectService.CreateAsync(request, User.Identity.Name);
+            await _projectService.CreateAsync(User.GetUserId(), request);
             return NoContent();
         }
 
@@ -55,7 +55,7 @@ namespace SmartValley.WebApi.Projects
                 throw new AppErrorException(ErrorCode.InvalidFileUploaded);
             }
 
-            if (!await _projectService.IsAuthorizedToEditProjectTeamMemberAsync(User.Identity.Name, request.ProjectTeamMemberId))
+            if (!await _projectService.IsAuthorizedToEditProjectTeamMemberAsync(User.GetUserId(), request.ProjectTeamMemberId))
                 return Unauthorized();
 
             await _projectService.UpdateTeamMemberPhotoAsync(request.ProjectTeamMemberId, photo.ToAzureFile());
@@ -119,7 +119,7 @@ namespace SmartValley.WebApi.Projects
         [Route("my")]
         public async Task<CollectionResponse<MyProjectsItemResponse>> GetMyProjectsAsync()
         {
-            var projectScorings = await _projectService.GetByAuthorAsync(User.Identity.Name);
+            var projectScorings = await _projectService.GetByAuthorIdAsync(User.GetUserId());
 
             var items = new List<MyProjectsItemResponse>();
             foreach (var projectScoring in projectScorings)

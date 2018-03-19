@@ -28,12 +28,12 @@ namespace SmartValley.WebApi.Applications
             _countryRepository = countryRepository;
         }
 
-        public async Task CreateAsync(ApplicationRequest applicationRequest)
+        public async Task CreateAsync(long userId, ApplicationRequest applicationRequest)
         {
             if (applicationRequest == null)
                 throw new ArgumentNullException();
 
-            var projectId = await AddProjectAsync(applicationRequest);
+            var projectId = await AddProjectAsync(userId, applicationRequest);
             var applicationId = await AddApplicationAsync(applicationRequest, projectId);
             await AddTeamMembersAsync(applicationRequest, applicationId);
         }
@@ -90,7 +90,7 @@ namespace SmartValley.WebApi.Applications
             return application.Id;
         }
 
-        private async Task<long> AddProjectAsync(ApplicationRequest request)
+        private async Task<long> AddProjectAsync(long userId, ApplicationRequest request)
         {
             var country = await _countryRepository.GetByCodeAsync(request.CountryCode);
 
@@ -100,7 +100,7 @@ namespace SmartValley.WebApi.Applications
                               CountryId = country.Id,
                               CategoryId = (CategoryType) request.CategoryType,
                               Description = request.Description,
-                              AuthorAddress = request.AuthorAddress,
+                              AuthorId = userId,
                               ExternalId = Guid.Parse(request.ProjectId)
                           };
 

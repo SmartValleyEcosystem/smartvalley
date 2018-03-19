@@ -162,11 +162,10 @@ namespace SmartValley.Data.SQL.Core
             modelBuilder.Entity<Project>()
                         .HasIndex(p => new {p.Name});
 
-            modelBuilder.Entity<Project>()
-                        .Property(b => b.AuthorAddress)
-                        .HasConversion(
-                            v => v.ToString(),
-                            v => new Address(v));
+            modelBuilder.Entity<User>()
+                        .HasMany(c => c.Projects)
+                        .WithOne(e => e.Author)
+                        .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Scoring>()
                         .HasIndex(p => new {p.ProjectId})

@@ -306,9 +306,7 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Address>("AuthorAddress")
-                        .HasConversion(new ValueConverter<Address, string>(v => default(string), v => default(Address)))
-                        .HasMaxLength(42);
+                    b.Property<long>("AuthorId");
 
                     b.Property<int>("CategoryId");
 
@@ -338,6 +336,8 @@ namespace SmartValley.Data.SQL.Migrations
                         .HasMaxLength(200);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("CategoryId");
 
@@ -708,6 +708,11 @@ namespace SmartValley.Data.SQL.Migrations
 
             modelBuilder.Entity("SmartValley.Domain.Entities.Project", b =>
                 {
+                    b.HasOne("SmartValley.Domain.Entities.User", "Author")
+                        .WithMany("Projects")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("SmartValley.Domain.Entities.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")

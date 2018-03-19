@@ -7,6 +7,7 @@ using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Estimates.Requests;
 using SmartValley.WebApi.Estimates.Responses;
 using SmartValley.WebApi.Experts;
+using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.WebApi;
 
@@ -44,7 +45,7 @@ namespace SmartValley.WebApi.Estimates
         [HttpGet]
         public async Task<IActionResult> GetEstimatesAsync(GetEstimatesRequest request)
         {
-            if (!await _projectService.IsAuthorizedToSeeEstimatesAsync(User.Identity.Name, request.ProjectId))
+            if (!await _projectService.IsAuthorizedToSeeEstimatesAsync(User.GetUserId(), request.ProjectId))
                 return Unauthorized();
 
             var scoringStatistics = await _estimationService.GetScoringStatisticsInAreaAsync(request.ProjectId, request.AreaType.ToDomain());

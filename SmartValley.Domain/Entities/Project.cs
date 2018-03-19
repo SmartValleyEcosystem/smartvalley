@@ -25,8 +25,7 @@ namespace SmartValley.Domain.Entities
         public StageType StageId { get; set; }
 
         [Required]
-        [MaxLength(42)]
-        public Address AuthorAddress { get; set; }
+        public long AuthorId { get; set; }
 
         [Required]
         [MaxLength(1000)]
@@ -42,6 +41,8 @@ namespace SmartValley.Domain.Entities
 
         [Url, MaxLength(50)]
         public string ContactEmail { get; set; }
+
+        public User Author { get; set; }
 
         public Country Country { get; set; }
 

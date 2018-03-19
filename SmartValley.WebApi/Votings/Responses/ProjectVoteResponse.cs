@@ -10,8 +10,6 @@ namespace SmartValley.WebApi.Votings.Responses
 
         public string Name { get; set; }
 
-        public string Author { get; set; }
-
         public string Country { get; set; }
 
         public int CategoryId { get; set; }
@@ -36,7 +34,6 @@ namespace SmartValley.WebApi.Votings.Responses
                        Country = projectDetails.Country.Code,
                        CategoryId = (int) projectDetails.Project.CategoryId,
                        Description = projectDetails.Project.Description,
-                       Author = projectDetails.Project.AuthorAddress,
                        MyVoteTokenAmount = investorVotes?.InvestorTokenVote,
                        IsVotedByMe = investorVotes?.InvestorTokenVote > 0,
                        TotalTokenAmount = investorVotes?.TotalTokenVote,

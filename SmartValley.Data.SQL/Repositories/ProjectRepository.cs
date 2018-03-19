@@ -68,13 +68,13 @@ namespace SmartValley.Data.SQL.Repositories
             }
         }
 
-        public async Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorAsync(Address authorAddress)
+        public async Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorIdAsync(long authorId)
         {
             return await (from project in ReadContext.Projects
                           from scoring in ReadContext.Scorings.Where(s => s.ProjectId == project.Id).DefaultIfEmpty()
                           from application in ReadContext.Applications.Where(a => a.ProjectId == project.Id).DefaultIfEmpty()
                           join country in ReadContext.Countries on project.CountryId equals country.Id
-                          where project.AuthorAddress == authorAddress
+                          where project.AuthorId == authorId
                           select new ProjectDetails(project, scoring, application, country)).ToArrayAsync();
         }
 

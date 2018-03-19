@@ -24,6 +24,8 @@ namespace SmartValley.Domain.Entities
 
         public Expert Expert { get; set; }
 
+        public IEnumerable<Project> Projects { get; set; }
+
         public IEnumerable<UserRole> UserRoles { get; set; }
     }
 }

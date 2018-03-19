@@ -11,8 +11,6 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public string Address { get; set; }
 
-        public string Author { get; set; }
-
         public string Country { get; set; }
 
         public int CategoryId { get; set; }
@@ -32,7 +30,6 @@ namespace SmartValley.WebApi.Projects.Responses
                        Country = projectDetails.Country.Code,
                        CategoryId = (int) projectDetails.Project.CategoryId,
                        Description = projectDetails.Project.Description,
-                       Author = projectDetails.Project.AuthorAddress,
                        Address = projectDetails.Scoring?.ContractAddress,
                        Score = projectDetails.Scoring?.Score,
                        ScoringEndDate = projectDetails.Scoring?.ScoringEndDate

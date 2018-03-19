@@ -41,15 +41,17 @@ export class ProjectCardComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    const address = this.data.address ? this.data.address : this.data.author;
-    this.projectImageUrl = this.blockiesService.getImageForAddress(address);
+    const address = this.data.address;
+    if (!isNullOrUndefined(address)) {
+      this.projectImageUrl = this.blockiesService.getImageForAddress(address);
 
-    if (this.data.votingStatus === VotingStatus.InProgress) {
-      this.updateVotingRemainingTime();
-      setInterval(() => this.updateVotingRemainingTime(), 1000);
+      if (this.data.votingStatus === VotingStatus.InProgress) {
+        this.updateVotingRemainingTime();
+        setInterval(() => this.updateVotingRemainingTime(), 1000);
+      }
+
+      this.projectTokensPercent = Math.round(100 * this.data.projectVote / this.totalVotes);
     }
-
-    this.projectTokensPercent = Math.round(100 * this.data.projectVote / this.totalVotes);
   }
 
   public showProject(): void {

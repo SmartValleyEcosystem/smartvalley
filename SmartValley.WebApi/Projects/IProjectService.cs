@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SmartValley.Application.AzureStorage;
 using SmartValley.Domain;
-using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.WebApi.Projects.Requests;
 
@@ -17,11 +16,11 @@ namespace SmartValley.WebApi.Projects
 
         Task<int> GetScoredTotalCountAsync(SearchProjectsQuery projectsQuery);
 
-        Task<bool> IsAuthorizedToSeeEstimatesAsync(Address account, long projectId);
+        Task<bool> IsAuthorizedToSeeEstimatesAsync(long userId, long projectId);
 
-        Task<bool> IsAuthorizedToEditProjectTeamMemberAsync(Address account, long projectTeamMemberId);
+        Task<bool> IsAuthorizedToEditProjectTeamMemberAsync(long userId, long projectTeamMemberId);
 
-        Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorAsync(Address authorAddress);
+        Task UpdateTeamMemberPhotoAsync(long projectTeamMemberId, AzureFile photo);
 
         Task<IReadOnlyCollection<ProjectDetails>> GetForScoringAsync(AreaType areaType, long expertId);
 
@@ -29,8 +28,8 @@ namespace SmartValley.WebApi.Projects
 
         Task<IReadOnlyCollection<ProjectDetails>> GetProjectsByNameAsync(string projectName);
 
-        Task CreateAsync(CreateProjectRequest request, Address author);
+        Task CreateAsync(long userId, CreateProjectRequest request);
 
-        Task UpdateTeamMemberPhotoAsync(long projectTeamMemberId, AzureFile photo);
+        Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorIdAsync(long authorId);
     }
 }

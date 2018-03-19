@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application.AzureStorage;
 using SmartValley.Domain;
-using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
@@ -61,25 +60,25 @@ namespace SmartValley.WebApi.Projects
         public Task<int> GetScoredTotalCountAsync(SearchProjectsQuery projectsQuery)
             => _projectRepository.GetScoredTotalCountAsync(projectsQuery);
 
-        public async Task<bool> IsAuthorizedToEditProjectTeamMemberAsync(Address account, long projectTeamMemberId)
+        public Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorIdAsync(long authorId)
+            => _projectRepository.GetByAuthorIdAsync(authorId);
+
+        public async Task<bool> IsAuthorizedToEditProjectTeamMemberAsync(long userId, long projectTeamMemberId)
         {
             var projectTeamMember = await _teamMemberRepository.GetByIdAsync(projectTeamMemberId);
             var project = await FindAsync(projectTeamMember.ProjectId);
-            return project.AuthorAddress == account;
+            return project.AuthorId == userId;
         }
-
-        public Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorAsync(Address authorAddress)
-            => _projectRepository.GetByAuthorAsync(authorAddress);
 
         public Task<IReadOnlyCollection<ProjectDetails>> GetForScoringAsync(AreaType areaType, long expertId)
             => _projectRepository.GetForScoringAsync(areaType, expertId);
 
-        public async Task<bool> IsAuthorizedToSeeEstimatesAsync(Address account, long projectId)
+        public async Task<bool> IsAuthorizedToSeeEstimatesAsync(long userId, long projectId)
         {
             var project = await FindAsync(projectId);
             var projectScoring = await _scoringRepository.GetByProjectIdAsync(projectId);
 
-            return projectScoring.Score != null || project.AuthorAddress == account;
+            return projectScoring.Score != null || project.AuthorId != userId;
         }
 
         public Task<IReadOnlyCollection<ProjectDetails>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds)
@@ -88,12 +87,12 @@ namespace SmartValley.WebApi.Projects
         public Task<IReadOnlyCollection<ProjectDetails>> GetProjectsByNameAsync(string projectName)
             => _projectRepository.GetAllByNameAsync(projectName);
 
-        public async Task CreateAsync(CreateProjectRequest request, Address author)
+        public async Task CreateAsync(long userId, CreateProjectRequest request)
         {
             if (request == null)
                 throw new ArgumentNullException();
 
-            var projectId = await AddProjectAsync(request, author);
+            var projectId = await AddProjectAsync(userId, request);
             if (request.SocialMedias != null && request.SocialMedias.Any())
                 await AddSocialMediasAsync(request, projectId);
 
@@ -111,7 +110,7 @@ namespace SmartValley.WebApi.Projects
             await _teamMemberRepository.UpdatePhotoNameAsync(projectTeamMemberId, photoName);
         }
 
-        private async Task<long> AddProjectAsync(CreateProjectRequest request, Address author)
+        private async Task<long> AddProjectAsync(long userId, CreateProjectRequest request)
         {
             var country = await _countryRepository.GetByCodeAsync(request.CountryCode);
             if (country == null)
@@ -123,7 +122,7 @@ namespace SmartValley.WebApi.Projects
                               CountryId = country.Id,
                               CategoryId = (CategoryType) request.CategoryId,
                               Description = request.Description,
-                              AuthorAddress = author,
+                              AuthorId = userId,
                               ExternalId = Guid.Parse(request.ProjectId),
                               ContactEmail = request.ContactEmail,
                               IcoDate = request.IcoDate,

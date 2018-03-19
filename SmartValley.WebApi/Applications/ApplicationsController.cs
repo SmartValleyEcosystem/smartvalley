@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.WebApi.Applications.Requests;
 using SmartValley.WebApi.Applications.Responses;
+using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Applications
@@ -23,7 +24,7 @@ namespace SmartValley.WebApi.Applications
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ApplicationRequest request)
         {
-            await _service.CreateAsync(request);
+            await _service.CreateAsync(User.GetUserId(), request);
             return NoContent();
         }
 

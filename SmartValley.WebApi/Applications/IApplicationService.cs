@@ -7,7 +7,7 @@ namespace SmartValley.WebApi.Applications
 {
     public interface IApplicationService
     {
-        Task CreateAsync(ApplicationRequest applicationRequest);
+        Task CreateAsync(long userId, ApplicationRequest applicationRequest);
 
         Task<IReadOnlyCollection<Country>> GetCountriesAsync();
 
