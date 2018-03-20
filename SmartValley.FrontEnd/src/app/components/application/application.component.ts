@@ -45,9 +45,9 @@ export class ApplicationComponent implements OnInit {
               private balanceService: BalanceService,
               private projectService: ProjectService) {
 
-    this.projectAreas = this.projectService.getProjectAreas().map(i => <SelectItem>{
+    this.projectAreas = this.projectService.getProjectCategories().map(i => <SelectItem>{
       label: i.name,
-      value: i.projectAreaType
+      value: i.projectCategory
     });
 
     this.socials = this.projectService.getSocialMedias().map(i => <SelectItem>{
@@ -115,7 +115,7 @@ export class ApplicationComponent implements OnInit {
       name: form.name,
       description: form.description,
       icoDate: form.icoDate,
-      categoryId: form.projectArea,
+      category: form.projectArea,
       whitePaperLink: form.whitePaperLink,
       projectId: uuid(),
       website: form.website

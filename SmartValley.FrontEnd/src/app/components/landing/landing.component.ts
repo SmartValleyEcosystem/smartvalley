@@ -4,8 +4,6 @@ import {Paths} from '../../paths';
 import {ProjectCardType} from '../../services/project-card-type';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ScoredProject} from '../../api/expert/scored-project';
-import {roundNumberPipe} from '../../utils/round-number.pipe';
-import {Constants} from '../../constants';
 
 @Component({
   selector: 'app-root',

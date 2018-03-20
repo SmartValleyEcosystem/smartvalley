@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import {AreaType} from '../../api/scoring/area-type.enum';
-import {ProjectArea} from './project-area';
+import {ProjectСategory} from './project-category';
 import {Stage} from './stage';
 import {SocialMedia} from './social-media';
 import {ScoringProjectStatus} from '../scoring-project-status.enum';
-import {ProjectAreaTypeEnum} from './project-area-type.enum';
+import {ProjectCategoryEnum} from './project-category.enum';
 import {SocialMediaTypeEnum} from './social-media-type.enum';
 import {QuestionService} from '../questions/question-service';
 import {StageTypeEnum} from './stage-type.enum';
@@ -15,38 +15,38 @@ export class ProjectService {
   constructor(private questionService: QuestionService) {
   }
 
-  public getProjectAreas(): Array<ProjectArea> {
-    return <Array<ProjectArea>>[
-      {name: 'All areas', projectAreaType: null},
-      {name: 'Art', projectAreaType: ProjectAreaTypeEnum.Art},
-      {name: 'Artificial intelligence', projectAreaType: ProjectAreaTypeEnum.ArtificialIntelligence},
-      {name: 'Banking', projectAreaType: ProjectAreaTypeEnum.Banking},
-      {name: 'BigData', projectAreaType: ProjectAreaTypeEnum.BigData},
-      {name: 'Business services', projectAreaType: ProjectAreaTypeEnum.BusinessServices},
-      {name: 'Casino and gambling', projectAreaType: ProjectAreaTypeEnum.CasinoAndGambling},
-      {name: 'Charity', projectAreaType: ProjectAreaTypeEnum.Charity},
-      {name: 'Communication', projectAreaType: ProjectAreaTypeEnum.Communication},
-      {name: 'Cryptocurrency', projectAreaType: ProjectAreaTypeEnum.Cryptocurrency},
-      {name: 'Education', projectAreaType: ProjectAreaTypeEnum.Education},
-      {name: 'Electronics', projectAreaType: ProjectAreaTypeEnum.Electronics},
-      {name: 'Energy', projectAreaType: ProjectAreaTypeEnum.Energy},
-      {name: 'Entertainment', projectAreaType: ProjectAreaTypeEnum.Entertainment},
-      {name: 'Health', projectAreaType: ProjectAreaTypeEnum.Health},
-      {name: 'Infrastructure', projectAreaType: ProjectAreaTypeEnum.Infrastructure},
-      {name: 'Internet', projectAreaType: ProjectAreaTypeEnum.Internet},
-      {name: 'Investment', projectAreaType: ProjectAreaTypeEnum.Investment},
-      {name: 'Legal', projectAreaType: ProjectAreaTypeEnum.Legal},
-      {name: 'Manufacturing', projectAreaType: ProjectAreaTypeEnum.Manufacturing},
-      {name: 'Media', projectAreaType: ProjectAreaTypeEnum.Media},
-      {name: 'Other', projectAreaType: ProjectAreaTypeEnum.Other},
-      {name: 'Platform', projectAreaType: ProjectAreaTypeEnum.Platform},
-      {name: 'Real estate', projectAreaType: ProjectAreaTypeEnum.RealEstate},
-      {name: 'Retail', projectAreaType: ProjectAreaTypeEnum.Retail},
-      {name: 'Smart contract', projectAreaType: ProjectAreaTypeEnum.SmartContract},
-      {name: 'Software', projectAreaType: ProjectAreaTypeEnum.Software},
-      {name: 'Sports', projectAreaType: ProjectAreaTypeEnum.Sports},
-      {name: 'Tourism', projectAreaType: ProjectAreaTypeEnum.Tourism},
-      {name: 'Virtual reality', projectAreaType: ProjectAreaTypeEnum.VirtualReality}
+  public getProjectCategories(): Array<ProjectСategory> {
+    return <Array<ProjectСategory>>[
+      {name: 'All areas', projectCategory: null},
+      {name: 'Art', projectCategory: ProjectCategoryEnum.Art},
+      {name: 'Artificial intelligence', projectCategory: ProjectCategoryEnum.ArtificialIntelligence},
+      {name: 'Banking', projectCategory: ProjectCategoryEnum.Banking},
+      {name: 'BigData', projectCategory: ProjectCategoryEnum.BigData},
+      {name: 'Business services', projectCategory: ProjectCategoryEnum.BusinessServices},
+      {name: 'Casino and gambling', projectCategory: ProjectCategoryEnum.CasinoAndGambling},
+      {name: 'Charity', projectCategory: ProjectCategoryEnum.Charity},
+      {name: 'Communication', projectCategory: ProjectCategoryEnum.Communication},
+      {name: 'Cryptocurrency', projectCategory: ProjectCategoryEnum.Cryptocurrency},
+      {name: 'Education', projectCategory: ProjectCategoryEnum.Education},
+      {name: 'Electronics', projectCategory: ProjectCategoryEnum.Electronics},
+      {name: 'Energy', projectCategory: ProjectCategoryEnum.Energy},
+      {name: 'Entertainment', projectCategory: ProjectCategoryEnum.Entertainment},
+      {name: 'Health', projectCategory: ProjectCategoryEnum.Health},
+      {name: 'Infrastructure', projectCategory: ProjectCategoryEnum.Infrastructure},
+      {name: 'Internet', projectCategory: ProjectCategoryEnum.Internet},
+      {name: 'Investment', projectCategory: ProjectCategoryEnum.Investment},
+      {name: 'Legal', projectCategory: ProjectCategoryEnum.Legal},
+      {name: 'Manufacturing', projectCategory: ProjectCategoryEnum.Manufacturing},
+      {name: 'Media', projectCategory: ProjectCategoryEnum.Media},
+      {name: 'Other', projectCategory: ProjectCategoryEnum.Other},
+      {name: 'Platform', projectCategory: ProjectCategoryEnum.Platform},
+      {name: 'Real estate', projectCategory: ProjectCategoryEnum.RealEstate},
+      {name: 'Retail', projectCategory: ProjectCategoryEnum.Retail},
+      {name: 'Smart contract', projectCategory: ProjectCategoryEnum.SmartContract},
+      {name: 'Software', projectCategory: ProjectCategoryEnum.Software},
+      {name: 'Sports', projectCategory: ProjectCategoryEnum.Sports},
+      {name: 'Tourism', projectCategory: ProjectCategoryEnum.Tourism},
+      {name: 'Virtual reality', projectCategory: ProjectCategoryEnum.VirtualReality}
     ];
   }
 

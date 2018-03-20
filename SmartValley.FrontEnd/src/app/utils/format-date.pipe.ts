@@ -7,7 +7,7 @@ import * as moment from 'moment';
 export class FormatDatePipe implements PipeTransform {
 
   transform(value: any, args?: any): any {
-    if (value instanceof Date) {
+    if (value instanceof Date || typeof value === 'string') {
       return moment(value).format('MMMM D, Y');
     }
     return value;

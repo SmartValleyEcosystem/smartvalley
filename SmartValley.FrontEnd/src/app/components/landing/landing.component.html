@@ -14,8 +14,8 @@
       <tr>
         <td class="project-name"><a [routerLink]="getProjectLink(project.id)" >{{project.name}}</a></td>
         <td>{{project.country}}</td>
-        <td>{{project.area}}</td>
-        <td>{{project.scoringEndDate}}</td>
+        <td>{{project.category}}</td>
+        <td>{{project.scoringEndDate | formatDate}}</td>
         <td class="scoring-col">{{project.score | roundNumberPipe}}/100</td>
       </tr>
     </ng-template>

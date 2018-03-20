@@ -54,17 +54,17 @@ namespace SmartValley.Data.SQL.Repositories
             switch (orderBy)
             {
                 case ProjectsOrderBy.Name:
-                    return @direction == SortDirection.Descending 
-                        ? details.OrderByDescending(i => i.Project.Name) 
-                        : details.OrderBy(i => i.Project.Name);
+                    return @direction == SortDirection.Ascending 
+                        ? details.OrderBy(i => i.Project.Name) 
+                        : details.OrderByDescending(i => i.Project.Name);
                 case ProjectsOrderBy.ScoringRating:
-                    return @direction == SortDirection.Descending 
-                        ? details.OrderByDescending(i => i.Scoring.Score) 
-                        : details.OrderBy(i => i.Scoring.Score);
+                    return @direction == SortDirection.Ascending
+                        ? details.OrderBy(i => i.Scoring.Score) 
+                        : details.OrderByDescending(i => i.Scoring.Score);
                 default:
-                    return @direction == SortDirection.Descending 
-                        ? details.OrderByDescending(i => i.Scoring.ScoringEndDate) 
-                        : details.OrderBy(i => i.Scoring.ScoringEndDate);
+                    return @direction == SortDirection.Ascending
+                        ? details.OrderBy(i => i.Scoring.ScoringEndDate) 
+                        : details.OrderByDescending(i => i.Scoring.ScoringEndDate);
             }
         }
 

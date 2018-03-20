@@ -1,4 +1,4 @@
-export enum ProjectAreaTypeEnum {
+export enum ProjectCategoryEnum {
   Art = 0,
   ArtificialIntelligence = 1,
   Banking = 2,
