@@ -43,7 +43,7 @@ namespace SmartValley.Application.Contracts.Scorings
             if (offerState > 2)
             {
                 status = ScoringOfferStatus.Pending;
-                timestamp = DateTimeOffset.FromUnixTimeMilliseconds(offerState);
+                timestamp = DateTimeOffset.FromUnixTimeSeconds(offerState);
             }
             else
             {
