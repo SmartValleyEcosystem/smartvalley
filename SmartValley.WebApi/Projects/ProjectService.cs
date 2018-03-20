@@ -109,14 +109,14 @@ namespace SmartValley.WebApi.Projects
         public async Task UpdateTeamMemberPhotoAsync(long projectTeamMemberId, AzureFile photo)
         {
             var photoName = $"project-{projectTeamMemberId}/photo-{Guid.NewGuid()}{photo.Extension}";
-            var link = await _projectTeamMembersStorageProvider.UploadAsyncAndGetUri(photoName, photo);
+            var link = await _projectTeamMembersStorageProvider.UploadAndGetUriAsync(photoName, photo);
             await _teamMemberRepository.UpdatePhotoNameAsync(projectTeamMemberId, link);
         }
 
         private async Task<long> AddProjectAsync(long userId, CreateProjectRequest request, AzureFile image)
         {
             var imageName = $"application-{request.Name}/scan-{Guid.NewGuid()}{image.Extension}";
-            var imageUrl = await _projectStorageProvider.UploadAsyncAndGetUri(imageName, image);
+            var imageUrl = await _projectStorageProvider.UploadAndGetUriAsync(imageName, image);
 
             var country = await _countryRepository.GetByCodeAsync(request.CountryCode);
             if (country == null)
