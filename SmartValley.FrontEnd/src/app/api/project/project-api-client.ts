@@ -40,7 +40,7 @@ export class ProjectApiClient extends BaseApiClient {
   }
 
   public async getForScoringAsync(areaType: AreaType): Promise<CollectionResponse<ProjectResponse>> {
-    const parameters = new HttpParams().append('expertiseArea', areaType.toString());
+    const parameters = new HttpParams().append('areaType', areaType.toString());
 
     return this.http
       .get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/projects/forscoring', {params: parameters})

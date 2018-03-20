@@ -2,13 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {ExpertApiClient} from '../../../api/expert/expert-api-client';
 import {LazyLoadEvent} from 'primeng/api';
 import {AdminExpertItem} from './admin-expert-item';
-import {AreaService} from '../../../services/expert/area.service';
 import {DialogService} from '../../../services/dialog-service';
 import {ExpertDeleteRequest} from '../../../api/expert/expert-delete-request';
 import {CollectionResponse} from '../../../api/collection-response';
 import {ExpertResponse} from '../../../api/expert/expert-response';
 import {ExpertsRegistryContractClient} from '../../../services/contract-clients/experts-registry-contract-client';
-import {EditExpertModalData} from "../../common/edit-expert-modal/edit-expert-modal-data";
+import {EditExpertModalData} from '../../common/edit-expert-modal/edit-expert-modal-data';
 
 @Component({
   selector: 'app-admin-experts-list',
@@ -27,8 +26,7 @@ export class AdminExpertsListComponent implements OnInit {
 
   constructor(private expertApiClient: ExpertApiClient,
               private expertsRegistryContractClient: ExpertsRegistryContractClient,
-              private dialogService: DialogService,
-              private areaService: AreaService) {
+              private dialogService: DialogService) {
   }
 
   public async getExpertList(event: LazyLoadEvent) {
@@ -45,7 +43,7 @@ export class AdminExpertsListComponent implements OnInit {
         address: expert.address,
         email: expert.email,
         isAvailable: expert.isAvailable,
-        areas: this.areaService.getAreasByTypes(expert.areas),
+        areas: expert.areas.map(a => a.name),
       };
       this.experts.push(expertItem);
     }

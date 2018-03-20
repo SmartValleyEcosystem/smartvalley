@@ -6,25 +6,22 @@ import {AreaType} from '../../api/scoring/area-type.enum';
 @Injectable()
 export class AreaService {
 
-    constructor(private expertApiClient: ExpertApiClient) {
-    }
+  constructor(private expertApiClient: ExpertApiClient) {
+  }
 
-    public areas: Area[];
-    public async initializeAsync() {
-        const response = await this.expertApiClient.getAreasAsync();
-        this.areas = response.items.map(a => {
-            return <Area>{
-                name: a.name,
-                areaType: a.id
-            };
-        });
-    }
+  public areas: Area[];
 
-    public getAreasByTypes(types: Area[]): string[] {
-        return types.map(a => a.name);
-    }
+  public async initializeAsync() {
+    const response = await this.expertApiClient.getAreasAsync();
+    this.areas = response.items.map(a => {
+      return <Area>{
+        name: a.name,
+        areaType: a.id
+      };
+    });
+  }
 
-    public getAreaTypeByIndex(index: number): AreaType {
-        return this.areas[index].areaType;
-    }
+  public getAreaTypeByIndex(index: number): AreaType {
+    return this.areas[index].areaType;
+  }
 }

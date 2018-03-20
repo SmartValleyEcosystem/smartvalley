@@ -16,7 +16,7 @@ import {AreaService} from '../../services/expert/area.service';
 export class ScoringComponent implements OnDestroy, OnInit {
   public ProjectCardType = ProjectCardType;
   public projects: Array<ProjectCardData> = [];
-  public selectedTabIndex: number;
+  public selectedTabIndex = 0;
 
   @ViewChild('projectsTabSet')
   private projectsTabSet: NgbTabset;
