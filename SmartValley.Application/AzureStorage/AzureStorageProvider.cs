@@ -7,19 +7,34 @@ namespace SmartValley.Application.AzureStorage
 {
     public abstract class AzureStorageProvider
     {
-        private readonly CloudBlobContainer _container;
+        private readonly string _containerName;
+        private readonly CloudBlobClient _client;
 
         protected AzureStorageProvider(AzureStorageOptions azureStorageOptions, string containerName)
         {
+            _containerName = containerName;
             var storageAccount = CloudStorageAccount.Parse(azureStorageOptions.StorageConnectionString);
-            var blobClient = storageAccount.CreateCloudBlobClient();
-            _container = blobClient.GetContainerReference(containerName);
-            _container.CreateIfNotExistsAsync();
+            _client = storageAccount.CreateCloudBlobClient();
+        }
+
+        public async Task InitializeAsync()
+        {
+            var container = _client.GetContainerReference(_containerName);
+            await container.CreateIfNotExistsAsync();
+
+            await SetPermissions(container);
+        }
+
+        protected virtual async Task SetPermissions(CloudBlobContainer container)
+        {
+            var permissions = await container.GetPermissionsAsync();
+            permissions.PublicAccess = BlobContainerPublicAccessType.Blob;
+            await container.SetPermissionsAsync(permissions);
         }
 
         public async Task<AzureFile> DowndloadAsync(string fileName)
         {
-            var blockBlob = _container.GetBlockBlobReference(fileName);
+            var blockBlob = _client.GetContainerReference(_containerName).GetBlockBlobReference(fileName);
             using (var stream = new MemoryStream())
             {
                 await blockBlob.DownloadToStreamAsync(stream);
@@ -27,11 +42,12 @@ namespace SmartValley.Application.AzureStorage
             }
         }
 
-        public async Task UploadAsync(string fileName, AzureFile file)
+        public async Task<string> UploadAndGetUriAsync(string fileName, AzureFile file)
         {
-            var blockBlob = _container.GetBlockBlobReference(fileName);
+            var blockBlob = _client.GetContainerReference(_containerName).GetBlockBlobReference(fileName);
             await blockBlob.DeleteIfExistsAsync();
             await blockBlob.UploadFromByteArrayAsync(file.Data, 0, file.Data.Length);
+            return blockBlob.Uri.AbsoluteUri;
         }
     }
 }

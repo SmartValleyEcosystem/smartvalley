@@ -28,7 +28,7 @@ namespace SmartValley.WebApi.Projects
 
         Task<IReadOnlyCollection<ProjectDetails>> GetProjectsByNameAsync(string projectName);
 
-        Task CreateAsync(long userId, CreateProjectRequest request);
+        Task CreateAsync(long userId, CreateProjectRequest request, AzureFile image);
 
         Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorIdAsync(long authorId);
     }

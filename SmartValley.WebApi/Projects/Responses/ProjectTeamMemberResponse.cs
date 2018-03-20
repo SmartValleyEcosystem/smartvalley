@@ -18,7 +18,7 @@ namespace SmartValley.WebApi.Projects.Responses
             {
                        FullName = teamMember.FullName,
                        About = teamMember.About,
-                       PhotoName = teamMember.PhotoName,
+                       PhotoName = teamMember.PhotoUrl,
                        Role = teamMember.Role
                    };
         }

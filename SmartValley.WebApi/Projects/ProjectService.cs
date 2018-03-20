@@ -22,6 +22,7 @@ namespace SmartValley.WebApi.Projects
         private readonly ProjectTeamMembersStorageProvider _projectTeamMembersStorageProvider;
         private readonly IProjectSocialMediaRepository _socialMediaRepository;
         private readonly IProjectTeamMemberSocialMediaRepository _projectTeamMemberSocialMediaRepository;
+        private readonly ProjectStorageProvider _projectStorageProvider;
 
         public ProjectService(
             IApplicationRepository applicationRepository,
@@ -31,7 +32,8 @@ namespace SmartValley.WebApi.Projects
             ICountryRepository countryRepository,
             ProjectTeamMembersStorageProvider projectTeamMembersStorageProvider,
             IProjectSocialMediaRepository socialMediaRepository,
-            IProjectTeamMemberSocialMediaRepository projectTeamMemberSocialMediaRepository)
+            IProjectTeamMemberSocialMediaRepository projectTeamMemberSocialMediaRepository,
+            ProjectStorageProvider projectStorageProvider)
         {
             _applicationRepository = applicationRepository;
             _projectRepository = projectRepository;
@@ -41,6 +43,7 @@ namespace SmartValley.WebApi.Projects
             _projectTeamMembersStorageProvider = projectTeamMembersStorageProvider;
             _socialMediaRepository = socialMediaRepository;
             _projectTeamMemberSocialMediaRepository = projectTeamMemberSocialMediaRepository;
+            _projectStorageProvider = projectStorageProvider;
         }
 
         public async Task<ProjectDetails> GetDetailsAsync(long projectId)
@@ -87,12 +90,12 @@ namespace SmartValley.WebApi.Projects
         public Task<IReadOnlyCollection<ProjectDetails>> GetProjectsByNameAsync(string projectName)
             => _projectRepository.GetAllByNameAsync(projectName);
 
-        public async Task CreateAsync(long userId, CreateProjectRequest request)
+        public async Task CreateAsync(long userId, CreateProjectRequest request, AzureFile image)
         {
             if (request == null)
                 throw new ArgumentNullException();
 
-            var projectId = await AddProjectAsync(userId, request);
+            var projectId = await AddProjectAsync(userId, request, image);
             if (request.SocialMedias != null && request.SocialMedias.Any())
                 await AddSocialMediasAsync(request, projectId);
 
@@ -105,13 +108,16 @@ namespace SmartValley.WebApi.Projects
 
         public async Task UpdateTeamMemberPhotoAsync(long projectTeamMemberId, AzureFile photo)
         {
-            var photoName = $"project-{projectTeamMemberId}/photo{photo.Extension}";
-            await _projectTeamMembersStorageProvider.UploadAsync(photoName, photo);
-            await _teamMemberRepository.UpdatePhotoNameAsync(projectTeamMemberId, photoName);
+            var photoName = $"project-{projectTeamMemberId}/photo-{Guid.NewGuid()}{photo.Extension}";
+            var link = await _projectTeamMembersStorageProvider.UploadAsyncAndGetUri(photoName, photo);
+            await _teamMemberRepository.UpdatePhotoNameAsync(projectTeamMemberId, link);
         }
 
-        private async Task<long> AddProjectAsync(long userId, CreateProjectRequest request)
+        private async Task<long> AddProjectAsync(long userId, CreateProjectRequest request, AzureFile image)
         {
+            var imageName = $"application-{request.Name}/scan-{Guid.NewGuid()}{image.Extension}";
+            var imageUrl = await _projectStorageProvider.UploadAsyncAndGetUri(imageName, image);
+
             var country = await _countryRepository.GetByCodeAsync(request.CountryCode);
             if (country == null)
                 throw new AppErrorException(ErrorCode.CountryNotFound);
@@ -129,6 +135,7 @@ namespace SmartValley.WebApi.Projects
                               Website = request.Website,
                               WhitePaperLink = request.WhitePaperLink,
                               StageId = (StageType) request.StageId,
+                              ImageUrl = imageUrl
                           };
 
             await _projectRepository.AddAsync(project);

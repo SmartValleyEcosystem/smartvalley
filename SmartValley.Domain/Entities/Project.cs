@@ -42,6 +42,9 @@ namespace SmartValley.Domain.Entities
         [Url, MaxLength(50)]
         public string ContactEmail { get; set; }
 
+        [Url, MaxLength(200)]
+        public string ImageUrl { get; set; }
+
         public User Author { get; set; }
 
         public Country Country { get; set; }

@@ -38,11 +38,11 @@ namespace SmartValley.WebApi.Experts.Responses
 
         public IReadOnlyCollection<int> Areas { get; set; }
 
-        public string ScanName { get; set; }
+        public string ScanUrl { get; set; }
 
-        public string PhotoName { get; set; }
+        public string PhotoUrl { get; set; }
 
-        public string CvName { get; set; }
+        public string CvUrl { get; set; }
 
         public static ExpertApplicationResponse Create(ExpertApplicationDetails applicationDetails)
         {
@@ -62,9 +62,9 @@ namespace SmartValley.WebApi.Experts.Responses
                        BirthDate = applicationDetails.ExpertApplication.BirthDate,
                        FacebookLink = applicationDetails.ExpertApplication.FacebookLink,
                        Description = applicationDetails.ExpertApplication.Description,
-                       CvName = applicationDetails.ExpertApplication.CvName,
-                       PhotoName = applicationDetails.ExpertApplication.PhotoName,
-                       ScanName = applicationDetails.ExpertApplication.ScanName,
+                       CvUrl = applicationDetails.ExpertApplication.CvUrl,
+                       PhotoUrl = applicationDetails.ExpertApplication.PhotoUrl,
+                       ScanUrl = applicationDetails.ExpertApplication.ScanUrl,
                        CountryIsoCode = applicationDetails.ExpertApplication.Country
                    };
         }

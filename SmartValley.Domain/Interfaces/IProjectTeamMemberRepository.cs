@@ -10,7 +10,7 @@ namespace SmartValley.Domain.Interfaces
 
         Task<IReadOnlyCollection<ProjectTeamMember>> GetAllByProjectIdAsync(long projectId);
         
-        Task UpdatePhotoNameAsync(long id, string photoName);
+        Task UpdatePhotoNameAsync(long id, string photoUrl);
 
         Task<ProjectTeamMember> GetByIdAsync(long id);
     }

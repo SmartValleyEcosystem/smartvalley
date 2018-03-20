@@ -4,7 +4,7 @@ using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
 {
-    public class ProjectTeamMember: IEntityWithId
+    public class ProjectTeamMember : IEntityWithId
     {
         public long Id { get; set; }
 
@@ -21,8 +21,8 @@ namespace SmartValley.Domain.Entities
         [MaxLength(500)]
         public string About { get; set; }
 
-        [MaxLength(50)]
-        public string PhotoName { get; set; }
+        [Url, MaxLength(200)]
+        public string PhotoUrl { get; set; }
 
         public Project Project { get; set; }
     }

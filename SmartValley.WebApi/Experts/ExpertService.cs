@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application.AzureStorage;
@@ -59,17 +60,17 @@ namespace SmartValley.WebApi.Experts
 
             var applicationId = expertApplication.Id.ToString();
 
-            var scanName = $"application-{applicationId}/scan{scan.Extension}";
-            var photoName = $"application-{applicationId}/photo{photo.Extension}";
-            var cvName = $"application-{applicationId}/cv{cv.Extension}";
+            var scanName = $"application-{applicationId}/scan-{Guid.NewGuid()}{scan.Extension}";
+            var photoName = $"application-{applicationId}/photo-{Guid.NewGuid()}{photo.Extension}";
+            var cvName = $"application-{applicationId}/cv-{Guid.NewGuid()}{cv.Extension}";
 
-            await Task.WhenAll(_expertApplicationsStorageProvider.UploadAsync(scanName, scan),
-                               _expertApplicationsStorageProvider.UploadAsync(cvName, cv),
-                               _expertApplicationsStorageProvider.UploadAsync(photoName, photo));
+            var links = await Task.WhenAll(_expertApplicationsStorageProvider.UploadAndGetUriAsync(scanName, scan),
+                                           _expertApplicationsStorageProvider.UploadAndGetUriAsync(cvName, cv),
+                                           _expertApplicationsStorageProvider.UploadAndGetUriAsync(photoName, photo));
 
-            expertApplication.ScanName = scanName;
-            expertApplication.CvName = cvName;
-            expertApplication.PhotoName = photoName;
+            expertApplication.ScanUrl = links[0];
+            expertApplication.CvUrl = links[1];
+            expertApplication.PhotoUrl = links[2];
 
             await _expertApplicationRepository.UpdateWholeAsync(expertApplication);
         }

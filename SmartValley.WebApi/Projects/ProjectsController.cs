@@ -37,10 +37,17 @@ namespace SmartValley.WebApi.Projects
         }
 
         [HttpPost]
+        [DisableRequestSizeLimit]
         [Authorize]
-        public async Task<IActionResult> Post([FromBody] CreateProjectRequest request)
+        public async Task<IActionResult> Post([FromForm] CreateProjectRequest request, IFormFile image)
         {
-            await _projectService.CreateAsync(User.GetUserId(), request);
+            if (image == null ||
+                image.Length < 0 ||
+                image.Length > FileSizeLimitBytes)
+            {
+                throw new AppErrorException(ErrorCode.InvalidFileUploaded);
+            }
+            await _projectService.CreateAsync(User.GetUserId(), request, image.ToAzureFile());
             return NoContent();
         }
 

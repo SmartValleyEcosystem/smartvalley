@@ -162,14 +162,6 @@ namespace SmartValley.WebApi.Experts
             return NoContent();
         }
 
-        [HttpGet("applications/file")]
-        [Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<IActionResult> GetFileAsync(string fileName)
-        {
-            var file = await _expertApplicationsStorageProvider.DowndloadAsync(fileName);
-            return File(file.Data, file.FileName);
-        }
-
         [HttpPost, DisableRequestSizeLimit, Route("applications")]
         public async Task<EmptyResponse> CreateExpertApplicationAsync([FromForm] CreateExpertApplicationRequest request,
                                                                       IFormFile scan,

@@ -20,16 +20,16 @@ namespace SmartValley.Data.SQL.Repositories
                              .Where(t => t.ProjectId == projectId)
                              .ToArrayAsync();
 
-        public Task UpdatePhotoNameAsync(long id, string photoName)
+        public Task UpdatePhotoNameAsync(long id, string photoUrl)
         {
             var projectTeamMember = new ProjectTeamMember
                                     {
                                         Id = id,
-                                        PhotoName = photoName
+                                        PhotoUrl = photoUrl
                                     };
 
             EditContext.ProjectTeamMembers.Attach(projectTeamMember);
-            EditContext.Entity(projectTeamMember).Property(p => p.PhotoName).IsModified = true;
+            EditContext.Entity(projectTeamMember).Property(p => p.PhotoUrl).IsModified = true;
             return EditContext.SaveAsync();
         }
     }

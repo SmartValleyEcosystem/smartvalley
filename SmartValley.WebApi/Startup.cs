@@ -60,7 +60,6 @@ namespace SmartValley.WebApi
         {
             services.ConfigureOptions(Configuration, typeof(NethereumOptions), typeof(AuthenticationOptions), typeof(SiteOptions), typeof(SmtpOptions), typeof(AzureStorageOptions), typeof(ScoringOptions));
 
-            ConfigureCorsPolicy(services);
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "SmartValley API", Version = "v1"}); });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -79,6 +78,7 @@ namespace SmartValley.WebApi
                                                                           };
                                   });
 
+            services.AddSingleton<InitializationService>();
             services.AddSingleton(provider => InitializeWeb3(provider.GetService<NethereumOptions>().RpcAddress));
             services.AddSingleton<IClock, UtcClock>();
             services.AddSingleton<EthereumMessageSigner>();
@@ -91,6 +91,7 @@ namespace SmartValley.WebApi
             services.AddSingleton<ProjectTeamMembersStorageProvider>();
             services.AddSingleton<ApplicationTeamMembersStorageProvider>();
             services.AddSingleton<ExpertApplicationsStorageProvider>();
+            services.AddSingleton<ProjectStorageProvider>();
             services.AddSingleton<ITokenContractClient, TokenContractClient>(
                 provider => new TokenContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().TokenContract));
             services.AddSingleton<IVotingSprintContractClient, VotingSprintContractClient>(
@@ -152,6 +153,14 @@ namespace SmartValley.WebApi
             services.AddTransient<IProjectTeamMemberRepository, ProjectTeamMemberRepository>();
             services.AddTransient<IProjectSocialMediaRepository, ProjectSocialMediaRepository>();
             services.AddTransient<IProjectTeamMemberSocialMediaRepository, ProjectTeamMemberSocialMediaRepository>();
+
+            var serviceProvider = services.BuildServiceProvider();
+            var siteOptions = serviceProvider.GetService<SiteOptions>();
+
+            ConfigureCorsPolicy(services, siteOptions);
+
+            var service = serviceProvider.GetService<InitializationService>();
+            service.InitializeAsync().Wait();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -185,10 +194,8 @@ namespace SmartValley.WebApi
                .UseMvc();
         }
 
-        private void ConfigureCorsPolicy(IServiceCollection services)
+        private void ConfigureCorsPolicy(IServiceCollection services, SiteOptions siteOptions)
         {
-            var sp = services.BuildServiceProvider();
-            var siteOptions = sp.GetService<SiteOptions>();
             var url = siteOptions.Root;
             if (!_currentEnvironment.IsProduction())
             {

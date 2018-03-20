@@ -20,8 +20,8 @@ namespace SmartValley.Domain.Entities
         [MaxLength(500)]
         public string About { get; set; }
 
-        [MaxLength(50)]
-        public string PhotoName { get; set; }
+        [Url, MaxLength(200)]
+        public string PhotoUrl { get; set; }
 
         public Application Application { get; set; }
     }

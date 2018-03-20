@@ -75,8 +75,8 @@ namespace SmartValley.Data.SQL.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<string>("PhotoName")
-                        .HasMaxLength(50);
+                    b.Property<string>("PhotoUrl")
+                        .HasMaxLength(200);
 
                     b.Property<string>("Role")
                         .IsRequired()
@@ -228,8 +228,8 @@ namespace SmartValley.Data.SQL.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<string>("CvName")
-                        .HasMaxLength(50);
+                    b.Property<string>("CvUrl")
+                        .HasMaxLength(200);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -254,11 +254,11 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<string>("LinkedInLink")
                         .HasMaxLength(400);
 
-                    b.Property<string>("PhotoName")
-                        .HasMaxLength(50);
+                    b.Property<string>("PhotoUrl")
+                        .HasMaxLength(200);
 
-                    b.Property<string>("ScanName")
-                        .HasMaxLength(50);
+                    b.Property<string>("ScanUrl")
+                        .HasMaxLength(200);
 
                     b.Property<int>("Sex");
 
@@ -323,6 +323,9 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<DateTimeOffset?>("IcoDate");
 
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(200);
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50);
@@ -383,8 +386,8 @@ namespace SmartValley.Data.SQL.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<string>("PhotoName")
-                        .HasMaxLength(50);
+                    b.Property<string>("PhotoUrl")
+                        .HasMaxLength(200);
 
                     b.Property<long>("ProjectId");
 

@@ -51,14 +51,14 @@ namespace SmartValley.Domain.Entities
         [MaxLength(30)]
         public string DocumentNumber { get; set; }
 
-        [MaxLength(50)]
-        public string ScanName { get; set; }
+        [Url, MaxLength(200)]
+        public string ScanUrl { get; set; }
 
-        [MaxLength(50)]
-        public string PhotoName { get; set; }
+        [Url, MaxLength(200)]
+        public string PhotoUrl { get; set; }
 
-        [MaxLength(50)]
-        public string CvName { get; set; }
+        [Url, MaxLength(200)]
+        public string CvUrl { get; set; }
 
         public ExpertApplicationStatus Status { get; set; }
 
