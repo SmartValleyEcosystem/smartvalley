@@ -16,7 +16,7 @@ namespace SmartValley.WebApi.Contracts
             _nethereumOptions = nethereumOptions;
         }
 
-        [HttpGet("scoringExpertsManager"), Authorize(Roles = nameof(RoleType.Admin))]
+        [HttpGet("scoringExpertsManager")]
         public ContractResponse GetScoringExpertsManagerContract()
         {
             var contractOptions = _nethereumOptions.ScoringExpertsManagerContract;
