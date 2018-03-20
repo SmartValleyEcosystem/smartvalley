@@ -9,6 +9,7 @@ import {AuthenticationService} from '../authentication/authentication-service';
 import {AdminContractClient} from '../contract-clients/admin-contract-client';
 import {ExpertsRegistryContractClient} from '../contract-clients/experts-registry-contract-client';
 import {AreaService} from '../expert/area.service';
+import {ScoringExpertsManagerContractClient} from '../contract-clients/scoring-experts-manager-contract-client';
 
 @Injectable()
 export class InitializationService {
@@ -19,6 +20,7 @@ export class InitializationService {
               private adminContractClient: AdminContractClient,
               private expertContractClient: ExpertsRegistryContractClient,
               private scoringManagerContractClient: ScoringManagerContractClient,
+              private scoringExpertsManagerContractClient: ScoringExpertsManagerContractClient,
               private votingManagerContractClient: VotingManagerContractClient,
               private votingContractClient: VotingContractClient,
               private balanceService: BalanceService,
@@ -41,6 +43,7 @@ export class InitializationService {
       this.questionService.initializeAsync(),
       this.adminContractClient.initializeAsync(),
       this.scoringManagerContractClient.initializeAsync(),
+      this.scoringExpertsManagerContractClient.initializeAsync(),
       this.votingManagerContractClient.initializeAsync(),
       this.votingContractClient.initializeAsync(),
       this.balanceService.updateBalanceAsync(),
