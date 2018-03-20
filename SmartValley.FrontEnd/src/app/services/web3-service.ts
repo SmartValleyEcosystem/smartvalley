@@ -11,7 +11,7 @@ export class Web3Service {
   constructor(private progress: NgProgress) {
   }
 
-  private readonly rinkebyNetworkId = environment.network_id;
+  private readonly networkId = environment.network_id;
   private _transactionReceiptPollingInterval = 1000;
 
   private _eth: EthJs;
@@ -52,7 +52,7 @@ export class Web3Service {
 
   public async checkNetworkAsync(): Promise<boolean> {
     const version = await this.getNetworkVersionAsync();
-    return version === this.rinkebyNetworkId;
+    return version === this.networkId;
   }
 
   public getContract(abiString: string, address: string) {
