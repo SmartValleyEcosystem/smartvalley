@@ -21,7 +21,7 @@ namespace SmartValley.Data.SQL.Repositories
         public Task<User> GetByAddressAsync(Address address)
             => ReadContext.Users.FirstOrDefaultAsync(u => u.Address == address);
 
-        public async Task<IReadOnlyCollection<User>> GetIdsByAddressesAsync(IReadOnlyCollection<Address> addresses)
+        public async Task<IReadOnlyCollection<User>> GetByAddressesAsync(IReadOnlyCollection<Address> addresses)
         {
             return await ReadContext.Users
                                     .Where(user => addresses.Contains(user.Address))

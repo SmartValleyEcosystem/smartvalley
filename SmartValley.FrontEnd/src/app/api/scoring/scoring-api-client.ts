@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BaseApiClient} from '../base-api-client';
 import {HttpClient} from '@angular/common/http';
-import {UpdateOffersRequest} from './update-offers-request';
 import {StartProjectScoringRequest} from './start-project-scoring-request';
 import {AreaRequest} from './area-request';
 
@@ -18,19 +17,10 @@ export class ScoringApiClient extends BaseApiClient {
     const request = <StartProjectScoringRequest>{
       projectExternalId: projectId,
       areas: areas.map((a, index) => <AreaRequest>{area: a, expertsCount: areaExpertCounts[index]}),
-      transactionHash: transactionHash};
+      transactionHash: transactionHash
+    };
     await this.http
       .post(this.baseApiUrl + '/scoring/start', request)
-      .toPromise();
-  }
-
-  public async updateOffersAsync(projectId: string,
-                                 transactionHash: string): Promise<void> {
-    const request = <UpdateOffersRequest>{
-      projectExternalId: projectId,
-      transactionHash: transactionHash};
-    await this.http
-      .put(this.baseApiUrl + '/scoring/offers', request)
       .toPromise();
   }
 }

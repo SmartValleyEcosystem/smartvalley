@@ -6,6 +6,7 @@ import {ExpertScoringOffer} from './expert-scoring-offer';
 import {AreaType} from '../scoring/area-type.enum';
 import {ExpertHistoryOffer} from './expert-history-offer';
 import {ScoringOfferStatusResponse} from './scoring-offer-status-response';
+import {UpdateOffersRequest} from './update-offers-request';
 import {ChangeStatusExpertOfferRequest} from './change-status-expert-offer-request';
 
 @Injectable()
@@ -52,4 +53,10 @@ export class OffersApiClient extends BaseApiClient {
     }).toPromise();
   }
 
+  public async updateOffersAsync(projectId: string, transactionHash: string): Promise<void> {
+    await this.http.put(this.baseApiUrl + '/scoring/offers', <UpdateOffersRequest>{
+      projectExternalId: projectId,
+      transactionHash: transactionHash
+    }).toPromise();
+  }
 }

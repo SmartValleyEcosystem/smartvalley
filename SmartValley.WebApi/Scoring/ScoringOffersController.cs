@@ -87,6 +87,14 @@ namespace SmartValley.WebApi.Scoring
             return new ScoringOfferStatusResponse {Status = GetOfferStatus(offer, _clock.UtcNow)};
         }
 
+        [HttpPut]
+        public async Task<EmptyResponse> UpdateOffersAsync([FromBody] UpdateOffersRequest request)
+        {
+            await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
+            await _scoringService.UpdateOffersAsync(request.ProjectExternalId);
+            return new EmptyResponse();
+        }
+
         private static OfferStatus GetOfferStatus(ScoringOffer offer, DateTimeOffset now)
         {
             if (offer == null)

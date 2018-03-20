@@ -54,20 +54,6 @@ namespace SmartValley.Data.SQL.Repositories
             return offer?.Status == ScoringOfferStatus.Accepted;
         }
 
-        private Task SetStatusAsync(long scoringId, long expertId, AreaType area, ScoringOfferStatus status)
-        {
-            var scoringOffer = new ScoringOffer
-                               {
-                                   ScoringId = scoringId,
-                                   ExpertId = expertId,
-                                   AreaId = area,
-                                   Status = status
-                               };
-
-            _editContext.ScoringOffers.Attach(scoringOffer).Property(s => s.Status).IsModified = true;
-            return _editContext.SaveAsync();
-        }
-
         public Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllPendingByExpertAsync(long expertId)
             => GetAllForExpertByStatusAsync(expertId, ScoringOfferStatus.Pending);
 
@@ -97,6 +83,23 @@ namespace SmartValley.Data.SQL.Repositories
                               scoringOffer.AreaId,
                               project.ExternalId))
                        .ToArrayAsync();
+        }
+
+        public async Task<IReadOnlyCollection<ScoringOffer>> GetByScoringIdAsync(long scoringId)
+            => await _readContext.ScoringOffers.Where(o => o.ScoringId == scoringId).ToArrayAsync();
+
+        private Task SetStatusAsync(long scoringId, long expertId, AreaType area, ScoringOfferStatus status)
+        {
+            var scoringOffer = new ScoringOffer
+                               {
+                                   ScoringId = scoringId,
+                                   ExpertId = expertId,
+                                   AreaId = area,
+                                   Status = status
+                               };
+
+            _editContext.ScoringOffers.Attach(scoringOffer).Property(s => s.Status).IsModified = true;
+            return _editContext.SaveAsync();
         }
 
         private async Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllForExpertByStatusAsync(long expertId, ScoringOfferStatus status)

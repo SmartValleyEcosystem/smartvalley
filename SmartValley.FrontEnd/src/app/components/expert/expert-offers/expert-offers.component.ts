@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {OffersApiClient} from '../../../api/expert/offers-api-client';
 import {ExpertScoringOffer} from '../../../api/expert/expert-scoring-offer';
 import {AreaService} from '../../../services/expert/area.service';
@@ -7,8 +7,6 @@ import {ExpertApiClient} from '../../../api/expert/expert-api-client';
 import {ExpertAvailabilityStatusResponse} from '../../../api/expert/expert-availability-status-response';
 import {ExpertsRegistryContractClient} from '../../../services/contract-clients/experts-registry-contract-client';
 import {BlockiesService} from '../../../services/blockies-service';
-import {ProjectService} from '../../../services/project/project-service';
-import {ProjectAreaTypeEnum} from '../../../services/project/project-area-type.enum';
 
 @Component({
   selector: 'app-expert-offers',
@@ -25,13 +23,14 @@ export class ExpertOffersComponent implements OnInit {
               private expertApiClient: ExpertApiClient,
               private blockiesService: BlockiesService,
               private expertsRegistryContractClient: ExpertsRegistryContractClient,
-              private scoringExpertsManagerContractClient: ScoringExpertsManagerContractClient) { }
+              private scoringExpertsManagerContractClient: ScoringExpertsManagerContractClient) {
+  }
 
   async ngOnInit() {
-      let pendingOffers = await this.offersApiClient.getExpertPendingOffersAsync();
-      this.expertOffers = pendingOffers.items;
-      let availabilityStatusResponse: ExpertAvailabilityStatusResponse = await this.expertApiClient.getAvailabilityStatusAsync();
-      this.isAvailable = availabilityStatusResponse.isAvailable;
+    const pendingOffers = await this.offersApiClient.getExpertPendingOffersAsync();
+    this.expertOffers = pendingOffers.items;
+    const availabilityStatusResponse: ExpertAvailabilityStatusResponse = await this.expertApiClient.getAvailabilityStatusAsync();
+    this.isAvailable = availabilityStatusResponse.isAvailable;
 
   }
 
@@ -40,23 +39,22 @@ export class ExpertOffersComponent implements OnInit {
   }
 
   public async acceptOffer(projectId, scoringId, areaId) {
-      let transactionHash = (await this.scoringExpertsManagerContractClient.acceptOfferAsync(projectId, areaId));
-      await this.offersApiClient.acceptExpertOfferAsync(transactionHash, scoringId, areaId);
+    const transactionHash = (await this.scoringExpertsManagerContractClient.acceptOfferAsync(projectId, areaId));
+    await this.offersApiClient.acceptExpertOfferAsync(transactionHash, scoringId, areaId);
   }
 
   public async declineOffer(projectId, scoringId, areaId) {
-      let transactionHash =  (await this.scoringExpertsManagerContractClient.rejectOfferAsync(projectId, areaId));
-      await this.offersApiClient.declineExpertOfferAsync(transactionHash, scoringId, areaId);
+    const transactionHash = (await this.scoringExpertsManagerContractClient.rejectOfferAsync(projectId, areaId));
+    await this.offersApiClient.declineExpertOfferAsync(transactionHash, scoringId, areaId);
   }
 
   public async toggleAvailabilityAsync(event) {
-    if ( event.checked ) {
-      let transactionHash = await this.expertsRegistryContractClient.expertEnableAsync();
+    if (event.checked) {
+      const transactionHash = await this.expertsRegistryContractClient.expertEnableAsync();
       await this.expertApiClient.switchAvailabilityAsync(transactionHash, true);
     } else {
-      let transactionHash = await this.expertsRegistryContractClient.expertDisableAsync();
+      const transactionHash = await this.expertsRegistryContractClient.expertDisableAsync();
       await this.expertApiClient.switchAvailabilityAsync(transactionHash, false);
     }
   }
-
 }

@@ -18,9 +18,10 @@
           <span style="padding-right: 2em;" *ngFor="let areaExpert of project.areasExperts">{{areaExpert.area.name}}: {{areaExpert.acceptedCount}}/{{areaExpert.requiredCount}}</span>
         </div>
         <div class="col-4 text-right">
-          <a *ngIf="project.statusCode !== ScoringProjectStatus.InProgress" class="col-10 sv-default-btn btn btn-primary"
-             (click)="relaunchAsync (project.projectId)">
-            {{ 'AdminScoringProject.ReLaunch' | translate }}
+          <a *ngIf="project.statusCode !== ScoringProjectStatus.InProgress"
+             class="col-10 sv-default-btn btn btn-primary"
+             (click)="relaunchAsync(project.projectId)">
+            {{ 'AdminScoringProject.Relaunch' | translate }}
           </a>
           <span *ngIf="project.statusCode === ScoringProjectStatus.InProgress" class="big-size high_rate">{{ 'AdminScoringProject.WaitExperts' | translate }} {{project.endDate}}</span>
         </div>
@@ -30,7 +31,8 @@
           <span *ngIf="project.startDate !== ''" class="big-size medium_rate">{{ 'AdminScoringProject.StartDate' | translate }}: {{project.startDate}}</span>
         </div>
         <div class="col-4 text-right">
-          <a *ngIf="project.statusCode !== ScoringProjectStatus.InProgress" class="col-10 sv-default-btn btn btn-primary"
+          <a *ngIf="project.statusCode !== ScoringProjectStatus.InProgress"
+             class="col-10 sv-default-btn btn btn-primary"
              (click)="setExpertsAsync(project.projectId)">
             {{ 'AdminScoringProject.SetExperts' | translate }}
           </a>

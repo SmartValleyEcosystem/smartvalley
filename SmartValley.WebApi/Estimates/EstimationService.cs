@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application.Contracts.Scorings;
 using SmartValley.Domain;
-using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
@@ -66,7 +65,7 @@ namespace SmartValley.WebApi.Estimates
 
             var estimateScores = await _scoringContractClient.GetEstimatesAsync(scoring.ContractAddress);
             var comments = await _estimateCommentRepository.GetByProjectIdAsync(projectId, areaType);
-            var users = await _userRepository.GetIdsByAddressesAsync(estimateScores.Select(x => x.ExpertAddress).ToArray());
+            var users = await _userRepository.GetByAddressesAsync(estimateScores.Select(x => x.ExpertAddress).ToArray());
 
             var estimates = (from user in users
                              join comment in comments

@@ -24,5 +24,7 @@ namespace SmartValley.Domain.Interfaces
         Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllAcceptedByExpertAsync(long expertId);
 
         Task<IReadOnlyCollection<ScoringOfferDetails>> GetExpertOffersHistoryAsync(long expertId, DateTimeOffset now);
+
+        Task<IReadOnlyCollection<ScoringOffer>> GetByScoringIdAsync(long scoringId);
     }
 }

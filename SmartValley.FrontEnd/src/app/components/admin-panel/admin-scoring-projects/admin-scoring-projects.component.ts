@@ -14,8 +14,8 @@ import {StatusRequest} from '../../../api/project/status-request';
 import {DialogService} from '../../../services/dialog-service';
 import {isNullOrUndefined} from 'util';
 import {TranslateService} from '@ngx-translate/core';
-import {ScoringApiClient} from '../../../api/scoring/scoring-api-client';
 import {AreaService} from '../../../services/expert/area.service';
+import {OffersApiClient} from '../../../api/expert/offers-api-client';
 
 @Component({
   selector: 'app-admin-scoring-projects',
@@ -33,9 +33,9 @@ export class AdminScoringProjectsComponent implements OnInit {
               public projectService: ProjectService,
               private blockiesService: BlockiesService,
               private dialogService: DialogService,
-              private scorintExpertsManagerContractClient: ScoringExpertsManagerContractClient,
+              private scoringExpertsManagerContractClient: ScoringExpertsManagerContractClient,
               private translateService: TranslateService,
-              private scoringApiClient: ScoringApiClient,
+              private offersApiClient: OffersApiClient,
               private areaService: AreaService) {
 
     this.categories = [
@@ -51,7 +51,8 @@ export class AdminScoringProjectsComponent implements OnInit {
 
   async updateProjectsAsync() {
     const categories = this.selectedCategories.map(i => <StatusRequest>{StatusId: i});
-    const projectsResponse = await this.projectClient.getScoringProjectsByCategoriesAsync(<GetScoringProjectsRequest>{statuses: categories});
+    const getScoringProjectsRequest = <GetScoringProjectsRequest>{statuses: categories};
+    const projectsResponse = await this.projectClient.getScoringProjectsByCategoriesAsync(getScoringProjectsRequest);
     this.projects = projectsResponse.items.map(i => <AdminScoringProjectItem>{
       projectId: i.projectId,
       imageUrl: this.blockiesService.getImageForAddress(i.address),
@@ -72,7 +73,7 @@ export class AdminScoringProjectsComponent implements OnInit {
   }
 
   async relaunchAsync(projectId: string) {
-    const transactionHash = await this.scorintExpertsManagerContractClient.selectMissingExpertsAsync(projectId);
+    const transactionHash = await this.scoringExpertsManagerContractClient.selectMissingExpertsAsync(projectId);
     if (transactionHash == null) {
       return;
     }
@@ -82,7 +83,7 @@ export class AdminScoringProjectsComponent implements OnInit {
       transactionHash
     );
 
-    await this.scoringApiClient.updateOffersAsync(projectId, transactionHash);
+    await this.offersApiClient.updateOffersAsync(projectId, transactionHash);
 
     transactionDialog.close();
   }
@@ -107,7 +108,7 @@ export class AdminScoringProjectsComponent implements OnInit {
     }
     const areaTypes = areaExperts.map(i => i.areaType);
     const addresses = areaExperts.map(i => i.address);
-    const transactionHash = await this.scorintExpertsManagerContractClient.setExpertsAsync(projectId, areaTypes, addresses);
+    const transactionHash = await this.scoringExpertsManagerContractClient.setExpertsAsync(projectId, areaTypes, addresses);
     if (transactionHash == null) {
       return;
     }
@@ -117,11 +118,10 @@ export class AdminScoringProjectsComponent implements OnInit {
       transactionHash
     );
 
-    await this.scoringApiClient.updateOffersAsync(projectId, transactionHash);
+    await this.offersApiClient.updateOffersAsync(projectId, transactionHash);
 
     transactionDialog.close();
   }
-
 
   async onCheckAsync() {
     await this.updateProjectsAsync();
@@ -130,5 +130,4 @@ export class AdminScoringProjectsComponent implements OnInit {
   async ngOnInit() {
     await this.updateProjectsAsync();
   }
-
 }
