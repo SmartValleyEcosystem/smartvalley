@@ -9,7 +9,7 @@
 
 body {
   background: #eeedf5;
-  font-family: 'AvenirNextCyr', sans-serif;
+  font-family: 'Roboto-Regular';
 }
 
 .body-visible {
@@ -24,23 +24,23 @@ body {
 
 .mat-toolbar {
   background: transparent !important;
-  font-family: 'AvenirNextCyr', sans-serif;
+  font-family: 'Roboto-Regular', sans-serif;
 }
 
 .mat-button-wrapper {
-  font-family: 'AvenirNextCyr-Medium', sans-serif;
+  font-family: 'Roboto-Regular-Medium', sans-serif;
 }
 
 .mat-tab-group {
-  font-family: 'AvenirNextCyr', sans-serif;
+  font-family: 'Roboto-Regular', sans-serif;
 }
 
 .mat-checkbox {
-  font-family: 'AvenirNextCyr', sans-serif;
+  font-family: 'Roboto-Regular', sans-serif;
 }
 
 strong {
-  font-family: 'AvenirNextCyr-Bold', sans-serif;
+  font-family: 'Roboto-Bold', sans-serif;
 }
 
 div.mat-checkbox-frame {
