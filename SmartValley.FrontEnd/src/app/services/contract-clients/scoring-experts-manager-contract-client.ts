@@ -50,7 +50,8 @@ export class ScoringExpertsManagerContractClient implements ContractClient {
 
         return contract.accept(
             projectId.replace(/-/g, ''),
-            area);
+            area,
+            {from: fromAddress});
     }
 
     public async rejectOfferAsync(projectId: string,
@@ -60,6 +61,7 @@ export class ScoringExpertsManagerContractClient implements ContractClient {
 
         return contract.reject(
             projectId.replace(/-/g, ''),
-            area);
+            area,
+            {from: fromAddress});
     }
 }
