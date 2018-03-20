@@ -165,8 +165,20 @@ namespace SmartValley.WebApi.Scoring
         private async Task NotifyExpertsAsync(IReadOnlyCollection<ScoringOffer> offers, IReadOnlyCollection<User> experts)
         {
             var expertEmailsDictionary = experts.ToDictionary(e => e.Id, e => e.Email);
-            foreach (var offer in offers)
-                await _mailService.SendOfferEmailAsync(expertEmailsDictionary[offer.ExpertId]);
+            await Task.WhenAll(offers.Select(o => SendOfferEmailAsync(expertEmailsDictionary[o.ExpertId])));
+        }
+
+        private Task SendOfferEmailAsync(string email)
+        {
+            try
+            {
+                return _mailService.SendOfferEmailAsync(email);
+            }
+            catch (EmailSendingFailedException)
+            {
+                // TODO https://rassvet-capital.atlassian.net/browse/ILT-763
+                return Task.CompletedTask;
+            }
         }
 
         private async Task<ScoringOffer[]> AddScoringOffersAsync(

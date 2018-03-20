@@ -31,9 +31,9 @@ namespace SmartValley.Application.Email
                     await client.SendAsync(message);
                     await client.DisconnectAsync(true);
                 }
-                catch (Exception)
+                catch (Exception exception)
                 {
-                    throw new AppErrorException(ErrorCode.EmailSendingFailed);
+                    throw new EmailSendingFailedException(exception.ToString());
                 }
             }
         }
