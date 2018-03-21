@@ -154,9 +154,8 @@ namespace SmartValley.WebApi.Scoring
         private async Task<IReadOnlyCollection<User>> GetExpertsForOffersAsync(IReadOnlyCollection<ScoringOfferInfo> contractOffers)
         {
             var expertAddresses = contractOffers
-                                  .Select(o => o.ExpertAddress)
+                                  .Select(o => (Address) o.ExpertAddress)
                                   .Distinct()
-                                  .Cast<Address>()
                                   .ToArray();
 
             return await _userRepository.GetByAddressesAsync(expertAddresses);
