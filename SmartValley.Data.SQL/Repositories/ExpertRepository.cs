@@ -83,7 +83,7 @@ namespace SmartValley.Data.SQL.Repositories
             await _editContext.SaveAsync();
         }
 
-        public Task<int> GetTotalCountExpertsAsync() 
+        public Task<int> GetTotalCountExpertsAsync()
             => _readContext.Experts.CountAsync();
 
         public async Task<ExpertDetails> GetDetailsAsync(Address address)
@@ -127,12 +127,12 @@ namespace SmartValley.Data.SQL.Repositories
             var lookUpAreas = expertAreas.ToLookup(k => k.ExpertId, v => v.area);
 
             return await expertUsersQuery.Select(expertUser =>
-                                          new ExpertDetails(expertUser.user.Address,
-                                                            expertUser.user.Email,
-                                                            expertUser.user.Name,
-                                                            expertUser.user.About,
-                                                            expertUser.expert.IsAvailable,
-                                                            lookUpAreas[expertUser.expert.UserId].ToArray())).ToArrayAsync();
+                                                     new ExpertDetails(expertUser.user.Address,
+                                                                       expertUser.user.Email,
+                                                                       expertUser.user.Name,
+                                                                       expertUser.user.About,
+                                                                       expertUser.expert.IsAvailable,
+                                                                       lookUpAreas[expertUser.expert.UserId].ToArray())).ToArrayAsync();
         }
     }
 }

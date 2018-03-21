@@ -25,6 +25,7 @@ namespace SmartValley.Domain
             About = about;
             IsAvailable = isAvailable;
             Areas = areas;
+            Name = name;
         }
     }
 }
