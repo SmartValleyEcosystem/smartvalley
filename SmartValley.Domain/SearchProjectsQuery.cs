@@ -12,8 +12,8 @@ namespace SmartValley.Domain
                                    CategoryType? categoryType,
                                    int? minimumScore,
                                    int? maximumScore,
-                                   ProjectsOrderBy orderBy,
-                                   SortDirection direction)
+                                   ProjectsOrderBy? orderBy,
+                                   SortDirection? direction)
         {
             Offset = offset;
             Count = count;
@@ -43,8 +43,8 @@ namespace SmartValley.Domain
 
         public int? MaximumScore { get; }
 
-        public ProjectsOrderBy OrderBy { get; }
+        public ProjectsOrderBy? OrderBy { get; }
 
-        public SortDirection Direction { get; }
+        public SortDirection? Direction { get; }
     }
 }

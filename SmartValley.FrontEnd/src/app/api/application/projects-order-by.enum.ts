@@ -1,5 +1,5 @@
 export enum ProjectsOrderBy {
-  None = 0,
+  ScoringEndDate = 0,
   Name = 1,
   ScoringRating = 2
 }

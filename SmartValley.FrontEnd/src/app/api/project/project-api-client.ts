@@ -24,11 +24,6 @@ export class ProjectApiClient extends BaseApiClient {
     await this.http.post(this.baseApiUrl + '/projects', request).toPromise();
   }
 
-  async getScoredProjectsAsync(): Promise<CollectionResponse<ProjectResponse>> {
-    return await this.http.get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/projects/scored')
-      .toPromise();
-  }
-
   async getDetailsByIdAsync(id: number): Promise<ProjectDetailsResponse> {
     return this.http.get<ProjectDetailsResponse>(this.baseApiUrl + '/projects?projectId=' + id)
       .toPromise();
@@ -55,15 +50,6 @@ export class ProjectApiClient extends BaseApiClient {
       .toPromise();
   }
 
-  public getScoredProjectAsync(page: number, pageSize: number): Promise<CollectionResponse<ScoredProject>> {
-    const parameters = new HttpParams().append('Page', page.toString())
-      .append('PageSize', pageSize.toString());
-
-    return this.http
-      .get<CollectionResponse<ScoredProject>>(this.baseApiUrl + '/projects/scored', {params: parameters})
-      .toPromise();
-  }
-
   public getProjectsBySearchString(searchString: string): Promise<CollectionResponse<SearchProjectResponse>> {
     const parameters = new HttpParams().append('SearchString', searchString);
 
@@ -73,7 +59,7 @@ export class ProjectApiClient extends BaseApiClient {
   }
 
   public getFilteredProjectsAsync(filters: ProjectFilter): Promise<CollectionResponse<ScoredProject>> {
-    const checkParam = (param) =>  isNullOrUndefined(param) ? '' : param.toString();
+    const checkParam = (param) => isNullOrUndefined(param) ? '' : param.toString();
 
     const parameters = new HttpParams()
       .append('offset', filters.offset.toString())

@@ -28,8 +28,8 @@ namespace SmartValley.WebApi.Projects.Requests
 
         public int? MaximumScore { get; set; }
 
-        public ProjectsOrderBy OrderBy { get; set; }
+        public ProjectsOrderBy? OrderBy { get; set; }
 
-        public SortDirection Direction { get; set; }
+        public SortDirection? Direction { get; set; }
     }
 }

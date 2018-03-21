@@ -5,6 +5,8 @@ import {ProjectCardType} from '../../services/project-card-type';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ScoredProject} from '../../api/expert/scored-project';
 import {ProjectCategory} from '../../api/application/project-category.enum';
+import {ProjectFilter} from '../../api/project/project-filter';
+import {ProjectsOrderBy} from '../../api/application/projects-order-by.enum';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +25,11 @@ export class LandingComponent implements OnInit {
 
   public async ngOnInit() {
     this.projectsLink = Paths.ProjectList;
-    let projectResponse = await this.projectApiClient.getScoredProjectAsync(0, 10);
+    const projectResponse = await this.projectApiClient.getFilteredProjectsAsync(<ProjectFilter>{
+      offset: 0,
+      count: 10,
+      orderBy: ProjectsOrderBy.ScoringEndDate
+    });
     this.scoredProjects = projectResponse.items;
   }
 

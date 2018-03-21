@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Domain;
-using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 
@@ -19,54 +18,58 @@ namespace SmartValley.Data.SQL.Repositories
         {
         }
 
-        private IQueryable<ProjectDetails> GetScoredQueryable(SearchProjectsQuery projectsQuery)
+        private IQueryable<ProjectDetails> GetScoredQueryable(SearchProjectsQuery query, bool enablePaging = true, bool enableSorting = true)
         {
-            var query = from project in ReadContext.Projects
-                        join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
-                        join application in ReadContext.Applications on project.Id equals application.ProjectId
-                        join country in ReadContext.Countries on project.CountryId equals country.Id
-                        where scoring.Score.HasValue
-                        where !projectsQuery.StageType.HasValue || project.StageId == projectsQuery.StageType.Value
-                        where string.IsNullOrEmpty(projectsQuery.SearchString) || project.Name.ToUpper().Contains(projectsQuery.SearchString.ToUpper())
-                        where string.IsNullOrEmpty(projectsQuery.CountryCode) || country.Code == projectsQuery.CountryCode.ToUpper()
-                        where !projectsQuery.CategoryType.HasValue || project.CategoryId == projectsQuery.CategoryType.Value
-                        where !projectsQuery.MinimumScore.HasValue || scoring.Score >= projectsQuery.MinimumScore.Value
-                        where !projectsQuery.MaximumScore.HasValue || scoring.Score <= projectsQuery.MaximumScore.Value
-                        select new ProjectDetails(project, scoring, application, country);
-            return AddSorting(query, projectsQuery.OrderBy, projectsQuery.Direction);
+            var queryable = ReadContext
+                            .Projects
+                            .Join(ReadContext.Scorings, p => p.Id, s => s.ProjectId, (project, scoring) => new {project, scoring})
+                            .Join(ReadContext.Applications, p => p.project.Id, a => a.ProjectId, (current, application) => new {current.project, current.scoring, application})
+                            .Join(ReadContext.Countries, p => p.project.CountryId, c => c.Id, (current, country) => new {current.project, current.scoring, current.application, country})
+                            .Where(o => o.scoring.Score.HasValue)
+                            .Where(o => !query.StageType.HasValue || o.project.StageId == query.StageType.Value)
+                            .Where(o => string.IsNullOrEmpty(query.SearchString) || o.project.Name.ToUpper().Contains(query.SearchString.ToUpper()))
+                            .Where(o => string.IsNullOrEmpty(query.CountryCode) || o.country.Code == query.CountryCode.ToUpper())
+                            .Where(o => !query.CategoryType.HasValue || o.project.CategoryId == query.CategoryType.Value)
+                            .Where(o => !query.MinimumScore.HasValue || o.scoring.Score >= query.MinimumScore.Value)
+                            .Where(o => !query.MaximumScore.HasValue || o.scoring.Score <= query.MaximumScore.Value);
+
+            if (enableSorting && query.OrderBy.HasValue)
+            {
+                switch (query.OrderBy)
+                {
+                    case ProjectsOrderBy.Name:
+                        queryable = query.Direction == SortDirection.Ascending
+                                        ? queryable.OrderBy(o => o.project.Name)
+                                        : queryable.OrderByDescending(i => i.project.Name);
+                        break;
+                    case ProjectsOrderBy.ScoringRating:
+                        queryable = query.Direction == SortDirection.Ascending
+                                        ? queryable.OrderBy(o => o.scoring.Score)
+                                        : queryable.OrderByDescending(i => i.scoring.Score);
+                        break;
+                    case ProjectsOrderBy.ScoringEndDate:
+                        queryable = query.Direction == SortDirection.Ascending
+                                        ? queryable.OrderBy(o => o.scoring.ScoringEndDate)
+                                        : queryable.OrderByDescending(o => o.scoring.ScoringEndDate);
+                        break;
+                }
+            }
+
+            if (enablePaging)
+            {
+                queryable = queryable
+                            .Skip(query.Offset)
+                            .Take(query.Count);
+            }
+
+            return queryable.Select(o => new ProjectDetails(o.project, o.scoring, o.application, o.country));
         }
 
         public async Task<IReadOnlyCollection<ProjectDetails>> GetScoredAsync(SearchProjectsQuery projectsQuery)
-        {
-            return await GetScoredQueryable(projectsQuery)
-                       .Skip(projectsQuery.Offset)
-                       .Take(projectsQuery.Count)
-                       .ToArrayAsync();
-        }
+            => await GetScoredQueryable(projectsQuery).ToArrayAsync();
 
         public Task<int> GetScoredTotalCountAsync(SearchProjectsQuery projectsQuery)
-        {
-            return GetScoredQueryable(projectsQuery).CountAsync();
-        }
-
-        private IQueryable<ProjectDetails> AddSorting(IQueryable<ProjectDetails> details, ProjectsOrderBy orderBy, SortDirection direction)
-        {
-            switch (orderBy)
-            {
-                case ProjectsOrderBy.Name:
-                    return @direction == SortDirection.Ascending 
-                        ? details.OrderBy(i => i.Project.Name) 
-                        : details.OrderByDescending(i => i.Project.Name);
-                case ProjectsOrderBy.ScoringRating:
-                    return @direction == SortDirection.Ascending
-                        ? details.OrderBy(i => i.Scoring.Score) 
-                        : details.OrderByDescending(i => i.Scoring.Score);
-                default:
-                    return @direction == SortDirection.Ascending
-                        ? details.OrderBy(i => i.Scoring.ScoringEndDate) 
-                        : details.OrderByDescending(i => i.Scoring.ScoringEndDate);
-            }
-        }
+            => GetScoredQueryable(projectsQuery, false, false).CountAsync();
 
         public async Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorIdAsync(long authorId)
         {

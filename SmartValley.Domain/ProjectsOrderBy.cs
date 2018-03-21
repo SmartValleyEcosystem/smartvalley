@@ -2,7 +2,7 @@
 {
     public enum ProjectsOrderBy
     {
-        None,
+        ScoringEndDate,
         Name,
         ScoringRating
     }
