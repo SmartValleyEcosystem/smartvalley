@@ -13,9 +13,9 @@
     <ng-template pTemplate="body" let-project>
       <tr>
         <td class="project-name"><a [routerLink]="getProjectLink(project.id)" >{{project.name}}</a></td>
-        <td>{{project.country}}</td>
-        <td>{{project.category}}</td>
-        <td>{{project.scoringEndDate | formatDate}}</td>
+        <td>{{ 'Countries.' + project.country | translate }}</td>
+        <td>{{ getCategoryName(project.categoryId) }}</td>
+        <td>{{ project.scoringEndDate | date: 'yyyy-MM-dd' }}</td>
         <td class="scoring-col">{{project.score | roundNumberPipe}}/100</td>
       </tr>
     </ng-template>

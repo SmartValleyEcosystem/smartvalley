@@ -27,11 +27,12 @@
 .social-icon {
   width: 23px;
   height: 23px;
+  position: relative;
   margin-right: 8px;
   background-position: center;
-  -webkit-background-size: cover;
   background-size: cover;
   display: inline-block;
+  top: 5px;
 }
 .social-icon:last-child {
   margin-right: 0;

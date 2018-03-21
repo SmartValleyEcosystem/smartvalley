@@ -102,7 +102,7 @@ button:focus {
   margin-right: 8px;
 }
 .header-nav__login-logout {
-  color: #a4a2b0;
+  color: #fff;
   display: inline-block;
   margin-left: 30px;
   cursor: pointer;
