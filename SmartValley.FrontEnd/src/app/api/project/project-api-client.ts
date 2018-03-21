@@ -11,6 +11,8 @@ import {ScoringProjectResponse} from './scoring-project-response';
 import {ScoredProject} from '../expert/scored-project';
 import {SearchProjectResponse} from './search-projects-response';
 import {CreateProjectRequest} from './create-project-request';
+import {ProjectFilter} from './project-filter';
+import {isNullOrUndefined} from 'util';
 
 @Injectable()
 export class ProjectApiClient extends BaseApiClient {
@@ -67,6 +69,26 @@ export class ProjectApiClient extends BaseApiClient {
 
     return this.http
       .get<CollectionResponse<SearchProjectResponse>>(this.baseApiUrl + '/projects/search', {params: parameters})
+      .toPromise();
+  }
+
+  public getFilteredProjectsAsync(filters: ProjectFilter): Promise<CollectionResponse<ScoredProject>> {
+    const checkParam = (param) =>  isNullOrUndefined(param) ? '' : param.toString();
+
+    const parameters = new HttpParams()
+      .append('offset', filters.offset.toString())
+      .append('count', filters.count.toString())
+      .append('SearchString', checkParam(filters.searchString))
+      .append('StageType', checkParam(filters.stageType))
+      .append('CountryCode', checkParam(filters.countryCode))
+      .append('CategoryType', checkParam(filters.categoryType))
+      .append('MinimumScore', checkParam(filters.minimumScore))
+      .append('MaximumScore', checkParam(filters.maximumScore))
+      .append('OrderBy', checkParam(filters.orderBy))
+      .append('Direction', checkParam(filters.direction));
+
+    return this.http
+      .get<CollectionResponse<ScoredProject>>(this.baseApiUrl + '/projects/scored', {params: parameters})
       .toPromise();
   }
 }

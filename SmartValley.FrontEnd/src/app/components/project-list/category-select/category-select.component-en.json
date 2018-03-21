@@ -1,0 +1,32 @@
+{
+  "CategorySelect": {
+    "Art": "Art",
+    "ArtificialIntelligence": "Artificial Intelligence",
+    "Banking": "Banking",
+    "BigData": "Big Data",
+    "BusinessServices": "Business Services",
+    "CasinoAndGambling": "Casino and Gambling",
+    "Charity": "Charity",
+    "Communication": "Communication",
+    "Cryptocurrency": "Cryptocurrency",
+    "Education": "Education",
+    "Electronics": "Electronics,",
+    "Energy": "Energy",
+    "Entertainment": "Entertainment",
+    "Health": "Health",
+    "Infrastructure": "Infrastructure",
+    "Internet": "Internet",
+    "Investment": "Investment",
+    "Legal": "Legal",
+    "Manufacturing": "Manufacturing",
+    "Media": "Media",
+    "Other": "Other",
+    "Platform": "Platform",
+    "RealEstate": "Real Estate",
+    "Retail": "Retail",
+    "SmartContract": "Smart Contract",
+    "Software": "Software",
+    "Sports": "Sports",
+    "Tourism": "Tourism"
+  }
+}

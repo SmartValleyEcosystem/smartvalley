@@ -21,6 +21,7 @@ import {CheckboxModule} from 'primeng/checkbox';
 import {ScoringComponent} from './components/scoring/scoring.component';
 import {MatTabsModule} from '@angular/material';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatSelectModule} from '@angular/material/select';
 import {FooterComponent} from './components/footer/footer.component';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {EstimateComponent} from './components/estimate/estimate.component';
@@ -113,6 +114,9 @@ import {ExpertOffersComponent} from './components/expert/expert-offers/expert-of
 import {roundNumberPipe} from './utils/round-number.pipe';
 import {SearchWithAutocompleteComponent} from './components/search-with-autocomplete/search-with-autocomplete.component';
 import {ProjectListComponent} from './components/project-list/project-list.component';
+import {CountryAutocompleteComponent} from './components/project-list/country-autocomplete/country-autocomplete.component';
+import {CategorySelectComponent} from './components/project-list/category-select/category-select.component';
+import {PaginatorModule} from 'primeng/paginator';
 import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-assigned.guard';
 
 @NgModule({
@@ -170,7 +174,9 @@ import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-as
     ExpertOffersHistoryComponent,
     roundNumberPipe,
     SearchWithAutocompleteComponent,
-    ProjectListComponent
+    ProjectListComponent,
+    CountryAutocompleteComponent,
+    CategorySelectComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -195,6 +201,7 @@ import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-as
     DataTableModule,
     FileUploadModule,
     MatCheckboxModule,
+    MatSelectModule,
     MatTabsModule,
     BrowserModule,
     CheckboxModule,
@@ -208,6 +215,7 @@ import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-as
     NgbModule.forRoot(),
     SimpleNotificationsModule.forRoot(),
     NgProgressModule,
+    PaginatorModule,
     MatIconModule,
     Ng2DeviceDetectorModule.forRoot(),
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),

@@ -1,16 +1,91 @@
 .main-btn {
-  width: 193px;
+  min-width: 150px;
   height: 36px;
   border-radius: 18px;
   background-color: #5d49f2;
   border: solid 1px #5d49f2;
   font-size: 14px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 1.43;
-  letter-spacing: normal;
+  padding-left: 15px;
+  padding-right: 15px;
   text-align: center;
   color: #ffffff;
   cursor: pointer;
+  outline: none;
+}
+.ghost-btn {
+  font-family: "Roboto-Regular";
+  min-width: 100px;
+  padding: 0 20px;
+  height: 36px;
+  background-color: transparent;
+  border: solid 1px #5d49f2;
+  border-radius: 18px !important;
+  cursor: pointer;
+  outline: none;
+}
+.input {
+  height: 36px;
+  color: #000;
+  padding: 0 16px;
+  border-radius: 18px;
+  background-color: #ffffff;
+  border: solid 1px #a4a2b0;
+  outline: none;
+}
+
+.sortable {
+  cursor: pointer;
+  position: relative;
+}
+.sortable:after,
+.sortable:before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  right: -17px;
+}
+.sortable:after {
+  background-image: url(/assets/img/table-controls/arrow-down-gray.svg);
+  top: 8px;
+}
+.sortable:before {
+  top: -9px;
+  background-image: url(/assets/img/table-controls/arrow-up-gray.svg);
+}
+.sortable__active.sortable__active_asc.sortable:before {
+  background-image: url(/assets/img/table-controls/arrow-up-white.svg);
+}
+.sortable__active.sortable__active_desc.sortable:after {
+  background-image: url(/assets/img/table-controls/arrow-down-white.svg);
+}
+
+/* ng prime paginator restyle */
+
+body .ui-paginator {
+  margin-bottom: 100px !important;
+  background-color: transparent !important;
+}
+body .ui-widget-header {
+  background-color: transparent !important;
+  border: none !important;
+}
+body .ui-paginator .ui-paginator-first, body .ui-paginator .ui-paginator-prev, body .ui-paginator .ui-paginator-next, body .ui-paginator .ui-paginator-last {
+  color: #5d49f2 !important;
+}
+body .ui-paginator .ui-paginator-pages .ui-paginator-page {
+  text-align: center !important;
+  font-size: 18px !important;
+  font-family: Roboto-Bold !important;
+  color: #5d49f2 !important;
+  width: 30px !important;
+  height: 30px !important;
+}
+body .ui-state-active, body .ui-state-highlight {
+  color: #000 !important;
+  background-color: #ffd038 !important;
+}
+body .ui-paginator .ui-paginator-pages .ui-paginator-page {
+  padding: 2px 0 0 !important;
 }

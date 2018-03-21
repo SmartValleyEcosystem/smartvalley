@@ -36,7 +36,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     const currentUser = this.userContext.getCurrentUser();
     this.updateAccount(currentUser);
-    this.projectsLink = Paths.MyProjects;
+    this.projectsLink = Paths.ProjectList;
     this.accountLink = Paths.Account;
     this.adminPanelLink = Paths.Admin;
   }

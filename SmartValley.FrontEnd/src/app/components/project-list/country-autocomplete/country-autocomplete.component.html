@@ -1,0 +1,15 @@
+<p>
+  <label class="control-label" for="country-filter">{{ 'ProjectList.Country' | translate }}</label>
+</p>
+<input (focus)="searchInputFocusStatusSwitch(true); showCountryList();"
+       (focusout)="searchInputFocusStatusSwitch(false); hideCountryList();"
+       [class.search-controls__input_square]="squareInput"
+       (input)="onCountryInputChange($event)"
+       [value]="selectedCountry"
+       placeholder="{{ 'ProjectList.Country' | translate }}" type="text" class="input filter-country" id="country-filter">
+<ul (mouseenter) ="countryListHoverStatusSwitch(true) "  (mouseleave) ="countryListHoverStatusSwitch(false); hideCountryList();"
+    class="search-controls__country-list" [class.hidden]="isAutocompleteHidden">
+  <li *ngFor="let country of countries" (click)="selectCountry(country.code)" class="search-controls__country-item">
+    <p class="country-name">{{ country.name }}</p>
+  </li>
+</ul>

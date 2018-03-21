@@ -44,6 +44,9 @@ export function multiTranslateLoaderFactory() {
     'components/expert/expert-work-place/expert-work-place.component',
     'components/expert/expert-offers/expert-offers.component',
     'components/expert/expert-offers-history/expert-offers-history.component',
-    'components/search-with-autocomplete/search-with-autocomplete.component'
+    'components/project-list/project-list.component',
+    'components/search-with-autocomplete/search-with-autocomplete.component',
+    'components/project-list/category-select/category-select.component',
+    'services/project/countries'
   ]);
 }

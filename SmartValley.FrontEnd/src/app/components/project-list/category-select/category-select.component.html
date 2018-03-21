@@ -1,0 +1,15 @@
+<p>
+  <label class="control-label" for="Category-filter">{{ 'ProjectList.ProjectCategory' | translate }}</label>
+</p>
+<input (focus)="searchInputFocusStatusSwitch(true); showCategoryList();"
+       (focusout)="searchInputFocusStatusSwitch(false); hideCategoryList();"
+       [class.search-controls__input_square]="squareInput"
+       (input)="onCategoryInputChange()"
+       [value]="selectedCategory"
+       placeholder="{{ 'ProjectList.ProjectCategory' | translate}}" type="text" class="input project-category-input" id="category-filter">
+<ul (mouseenter) ="CategoryListHoverStatusSwitch(true) "  (mouseleave) ="CategoryListHoverStatusSwitch(false); hideCategoryList();"
+    class="category-list" [class.hidden]="isAutocompleteHidden">
+  <li *ngFor="let category of categories" (click)="selectCategory(category)" class="category-item">
+    <p class="category-name">{{ 'CategorySelect.' + categoriesEnum[category] | translate }}</p>
+  </li>
+</ul>

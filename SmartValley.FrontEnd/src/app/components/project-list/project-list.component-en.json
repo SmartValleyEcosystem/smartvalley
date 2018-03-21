@@ -1,0 +1,14 @@
+{
+  "ProjectList": {
+    "Title": "Projects",
+    "Country": "Country",
+    "ScoringRating": "Scoring rating",
+    "ApplyFilters": "Apply filters",
+    "ClearFilters": "Clear filters",
+    "ProjectNamePlaceholder": "Project name or category",
+    "Search": "Search",
+    "ProjectCategory": "Project area",
+    "ScoringDate": "Scoring date",
+    "Name": "Name"
+  }
+}

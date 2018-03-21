@@ -21,7 +21,7 @@ export class AreaService {
     });
   }
 
-  public getAreaTypeByIndex(index: number): AreaType {
-    return this.areas[index].areaType;
-  }
+    public getAreaTypeByIndex(index: number): AreaType {
+        return this.areas[index].areaType;
+    }
 }

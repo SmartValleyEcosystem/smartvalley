@@ -1,0 +1,65 @@
+@import "/assets/styles/table.css";
+
+.title{
+  font-size: 32px;
+  font-family: Roboto-Bold;
+  color: #000;
+  margin-bottom: 20px;
+}
+.control-label {
+  width: 113.6px;
+  height: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: left;
+  color: #000000;
+  cursor: pointer;
+}
+.filters-wrapper {
+  display: flex;
+  margin-top: 20px;
+}
+p {
+  margin: 0;
+}
+.apply-filters {
+  margin: 20px 0;
+}
+.filter-item {
+  margin-right: 20px;
+}
+.filter-item:last-child {
+  margin-right: 0;
+}
+.search-input {
+  width: 533px;
+}
+.search-submit {
+  border-radius: 0 30px 30px 0;
+  min-width: 95px;
+  position: relative;
+  top: -2px;
+  left: -20px;
+}
+.search-controls-wrapper {
+  position: relative;
+}
+.clear-form {
+  cursor: pointer;
+  font-family: Roboto-Bold;
+  color: #a4a2b0;
+  display: inline-block;
+  margin-left: 20px;
+}
+.scoring-input {
+  width: 76px;
+}
+.scoring-col {
+  font-size: 24px;
+  font-weight: bold;
+  color: #a4a2b0;
+}
+.project-name {
+  font-size: 14px;
+  font-weight: bold;
+}

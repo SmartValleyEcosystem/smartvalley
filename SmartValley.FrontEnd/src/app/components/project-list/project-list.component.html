@@ -1,3 +1,64 @@
-<p>
-  project-list works!
-</p>
+<div class="content">
+  <h1 class="title">{{ 'ProjectList.Title' | translate }}</h1>
+  <div class="search-controls">
+    <form name="filters" (ngSubmit)="submitFilters()" class="search-form">
+      <div class="search-controls-wrapper">
+        <input  [(ngModel)]="projectSearch" class="input search-input" type="text" name="searchInput" placeholder="{{ 'ProjectList.ProjectNamePlaceholder' | translate }}">
+        <input class="main-btn search-submit" (click)="submitFilters()" type="button" value="{{ 'ProjectList.Search' | translate }}" name="searchSubmit">
+      </div>
+      <div class="filters-wrapper">
+        <div class="filter-item">
+          <app-country-autocomplete></app-country-autocomplete>
+        </div>
+        <div class="filter-item">
+          <app-category-select></app-category-select>
+        </div>
+        <div class="filter-item">
+          <p>
+            <label class="control-label" for="scoring-filter-from">{{ 'ProjectList.ScoringRating' | translate }}</label>
+          </p>
+          <input class="input scoring-input" type="number" min="0" max="100" name="scoringRatingFrom" [(ngModel)]="scoringRatingFrom" placeholder="0" id="scoring-filter-from">
+          –
+          <input class="input scoring-input" type="number" min="0" max="100" name="scoringRatingTo" [(ngModel)]="scoringRatingTo" placeholder="100" id="scoring-filter-to">
+        </div>
+      </div>
+      <input type="submit" class="ghost-btn apply-filters" value="{{ 'ProjectList.ApplyFilters' | translate }}">
+      <span (click)="clearFilters()" class="clear-form">{{ 'ProjectList.ClearFilters' | translate }}</span>
+    </form>
+    <p-table [value]="scoredProjects">
+      <ng-template pTemplate="header">
+        <tr>
+          <th><span class="sortable" [ngClass]="{
+              'sortable__active' : isSortableField('Name'),
+              'sortable__active_desc' : isSortableDirection(DESC),
+              'sortable__active_asc' : isSortableDirection(ASC)
+             }"
+              (click)="sortProjectsBy('Name')">{{ 'ProjectList.Name' | translate }}</span></th>
+          <th>{{ 'ProjectList.Country' | translate }}</th>
+          <th>{{ 'ProjectList.ProjectCategory' | translate }}</th>
+          <th><span class="sortable" [ngClass]="{
+                'sortable__active' : isSortableField('None'),
+                'sortable__active_desc' : isSortableDirection(DESC),
+                'sortable__active_asc' : isSortableDirection(ASC)
+              }"
+              (click)="sortProjectsBy('None')">{{ 'ProjectList.ScoringDate' | translate }}</span></th>
+          <th><span class="sortable" [ngClass]="{
+                'sortable__active' : isSortableField('ScoringRating') ,
+                'sortable__active_desc' : isSortableDirection(DESC),
+                'sortable__active_asc' : isSortableDirection(ASC)
+              }" (click)="sortProjectsBy('ScoringRating')">{{ 'ProjectList.ScoringRating' | translate }}</span></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-project>
+        <tr>
+          <td class="project-name"><a [routerLink]="getProjectLink(project.id)" >{{project.name}}</a></td>
+          <td>{{ 'Countries.' + project.country | translate }}</td>
+          <td>{{ getCategoryName(project.categoryId) }}</td>
+          <td>{{ project.scoringEndDate | date:'yyyy-MM-dd' }}</td>
+          <td class="scoring-col">{{project.score | roundNumberPipe}}/100</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <p-paginator [rows]="projectOnPageCount" [totalRecords]="totalProjects" (onPageChange)="changePage($event)"></p-paginator>
+  </div>
+</div>
