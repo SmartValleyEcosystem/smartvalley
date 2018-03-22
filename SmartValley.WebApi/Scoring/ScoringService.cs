@@ -167,16 +167,15 @@ namespace SmartValley.WebApi.Scoring
             return Task.WhenAll(offers.Select(o => SendOfferEmailAsync(expertEmailsDictionary[o.ExpertId])));
         }
 
-        private Task SendOfferEmailAsync(string email)
+        private async Task SendOfferEmailAsync(string email)
         {
             try
             {
-                return _mailService.SendOfferEmailAsync(email);
+                await _mailService.SendOfferEmailAsync(email);
             }
             catch (EmailSendingFailedException)
             {
                 // TODO https://rassvet-capital.atlassian.net/browse/ILT-763
-                return Task.CompletedTask;
             }
         }
 
