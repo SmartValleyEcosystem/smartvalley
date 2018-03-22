@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Internal;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
@@ -57,7 +56,7 @@ namespace SmartValley.Data.SQL.Repositories
 
         public async Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllAcceptedByExpertAsync(long expertId, DateTimeOffset now)
             => await GetOffersQueryForExpert(expertId)
-                     .Where(o => o.ScoringOfferStatus == ScoringOfferStatus.Accepted && o.EstimatesDueDate > now)
+                     .Where(o => o.ScoringOfferStatus == ScoringOfferStatus.Accepted && (!o.EstimatesDueDate.HasValue || o.EstimatesDueDate > now))
                      .ToArrayAsync();
 
         public async Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllPendingByExpertAsync(long expertId, DateTimeOffset now)
