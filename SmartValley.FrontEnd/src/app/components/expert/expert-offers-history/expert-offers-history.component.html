@@ -13,7 +13,7 @@
           {{rowData.name}}
         </td>
         <td class="list-item">
-          {{rowData.scoringOfferTimestamp}}
+          {{rowData.scoringOfferTimestamp | formatDate}}
         </td>
         <td class="list-item">
           {{getExpertOfferStatusById(rowData.offerStatus)}}

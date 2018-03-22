@@ -20,7 +20,7 @@
       {{expertItem.description}}
     </div>
     <div class="scoring-control">
-      <p>{{ 'expertOffers.Till' | translate }} {{expertItem.scoringOfferTimestamp}}</p>
+      <p>{{ 'expertOffers.Till' | translate }} {{expertItem.scoringOfferTimestamp | formatDate}}</p>
       <p>
         <button mat-raised-button (click)="acceptOffer(expertItem.projectExternalId, expertItem.scoringId, expertItem.areaId)" class="sv-default-btn btn-space">
           {{ 'expertOffers.Accept' | translate }}

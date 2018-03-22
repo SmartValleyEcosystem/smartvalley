@@ -119,22 +119,21 @@ namespace SmartValley.Data.SQL.Repositories
 
         public async Task<bool> HasEnoughExpertsAsync(long scoringId)
         {
-            return await (from areaScoring in ReadContext.AreaScorings
-                          join scoringOffer in ReadContext.ScoringOffers
-                              on new {areaScoring.ScoringId, areaScoring.AreaId}
-                              equals new {scoringOffer.ScoringId, scoringOffer.AreaId}
-                          where scoringOffer.Status == ScoringOfferStatus.Accepted
-                          where !areaScoring.IsCompleted
-                          where areaScoring.ScoringId == scoringId
-                          group scoringOffer by new {scoringOffer.ScoringId, scoringOffer.AreaId, areaScoring.ExpertsCount}
-                          into scoringAreaGroup
-                          select new
-                                 {
-                                     scoringAreaGroup.Key.ScoringId,
-                                     AreaType = scoringAreaGroup.Key.AreaId,
-                                     Count = scoringAreaGroup.Count(),
-                                     RequiredCount = scoringAreaGroup.Key.ExpertsCount
-                                 }).AllAsync(i => i.RequiredCount == i.Count);
+            var scoringAreaCounts = await (from areaScoring in ReadContext.AreaScorings
+                                           join scoringOffer in ReadContext.ScoringOffers
+                                               on new {areaScoring.ScoringId, areaScoring.AreaId}
+                                               equals new {scoringOffer.ScoringId, scoringOffer.AreaId}
+                                           where scoringOffer.Status == ScoringOfferStatus.Accepted
+                                           where !areaScoring.IsCompleted
+                                           where areaScoring.ScoringId == scoringId
+                                           group scoringOffer by new {scoringOffer.ScoringId, scoringOffer.AreaId, areaScoring.ExpertsCount}
+                                           into scoringAreaGroup
+                                           select new
+                                                  {
+                                                      Count = scoringAreaGroup.Count(),
+                                                      RequiredCount = scoringAreaGroup.Key.ExpertsCount
+                                                  }).ToArrayAsync();
+            return scoringAreaCounts.All(i => i.RequiredCount == i.Count);
         }
 
         public async Task<IReadOnlyCollection<ScoringProjectDetails>> GetScoringProjectsDetailsByScoringIdsAsync(IReadOnlyCollection<long> scoringIds)
