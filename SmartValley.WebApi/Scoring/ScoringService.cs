@@ -102,10 +102,10 @@ namespace SmartValley.WebApi.Scoring
         }
 
         public Task<IReadOnlyCollection<ScoringOfferDetails>> GetPendingOfferDetailsAsync(long expertId)
-            => _scoringOffersRepository.GetAllPendingByExpertAsync(expertId);
+            => _scoringOffersRepository.GetAllPendingByExpertAsync(expertId, _clock.UtcNow);
 
         public Task<IReadOnlyCollection<ScoringOfferDetails>> GetAcceptedOfferDetailsAsync(long expertId)
-            => _scoringOffersRepository.GetAllAcceptedByExpertAsync(expertId);
+            => _scoringOffersRepository.GetAllAcceptedByExpertAsync(expertId, _clock.UtcNow);
 
         public Task<IReadOnlyCollection<ScoringOfferDetails>> GetExpertOffersHistoryAsync(long expertId, DateTimeOffset now)
             => _scoringOffersRepository.GetExpertOffersHistoryAsync(expertId, now);
@@ -151,20 +151,20 @@ namespace SmartValley.WebApi.Scoring
             await NotifyExpertsAsync(offers, experts);
         }
 
-        private async Task<IReadOnlyCollection<User>> GetExpertsForOffersAsync(IReadOnlyCollection<ScoringOfferInfo> contractOffers)
+        private Task<IReadOnlyCollection<User>> GetExpertsForOffersAsync(IReadOnlyCollection<ScoringOfferInfo> contractOffers)
         {
             var expertAddresses = contractOffers
                                   .Select(o => (Address) o.ExpertAddress)
                                   .Distinct()
                                   .ToArray();
 
-            return await _userRepository.GetByAddressesAsync(expertAddresses);
+            return _userRepository.GetByAddressesAsync(expertAddresses);
         }
 
-        private async Task NotifyExpertsAsync(IReadOnlyCollection<ScoringOffer> offers, IReadOnlyCollection<User> experts)
+        private Task NotifyExpertsAsync(IReadOnlyCollection<ScoringOffer> offers, IReadOnlyCollection<User> experts)
         {
             var expertEmailsDictionary = experts.ToDictionary(e => e.Id, e => e.Email);
-            await Task.WhenAll(offers.Select(o => SendOfferEmailAsync(expertEmailsDictionary[o.ExpertId])));
+            return Task.WhenAll(offers.Select(o => SendOfferEmailAsync(expertEmailsDictionary[o.ExpertId])));
         }
 
         private Task SendOfferEmailAsync(string email)

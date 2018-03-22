@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Internal;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
@@ -54,36 +55,21 @@ namespace SmartValley.Data.SQL.Repositories
             return offer?.Status == ScoringOfferStatus.Accepted;
         }
 
-        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllPendingByExpertAsync(long expertId)
-            => GetAllForExpertByStatusAsync(expertId, ScoringOfferStatus.Pending);
+        public async Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllAcceptedByExpertAsync(long expertId, DateTimeOffset now)
+            => await GetOffersQueryForExpert(expertId)
+                     .Where(o => o.ScoringOfferStatus == ScoringOfferStatus.Accepted && o.EstimatesDueDate > now)
+                     .ToArrayAsync();
 
-        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllAcceptedByExpertAsync(long expertId)
-            => GetAllForExpertByStatusAsync(expertId, ScoringOfferStatus.Accepted);
+        public async Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllPendingByExpertAsync(long expertId, DateTimeOffset now)
+            => await GetOffersQueryForExpert(expertId)
+                     .Where(o => o.ScoringOfferStatus == ScoringOfferStatus.Pending && o.ExpirationTimestamp > now)
+                     .ToArrayAsync();
 
         public async Task<IReadOnlyCollection<ScoringOfferDetails>> GetExpertOffersHistoryAsync(long expertId, DateTimeOffset now)
         {
-            return await (from scoringOffer in _readContext.ScoringOffers
-                          join scoring in _readContext.Scorings on scoringOffer.ScoringId equals scoring.Id
-                          join project in _readContext.Projects on scoring.ProjectId equals project.Id
-                          join user in _readContext.Users on scoringOffer.ExpertId equals user.Id
-                          join category in _readContext.Categories on project.CategoryId equals category.Id
-                          join country in _readContext.Countries on project.CountryId equals country.Id
-                          where scoringOffer.Status != ScoringOfferStatus.Pending || scoringOffer.ExpirationTimestamp < now
-                          where user.Id == expertId
-                          select new ScoringOfferDetails(
-                              scoringOffer.Status,
-                              scoringOffer.ExpirationTimestamp,
-                              scoring.ContractAddress,
-                              scoring.Id,
-                              user.Id,
-                              project.Name,
-                              country.Code,
-                              category.Name,
-                              project.Description,
-                              scoringOffer.AreaId,
-                              project.ExternalId,
-                              project.Id))
-                       .ToArrayAsync();
+            return await GetOffersQueryForExpert(expertId)
+                         .Where(o => o.ScoringOfferStatus != ScoringOfferStatus.Pending || o.ExpirationTimestamp < now)
+                         .ToArrayAsync();
         }
 
         public async Task<IReadOnlyCollection<ScoringOffer>> GetByScoringIdAsync(long scoringId)
@@ -103,30 +89,29 @@ namespace SmartValley.Data.SQL.Repositories
             return _editContext.SaveAsync();
         }
 
-        private async Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllForExpertByStatusAsync(long expertId, ScoringOfferStatus status)
+        private IQueryable<ScoringOfferDetails> GetOffersQueryForExpert(long expertId)
         {
-            return await (from scoringOffer in _readContext.ScoringOffers
-                          join scoring in _readContext.Scorings on scoringOffer.ScoringId equals scoring.Id
-                          join project in _readContext.Projects on scoring.ProjectId equals project.Id
-                          join user in _readContext.Users on scoringOffer.ExpertId equals user.Id
-                          join category in _readContext.Categories on project.CategoryId equals category.Id
-                          join country in _readContext.Countries on project.CountryId equals country.Id
-                          where scoringOffer.Status == status
-                          where user.Id == expertId
-                          select new ScoringOfferDetails(
-                              scoringOffer.Status,
-                              scoringOffer.ExpirationTimestamp,
-                              scoring.ContractAddress,
-                              scoring.Id,
-                              user.Id,
-                              project.Name,
-                              country.Code,
-                              category.Name,
-                              project.Description,
-                              scoringOffer.AreaId,
-                              project.ExternalId,
-                              project.Id))
-                       .ToArrayAsync();
+            return from scoringOffer in _readContext.ScoringOffers
+                   join scoring in _readContext.Scorings on scoringOffer.ScoringId equals scoring.Id
+                   join project in _readContext.Projects on scoring.ProjectId equals project.Id
+                   join user in _readContext.Users on scoringOffer.ExpertId equals user.Id
+                   join category in _readContext.Categories on project.CategoryId equals category.Id
+                   join country in _readContext.Countries on project.CountryId equals country.Id
+                   where user.Id == expertId
+                   select new ScoringOfferDetails(
+                       scoringOffer.Status,
+                       scoringOffer.ExpirationTimestamp,
+                       scoring.EstimatesDueDate,
+                       scoring.ContractAddress,
+                       scoring.Id,
+                       user.Id,
+                       project.Name,
+                       country.Code,
+                       category.Name,
+                       project.Description,
+                       scoringOffer.AreaId,
+                       project.ExternalId,
+                       project.Id);
         }
     }
 }

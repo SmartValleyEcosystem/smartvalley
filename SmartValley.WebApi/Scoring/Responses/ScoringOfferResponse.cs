@@ -26,7 +26,9 @@ namespace SmartValley.WebApi.Scoring.Responses
 
         public Guid ProjectExternalId { get; set; }
 
-        public DateTimeOffset ScoringOfferTimestamp { get; set; }
+        public DateTimeOffset ExpirationTimestamp { get; set; }
+
+        public DateTimeOffset? EstimatesDueDate { get; set; }
 
         public static ScoringOfferResponse Create(ScoringOfferDetails scoringOffer, DateTimeOffset now)
         {
@@ -40,9 +42,9 @@ namespace SmartValley.WebApi.Scoring.Responses
                        Country = scoringOffer.CountryCode,
                        ScoringId = scoringOffer.ScoringId,
                        ProjectExternalId = scoringOffer.ProjectExternalId,
-                       ScoringOfferTimestamp = scoringOffer.ScoringOfferTimestamp,
-                       OfferStatus = GetStatus(scoringOffer, now),
-                       ProjectId = scoringOffer.ProjectId
+                       ExpirationTimestamp = scoringOffer.ExpirationTimestamp,
+                       EstimatesDueDate = scoringOffer.EstimatesDueDate,
+                       OfferStatus = GetStatus(scoringOffer, now)
                    };
         }
 
@@ -54,7 +56,7 @@ namespace SmartValley.WebApi.Scoring.Responses
             switch (scoringOffer.ScoringOfferStatus)
             {
                 case ScoringOfferStatus.Pending:
-                    return scoringOffer.ScoringOfferTimestamp < now ? OfferStatus.Timeout : OfferStatus.Pending;
+                    return scoringOffer.ExpirationTimestamp < now ? OfferStatus.Timeout : OfferStatus.Pending;
                 case ScoringOfferStatus.Accepted:
                     return OfferStatus.Accepted;
                 case ScoringOfferStatus.Rejected:

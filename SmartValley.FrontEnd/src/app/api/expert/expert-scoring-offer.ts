@@ -10,5 +10,6 @@ export interface ExpertScoringOffer {
   projectArea: string;
   description: string;
   projectExternalId: string;
-  scoringOfferTimestamp: string;
+  expirationTimestamp: string;
+  estimatesDueDate: string;
 }

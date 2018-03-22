@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {ExpertScoringOffer} from '../../../api/expert/expert-scoring-offer';
-import {AreaService} from '../../../services/expert/area.service';
 import {Router} from '@angular/router';
 import {Paths} from '../../../paths';
 import {OffersApiClient} from '../../../api/expert/offers-api-client';
@@ -16,7 +15,6 @@ export class ExpertWorkPlaceComponent implements OnInit {
   public expertScoring: ExpertScoringOffer[] = [];
 
   constructor(private offersApiClient: OffersApiClient,
-              private areaService: AreaService,
               private router: Router) {
   }
 

@@ -12,7 +12,7 @@
       {{scoringItem.description}}
     </div>
     <div class="scoring-control">
-      <p>{{ 'ExpertWorkPlace.Till' | translate }} {{scoringItem.scoringOfferTimestamp | formatDate}}</p>
+        <p>{{ 'ExpertWorkPlace.Till' | translate }} {{scoringItem.estimatesDueDate | translate}}</p>
       <p>
         <button mat-raised-button (click)="navigateToEstimate(scoringItem.projectId, scoringItem.areaId)" class="sv-default-btn btn-space">
           {{ 'ExpertWorkPlace.EstimateAs' | translate }}{{scoringItem.projectArea}}
