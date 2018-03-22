@@ -44,7 +44,8 @@ namespace SmartValley.WebApi.Scoring.Responses
                        ProjectExternalId = scoringOffer.ProjectExternalId,
                        ExpirationTimestamp = scoringOffer.ExpirationTimestamp,
                        EstimatesDueDate = scoringOffer.EstimatesDueDate,
-                       OfferStatus = GetStatus(scoringOffer, now)
+                       OfferStatus = GetStatus(scoringOffer, now),
+                       ProjectId = scoringOffer.ProjectId
                    };
         }
 
