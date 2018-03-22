@@ -39,6 +39,17 @@ namespace SmartValley.WebApi.Contracts
                    };
         }
 
+        [Route("scoring")]
+        [HttpGet]
+        public ContractResponse GetScoringContract()
+        {
+            var contractOptions = _nethereumOptions.ScoringContract;
+            return new ContractResponse
+                   {
+                       Abi = contractOptions.Abi
+                   };
+        }
+
         [Route("expertsRegistry")]
         [HttpGet]
         public ContractResponse GetExpertsRegistryContract()

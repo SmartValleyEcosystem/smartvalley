@@ -7,6 +7,7 @@ import {AreaType} from '../../api/scoring/area-type.enum';
 import {Estimate} from '../estimate';
 import {Md5} from 'ts-md5';
 import {UserContext} from '../authentication/user-context';
+import {BigNumber} from 'bignumber.js';
 
 @Injectable()
 export class ScoringManagerContractClient implements ContractClient {
@@ -27,18 +28,17 @@ export class ScoringManagerContractClient implements ContractClient {
 
   public async startAsync(projectId: string,
                           areas: Array<number>,
-                          areaExpertCounts: Array<number>): Promise<string> {
+                          areaExpertCounts: Array<number>,
+                          scoringCostEth: number): Promise<string> {
     const scoringManagerContract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.userContext.getCurrentUser().account;
-    const scoringCost = await this.getScoringCostAsync();
-
     return await scoringManagerContract.start(
       projectId.replace(/-/g, ''),
       areas,
       areaExpertCounts,
       {
         from: fromAddress,
-        value: scoringCost
+        value: this.web3Service.toWei(scoringCostEth)
       });
   }
 
@@ -57,9 +57,15 @@ export class ScoringManagerContractClient implements ContractClient {
       {from: fromAddress});
   }
 
-  public async getScoringCostAsync(): Promise<number> {
+  public async getScoringCostInAreaAsync(areaType: AreaType): Promise<BigNumber> {
     const scoringManager = this.web3Service.getContract(this.abi, this.address);
-    return ConverterHelper.extractNumberValue(await scoringManager.scoringCostWEI());
+    return await scoringManager.estimateRewardsInAreaMap(+areaType);
+  }
+
+  public async setEstimateRewardsAsync(areas: Array<number>, costsWei: Array<BigNumber>): Promise<string> {
+    const fromAddress = this.userContext.getCurrentUser().account;
+    const scoringManager = this.web3Service.getContract(this.abi, this.address);
+    return await scoringManager.setEstimateRewards(areas, costsWei, {from: fromAddress});
   }
 
   public async submitEstimatesAsync(scoringAddress: string,

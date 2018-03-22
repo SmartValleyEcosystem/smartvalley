@@ -118,6 +118,9 @@ import {CountryAutocompleteComponent} from './components/project-list/country-au
 import {CategorySelectComponent} from './components/project-list/category-select/category-select.component';
 import {PaginatorModule} from 'primeng/paginator';
 import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-assigned.guard';
+import {ScoringService} from "./services/scoring/scoring.service";
+import {ScoringContractClient} from "./services/contract-clients/scoring-contract-client";
+import { ScoringCostComponent } from './components/common/scoring-cost-modal/scoring-cost.component';
 
 @NgModule({
   declarations: [
@@ -135,6 +138,7 @@ import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-as
     ReportComponent,
     QuestionsComponent,
     TransactionAwaitingModalComponent,
+    ScoringCostComponent,
     NullableLinkComponent,
     AlertModalComponent,
     MetamaskManualModalComponent,
@@ -175,6 +179,7 @@ import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-as
     roundNumberPipe,
     SearchWithAutocompleteComponent,
     ProjectListComponent,
+    ScoringCostComponent,
     CountryAutocompleteComponent,
     CategorySelectComponent
   ],
@@ -192,7 +197,8 @@ import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-as
     EditExpertModalComponent,
     ExpertsCountSelectionModalComponent,
     SetExpertsModalComponent,
-    ChangeEmailModalComponent
+    ChangeEmailModalComponent,
+    ScoringCostComponent
   ],
   imports: [
     FileUploadModule,
@@ -278,8 +284,11 @@ import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-as
     ExpertStatusGuard,
     ExpertShouldBeAssignedGuard,
     AreaService,
+    AreaService,
     EnumHelper,
-    OffersApiClient
+    OffersApiClient,
+    ScoringService,
+    ScoringContractClient
   ],
   bootstrap: [AppComponent]
 })

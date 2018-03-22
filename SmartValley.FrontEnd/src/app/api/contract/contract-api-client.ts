@@ -14,6 +14,11 @@ export class ContractApiClient extends BaseApiClient {
       .toPromise();
   }
 
+  public async getScoringContractAsync(): Promise<ContractResponse> {
+    return await this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/scoring')
+      .toPromise();
+  }
+
   async getScoringExpertsManagerContractAsync(): Promise<ContractResponse> {
     return await this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/scoringExpertsManager')
       .toPromise();

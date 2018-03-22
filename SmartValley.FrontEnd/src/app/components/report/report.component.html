@@ -8,7 +8,7 @@
     <div class="report-card col-12">
       <div class="report-content row">
         <div class="main-info col-2">
-          <img src="{{projectImageUrl}}" style="width: 128px;"/>
+          <img src="{{details.imageUrl}}" style="width: 128px;"/>
         </div>
         <div class="description col-3">
           <div class="main-info__title">
@@ -22,7 +22,7 @@
             <span>
               {{details.votingStatus == VotingStatus.Accepted
               ? ('Report.SubmitForFree' | translate)
-              : ('Report.SubmitForTokens' | translate:{scoringCost: scoringCost}) }}
+              : ('Report.SubmitForEther' | translate:{scoringCost: scoringCost}) }}
             </span>
             <a (click)="submitToScoringAsync()" class="col-8 submit-button sv-default-btn btn btn-primary">
               {{ 'Report.Submit' | translate }}

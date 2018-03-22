@@ -6,4 +6,8 @@ export class ConverterHelper {
   static extractBoolValue(result): boolean {
     return result[0];
   }
+
+  static extractStringValue(result): string {
+    return result[0];
+  }
 }

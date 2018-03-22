@@ -27,6 +27,7 @@ import {SetExpertsModalComponent} from '../components/common/set-experts-modal/s
 import {ConfirmEmailModalData} from '../components/common/confirm-email/confirm-email-modal-data';
 import {ChangeEmailModalComponent} from '../components/common/change-email-modal/change-email-modal.component';
 import {EditExpertModalData} from "../components/common/edit-expert-modal/edit-expert-modal-data";
+import {ScoringCostComponent} from "../components/common/scoring-cost-modal/scoring-cost.component";
 
 @Injectable()
 export class DialogService {
@@ -56,6 +57,12 @@ export class DialogService {
     return this.openModal(AddAdminModalComponent, {})
       .afterClosed()
       .toPromise<string>();
+  }
+
+  public showScoringCostDialog(): Promise<void> {
+    return this.openModal(ScoringCostComponent, {})
+      .afterClosed()
+      .toPromise<void>();
   }
 
   public showExpertsCountSelectionDialogAsync(areas: Array<AreaType>): Promise<Array<number>> {

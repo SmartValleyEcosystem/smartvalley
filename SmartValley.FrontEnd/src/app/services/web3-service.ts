@@ -42,8 +42,12 @@ export class Web3Service {
     return this.eth.personal_sign(EthJs.fromUtf8(message), address);
   }
 
-  public fromWei(weiNumber: number): number {
+  public fromWei(weiNumber: string): number {
     return EthJs.fromWei(weiNumber, 'ether');
+  }
+
+  public toWei(value: number): BigNumber {
+    return EthJs.toWei(value, 'ether');
   }
 
   public recoverSignature(message: string, signature: string): Promise<string> {

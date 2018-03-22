@@ -22,6 +22,7 @@ export interface ProjectDetailsResponse {
   votingAddress?: string;
   score: number;
   scoringStatus: ScoringStatus;
-  votingStatus?: VotingStatus;
-  votingEndDate?: string;
+  votingStatus: VotingStatus;
+  votingEndDate: string;
+  imageUrl: string;
 }

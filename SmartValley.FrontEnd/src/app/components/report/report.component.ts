@@ -28,6 +28,7 @@ import * as moment from 'moment';
 import {UserContext} from '../../services/authentication/user-context';
 import {AreaService} from '../../services/expert/area.service';
 import {Area} from '../../services/expert/area';
+import {ScoringService} from "../../services/scoring/scoring.service";
 
 @Component({
   selector: 'app-report',
@@ -48,7 +49,6 @@ export class ReportComponent implements AfterViewChecked, OnInit {
   public details: ProjectDetailsResponse;
   public areaAverageScore: number;
   public expertiseMaxScore: number;
-  public projectImageUrl: string;
   public currentAccount: string;
   public areas: Area[];
 
@@ -73,7 +73,7 @@ export class ReportComponent implements AfterViewChecked, OnInit {
               private scoringApiClient: ScoringApiClient,
               private notificationsService: NotificationsService,
               private userContext: UserContext,
-              private scoringManagerContractClient: ScoringManagerContractClient,
+              private scoringService: ScoringService,
               private areaService: AreaService) {
   }
 
@@ -142,13 +142,13 @@ export class ReportComponent implements AfterViewChecked, OnInit {
                                   areaExpertCounts: Array<number>): Promise<string> {
     try {
       if (this.details.votingStatus === VotingStatus.Accepted) {
-        return await this.scoringManagerContractClient.startForFreeAsync(
+        return await this.scoringService.startForFreeAsync(
           this.details.externalId,
           this.details.votingAddress,
           areas,
           areaExpertCounts);
       } else {
-        return await this.scoringManagerContractClient.startAsync(
+        return await this.scoringService.startAsync(
           this.details.externalId,
           areas,
           areaExpertCounts);
@@ -162,11 +162,10 @@ export class ReportComponent implements AfterViewChecked, OnInit {
     this.areas = this.areaService.areas;
     this.projectId = +this.route.snapshot.paramMap.get('id');
     this.details = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
-    this.projectImageUrl = this.getImageUrl();
     if (this.details.scoringStatus !== ScoringStatus.Pending) {
       await this.reloadExpertEstimatesAsync();
     } else if (this.details.votingStatus !== VotingStatus.InProgress) {
-      this.scoringCost = +(await this.scoringManagerContractClient.getScoringCostAsync()).toFixed(3);
+      this.scoringCost = +(await this.scoringService.getScoringCostEthByAddressAsync(this.details.scoringContractAddress)).toFixed(3);
     } else {
       this.updateVotingRemainingTime();
       setInterval(() => this.updateVotingRemainingTime(), 1000);
@@ -183,11 +182,6 @@ export class ReportComponent implements AfterViewChecked, OnInit {
     this.votingRemainingHours = remaining.hours;
     this.votingRemainingMinutes = remaining.minutes;
     this.votingRemainingSeconds = remaining.seconds;
-  }
-
-  private getImageUrl(): string {
-    const address = this.details.scoringContractAddress ? this.details.scoringContractAddress : this.details.authorAddress;
-    return this.blockiesService.getImageForAddress(address);
   }
 
   private async reloadExpertEstimatesAsync(): Promise<void> {
