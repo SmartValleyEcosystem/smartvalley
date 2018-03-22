@@ -2,6 +2,7 @@ import {AreaType} from '../scoring/area-type.enum';
 
 export interface ExpertScoringOffer {
   scoringId: number;
+  projectId: number;
   areaId: AreaType;
   name: string;
   scoringContractAddress: string;

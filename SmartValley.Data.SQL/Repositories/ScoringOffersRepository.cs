@@ -81,7 +81,8 @@ namespace SmartValley.Data.SQL.Repositories
                               category.Name,
                               project.Description,
                               scoringOffer.AreaId,
-                              project.ExternalId))
+                              project.ExternalId,
+                              project.Id))
                        .ToArrayAsync();
         }
 
@@ -123,7 +124,8 @@ namespace SmartValley.Data.SQL.Repositories
                               category.Name,
                               project.Description,
                               scoringOffer.AreaId,
-                              project.ExternalId))
+                              project.ExternalId,
+                              project.Id))
                        .ToArrayAsync();
         }
     }

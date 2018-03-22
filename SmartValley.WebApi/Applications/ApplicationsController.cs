@@ -11,7 +11,6 @@ using SmartValley.WebApi.WebApi;
 namespace SmartValley.WebApi.Applications
 {
     [Route("api/applications")]
-    [Authorize]
     public class ApplicationsController : Controller
     {
         private readonly IApplicationService _service;
@@ -21,7 +20,7 @@ namespace SmartValley.WebApi.Applications
             _service = service;
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<IActionResult> Post([FromBody] ApplicationRequest request)
         {
             await _service.CreateAsync(User.GetUserId(), request);

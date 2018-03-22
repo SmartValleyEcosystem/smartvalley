@@ -28,6 +28,8 @@ namespace SmartValley.Domain
 
         public Guid ProjectExternalId { get; }
 
+        public long ProjectId { get; }
+
         public ScoringOfferDetails(
             ScoringOfferStatus scoringOfferStatus, 
             DateTimeOffset scoringOfferTimestamp, 
@@ -39,7 +41,8 @@ namespace SmartValley.Domain
             string projectArea, 
             string description, 
             AreaType areaType, 
-            Guid projectExternalId)
+            Guid projectExternalId,
+            long projectId)
         {
             ScoringOfferStatus = scoringOfferStatus;
             ScoringOfferTimestamp = scoringOfferTimestamp;
@@ -52,6 +55,7 @@ namespace SmartValley.Domain
             Description = description;
             AreaType = areaType;
             ProjectExternalId = projectExternalId;
+            ProjectId = projectId;
         }
     }
 }

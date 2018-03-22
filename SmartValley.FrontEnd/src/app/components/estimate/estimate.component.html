@@ -1,15 +1,10 @@
-<div [ngClass]="hidden ? '' : 'hidden'" class="container" *ngIf="projectDetails">
+<div class="container" *ngIf="projectDetails">
   <div class="row mx-auto">
     <div class="col-8 sm-title">
       <h1>{{ 'Estimate.Title' | translate }}</h1>
     </div>
   </div>
   <app-project-information [showBasicInfoCaption]="true" [projectDetails]="projectDetails"></app-project-information>
-  <div class="next-button row">
-    <button (click)="changeHidden()" class="btn-blue col-3 btn btn-primary"
-            style="padding-top: 1em; padding-bottom: 1em;">{{ 'Estimate.Estimate' | translate }}
-    </button>
-  </div>
   <form [formGroup]="estimateForm" novalidate>
     <div *ngFor="let question of estimateForm.get('questions')['controls'];" class="sw-card sw-content">
       <div [formGroup]="question">

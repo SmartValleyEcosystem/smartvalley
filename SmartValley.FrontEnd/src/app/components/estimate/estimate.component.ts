@@ -23,7 +23,6 @@ import {UserContext} from '../../services/authentication/user-context';
   styleUrls: ['./estimate.component.css']
 })
 export class EstimateComponent implements OnInit {
-  public hidden: boolean;
   public areaType: AreaType;
   public projectId: number;
   public projectDetails: ProjectDetailsResponse;
@@ -45,14 +44,9 @@ export class EstimateComponent implements OnInit {
               private balanceService: BalanceService) {
   }
 
-  public ngOnInit(): void {
-    this.loadProjectDetailsAsync();
+  public async ngOnInit(): Promise<void> {
+    await this.loadProjectDetailsAsync();
   }
-
-  public changeHidden() {
-    this.hidden = true;
-  }
-
   public async sendEstimateAsync(): Promise<void> {
     if (!this.validateForm()) {
       return;

@@ -8,6 +8,8 @@ namespace SmartValley.WebApi.Scoring.Responses
     {
         public long ScoringId { get; set; }
 
+        public long ProjectId { get; set; }
+
         public long AreaId { get; set; }
 
         public string Name { get; set; }
@@ -39,7 +41,8 @@ namespace SmartValley.WebApi.Scoring.Responses
                        ScoringId = scoringOffer.ScoringId,
                        ProjectExternalId = scoringOffer.ProjectExternalId,
                        ScoringOfferTimestamp = scoringOffer.ScoringOfferTimestamp,
-                       OfferStatus = GetStatus(scoringOffer, now)
+                       OfferStatus = GetStatus(scoringOffer, now),
+                       ProjectId = scoringOffer.ProjectId
                    };
         }
 
