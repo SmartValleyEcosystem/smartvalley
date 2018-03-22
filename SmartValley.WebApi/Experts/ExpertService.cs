@@ -81,8 +81,14 @@ namespace SmartValley.WebApi.Experts
         public Task<IReadOnlyCollection<ExpertApplication>> GetPendingApplicationsAsync()
             => _expertApplicationRepository.GetAllByStatusAsync(ExpertApplicationStatus.Pending);
 
-        public Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(Address address)
-            => _expertApplicationRepository.GetExpertApplicationStatusAsync(address);
+        public async Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(Address address)
+        {
+            var expert = await _expertRepository.GetByAddressAsync(address);
+            if (expert != null)
+                return ExpertApplicationStatus.Accepted;
+
+            return await _expertApplicationRepository.GetExpertApplicationStatusAsync(address);
+        }
 
         public Task<Expert> GetAsync(long expertId)
             => _expertRepository.GetAsync(expertId);

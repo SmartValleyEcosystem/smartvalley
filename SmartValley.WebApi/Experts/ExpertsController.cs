@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application;
-using SmartValley.Application.AzureStorage;
 using SmartValley.Application.Extensions;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
@@ -16,20 +15,18 @@ using SmartValley.WebApi.WebApi;
 namespace SmartValley.WebApi.Experts
 {
     [Route("api/experts")]
-    public class ExpertController : Controller
+    public class ExpertsController : Controller
     {
         private const int FileSizeLimitBytes = 5242880;
+
         private readonly IExpertService _expertService;
         private readonly EthereumClient _ethereumClient;
-        private readonly ExpertApplicationsStorageProvider _expertApplicationsStorageProvider;
 
-        public ExpertController(
+        public ExpertsController(
             IExpertService expertService,
-            ExpertApplicationsStorageProvider expertApplicationsStorageProvider,
             EthereumClient ethereumClient)
         {
             _ethereumClient = ethereumClient;
-            _expertApplicationsStorageProvider = expertApplicationsStorageProvider;
             _expertService = expertService;
             _ethereumClient = ethereumClient;
         }
