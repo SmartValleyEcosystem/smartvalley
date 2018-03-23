@@ -719,7 +719,7 @@ namespace SmartValley.Data.SQL.Migrations
                         .HasForeignKey("ApplicationId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.OwnsOne("SmartValley.Domain.Entities.SocialNetwork", "SocialNetwork", b1 =>
+                    b.OwnsOne("SmartValley.Domain.Entities.SocialNetworks", "SocialNetworks", b1 =>
                         {
                             b1.Property<long?>("ApplicationTeamMemberId");
 
@@ -750,8 +750,8 @@ namespace SmartValley.Data.SQL.Migrations
                             b1.ToTable("ApplicationTeamMembers");
 
                             b1.HasOne("SmartValley.Domain.Entities.ApplicationTeamMember")
-                                .WithOne("SocialNetwork")
-                                .HasForeignKey("SmartValley.Domain.Entities.SocialNetwork", "ApplicationTeamMemberId")
+                                .WithOne("SocialNetworks")
+                                .HasForeignKey("SmartValley.Domain.Entities.SocialNetworks", "ApplicationTeamMemberId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });
@@ -846,7 +846,7 @@ namespace SmartValley.Data.SQL.Migrations
                         .HasForeignKey("StageId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.OwnsOne("SmartValley.Domain.Entities.SocialNetwork", "SocialNetwork", b1 =>
+                    b.OwnsOne("SmartValley.Domain.Entities.SocialNetworks", "SocialNetworks", b1 =>
                         {
                             b1.Property<long>("ProjectId");
 
@@ -877,8 +877,8 @@ namespace SmartValley.Data.SQL.Migrations
                             b1.ToTable("Projects");
 
                             b1.HasOne("SmartValley.Domain.Entities.Project")
-                                .WithOne("SocialNetwork")
-                                .HasForeignKey("SmartValley.Domain.Entities.SocialNetwork", "ProjectId")
+                                .WithOne("SocialNetworks")
+                                .HasForeignKey("SmartValley.Domain.Entities.SocialNetworks", "ProjectId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });
@@ -890,7 +890,7 @@ namespace SmartValley.Data.SQL.Migrations
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.OwnsOne("SmartValley.Domain.Entities.SocialNetwork", "SocialNetwork", b1 =>
+                    b.OwnsOne("SmartValley.Domain.Entities.SocialNetworks", "SocialNetworks", b1 =>
                         {
                             b1.Property<long>("ProjectTeamMemberId");
 
@@ -921,8 +921,8 @@ namespace SmartValley.Data.SQL.Migrations
                             b1.ToTable("ProjectTeamMembers");
 
                             b1.HasOne("SmartValley.Domain.Entities.ProjectTeamMember")
-                                .WithOne("SocialNetwork")
-                                .HasForeignKey("SmartValley.Domain.Entities.SocialNetwork", "ProjectTeamMemberId")
+                                .WithOne("SocialNetworks")
+                                .HasForeignKey("SmartValley.Domain.Entities.SocialNetworks", "ProjectTeamMemberId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });
