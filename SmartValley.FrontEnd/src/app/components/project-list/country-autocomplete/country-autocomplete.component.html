@@ -10,6 +10,6 @@
 <ul (mouseenter) ="countryListHoverStatusSwitch(true) "  (mouseleave) ="countryListHoverStatusSwitch(false); hideCountryList();"
     class="search-controls__country-list" [class.hidden]="isAutocompleteHidden">
   <li *ngFor="let country of countries" (click)="selectCountry(country.code)" class="search-controls__country-item">
-    <p class="country-name">{{ country.name }}</p>
+    <p class="country-name">{{ country.name | translate }}</p>
   </li>
 </ul>
