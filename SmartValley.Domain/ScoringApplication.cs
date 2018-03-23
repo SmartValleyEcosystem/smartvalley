@@ -1,0 +1,101 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using SmartValley.Domain.Entities;
+
+namespace SmartValley.Domain
+{
+    public class ScoringApplication
+    {
+        public long Id { get; set; }
+
+        public long ProjectId { get; set; }
+
+        public DateTimeOffset Created { get; set; }
+
+        public DateTimeOffset? Saved { get; set; }
+
+        public DateTimeOffset? Submitted { get; set; }
+
+        public string ProjectName { get; set; }
+
+        public string ProjectArea { get; set; }
+
+        public string Status { get; set; }
+
+        public string ProjectDescription { get; set; }
+
+        public string Site { get; set; }
+
+        public string WhitePaper { get; set; }
+
+        public string ICODate { get; set; }
+
+        public string ContactEmail { get; set; }
+
+        public string FacebookLink { get; set; }
+
+        public string BitcointalkLink { get; set; }
+
+        public string MediumLink { get; set; }
+
+        public string RedditLink { get; set; }
+
+        public string TelegramLink { get; set; }
+
+        public string TwitterLink { get; set; }
+
+        public string GitHubLink { get; set; }
+
+        public string LinkedInLink { get; set; }
+
+        public long? CountryId { get; set; }
+
+        public Country Country { get; set; }
+
+        public ICollection<ScoringApplicationAnswer> Answers { get; set; }
+
+        public Project Project { get; set; }
+
+        public ICollection<ScoringApplicationTeamMember> TeamMembers { get; set; }
+
+        public ICollection<ScoringApplicationAdviser> Advisers { get; set; }
+
+        public void UpdateTeamMembers(IReadOnlyCollection<ScoringApplicationTeamMember> teamMembers)
+        {
+            TeamMembers.Clear();
+            foreach (var teamMember in teamMembers)
+            {
+                TeamMembers.Add(teamMember);
+            }
+        }
+
+        public void UpdateAdvisers(IReadOnlyCollection<ScoringApplicationAdviser> advisers)
+        {
+            Advisers.Clear();
+            foreach (var adviser in advisers)
+            {
+                Advisers.Add(adviser);
+            }
+        }
+
+        public string GetAnswer(long questionId)
+        {
+            return Answers.FirstOrDefault(x => x.QuestionId == questionId)?.Value;
+        }
+
+        public void SetAnswer(long questionid, string value)
+        {
+            var answer = Answers.FirstOrDefault(x => x.QuestionId == questionid);
+            if (answer == null)
+            {
+                answer = new ScoringApplicationAnswer
+                         {
+                             QuestionId = questionid
+                         };
+            }
+
+            answer.Value = value;
+        }
+    }
+}

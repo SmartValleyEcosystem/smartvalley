@@ -33,6 +33,7 @@ using SmartValley.WebApi.ExceptionHandler;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.Scoring;
+using SmartValley.WebApi.ScoringApplication;
 using SmartValley.WebApi.Users;
 using SmartValley.WebApi.Votings;
 using SmartValley.WebApi.WebApi;
@@ -153,6 +154,9 @@ namespace SmartValley.WebApi
             services.AddTransient<IProjectTeamMemberRepository, ProjectTeamMemberRepository>();
             services.AddTransient<IProjectSocialMediaRepository, ProjectSocialMediaRepository>();
             services.AddTransient<IProjectTeamMemberSocialMediaRepository, ProjectTeamMemberSocialMediaRepository>();
+            services.AddTransient<IScoringApplicationRepository, ScoringApplicationRepository>();
+            services.AddTransient<IScoringApplicationQuestionsRepository, ScoringApplicationQuestionsRepository>();
+            services.AddTransient<IScoringApplicationService, ScoringApplicationService>();
 
             var serviceProvider = services.BuildServiceProvider();
             var siteOptions = serviceProvider.GetService<SiteOptions>();

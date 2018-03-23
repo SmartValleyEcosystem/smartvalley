@@ -2,8 +2,10 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using SmartValley.Domain;
 using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
+using ScoringApplicationQuestion = SmartValley.Domain.Entities.ScoringApplicationQuestion;
 
 namespace SmartValley.Data.SQL.Core
 {
@@ -66,6 +68,10 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<Stage> IReadOnlyDataContext.Stages => Stages.AsNoTracking();
 
+        IQueryable<ScoringApplicationQuestion> IReadOnlyDataContext.ScoringApplicationQuestions => ScoringApplicationQuestions.AsNoTracking();
+
+        IQueryable<ScoringApplication> IReadOnlyDataContext.ScoringApplications => ScoringApplications.AsNoTracking();
+
         public DbSet<ProjectTeamMemberSocialMedia> ProjectTeamMemberSocialMedias { get; set; }
 
         public DbSet<ApplicationTeamMemberSocialMedia> ApplicationTeamMemberSocialMedias { get; set; }
@@ -117,6 +123,16 @@ namespace SmartValley.Data.SQL.Core
         public DbSet<ExpertApplication> ExpertApplications { get; set; }
 
         public DbSet<ExpertApplicationArea> ExpertApplicationAreas { get; set; }
+
+        public DbSet<ScoringApplicationQuestion> ScoringApplicationQuestions { get; set; }
+
+        public DbSet<ScoringApplication> ScoringApplications { get; set; }
+
+        public DbSet<ScoringApplicationAnswer> ScoringApplicationAnswers { get; set; }
+
+        public DbSet<ScoringApplicationTeamMember> ScoringApplicationTeamMembers { get; set; }
+
+        public DbSet<ScoringApplicationAdviser> ScoringApplicationAdvisers { get; set; }
 
         public IQueryable<T> GetAll<T>() where T : class
         {
@@ -295,6 +311,52 @@ namespace SmartValley.Data.SQL.Core
 
             modelBuilder.Entity<EstimateComment>()
                         .HasOne(x => x.Expert);
+
+            modelBuilder.Entity<ScoringApplicationAnswer>()
+                        .HasOne(x => x.Question);
+
+            modelBuilder.Entity<ScoringApplication>()
+                        .HasOne(x => x.Project);
+            
+            modelBuilder.Entity<ScoringApplication>()
+                        .HasMany(x => x.Answers)
+                        .WithOne()
+                        .IsRequired();
+
+            modelBuilder.Entity<ScoringApplication>()
+                        .HasOne(x => x.Country)
+                        .WithMany(x => x.ScoringApplications)
+                        .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ScoringApplication>()
+                        .HasMany(x => x.Advisers)
+                        .WithOne()
+                        .IsRequired();
+
+            modelBuilder.Entity<ScoringApplication>()
+                        .HasMany(x => x.TeamMembers)
+                        .WithOne()
+                        .IsRequired();
+
+            modelBuilder.Entity<ScoringApplication>()
+                        .HasIndex(x => x.ProjectId)
+                        .IsUnique();
+
+            modelBuilder.Entity<ScoringApplicationQuestion>()
+                        .HasIndex(x => x.Key)
+                        .IsUnique();
+
+            modelBuilder.Entity<ScoringApplicationQuestion>()
+                        .Property(x => x.Key)
+                        .IsRequired();
+
+            modelBuilder.Entity<ScoringApplicationQuestion>()
+                        .Property(x => x.GroupKey)
+                        .IsRequired();
+
+            modelBuilder.Entity<ScoringApplicationQuestion>()
+                        .Property(x => x.GroupOrder)
+                        .IsRequired();
         }
     }
 }

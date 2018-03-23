@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
@@ -9,5 +10,8 @@ namespace SmartValley.Domain.Entities
 
         [Required, MaxLength(2)]
         public string Code { get; set; }
+        
+        public ICollection<Project> Projects { get; set; }
+        public ICollection<ScoringApplication> ScoringApplications { get; set; }
     }
 }

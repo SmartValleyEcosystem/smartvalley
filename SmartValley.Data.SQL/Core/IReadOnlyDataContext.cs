@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using SmartValley.Domain;
 using SmartValley.Domain.Entities;
+using ScoringApplicationQuestion = SmartValley.Domain.Entities.ScoringApplicationQuestion;
 
 namespace SmartValley.Data.SQL.Core
 {
@@ -32,6 +34,8 @@ namespace SmartValley.Data.SQL.Core
         IQueryable<ProjectTeamMemberSocialMedia> ProjectTeamMemberSocialMedias { get; }
         IQueryable<ApplicationTeamMemberSocialMedia> ApplicationTeamMemberSocialMedias { get; }
         IQueryable<Stage> Stages { get; }
+        IQueryable<ScoringApplicationQuestion> ScoringApplicationQuestions { get; }
+        IQueryable<ScoringApplication> ScoringApplications { get; }
 
         IQueryable<T> GetAll<T>() where T : class;
     }

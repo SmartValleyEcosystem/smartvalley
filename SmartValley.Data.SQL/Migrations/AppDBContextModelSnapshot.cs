@@ -484,6 +484,37 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("Scorings");
                 });
 
+            modelBuilder.Entity("SmartValley.Domain.Entities.ScoringApplicationQuestion", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ExtendedInfo");
+
+                    b.Property<string>("GroupKey")
+                        .IsRequired();
+
+                    b.Property<int>("GroupOrder");
+
+                    b.Property<string>("Key")
+                        .IsRequired();
+
+                    b.Property<int>("Order");
+
+                    b.Property<long?>("ParentId");
+
+                    b.Property<string>("ParentTriggerValue");
+
+                    b.Property<int>("Type");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Key")
+                        .IsUnique();
+
+                    b.ToTable("ScoringApplicationQuestions");
+                });
+
             modelBuilder.Entity("SmartValley.Domain.Entities.ScoringOffer", b =>
                 {
                     b.Property<long>("ScoringId");
@@ -612,6 +643,136 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("VotingProjects");
                 });
 
+            modelBuilder.Entity("SmartValley.Domain.ScoringApplication", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("BitcointalkLink");
+
+                    b.Property<string>("ContactEmail");
+
+                    b.Property<long?>("CountryId");
+
+                    b.Property<DateTimeOffset>("Created");
+
+                    b.Property<string>("FacebookLink");
+
+                    b.Property<string>("GitHubLink");
+
+                    b.Property<string>("ICODate");
+
+                    b.Property<string>("LinkedInLink");
+
+                    b.Property<string>("MediumLink");
+
+                    b.Property<string>("ProjectArea");
+
+                    b.Property<string>("ProjectDescription");
+
+                    b.Property<long>("ProjectId");
+
+                    b.Property<string>("ProjectName");
+
+                    b.Property<string>("RedditLink");
+
+                    b.Property<DateTimeOffset?>("Saved");
+
+                    b.Property<string>("Site");
+
+                    b.Property<string>("Status");
+
+                    b.Property<DateTimeOffset?>("Submitted");
+
+                    b.Property<string>("TelegramLink");
+
+                    b.Property<string>("TwitterLink");
+
+                    b.Property<string>("WhitePaper");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("ProjectId")
+                        .IsUnique();
+
+                    b.ToTable("ScoringApplications");
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.ScoringApplicationAdviser", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("About");
+
+                    b.Property<string>("FacebookLink");
+
+                    b.Property<string>("FullName");
+
+                    b.Property<string>("LinkedInLink");
+
+                    b.Property<string>("Reason");
+
+                    b.Property<long?>("ScoringApplicationId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ScoringApplicationId");
+
+                    b.ToTable("ScoringApplicationAdvisers");
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.ScoringApplicationAnswer", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<long>("QuestionId");
+
+                    b.Property<long?>("ScoringApplicationId")
+                        .IsRequired();
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("ScoringApplicationId");
+
+                    b.ToTable("ScoringApplicationAnswers");
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.ScoringApplicationTeamMember", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("About");
+
+                    b.Property<string>("AdditionalInformation");
+
+                    b.Property<string>("FacebookLink");
+
+                    b.Property<string>("FullName");
+
+                    b.Property<string>("LinkedInLink");
+
+                    b.Property<string>("ProjectRole");
+
+                    b.Property<long?>("ScoringApplicationId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ScoringApplicationId");
+
+                    b.ToTable("ScoringApplicationTeamMembers");
+                });
+
             modelBuilder.Entity("SmartValley.Domain.Entities.Application", b =>
                 {
                     b.HasOne("SmartValley.Domain.Entities.Project", "Project")
@@ -722,7 +883,7 @@ namespace SmartValley.Data.SQL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SmartValley.Domain.Entities.Country", "Country")
-                        .WithMany()
+                        .WithMany("Projects")
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -815,6 +976,48 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasOne("SmartValley.Domain.Entities.Voting", "Voting")
                         .WithMany()
                         .HasForeignKey("VotingId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.ScoringApplication", b =>
+                {
+                    b.HasOne("SmartValley.Domain.Entities.Country", "Country")
+                        .WithMany("ScoringApplications")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("SmartValley.Domain.Entities.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.ScoringApplicationAdviser", b =>
+                {
+                    b.HasOne("SmartValley.Domain.ScoringApplication")
+                        .WithMany("Advisers")
+                        .HasForeignKey("ScoringApplicationId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.ScoringApplicationAnswer", b =>
+                {
+                    b.HasOne("SmartValley.Domain.Entities.ScoringApplicationQuestion", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SmartValley.Domain.ScoringApplication")
+                        .WithMany("Answers")
+                        .HasForeignKey("ScoringApplicationId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.ScoringApplicationTeamMember", b =>
+                {
+                    b.HasOne("SmartValley.Domain.ScoringApplication")
+                        .WithMany("TeamMembers")
+                        .HasForeignKey("ScoringApplicationId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

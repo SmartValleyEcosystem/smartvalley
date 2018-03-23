@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.Data.SQL.Core
@@ -34,6 +35,7 @@ namespace SmartValley.Data.SQL.Core
         DbSet<ProjectTeamMemberSocialMedia> ProjectTeamMemberSocialMedias { get; }
         DbSet<ApplicationTeamMemberSocialMedia> ApplicationTeamMemberSocialMedias { get; }
         DbSet<Stage> Stages { get; }
+        DbSet<ScoringApplication> ScoringApplications { get; }
 
         Task<int> SaveAsync();
         EntityEntry<T> Entity<T>(T x) where T : class;

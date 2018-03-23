@@ -25,6 +25,7 @@
         OffersNotFound,
         AuthenticationError,
         ExpertNotFound,
-        CountryNotFound
+        CountryNotFound,
+        ProjectScoringApplicationNotFound
     }
 }
