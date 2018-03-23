@@ -53,7 +53,7 @@
         <tr>
           <td class="project-name"><a [routerLink]="getProjectLink(project.id)" >{{project.name}}</a></td>
           <td>{{ 'Countries.' + project.country | translate }}</td>
-          <td>{{ getCategoryName(project.categoryId) }}</td>
+          <td>{{ 'Categories.' + project.categoryId | translate }}</td>
           <td>{{ project.scoringEndDate | date:'yyyy-MM-dd' }}</td>
           <td class="scoring-col">{{project.score | roundNumberPipe}}/100</td>
         </tr>

@@ -8,7 +8,6 @@ import {CountryAutocompleteComponent} from './country-autocomplete/country-autoc
 import {CategorySelectComponent} from './category-select/category-select.component';
 import {ProjectsOrderBy} from '../../api/application/projects-order-by.enum';
 import {SortDirection} from '../../api/sort-direction.enum';
-import {ProjectCategory} from '../../api/application/project-category.enum';
 
 @Component({
   selector: 'app-project-list',
@@ -18,7 +17,7 @@ import {ProjectCategory} from '../../api/application/project-category.enum';
 export class ProjectListComponent implements OnInit {
 
   public ASC: SortDirection = SortDirection.Ascending;
-  public DESC: SortDirection  = SortDirection.Descending;
+  public DESC: SortDirection = SortDirection.Descending;
   public scoredProjects: ScoredProject[];
   public scoringRatingFrom: number;
   public scoringRatingTo: number;
@@ -31,21 +30,19 @@ export class ProjectListComponent implements OnInit {
   @ViewChild(CountryAutocompleteComponent) country: CountryAutocompleteComponent;
   @ViewChild(CategorySelectComponent) category: CategorySelectComponent;
 
-  constructor(
-    private router: Router,
-    private expertApiClient: ExpertApiClient,
-    private projectApiClient: ProjectApiClient) { }
+  constructor(private router: Router,
+              private expertApiClient: ExpertApiClient,
+              private projectApiClient: ProjectApiClient) {
+  }
 
   async ngOnInit() {
     this.sortDirection = this.ASC;
-    this.sortedBy  = ProjectsOrderBy.ScoringEndDate;
+    this.sortedBy = ProjectsOrderBy.ScoringEndDate;
     this.scoringRatingFrom = 0;
     this.scoringRatingTo = 100;
     this.projectSearch = '';
 
-    let projectsResponse = await this.getFilteredProjectsAsync();
-    this.scoredProjects = projectsResponse.items;
-    this.totalProjects = projectsResponse.totalCount;
+    await this.updateProjectsAsync();
   }
 
   public async getFilteredProjectsAsync() {
@@ -69,12 +66,13 @@ export class ProjectListComponent implements OnInit {
   }
 
   public async submitFilters() {
-    this.updateProjects();
+    await this.updateProjectsAsync();
   }
 
-  public async updateProjects() {
-    let projectsResponse = await this.getFilteredProjectsAsync();
-    return this.scoredProjects = projectsResponse.items;
+  public async updateProjectsAsync() {
+    const projectsResponse = await this.getFilteredProjectsAsync();
+    this.scoredProjects = projectsResponse.items;
+    this.totalProjects = projectsResponse.totalCount;
   }
 
   public clearFilters() {
@@ -86,27 +84,23 @@ export class ProjectListComponent implements OnInit {
     this.projectSearch = '';
   }
 
-  public getCategoryName(id): string {
-    return ProjectCategory[id];
-  }
-
   public async changePage(event) {
     this.currentPage = event.page;
 
-    this.updateProjects();
+    await this.updateProjectsAsync();
   }
 
   public async sortProjectsBy(sortField: string) {
-    if ( this.sortedBy === ProjectsOrderBy[sortField] ) {
-      if (this.sortDirection === SortDirection.Descending ) {
+    if (this.sortedBy === ProjectsOrderBy[sortField]) {
+      if (this.sortDirection === SortDirection.Descending) {
         this.sortDirection = SortDirection.Ascending;
       } else {
-        this.sortDirection = SortDirection.Descending ;
+        this.sortDirection = SortDirection.Descending;
       }
     }
     this.sortedBy = ProjectsOrderBy[sortField];
 
-    this.updateProjects();
+    await this.updateProjectsAsync();
   }
 
   public isSortableField(sortField: string): boolean {
@@ -116,5 +110,4 @@ export class ProjectListComponent implements OnInit {
   public isSortableDirection(direction: SortDirection): boolean {
     return this.sortDirection === direction;
   }
-
 }

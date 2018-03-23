@@ -1,4 +1,4 @@
-export enum ProjectCategoryEnum {
+export enum CategoryEnum {
   Art = 0,
   ArtificialIntelligence = 1,
   Banking = 2,
@@ -27,5 +27,5 @@ export enum ProjectCategoryEnum {
   Software = 25,
   Sports = 26,
   Tourism = 27,
-  VirtualReality = 28
 }
+

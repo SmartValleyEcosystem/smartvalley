@@ -10,6 +10,7 @@ import {AdminContractClient} from '../contract-clients/admin-contract-client';
 import {ExpertsRegistryContractClient} from '../contract-clients/experts-registry-contract-client';
 import {AreaService} from '../expert/area.service';
 import {ScoringExpertsManagerContractClient} from '../contract-clients/scoring-experts-manager-contract-client';
+import {CommonService} from '../common/common.service';
 
 @Injectable()
 export class InitializationService {
@@ -25,7 +26,8 @@ export class InitializationService {
               private votingContractClient: VotingContractClient,
               private balanceService: BalanceService,
               private authenticationService: AuthenticationService,
-              private areaService: AreaService) {
+              private areaService: AreaService,
+              private commonService: CommonService) {
   }
 
   public async initializeAppAsync(): Promise<void> {
@@ -38,6 +40,7 @@ export class InitializationService {
   }
 
   private async initializeAppInternalAsync(): Promise<void> {
+    this.commonService.initialize();
     await Promise.all([
       this.authenticationService.initializeAsync(),
       this.questionService.initializeAsync(),

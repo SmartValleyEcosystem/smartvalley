@@ -1,5 +1,5 @@
-import {ProjectCategory} from './project-category.enum';
+import {CategoryEnum} from '../../services/common/category.enum';
 
 export interface CategoryResponse {
-  id: ProjectCategory;
+  id: CategoryEnum;
 }

@@ -37,6 +37,7 @@ import {EstimatesApiClient} from './api/estimates/estimates-api-client';
 import {VotingApiClient} from './api/voting/voting-api-client';
 import {UserApiClient} from './api/user/user-api-client';
 import {QuestionsComponent} from './components/report/questions/questions.component';
+import {CommonService} from './services/common/common.service';
 import {ProjectService} from './services/project/project-service';
 import {NgProgressInterceptor, NgProgressModule} from 'ngx-progressbar';
 import {TransactionAwaitingModalComponent} from './components/common/transaction-awaiting-modal/transaction-awaiting-modal.component';
@@ -248,6 +249,7 @@ import { ScoringCostComponent } from './components/common/scoring-cost-modal/sco
       useClass: NgProgressInterceptor,
       multi: true
     },
+    CommonService,
     BalanceApiClient,
     ApplicationApiClient,
     ContractApiClient,

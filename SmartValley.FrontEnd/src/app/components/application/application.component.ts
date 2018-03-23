@@ -13,7 +13,7 @@ import {UserContext} from '../../services/authentication/user-context';
 import {SelectItem} from 'primeng/api';
 import {CreateProjectRequest} from '../../api/project/create-project-request';
 import {ProjectApiClient} from '../../api/project/project-api-client';
-import {ProjectService} from '../../services/project/project-service';
+import {CommonService} from '../../services/common/common.service';
 
 @Component({
   selector: 'app-application',
@@ -23,7 +23,7 @@ import {ProjectService} from '../../services/project/project-service';
 export class ApplicationComponent implements OnInit {
   public applicationForm: FormGroup;
   public isProjectCreating: boolean;
-  projectAreas: SelectItem[];
+  categories: SelectItem[];
   stages: SelectItem[];
   countries: SelectItem[];
   socials: SelectItem[];
@@ -43,28 +43,27 @@ export class ApplicationComponent implements OnInit {
               private projectApiClient: ProjectApiClient,
               private translateService: TranslateService,
               private balanceService: BalanceService,
-              private projectService: ProjectService) {
+              private commonService: CommonService) {
 
-    this.projectAreas = this.projectService.getProjectCategories().map(i => <SelectItem>{
+    this.categories =  this.commonService.categories.map(i => <SelectItem>{
       label: i.name,
-      value: i.projectCategory
+      value: i.type
     });
 
-    this.socials = this.projectService.getSocialMedias().map(i => <SelectItem>{
+    this.socials = this.commonService.networks.map(i => <SelectItem>{
       label: i.name,
       value: i.socialMediaType
     });
 
-    this.stages = this.projectService.getStages().map(i => <SelectItem>{
+    this.stages = this.commonService.stages.map(i => <SelectItem>{
       label: i.name,
-      value: i.stageType
+      value: i.type
     });
 
-    this.countries = [
-      {label: 'Select City', value: null},
-      {label: 'New York', value: 'RU'},
-      {label: 'Rome', value: 'UK'}
-    ];
+    this.countries = this.commonService.countries.map(i => <SelectItem>{
+      label: i.name,
+      value: i.code
+    });
   }
 
   public ngOnInit(): void {
@@ -99,15 +98,15 @@ export class ApplicationComponent implements OnInit {
       whitePaperLink: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
       contactEmail: ['', Validators.maxLength(100)],
       icoDate: ['', [Validators.required, Validators.maxLength(100)]],
-      projectArea: [this.projectAreas[0].value],
-      country: [this.countries[0].value],
-      stage: [this.stages[0].value],
-      social: [this.socials[0].value],
+      category: [this.categories[0].value],
+      country: [this.translateService.instant(this.countries[0].label)],
+      stage: [this.translateService.instant(this.stages[0].label)],
+      social: [this.translateService.instant(this.socials[0].label)],
       teamMember: []
     });
   }
 
-  private createSubmitApplicationRequest(): CreateProjectRequest {   ;
+  private createSubmitApplicationRequest(): CreateProjectRequest {
     const form = this.applicationForm.value;
     return <CreateProjectRequest>{
       contactEmail: form.contactEmail,
@@ -134,7 +133,7 @@ export class ApplicationComponent implements OnInit {
   private scrollToInvalidElement() {
     if (this.applicationForm.controls['name'].invalid) {
       this.scrollToElement(this.nameRow);
-    } else if (this.applicationForm.controls['projectArea'].invalid) {
+    } else if (this.applicationForm.controls['category'].invalid) {
       this.scrollToElement(this.areaRow);
     } else if (this.applicationForm.controls['description'].invalid) {
       this.scrollToElement(this.descriptionRow);

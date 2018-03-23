@@ -9,7 +9,7 @@ import {AreaType} from '../../api/scoring/area-type.enum';
 import {DialogService} from '../../services/dialog-service';
 import {SexEnum} from './sex.enum';
 import {DocumentEnum} from './document.enum';
-import {Country} from './country';
+import {Country} from '../../services/common/country';
 import {TranslateService} from '@ngx-translate/core';
 import {SelectItem} from 'primeng/api';
 import {UserContext} from '../../services/authentication/user-context';

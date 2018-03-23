@@ -14,20 +14,32 @@
         <input class="form-control col-8" formControlName="name"
                placeholder="{{ 'Application.NamePlaceholder' | translate }}" #required>
       </div>
-      <div #projectArea class="row">
+      <div #category class="row">
         <span class="col-2 offset-1">{{ 'Application.ProjectArea' | translate }}</span>
         <p-dropdown class="form-control col-8" placeholder="{{ 'Application.ProjectAreaPlaceholder' | translate }}"
-                    [options]="projectAreas" formControlName="projectArea" #required></p-dropdown>
+                    [options]="categories" formControlName="category" #required>
+          <ng-template let-item pTemplate="item">
+            {{ item.label | translate }}
+          </ng-template>
+        </p-dropdown>
       </div>
       <div #stage class="row">
         <span class="col-2 offset-1">{{ 'Application.Stage' | translate }}</span>
         <p-dropdown class="form-control col-8" placeholder="{{ 'Application.ProjectAreaPlaceholder' | translate }}"
-                    [options]="stages" formControlName="stage" #required></p-dropdown>
+                    [options]="stages" formControlName="stage" #required>
+          <ng-template let-item pTemplate="item">
+            {{ item.label | translate }}
+          </ng-template>
+        </p-dropdown>
       </div>
       <div #country class="row">
         <span class="col-2 offset-1">{{ 'Application.Country' | translate }}</span>
         <p-dropdown class="form-control col-8" placeholder="{{ 'Application.ProjectAreaPlaceholder' | translate }}"
-                    [options]="countries" formControlName="country" #required></p-dropdown>
+                    [options]="countries" formControlName="country" #required>
+          <ng-template let-item pTemplate="item">
+            {{ item.label | translate }}
+          </ng-template>
+        </p-dropdown>
       </div>
       <div #description class="row">
         <span class="col-2 offset-1">{{ 'Application.Description' | translate }}</span>

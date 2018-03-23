@@ -4,7 +4,6 @@ import {Paths} from '../../paths';
 import {ProjectCardType} from '../../services/project-card-type';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ScoredProject} from '../../api/expert/scored-project';
-import {ProjectCategory} from '../../api/application/project-category.enum';
 import {ProjectFilter} from '../../api/project/project-filter';
 import {ProjectsOrderBy} from '../../api/application/projects-order-by.enum';
 
@@ -37,9 +36,5 @@ export class LandingComponent implements OnInit {
     return decodeURIComponent(
       this.router.createUrlTree([Paths.Report + '/' + id]).toString()
     );
-  }
-
-  public getCategoryName(id): string {
-    return ProjectCategory[id];
   }
 }

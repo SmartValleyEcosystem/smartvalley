@@ -1,4 +1,4 @@
-export enum StageTypeEnum {
+export enum StageEnum {
   PreSale = 0,
   Stage = 1
 }

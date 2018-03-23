@@ -5,7 +5,8 @@ import 'rxjs/add/operator/throttleTime';
 import 'rxjs/add/observable/fromEvent';
 import {ApplicationApiClient} from '../../../api/application/application-api.client';
 import {TranslateService} from '@ngx-translate/core';
-import {Country} from '../../register-expert/country';
+import {Country} from '../../../services/common/country';
+import {CommonService} from '../../../services/common/common.service';
 
 @Component({
   selector: 'app-country-autocomplete',
@@ -23,7 +24,7 @@ export class CountryAutocompleteComponent implements OnInit {
   public selectedCountry: string;
   public selectedCountryCode: string;
 
-  constructor(private applicationApiClient: ApplicationApiClient,
+  constructor(private commonService: CommonService,
               private translateService: TranslateService) { }
 
   public ngOnInit() {
@@ -31,7 +32,7 @@ export class CountryAutocompleteComponent implements OnInit {
     this.isSearchInputInFocus = false;
     this.hideCountryList();
 
-    this.allCountriesList = this.applicationApiClient.getCountries();
+    this.allCountriesList = this.commonService.countries;
     this.countries = this.allCountriesList;
     this.selectedCountry = '';
     this.selectedCountryCode = '';

@@ -1,0 +1,33 @@
+{
+  "Categories": {
+    "0": "Art",
+    "1": "Artificial Intelligence",
+    "2": "Banking",
+    "3": "Big data",
+    "4": "Business services",
+    "5": "Casino and gambling",
+    "6": "Charity",
+    "7": "Communication",
+    "8": "Cryptocurrency",
+    "9": "Education",
+    "10": "Electronics",
+    "11": "Energy",
+    "12": "Entertainment",
+    "13": "Health",
+    "14": "Infrastructure",
+    "15": "Internet",
+    "16": "Investment",
+    "17": "Legal",
+    "18": "Manufacturing",
+    "19": "Media",
+    "20": "Other",
+    "21": "Platform",
+    "22": "Real estate",
+    "23": "Retail",
+    "24": "Smart contract",
+    "25": "Software",
+    "26": "Sports",
+    "27": "Tourism",
+    "28": "Virtual reality"
+  }
+}

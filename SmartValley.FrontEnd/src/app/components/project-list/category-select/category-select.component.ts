@@ -1,7 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ApplicationApiClient} from '../../../api/application/application-api.client';
-import {CategoryResponse} from '../../../api/application/category-response';
-import {ProjectCategory} from '../../../api/application/project-category.enum';
+import {Component, OnInit} from '@angular/core';
+import {Category} from '../../../services/common/category';
+import {TranslateService} from '@ngx-translate/core';
+import {CommonService} from '../../../services/common/common.service';
 
 
 @Component({
@@ -17,11 +17,11 @@ export class CategorySelectComponent implements OnInit {
   public squareInput = false;
   public selectedCategory: string;
   public selectedCategoryId: number;
-  public categories: ProjectCategory[];
-  public categoriesEnum = ProjectCategory;
+  public categories: Category[];
 
   constructor(
-    private applicationApiClient: ApplicationApiClient
+    private commonService: CommonService,
+    private translateService: TranslateService
   ) { }
 
   public async ngOnInit() {
@@ -29,8 +29,7 @@ export class CategorySelectComponent implements OnInit {
     this.isSearchInputInFocus = false;
     this.selectedCategory = '';
     this.hideCategoryList();
-    let categoriesResponse = await this.applicationApiClient.getCategoriesAsync();
-    this.categories = categoriesResponse.items.map( cat => cat.id);
+    this.categories = this.commonService.categories;
   }
 
   public showCategoryList() {
@@ -58,7 +57,7 @@ export class CategorySelectComponent implements OnInit {
   }
 
   public selectCategory(id) {
-    this.selectedCategory = this.categoriesEnum[id];
+    this.selectedCategory = this.translateService.instant('Categories.' + id);
     this.selectedCategoryId = id;
     this.isAutocompleteHidden = true;
   }

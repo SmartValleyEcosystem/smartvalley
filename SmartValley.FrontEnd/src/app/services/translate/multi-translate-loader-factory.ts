@@ -47,6 +47,8 @@ export function multiTranslateLoaderFactory() {
     'components/project-list/project-list.component',
     'components/search-with-autocomplete/search-with-autocomplete.component',
     'components/project-list/category-select/category-select.component',
-    'services/project/countries'
+    'services/translate/countries',
+    'services/translate/categories',
+    'services/translate/stages'
   ]);
 }

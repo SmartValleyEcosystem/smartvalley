@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ExpertApiClient} from '../../../api/expert/expert-api-client';
 import {SelectItem} from 'primeng/api';
 import {AreaService} from '../../../services/expert/area.service';
-import {Country} from '../../register-expert/country';
+import {Country} from '../../../services/common/country';
 import {AdminExpertApplicationData} from './admin-expert-application-data';
 import * as moment from 'moment';
 import {EnumHelper} from '../../../utils/enum-helper';
