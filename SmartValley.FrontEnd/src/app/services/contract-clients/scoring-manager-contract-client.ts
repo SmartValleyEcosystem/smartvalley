@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Web3Service} from '../web3-service';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
-import {ConverterHelper} from '../converter-helper';
 import {ContractClient} from './contract-client';
 import {AreaType} from '../../api/scoring/area-type.enum';
 import {Estimate} from '../estimate';
@@ -26,14 +25,14 @@ export class ScoringManagerContractClient implements ContractClient {
     this.address = scoringManagerContract.address;
   }
 
-  public async startAsync(projectId: string,
+  public async startAsync(projectExternalId: string,
                           areas: Array<number>,
                           areaExpertCounts: Array<number>,
                           scoringCostEth: number): Promise<string> {
     const scoringManagerContract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.userContext.getCurrentUser().account;
     return await scoringManagerContract.start(
-      projectId.replace(/-/g, ''),
+      projectExternalId.replace(/-/g, ''),
       areas,
       areaExpertCounts,
       {
@@ -68,7 +67,7 @@ export class ScoringManagerContractClient implements ContractClient {
     return await scoringManager.setEstimateRewards(areas, costsWei, {from: fromAddress});
   }
 
-  public async submitEstimatesAsync(scoringAddress: string,
+  public async submitEstimatesAsync(projectExternalId: string,
                                     areaType: AreaType,
                                     estimates: Array<Estimate>): Promise<string> {
     const contract = this.web3Service.getContract(this.abi, this.address);
@@ -86,7 +85,7 @@ export class ScoringManagerContractClient implements ContractClient {
     }
 
     return await contract.submitEstimates(
-      scoringAddress,
+      projectExternalId.replace(/-/g, ''),
       <number>areaType,
       questionIds,
       scores,

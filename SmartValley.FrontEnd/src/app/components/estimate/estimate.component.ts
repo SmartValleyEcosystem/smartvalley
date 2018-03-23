@@ -47,6 +47,7 @@ export class EstimateComponent implements OnInit {
   public async ngOnInit(): Promise<void> {
     await this.loadProjectDetailsAsync();
   }
+
   public async sendEstimateAsync(): Promise<void> {
     if (!this.validateForm()) {
       return;
@@ -115,7 +116,7 @@ export class EstimateComponent implements OnInit {
   private async submitToContractAsync(estimates: Array<Estimate>): Promise<string> {
     try {
       return await this.scoringContractClient.submitEstimatesAsync(
-        this.projectDetails.scoringContractAddress,
+        this.projectDetails.externalId,
         this.areaType,
         estimates);
     } catch (e) {
