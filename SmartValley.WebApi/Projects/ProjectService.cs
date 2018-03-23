@@ -8,6 +8,7 @@ using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Projects.Requests;
+using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Projects
 {
@@ -20,8 +21,6 @@ namespace SmartValley.WebApi.Projects
         private readonly IProjectTeamMemberRepository _teamMemberRepository;
         private readonly ICountryRepository _countryRepository;
         private readonly ProjectTeamMembersStorageProvider _projectTeamMembersStorageProvider;
-        private readonly IProjectSocialMediaRepository _socialMediaRepository;
-        private readonly IProjectTeamMemberSocialMediaRepository _projectTeamMemberSocialMediaRepository;
         private readonly ProjectStorageProvider _projectStorageProvider;
 
         public ProjectService(
@@ -31,8 +30,6 @@ namespace SmartValley.WebApi.Projects
             IProjectTeamMemberRepository teamMemberRepository,
             ICountryRepository countryRepository,
             ProjectTeamMembersStorageProvider projectTeamMembersStorageProvider,
-            IProjectSocialMediaRepository socialMediaRepository,
-            IProjectTeamMemberSocialMediaRepository projectTeamMemberSocialMediaRepository,
             ProjectStorageProvider projectStorageProvider)
         {
             _applicationRepository = applicationRepository;
@@ -41,8 +38,6 @@ namespace SmartValley.WebApi.Projects
             _teamMemberRepository = teamMemberRepository;
             _countryRepository = countryRepository;
             _projectTeamMembersStorageProvider = projectTeamMembersStorageProvider;
-            _socialMediaRepository = socialMediaRepository;
-            _projectTeamMemberSocialMediaRepository = projectTeamMemberSocialMediaRepository;
             _projectStorageProvider = projectStorageProvider;
         }
 
@@ -73,6 +68,12 @@ namespace SmartValley.WebApi.Projects
             return project.AuthorId == userId;
         }
 
+        public async Task<bool> IsAuthorizedToEditProjectAsync(long projectId, long userId)
+        {
+            var project = await FindAsync(projectId);
+            return project.AuthorId == userId;
+        }
+
         public Task<IReadOnlyCollection<ProjectDetails>> GetForScoringAsync(AreaType areaType, long expertId)
             => _projectRepository.GetForScoringAsync(areaType, expertId);
 
@@ -90,19 +91,65 @@ namespace SmartValley.WebApi.Projects
         public Task<IReadOnlyCollection<ProjectDetails>> GetProjectsByNameAsync(string projectName)
             => _projectRepository.GetAllByNameAsync(projectName);
 
-        public async Task CreateAsync(long userId, CreateProjectRequest request, AzureFile image)
+        public async Task CreateAsync(long userId, CreateProjectRequest request)
         {
-            if (request == null)
-                throw new ArgumentNullException();
-
-            var projectId = await AddProjectAsync(userId, request, image);
-            if (request.SocialMedias != null && request.SocialMedias.Any())
-                await AddSocialMediasAsync(request, projectId);
+            var projectId = await AddProjectAsync(userId, request);
 
             if (request.TeamMembers != null && request.TeamMembers.Any())
+                await AddTeamMembersAsync(request.TeamMembers, projectId);
+        }
+
+        public async Task UpdateAsync(long projectId, UpdateProjectRequest request)
+        {
+            var project = await _projectRepository.GetByIdAsync(projectId);
+            var country = await GetCountryAsync(request.CountryCode);
+
+            project.Name = request.Name;
+            project.CountryId = country.Id;
+            project.CategoryId = (CategoryType) request.CategoryId;
+            project.Description = request.Description;
+            project.ContactEmail = request.ContactEmail;
+            project.IcoDate = request.IcoDate;
+            project.Website = request.Website;
+            project.WhitePaperLink = request.WhitePaperLink;
+            project.StageId = (StageType) request.StageId;
+            project.SocialNetworks = SocialNetworkRequest.ToDomain(request.SocialNetworks);
+
+            await UpdateTeamMembersAsync(request.TeamMembers.Where(t => t.Id != 0).ToArray(), project.Id);
+            await AddTeamMembersAsync(request.TeamMembers.Where(t => t.Id == 0).ToArray(), project.Id);
+            await _projectRepository.UpdateAsync(project);
+        }
+
+        public async Task DeleteAsync(long projectId)
+        {
+            var scoring = await _scoringRepository.GetByProjectIdAsync(projectId);
+            if (scoring != null)
+                throw new AppErrorException(ErrorCode.ProjectCouldntBeRemoved);
+
+            var project = await _projectRepository.GetByIdAsync(projectId);
+
+            await _projectRepository.RemoveAsync(project);
+        }
+
+        private async Task UpdateTeamMembersAsync(IReadOnlyCollection<ProjectTeamMemberRequest> teamMemberRequests, long projectId)
+        {
+            var existingTeamMembers = await _teamMemberRepository.GetAllByProjectIdAsync(projectId);
+
+            foreach (var existingTeamMember in existingTeamMembers)
             {
-                var teamMembers = await AddTeamMembersAsync(request, projectId);
-                await AddTeamMembersSocialMediasAsync(request, teamMembers);
+                var requestTeamMember = teamMemberRequests.FirstOrDefault(t => t.Id == existingTeamMember.Id);
+                if (requestTeamMember == null)
+                {
+                    await _teamMemberRepository.RemoveAsync(existingTeamMember);
+                    return;
+                }
+
+                existingTeamMember.About = requestTeamMember.About;
+                existingTeamMember.FullName = requestTeamMember.FullName;
+                existingTeamMember.Role = requestTeamMember.Role;
+                existingTeamMember.SocialNetworks = SocialNetworkRequest.ToDomain(requestTeamMember.SocialNetworks);
+
+                await _teamMemberRepository.UpdateAsync(existingTeamMember);
             }
         }
 
@@ -113,14 +160,16 @@ namespace SmartValley.WebApi.Projects
             await _teamMemberRepository.UpdatePhotoNameAsync(projectTeamMemberId, link);
         }
 
-        private async Task<long> AddProjectAsync(long userId, CreateProjectRequest request, AzureFile image)
+        public async Task UpdateImageAsync(long projectId, AzureFile image)
         {
-            var imageName = $"application-{request.Name}/scan-{Guid.NewGuid()}{image.Extension}";
-            var imageUrl = await _projectStorageProvider.UploadAndGetUriAsync(imageName, image);
+            var project = await _projectRepository.GetByIdAsync(projectId);
+            project.ImageUrl = await UploadImageAndGetUrlAsync(projectId, image);
+            await _projectRepository.UpdateAsync(project, p => p.ImageUrl);
+        }
 
-            var country = await _countryRepository.GetByCodeAsync(request.CountryCode);
-            if (country == null)
-                throw new AppErrorException(ErrorCode.CountryNotFound);
+        private async Task<long> AddProjectAsync(long userId, CreateProjectRequest request)
+        {
+            var country = await GetCountryAsync(request.CountryCode);
 
             var project = new Project
                           {
@@ -129,95 +178,49 @@ namespace SmartValley.WebApi.Projects
                               CategoryId = (CategoryType) request.CategoryId,
                               Description = request.Description,
                               AuthorId = userId,
-                              ExternalId = Guid.Parse(request.ProjectId),
+                              ExternalId = Guid.NewGuid(),
                               ContactEmail = request.ContactEmail,
                               IcoDate = request.IcoDate,
                               Website = request.Website,
                               WhitePaperLink = request.WhitePaperLink,
                               StageId = (StageType) request.StageId,
-                              ImageUrl = imageUrl
+                              SocialNetworks = SocialNetworkRequest.ToDomain(request.SocialNetworks)
                           };
 
             await _projectRepository.AddAsync(project);
             return project.Id;
         }
 
-        private ProjectTeamMember CreateTeamMember(ProjectTeamMemberRequest memberRequest, long projectId)
+        private async Task<Country> GetCountryAsync(string code)
         {
-            return new ProjectTeamMember
-                   {
-                       ProjectId = projectId,
-                       FullName = memberRequest.FullName,
-                       About = memberRequest.About,
-                       Role = memberRequest.Role
-                   };
+            var country = await _countryRepository.GetByCodeAsync(code);
+            if (country == null)
+                throw new AppErrorException(ErrorCode.CountryNotFound);
+            return country;
         }
 
-        private ProjectTeamMemberSocialMedia CreateTeamMemberSocialMedia(SocialMediaRequest socialMediaRequest, long teamMemberId)
+        private async Task<string> UploadImageAndGetUrlAsync(long projectId, AzureFile image)
         {
-            return new ProjectTeamMemberSocialMedia
-                   {
-                       Url = socialMediaRequest.Link,
-                       SocialMediaId = socialMediaRequest.NetworkId,
-                       TeamMemberId = teamMemberId
-                   };
+            if (image == null)
+                return null;
+
+            var imageName = $"project-{projectId}/image-{Guid.NewGuid()}{image.Extension}";
+            var imageUrl = await _projectStorageProvider.UploadAndGetUriAsync(imageName, image);
+            return imageUrl;
         }
 
-        private ProjectSocialMedia CreateProjectSocialMedia(SocialMediaRequest socialMediaRequest, long projectId)
+        private async Task<ProjectTeamMember[]> AddTeamMembersAsync(IReadOnlyCollection<ProjectTeamMemberRequest> teamMemberRequests, long projectId)
         {
-            return new ProjectSocialMedia
-                   {
-                       Url = socialMediaRequest.Link,
-                       ProjectId = projectId,
-                       SocialMediaId = socialMediaRequest.NetworkId
-                   };
-        }
+            var teamMembers = teamMemberRequests.Select(m => new ProjectTeamMember
+                                                             {
+                                                                 ProjectId = projectId,
+                                                                 FullName = m.FullName,
+                                                                 About = m.About,
+                                                                 Role = m.Role,
+                                                                 SocialNetworks = SocialNetworkRequest.ToDomain(m.SocialNetworks)
+                                                             })
+                                                .ToArray();
 
-        private async Task<ProjectSocialMedia[]> AddSocialMediasAsync(CreateProjectRequest request, long projectId)
-        {
-            var socialMedias = request
-                               .SocialMedias
-                               .Select(s => CreateProjectSocialMedia(s, projectId))
-                               .ToArray();
-            await _socialMediaRepository.AddRangeAsync(socialMedias);
-            return socialMedias;
-        }
-
-        private Task AddTeamMembersSocialMediasAsync(CreateProjectRequest request, ProjectTeamMember[] projectTeamMembers)
-        {
-            var facebookSocialMedias = (from memberRequest in request.TeamMembers
-                                        join projectTeamMember in projectTeamMembers
-                                            on new {memberRequest.FullName, memberRequest.About, memberRequest.Role}
-                                            equals new {projectTeamMember.FullName, projectTeamMember.About, projectTeamMember.Role}
-                                        select new ProjectTeamMemberSocialMedia
-                                               {
-                                                   SocialMediaId = SocialMediaType.Facebook,
-                                                   Url = memberRequest.FacebookLink,
-                                                   TeamMemberId = projectTeamMember.Id
-                                               }).ToArray();
-
-            var linkedinSocialMedias = (from memberRequest in request.TeamMembers
-                                        join projectTeamMember in projectTeamMembers
-                                            on new {memberRequest.FullName, memberRequest.About, memberRequest.Role}
-                                            equals new {projectTeamMember.FullName, projectTeamMember.About, projectTeamMember.Role}
-                                        select new ProjectTeamMemberSocialMedia
-                                               {
-                                                   SocialMediaId = SocialMediaType.LinkedIn,
-                                                   Url = memberRequest.LinkedInLink,
-                                                   TeamMemberId = projectTeamMember.Id
-                                               }).ToArray();
-
-            var allMedias = facebookSocialMedias.Union(linkedinSocialMedias).ToArray();
-
-            return _projectTeamMemberSocialMediaRepository.AddRangeAsync(allMedias);
-        }
-
-        private async Task<ProjectTeamMember[]> AddTeamMembersAsync(CreateProjectRequest request, long projectId)
-        {
-            var teamMembers = request
-                              .TeamMembers
-                              .Select(m => CreateTeamMember(m, projectId))
-                              .ToArray();
             await _teamMemberRepository.AddRangeAsync(teamMembers);
             return teamMembers;
         }

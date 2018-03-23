@@ -116,7 +116,7 @@ export class ApplicationComponent implements OnInit {
       icoDate: form.icoDate,
       category: form.projectArea,
       whitePaperLink: form.whitePaperLink,
-      projectId: uuid(),
+      externalId: uuid(),
       website: form.website
       //teamMembers: form.teamMembers.filter(m => !isNullOrUndefined(m.fullName))
     };

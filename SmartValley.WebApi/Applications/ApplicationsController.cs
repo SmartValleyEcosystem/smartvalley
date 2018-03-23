@@ -60,21 +60,8 @@ namespace SmartValley.WebApi.Applications
             return new CollectionResponse<StageResponse>
                    {
                        Items = stages.Select(s => new StageResponse
-                       {
-                                                         Id = s.Id
-                                                     }).ToArray()
-                   };
-        }
-
-        [HttpGet("socialmedias")]
-        public async Task<CollectionResponse<SocialMediaResponse>> GetSocialMediasAsync()
-        {
-            var stages = await _service.GetSocialMediasAsync();
-            return new CollectionResponse<SocialMediaResponse>
-                   {
-                       Items = stages.Select(s => new SocialMediaResponse
-                       {
-                                                      NetworkId = s.Id
+                                                  {
+                                                      Id = s.Id
                                                   }).ToArray()
                    };
         }

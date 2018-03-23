@@ -30,13 +30,13 @@ namespace SmartValley.Domain.Entities
         [Required]
         [MaxLength(1000)]
         public string Description { get; set; }
-        
+
         [MaxLength(200)]
         public string Website { get; set; }
 
         [MaxLength(200)]
         public string WhitePaperLink { get; set; }
-        
+
         public DateTimeOffset? IcoDate { get; set; }
 
         [Url, MaxLength(50)]
@@ -45,6 +45,8 @@ namespace SmartValley.Domain.Entities
         [Url, MaxLength(200)]
         public string ImageUrl { get; set; }
 
+        public SocialNetworks SocialNetworks { get; set; }
+
         public User Author { get; set; }
 
         public Country Country { get; set; }
@@ -52,7 +54,5 @@ namespace SmartValley.Domain.Entities
         public Category Category { get; set; }
 
         public Stage Stage { get; set; }
-
-        public IEnumerable<ProjectSocialMedia> ProjectSocialMedias { get; set; }
     }
 }

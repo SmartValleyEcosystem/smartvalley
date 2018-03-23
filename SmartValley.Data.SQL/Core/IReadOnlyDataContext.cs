@@ -29,10 +29,6 @@ namespace SmartValley.Data.SQL.Core
         IQueryable<ExpertApplicationArea> ExpertApplicationAreas { get; }
         IQueryable<Country> Countries { get; }
         IQueryable<Category> Categories { get; }
-        IQueryable<ProjectSocialMedia> ProjectSocialMedias { get; }
-        IQueryable<SocialMedia> SocialMedias { get; }
-        IQueryable<ProjectTeamMemberSocialMedia> ProjectTeamMemberSocialMedias { get; }
-        IQueryable<ApplicationTeamMemberSocialMedia> ApplicationTeamMemberSocialMedias { get; }
         IQueryable<Stage> Stages { get; }
         IQueryable<ScoringApplicationQuestion> ScoringApplicationQuestions { get; }
         IQueryable<ScoringApplication> ScoringApplications { get; }

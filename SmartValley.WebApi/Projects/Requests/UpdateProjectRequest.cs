@@ -5,7 +5,7 @@ using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Projects.Requests
 {
-    public class CreateProjectRequest
+    public class UpdateProjectRequest
     {
         [Required]
         public string Name { get; set; }

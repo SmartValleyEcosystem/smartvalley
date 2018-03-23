@@ -47,8 +47,6 @@ namespace SmartValley.WebApi.Applications
         public Task<IReadOnlyCollection<Stage>> GetStagesAsync()
             => _applicationRepository.GetStagesAsync();
 
-        public Task<IReadOnlyCollection<SocialMedia>> GetSocialMediasAsync()
-            => _applicationRepository.GetSocialMediasAsync();
 
         private Task AddTeamMembersAsync(ApplicationRequest applicationRequest, long applicationId)
         {

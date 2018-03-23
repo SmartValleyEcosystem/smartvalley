@@ -26,6 +26,7 @@
         AuthenticationError,
         ExpertNotFound,
         CountryNotFound,
+        ProjectCouldntBeRemoved,
         ProjectScoringApplicationNotFound
     }
 }

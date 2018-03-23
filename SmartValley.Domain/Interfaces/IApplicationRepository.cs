@@ -13,7 +13,5 @@ namespace SmartValley.Domain.Interfaces
         Task<IReadOnlyCollection<Category>> GetCategoriesAsync();
 
         Task<IReadOnlyCollection<Stage>> GetStagesAsync();
-
-        Task<IReadOnlyCollection<SocialMedia>> GetSocialMediasAsync();
     }
 }

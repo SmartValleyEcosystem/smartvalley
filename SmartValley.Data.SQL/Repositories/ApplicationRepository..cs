@@ -23,9 +23,6 @@ namespace SmartValley.Data.SQL.Repositories
             => await ReadContext.Categories.ToArrayAsync();
 
         public async Task<IReadOnlyCollection<Stage>> GetStagesAsync()
-            => await ReadContext.Stages.ToArrayAsync(); 
-
-        public async Task<IReadOnlyCollection<SocialMedia>> GetSocialMediasAsync()
-            => await ReadContext.SocialMedias.ToArrayAsync();
+            => await ReadContext.Stages.ToArrayAsync();
     }
 }

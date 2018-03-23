@@ -5,7 +5,7 @@ export interface CreateProjectRequest {
   name: string;
   category: number;
   stageId: number;
-  projectId: string;
+  externalId: string;
   description: string;
   contactEmail: string;
   whitePaperLink: string;

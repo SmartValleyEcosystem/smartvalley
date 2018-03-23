@@ -20,6 +20,8 @@ namespace SmartValley.WebApi.Projects
 
         Task<bool> IsAuthorizedToEditProjectTeamMemberAsync(long userId, long projectTeamMemberId);
 
+        Task<bool> IsAuthorizedToEditProjectAsync(long projectId, long userId);
+
         Task UpdateTeamMemberPhotoAsync(long projectTeamMemberId, AzureFile photo);
 
         Task<IReadOnlyCollection<ProjectDetails>> GetForScoringAsync(AreaType areaType, long expertId);
@@ -28,8 +30,14 @@ namespace SmartValley.WebApi.Projects
 
         Task<IReadOnlyCollection<ProjectDetails>> GetProjectsByNameAsync(string projectName);
 
-        Task CreateAsync(long userId, CreateProjectRequest request, AzureFile image);
+        Task CreateAsync(long userId, CreateProjectRequest request);
+
+        Task UpdateAsync(long projectId, UpdateProjectRequest request);
+
+        Task DeleteAsync(long projectId);
 
         Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorIdAsync(long authorId);
+
+        Task UpdateImageAsync(long projectId, AzureFile image);
     }
 }

@@ -81,6 +81,13 @@ namespace SmartValley.Data.SQL.Repositories
                           select new ProjectDetails(project, scoring, application, country)).ToArrayAsync();
         }
 
+        public Task<int> UpdateAsync(Project project)
+        {
+            EditContext.Projects.Attach(project).State = EntityState.Modified;
+            EditContext.Entity(project.SocialNetworks).State = EntityState.Modified;
+            return EditContext.SaveAsync();
+        }
+
         public async Task<IReadOnlyCollection<ProjectDetails>> GetForScoringAsync(AreaType areaType, long expertId)
         {
             var scoredProjects = (from question in ReadContext.Questions

@@ -89,24 +89,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("ApplicationTeamMembers");
                 });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.ApplicationTeamMemberSocialMedia", b =>
-                {
-                    b.Property<int>("SocialMediaId");
-
-                    b.Property<long>("TeamMemberId");
-
-                    b.Property<string>("Url")
-                        .IsRequired();
-
-                    b.HasKey("SocialMediaId", "TeamMemberId");
-
-                    b.HasIndex("TeamMemberId");
-
-                    b.HasIndex("SocialMediaId", "TeamMemberId");
-
-                    b.ToTable("ApplicationTeamMemberSocialMedias");
-                });
-
             modelBuilder.Entity("SmartValley.Domain.Entities.Area", b =>
                 {
                     b.Property<int>("Id");
@@ -356,24 +338,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.ProjectSocialMedia", b =>
-                {
-                    b.Property<int>("SocialMediaId");
-
-                    b.Property<long>("ProjectId");
-
-                    b.Property<string>("Url")
-                        .IsRequired();
-
-                    b.HasKey("SocialMediaId", "ProjectId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("SocialMediaId", "ProjectId");
-
-                    b.ToTable("ProjectSocialMedias");
-                });
-
             modelBuilder.Entity("SmartValley.Domain.Entities.ProjectTeamMember", b =>
                 {
                     b.Property<long>("Id")
@@ -400,24 +364,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("ProjectTeamMembers");
-                });
-
-            modelBuilder.Entity("SmartValley.Domain.Entities.ProjectTeamMemberSocialMedia", b =>
-                {
-                    b.Property<int>("SocialMediaId");
-
-                    b.Property<long>("TeamMemberId");
-
-                    b.Property<string>("Url")
-                        .IsRequired();
-
-                    b.HasKey("SocialMediaId", "TeamMemberId");
-
-                    b.HasIndex("TeamMemberId");
-
-                    b.HasIndex("SocialMediaId", "TeamMemberId");
-
-                    b.ToTable("ProjectTeamMemberSocialMedias");
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.Question", b =>
@@ -536,21 +482,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasIndex("ScoringId", "AreaId", "ExpertId");
 
                     b.ToTable("ScoringOffers");
-                });
-
-            modelBuilder.Entity("SmartValley.Domain.Entities.SocialMedia", b =>
-                {
-                    b.Property<int>("Id");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("SocialMedias");
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.Stage", b =>
@@ -787,19 +718,42 @@ namespace SmartValley.Data.SQL.Migrations
                         .WithMany()
                         .HasForeignKey("ApplicationId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.ApplicationTeamMemberSocialMedia", b =>
-                {
-                    b.HasOne("SmartValley.Domain.Entities.SocialMedia", "SocialMedia")
-                        .WithMany()
-                        .HasForeignKey("SocialMediaId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.OwnsOne("SmartValley.Domain.Entities.SocialNetwork", "SocialNetwork", b1 =>
+                        {
+                            b1.Property<long?>("ApplicationTeamMemberId");
 
-                    b.HasOne("SmartValley.Domain.Entities.ProjectTeamMember", "TeamMember")
-                        .WithMany()
-                        .HasForeignKey("TeamMemberId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                            b1.Property<string>("BitcoinTalk")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Facebook")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Github")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Linkedin")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Medium")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Reddit")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Telegram")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Twitter")
+                                .HasMaxLength(500);
+
+                            b1.ToTable("ApplicationTeamMembers");
+
+                            b1.HasOne("SmartValley.Domain.Entities.ApplicationTeamMember")
+                                .WithOne("SocialNetwork")
+                                .HasForeignKey("SmartValley.Domain.Entities.SocialNetwork", "ApplicationTeamMemberId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.AreaScoring", b =>
@@ -891,19 +845,42 @@ namespace SmartValley.Data.SQL.Migrations
                         .WithMany()
                         .HasForeignKey("StageId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.ProjectSocialMedia", b =>
-                {
-                    b.HasOne("SmartValley.Domain.Entities.Project", "Project")
-                        .WithMany("ProjectSocialMedias")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.OwnsOne("SmartValley.Domain.Entities.SocialNetwork", "SocialNetwork", b1 =>
+                        {
+                            b1.Property<long>("ProjectId");
 
-                    b.HasOne("SmartValley.Domain.Entities.SocialMedia", "SocialMedia")
-                        .WithMany("ProjectSocialMedias")
-                        .HasForeignKey("SocialMediaId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                            b1.Property<string>("BitcoinTalk")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Facebook")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Github")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Linkedin")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Medium")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Reddit")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Telegram")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Twitter")
+                                .HasMaxLength(500);
+
+                            b1.ToTable("Projects");
+
+                            b1.HasOne("SmartValley.Domain.Entities.Project")
+                                .WithOne("SocialNetwork")
+                                .HasForeignKey("SmartValley.Domain.Entities.SocialNetwork", "ProjectId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.ProjectTeamMember", b =>
@@ -912,19 +889,42 @@ namespace SmartValley.Data.SQL.Migrations
                         .WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.ProjectTeamMemberSocialMedia", b =>
-                {
-                    b.HasOne("SmartValley.Domain.Entities.SocialMedia", "SocialMedia")
-                        .WithMany()
-                        .HasForeignKey("SocialMediaId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.OwnsOne("SmartValley.Domain.Entities.SocialNetwork", "SocialNetwork", b1 =>
+                        {
+                            b1.Property<long>("ProjectTeamMemberId");
 
-                    b.HasOne("SmartValley.Domain.Entities.ProjectTeamMember", "TeamMember")
-                        .WithMany()
-                        .HasForeignKey("TeamMemberId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                            b1.Property<string>("BitcoinTalk")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Facebook")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Github")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Linkedin")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Medium")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Reddit")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Telegram")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Twitter")
+                                .HasMaxLength(500);
+
+                            b1.ToTable("ProjectTeamMembers");
+
+                            b1.HasOne("SmartValley.Domain.Entities.ProjectTeamMember")
+                                .WithOne("SocialNetwork")
+                                .HasForeignKey("SmartValley.Domain.Entities.SocialNetwork", "ProjectTeamMemberId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.Scoring", b =>

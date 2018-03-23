@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -36,17 +37,49 @@ namespace SmartValley.WebApi.Projects
         }
 
         [HttpPost]
-        [DisableRequestSizeLimit]
         [Authorize]
-        public async Task<IActionResult> Post([FromForm] CreateProjectRequest request, IFormFile image)
+        public async Task<IActionResult> Post([FromBody] CreateProjectRequest request)
         {
-            if (image == null ||
-                image.Length < 0 ||
-                image.Length > FileSizeLimitBytes)
-            {
+            await _projectService.CreateAsync(User.GetUserId(), request);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Put([FromQuery] long id, [FromBody] UpdateProjectRequest request)
+        {
+            var isAuthorized = await _projectService.IsAuthorizedToEditProjectAsync(id, User.GetUserId());
+            if (!isAuthorized)
+                return Unauthorized();
+
+            await _projectService.UpdateAsync(id, request);
+            return NoContent();
+        }
+
+        [HttpPut("{id}/image")]
+        [Authorize]
+        public async Task<IActionResult> UpdateImage([FromQuery] long id, IFormFile image)
+        {
+            if (image != null && image.Length > FileSizeLimitBytes)
                 throw new AppErrorException(ErrorCode.InvalidFileUploaded);
-            }
-            await _projectService.CreateAsync(User.GetUserId(), request, image.ToAzureFile());
+
+            var isAuthorized = await _projectService.IsAuthorizedToEditProjectAsync(id, User.GetUserId());
+            if (!isAuthorized)
+                return Unauthorized();
+
+            await _projectService.UpdateImageAsync(id, image?.ToAzureFile());
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Delete(long id)
+        {
+            var isAuthorized = await _projectService.IsAuthorizedToEditProjectAsync(id, User.GetUserId());
+            if (!isAuthorized)
+                return Unauthorized();
+
+            await _projectService.DeleteAsync(id);
             return NoContent();
         }
 

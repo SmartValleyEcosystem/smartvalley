@@ -30,10 +30,6 @@ namespace SmartValley.Data.SQL.Core
         DbSet<ExpertApplicationArea> ExpertApplicationAreas { get; }
         DbSet<Country> Countries { get; }
         DbSet<Category> Categories { get; }
-        DbSet<ProjectSocialMedia> ProjectSocialMedias { get; }
-        DbSet<SocialMedia> SocialMedias { get; }
-        DbSet<ProjectTeamMemberSocialMedia> ProjectTeamMemberSocialMedias { get; }
-        DbSet<ApplicationTeamMemberSocialMedia> ApplicationTeamMemberSocialMedias { get; }
         DbSet<Stage> Stages { get; }
         DbSet<ScoringApplication> ScoringApplications { get; }
 

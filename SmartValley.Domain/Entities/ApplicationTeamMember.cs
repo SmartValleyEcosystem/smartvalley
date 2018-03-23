@@ -23,6 +23,8 @@ namespace SmartValley.Domain.Entities
         [Url, MaxLength(200)]
         public string PhotoUrl { get; set; }
 
+        public SocialNetworks SocialNetworks { get; set; }
+
         public Application Application { get; set; }
     }
 }
