@@ -22,7 +22,6 @@ import {VotingCardComponent} from './components/voting-card/voting-card.componen
 import {CompletedVotingComponent} from './components/completed-voting/completed-voting.component';
 import {AdminPanelComponent} from './components/admin-panel/admin-panel.component';
 import {CompletedVotingsComponent} from './components/completed-votings/completed-votings.component';
-import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
 import {ExpertStatusComponent} from './components/expert-status/expert-status.component';
 import {ExpertComponent} from './components/expert/expert.component';
 import {RegisterExpertComponent} from './components/register-expert/register-expert.component';
@@ -31,6 +30,9 @@ import {ExpertStatusGuard} from './services/guards/expert-status.guard';
 import {ExpertApplicationStatus} from './services/expert/expert-application-status.enum';
 import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-assigned.guard';
 import {ProjectListComponent} from './components/project-list/project-list.component';
+import {RegisterComponent} from './components/authentication/register/register.component';
+import {RegisterConfirmComponent} from './components/authentication/register-confirm/register-confirm.component';
+import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -61,6 +63,17 @@ const appRoutes: Routes = [
         path: Paths.CompletedVoting + '/:address',
         pathMatch: 'full',
         component: CompletedVotingComponent
+      },
+      {
+        path: Paths.Register,
+        pathMatch: 'full',
+        component: RegisterComponent
+      },
+      {path: Paths.ConfirmEmail, component: ConfirmEmailComponent},
+      {
+        path: Paths.ConfirmRegister,
+        pathMatch: 'full',
+        component: RegisterConfirmComponent
       },
       {
         path: Paths.CompletedVotings,
@@ -125,7 +138,6 @@ const appRoutes: Routes = [
         component: EstimateComponent,
         canActivate: [ShouldHaveEthGuard, ExpertShouldBeAssignedGuard]
       },
-      {path: Paths.ConfirmEmail, component: ConfirmEmailComponent},
       {path: Paths.ProjectList, component: ProjectListComponent},
       {path: Paths.ProjectList + '/:search', component: ProjectListComponent}
     ]

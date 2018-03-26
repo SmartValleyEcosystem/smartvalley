@@ -1,0 +1,12 @@
+<div [formGroup]="form" novalidate class="content">
+  <h1 class="title">{{ 'Register.Title' | translate }}</h1>
+  <div class="register-card">
+    <div class="email">
+      <p class="email__label">{{ 'Register.ContactMail' | translate }}</p>
+      <input matInput formControlName="email" #required class="email__input" type="email"
+             placeholder="{{ 'Register.InputPlaceholder' | translate }}"/>
+      <input (click)="submitAsync()" class="email__button" value="{{ 'Register.ButtonText' | translate }}"/>
+      <p class="gray-text">{{ 'Register.UnderlineText' | translate }}</p>
+    </div>
+  </div>
+</div>

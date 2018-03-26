@@ -13,10 +13,7 @@ import {Area} from './expert/area';
 import {FreeScoringConfirmationModalComponent} from '../components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component';
 import {VoteModalData} from '../components/common/vote-modal/vote-modal-data';
 import {VoteModalComponent} from '../components/common/vote-modal/vote-modal.component';
-import {RegisterModalData} from '../components/common/register-modal/register-modal-data';
-import {RegisterModalComponent} from '../components/common/register-modal/register-modal.component';
 import {AddAdminModalComponent} from '../components/common/add-admin-modal/add-admin-modal.component';
-import {ConfirmEmailModalComponent} from '../components/common/confirm-email/confirm-email-modal.component';
 import {CreateNewExpertModalComponent} from '../components/common/create-new-expert-modal/create-new-expert-modal.component';
 import {EditExpertModalComponent} from '../components/common/edit-expert-modal/edit-expert-modal.component';
 import {ExpertsCountSelectionModalComponent} from '../components/common/experts-count-selection-modal/experts-count-selection-modal.component';
@@ -24,10 +21,9 @@ import {ExpertsCountSelectionModalData} from '../components/common/experts-count
 import {AreaType} from '../api/scoring/area-type.enum';
 import {AreaExpertsSettings} from '../components/common/experts-count-selection-modal/area-experts-settings';
 import {SetExpertsModalComponent} from '../components/common/set-experts-modal/set-experts-modal.component';
-import {ConfirmEmailModalData} from '../components/common/confirm-email/confirm-email-modal-data';
 import {ChangeEmailModalComponent} from '../components/common/change-email-modal/change-email-modal.component';
-import {EditExpertModalData} from "../components/common/edit-expert-modal/edit-expert-modal-data";
-import {ScoringCostComponent} from "../components/common/scoring-cost-modal/scoring-cost.component";
+import {EditExpertModalData} from '../components/common/edit-expert-modal/edit-expert-modal-data';
+import {ScoringCostComponent} from '../components/common/scoring-cost-modal/scoring-cost.component';
 
 @Injectable()
 export class DialogService {
@@ -90,29 +86,10 @@ export class DialogService {
       .toPromise<number>();
   }
 
-  public async showRegisterDialogAsync() {
-    const data = <RegisterModalData>{
-      email: ''
-    };
-    return this.openModal(RegisterModalComponent, data)
-      .afterClosed()
-      .toPromise<string>();
-  }
-
   public async showChangeEmailDialogAsync(): Promise<string> {
     return this.openModal(ChangeEmailModalComponent, {})
       .afterClosed()
       .toPromise<string>();
-  }
-
-  public showConfirmEmailDialogAsync(email: string): Promise<boolean> {
-    return this.dialog.open(ConfirmEmailModalComponent, {
-      data: <ConfirmEmailModalData>{
-        email: email
-      }, width: '30em'
-    })
-      .afterClosed()
-      .toPromise<boolean>();
   }
 
   public showMetamaskManualAlert(): MatDialogRef<MetamaskManualModalComponent> {

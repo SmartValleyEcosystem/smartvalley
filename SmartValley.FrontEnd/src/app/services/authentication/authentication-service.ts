@@ -13,13 +13,10 @@ import {DialogService} from '../dialog-service';
 import {UserContext} from './user-context';
 import {ErrorCode} from '../../shared/error-code.enum';
 import {AuthenticationApiClient} from '../../api/authentication/authentication-api-client';
-import {NotificationsService} from 'angular2-notifications';
-import {AdminContractClient} from '../contract-clients/admin-contract-client';
 import {AccountSignatureDto} from './account-signature-dto';
-import {RegistrationRequest} from '../../api/authentication/registration-request';
 import {AuthenticationRequest} from '../../api/authentication/authentication-request';
-import {UserApiClient} from '../../api/user/user-api-client';
-import {EmailRequest} from '../../api/user/email-request';
+import {RegistrationRequest} from '../../api/authentication/registration-request';
+import {NotificationsService} from 'angular2-notifications';
 import {TranslateService} from '@ngx-translate/core';
 
 @Injectable()
@@ -33,12 +30,10 @@ export class AuthenticationService {
               private router: Router,
               private deviceService: Ng2DeviceService,
               private dialogService: DialogService,
-              private userContext: UserContext,
-              private authenticationApiClient: AuthenticationApiClient,
+              private translateService: TranslateService,
               private notificationsService: NotificationsService,
-              private adminContractClient: AdminContractClient,
-              private userApiClient: UserApiClient,
-              private translateService: TranslateService) {
+              private userContext: UserContext,
+              private authenticationApiClient: AuthenticationApiClient) {
 
     this.userContext.userContextChanged.subscribe((user) => {
       if (user == null) {
@@ -54,7 +49,7 @@ export class AuthenticationService {
     }
   }
 
-  public isAuthenticated() {
+  public isAuthenticated(): boolean {
     return this.web3Service.isMetamaskInstalled && !isNullOrUndefined(this.userContext.getCurrentUser());
   }
 
@@ -79,21 +74,16 @@ export class AuthenticationService {
       this.dialogService.showMetamaskManualAlert();
       return false;
     }
-
-    let signature = this.userContext.getSignatureByAccount(currentAccount);
-    if (await this.shouldSignAccountAsync(currentAccount, signature)) {
-      try {
-        signature = await this.web3Service.signAsync(AuthenticationService.MESSAGE_TO_SIGN, currentAccount);
-      } catch (e) {
-        return false;
-      }
+    let signature: string;
+    try {
+      signature = await this.getSignatureAsync(currentAccount);
+    } catch (e) {
+      return false;
     }
-
     const user = await this.authenticateOnBackendAsync(currentAccount, signature, AuthenticationService.MESSAGE_TO_SIGN);
     if (user == null) {
       return false;
     }
-
     this.startUserSession(user);
     return true;
   }
@@ -120,51 +110,21 @@ export class AuthenticationService {
     } catch (e) {
       switch (e.error.errorCode) {
         case ErrorCode.UserNotFound:
-          const isSuccess = await this.registerAsync(account, signature, messageToSign);
-          if (isSuccess) {
-            this.notificationsService.success('Successful registration', 'Please check your email');
-          } else {
-            this.notificationsService.error('Failed registration', 'Please try again later');
-          }
+          await this.router.navigate([Paths.Register]);
           return null;
         case ErrorCode.EmailNotConfirmed:
-          const response = await this.userApiClient.getEmailBySignatureAsync(<EmailRequest>{
-            address: account,
-            signature: signature,
-            signedText: AuthenticationService.MESSAGE_TO_SIGN
-          });
-
-          const isNewEmailSpecified = await this.dialogService.showConfirmEmailDialogAsync(response.email);
-          if (isNewEmailSpecified) {
-            await this.registerAsync(account, signature, messageToSign);
-          }
+          await this.router.navigate([Paths.ConfirmRegister]);
+          return null;
       }
     }
   }
 
-  private async registerAsync(account: string, signature: string, messageToSign: string): Promise<boolean> {
-    try {
-      const email = await this.dialogService.showRegisterDialogAsync();
-      if (isNullOrUndefined(email)) {
-        return false;
-      }
-      await this.authenticationApiClient.registerAsync(<RegistrationRequest>{
-        address: account,
-        email: email,
-        signedText: messageToSign,
-        signature: signature
-      });
-      await this.userContext.saveSignatureForAccount(account, signature);
-      return true;
-    } catch (e) {
-      if (e.error.errorCode === ErrorCode.EmailSendingFailed) {
-        this.notificationsService.error(
-          this.translateService.instant('Common.EmailSendingErrorTitle'),
-          this.translateService.instant('Common.TryAgain')
-        );
-      }
-      return false;
+  public async getSignatureAsync(currentAccount: string): Promise<string> {
+    let signature = this.userContext.getSignatureByAccount(currentAccount);
+    if (await this.shouldSignAccountAsync(currentAccount, signature)) {
+      signature = await this.web3Service.signAsync(AuthenticationService.MESSAGE_TO_SIGN, currentAccount);
     }
+    return signature;
   }
 
   private async shouldSignAccountAsync(currentAccount: string, savedSignature: string): Promise<boolean> {
@@ -220,6 +180,29 @@ export class AuthenticationService {
   private stopBackgroundChecker() {
     if (!isNullOrUndefined(this.backgroundChecker) && !this.backgroundChecker.closed) {
       this.backgroundChecker.unsubscribe();
+    }
+  }
+
+  public async registerAsync(email: string): Promise<void> {
+    const account = await this.web3Service.getCurrentAccountAsync();
+    const signature = await this.getSignatureAsync(account);
+
+    try {
+      await this.authenticationApiClient.registerAsync(<RegistrationRequest>{
+        address: account,
+        email: email,
+        signedText: AuthenticationService.MESSAGE_TO_SIGN,
+        signature: signature
+      });
+      await this.userContext.saveSignatureForAccount(account, signature);
+      await this.router.navigate([Paths.ConfirmRegister]);
+    } catch (e) {
+      if (e.error.errorCode === ErrorCode.EmailSendingFailed) {
+        this.notificationsService.error(
+          this.translateService.instant('Common.EmailSendingErrorTitle'),
+          this.translateService.instant('Common.TryAgain')
+        );
+      }
     }
   }
 

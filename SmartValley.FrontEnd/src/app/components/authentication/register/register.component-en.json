@@ -1,0 +1,9 @@
+{
+  "Register": {
+    "Title": "Register",
+    "InputPlaceholder": "Email",
+    "ContactMail": "Contact email",
+    "UnderlineText": "Will not published. Just for important things.",
+    "ButtonText": "Continue"
+  }
+}

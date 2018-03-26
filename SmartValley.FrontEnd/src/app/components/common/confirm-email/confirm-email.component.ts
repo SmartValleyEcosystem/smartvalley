@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthenticationApiClient} from '../../../api/authentication/authentication-api-client';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Constants} from '../../../constants';
 import {ConfirmEmailRequest} from '../../../api/authentication/confirm-email-request';
 import {Paths} from '../../../paths';
 import {NotificationsService} from 'angular2-notifications';
@@ -24,9 +23,10 @@ export class ConfirmEmailComponent implements OnInit {
   }
 
   public async ngOnInit() {
+    debugger
     const address = this.activatedRoute.snapshot.params.address;
     const token = this.activatedRoute.snapshot.params.token;
-    await   this.authenticationApiClient.confirmEmailAsync(<ConfirmEmailRequest>{
+    await this.authenticationApiClient.confirmEmailAsync(<ConfirmEmailRequest>{
       address: address,
       token: token
     });

@@ -1,5 +1,28 @@
 @import "/assets/styles/table.css";
 
+.title{
+  width: 119px;
+  height: 40px;
+  font-family: Roboto-Bold;
+  font-size: 32px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.25;
+  letter-spacing: -0.1px;
+  text-align: left;
+  color: #000000;
+  margin-bottom: 20px;
+}
+.control-label {
+  width: 113.6px;
+  height: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: left;
+  color: #000000;
+  cursor: pointer;
+}
 .filters-wrapper {
   display: flex;
   margin-top: 20px;

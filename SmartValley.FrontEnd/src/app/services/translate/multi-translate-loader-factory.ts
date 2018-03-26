@@ -31,10 +31,7 @@ export function multiTranslateLoaderFactory() {
     'components/account/account.component',
     'components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component',
     'components/common/vote-modal/vote-modal.component',
-    'components/common/register-modal/register-modal.component',
     'components/common/change-email-modal/change-email-modal.component',
-    'components/common/confirm-email/confirm-email.component',
-    'components/common/confirm-email/confirm-email-modal.component',
     'components/completed-voting/completed-voting.component',
     'components/common/create-new-expert-modal/create-new-expert-modal.component',
     'components/admin-panel/admin-experts-list/admin-expert-list.component',
@@ -47,9 +44,12 @@ export function multiTranslateLoaderFactory() {
     'components/project-list/project-list.component',
     'components/search-with-autocomplete/search-with-autocomplete.component',
     'components/project-list/category-select/category-select.component',
+    'components/authentication/register/register.component',
+    'components/authentication/register-confirm/register-confirm.component',
     'components/select/select.component',
     'services/translate/countries',
     'services/translate/categories',
+    'components/common/confirm-email/confirm-email.component',
     'services/translate/stages'
   ]);
 }

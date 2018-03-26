@@ -76,7 +76,7 @@ export class HeaderComponent implements OnInit {
 
   async navigateToScoring() {
     if (await this.authenticationService.authenticateAsync()) {
-      await this.router.navigate([Paths.Expert]);
+      await this.router.navigate([Paths.RegisterExpert]);
     }
   }
 

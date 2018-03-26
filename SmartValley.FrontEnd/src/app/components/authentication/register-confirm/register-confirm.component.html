@@ -1,0 +1,16 @@
+<div class="content">
+  <h1 class="title">{{ 'Confirm.Title' | translate }}</h1>
+    <div class="register-card">
+      <p>{{ 'Confirm.On' | translate }} <span class="text-bold">{{email}}</span> {{ 'Confirm.WasSentEmail' | translate }}</p>
+      <p>{{ 'Confirm.CheckEmailText' | translate }}</p>
+      <p><button class="sv-btn-default" (click)="navigateToRegister()">
+        {{ 'Confirm.ButtonText' | translate }}
+      </button></p>
+      <div class="h-line"></div>
+      <p class="gray-text">
+        {{ 'Confirm.HaventMail' | translate }}
+        <button [disabled]="seconds > 0" class="sv-link" (click)="sendEmailAsync()">
+          {{ 'Confirm.SendAgain' | translate }}</button>
+      </p>
+    </div>
+</div>

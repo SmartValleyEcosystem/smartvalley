@@ -4,7 +4,6 @@ export class Paths {
   public static readonly Application = 'application';
   public static readonly Scoring = 'scoring';
   public static readonly Expert = 'expert';
-  public static readonly BecomeExpert = 'expert/become';
   public static readonly ExpertStatus = 'expert/status';
   public static readonly RegisterExpert = 'expert/register';
   public static readonly Report = 'report';
@@ -18,4 +17,6 @@ export class Paths {
   public static readonly ConfirmEmail = 'auth/confirm/:address/:token';
   public static readonly AdminExpertApplication = 'admin/expert/application';
   public static readonly ProjectList = 'projects';
+  public static readonly Register = 'register';
+  public static readonly ConfirmRegister = 'confirm';
 }

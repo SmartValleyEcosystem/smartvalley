@@ -1,0 +1,11 @@
+{
+  "Confirm": {
+    "Title": "Register",
+    "CheckEmailText": "Please check your email.",
+    "ButtonText": "Enter another email",
+    "SendAgain": "Send again",
+    "On": "On",
+    "WasSentEmail": "was sent email with following instructions.",
+    "HaventMail": "Haven't got the mail after 5 minutes?"
+  }
+}

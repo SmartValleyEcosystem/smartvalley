@@ -78,7 +78,6 @@ import {CompletedVotingComponent} from './components/completed-voting/completed-
 import {CompletedVotingsComponent} from './components/completed-votings/completed-votings.component';
 import {FormatDatePipe} from './utils/format-date.pipe';
 import {AuthenticationApiClient} from './api/authentication/authentication-api-client';
-import {RegisterModalComponent} from './components/common/register-modal/register-modal.component';
 import {UserContext} from './services/authentication/user-context';
 import {JwtInterceptor} from './api/jwt-interceptor';
 import {AdminApiClient} from './api/admin/admin-api-client';
@@ -89,8 +88,6 @@ import {FileUploadModule} from 'primeng/fileupload';
 import {TableModule} from 'primeng/table';
 import {DataTableModule} from 'primeng/primeng';
 import {DropdownModule} from 'primeng/dropdown';
-import {ConfirmEmailModalComponent} from './components/common/confirm-email/confirm-email-modal.component';
-import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
 import {ExpertsRegistryContractClient} from './services/contract-clients/experts-registry-contract-client';
 import {CalendarModule} from 'primeng/calendar';
 import {ExpertStatusComponent} from './components/expert-status/expert-status.component';
@@ -121,9 +118,12 @@ import {PaginatorModule} from 'primeng/paginator';
 import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-assigned.guard';
 import {SelectComponent} from './components/select/select.component';
 import {AutocompleteComponent} from './components/autocomplete/autocomplete.component';
-import {ScoringService} from "./services/scoring/scoring.service";
-import {ScoringContractClient} from "./services/contract-clients/scoring-contract-client";
-import { ScoringCostComponent } from './components/common/scoring-cost-modal/scoring-cost.component';
+import {ScoringService} from './services/scoring/scoring.service';
+import {ScoringContractClient} from './services/contract-clients/scoring-contract-client';
+import {ScoringCostComponent} from './components/common/scoring-cost-modal/scoring-cost.component';
+import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
+import {RegisterConfirmComponent} from './components/authentication/register-confirm/register-confirm.component';
+import {RegisterComponent} from './components/authentication/register/register.component';
 
 @NgModule({
   declarations: [
@@ -155,7 +155,6 @@ import { ScoringCostComponent } from './components/common/scoring-cost-modal/sco
     VotingCardComponent,
     FreeScoringConfirmationModalComponent,
     VoteModalComponent,
-    RegisterModalComponent,
     CompletedVotingComponent,
     CompletedVotingsComponent,
     FormatDatePipe,
@@ -164,8 +163,6 @@ import { ScoringCostComponent } from './components/common/scoring-cost-modal/sco
     ExpertStatusComponent,
     ExpertComponent,
     RegisterExpertComponent,
-    ConfirmEmailModalComponent,
-    ConfirmEmailComponent,
     AdminExpertApplicationsListComponent,
     AdminExpertApplicationComponent,
     AdminExpertsListComponent,
@@ -186,7 +183,10 @@ import { ScoringCostComponent } from './components/common/scoring-cost-modal/sco
     CountryAutocompleteComponent,
     CategorySelectComponent,
     SelectComponent,
-    AutocompleteComponent
+    AutocompleteComponent,
+    RegisterComponent,
+    ConfirmEmailComponent,
+    RegisterConfirmComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -195,9 +195,7 @@ import { ScoringCostComponent } from './components/common/scoring-cost-modal/sco
     ReceiveEtherModalComponent,
     FreeScoringConfirmationModalComponent,
     VoteModalComponent,
-    RegisterModalComponent,
     AddAdminModalComponent,
-    ConfirmEmailModalComponent,
     CreateNewExpertModalComponent,
     EditExpertModalComponent,
     ExpertsCountSelectionModalComponent,

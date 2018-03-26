@@ -1,0 +1,82 @@
+.title {
+  width: 119px;
+  height: 40px;
+  font-family: Roboto-Bold;
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 1.25;
+  letter-spacing: -0.1px;
+  text-align: left;
+  color: #000000;
+  margin-bottom: 20px;
+}
+
+.register-card {
+  width: 750px;
+  background-color: #ffffff;
+  margin-bottom: 180px;
+}
+
+.gray-text{
+  font-family: Roboto;
+  line-height: 1.33;
+  letter-spacing: -0.1px;
+  text-align: left;
+  color: #a4a2b0;
+}
+
+
+.email{
+  padding-left: 40px;
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+.email__label{
+  font-family: Roboto-Bold;
+  font-weight: bold;
+  line-height: 1.25;
+  letter-spacing: -0.1px;
+  text-align: left;
+  color: #000000;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.email__input {
+  padding-left: 15px;
+  width: 350px;
+  height: 36px;
+  border-radius: 18px 0 0 18px;
+  background-color: #ffffff;
+  border: solid 1px #a4a2b0;
+  outline: none;
+}
+
+.email__input::placeholder {
+  width: 84px;
+  height: 20px;
+  font-family: Roboto;
+  font-size: 14px;
+  line-height: 1.43;
+  text-align: left;
+  color: #a4a2b0;
+  padding-bottom: 8px;
+  padding-top: 8px;
+}
+
+.email__button {
+  width: 97px;
+  height: 36px;
+  border: 0;
+  border-radius: 0 18px 18px 0;
+  background-color: #5d49f2;
+  margin-left: -5px;
+  outline: none;
+  color: white;
+  padding-left: 15px;
+}
+
+.email__button:hover {
+  cursor: pointer;
+}
