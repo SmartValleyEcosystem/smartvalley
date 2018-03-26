@@ -321,11 +321,6 @@ a {
   background-color: white;
 }
 
-input.ng-dirty.ng-invalid, textarea.ng-dirty.ng-invalid, p-calendar.ng-dirty.ng-invalid .ui-inputtext {
-  border: 1px solid #ced4da;
-  box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
-}
-
 .login-button .mat-button-wrapper {
   padding-bottom: 10px;
   padding-top: 10px;
@@ -356,6 +351,21 @@ mat-dialog-actions .mat-button {
 }
 .hidden {
   display: none;
+}
+.title{
+  font-size: 32px;
+  font-family: Roboto-Bold;
+  color: #000;
+  margin-bottom: 20px;
+}
+.control-label {
+  width: 113.6px;
+  height: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: left;
+  color: #000000;
+  cursor: pointer;
 }
 
 @font-face {

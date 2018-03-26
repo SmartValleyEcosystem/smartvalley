@@ -1,20 +1,5 @@
 @import "/assets/styles/table.css";
 
-.title{
-  font-size: 32px;
-  font-family: Roboto-Bold;
-  color: #000;
-  margin-bottom: 20px;
-}
-.control-label {
-  width: 113.6px;
-  height: 20px;
-  font-size: 14px;
-  font-weight: bold;
-  text-align: left;
-  color: #000000;
-  cursor: pointer;
-}
 .filters-wrapper {
   display: flex;
   margin-top: 20px;
@@ -35,7 +20,7 @@ p {
   width: 533px;
 }
 .search-submit {
-  border-radius: 0 30px 30px 0;
+  border-radius: 0 30px 30px 0 !important;
   min-width: 95px;
   position: relative;
   top: -2px;

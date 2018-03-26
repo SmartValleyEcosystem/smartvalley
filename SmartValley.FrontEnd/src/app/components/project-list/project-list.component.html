@@ -1,7 +1,7 @@
 <div class="content">
   <h1 class="title">{{ 'ProjectList.Title' | translate }}</h1>
   <div class="search-controls">
-    <form name="filters" (ngSubmit)="submitFilters()" class="search-form">
+    <form name="filters" (ngSubmit)="submitFilters()" class="search-form" autocomplete="off">
       <div class="search-controls-wrapper">
         <input  [(ngModel)]="projectSearch" class="input search-input" type="text" name="searchInput" placeholder="{{ 'ProjectList.ProjectNamePlaceholder' | translate }}">
         <input class="main-btn search-submit" (click)="submitFilters()" type="button" value="{{ 'ProjectList.Search' | translate }}" name="searchSubmit">

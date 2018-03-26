@@ -28,7 +28,7 @@ export class CommonService {
     this.networks = this.getSocialMedias();
   }
 
-  private getCountries(): Country[] {
+  public getCountries(): Country[] {
     const tranlatedCountries: Country[] = [];
     for (const countryCode in Countries) {
       const currentCountry = {

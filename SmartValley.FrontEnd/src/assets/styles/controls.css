@@ -1,7 +1,6 @@
 .main-btn {
-  min-width: 150px;
   height: 36px;
-  border-radius: 18px;
+  border-radius: 18px !important;
   background-color: #5d49f2;
   border: solid 1px #5d49f2;
   font-size: 14px;
@@ -15,7 +14,6 @@
 }
 .ghost-btn {
   font-family: "Roboto-Regular";
-  min-width: 100px;
   padding: 0 20px;
   height: 36px;
   background-color: transparent;
@@ -23,6 +21,9 @@
   border-radius: 18px !important;
   cursor: pointer;
   outline: none;
+}
+textarea {
+  padding: 10px;
 }
 .input {
   height: 36px;
@@ -89,4 +90,32 @@ body .ui-state-active, body .ui-state-highlight {
 }
 body .ui-paginator .ui-paginator-pages .ui-paginator-page {
   padding: 2px 0 0 !important;
+}
+
+/* ng prime calendar style */
+
+.ui-inputtext.input-date {
+  height: 36px;
+  color: #000;
+  width: 230px;
+  padding: 0 16px;
+  border-radius: 18px;
+  background-color: #ffffff;
+  border: solid 1px #a4a2b0 !important;
+  background-image: url(/assets/img/controls/calendar.svg);
+  background-repeat: no-repeat;
+  background-position: 200px center;
+  outline: none;
+}
+
+/* validation input style */
+
+input.ng-dirty.ng-invalid,
+.input-component.ng-invalid.ng-dirty .input,
+textarea.ng-dirty.ng-invalid,
+p-calendar.ng-dirty.ng-invalid .ui-inputtext {
+  border-color: red;
+}
+input.ng-valid {
+  border-color: #a4a2b0 !important;
 }

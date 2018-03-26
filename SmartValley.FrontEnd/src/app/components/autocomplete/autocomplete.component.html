@@ -1,0 +1,18 @@
+<div [formGroup]="form">
+  <div class="autocomplete-wrapper {{ elementClass }}">
+    <input (focus)="searchInputFocusStatusSwitch(true); showItemsList();"
+           (focusout)="searchInputFocusStatusSwitch(false); hideItemsList();"
+           [class.autocomplete-item__focused]="squareInput"
+           [formControlName]="elementName"
+           (input)="onAutocompleteInputChange($event)"
+           [value]="selectedItemLabel"
+           [(ngModel)]="selectedItemValue"
+           [placeholder]="placeholder" type="text" class="input filter-autocomplete" id="{{elementId}}" name="{{elementName}}">
+    <ul (mouseenter) ="selectListHoverStatusSwitch(true) "  (mouseleave) ="selectListHoverStatusSwitch(false); hideItemsList();"
+        class="autocomplete-list" [class.hidden]="isAutocompleteHidden">
+      <li *ngFor="let item of items" (click)="selectItem(item.label, item.value, true)" class="autocomplete-item">
+        <p class="item-name">{{ item.label | translate }}</p>
+      </li>
+    </ul>
+  </div>
+</div>

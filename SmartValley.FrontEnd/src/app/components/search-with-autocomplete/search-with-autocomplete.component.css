@@ -30,7 +30,7 @@
 .search-controls__submit {
   width: 149px;
   height: 60px;
-  border-radius: 0 100px 100px 0;
+  border-radius: 0 100px 100px 0 !important;
   background-color: #5d49f2;
   font-size: 16px;
   outline: none;

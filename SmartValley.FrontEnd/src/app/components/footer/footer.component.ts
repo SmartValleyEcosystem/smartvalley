@@ -13,7 +13,7 @@ export class FooterComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.projectsLink = Paths.ProjectList;
+    this.projectsLink = Paths.Root;
   }
 
 }

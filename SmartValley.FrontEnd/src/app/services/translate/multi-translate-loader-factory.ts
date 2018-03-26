@@ -47,6 +47,7 @@ export function multiTranslateLoaderFactory() {
     'components/project-list/project-list.component',
     'components/search-with-autocomplete/search-with-autocomplete.component',
     'components/project-list/category-select/category-select.component',
+    'components/select/select.component',
     'services/translate/countries',
     'services/translate/categories',
     'services/translate/stages'

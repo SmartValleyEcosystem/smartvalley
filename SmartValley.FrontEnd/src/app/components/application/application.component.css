@@ -1,60 +1,94 @@
-.row {
-  margin: 1em 0em;
+body {
+  font-size: 14px;
+  font-family: Roboto-Regular;
 }
-
-.row > span {
-  padding-top: 0.6em;
-  padding-right: 1.5em;
+.description {
+  margin-bottom: 40px;
 }
-
-.row-title {
-  margin: 2em 0em;
+.settings-block {
+  background: #fff;
+  padding: 16px 40px 32px;
+  margin-bottom: 16px;
 }
-
-.row-primary {
-  background-color: rgb(248, 248, 248);
+.settings-block_last {
+  margin-bottom: 0;
 }
-
-.row-content {
-  padding-bottom: 1em;
+.settings-title {
+  font-family: Roboto-Bold;
+  margin: 0;
+  font-size: 24px;
+  text-align: left;
+  background: #fff;
+  padding: 16px 40px;
+  margin-bottom: 3px;
+  color: #a4a2b0;
 }
-
-.btn {
+.control-label {
+  margin-bottom: 5px;
+  width: auto;
+}
+label {
   cursor: pointer;
-  padding-top: 1em;
-  padding-bottom: 1em;
 }
-
-.is-active .row-content {
-  display: block;
+.wide-input {
+  width: 680px;
 }
-
-.submit-btn, .finance-btn, .legal-btn, .team-btn {
-  display: none;
+.control-row {
+  margin-bottom: 20px;
 }
-
-.sw-members > div{
-  padding-top: 1em;
-  padding-bottom: 1em;
+.save-btn {
+  margin: 60px 0;
+  width: 100px;
 }
-
-.sw-members > div:nth-child(1), .sw-members > div:nth-child(3), .sw-members > div:nth-child(5){
-  /*background: #f8f8f8;*/
-}
-
-.main-btn {
-  display: none;
-}
-
-.row-content {
-  display: none;
-}
-
 textarea {
-  height: 10em;
-  resize: none;
+  min-height: 132px;
+  padding: 10px;
 }
-
-label.mat-checkbox-layout > div.mat-checkbox-inner-container {
-margin-left: 6.2em;
+.input-attention {
+  font-size: 12px;
+  color: #a4a2b0;
+  margin: 5px 0 0;
+}
+.socials__add-button {
+  font-family: Roboto-Regular;
+  font-size: 14px;
+  line-height: 1.43;
+  color: #5d49f2;
+  cursor: pointer;
+  display: inline-block;
+  margin-top: 10px;
+}
+.socials__row {
+  display: flex;
+  margin-bottom: 10px;
+}
+.socials__input {
+  margin-left: 20px;
+  width: 480px;
+}
+.socials__labels-wrapper {
+  display: flex;
+}
+.socials__link-label {
+  margin-left: 247px;
+}
+.member-name {
+  font-family: Roboto-Bold;
+  font-size: 24px;
+  text-align: left;
+  background: #fff;
+  padding: 0;
+  margin-bottom: 16px;
+  color: #a4a2b0;
+}
+.socials__remove {
+  cursor: pointer;
+  display: inline-block;
+  background-image: url(/assets/img/controls/cross.svg);
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  margin-left: 20px;
+  position: relative;
+  top: 8px;
 }

@@ -1,106 +1,119 @@
-<div class="container">
-  <div class="row mx-auto">
-    <div class="col-7 sm-title">
-      <h1>{{ 'Application.CreateNewProject' | translate }}</h1>
-    </div>
-  </div>
-  <form [formGroup]="applicationForm" novalidate>
-    <div class="sw-card sw-content">
-      <div class="row row-title">
-        <h3 class="col-10 offset-1">{{ 'Application.CommonInformation' | translate }}</h3>
+<div class="content">
+  <form (ngSubmit)="onSaveAsync()" novalidate [formGroup]="applicationForm" autocomplete="off">
+    <h1 class="title">{{ 'Application.Title' | translate }}</h1>
+    <p class="description">{{ 'Application.PageDescription' | translate }}</p>
+    <h2 class="settings-title">{{ 'Application.CommonInformation' | translate }}</h2>
+    <div class="settings-block">
+      <div #name class="control-row">
+        <p class="control-label">
+          <label for="project-name">{{ 'Application.Name' | translate }}</label>
+        </p>
+        <input class="input wide-input" id="project-name" type="text" formControlName="name" placeholder="{{ 'Application.NamePlaceholder' | translate }}">
       </div>
-      <div #name class="row">
-        <span class="col-2 offset-1">{{ 'Application.Name' | translate }}</span>
-        <input class="form-control col-8" formControlName="name"
-               placeholder="{{ 'Application.NamePlaceholder' | translate }}" #required>
+      <div #area class="control-row">
+        <p class="control-label">
+          <label for="project-area">{{ 'Application.ProjectArea' | translate }}</label>
+        </p>
+        <app-select [isNeedToTranslate]="true" class="select-component input-component" [form]="applicationForm" [elementName]="'projectArea'" [elementId]="'project-area'" [items]="categories" [placeholder]="'Application.AllAreas' | translate"></app-select>
       </div>
-      <div #category class="row">
-        <span class="col-2 offset-1">{{ 'Application.ProjectArea' | translate }}</span>
-        <p-dropdown class="form-control col-8" placeholder="{{ 'Application.ProjectAreaPlaceholder' | translate }}"
-                    [options]="categories" formControlName="category" #required>
-          <ng-template let-item pTemplate="item">
-            {{ item.label | translate }}
-          </ng-template>
-        </p-dropdown>
+      <div #stage class="control-row">
+        <p class="control-label">
+          <label for="stage">{{ 'Application.Stage' | translate }}</label>
+        </p>
+        <app-select [isNeedToTranslate]="true" class="input-component" [elementName]="'stage'" [form]="applicationForm" [elementId]="'stage'" [items]="stages" [placeholder]="'Application.AllStages' | translate"></app-select>
       </div>
-      <div #stage class="row">
-        <span class="col-2 offset-1">{{ 'Application.Stage' | translate }}</span>
-        <p-dropdown class="form-control col-8" placeholder="{{ 'Application.ProjectAreaPlaceholder' | translate }}"
-                    [options]="stages" formControlName="stage" #required>
-          <ng-template let-item pTemplate="item">
-            {{ item.label | translate }}
-          </ng-template>
-        </p-dropdown>
+      <div #country class="control-row">
+        <p class="control-label">
+          <label for="country">{{ 'Application.Country' | translate }}</label>
+        </p>
+        <app-autocomplete class="input-component" [isNeedToTranslate]="true" [form]="applicationForm" [elementClass]="'wide-autocomplete'" [elementId]="'country'" [elementName]="'country'" [placeholder]="'Application.AllCountries' | translate" [allItems]="countries"></app-autocomplete>
       </div>
-      <div #country class="row">
-        <span class="col-2 offset-1">{{ 'Application.Country' | translate }}</span>
-        <p-dropdown class="form-control col-8" placeholder="{{ 'Application.ProjectAreaPlaceholder' | translate }}"
-                    [options]="countries" formControlName="country" #required>
-          <ng-template let-item pTemplate="item">
-            {{ item.label | translate }}
-          </ng-template>
-        </p-dropdown>
+      <div #description class="control-row">
+        <p class="control-label">
+          <label for="description">{{ 'Application.Description' | translate }}</label>
+        </p>
+        <textarea class="input wide-input" id="description" type="text" formControlName="description" placeholder="{{ 'Application.DescriptionPlaceholder' | translate }}"></textarea>
       </div>
-      <div #description class="row">
-        <span class="col-2 offset-1">{{ 'Application.Description' | translate }}</span>
-        <textarea class="form-control col-8" formControlName="description"
-                  placeholder="{{ 'Application.DescriptionPlaceholder' | translate }}" #required>
-        </textarea>
+      <div class="control-row">
+        <p class="control-label">
+          <label for="website">{{ 'Application.Website' | translate }}</label>
+        </p>
+        <input class="input" id="website" type="text" formControlName="website" placeholder="{{ 'Application.WWW' | translate }}">
       </div>
-      <div #webSite class="row" style="margin-bottom: 3em;">
-        <span class="col-2 offset-1">{{ 'Application.Website' | translate }}</span>
-        <input class="form-control col-8" formControlName="website"
-               title="Include http://" placeholder="http://">
+      <div class="control-row">
+        <p class="control-label">
+          <label for="white-paper-link">{{ 'Application.WhitePaperLink' | translate }}</label>
+        </p>
+        <input class="input" id="white-paper-link" type="text" formControlName="whitePaperLink" placeholder="{{ 'Application.Http' | translate }}">
       </div>
-      <div class="row" style="margin-bottom: 3em;">
-        <span class="col-2 offset-1">{{ 'Application.WhitePaperLink' | translate }}</span>
-        <input class="form-control col-8" formControlName="whitePaperLink"
-               title="Include http://" placeholder="http://">
+      <div class="control-row">
+        <p class="control-label">
+          <label for="ico-date">{{ 'Application.IcoDate' | translate }}</label>
+        </p>
+        <p-calendar [inputId]="'ico-date'" formControlName="icoDate" [inputStyleClass]="'input input-date'"></p-calendar>
       </div>
-      <div class="row" style="margin-bottom: 3em;">
-        <span class="col-2 offset-1">{{ 'Application.IcoDate' | translate }}</span>
-        <p-calendar [showIcon]="true" class="padding-zero col-4" formControlName="icoDate" #required></p-calendar>
-      </div>
-      <div #contactEmail class="wp-link  row">
-        <span class="col-2 offset-1">{{ 'Application.ContactEmail' | translate }}</span>
-        <input class="form-control col-8" formControlName="contactEmail"
-               placeholder="{{ 'Application.ContactEmailPlaceholder' | translate }}" #required>
+      <div class="control-row">
+        <p class="control-label">
+          <label for="email">{{ 'Application.ContactEmail' | translate }}</label>
+        </p>
+        <input class="input" id="email" type="text" formControlName="contactEmail">
+        <p class="input-attention">{{ 'Application.ContactEmailLabel' | translate }}</p>
       </div>
     </div>
-    <div class="sw-card sw-content">
-      <div class="row row-title">
-        <h3 class="col-10 offset-1">{{ 'Application.SocialMedia' | translate }}</h3>
+    <h2 class="settings-title">{{ 'Application.SocialMedia' | translate }}</h2>
+    <div class="settings-block socials">
+      <div class="socials__labels-wrapper">
+        <p class="control-label">
+          <label for="email">{{ 'Application.Network' | translate }}</label>
+        </p>
+        <p class="control-label socials__link-label">
+          <label for="email">{{ 'Application.Link' | translate }}</label>
+        </p>
       </div>
-      <div class="row">
-        <span class="col-2 offset-1">{{ 'Application.Network' | translate }}</span>
-        <p-dropdown class="form-control col-8" placeholder="{{ 'Application.ProjectAreaPlaceholder' | translate }}"
-                    [options]="socials" formControlName="social"></p-dropdown>
+      <div *ngFor="let social of activeSocials; first as isFirst" class="socials__row" [formGroup]="socialFormGroup">
+        <app-select class="input-component" [form]="socialFormGroup" [elementName]="'social__' + social" [elementId]="'social__'+ social" [items]="socials" [placeholder]="'Application.SocialMedia' | translate"></app-select>
+        <input type="text" [formControlName]="'social-link__' + social" class="input socials__input" placeholder="{{ 'Application.Http' | translate }}">
+        <span (click)="removeSocialMedia(social)" class="socials__remove" *ngIf="!isFirst"></span>
       </div>
-      <div class="row" style="margin-bottom: 3em;">
-        <button>
-          +{{ 'Application.AddMore' | translate }}
-        </button>
-      </div>
+      <span class="socials__add-button" (click)="addSocialMedia()">{{ 'Application.AddMore' | translate }}</span>
     </div>
-    <div class="sw-card sw-content">
-      <div class="row row-title">
-        <h3 class="col-10 offset-1">{{ 'Application.Team' | translate }}</h3>
+    <h2 class="settings-title">{{ 'Application.Team' | translate }}</h2>
+    <div class="settings-block settings-block_last" [formGroup]="membersGroup">
+      <div *ngFor="let member of members" class="member-wrapper">
+        <h3 class="member-name">{{ 'Application.Member' | translate }} {{ member }}</h3>
+        <div class="control-row">
+          <p class="control-label">
+            <label for="full-name">{{ 'Application.FullName' | translate }}</label>
+          </p>
+          <input class="input" id="full-name" type="text" [formControlName]="'full-name__'+ member">
+        </div>
+        <div class="control-row">
+          <p class="control-label">
+            <label for="role">{{ 'Application.Role' | translate }}</label>
+          </p>
+          <input class="input" id="role" type="text" [formControlName]="'role__' + member" placeholder="{{ 'Application.RolePlaceholder' | translate }}">
+        </div>
+        <div class="control-row">
+          <p class="control-label">
+            <label for="linkedin">{{ 'Application.LinkedinLink' | translate }}</label>
+          </p>
+          <input class="input" id="linkedin" type="text" [formControlName]="'linkedin__'+ member" placeholder="{{ 'Application.Http' | translate }}">
+        </div>
+        <div class="control-row">
+          <p class="control-label">
+            <label for="facebook">{{ 'Application.FacebookLink' | translate }}</label>
+          </p>
+          <input class="input" id="facebook" type="text" [formControlName]="'facebook__' + member" placeholder="{{ 'Application.FacebookLink' | translate }}">
+        </div>
+        <div class="control-row">
+          <p class="control-label">
+            <label for="success-stories">{{ 'Application.ExperienceAndAchievements' | translate }}</label>
+          </p>
+          <textarea class="input wide-input" id="success-stories" type="text" [formControlName]="'description__' + member" placeholder="{{ 'Application.SuccessStories' | translate }}"></textarea>
+        </div>
       </div>
-      <div class="row">
-        <span class="col-2 offset-1">{{ 'Application.Network' | translate }}</span>
-        <p-dropdown class="form-control col-8" placeholder="{{ 'Application.ProjectAreaPlaceholder' | translate }}"
-                    [options]="socials" formControlName="social"></p-dropdown>
-      </div>
-      <div class="row" style="margin-bottom: 3em;">
-        <button>
-          +{{ 'Application.AddMore' | translate }}
-        </button>
-      </div>
+      <span class="socials__add-button" (click)="addTeamMember()">{{ 'Application.AddTeamMember' | translate }}</span>
     </div>
-    <div class="row">
-      <button (click)="onSaveAsync()" [disabled]="isProjectCreating" class="col-3 btn btn-primary">
-        {{ 'Application.Save' | translate }}
-      </button>
-    </div>
+    <input type="submit" class="main-btn save-btn" value="{{ 'Application.Save' | translate }}">
   </form>
 </div>

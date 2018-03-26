@@ -1,5 +1,5 @@
 import {Component, ViewChild, ElementRef, ViewChildren, QueryList, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {v4 as uuid} from 'uuid';
 import {ScoringManagerContractClient} from '../../services/contract-clients/scoring-manager-contract-client';
 import {Router} from '@angular/router';
@@ -13,6 +13,9 @@ import {UserContext} from '../../services/authentication/user-context';
 import {SelectItem} from 'primeng/api';
 import {CreateProjectRequest} from '../../api/project/create-project-request';
 import {ProjectApiClient} from '../../api/project/project-api-client';
+import {ProjectService} from '../../services/project/project-service';
+import {ApplicationApiClient} from '../../api/application/application-api.client';
+import {SocialMediaTypeEnum} from '../../services/project/social-media-type.enum';
 import {CommonService} from '../../services/common/common.service';
 
 @Component({
@@ -23,13 +26,21 @@ import {CommonService} from '../../services/common/common.service';
 export class ApplicationComponent implements OnInit {
   public applicationForm: FormGroup;
   public isProjectCreating: boolean;
-  categories: SelectItem[];
-  stages: SelectItem[];
-  countries: SelectItem[];
-  socials: SelectItem[];
+  public categories: SelectItem[];
+  public stages: SelectItem[];
+  public countries: SelectItem[];
+  public socials: SelectItem[];
+  public activeSocials: number[];
+  public socialMediaEnumLength: number;
+  public members: number[] = [];
+  public currentMemberId = 1;
+  public membersGroup: FormGroup;
+  public socialFormGroup: FormGroup;
 
   @ViewChild('name') public nameRow: ElementRef;
   @ViewChild('area') public areaRow: ElementRef;
+  @ViewChild('stage') public stageRow: ElementRef;
+  @ViewChild('country') public countryRow: ElementRef;
   @ViewChild('description') public descriptionRow: ElementRef;
   @ViewChildren('required') public requiredFields: QueryList<any>;
 
@@ -43,6 +54,8 @@ export class ApplicationComponent implements OnInit {
               private projectApiClient: ProjectApiClient,
               private translateService: TranslateService,
               private balanceService: BalanceService,
+              private projectService: ProjectService,
+              private applicationApiClient: ApplicationApiClient,
               private commonService: CommonService) {
 
     this.categories =  this.commonService.categories.map(i => <SelectItem>{
@@ -66,8 +79,57 @@ export class ApplicationComponent implements OnInit {
     });
   }
 
+  public addSocialMedia() {
+    const newSocialInputId = this.activeSocials.length + 1;
+    this.activeSocials.push(newSocialInputId);
+    this.addSocialControls();
+  }
+
+  public removeSocialMedia(id) {
+    this.activeSocials = this.activeSocials.filter( a => a !== id);
+  }
+
+  public addTeamMember() {
+    this.currentMemberId++;
+    this.members.push(this.currentMemberId);
+    this.addTeamMemberControls();
+  }
+
   public ngOnInit(): void {
+    this.socialMediaEnumLength = Object.keys(SocialMediaTypeEnum).length / 2;
+    this.activeSocials = [1];
+    this.members.push(this.currentMemberId);
     this.createForm();
+
+    const memberGroupFields = {
+      ['full-name__' + this.members[this.members.length - 1]]: '',
+      ['role__' + this.members[this.members.length - 1]]: '',
+      ['linkedin__' + this.members[this.members.length - 1]]: '',
+      ['facebook__' + this.members[this.members.length - 1]]: '',
+      ['description__' + this.members[this.members.length - 1]]: '',
+    };
+
+    this.membersGroup = this.formBuilder.group(memberGroupFields);
+
+    const socialGroupFileds = {
+      ['social__1']: '',
+      ['social-link__1']: ''
+    };
+
+    this.socialFormGroup = this.formBuilder.group(socialGroupFileds);
+  }
+
+  public addTeamMemberControls() {
+    this.membersGroup.addControl('full-name__' + this.members[this.members.length - 1], new FormControl(''));
+    this.membersGroup.addControl('role__' + this.members[this.members.length - 1], new FormControl(''));
+    this.membersGroup.addControl('linkedin__' + this.members[this.members.length - 1], new FormControl(''));
+    this.membersGroup.addControl('facebook__' + this.members[this.members.length - 1], new FormControl(''));
+    this.membersGroup.addControl('description__' + this.members[this.members.length - 1], new FormControl(''));
+  }
+
+  public addSocialControls() {
+    this.socialFormGroup.addControl('social__' + this.activeSocials[this.activeSocials.length - 1], new FormControl(''));
+    this.socialFormGroup.addControl('social-link__' + this.activeSocials[this.activeSocials.length - 1], new FormControl(''));
   }
 
   public async onSaveAsync() {
@@ -90,6 +152,33 @@ export class ApplicationComponent implements OnInit {
     );
   }
 
+  public getTeamMembers() {
+    let teamArray = [];
+    for (let i = 1; i <= this.members.length; i++) {
+      const currentMember = {
+        fullName: this.membersGroup.value['full-name__' + i],
+        role: this.membersGroup.value['role__' + i],
+        about: this.membersGroup.value['description__' + i],
+        socialMedias: []
+      };
+      teamArray.push(currentMember);
+    }
+    return teamArray;
+  }
+
+  public getSocials() {
+    let socialsArray = [];
+    for (let i = 1; i <= this.activeSocials.length; i++) {
+      const currenstSocial = {
+        fullName: this.socialFormGroup.value['social__' + i],
+        role: this.socialFormGroup.value['social-link__' + i],
+        about: this.socialFormGroup.value['social-link__' + i],
+      };
+      socialsArray.push(currenstSocial);
+    }
+    return socialsArray;
+  }
+
   private createForm() {
     this.applicationForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
@@ -97,28 +186,30 @@ export class ApplicationComponent implements OnInit {
       website: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
       whitePaperLink: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
       contactEmail: ['', Validators.maxLength(100)],
-      icoDate: ['', [Validators.required, Validators.maxLength(100)]],
-      category: [this.categories[0].value],
-      country: [this.translateService.instant(this.countries[0].label)],
-      stage: [this.translateService.instant(this.stages[0].label)],
-      social: [this.translateService.instant(this.socials[0].label)],
-      teamMember: []
+      icoDate: [''],
+      projectArea: ['', [Validators.required]],
+      stage: ['', [Validators.required]],
+      country: ['', [Validators.required]],
+      social: [this.socials[0].value]
     });
   }
 
   private createSubmitApplicationRequest(): CreateProjectRequest {
     const form = this.applicationForm.value;
     return <CreateProjectRequest>{
+      externalId: uuid(),
       contactEmail: form.contactEmail,
       countryCode: form.country,
       name: form.name,
       description: form.description,
       icoDate: form.icoDate,
+      stageId: form.stage,
       category: form.projectArea,
       whitePaperLink: form.whitePaperLink,
-      externalId: uuid(),
-      website: form.website
-      //teamMembers: form.teamMembers.filter(m => !isNullOrUndefined(m.fullName))
+      projectId: uuid(),
+      website: form.website,
+      teamMembers: this.getTeamMembers(),
+      socialMedias: this.getSocials()
     };
   }
 
@@ -133,8 +224,12 @@ export class ApplicationComponent implements OnInit {
   private scrollToInvalidElement() {
     if (this.applicationForm.controls['name'].invalid) {
       this.scrollToElement(this.nameRow);
-    } else if (this.applicationForm.controls['category'].invalid) {
+    } else if (this.applicationForm.controls['projectArea'].invalid) {
       this.scrollToElement(this.areaRow);
+    } else if (this.applicationForm.controls['stage'].invalid) {
+      this.scrollToElement(this.stageRow);
+    } else if (this.applicationForm.controls['country'].invalid) {
+      this.scrollToElement(this.countryRow);
     } else if (this.applicationForm.controls['description'].invalid) {
       this.scrollToElement(this.descriptionRow);
     }
@@ -155,4 +250,5 @@ export class ApplicationComponent implements OnInit {
       }
     }
   }
+
 }

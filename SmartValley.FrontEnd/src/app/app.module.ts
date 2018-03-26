@@ -119,6 +119,8 @@ import {CountryAutocompleteComponent} from './components/project-list/country-au
 import {CategorySelectComponent} from './components/project-list/category-select/category-select.component';
 import {PaginatorModule} from 'primeng/paginator';
 import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-assigned.guard';
+import {SelectComponent} from './components/select/select.component';
+import {AutocompleteComponent} from './components/autocomplete/autocomplete.component';
 import {ScoringService} from "./services/scoring/scoring.service";
 import {ScoringContractClient} from "./services/contract-clients/scoring-contract-client";
 import { ScoringCostComponent } from './components/common/scoring-cost-modal/scoring-cost.component';
@@ -182,7 +184,9 @@ import { ScoringCostComponent } from './components/common/scoring-cost-modal/sco
     ProjectListComponent,
     ScoringCostComponent,
     CountryAutocompleteComponent,
-    CategorySelectComponent
+    CategorySelectComponent,
+    SelectComponent,
+    AutocompleteComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
