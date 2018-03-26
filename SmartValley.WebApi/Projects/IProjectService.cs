@@ -39,5 +39,9 @@ namespace SmartValley.WebApi.Projects
         Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorIdAsync(long authorId);
 
         Task UpdateImageAsync(long projectId, AzureFile image);
+
+        Task<Project> GetAsync(long projectId);
+
+        Task<IReadOnlyCollection<ProjectTeamMember>> GetTeamAsync(long projectId);
     }
 }

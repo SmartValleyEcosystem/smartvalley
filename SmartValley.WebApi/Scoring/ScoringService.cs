@@ -151,6 +151,9 @@ namespace SmartValley.WebApi.Scoring
             await NotifyExpertsAsync(offers, experts);
         }
 
+        public Task<Domain.Entities.Scoring> GetByProjectIdAsync(long projectId)
+            => _scoringRepository.GetByProjectIdAsync(projectId);
+
         private Task<IReadOnlyCollection<User>> GetExpertsForOffersAsync(IReadOnlyCollection<ScoringOfferInfo> contractOffers)
         {
             var expertAddresses = contractOffers

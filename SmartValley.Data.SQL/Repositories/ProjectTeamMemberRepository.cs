@@ -15,7 +15,7 @@ namespace SmartValley.Data.SQL.Repositories
         {
         }
 
-        public async Task<IReadOnlyCollection<ProjectTeamMember>> GetAllByProjectIdAsync(long projectId) =>
+        public async Task<IReadOnlyCollection<ProjectTeamMember>> GetByProjectIdAsync(long projectId) =>
             await ReadContext.ProjectTeamMembers
                              .Where(t => t.ProjectId == projectId)
                              .ToArrayAsync();

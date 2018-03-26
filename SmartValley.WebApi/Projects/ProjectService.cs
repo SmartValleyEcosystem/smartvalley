@@ -46,11 +46,14 @@ namespace SmartValley.WebApi.Projects
             var project = await FindAsync(projectId);
             var projectScoring = await _scoringRepository.GetByProjectIdAsync(projectId);
             var application = await _applicationRepository.GetByProjectIdAsync(projectId);
-            var teamMembers = await _teamMemberRepository.GetAllByProjectIdAsync(projectId);
+            var teamMembers = await _teamMemberRepository.GetByProjectIdAsync(projectId);
             var country = await _countryRepository.GetByIdAsync(project.CountryId);
             var details = new ProjectDetails(project, projectScoring, application, country) {TeamMembers = teamMembers};
             return details;
         }
+
+        public Task<IReadOnlyCollection<ProjectTeamMember>> GetTeamAsync(long projectId)
+            => _teamMemberRepository.GetByProjectIdAsync(projectId);
 
         public Task<IReadOnlyCollection<ProjectDetails>> GetScoredAsync(SearchProjectsQuery projectsQuery)
             => _projectRepository.GetScoredAsync(projectsQuery);
@@ -133,7 +136,7 @@ namespace SmartValley.WebApi.Projects
 
         private async Task UpdateTeamMembersAsync(IReadOnlyCollection<ProjectTeamMemberRequest> teamMemberRequests, long projectId)
         {
-            var existingTeamMembers = await _teamMemberRepository.GetAllByProjectIdAsync(projectId);
+            var existingTeamMembers = await _teamMemberRepository.GetByProjectIdAsync(projectId);
 
             foreach (var existingTeamMember in existingTeamMembers)
             {
@@ -166,6 +169,9 @@ namespace SmartValley.WebApi.Projects
             project.ImageUrl = await UploadImageAndGetUrlAsync(projectId, image);
             await _projectRepository.UpdateAsync(project, p => p.ImageUrl);
         }
+
+        public async Task<Project> GetAsync(long projectId)
+            => await _projectRepository.GetByIdAsync(projectId) ?? throw new AppErrorException(ErrorCode.ProjectNotFound);
 
         private async Task<long> AddProjectAsync(long userId, CreateProjectRequest request)
         {

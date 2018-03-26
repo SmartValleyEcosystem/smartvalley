@@ -27,5 +27,7 @@ namespace SmartValley.WebApi.Scoring
         Task RejectOfferAsync(long scoringId, long areaId, long expertId);
 
         Task UpdateOffersAsync(Guid projectExternalId);
+
+        Task<Domain.Entities.Scoring> GetByProjectIdAsync(long projectId);
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -38,7 +37,7 @@ namespace SmartValley.WebApi.Projects
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Post([FromBody] CreateProjectRequest request)
+        public async Task<IActionResult> PostAsync([FromBody] CreateProjectRequest request)
         {
             await _projectService.CreateAsync(User.GetUserId(), request);
             return NoContent();
@@ -46,7 +45,7 @@ namespace SmartValley.WebApi.Projects
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> Put([FromQuery] long id, [FromBody] UpdateProjectRequest request)
+        public async Task<IActionResult> PutAsync([FromQuery] long id, [FromBody] UpdateProjectRequest request)
         {
             var isAuthorized = await _projectService.IsAuthorizedToEditProjectAsync(id, User.GetUserId());
             if (!isAuthorized)
@@ -58,7 +57,7 @@ namespace SmartValley.WebApi.Projects
 
         [HttpPut("{id}/image")]
         [Authorize]
-        public async Task<IActionResult> UpdateImage([FromQuery] long id, IFormFile image)
+        public async Task<IActionResult> UpdateImageAsync([FromQuery] long id, IFormFile image)
         {
             if (image != null && image.Length > FileSizeLimitBytes)
                 throw new AppErrorException(ErrorCode.InvalidFileUploaded);
@@ -101,11 +100,29 @@ namespace SmartValley.WebApi.Projects
             return NoContent();
         }
 
-        [HttpGet]
-        public async Task<ProjectDetailsResponse> GetByIdAsync(GetByIdRequest request)
+        [HttpGet("{id}")]
+        public async Task<ProjectSummaryResponse> GetSummaryAsync([FromQuery] long id)
         {
-            var details = await _projectService.GetDetailsAsync(request.ProjectId);
-            var votingDetails = await _votingService.GetVotingProjectDetailsAsync(request.ProjectId);
+            var project = await _projectService.GetAsync(id);
+            var scoring = await _scoringService.GetByProjectIdAsync(id);
+
+            return ProjectSummaryResponse.Create(project, scoring);
+        }
+
+        [HttpGet("{id}/about")]
+        public async Task<ProjectAboutResponse> GetAboutAsync([FromQuery] long id)
+        {
+            var project = await _projectService.GetAsync(id);
+            var teamMembers = await _projectService.GetTeamAsync(id);
+
+            return ProjectAboutResponse.Create(project, teamMembers);
+        }
+
+        [HttpGet("{id}/details")]
+        public async Task<ProjectDetailsResponse> GetDetailsAsync([FromQuery] long id)
+        {
+            var details = await _projectService.GetDetailsAsync(id);
+            var votingDetails = await _votingService.GetVotingProjectDetailsAsync(id);
 
             return ProjectDetailsResponse.Create(details, votingDetails, _clock.UtcNow);
         }
