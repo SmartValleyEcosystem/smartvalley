@@ -5,7 +5,8 @@
         Line,
         MultiLine,
         Combobox,
-        Date,
+        DateTime,
+        CheckBox,
         Url
     }
 }

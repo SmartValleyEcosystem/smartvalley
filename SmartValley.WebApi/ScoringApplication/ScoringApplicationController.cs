@@ -20,10 +20,15 @@ namespace SmartValley.WebApi.ScoringApplication
         [HttpGet]
         public async Task<ScoringApplicationBlankResponse> GetByProjectIdAsync(long projectId)
         {
-            var scoringApplicationQuestions = await _scoringApplicationService.GetQuestionsAsync();
+            var questions = await _scoringApplicationService.GetQuestionsAsync();
             var scoringApplication = await _scoringApplicationService.GetApplicationAsync(projectId);
 
-            return ScoringApplicationBlankResponse.Create(scoringApplicationQuestions, scoringApplication);
+            if (scoringApplication == null)
+            {
+                return ScoringApplicationBlankResponse.CreateEmpty(questions);
+            }
+
+            return ScoringApplicationBlankResponse.InitializeFromApplication(questions, scoringApplication);
         }
 
         [HttpPost]

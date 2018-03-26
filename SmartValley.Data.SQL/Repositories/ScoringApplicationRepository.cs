@@ -24,7 +24,12 @@ namespace SmartValley.Data.SQL.Repositories
                                      .FirstOrDefaultAsync(x => x.ProjectId == projectId);
         }
 
-        public async Task SaveAsync(ScoringApplication scoringApplication)
+        public void Add(ScoringApplication scoringApplication)
+        {
+            _editContext.ScoringApplications.Add(scoringApplication);
+        }
+
+        public async Task SaveChangesAsync()
         {
             await _editContext.SaveAsync();
         }

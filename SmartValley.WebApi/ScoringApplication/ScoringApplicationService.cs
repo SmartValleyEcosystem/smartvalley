@@ -14,32 +14,27 @@ namespace SmartValley.WebApi.ScoringApplication
         private readonly IScoringApplicationRepository _scoringApplicationRepository;
         private readonly IScoringApplicationQuestionsRepository _scoringApplicationQuestionsRepository;
         private readonly ICountryRepository _countryRepository;
+        private readonly IProjectRepository _projectRepository;
         private readonly IClock _clock;
 
         public ScoringApplicationService(IScoringApplicationRepository scoringApplicationRepository,
                                          IScoringApplicationQuestionsRepository scoringApplicationQuestionsRepository,
                                          ICountryRepository countryRepository,
+                                         IProjectRepository projectRepository,
                                          IClock clock)
         {
             _scoringApplicationRepository = scoringApplicationRepository;
             _scoringApplicationQuestionsRepository = scoringApplicationQuestionsRepository;
             _countryRepository = countryRepository;
+            _projectRepository = projectRepository;
             _clock = clock;
         }
 
         public Task<IReadOnlyCollection<ScoringApplicationQuestion>> GetQuestionsAsync() 
             => _scoringApplicationQuestionsRepository.GetAllAsync();
 
-        public async Task<Domain.ScoringApplication> GetApplicationAsync(long projectId)
-        {
-            var scoringApplication = await _scoringApplicationRepository.GetByProjectIdAsync(projectId);
-            if (scoringApplication == null)
-            {
-                scoringApplication = new Domain.ScoringApplication();
-            }
-
-            return scoringApplication;
-        } 
+        public Task<Domain.ScoringApplication> GetApplicationAsync(long projectId)
+            => _scoringApplicationRepository.GetByProjectIdAsync(projectId);
 
         public async Task SaveApplicationAsync(long projectId, SaveScoringApplicationRequest saveScoringApplicationRequest)
         {
@@ -47,10 +42,18 @@ namespace SmartValley.WebApi.ScoringApplication
             if (country == null)
                 throw new AppErrorException(ErrorCode.CountryNotFound);
 
+            var project = await _projectRepository.GetByIdAsync(projectId);
+            if (project == null)
+                throw new AppErrorException(ErrorCode.ProjectNotFound);
+
             var scoringApplication = await _scoringApplicationRepository.GetByProjectIdAsync(projectId);
             if (scoringApplication == null)
-                throw new AppErrorException(ErrorCode.ProjectScoringApplicationNotFound);
+            {
+                scoringApplication = Domain.ScoringApplication.Create(_clock.UtcNow);
+                _scoringApplicationRepository.Add(scoringApplication);
+            }
 
+            scoringApplication.ProjectId = project.Id;
             scoringApplication.ProjectName = saveScoringApplicationRequest.ProjectName;
             scoringApplication.ProjectArea = saveScoringApplicationRequest.ProjectArea;
             scoringApplication.Status = saveScoringApplicationRequest.Status;
@@ -93,13 +96,9 @@ namespace SmartValley.WebApi.ScoringApplication
             }).ToList();
 
             scoringApplication.UpdateAdvisers(newAdvisers);
+            scoringApplication.UpdateAnswers(saveScoringApplicationRequest.Answers);
 
-            foreach (var answer in saveScoringApplicationRequest.Answers)
-            {
-                scoringApplication.SetAnswer(answer.Key, answer.Value);
-            }
-
-            await _scoringApplicationRepository.SaveAsync(scoringApplication);
+            await _scoringApplicationRepository.SaveChangesAsync();
         }
 
         public async Task SubmitForScoreAsync(long projectId)
@@ -111,7 +110,7 @@ namespace SmartValley.WebApi.ScoringApplication
             if (!scoringApplication.Submitted.HasValue)
             {
                 scoringApplication.Submitted = _clock.UtcNow;
-                await _scoringApplicationRepository.SaveAsync(scoringApplication);
+                await _scoringApplicationRepository.SaveChangesAsync();
             }
         }
     }
