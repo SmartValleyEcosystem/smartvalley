@@ -20,7 +20,7 @@
                 {{ 'ProjectCard.ScoringRating' | translate }}
               </span>
               <div class="score-panel" *ngIf="data.scoringStatus === ScoringStatus.Finished">
-                <span class="score {{projectService.colorOfProjectRate(data.score)}}">
+                <span class="score {{scoreColorsService.getProjectScoreColor(data.score)}}">
                   {{data.score.toFixed(0)}}
                 </span>
                 <span>/ 100</span>

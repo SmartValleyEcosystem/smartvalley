@@ -1,5 +1,5 @@
 export interface EstimateCommentRequest {
-  questionId: number;
+  scoringCriterionId: number;
 
   comment: string;
 }

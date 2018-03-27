@@ -35,7 +35,7 @@
                 {{ 'Report.ScoringRating' | translate }}
               </span>
             <div class="score-panel" *ngIf="details.scoringStatus === ScoringStatus.Finished">
-                <span class="score {{projectService.colorOfProjectRate(details.score)}}">
+                <span class="score {{scoreColorsService.getProjectScoreColor(details.score)}}">
                   {{details.score.toFixed(0)}}
                 </span>
               <span>/ 100</span>
@@ -132,15 +132,15 @@
               <div *ngFor="let area of areas">
                 <mat-tab label="{{area.name}}">
                   <span>{{ 'Report.Avg' | translate }}:</span>
-                  <span *ngIf="areaAverageScore != null; else elseBlock"
-                        class="{{projectService.colorOfAreaScore(areaAverageScore, area.areaType)}}">
-                  {{areaAverageScore.toFixed(2)}}
+                  <span *ngIf="areaScore != null; else elseBlock"
+                        class="{{scoreColorsService.getAreaScoreColor(areaScore, area.areaType)}}">
+                  {{areaScore.toFixed(2)}}
                 </span>
-                  <span *ngIf="areaAverageScore != null">
-                  {{ 'Report.OutOf' | translate }} <strong>{{expertiseMaxScore.toFixed(2)}}</strong>
+                  <span *ngIf="areaScore != null">
+                  {{ 'Report.OutOf' | translate }} <strong>{{areaMaxScore.toFixed(2)}}</strong>
                 </span>
                   <ng-template #elseBlock><span>{{ 'Report.InProgressLower' | translate }}</span></ng-template>
-                  <app-questions [questions]="questions"></app-questions>
+                  <app-criteria [criteria]="criteriaWithEstimates"></app-criteria>
                 </mat-tab>
               </div>
             </mat-tab-group>

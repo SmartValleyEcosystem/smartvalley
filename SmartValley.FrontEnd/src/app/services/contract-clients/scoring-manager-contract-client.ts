@@ -73,12 +73,12 @@ export class ScoringManagerContractClient implements ContractClient {
     const contract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.userContext.getCurrentUser().account;
 
-    const questionIds: number[] = [];
+    const scoringCriteriaIds: number[] = [];
     const scores: number[] = [];
     const commentHashes: string[] = [];
 
     for (const estimate of estimates) {
-      questionIds.push(estimate.questionId);
+      scoringCriteriaIds.push(estimate.scoringCriterionId);
       scores.push(estimate.score);
       const commentHash = '0x' + Md5.hashStr(estimate.comments, false).toString();
       commentHashes.push(commentHash);
@@ -87,7 +87,7 @@ export class ScoringManagerContractClient implements ContractClient {
     return await contract.submitEstimates(
       projectExternalId.replace(/-/g, ''),
       <number>areaType,
-      questionIds,
+      scoringCriteriaIds,
       scores,
       commentHashes,
       {from: fromAddress});

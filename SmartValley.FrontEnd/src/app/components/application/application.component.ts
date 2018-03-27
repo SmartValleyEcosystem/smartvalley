@@ -13,7 +13,7 @@ import {UserContext} from '../../services/authentication/user-context';
 import {SelectItem} from 'primeng/api';
 import {CreateProjectRequest} from '../../api/project/create-project-request';
 import {ProjectApiClient} from '../../api/project/project-api-client';
-import {ProjectService} from '../../services/project/project-service';
+import {ScoreColorsService} from '../../services/project/score-colors.service';
 import {ApplicationApiClient} from '../../api/application/application-api.client';
 import {SocialMediaTypeEnum} from '../../services/project/social-media-type.enum';
 import {CommonService} from '../../services/common/common.service';
@@ -54,7 +54,7 @@ export class ApplicationComponent implements OnInit {
               private projectApiClient: ProjectApiClient,
               private translateService: TranslateService,
               private balanceService: BalanceService,
-              private projectService: ProjectService,
+              private scoreColorsService: ScoreColorsService,
               private applicationApiClient: ApplicationApiClient,
               private commonService: CommonService) {
 

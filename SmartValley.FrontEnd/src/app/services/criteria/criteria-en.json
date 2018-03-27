@@ -1,5 +1,5 @@
 {
-  "QuestionsNames": {
+  "CriteriaNames": {
     "1": "Team completeness",
     "2": "Team experience",
     "3": "Attracted investments",
@@ -14,7 +14,7 @@
     "12": "Blockchain selection",
     "13": "Prototype/MVP analysis"
   },
-  "QuestionsDescriptions": {
+  "CriteriaDescriptions": {
     "1": "In case all major roles are filled in - <strong>6</strong> points<br/>In case any position is missing, minus <strong>1</strong> point for each specialist, minus <strong>2</strong> points for CEO<br/>In case specialist doesn't have any experience, disregard him<br/> <br/>Minimum: <strong>0</strong> points, Maximum: <strong>6</strong> points",
     "2": "Team experience (for each position)<br/> Specialist's experience:<br/> <span class=\"sub-list\">Less than 2 years - <strong>1</strong> point</span><br/> <span class=\"sub-list\">More than 2 years - <strong>2</strong> points</span><br/> <span class=\"sub-list\">No experience - <strong>0</strong> points</span><br/> <br/>Minimum: <strong>0</strong> points, Maximum: <strong>10</strong> points<br/>",
     "3": "In case anyone in the team attracted investments before - <strong>3</strong> points<br/><br/>Minimum: <strong>0</strong> points, Maximum: <strong>3</strong> points",
@@ -30,4 +30,3 @@
     "13": "Prototype solves stated problem by means of blockchain - <strong>10</strong> points<br/>Prototype solves stated problem without blockchain use - <strong>6</strong> points<br/>Prototype does not solve stated problem, however blockchain is used - <strong>2</strong> points<br/>Prototype does not solve stated problem - <strong>0</strong> points<br/><br/>Minimum: <strong>0</strong> points, Maximum <strong>10</strong> points"
   }
 }
-

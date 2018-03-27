@@ -6,22 +6,27 @@ import {AreaType} from '../../api/scoring/area-type.enum';
 @Injectable()
 export class AreaService {
 
+  public areas: Area[];
+
   constructor(private expertApiClient: ExpertApiClient) {
   }
-
-  public areas: Area[];
 
   public async initializeAsync() {
     const response = await this.expertApiClient.getAreasAsync();
     this.areas = response.items.map(a => {
       return <Area>{
         name: a.name,
-        areaType: a.id
+        areaType: a.id,
+        maxScore: a.maxScore
       };
     });
   }
 
-    public getAreaTypeByIndex(index: number): AreaType {
-        return this.areas[index].areaType;
-    }
+  public getTypeByIndex(index: number): AreaType {
+    return this.areas[index].areaType;
+  }
+
+  public getMaxScore(areaType: AreaType): number {
+    return this.areas.find(a => a.areaType === areaType).maxScore;
+  }
 }

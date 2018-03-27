@@ -8,7 +8,7 @@ import {ProjectApiClient} from '../../../api/project/project-api-client';
 import {BlockiesService} from '../../../services/blockies-service';
 import * as moment from 'moment';
 import {ScoringExpertsManagerContractClient} from '../../../services/contract-clients/scoring-experts-manager-contract-client';
-import {ProjectService} from '../../../services/project/project-service';
+import {ScoreColorsService} from '../../../services/project/score-colors.service';
 import {GetScoringProjectsRequest} from '../../../api/project/get-scoring-projects-request';
 import {StatusRequest} from '../../../api/project/status-request';
 import {DialogService} from '../../../services/dialog-service';
@@ -30,7 +30,7 @@ export class AdminScoringProjectsComponent implements OnInit {
   projects: AdminScoringProjectItem[] = [];
 
   constructor(private projectClient: ProjectApiClient,
-              public projectService: ProjectService,
+              public scoreColorsService: ScoreColorsService,
               private blockiesService: BlockiesService,
               private dialogService: DialogService,
               private scoringExpertsManagerContractClient: ScoringExpertsManagerContractClient,

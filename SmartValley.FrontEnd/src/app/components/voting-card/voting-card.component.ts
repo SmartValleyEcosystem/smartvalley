@@ -1,14 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ProjectService} from '../../services/project/project-service';
+import {ScoreColorsService} from '../../services/project/score-colors.service';
 import {BlockiesService} from '../../services/blockies-service';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {Paths} from '../../paths';
 import {VotingSprint} from '../../services/voting/voting-sprint';
 import {VotingService} from '../../services/voting/voting-service';
-import {VotingContractClient} from '../../services/contract-clients/voting-contract-client';
-import {DialogService} from '../../services/dialog-service';
 import * as timespan from 'timespan';
 
 @Component({
@@ -34,7 +32,7 @@ export class VotingCardComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private blockiesService: BlockiesService,
-              public projectService: ProjectService,
+              public scoreColorsService: ScoreColorsService,
               private votingService: VotingService) {
   }
 
@@ -60,7 +58,9 @@ export class VotingCardComponent implements OnInit {
   }
 
   private getImageUrl(): string {
-    const address = this.projectDetails.scoringContractAddress ? this.projectDetails.scoringContractAddress : this.projectDetails.authorAddress;
+    const address = this.projectDetails.scoringContractAddress
+      ? this.projectDetails.scoringContractAddress
+      : this.projectDetails.authorAddress;
     return this.blockiesService.getImageForAddress(address);
   }
 

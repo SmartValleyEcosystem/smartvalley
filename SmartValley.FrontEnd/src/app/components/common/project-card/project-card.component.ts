@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Paths} from '../../../paths';
-import {ProjectService} from '../../../services/project/project-service';
+import {ScoreColorsService} from '../../../services/project/score-colors.service';
 import {BlockiesService} from '../../../services/blockies-service';
 import {Constants} from '../../../constants';
 import {ProjectCardType} from '../../../services/project-card-type';
@@ -36,7 +36,7 @@ export class ProjectCardComponent implements OnInit {
 
   constructor(private router: Router,
               private blockiesService: BlockiesService,
-              public projectService: ProjectService,
+              public scoreColorsService: ScoreColorsService,
               private votingService: VotingService) {
   }
 

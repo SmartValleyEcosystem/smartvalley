@@ -6,22 +6,22 @@
   </div>
   <app-project-information [showBasicInfoCaption]="true" [projectDetails]="projectDetails"></app-project-information>
   <form [formGroup]="estimateForm" novalidate>
-    <div *ngFor="let question of estimateForm.get('questions')['controls'];" class="sw-card sw-content">
-      <div [formGroup]="question">
+    <div *ngFor="let criterion of estimateForm.get('criteria')['controls'];" class="sw-card sw-content">
+      <div [formGroup]="criterion">
         <div class="row row-title">
-          <h3 class="col-10 offset-1">{{question.value.name}}</h3>
+          <h3 class="col-10 offset-1">{{criterion.value.name}}</h3>
         </div>
         <div class="row-content">
           <div class="row">
             <span class="col-6 offset-1" style="word-wrap: break-word; white-space: pre-line; font-size: 0.8em;"
-                  [innerHTML]=question.value.description></span>
+                  [innerHTML]=criterion.value.description></span>
           </div>
           <div class="row">
             <div class="form-group">
               <div class="score col-1 offset-1">
                 <span style="font-size: 0.85em;">{{ 'Estimate.YourScore' | translate }}</span>
                 <input #required type="number" style="margin-top: 1em;" class="form-control" formControlName="score"
-                       placeholder="{{question.value.maxScore}}">
+                       placeholder="{{criterion.value.maxScore}}">
               </div>
               <div class="col-6">
                 <span style="font-size: 0.85em;">{{ 'Estimate.YourComment' | translate }}</span>

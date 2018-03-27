@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {QuestionService} from '../questions/question-service';
+import {ScoringCriterionService} from '../criteria/scoring-criterion.service';
 import {PromiseUtils} from '../../utils/promise-utils';
 import {BalanceService} from '../balance/balance.service';
 import {ScoringManagerContractClient} from '../contract-clients/scoring-manager-contract-client';
@@ -17,7 +17,7 @@ export class InitializationService {
 
   public isAppInitialized: boolean;
 
-  constructor(private questionService: QuestionService,
+  constructor(private scoringCriterionService: ScoringCriterionService,
               private adminContractClient: AdminContractClient,
               private expertContractClient: ExpertsRegistryContractClient,
               private scoringManagerContractClient: ScoringManagerContractClient,
@@ -43,7 +43,7 @@ export class InitializationService {
     this.commonService.initialize();
     await Promise.all([
       this.authenticationService.initializeAsync(),
-      this.questionService.initializeAsync(),
+      this.scoringCriterionService.initializeAsync(),
       this.adminContractClient.initializeAsync(),
       this.scoringManagerContractClient.initializeAsync(),
       this.scoringExpertsManagerContractClient.initializeAsync(),

@@ -1,5 +1,7 @@
+import {Score} from './score.enum';
+
 export interface Estimate {
-  questionId: number;
-  score: number;
+  scoringCriterionId: number;
+  score: Score;
   comments: string;
 }

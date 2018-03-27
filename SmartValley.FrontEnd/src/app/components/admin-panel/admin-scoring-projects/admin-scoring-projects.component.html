@@ -17,7 +17,7 @@
     <div class="col-9">
       <div class="row" style="padding-bottom: 3em;">
         <div class="description col-8">
-          <span class="big-size {{projectService.colorOfProjectStatus(project.statusCode)}}">{{ 'AdminScoringProject.Status' | translate }}: {{project.status}}</span>
+          <span class="big-size {{scoreColorsService.getProjectStatusColor(project.statusCode)}}">{{ 'AdminScoringProject.Status' | translate }}: {{project.status}}</span>
           <span style="padding-right: 2em;" *ngFor="let areaExpert of project.areasExperts">{{areaExpert.area.name}}: {{areaExpert.acceptedCount}}/{{areaExpert.requiredCount}}</span>
         </div>
         <div class="col-4 text-right">

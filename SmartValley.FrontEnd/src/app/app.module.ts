@@ -25,7 +25,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {FooterComponent} from './components/footer/footer.component';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {EstimateComponent} from './components/estimate/estimate.component';
-import {QuestionService} from './services/questions/question-service';
+import {ScoringCriterionService} from './services/criteria/scoring-criterion.service';
 import {ContractApiClient} from './api/contract/contract-api-client';
 import {ErrorInterceptor} from './api/error-interceptor';
 import {AdminContractClient} from './services/contract-clients/admin-contract-client';
@@ -36,9 +36,9 @@ import {ReportComponent} from './components/report/report.component';
 import {EstimatesApiClient} from './api/estimates/estimates-api-client';
 import {VotingApiClient} from './api/voting/voting-api-client';
 import {UserApiClient} from './api/user/user-api-client';
-import {QuestionsComponent} from './components/report/questions/questions.component';
+import {CriteriaComponent} from './components/report/criteria/criteria.component';
 import {CommonService} from './services/common/common.service';
-import {ProjectService} from './services/project/project-service';
+import {ScoreColorsService} from './services/project/score-colors.service';
 import {NgProgressInterceptor, NgProgressModule} from 'ngx-progressbar';
 import {TransactionAwaitingModalComponent} from './components/common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 import {BlockiesService} from './services/blockies-service';
@@ -140,7 +140,7 @@ import {WelcomeModalComponent} from './components/common/welcome-modal/welcome-m
     EstimateComponent,
     ProjectCardComponent,
     ReportComponent,
-    QuestionsComponent,
+    CriteriaComponent,
     TransactionAwaitingModalComponent,
     ScoringCostComponent,
     NullableLinkComponent,
@@ -270,8 +270,8 @@ import {WelcomeModalComponent} from './components/common/welcome-modal/welcome-m
     AuthenticationApiClient,
     AuthenticationService,
     UserContext,
-    ProjectService,
-    QuestionService,
+    ScoreColorsService,
+    ScoringCriterionService,
     Web3Service,
     DialogService,
     VotingService,

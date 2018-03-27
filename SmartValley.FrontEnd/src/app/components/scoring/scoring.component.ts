@@ -45,7 +45,7 @@ export class ScoringComponent implements OnDestroy, OnInit {
   }
 
   private async reloadProjectsForScoringAsync(): Promise<void> {
-    const areaType = this.areaService.getAreaTypeByIndex(this.selectedTabIndex);
+    const areaType = this.areaService.getTypeByIndex(this.selectedTabIndex);
     const response = await this.projectApiClient.getForScoringAsync(areaType);
     this.projects = response.items.map(p => ProjectCardData.fromProjectResponse(p, areaType));
   }

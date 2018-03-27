@@ -1,5 +1,5 @@
 import {EstimateResponse} from './estimate-response';
-export interface QuestionWithEstimatesResponse {
-  questionId: number;
+export interface CriterionWithEstimatesResponse {
+  scoringCriterionId: number;
   estimates: Array<EstimateResponse>;
 }

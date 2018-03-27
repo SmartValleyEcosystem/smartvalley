@@ -2,23 +2,20 @@ import {AfterViewChecked, Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {ProjectApiClient} from '../../api/project/project-api-client';
-import {QuestionService} from '../../services/questions/question-service';
-import {Question} from '../../services/questions/question';
+import {ScoringCriterionService} from '../../services/criteria/scoring-criterion.service';
+import {CriterionWithEstimates} from '../../services/criteria/criterionWithEstimates';
 import {Estimate} from '../../services/estimate';
 import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';
-import {AreaType} from '../../api/scoring/area-type.enum';
-import {ProjectService} from '../../services/project/project-service';
+import {ScoreColorsService} from '../../services/project/score-colors.service';
 import {BlockiesService} from '../../services/blockies-service';
 import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 import {Paths} from '../../paths';
 import {Constants} from '../../constants';
-import {QuestionResponse} from '../../api/estimates/question-response';
-import {QuestionWithEstimatesResponse} from '../../api/estimates/question-with-estimates-response';
+import {CriterionWithEstimatesResponse} from '../../api/estimates/criterion-with-estimates-response';
 import {VotingStatus} from '../../services/voting-status.enum';
 import {ScoringStatus} from '../../services/scoring-status.enum';
 import {isNullOrUndefined} from 'util';
 import * as timespan from 'timespan';
-import {ScoringManagerContractClient} from '../../services/contract-clients/scoring-manager-contract-client';
 import {BalanceService} from '../../services/balance/balance.service';
 import {TranslateService} from '@ngx-translate/core';
 import {DialogService} from '../../services/dialog-service';
@@ -28,7 +25,8 @@ import * as moment from 'moment';
 import {UserContext} from '../../services/authentication/user-context';
 import {AreaService} from '../../services/expert/area.service';
 import {Area} from '../../services/expert/area';
-import {ScoringService} from "../../services/scoring/scoring.service";
+import {ScoringService} from '../../services/scoring/scoring.service';
+import {ScoringCriterion} from '../../services/scoring-criterion';
 
 @Component({
   selector: 'app-report',
@@ -45,26 +43,26 @@ export class ReportComponent implements AfterViewChecked, OnInit {
   public votingRemainingSeconds: number;
   public scoringCost: number;
 
-  public questions: Array<Question>;
+  public criteriaWithEstimates: Array<CriterionWithEstimates>;
   public details: ProjectDetailsResponse;
-  public areaAverageScore: number;
-  public expertiseMaxScore: number;
+  public areaScore: number;
+  public areaMaxScore: number;
   public currentAccount: string;
   public areas: Area[];
 
   private projectId: number;
   @ViewChild('reportTabSet')
   private reportTabSet: NgbTabset;
-  private selectedReportTab: string;
-  private selectedAreaTabIndex: number;
+  public selectedReportTab: string;
+  public selectedAreaTabIndex: number;
   private knownTabs = [Constants.ReportFormTab, Constants.ReportEstimatesTab];
 
   constructor(private projectApiClient: ProjectApiClient,
               private estimatesApiClient: EstimatesApiClient,
-              private questionService: QuestionService,
+              private scoringCriterionService: ScoringCriterionService,
               private route: ActivatedRoute,
               private blockiesService: BlockiesService,
-              public projectService: ProjectService,
+              public scoreColorsService: ScoreColorsService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
               private translateService: TranslateService,
@@ -185,26 +183,24 @@ export class ReportComponent implements AfterViewChecked, OnInit {
   }
 
   private async reloadExpertEstimatesAsync(): Promise<void> {
-    const areaType = this.areaService.getAreaTypeByIndex(this.selectedAreaTabIndex);
+    const areaType = this.areaService.getTypeByIndex(this.selectedAreaTabIndex);
     const estimatesResponse = await this.estimatesApiClient.getAsync(this.projectId, areaType);
-    const questionsInArea = this.questionService.getByAreaType(areaType);
+    const criteria = this.scoringCriterionService.getByArea(areaType);
 
-    this.areaAverageScore = estimatesResponse.averageScore;
-    this.expertiseMaxScore = this.questionService.getMaxScoreForArea(areaType);
-    this.questions = estimatesResponse.questions.map(q => this.createQuestion(questionsInArea, q));
+    this.areaScore = estimatesResponse.score;
+    this.areaMaxScore = this.areaService.getMaxScore(areaType);
+    this.criteriaWithEstimates = estimatesResponse.criteria.map(q => this.createCriterionWithEstimates(criteria, q));
   }
 
-  private createQuestion(questionsInArea: Array<QuestionResponse>, questionWithEstimates: QuestionWithEstimatesResponse): Question {
-    const questionId = questionWithEstimates.questionId;
-    const question = questionsInArea.filter(j => j.id === questionId)[0];
+  private createCriterionWithEstimates(scoringCriteria: Array<ScoringCriterion>,
+                                       criterionWithEstimatesResponse: CriterionWithEstimatesResponse): CriterionWithEstimates {
+    const scoringCriterionId = criterionWithEstimatesResponse.scoringCriterionId;
+    const scoringCriterion = scoringCriteria.filter(j => j.id === scoringCriterionId)[0];
 
-    return <Question>{
-      name: question.name,
-      description: question.description,
-      minScore: question.minScore,
-      maxScore: question.maxScore,
-      estimates: questionWithEstimates.estimates.map(j => <Estimate>{
-        questionId: questionId,
+    return <CriterionWithEstimates>{
+      description: scoringCriterion.description,
+      estimates: criterionWithEstimatesResponse.estimates.map(j => <Estimate>{
+        scoringCriterionId: scoringCriterionId,
         score: j.score,
         comments: j.comment
       })

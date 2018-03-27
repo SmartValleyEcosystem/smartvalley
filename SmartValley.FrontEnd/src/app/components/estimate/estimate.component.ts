@@ -1,6 +1,6 @@
 import {Component, QueryList, ViewChildren, ElementRef, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {QuestionService} from '../../services/questions/question-service';
+import {ScoringCriterionService} from '../../services/criteria/scoring-criterion.service';
 import {Paths} from '../../paths';
 import {SubmitEstimatesRequest} from '../../api/estimates/submit-estimates-request';
 import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';
@@ -13,9 +13,10 @@ import {DialogService} from '../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
 import {Estimate} from '../../services/estimate';
 import {BalanceService} from '../../services/balance/balance.service';
-import {QuestionResponse} from '../../api/estimates/question-response';
+import {ScoringCriterionResponse} from '../../api/estimates/scoring-criterion-response';
 import {ScoringManagerContractClient} from '../../services/contract-clients/scoring-manager-contract-client';
 import {UserContext} from '../../services/authentication/user-context';
+import {ScoringCriterion} from '../../services/scoring-criterion';
 
 @Component({
   selector: 'app-estimate',
@@ -33,7 +34,7 @@ export class EstimateComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private projectApiClient: ProjectApiClient,
-              private questionService: QuestionService,
+              private scoringCriterionService: ScoringCriterionService,
               private router: Router,
               private estimatesApiClient: EstimatesApiClient,
               private userContext: UserContext,
@@ -104,7 +105,7 @@ export class EstimateComponent implements OnInit {
       areaType: this.areaType,
       expertAddress: this.userContext.getCurrentUser().account,
       estimateComments: estimates.map(e => <EstimateCommentRequest>{
-        questionId: e.questionId,
+        scoringCriterionId: e.scoringCriterionId,
         score: e.score,
         comment: e.comments
       })
@@ -137,8 +138,8 @@ export class EstimateComponent implements OnInit {
   }
 
   private getEstimates(): Array<Estimate> {
-    return this.estimateForm.value.questions.map(q => <Estimate>{
-      questionId: q.questionId,
+    return this.estimateForm.value.criteria.map(q => <Estimate>{
+      scoringCriterionId: q.scoringCriterionId,
       score: q.score,
       comments: q.comments.replace(/\s+$/, '')
     });
@@ -148,22 +149,20 @@ export class EstimateComponent implements OnInit {
     this.projectId = +this.route.snapshot.paramMap.get('id');
     this.areaType = +this.route.snapshot.queryParamMap.get('areaType');
 
-    const questions = this.questionService.getByAreaType(this.areaType);
-    const questionsFormGroups = questions.map(q => this.createQuestionFormGroup(q));
-    this.estimateForm = this.formBuilder.group({questions: this.formBuilder.array(questionsFormGroups)});
+    const criteria = this.scoringCriterionService.getByArea(this.areaType);
+    const criteriaFormGroups = criteria.map(q => this.createCriterionFormGroup(q));
+    this.estimateForm = this.formBuilder.group({criteria: this.formBuilder.array(criteriaFormGroups)});
     this.projectDetails = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
   }
 
-  private createQuestionFormGroup(question: QuestionResponse): FormGroup {
+  private createCriterionFormGroup(scoringCriterion: ScoringCriterion): FormGroup {
     return this.formBuilder.group({
-      questionId: question.id,
-      name: question.name,
-      description: question.description,
-      maxScore: question.maxScore,
+      scoringCriterionId: scoringCriterion.id,
+      description: scoringCriterion.description,
       score: ['', [
         Validators.required,
-        Validators.max(question.maxScore),
-        Validators.min(question.minScore),
+        Validators.max(2),
+        Validators.min(0),
         Validators.pattern('^-*[0-9]+$')]],
       comments: ['', [Validators.required, Validators.maxLength(250)]],
     });

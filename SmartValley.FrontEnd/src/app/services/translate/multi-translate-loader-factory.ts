@@ -2,7 +2,7 @@ import {MultiTranslateLoader} from './multi-translate-loader';
 
 export function multiTranslateLoaderFactory() {
   return new MultiTranslateLoader([
-    'services/questions/questions',
+    'services/criteria/criteria',
     'services/authentication/authentication-service',
     'services/balance/balance-service',
     'services/translate/common',
@@ -22,7 +22,7 @@ export function multiTranslateLoaderFactory() {
     'components/estimate/estimate.component',
     'components/report/report.component',
     'components/voting-card/voting-card.component',
-    'components/report/questions/questions.component',
+    'components/report/criteria/criteria.component',
     'components/footer/footer.component',
     'components/common/project-card/project-card.component',
     'components/common/transaction-awaiting-modal/transaction-awaiting-modal.component',
