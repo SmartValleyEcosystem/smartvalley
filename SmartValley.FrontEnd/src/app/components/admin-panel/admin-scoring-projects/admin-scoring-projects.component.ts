@@ -54,7 +54,7 @@ export class AdminScoringProjectsComponent implements OnInit {
     const getScoringProjectsRequest = <GetScoringProjectsRequest>{statuses: categories};
     const projectsResponse = await this.projectClient.getScoringProjectsByCategoriesAsync(getScoringProjectsRequest);
     this.projects = projectsResponse.items.map(i => <AdminScoringProjectItem>{
-      projectId: i.projectId,
+      projectExternalId: i.projectExternalId,
       imageUrl: this.blockiesService.getImageForAddress(i.address),
       startDate: isNullOrUndefined(i.startDate) ? '' : moment(i.startDate).format('MMMM D, Y'),
       endDate: isNullOrUndefined(i.endDate) ? '' : moment(i.endDate).format('MMMM D, Y'),
@@ -72,8 +72,8 @@ export class AdminScoringProjectsComponent implements OnInit {
     });
   }
 
-  async relaunchAsync(projectId: string) {
-    const transactionHash = await this.scoringExpertsManagerContractClient.selectMissingExpertsAsync(projectId);
+  async relaunchAsync(projectExternalId: string) {
+    const transactionHash = await this.scoringExpertsManagerContractClient.selectMissingExpertsAsync(projectExternalId);
     if (transactionHash == null) {
       return;
     }
@@ -83,7 +83,7 @@ export class AdminScoringProjectsComponent implements OnInit {
       transactionHash
     );
 
-    await this.offersApiClient.updateOffersAsync(projectId, transactionHash);
+    await this.offersApiClient.updateOffersAsync(projectExternalId, transactionHash);
 
     transactionDialog.close();
   }
@@ -100,7 +100,7 @@ export class AdminScoringProjectsComponent implements OnInit {
   }
 
   async setExpertsAsync(projectId: string) {
-    const project = this.projects.find(i => i.projectId === projectId);
+    const project = this.projects.find(i => i.projectExternalId === projectId);
     const areas = project.areasExperts.filter(i => i.acceptedCount < i.requiredCount).map(i => i.area);
     const areaExperts = await this.dialogService.showSetExpertsDialogAsync(areas);
     if (isNullOrUndefined(areaExperts)) {

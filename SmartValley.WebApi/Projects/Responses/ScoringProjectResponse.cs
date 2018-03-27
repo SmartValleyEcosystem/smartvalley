@@ -7,7 +7,9 @@ namespace SmartValley.WebApi.Projects.Responses
 {
     public class ScoringProjectResponse
     {
-        public string ProjectId { get; set; }
+        public long ProjectId { get; set; }
+        
+        public string ProjectExternalId { get; set; }
 
         public string Address { get; set; }
 
@@ -27,7 +29,8 @@ namespace SmartValley.WebApi.Projects.Responses
                    {
                        Address = details.Address,
                        Name = details.Name,
-                       ProjectId = details.ProjectId.ToString(),
+                       ProjectId = details.ProjectId,
+                       ProjectExternalId = details.ProjectExternalId.ToString(),
                        StartDate = details.CreationDate.Date,
                        EndDate = details.OffersEndDate.Date,
                        Status = details.Status,

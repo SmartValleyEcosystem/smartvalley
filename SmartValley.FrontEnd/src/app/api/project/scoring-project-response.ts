@@ -2,7 +2,8 @@ import {ScoringProjectStatus} from '../../services/scoring-project-status.enum';
 import {AreaExpertResponse} from './area-expert-response';
 
 export interface ScoringProjectResponse {
-  projectId: string;
+  projectId: number;
+  projectExternalId: string;
   name: string;
   address: string;
   startDate?: Date;

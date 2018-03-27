@@ -137,7 +137,14 @@ namespace SmartValley.Data.SQL.Repositories
             return await (from project in ReadContext.Projects
                           join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
                           where scoringIds.Any(i => i.Equals(scoring.Id))
-                          select new ScoringProjectDetails(project.Id, scoring.Id, scoring.ContractAddress, project.Name, scoring.CreationDate, scoring.OffersDueDate))
+                          select new ScoringProjectDetails(
+                              project.Id, 
+                              project.ExternalId, 
+                              scoring.Id, 
+                              scoring.ContractAddress, 
+                              project.Name, 
+                              scoring.CreationDate, 
+                              scoring.OffersDueDate))
                        .ToArrayAsync();
         }
     }

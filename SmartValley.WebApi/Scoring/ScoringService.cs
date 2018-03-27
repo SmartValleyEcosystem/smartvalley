@@ -273,6 +273,7 @@ namespace SmartValley.WebApi.Scoring
                 status,
                 areaCounts,
                 details.ProjectId,
+                details.ProjectExternalId,
                 details.ScoringId,
                 details.Address,
                 details.Name,

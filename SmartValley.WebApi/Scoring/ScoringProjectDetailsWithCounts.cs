@@ -12,12 +12,13 @@ namespace SmartValley.WebApi.Scoring
             ScoringProjectStatus status,
             IReadOnlyCollection<AreaCount> areaCounts,
             long projectId,
+            Guid projectExternalId,
             long scoringId,
             Address address,
             string name,
             DateTimeOffset creationDate,
             DateTimeOffset offersEndDate)
-            : base(projectId, scoringId, address, name, creationDate, offersEndDate)
+            : base(projectId, projectExternalId, scoringId, address, name, creationDate, offersEndDate)
         {
             Status = status;
             AreaCounts = areaCounts;

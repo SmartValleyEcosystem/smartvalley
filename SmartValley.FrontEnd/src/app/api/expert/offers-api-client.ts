@@ -53,9 +53,9 @@ export class OffersApiClient extends BaseApiClient {
     }).toPromise();
   }
 
-  public async updateOffersAsync(projectId: string, transactionHash: string): Promise<void> {
+  public async updateOffersAsync(projectExternalId: string, transactionHash: string): Promise<void> {
     await this.http.put(this.baseApiUrl + '/scoring/offers', <UpdateOffersRequest>{
-      projectExternalId: projectId,
+      projectExternalId: projectExternalId,
       transactionHash: transactionHash
     }).toPromise();
   }

@@ -2,7 +2,7 @@ import {ScoringProjectStatus} from '../../../services/scoring-project-status.enu
 import {AdminScoringProjectAreaExpertItem} from './admin-scoring-project-area-expert-item';
 
 export interface AdminScoringProjectItem {
-  projectId: string;
+  projectExternalId: string;
   title: string;
   imageUrl: string;
   startDate?: string;

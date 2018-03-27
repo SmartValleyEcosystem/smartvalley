@@ -23,7 +23,7 @@
         <div class="col-4 text-right">
           <a *ngIf="project.statusCode !== ScoringProjectStatus.InProgress"
              class="col-10 sv-default-btn btn btn-primary"
-             (click)="relaunchAsync(project.projectId)">
+             (click)="relaunchAsync(project.projectExternalId)">
             {{ 'AdminScoringProject.Relaunch' | translate }}
           </a>
           <span *ngIf="project.statusCode === ScoringProjectStatus.InProgress" class="big-size high_rate">{{ 'AdminScoringProject.WaitExperts' | translate }} {{project.endDate}}</span>
@@ -36,7 +36,7 @@
         <div class="col-4 text-right">
           <a *ngIf="project.statusCode !== ScoringProjectStatus.InProgress"
              class="col-10 sv-default-btn btn btn-primary"
-             (click)="setExpertsAsync(project.projectId)">
+             (click)="setExpertsAsync(project.projectExternalId)">
             {{ 'AdminScoringProject.SetExperts' | translate }}
           </a>
         </div>
