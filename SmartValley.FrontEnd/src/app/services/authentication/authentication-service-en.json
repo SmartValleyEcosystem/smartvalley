@@ -1,13 +1,16 @@
 {
   "Authentication": {
-    "IncompatibleBrowserTitle": "Attention!",
-    "IncompatibleBrowserMessage": "Our MVP works correctly only on PC with Google Chrome / Firefox browser with Metamask extension. You can't install Metamask on your browser.",
+    "IncompatibleBrowserTitle": "Attention",
+    "IncompatibleBrowserMessage": "Our MVP works correctly only on PC with Google Chrome/Firefox browser with Metamask extension. You can't install Metamask on your browser.",
     "IncompatibleBrowserButton": "Ok",
     "UnlockMetamaskTitle": "Metamask is locked",
     "UnlockMetamaskMessage": "Please click Metamask extension's logo in the top right corner of your browser, enter password and press 'UNLOCK'.",
     "UnlockMetamaskButton": "Ok",
     "WrongNetworkTitle": "Wrong network",
     "WrongNetworkMessage": "Please click Metamask extension's logo in the top right corner of your browser and change network to 'Rinkeby Test Network'.",
-    "WrongNetworkButton": "Ok"
+    "WrongNetworkButton": "Ok",
+    "WelcomeTitle": "Welcome to Smart Valley",
+    "WelcomeText": "Congratulations. Register is completed.",
+    "WelcomeButton": "Continue"
   }
 }

@@ -8,7 +8,7 @@
   padding-left: 15px;
   padding-right: 15px;
   text-align: center;
-  color: #ffffff;
+  color: #ffffff !important;
   cursor: pointer;
   outline: none;
 }

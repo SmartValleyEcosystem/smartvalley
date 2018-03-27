@@ -1,26 +1,21 @@
+img {
+  width: 148px;
+  height: 148px;
+  display: block;
+  margin: 0 auto;
+  padding-top: 1em;
+}
+
 .dialog {
-  width: 460px;
-  height: 256px;
+  width: 439px;
+  height: 465px;
   background-color: #ffffff;
-  padding: 40px 60px !important;
+  padding: 61px 40px!important;
   position: relative;
 }
 
-.dialog-content {
-  width: 338px;
-  height: 60px;
-  font-family: Roboto-Regular;
-  font-size: 14px;
-  line-height: 1.43;
-  text-align: left;
-  color: #000000;
-  margin: 0 0 20px 0;
-  padding: 0;
-}
-
 .dialog-title {
-  margin-bottom: 20px;
-  width: 133px;
+  width: 359px;
   height: 40px;
   font-family: Roboto-Regular;
   font-size: 32px;
@@ -29,10 +24,26 @@
   letter-spacing: -0.1px;
   text-align: left;
   color: #000000;
+  margin: 40px 0 0 0;
+}
+
+.dialog-content {
+  font-family: Roboto-Regular;
+  font-size: 14px;
+  line-height: 1.43;
+  text-align: left;
+  color: #000000;
+  width: 338px;
+  height: 20px;
+  margin: 20px 0 0 0;
+  padding: 0;
+  text-align: center;
 }
 
 .dialog-button {
-  width: 114px;
+  width: 215px;
+  height: 36px;
+  margin-top: 40px;
 }
 
 .dialog-close {

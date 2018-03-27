@@ -267,6 +267,7 @@ div.mat-tab-body-content {
   margin-bottom: 10px;
   padding: 0;
 }
+
 .btn-link, .sm-title {
   color: #a4a2b0 !important;
 }
@@ -327,14 +328,16 @@ a {
 }
 
 .mat-dialog-container {
-  background: white;
   color: rgb(32, 32, 32);
   max-width: 600px;
+  background: transparent;
+  box-shadow: none !important;
 }
 
 div.white-card .mat-tab-label-container {
   margin-left: 0.8em;
 }
+
 a, button, span {
   color: #a4a2bo;
   font-size: 13px;
@@ -344,20 +347,17 @@ a, button, span {
   background: #211f33 !important;
 }
 
-mat-dialog-actions .mat-button {
-  background-color: rgb(72, 138, 232);
-  border-color: rgb(72, 138, 232);
-  color: white !important;
-}
 .hidden {
   display: none;
 }
-.title{
+
+.title {
   font-size: 32px;
   font-family: Roboto-Bold;
   color: #000;
   margin-bottom: 20px;
 }
+
 .control-label {
   width: 113.6px;
   height: 20px;
@@ -442,22 +442,27 @@ mat-dialog-actions .mat-button {
   font-family: "AvenirNextCyr-UltraLight";
   src: url("/assets/fonts/AvenirNextCyr-UltraLightIt.otf") format("opentype");
 }
+
 @font-face {
   font-family: "Roboto-Bold";
   src: url("/assets/fonts/Roboto/Roboto-Bold.ttf") format("opentype");
 }
+
 @font-face {
   font-family: "Roboto-Condensed";
   src: url("/assets/fonts/Roboto/Roboto-Condensed.ttf") format("opentype");
 }
+
 @font-face {
   font-family: "Roboto-Medium";
   src: url("/assets/fonts/Roboto/Roboto-Medium.ttf") format("opentype");
 }
+
 @font-face {
   font-family: "Roboto-Regular";
   src: url("/assets/fonts/Roboto/Roboto-Regular.ttf") format("opentype");
 }
+
 @font-face {
   font-family: "Roboto-Thin";
   src: url("/assets/fonts/Roboto/Roboto-Thin.ttf") format("opentype");

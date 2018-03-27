@@ -24,6 +24,8 @@ import {SetExpertsModalComponent} from '../components/common/set-experts-modal/s
 import {ChangeEmailModalComponent} from '../components/common/change-email-modal/change-email-modal.component';
 import {EditExpertModalData} from '../components/common/edit-expert-modal/edit-expert-modal-data';
 import {ScoringCostComponent} from '../components/common/scoring-cost-modal/scoring-cost.component';
+import {WelcomeModalComponent} from '../components/common/welcome-modal/welcome-modal.component';
+import {WelcomeModalData} from '../components/common/welcome-modal/welcome-modal-data';
 
 @Injectable()
 export class DialogService {
@@ -110,6 +112,16 @@ export class DialogService {
       imgUrl: '/assets/img/unlock_metamask.png'
     };
     return this.openModal(MetamaskManualModalComponent, data);
+  }
+
+  public showWelcome(): MatDialogRef<WelcomeModalComponent> {
+    const data = <WelcomeModalData>{
+      title: this.translateService.instant('Authentication.WelcomeTitle'),
+      message: this.translateService.instant('Authentication.WelcomeText'),
+      button: this.translateService.instant('Authentication.WelcomeButton'),
+      imgUrl: '/assets/img/welcome.svg'
+    };
+    return this.openModal(WelcomeModalComponent, data);
   }
 
   public showIncompatibleBrowserAlert(): MatDialogRef<AlertModalComponent> {

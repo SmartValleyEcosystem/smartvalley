@@ -124,6 +124,7 @@ import {ScoringCostComponent} from './components/common/scoring-cost-modal/scori
 import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
 import {RegisterConfirmComponent} from './components/authentication/register-confirm/register-confirm.component';
 import {RegisterComponent} from './components/authentication/register/register.component';
+import {WelcomeModalComponent} from './components/common/welcome-modal/welcome-modal.component';
 
 @NgModule({
   declarations: [
@@ -186,7 +187,8 @@ import {RegisterComponent} from './components/authentication/register/register.c
     AutocompleteComponent,
     RegisterComponent,
     ConfirmEmailComponent,
-    RegisterConfirmComponent
+    RegisterConfirmComponent,
+    WelcomeModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -201,7 +203,8 @@ import {RegisterComponent} from './components/authentication/register/register.c
     ExpertsCountSelectionModalComponent,
     SetExpertsModalComponent,
     ChangeEmailModalComponent,
-    ScoringCostComponent
+    ScoringCostComponent,
+    WelcomeModalComponent
   ],
   imports: [
     FileUploadModule,

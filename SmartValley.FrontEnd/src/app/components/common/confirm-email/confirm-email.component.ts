@@ -6,6 +6,7 @@ import {Paths} from '../../../paths';
 import {NotificationsService} from 'angular2-notifications';
 import {TranslateService} from '@ngx-translate/core';
 import {AuthenticationService} from '../../../services/authentication/authentication-service';
+import {DialogService} from '../../../services/dialog-service';
 
 @Component({
   selector: 'app-confirm-email',
@@ -14,7 +15,8 @@ import {AuthenticationService} from '../../../services/authentication/authentica
 })
 export class ConfirmEmailComponent implements OnInit {
 
-  constructor(private authenticationApiClient: AuthenticationApiClient,
+  constructor(private dialogService: DialogService,
+              private authenticationApiClient: AuthenticationApiClient,
               private router: Router,
               private activatedRoute: ActivatedRoute,
               private notificationService: NotificationsService,
@@ -23,17 +25,23 @@ export class ConfirmEmailComponent implements OnInit {
   }
 
   public async ngOnInit() {
-    debugger
     const address = this.activatedRoute.snapshot.params.address;
     const token = this.activatedRoute.snapshot.params.token;
-    await this.authenticationApiClient.confirmEmailAsync(<ConfirmEmailRequest>{
-      address: address,
-      token: token
-    });
-    this.notificationService.success(
-      this.translateService.instant('ConfirmEmail.Success'),
-      this.translateService.instant('ConfirmEmail.Confirmed'));
-    await this.authenticationService.authenticateAsync();
+    try {
+      await this.authenticationApiClient.confirmEmailAsync(<ConfirmEmailRequest>{
+        address: address,
+        token: token
+      });
+      this.notificationService.success(
+        this.translateService.instant('ConfirmEmail.Success'),
+        this.translateService.instant('ConfirmEmail.Confirmed'));
+      await this.authenticationService.authenticateAsync();
+      this.dialogService.showWelcome();
+    } catch (e) {
+      this.notificationService.error(
+        this.translateService.instant('ConfirmEmail.Error'),
+        this.translateService.instant('ConfirmEmail.Failed'));
+    }
     this.router.navigate([Paths.Root]);
   }
 }
