@@ -4,16 +4,16 @@ namespace SmartValley.Domain.Entities
 {
     public class EstimateScore
     {
-        public EstimateScore(long questionId, int score, string expertAddress)
+        public EstimateScore(long scoringCriterionId, Score score, string expertAddress)
         {
-            QuestionId = questionId;
+            ScoringCriterionId = scoringCriterionId;
             Score = score;
             ExpertAddress = expertAddress;
         }
 
-        public long QuestionId { get; }
+        public long ScoringCriterionId { get; }
 
-        public int Score { get; }
+        public Score Score { get; }
 
         public Address ExpertAddress { get; }
     }

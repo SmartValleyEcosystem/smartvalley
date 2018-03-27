@@ -83,9 +83,9 @@ namespace SmartValley.WebApi.Projects
         public async Task<bool> IsAuthorizedToSeeEstimatesAsync(long userId, long projectId)
         {
             var project = await FindAsync(projectId);
-            var projectScoring = await _scoringRepository.GetByProjectIdAsync(projectId);
+            var scoring = await _scoringRepository.GetByProjectIdAsync(projectId);
 
-            return projectScoring.Score != null || project.AuthorId != userId;
+            return scoring.Score != null || project.AuthorId != userId;
         }
 
         public Task<IReadOnlyCollection<ProjectDetails>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds)

@@ -9,7 +9,5 @@ namespace SmartValley.Application.Contracts.Scorings
         Task<IReadOnlyCollection<EstimateScore>> GetEstimatesAsync(string scoringAddress);
 
         Task<ProjectScoringStatistics> GetScoringStatisticsAsync(string scoringAddress);
-
-        Task<uint> GetRequiredSubmissionsInAreaCountAsync(string scoringAddress, AreaType areaType);
     }
 }

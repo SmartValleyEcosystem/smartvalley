@@ -90,12 +90,12 @@ namespace SmartValley.Data.SQL.Repositories
 
         public async Task<IReadOnlyCollection<ProjectDetails>> GetForScoringAsync(AreaType areaType, long expertId)
         {
-            var scoredProjects = (from question in ReadContext.Questions
-                                  join comment in ReadContext.EstimateComments on question.Id equals comment.QuestionId
+            var scoredProjects = (from scoringCriterion in ReadContext.ScoringCriteria
+                                  join comment in ReadContext.EstimateComments on scoringCriterion.Id equals comment.ScoringCriterionId
                                   join scoring in ReadContext.Scorings on comment.ScoringId equals scoring.Id
                                   join areaScoring in ReadContext.AreaScorings on scoring.Id equals areaScoring.ScoringId
-                                  where comment.ExpertId == expertId && question.AreaType == areaType ||
-                                        areaScoring.AreaId == areaType && areaScoring.IsCompleted
+                                  where comment.ExpertId == expertId && scoringCriterion.AreaType == areaType ||
+                                        areaScoring.AreaId == areaType && areaScoring.Score.HasValue
                                   select comment.ScoringId).Distinct();
 
             return await (from project in ReadContext.Projects

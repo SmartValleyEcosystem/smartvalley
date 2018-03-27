@@ -15,9 +15,10 @@ using SmartValley.Domain.Entities;
 namespace SmartValley.Data.SQL.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20180327090738_ScoringAlgorithmUpdate")]
+    partial class ScoringAlgorithmUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,7 +168,7 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<long>("ExpertId");
 
-                    b.Property<long>("ScoringCriterionId");
+                    b.Property<long>("QuestionId");
 
                     b.Property<long>("ScoringId");
 
@@ -175,7 +176,7 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.HasIndex("ExpertId");
 
-                    b.HasIndex("ScoringCriterionId");
+                    b.HasIndex("QuestionId");
 
                     b.HasIndex("ScoringId");
 
@@ -368,6 +369,20 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("ProjectTeamMembers");
                 });
 
+            modelBuilder.Entity("SmartValley.Domain.Entities.Question", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AreaType");
+
+                    b.Property<int>("Weight");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Questions");
+                });
+
             modelBuilder.Entity("SmartValley.Domain.Entities.Role", b =>
                 {
                     b.Property<int>("Id");
@@ -445,20 +460,6 @@ namespace SmartValley.Data.SQL.Migrations
                         .IsUnique();
 
                     b.ToTable("ScoringApplicationQuestions");
-                });
-
-            modelBuilder.Entity("SmartValley.Domain.Entities.ScoringCriterion", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AreaType");
-
-                    b.Property<int>("Weight");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ScoringCriteria");
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.ScoringOffer", b =>
@@ -776,9 +777,9 @@ namespace SmartValley.Data.SQL.Migrations
                         .HasForeignKey("ExpertId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SmartValley.Domain.Entities.ScoringCriterion", "ScoringCriterion")
+                    b.HasOne("SmartValley.Domain.Entities.Question", "Question")
                         .WithMany()
-                        .HasForeignKey("ScoringCriterionId")
+                        .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SmartValley.Domain.Entities.Scoring", "Scoring")

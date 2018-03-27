@@ -8,6 +8,7 @@ using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class EstimateCommentRepository : EntityCrudRepository<EstimateComment>, IEstimateCommentRepository
     {
         public EstimateCommentRepository(IReadOnlyDataContext readContext, IEditableDataContext editContext)
@@ -15,12 +16,11 @@ namespace SmartValley.Data.SQL.Repositories
         {
         }
 
-        public async Task<IReadOnlyCollection<EstimateComment>> GetByProjectIdAsync(long projectId, AreaType areaType)
+        public async Task<IReadOnlyCollection<EstimateComment>> GetByScoringIdAsync(long scoringId, AreaType areaType)
         {
             return await (from estimate in ReadContext.EstimateComments
-                          join question in ReadContext.Questions on estimate.QuestionId equals question.Id
-                          join scoring in ReadContext.Scorings on estimate.ScoringId equals scoring.Id
-                          where question.AreaType == areaType && scoring.ProjectId == projectId
+                          join scoringCriterion in ReadContext.ScoringCriteria on estimate.ScoringCriterionId equals scoringCriterion.Id
+                          where scoringCriterion.AreaType == areaType && estimate.ScoringId == scoringId
                           select estimate)
                        .ToArrayAsync();
         }

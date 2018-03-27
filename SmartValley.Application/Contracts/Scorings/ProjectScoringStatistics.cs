@@ -5,14 +5,14 @@ namespace SmartValley.Application.Contracts.Scorings
 {
     public class ProjectScoringStatistics
     {
-        public ProjectScoringStatistics(int? score, IReadOnlyCollection<AreaType> scoredAreas)
+        public ProjectScoringStatistics(int? score, IDictionary<AreaType, double?> areaScores)
         {
             Score = score;
-            ScoredAreas = scoredAreas;
+            AreaScores = areaScores;
         }
 
         public int? Score { get; }
-        
-        public IReadOnlyCollection<AreaType> ScoredAreas { get; }
+
+        public IDictionary<AreaType, double?> AreaScores { get; }
     }
 }

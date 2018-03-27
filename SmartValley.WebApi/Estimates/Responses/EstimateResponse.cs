@@ -12,7 +12,7 @@ namespace SmartValley.WebApi.Estimates.Responses
         {
             return new EstimateResponse
                    {
-                       Score = estimate.Score,
+                       Score = (int) estimate.Score,
                        Comment = estimate.Comment
                    };
         }

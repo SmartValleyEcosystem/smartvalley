@@ -19,5 +19,8 @@ namespace SmartValley.Application.Contracts.Scorings.Dto
 
         [Parameter("bool[]", "_areaResults", 4)]
         public List<bool> AreaResults { get; set; }
+
+        [Parameter("uint[]", "_areaScores", 5)]
+        public List<long> AreaScores { get; set; }
     }
 }

@@ -6,7 +6,7 @@
 
         public AreaType AreaId { get; set; }
 
-        public bool IsCompleted { get; set; }
+        public double? Score { get; set; }
 
         public int ExpertsCount { get; set; }
 

@@ -15,9 +15,10 @@ using SmartValley.Domain.Entities;
 namespace SmartValley.Data.SQL.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20180327103544_RenamedQuestionToScoringCriterion")]
+    partial class RenamedQuestionToScoringCriterion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

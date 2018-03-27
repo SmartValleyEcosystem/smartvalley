@@ -19,23 +19,23 @@ namespace SmartValley.WebApi.Estimates
         private readonly EthereumClient _ethereumClient;
         private readonly IEstimationService _estimationService;
         private readonly IProjectService _projectService;
-        private readonly IQuestionRepository _questionRepository;
+        private readonly IScoringCriterionRepository _scoringCriterionRepository;
 
         public EstimatesController(
             EthereumClient ethereumClient,
             IEstimationService estimationService,
             IProjectService projectService,
-            IQuestionRepository questionRepository)
+            IScoringCriterionRepository scoringCriterionRepository)
         {
             _ethereumClient = ethereumClient;
             _estimationService = estimationService;
             _projectService = projectService;
-            _questionRepository = questionRepository;
+            _scoringCriterionRepository = scoringCriterionRepository;
         }
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] SubmitEstimatesRequest request)
+        public async Task<IActionResult> PostAsync([FromBody] SubmitEstimatesRequest request)
         {
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
             await _estimationService.SubmitEstimatesAsync(request);
@@ -49,17 +49,17 @@ namespace SmartValley.WebApi.Estimates
                 return Unauthorized();
 
             var scoringStatistics = await _estimationService.GetScoringStatisticsInAreaAsync(request.ProjectId, request.AreaType.ToDomain());
-            return Ok(GetQuestionsWithEstimatesResponse.Create(scoringStatistics));
+            return Ok(GetCriteriaWithEstimatesResponse.Create(scoringStatistics));
         }
 
         [HttpGet]
-        [Route("questions")]
-        public async Task<CollectionResponse<QuestionResponse>> GetQuestionsAsync()
+        [Route("criteria")]
+        public async Task<CollectionResponse<ScoringCriterionResponse>> GetCriteriaAsync()
         {
-            var questions = await _questionRepository.GetAllAsync();
-            return new CollectionResponse<QuestionResponse>
+            var criteria = await _scoringCriterionRepository.GetAllAsync();
+            return new CollectionResponse<ScoringCriterionResponse>
                    {
-                       Items = questions.Select(QuestionResponse.From).ToArray()
+                       Items = criteria.Select(ScoringCriterionResponse.From).ToArray()
                    };
         }
     }

@@ -4,13 +4,13 @@ namespace SmartValley.Domain
 {
     public class ScoringStatisticsInArea
     {
-        public ScoringStatisticsInArea(double? averageScore, IReadOnlyCollection<Estimate> estimates)
+        public ScoringStatisticsInArea(double? score, IReadOnlyCollection<Estimate> estimates)
         {
-            AverageScore = averageScore;
+            Score = score;
             Estimates = estimates;
         }
 
-        public double? AverageScore { get; }
+        public double? Score { get; }
 
         public IReadOnlyCollection<Estimate> Estimates { get; }
 

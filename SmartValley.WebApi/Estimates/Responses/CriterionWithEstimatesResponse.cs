@@ -4,17 +4,17 @@ using SmartValley.Domain;
 
 namespace SmartValley.WebApi.Estimates.Responses
 {
-    public class QuestionWithEstimatesResponse
+    public class CriterionWithEstimatesResponse
     {
-        public long QuestionId { get; set; }
+        public long ScoringCriterionId { get; set; }
 
         public IReadOnlyCollection<EstimateResponse> Estimates { get; set; }
 
-        public static QuestionWithEstimatesResponse Create(long questionId, IReadOnlyCollection<Estimate> estimates)
+        public static CriterionWithEstimatesResponse Create(long scoringCriterionId, IReadOnlyCollection<Estimate> estimates)
         {
-            return new QuestionWithEstimatesResponse
+            return new CriterionWithEstimatesResponse
                    {
-                       QuestionId = questionId,
+                       ScoringCriterionId = scoringCriterionId,
                        Estimates = estimates.Select(EstimateResponse.Create).ToArray()
                    };
         }

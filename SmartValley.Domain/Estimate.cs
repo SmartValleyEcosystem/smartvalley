@@ -1,17 +1,19 @@
-﻿namespace SmartValley.Domain
+﻿using SmartValley.Domain.Entities;
+
+namespace SmartValley.Domain
 {
     public class Estimate
     {
-        public Estimate(long questionId, int score, string comment)
+        public Estimate(long scoringCriterionId, Score score, string comment)
         {
-            QuestionId = questionId;
+            ScoringCriterionId = scoringCriterionId;
             Score = score;
             Comment = comment;
         }
 
-        public long QuestionId { get; }
+        public long ScoringCriterionId { get; }
 
-        public int Score { get; }
+        public Score Score { get; }
 
         public string Comment { get; }
     }

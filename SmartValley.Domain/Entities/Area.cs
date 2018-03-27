@@ -10,6 +10,8 @@ namespace SmartValley.Domain.Entities
         [Required]
         public string Name { get; set; }
 
+        public int MaxScore { get; set; }
+
         public IEnumerable<ExpertApplicationArea> ExpertApplicationAreas { get; set; }
     }
 }

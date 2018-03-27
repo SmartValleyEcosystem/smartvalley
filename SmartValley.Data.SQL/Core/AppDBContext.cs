@@ -32,7 +32,7 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<ProjectTeamMember> IReadOnlyDataContext.ProjectTeamMembers => ProjectTeamMembers.AsNoTracking();
 
-        IQueryable<Question> IReadOnlyDataContext.Questions => Questions.AsNoTracking();
+        IQueryable<ScoringCriterion> IReadOnlyDataContext.ScoringCriteria => ScoringCriteria.AsNoTracking();
 
         IQueryable<Voting> IReadOnlyDataContext.Votings => Votings.AsNoTracking();
 
@@ -86,7 +86,7 @@ namespace SmartValley.Data.SQL.Core
 
         public DbSet<ApplicationTeamMember> ApplicationTeamMembers { get; set; }
 
-        public DbSet<Question> Questions { get; set; }
+        public DbSet<ScoringCriterion> ScoringCriteria { get; set; }
 
         public DbSet<Voting> Votings { get; set; }
 

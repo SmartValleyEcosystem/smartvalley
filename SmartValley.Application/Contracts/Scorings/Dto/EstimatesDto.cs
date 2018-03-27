@@ -7,7 +7,7 @@ namespace SmartValley.Application.Contracts.Scorings.Dto
     public class EstimatesDto
     {
         [Parameter("uint256[]", "_questions", 1)]
-        public List<long> Questions { get; set; }
+        public List<long> ScoringCriteria { get; set; }
 
         [Parameter("uint256[]", "_scores", 2)]
         public List<int> Scores { get; set; }

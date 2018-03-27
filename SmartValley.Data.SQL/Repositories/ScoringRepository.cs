@@ -21,20 +21,10 @@ namespace SmartValley.Data.SQL.Repositories
         public Task<Scoring> GetByProjectIdAsync(long projectId)
             => ReadContext.Scorings.FirstOrDefaultAsync(scoring => scoring.ProjectId == projectId);
 
-        public async Task<bool> IsCompletedInAreaAsync(long scoringId, AreaType areaType)
+        public Task SetAreaScoreAsync(long scoringId, AreaType area, double score)
         {
-            var areaScoring = await ReadContext.AreaScorings.FirstOrDefaultAsync(s => s.ScoringId == scoringId && s.AreaId == areaType);
-            return areaScoring?.IsCompleted == true;
-        }
-
-        public Task SetAreasCompletedAsync(long scoringId, IReadOnlyCollection<AreaType> areas)
-        {
-            foreach (var area in areas)
-            {
-                var areaScoring = new AreaScoring {ScoringId = scoringId, AreaId = area, IsCompleted = true};
-                EditContext.AreaScorings.Attach(areaScoring).Property(s => s.IsCompleted).IsModified = true;
-            }
-
+            var areaScoring = new AreaScoring {ScoringId = scoringId, AreaId = area, Score = score};
+            EditContext.AreaScorings.Attach(areaScoring).Property(s => s.Score).IsModified = true;
             return EditContext.SaveAsync();
         }
 
@@ -48,7 +38,7 @@ namespace SmartValley.Data.SQL.Repositories
         {
             var requiredCounts = await (from areaScoring in ReadContext.AreaScorings
                                         join scoring in ReadContext.Scorings on areaScoring.ScoringId equals scoring.Id
-                                        where !areaScoring.IsCompleted
+                                        where !areaScoring.Score.HasValue
                                         select new
                                                {
                                                    OffersEndDate = scoring.OffersDueDate,
@@ -63,7 +53,7 @@ namespace SmartValley.Data.SQL.Repositories
                                             on new {areaScoring.ScoringId, areaScoring.AreaId}
                                             equals new {scoringOffer.ScoringId, scoringOffer.AreaId}
                                         where scoringOffer.Status == ScoringOfferStatus.Finished
-                                        where !areaScoring.IsCompleted
+                                        where !areaScoring.Score.HasValue
                                         group scoringOffer by new {scoringOffer.ScoringId, scoringOffer.AreaId}
                                         into scoringAreaGroup
                                         select new
@@ -78,7 +68,7 @@ namespace SmartValley.Data.SQL.Repositories
                                             on new {areaScoring.ScoringId, areaScoring.AreaId}
                                             equals new {scoringOffer.ScoringId, scoringOffer.AreaId}
                                         where scoringOffer.Status == ScoringOfferStatus.Accepted
-                                        where !areaScoring.IsCompleted
+                                        where !areaScoring.Score.HasValue
                                         group scoringOffer by new {scoringOffer.ScoringId, scoringOffer.AreaId}
                                         into scoringAreaGroup
                                         select new
@@ -93,7 +83,7 @@ namespace SmartValley.Data.SQL.Repositories
                                            on new {areaScoring.ScoringId, areaScoring.AreaId}
                                            equals new {scoringOffer.ScoringId, scoringOffer.AreaId}
                                        where scoringOffer.Status == ScoringOfferStatus.Pending
-                                       where !areaScoring.IsCompleted
+                                       where !areaScoring.Score.HasValue
                                        where scoringOffer.ExpirationTimestamp >= tillDate
                                        group scoringOffer by new {scoringOffer.ScoringId, scoringOffer.AreaId}
                                        into scoringAreaGroup
@@ -124,7 +114,7 @@ namespace SmartValley.Data.SQL.Repositories
                                                on new {areaScoring.ScoringId, areaScoring.AreaId}
                                                equals new {scoringOffer.ScoringId, scoringOffer.AreaId}
                                            where scoringOffer.Status == ScoringOfferStatus.Accepted
-                                           where !areaScoring.IsCompleted
+                                           where !areaScoring.Score.HasValue
                                            where areaScoring.ScoringId == scoringId
                                            group scoringOffer by new {scoringOffer.ScoringId, scoringOffer.AreaId, areaScoring.ExpertsCount}
                                            into scoringAreaGroup
@@ -136,12 +126,19 @@ namespace SmartValley.Data.SQL.Repositories
             return scoringAreaCounts.All(i => i.RequiredCount == i.Count);
         }
 
+        public async Task<double?> GetAreaScoreAsync(long scoringId, AreaType areaType)
+        {
+            var areaScoring = await ReadContext.AreaScorings.FirstOrDefaultAsync(a => a.ScoringId == scoringId && a.AreaId == areaType);
+            return areaScoring?.Score;
+        }
+
         public async Task<IReadOnlyCollection<ScoringProjectDetails>> GetScoringProjectsDetailsByScoringIdsAsync(IReadOnlyCollection<long> scoringIds)
         {
             return await (from project in ReadContext.Projects
                           join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
                           where scoringIds.Any(i => i.Equals(scoring.Id))
-                          select new ScoringProjectDetails(project.Id, scoring.Id, scoring.ContractAddress, project.Name, scoring.CreationDate, scoring.OffersDueDate)).ToArrayAsync();
+                          select new ScoringProjectDetails(project.Id, scoring.Id, scoring.ContractAddress, project.Name, scoring.CreationDate, scoring.OffersDueDate))
+                       .ToArrayAsync();
         }
     }
 }
