@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Paths} from '../../paths';
-import {ProjectCardType} from '../../services/project-card-type';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ScoredProject} from '../../api/expert/scored-project';
 import {ProjectQuery} from '../../api/project/project-query';
 import {ProjectsOrderBy} from '../../api/application/projects-order-by.enum';
 import {ProjectResponse} from '../../api/project/project-response';
+import {SortDirection} from '../../api/sort-direction.enum';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +15,6 @@ import {ProjectResponse} from '../../api/project/project-response';
 })
 export class LandingComponent implements OnInit {
 
-  public ProjectCardType = ProjectCardType;
   public projects: ScoredProject[];
   public projectsLink: string;
 
@@ -29,7 +28,8 @@ export class LandingComponent implements OnInit {
       offset: 0,
       count: 10,
       onlyScored: false,
-      orderBy: ProjectsOrderBy.ScoringEndDate
+      orderBy: ProjectsOrderBy.CreationDate,
+      direction: SortDirection.Descending
     });
     this.projects = projectResponse.items.map(p => this.createScoredProject(p));
   }

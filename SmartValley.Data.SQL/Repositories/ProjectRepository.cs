@@ -30,8 +30,8 @@ namespace SmartValley.Data.SQL.Repositories
                             .Where(o => string.IsNullOrEmpty(query.SearchString) || o.project.Name.ToUpper().Contains(query.SearchString.ToUpper()))
                             .Where(o => string.IsNullOrEmpty(query.CountryCode) || o.country.Code == query.CountryCode.ToUpper())
                             .Where(o => !query.Category.HasValue || o.project.Category == query.Category.Value)
-                            .Where(o => !query.MinimumScore.HasValue || o.scoring.Score >= query.MinimumScore.Value)
-                            .Where(o => !query.MaximumScore.HasValue || o.scoring.Score <= query.MaximumScore.Value);
+                            .Where(o => !query.MinimumScore.HasValue || !o.scoring.Score.HasValue || o.scoring.Score >= query.MinimumScore.Value)
+                            .Where(o => !query.MaximumScore.HasValue || !o.scoring.Score.HasValue || o.scoring.Score <= query.MaximumScore.Value);
 
             if (enableSorting && query.OrderBy.HasValue)
             {
@@ -51,6 +51,11 @@ namespace SmartValley.Data.SQL.Repositories
                         queryable = query.Direction == SortDirection.Ascending
                                         ? queryable.OrderBy(o => o.scoring.ScoringEndDate)
                                         : queryable.OrderByDescending(o => o.scoring.ScoringEndDate);
+                        break;
+                    case ProjectsOrderBy.CreationDate:
+                        queryable = query.Direction == SortDirection.Ascending
+                                        ? queryable.OrderBy(o => o.project.Id)
+                                        : queryable.OrderByDescending(o => o.project.Id);
                         break;
                 }
             }

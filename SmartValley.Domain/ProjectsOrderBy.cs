@@ -4,6 +4,7 @@
     {
         ScoringEndDate,
         Name,
-        ScoringRating
+        ScoringRating,
+        CreationDate,
     }
 }

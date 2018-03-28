@@ -54,7 +54,8 @@
           <td class="project-name"><a [routerLink]="getProjectLink(project.id)" >{{project.name}}</a></td>
           <td>{{ 'Countries.' + project.country | translate }}</td>
           <td>{{ 'Categories.' + project.categoryId | translate }}</td>
-          <td>{{ project.scoringEndDate | date:'yyyy-MM-dd' }}</td>
+          <td *ngIf="project.scoringEndDate" >{{ project.scoringEndDate | date:'yyyy-MM-dd' }}</td>
+          <td *ngIf="!project.scoringEndDate" >&mdash;</td>
           <td *ngIf="project.score" class="scoring-col">{{project.score | roundNumberPipe}}/100</td>
           <td *ngIf="!project.score" class="scoring-col">&mdash;</td>
         </tr>
