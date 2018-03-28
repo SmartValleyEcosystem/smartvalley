@@ -34,7 +34,7 @@ namespace SmartValley.Data.SQL.Repositories
 
             var applicant = await ReadContext.Users.FirstAsync(user => user.Id == expertApplication.ApplicantId);
 
-            return new ExpertApplicationDetails(applicant.Address, expertApplication, areas);
+            return new ExpertApplicationDetails(applicant.Address, applicant.Email, expertApplication, areas);
         }
 
         public Task<int> AddAsync(ExpertApplication expertApplication, IReadOnlyCollection<int> areas)
@@ -66,9 +66,7 @@ namespace SmartValley.Data.SQL.Repositories
             {
                 applicationExpertArea.Status = ExpertApplicationStatus.Rejected;
                 if (areas.Contains((int) applicationExpertArea.AreaId))
-                {
                     applicationExpertArea.Status = ExpertApplicationStatus.Accepted;
-                }
             }
 
             EditContext.ExpertApplications.Update(applicationDetails.ExpertApplication);

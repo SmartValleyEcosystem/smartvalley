@@ -6,17 +6,24 @@ namespace SmartValley.Domain
 {
     public class ExpertApplicationDetails
     {
-        public Address Address { get; }
-
-        public ExpertApplication ExpertApplication { get; }
-        
-        public IReadOnlyCollection<Area> Areas { get; }
-
-        public ExpertApplicationDetails(Address address, ExpertApplication expertApplication, IReadOnlyCollection<Area> areas)
+        public ExpertApplicationDetails(
+            Address address,
+            string email,
+            ExpertApplication expertApplication,
+            IReadOnlyCollection<Area> areas)
         {
             Address = address;
+            Email = email;
             ExpertApplication = expertApplication;
             Areas = areas;
         }
+
+        public Address Address { get; }
+
+        public string Email { get; }
+
+        public ExpertApplication ExpertApplication { get; }
+
+        public IReadOnlyCollection<Area> Areas { get; }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application.AzureStorage;
+using SmartValley.Application.Email;
 using SmartValley.Domain;
 using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
@@ -17,6 +18,7 @@ namespace SmartValley.WebApi.Experts
     {
         private readonly IUserRepository _userRepository;
         private readonly IExpertRepository _expertRepository;
+        private readonly MailService _mailService;
         private readonly IExpertApplicationRepository _expertApplicationRepository;
         private readonly ExpertApplicationsStorageProvider _expertApplicationsStorageProvider;
         private readonly IClock _clock;
@@ -25,10 +27,12 @@ namespace SmartValley.WebApi.Experts
                              IExpertApplicationRepository expertApplicationRepository,
                              IClock clock,
                              ExpertApplicationsStorageProvider expertApplicationsStorageProvider,
-                             IExpertRepository expertRepository)
+                             IExpertRepository expertRepository,
+                             MailService mailService)
         {
             _userRepository = userRepository;
             _expertRepository = expertRepository;
+            _mailService = mailService;
             _expertApplicationRepository = expertApplicationRepository;
             _expertApplicationsStorageProvider = expertApplicationsStorageProvider;
             _clock = clock;
@@ -166,15 +170,19 @@ namespace SmartValley.WebApi.Experts
                 await _expertRepository.AddAsync(user.Id, areas);
 
             await _expertApplicationRepository.SetAcceptedAsync(application, areas.ToList());
+
+            await _mailService.SendExpertApplicationAcceptedAsync(user.Email, application.ExpertApplication.FirstName);
         }
 
         public async Task RejectApplicationAsync(long id)
         {
-            var application = await _expertApplicationRepository.GetDetailsByIdAsync(id);
-            if (application.ExpertApplication.Status != ExpertApplicationStatus.Pending)
+            var applicationDetails = await _expertApplicationRepository.GetDetailsByIdAsync(id);
+            if (applicationDetails.ExpertApplication.Status != ExpertApplicationStatus.Pending)
                 throw new AppErrorException(ErrorCode.ExpertApplicationAlreadyProcessed);
 
-            await _expertApplicationRepository.SetRejectedAsync(application);
+            await _expertApplicationRepository.SetRejectedAsync(applicationDetails);
+
+            await _mailService.SendExpertApplicationRejectedAsync(applicationDetails.Email, applicationDetails.ExpertApplication.FirstName);
         }
 
         public Task<IReadOnlyCollection<ExpertDetails>> GetAllExpertsDetailsAsync(int offset, int count)

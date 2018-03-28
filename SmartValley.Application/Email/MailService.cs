@@ -26,12 +26,12 @@ namespace SmartValley.Application.Email
         {
             var token = _mailTokenService.EncryptEmailConfirmationToken(address, email);
             var template = await _templateProvider.GetEmailTemplateAsync();
-            
+
             template = template
-                .Replace("{SUBJECT}", "Please confirm email")
-                .Replace("{BODY}", "To complete registration please click the button below.")
-                .Replace("{BUTTON}", "Start work")
-                .Replace("{BUTTONHREF}", _siteUrls.GetConfirmEmail(token));
+                       .Replace("{SUBJECT}", "Please confirm email")
+                       .Replace("{BODY}", "To complete registration please click the button below.")
+                       .Replace("{BUTTON}", "Start work")
+                       .Replace("{BUTTONHREF}", _siteUrls.GetConfirmEmailUrl(token));
 
             await _mailSender.SendAsync(email, "Email confirmation", template);
         }
@@ -40,26 +40,53 @@ namespace SmartValley.Application.Email
         {
             var token = _mailTokenService.EncryptEmailConfirmationToken(address, email);
             var template = await _templateProvider.GetEmailTemplateAsync();
-            
+
             template = template
-                .Replace("{SUBJECT}", "Password change")
-                .Replace("{BODY}", $"Click on the button below to change your email ")
-                .Replace("{BUTTON}", "Update email")
-                .Replace("{BUTTONHREF}", _siteUrls.GetConfirmEmail(token));
+                       .Replace("{SUBJECT}", "Password change")
+                       .Replace("{BODY}", $"Click on the button below to change your email ")
+                       .Replace("{BUTTON}", "Update email")
+                       .Replace("{BUTTONHREF}", _siteUrls.GetConfirmEmailUrl(token));
+
             await _mailSender.SendAsync(email, "Email changing", template);
         }
 
-        public async Task SendOfferEmailAsync(string email)
+        public async Task SendOfferAsync(string email)
         {
             var template = await _templateProvider.GetEmailTemplateAsync();
 
             template = template
-                .Replace("{SUBJECT}", "Project scoring offer")
-                .Replace("{BODY}", "Click on the button below to view an offer.")
-                .Replace("{BUTTON}", "My Offers")
-                .Replace("{BUTTONHREF}", null);
+                       .Replace("{SUBJECT}", "Project scoring offer")
+                       .Replace("{BODY}", "Click on the button below to view an offer.")
+                       .Replace("{BUTTON}", "My Offers")
+                       .Replace("{BUTTONHREF}", null);
 
             await _mailSender.SendAsync(email, "Email confirmation", template);
+        }
+
+        public async Task SendExpertApplicationAcceptedAsync(string email, string name)
+        {
+            var template = await _templateProvider.GetEmailTemplateAsync();
+
+            template = template
+                       .Replace("{SUBJECT}", "Welcome to Smart Valley team")
+                       .Replace("{BODY}", $"{name}, you are part of our expert team now. Fill your profile and choose how to get projects for scoring.")
+                       .Replace("{BUTTON}", "Go to profile")
+                       .Replace("{BUTTONHREF}", _siteUrls.GetAccountUrl());
+
+            await _mailSender.SendAsync(email, "Expert application approval", template);
+        }
+
+        public async Task SendExpertApplicationRejectedAsync(string email, string name)
+        {
+            var template = await _templateProvider.GetEmailTemplateAsync();
+
+            template = template
+                       .Replace("{SUBJECT}", "Thank you for apply")
+                       .Replace("{BODY}", $"{name}, we are really sorry but we can't offer you an expert position. Your skills in specified expertise area aren't strong enough. Please choose another areas, fill the application carefully and try again. Thank you.")
+                       .Replace("{BUTTON}", "Go to Smart Valley")
+                       .Replace("{BUTTONHREF}", _siteUrls.GetRootUrl());
+
+            await _mailSender.SendAsync(email, "Expert application rejection", template);
         }
     }
 }

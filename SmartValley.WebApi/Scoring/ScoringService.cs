@@ -174,7 +174,7 @@ namespace SmartValley.WebApi.Scoring
         {
             try
             {
-                await _mailService.SendOfferEmailAsync(email);
+                await _mailService.SendOfferAsync(email);
             }
             catch (EmailSendingFailedException)
             {
