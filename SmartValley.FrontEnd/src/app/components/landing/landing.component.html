@@ -16,8 +16,8 @@
         <td>{{ 'Countries.' + project.country | translate }}</td>
         <td>{{ 'Categories.' + project.category | translate }}</td>
         <td>{{ project.scoringEndDate | date: 'yyyy-MM-dd' }}</td>
-        <td *ngif="project.score" class="scoring-col">{{project.score | roundNumberPipe}}/100</td>
-        <td *ngif="!project.score" class="scoring-col">&mdash;</td>
+        <td *ngIf="project.score" class="scoring-col">{{project.score | roundNumberPipe}}/100</td>
+        <td *ngIf="!project.score" class="scoring-col">&mdash;</td>
       </tr>
     </ng-template>
     <ng-template pTemplate="footer" let-columns>
