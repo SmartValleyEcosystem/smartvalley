@@ -33,20 +33,20 @@
               'sortable__active_desc' : isSortableDirection(DESC),
               'sortable__active_asc' : isSortableDirection(ASC)
              }"
-              (click)="sortProjectsBy('Name')">{{ 'ProjectList.Name' | translate }}</span></th>
+              (click)="sortByName()">{{ 'ProjectList.Name' | translate }}</span></th>
           <th>{{ 'ProjectList.Country' | translate }}</th>
           <th>{{ 'ProjectList.ProjectCategory' | translate }}</th>
           <th><span class="sortable" [ngClass]="{
-                'sortable__active' : isSortableField('None'),
+                'sortable__active' : isSortableField('ScoringEndDate'),
                 'sortable__active_desc' : isSortableDirection(DESC),
                 'sortable__active_asc' : isSortableDirection(ASC)
               }"
-              (click)="sortProjectsBy('None')">{{ 'ProjectList.ScoringDate' | translate }}</span></th>
+              (click)="sortByDate()">{{ 'ProjectList.ScoringDate' | translate }}</span></th>
           <th><span class="sortable" [ngClass]="{
                 'sortable__active' : isSortableField('ScoringRating') ,
                 'sortable__active_desc' : isSortableDirection(DESC),
                 'sortable__active_asc' : isSortableDirection(ASC)
-              }" (click)="sortProjectsBy('ScoringRating')">{{ 'ProjectList.ScoringRating' | translate }}</span></th>
+              }" (click)="sortByRating()">{{ 'ProjectList.ScoringRating' | translate }}</span></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-project>

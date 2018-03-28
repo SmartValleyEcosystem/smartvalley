@@ -102,15 +102,27 @@ export class ProjectListComponent implements OnInit {
     await this.updateProjectsAsync();
   }
 
-  public async sortProjectsBy(sortField: string) {
-    if (this.sortedBy === ProjectsOrderBy[sortField]) {
+  public async sortByName() {
+    return this.sortBy(ProjectsOrderBy.Name);
+  }
+
+  public async sortByDate() {
+    return this.sortBy(ProjectsOrderBy.ScoringEndDate);
+  }
+
+  public async sortByRating() {
+    return this.sortBy(ProjectsOrderBy.ScoringRating);
+  }
+
+  public async sortBy(orderBy: ProjectsOrderBy): Promise<void> {
+    if (this.sortedBy === orderBy) {
       if (this.sortDirection === SortDirection.Descending) {
         this.sortDirection = SortDirection.Ascending;
       } else {
         this.sortDirection = SortDirection.Descending;
       }
     }
-    this.sortedBy = ProjectsOrderBy[sortField];
+    this.sortedBy = orderBy;
 
     await this.updateProjectsAsync();
   }
