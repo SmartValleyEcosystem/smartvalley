@@ -60,7 +60,7 @@
     </div>
     <div *ngFor="let area of areas" class="row">
         <span class="col-6">
-          <mat-checkbox align="start" name="{{'category' + area.areaType}}"
+          <mat-checkbox align="start" name="{{'area' + area.areaType}}"
                         [(ngModel)]="selectedCategories[area.areaType]">
             {{ area.name }}
           </mat-checkbox>

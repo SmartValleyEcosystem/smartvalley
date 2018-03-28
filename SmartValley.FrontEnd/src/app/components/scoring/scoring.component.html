@@ -36,6 +36,11 @@
                 <app-project-card [data]="project" [type]="ProjectCardType.Scoring"></app-project-card>
               </div>
             </mat-tab>
+            <mat-tab label="{{ 'Common.Marketer' | translate }}">
+              <div class="card" *ngFor="let project of projects;">
+                <app-project-card [data]="project" [type]="ProjectCardType.Scoring"></app-project-card>
+              </div>
+            </mat-tab>
           </mat-tab-group>
         </div>
       </div>

@@ -4,7 +4,10 @@
     <div class="email">
       <p class="email__label">{{ 'Register.ContactMail' | translate }}</p>
       <input matInput formControlName="email" #required class="email__input" type="email"
-             placeholder="{{ 'Register.InputPlaceholder' | translate }}"/>
+             id="Email" name="Email"
+             (keyup.enter)="submitAsync()"
+             placeholder="{{ 'Register.InputPlaceholder' | translate }}"
+      />
       <input (click)="submitAsync()" class="email__button" value="{{ 'Register.ButtonText' | translate }}"/>
       <p class="gray-text">{{ 'Register.UnderlineText' | translate }}</p>
     </div>

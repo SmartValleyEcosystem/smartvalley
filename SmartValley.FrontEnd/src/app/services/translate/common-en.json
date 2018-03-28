@@ -5,6 +5,7 @@
     "Lawyer": "Lawyer",
     "Analyst": "Analyst",
     "TechnicalExpert": "Technical expert",
+    "Marketer": "Marketer",
     "Yes": "Yes",
     "No": "No",
     "Cancel": "Cancel",
@@ -13,6 +14,8 @@
     "TryAgain": "Please try again later",
     "Success": "Success",
     "UserNotFound": "User not found.",
-    "EmailSendingErrorTitle": "Failed to send email"
+    "EmailSendingErrorTitle": "Failed to send email",
+    "EmailAlreadyExistErrorTitle": "Email already exist",
+    "EnterAnotherEmail": "Enter another email."
   }
 }

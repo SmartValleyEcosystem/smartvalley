@@ -59,8 +59,8 @@ export class RegisterConfirmComponent implements OnInit {
       localStorage.setItem(this.secondsKey, this.seconds.toString());
     } catch (e) {
       this.notificationService.error(
-        this.translateService.instant('ConfirmEmailModal.ErrorTitle'),
-        this.translateService.instant('ConfirmEmailModal.ErrorBody'));
+        this.translateService.instant('ConfirmEmail.Error'),
+        this.translateService.instant('ConfirmEmail.Failed'));
     }
   }
 

@@ -1,129 +1,195 @@
 <html>
 <head>
     <style type="text/css">
-        body {
+        .body {
             padding-top: 0 !important;
             padding-bottom: 0 !important;
             padding-top: 0 !important;
             padding-bottom: 0 !important;
             margin: 0 !important;
-            width: 100% !important;
             -webkit-text-size-adjust: 100% !important;
             -ms-text-size-adjust: 100% !important;
             -webkit-font-smoothing: antialiased !important;
-        }
-
-        h1, h2, h3 {
-            color: white;
-            margin: 0;
+            width: 1000px;
+            max-width: 1000px;
+            background-color: #222034;
+            padding: 180px 200px;
         }
 
         .header {
-            padding-top: 10px;
-            background-color: #CE3A38;
-            height: 130px;
+            margin-bottom: 20px;
+            margin-left: 195px;
+            height: 170px;
+            margin-top: 110px;
+            vertical-align: bottom;
         }
 
-        .center {
-            width: 50%;
-            margin: auto;
+        .logo {
+            width: 160px;
+            height: 51px;
+            vertical-align: bottom;
         }
 
-        .left {
-            float: left;
-            height: inherit;
-            width: 40%;
-        }
-
-        .container {
-            min-width: 500px;
-            width: 500px;
-            margin: auto;
-        }
-
-        .right {
-            padding-top: 10px;
-            padding-right: 20px;
-        }
-
-        .body {
-            padding-left: 20px;
-            padding-right: 20px;
-            margin: 40px 0px 50px 0px;
-            background-color: white;
-            color: #444444;
-        }
-
-        .subject {
-            color: #535E69;
-            font-size: 25px;
-            font-weight: bold;
-        }
-
-        .button {
-            font-size: 21px;
-            display: block;
-            text-decoration: none;
-            background-color: #CE3A38;
-            text-align: center;
-            color: white;
-            padding: 10px 0px 10px 0px;
-        }
-
-        .footer {
-            vertical-align: middle;
+        .header-title {
+            width: 336px;
+            height: 24px;
+            font-family: Roboto;
             font-size: 20px;
-            line-height: 80px;
+            font-weight: bold;
+            line-height: 1.2;
+            text-align: left;
+            color: #ffffff;
+            margin-left: 32px;
+            margin: 0px 0px 6px 32px;
+        }
+
+        .message-card {
+            background-color: #ffffff;
+            border-spacing: 0;
+            width: 600px;
+        }
+
+        .message-content {
+            margin-left: 60px;
+            width: 480px;
+            display: block;
+        }
+
+        .message-title {
+            width: 50px;
+            height: 35px;
+            font-family: Roboto-Regular;
+            font-size: 30px;
+            font-weight: bold;
+            line-height: 1.17;
+            text-align: left;
+            color: #000000;
+            margin: 0;
+            padding-top: 40px;
+        }
+
+        .message-text {
+            width: 50px;
+            height: 20px;
+            font-family: Roboto-Regular;
+            font-size: 14px;
+            line-height: 1.43;
+            letter-spacing: 0px;
+            text-align: left;
+            color: #000000;
+            padding-top: 23px;
+        }
+
+        .message-link {
+            width: 50px;
+            font-family: Roboto-Regular;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 1.43;
+            letter-spacing: 0px;
+            text-align: left;
+            padding-top: 40px;
+        }
+
+            .message-link a {
+                color: #5d49f2;
+                text-decoration: none;
+                word-wrap: break-word;
+            }
+
+        .message-button {
+            border-radius: 18px !important;
+            background-color: #5d49f2;
+            border: solid 1px #5d49f2;
+            font-size: 14px;
+            font-family: Roboto-Regular;
             text-align: center;
-            color: white;
-            background-color: #535E69;
+            cursor: pointer;
+            outline: none;
+            padding-top: 18px;
+            padding-bottom: 18px;
+            width: 480px;
+            display: block;
         }
 
-        p {
-            color: white;
-            margin: 0px;
-        }
+            .message-button a {
+                color: #ffffff !important;
+                text-decoration: none;
+            }
 
-        .content {
-            padding-top: 30px;
-            padding-bottom: 40px;
-        }
-
-        #mainsubj {
-            padding-bottom: 10px;
-        }
-
-        #icolablink {
-            text-decoration: none;
-            color: white;
+        .description {
+            width: 447px;
+            height: 40px;
+            font-family: Arial;
+            font-size: 12px;
+            line-height: 1.67;
+            letter-spacing: 0.2px;
+            text-align: left;
+            color: #ffffff;
+            height: 223px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="left">
-                <img src="https://my.icolab.fund/assets/images/logo.png">
-            </div>
-
-            <div class="right">
-                <h2 id="mainsubj">Invest in the ICO projects before they ICO</h2>
-            </div>
-        </div>
-        <div class="body">
-            <div class="subject">
-                {SUBJECT}
-            </div>
-            <div class="content">
-                {BODY}
-            </div>
-            <div class="center">
-                <a class="button" href="{BUTTONHREF}">{BUTTON}</a>
-            </div>
-        </div>
-        <div class="footer">
-            <a id="icolablink" href="http://icolab.fund">icolab.fund</a>
-        </div>
-    </div>
+    <table style="border-spacing: 0;" class="body">
+        <tbody style="width: 50px; display: block;">
+            <tr class="header">
+                <td style="padding-left: 0; padding-bottom: 0;">
+                    <table style="border-spacing: 0;">
+                        <tbody>
+                            <tr style="padding: 0;">
+                                <td style="padding: 0"><img class="logo" src="https://smartvalleymvp-staging.azurewebsites.net/assets/img/logo.png"></td>
+                                <td><h2 class="header-title">The place where innovations are born</h2></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="display: block; padding-top: 20px;">
+                    <table class="message-card">
+                        <tbody>
+                            <tr>
+                                <td style="padding: 0;">
+                                    <table class="message-content" style="border-spacing: 0;">
+                                        <tbody>
+                                            <tr>
+                                                <td class="message-title">{SUBJECT}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="message-text">{BODY}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-top: 40px; padding-bottom: 40px;">
+                                                    <table style="border-spacing: 0;">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="message-button">
+                                                                    <a href="{BUTTONHREF}">
+                                                                        Start work
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr class="description">
+                <td style="vertical-align: top; padding-top: 20px;">
+                    You've got this letter because you had registered on the Smart Valley site.
+                    <br />
+                    If you haven't done it, just ignore this letter.
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>

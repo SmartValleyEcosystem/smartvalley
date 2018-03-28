@@ -197,11 +197,19 @@ export class AuthenticationService {
       await this.userContext.saveSignatureForAccount(account, signature);
       await this.router.navigate([Paths.ConfirmRegister]);
     } catch (e) {
-      if (e.error.errorCode === ErrorCode.EmailSendingFailed) {
-        this.notificationsService.error(
-          this.translateService.instant('Common.EmailSendingErrorTitle'),
-          this.translateService.instant('Common.TryAgain')
-        );
+      switch (e.error.errorCode) {
+        case ErrorCode.EmailSendingFailed:
+          this.notificationsService.error(
+            this.translateService.instant('Common.EmailSendingErrorTitle'),
+            this.translateService.instant('Common.TryAgain')
+          );
+          break;
+        case ErrorCode.EmailAlreadyExists:
+          this.notificationsService.error(
+            this.translateService.instant('Common.EmailAlreadyExistErrorTitle'),
+            this.translateService.instant('Common.EnterAnotherEmail')
+          );
+          break;
       }
     }
   }

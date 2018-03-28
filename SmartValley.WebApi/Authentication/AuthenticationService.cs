@@ -110,10 +110,12 @@ namespace SmartValley.WebApi.Authentication
             return (_clock.UtcNow - issueDate).TotalMinutes >= AuthenticationOptions.LifetimeInMinutes;
         }
 
-        public async Task ConfirmEmailAsync(Address address, string token)
+        public async Task ConfirmEmailAsync(string token)
         {
+            var tokenValues = _mailTokenService.DecryptToken(token).Split(' ');
+            string address = tokenValues[0];
+            string email = tokenValues[1];
             var user = await _userRepository.GetByAddressAsync(address);
-            string email = _mailTokenService.DecryptToken(token).Split(' ')[1];
             if (user == null || !_mailTokenService.CheckEmailConfirmationToken(address, email, token))
                 throw new AppErrorException(ErrorCode.IncorrectData);
 

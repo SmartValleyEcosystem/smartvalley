@@ -25,11 +25,9 @@ export class ConfirmEmailComponent implements OnInit {
   }
 
   public async ngOnInit() {
-    const address = this.activatedRoute.snapshot.params.address;
     const token = this.activatedRoute.snapshot.params.token;
     try {
       await this.authenticationApiClient.confirmEmailAsync(<ConfirmEmailRequest>{
-        address: address,
         token: token
       });
       this.notificationService.success(

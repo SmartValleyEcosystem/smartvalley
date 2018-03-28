@@ -14,7 +14,7 @@ namespace SmartValley.WebApi.Authentication
 
         bool ShouldRefreshToken(string token);
 
-        Task ConfirmEmailAsync(Address address, string token);
+        Task ConfirmEmailAsync(string token);
 
         Task ResendEmailAsync(Address address);
 

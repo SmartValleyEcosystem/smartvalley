@@ -9,7 +9,7 @@
             _root = root;
         }
 
-        public string GetConfirmEmail(string address, string token) =>
-            $"{_root}/auth/confirm/{address}/{token}";
+        public string GetConfirmEmail(string token) =>
+            $"{_root}/auth/confirm/{token}";
     }
 }

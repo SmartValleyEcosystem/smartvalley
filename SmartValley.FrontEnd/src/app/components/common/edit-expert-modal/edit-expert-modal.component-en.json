@@ -10,9 +10,10 @@
     "SaveBackend": "Save changes in backend",
     "SaveBlockchain": "Save changes in backend and blockchain",
     "AvailableForWork": "Available for work",
-    "Category1": "HR",
-    "Category2": "Analyst",
-    "Category3": "TechnicalExpert",
-    "Category4": "Lawyer"
+    "Area1": "HR",
+    "Area2": "Analyst",
+    "Area3": "TechnicalExpert",
+    "Area4": "Lawyer",
+    "Area5": "Marketer"
   }
 }
