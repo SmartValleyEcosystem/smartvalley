@@ -1,10 +1,9 @@
-import {TeamMemberRequest} from '../application/team-member-request';
-import {SocialMediaRequest} from '../application/social-media-request';
+import {TeamMemberRequest} from "./team-member-request";
 
 export interface CreateProjectRequest {
   name: string;
   category: number;
-  stageId: number;
+  stage: number;
   externalId: string;
   description: string;
   contactEmail: string;
@@ -12,6 +11,13 @@ export interface CreateProjectRequest {
   countryCode: string;
   website: string;
   icoDate: Date;
+  facebook: string;
+  bitcointalk: string;
+  medium: string;
+  reddit: string;
+  telegram: string;
+  twitter: string;
+  github: string;
+  linkedin: string;
   teamMembers: Array<TeamMemberRequest>;
-  socialMedias: Array<SocialMediaRequest>;
 }

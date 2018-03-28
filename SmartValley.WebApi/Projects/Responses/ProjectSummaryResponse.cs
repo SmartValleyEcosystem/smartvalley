@@ -39,13 +39,13 @@ namespace SmartValley.WebApi.Projects.Responses
                        Name = project.Name,
                        ImageUrl = project.ImageUrl,
                        CountryCode = project.Country.Code,
-                       StageId = (int) project.StageId,
+                       StageId = (int) project.Stage,
                        IcoDate = project.IcoDate,
                        Website = project.Website,
                        WhitePaperLink = project.WhitePaperLink,
-                       Facebook = project.SocialNetworks.Facebook,
-                       Telegram = project.SocialNetworks.Telegram,
-                       Twitter = project.SocialNetworks.Twitter,
+                       Facebook = project.Facebook,
+                       Telegram = project.Telegram,
+                       Twitter = project.Twitter,
                        ScoringStatus = scoring == null
                                            ? ScoringStatus.Pending
                                            : (scoring.Score.HasValue ? ScoringStatus.Finished : ScoringStatus.InProgress),

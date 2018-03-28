@@ -9,7 +9,7 @@
        placeholder="{{ 'ProjectList.ProjectCategory' | translate}}" type="text" class="input project-category-input" id="category-filter">
 <ul (mouseenter) ="CategoryListHoverStatusSwitch(true) "  (mouseleave) ="CategoryListHoverStatusSwitch(false); hideCategoryList();"
     class="category-list" [class.hidden]="isAutocompleteHidden">
-  <li *ngFor="let category of categories" (click)="selectCategory(category)" class="category-item">
-    <p class="category-name">{{ category.name| translate }}</p>
+  <li *ngFor="let category of categories" (click)="selectCategory(category.id)" class="category-item">
+    <p class="category-name">{{ category.value| translate }}</p>
   </li>
 </ul>

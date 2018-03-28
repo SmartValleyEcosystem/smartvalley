@@ -1,0 +1,139 @@
+<div class="content">
+  <form (ngSubmit)="submitAsync()" novalidate [formGroup]="applicationForm" autocomplete="off">
+    <h1 class="title">{{ 'CreateProject.Title' | translate }}</h1>
+    <p class="description">{{ 'CreateProject.PageDescription' | translate }}</p>
+    <h2 class="settings-title">{{ 'CreateProject.CommonInformation' | translate }}</h2>
+    <div class="settings-block">
+      <div #name class="control-row">
+        <p class="control-label">
+          <label for="project-name">{{ 'CreateProject.Name' | translate }}</label>
+        </p>
+        <input class="input wide-input" id="project-name" formControlName="name"
+               placeholder="{{ 'CreateProject.NamePlaceholder' | translate }}">
+      </div>
+      <div #area class="control-row">
+        <p class="control-label">
+          <label for="category">{{ 'CreateProject.Category' | translate }}</label>
+        </p>
+        <app-select class="select-component input-component" [form]="applicationForm"
+                    [elementName]="'category'" [elementId]="'category'" [items]="categories"
+                    [placeholder]="'CreateProject.AllAreas' | translate"></app-select>
+      </div>
+      <div #stage class="control-row">
+        <p class="control-label">
+          <label for="stage">{{ 'CreateProject.Stage' | translate }}</label>
+        </p>
+        <app-select class="input-component" [elementName]="'stage'" [form]="applicationForm"
+                    [elementId]="'stage'" [items]="stages"
+                    [placeholder]="'CreateProject.AllStages' | translate"></app-select>
+      </div>
+      <div #country class="control-row">
+        <p class="control-label">
+          <label for="country">{{ 'CreateProject.Country' | translate }}</label>
+        </p>
+        <app-autocomplete class="input-component" [isNeedToTranslate]="true" [form]="applicationForm"
+                          [elementClass]="'wide-autocomplete'" [elementId]="'country'" [elementName]="'country'"
+                          [placeholder]="'CreateProject.AllCountries' | translate"
+                          [allItems]="countries"></app-autocomplete>
+      </div>
+      <div #description class="control-row">
+        <p class="control-label">
+          <label for="description">{{ 'CreateProject.Description' | translate }}</label>
+        </p>
+        <textarea class="input wide-input" id="description" type="text" formControlName="description"
+                  placeholder="{{ 'CreateProject.DescriptionPlaceholder' | translate }}"></textarea>
+      </div>
+      <div class="control-row">
+        <p class="control-label">
+          <label for="website">{{ 'CreateProject.Website' | translate }}</label>
+        </p>
+        <input class="input" id="website" formControlName="website"
+               placeholder="{{ 'CreateProject.WWW' | translate }}">
+      </div>
+      <div class="control-row">
+        <p class="control-label">
+          <label for="white-paper-link">{{ 'CreateProject.WhitePaperLink' | translate }}</label>
+        </p>
+        <input class="input" id="white-paper-link" formControlName="whitePaperLink"
+               placeholder="{{ 'CreateProject.Http' | translate }}">
+      </div>
+      <div class="control-row">
+        <p class="control-label">
+          <label for="ico-date">{{ 'CreateProject.IcoDate' | translate }}</label>
+        </p>
+        <p-calendar [inputId]="'ico-date'" formControlName="icoDate"
+                    [inputStyleClass]="'input input-date'"></p-calendar>
+      </div>
+      <div class="control-row">
+        <p class="control-label">
+          <label for="email">{{ 'CreateProject.ContactEmail' | translate }}</label>
+        </p>
+        <input class="input" id="email" type="text" formControlName="contactEmail">
+        <p class="input-attention">{{ 'CreateProject.ContactEmailLabel' | translate }}</p>
+      </div>
+    </div>
+    <h2 class="settings-title">{{ 'CreateProject.SocialMedia' | translate }}</h2>
+    <div class="settings-block socials">
+      <div class="socials__labels-wrapper">
+        <p class="control-label">
+          <label for="email">{{ 'CreateProject.Network' | translate }}</label>
+        </p>
+        <p class="control-label socials__link-label">
+          <label for="email">{{ 'CreateProject.Link' | translate }}</label>
+        </p>
+      </div>
+      <div *ngFor="let social of activeSocials; first as isFirst" class="socials__row" [formGroup]="socialFormGroup">
+        <app-select class="input-component" [form]="socialFormGroup" [elementName]="'social__' + social"
+                    [elementId]="'social__'+ social" [items]="socials"
+                    [placeholder]="'CreateProject.SocialMedia' | translate"></app-select>
+        <input [formControlName]="'social-link__' + social" class="input socials__input"
+               placeholder="{{ 'CreateProject.Http' | translate }}">
+        <span (click)="removeSocialMedia(social)" class="socials__remove" *ngIf="!isFirst"></span>
+      </div>
+      <span class="socials__add-button" (click)="addSocialMedia()">{{ 'CreateProject.AddMore' | translate }}</span>
+    </div>
+    <h2 class="settings-title">{{ 'CreateProject.Team' | translate }}</h2>
+    <div class="settings-block settings-block_last" [formGroup]="membersGroup">
+      <div *ngFor="let member of membersAmount; first as isFirst" class="member-wrapper">
+        <h3 class="member-name">{{ 'CreateProject.Member' | translate }} {{ member }} <span (click)="removeTeamMember(member)" class="member__remove" *ngIf="!isFirst"></span></h3>
+        <div class="control-row">
+          <p class="control-label">
+            <label for="full-name">{{ 'CreateProject.FullName' | translate }}</label>
+          </p>
+          <input class="input" id="full-name" [formControlName]="'full-name__'+ member">
+        </div>
+        <div class="control-row">
+          <p class="control-label">
+            <label for="role">{{ 'CreateProject.Role' | translate }}</label>
+          </p>
+          <input class="input" id="role" [formControlName]="'role__' + member"
+                 placeholder="{{ 'CreateProject.RolePlaceholder' | translate }}">
+        </div>
+        <div class="control-row">
+          <p class="control-label">
+            <label for="linkedin">{{ 'CreateProject.LinkedinLink' | translate }}</label>
+          </p>
+          <input class="input" id="linkedin" [formControlName]="'linkedin__'+ member"
+                 placeholder="{{ 'CreateProject.Http' | translate }}">
+        </div>
+        <div class="control-row">
+          <p class="control-label">
+            <label for="facebook">{{ 'CreateProject.FacebookLink' | translate }}</label>
+          </p>
+          <input class="input" id="facebook" [formControlName]="'facebook__' + member"
+                 placeholder="{{ 'CreateProject.FacebookLink' | translate }}">
+        </div>
+        <div class="control-row">
+          <p class="control-label">
+            <label for="success-stories">{{ 'CreateProject.ExperienceAndAchievements' | translate }}</label>
+          </p>
+          <textarea class="input wide-input" id="success-stories" type="text"
+                    [formControlName]="'description__' + member"
+                    placeholder="{{ 'CreateProject.SuccessStories' | translate }}"></textarea>
+        </div>
+      </div>
+      <span class="socials__add-button" (click)="addTeamMember()">{{ 'CreateProject.AddTeamMember' | translate }}</span>
+    </div>
+    <input type="submit" class="main-btn save-btn" value="{{ 'CreateProject.Save' | translate }}">
+  </form>
+</div>

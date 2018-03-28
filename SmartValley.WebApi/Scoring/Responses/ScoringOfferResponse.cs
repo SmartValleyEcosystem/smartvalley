@@ -18,7 +18,7 @@ namespace SmartValley.WebApi.Scoring.Responses
 
         public string Country { get; set; }
 
-        public string ProjectArea { get; set; }
+        public Category Category { get; set; }
 
         public string Description { get; set; }
 
@@ -35,7 +35,7 @@ namespace SmartValley.WebApi.Scoring.Responses
             return new ScoringOfferResponse
                    {
                        ScoringContractAddress = scoringOffer.ScoringContractAddress,
-                       ProjectArea = scoringOffer.ProjectArea,
+                       Category = scoringOffer.Category,
                        Name = scoringOffer.Name,
                        Description = scoringOffer.Description,
                        AreaId = (long) scoringOffer.AreaType,

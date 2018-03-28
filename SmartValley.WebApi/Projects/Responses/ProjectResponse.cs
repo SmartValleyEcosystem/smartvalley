@@ -28,7 +28,7 @@ namespace SmartValley.WebApi.Projects.Responses
                        Id = projectDetails.Project.Id,
                        Name = projectDetails.Project.Name,
                        Country = projectDetails.Country.Code,
-                       CategoryId = (int) projectDetails.Project.CategoryId,
+                       CategoryId = (int) projectDetails.Project.Category,
                        Description = projectDetails.Project.Description,
                        Address = projectDetails.Scoring?.ContractAddress,
                        Score = projectDetails.Scoring?.Score,

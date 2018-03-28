@@ -31,7 +31,7 @@
     <div *ngFor="let member of getMembersCollection(projectDetails);">
       <div class="row">
         <span class="col-1 offset-1">{{EnumTeamMemberType[member.memberType]}}:</span>
-        <span class="col-3" style="margin-left: 2em;">{{member.fullName | dashIfEmpty}}</span>
+        <span class="col-3" style="margin-left: 2em;">{{member.id | dashIfEmpty}}</span>
         <span class="col-2 offset-1 social-group">
         <a *ngIf="member.facebookLink" href="{{member.facebookLink}}" target="_blank" style="margin-right: 1em;">
           <i class="fa fa-facebook" aria-hidden="true"></i>

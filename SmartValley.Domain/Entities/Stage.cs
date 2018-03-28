@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SmartValley.Domain.Entities
+﻿namespace SmartValley.Domain.Entities
 {
-    public class Stage
+    public enum Stage
     {
-        public StageType Id { get; set; }
-
-        public string Name { get; set; }
+        PreSale = 0,
+        Stage = 1
     }
 }

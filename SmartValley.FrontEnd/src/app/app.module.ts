@@ -9,12 +9,10 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from './app-routing.module';
 import {Web3Service} from './services/web3-service';
 import {AuthenticationService} from './services/authentication/authentication-service';
-import {ApplicationApiClient} from './api/application/application-api.client';
 import {HeaderComponent} from './components/header/header.component';
 import {MaterialModule} from './shared/material.module';
 import {BalanceApiClient} from './api/balance/balance-api-client';
 import {ExpertApiClient} from './api/expert/expert-api-client';
-import {ApplicationComponent} from './components/application/application.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ScoringManagerContractClient} from './services/contract-clients/scoring-manager-contract-client';
 import {CheckboxModule} from 'primeng/checkbox';
@@ -37,8 +35,8 @@ import {EstimatesApiClient} from './api/estimates/estimates-api-client';
 import {VotingApiClient} from './api/voting/voting-api-client';
 import {UserApiClient} from './api/user/user-api-client';
 import {CriteriaComponent} from './components/report/criteria/criteria.component';
-import {CommonService} from './services/common/common.service';
 import {ScoreColorsService} from './services/project/score-colors.service';
+import {DictionariesService} from './services/common/dictionaries.service';
 import {NgProgressInterceptor, NgProgressModule} from 'ngx-progressbar';
 import {TransactionAwaitingModalComponent} from './components/common/transaction-awaiting-modal/transaction-awaiting-modal.component';
 import {BlockiesService} from './services/blockies-service';
@@ -65,7 +63,6 @@ import {CompositeGuard} from './services/guards/composite.guard';
 import {GuardFactory} from './services/guards/guard-factory';
 import {DashIfEmptyPipe} from './utils/dash-if-empty.pipe';
 import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-authenticated.guard';
-import {MyProjectsComponent} from './components/my-projects/my-projects.component';
 import {VotingService} from './services/voting/voting-service';
 import {VotingComponent} from './components/voting/voting.component';
 import {VotingCardComponent} from './components/voting-card/voting-card.component';
@@ -124,6 +121,7 @@ import {ScoringCostComponent} from './components/common/scoring-cost-modal/scori
 import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
 import {RegisterConfirmComponent} from './components/authentication/register-confirm/register-confirm.component';
 import {RegisterComponent} from './components/authentication/register/register.component';
+import {CreateProjectComponent} from './components/project/create-project/create-project.component';
 import {WelcomeModalComponent} from './components/common/welcome-modal/welcome-modal.component';
 
 @NgModule({
@@ -134,7 +132,7 @@ import {WelcomeModalComponent} from './components/common/welcome-modal/welcome-m
     MetamaskHowtoComponent,
     LandingComponent,
     HeaderComponent,
-    ApplicationComponent,
+    CreateProjectComponent,
     ScoringComponent,
     FooterComponent,
     EstimateComponent,
@@ -152,7 +150,6 @@ import {WelcomeModalComponent} from './components/common/welcome-modal/welcome-m
     ProjectInformationComponent,
     AccountComponent,
     DashIfEmptyPipe,
-    MyProjectsComponent,
     VotingCardComponent,
     FreeScoringConfirmationModalComponent,
     VoteModalComponent,
@@ -254,9 +251,8 @@ import {WelcomeModalComponent} from './components/common/welcome-modal/welcome-m
       useClass: NgProgressInterceptor,
       multi: true
     },
-    CommonService,
+    DictionariesService,
     BalanceApiClient,
-    ApplicationApiClient,
     ContractApiClient,
     AdminContractClient,
     ProjectApiClient,

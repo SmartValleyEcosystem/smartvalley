@@ -4,6 +4,6 @@ namespace SmartValley.WebApi.Applications.Responses
 {
     public class CategoryResponse
     {
-        public CategoryType Id { get; set; }
+        public Category Id { get; set; }
     }
 }

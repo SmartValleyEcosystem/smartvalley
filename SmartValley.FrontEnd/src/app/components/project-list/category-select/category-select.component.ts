@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Category} from '../../../services/common/category';
 import {TranslateService} from '@ngx-translate/core';
-import {CommonService} from '../../../services/common/common.service';
+import {DictionariesService} from '../../../services/common/dictionaries.service';
+import {CategoryEnum} from '../../../services/common/category.enum';
 
 
 @Component({
@@ -17,19 +17,18 @@ export class CategorySelectComponent implements OnInit {
   public squareInput = false;
   public selectedCategory: string;
   public selectedCategoryId: number;
-  public categories: Category[];
+  public categories: EnumItem<CategoryEnum>[];
 
-  constructor(
-    private commonService: CommonService,
-    private translateService: TranslateService
-  ) { }
+  constructor(private dictionariesService: DictionariesService,
+              private translateService: TranslateService) {
+  }
 
   public async ngOnInit() {
     this.isCategoryListHovered = false;
     this.isSearchInputInFocus = false;
     this.selectedCategory = '';
     this.hideCategoryList();
-    this.categories = this.commonService.categories;
+    this.categories = this.dictionariesService.categories;
   }
 
   public showCategoryList() {

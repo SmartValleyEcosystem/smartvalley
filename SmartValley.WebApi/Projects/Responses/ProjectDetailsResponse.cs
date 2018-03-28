@@ -61,7 +61,7 @@ namespace SmartValley.WebApi.Projects.Responses
                        ExternalId = details.Project.ExternalId.ToString(),
                        Description = details.Project.Description,
                        Country = details.Country.Code,
-                       CategoryId = (int) details.Project.CategoryId,
+                       CategoryId = (int) details.Project.Category,
                        Score = details.Scoring?.Score,
                        ScoringContractAddress = details.Scoring?.ContractAddress,
                        AttractedInvestments = details.Application?.InvestmentsAreAttracted ?? false,

@@ -94,7 +94,6 @@ namespace SmartValley.Data.SQL.Repositories
                    join scoring in _readContext.Scorings on scoringOffer.ScoringId equals scoring.Id
                    join project in _readContext.Projects on scoring.ProjectId equals project.Id
                    join user in _readContext.Users on scoringOffer.ExpertId equals user.Id
-                   join category in _readContext.Categories on project.CategoryId equals category.Id
                    join country in _readContext.Countries on project.CountryId equals country.Id
                    where user.Id == expertId
                    select new ScoringOfferDetails(
@@ -106,7 +105,7 @@ namespace SmartValley.Data.SQL.Repositories
                        user.Id,
                        project.Name,
                        country.Code,
-                       category.Name,
+                       project.Category,
                        project.Description,
                        scoringOffer.AreaId,
                        project.ExternalId,

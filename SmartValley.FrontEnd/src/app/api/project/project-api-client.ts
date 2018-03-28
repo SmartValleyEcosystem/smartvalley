@@ -5,7 +5,7 @@ import {ProjectResponse} from './project-response';
 import {CollectionResponse} from '../collection-response';
 import {ProjectDetailsResponse} from './project-details-response';
 import {GetScoringProjectsRequest} from './get-scoring-projects-request';
-import {MyProjectsItemResponse} from './my-projects-item-response';
+import {MyProjectResponse} from './my-project-response';
 import {AreaType} from '../scoring/area-type.enum';
 import {ScoringProjectResponse} from './scoring-project-response';
 import {ScoredProject} from '../expert/scored-project';
@@ -13,6 +13,7 @@ import {SearchProjectResponse} from './search-projects-response';
 import {CreateProjectRequest} from './create-project-request';
 import {ProjectQuery} from './project-query';
 import {isNullOrUndefined} from 'util';
+import {UpdateProjectRequest} from './update-project-request';
 
 @Injectable()
 export class ProjectApiClient extends BaseApiClient {
@@ -22,6 +23,10 @@ export class ProjectApiClient extends BaseApiClient {
 
   public async createAsync(request: CreateProjectRequest): Promise<void> {
     await this.http.post(this.baseApiUrl + '/projects', request).toPromise();
+  }
+
+  public async updateAsync(request: UpdateProjectRequest): Promise<void> {
+    await this.http.put(`${this.baseApiUrl}/projects/${request.id}/`, request).toPromise();
   }
 
   async getDetailsByIdAsync(id: number): Promise<ProjectDetailsResponse> {
@@ -44,9 +49,9 @@ export class ProjectApiClient extends BaseApiClient {
       .toPromise();
   }
 
-  public async getMyProjectsAsync(): Promise<CollectionResponse<MyProjectsItemResponse>> {
+  public async getMyProjectAsync(): Promise<MyProjectResponse> {
     return this.http
-      .get<CollectionResponse<MyProjectsItemResponse>>(this.baseApiUrl + '/projects/my')
+      .get<MyProjectResponse>(this.baseApiUrl + '/projects/my')
       .toPromise();
   }
 

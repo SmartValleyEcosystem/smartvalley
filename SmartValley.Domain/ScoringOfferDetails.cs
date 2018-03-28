@@ -22,7 +22,7 @@ namespace SmartValley.Domain
 
         public string CountryCode { get; }
 
-        public string ProjectArea { get; }
+        public Category Category { get; }
 
         public string Description { get; }
 
@@ -41,7 +41,7 @@ namespace SmartValley.Domain
             long expertId, 
             string name, 
             string countryCode, 
-            string projectArea, 
+            Category category, 
             string description, 
             AreaType areaType, 
             Guid projectExternalId,
@@ -55,7 +55,7 @@ namespace SmartValley.Domain
             ExpertId = expertId;
             Name = name;
             CountryCode = countryCode;
-            ProjectArea = projectArea;
+            Category = category;
             Description = description;
             AreaType = areaType;
             ProjectExternalId = projectExternalId;

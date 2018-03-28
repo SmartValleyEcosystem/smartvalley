@@ -8,9 +8,9 @@ namespace SmartValley.Domain
                              int count,
                              bool onlyScored,
                              string searchString,
-                             StageType? stageType,
+                             Stage? stage,
                              string countryCode,
-                             CategoryType? categoryType,
+                             Category? category,
                              int? minimumScore,
                              int? maximumScore,
                              ProjectsOrderBy? orderBy,
@@ -19,9 +19,9 @@ namespace SmartValley.Domain
             Offset = offset;
             Count = count;
             SearchString = searchString;
-            StageType = stageType;
+            Stage = stage;
             CountryCode = countryCode;
-            CategoryType = categoryType;
+            Category = category;
             MinimumScore = minimumScore;
             MaximumScore = maximumScore;
             OrderBy = orderBy;
@@ -37,11 +37,11 @@ namespace SmartValley.Domain
 
         public string SearchString { get; }
 
-        public StageType? StageType { get; }
+        public Stage? Stage { get; }
 
         public string CountryCode { get; }
 
-        public CategoryType? CategoryType { get; }
+        public Category? Category { get; }
 
         public int? MinimumScore { get; }
 

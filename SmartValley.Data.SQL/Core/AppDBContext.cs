@@ -56,19 +56,11 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<Country> IReadOnlyDataContext.Countries => Countries.AsNoTracking();
 
-        IQueryable<Category> IReadOnlyDataContext.Categories => Categories.AsNoTracking();
-
-        IQueryable<Stage> IReadOnlyDataContext.Stages => Stages.AsNoTracking();
-
         IQueryable<ScoringApplicationQuestion> IReadOnlyDataContext.ScoringApplicationQuestions => ScoringApplicationQuestions.AsNoTracking();
 
         IQueryable<ScoringApplication> IReadOnlyDataContext.ScoringApplications => ScoringApplications.AsNoTracking();
 
-        public DbSet<Stage> Stages { get; set; }
-
         public DbSet<ProjectTeamMember> ProjectTeamMembers { get; set; }
-
-        public DbSet<Category> Categories { get; set; }
 
         public DbSet<Country> Countries { get; set; }
 
@@ -162,9 +154,6 @@ namespace SmartValley.Data.SQL.Core
             modelBuilder.Entity<Project>()
                         .HasIndex(p => new {p.Name});
 
-            modelBuilder.Entity<Project>()
-                        .OwnsOne(p => p.SocialNetworks);
-
             modelBuilder.Entity<User>()
                         .HasMany(c => c.Projects)
                         .WithOne(e => e.Author)
@@ -250,16 +239,8 @@ namespace SmartValley.Data.SQL.Core
                         .WithOne(r => r.User)
                         .HasForeignKey<Expert>(u => u.UserId);
 
-            modelBuilder.Entity<Stage>()
-                        .HasIndex(u => u.Name)
-                        .IsUnique();
-
             modelBuilder.Entity<Country>()
                         .HasIndex(u => u.Code)
-                        .IsUnique();
-
-            modelBuilder.Entity<Category>()
-                        .HasIndex(u => u.Name)
                         .IsUnique();
 
             modelBuilder.Entity<AreaScoring>()
@@ -322,12 +303,6 @@ namespace SmartValley.Data.SQL.Core
             modelBuilder.Entity<ScoringApplicationQuestion>()
                         .Property(x => x.GroupOrder)
                         .IsRequired();
-
-            modelBuilder.Entity<ProjectTeamMember>()
-                        .OwnsOne(p => p.SocialNetworks);
-
-            modelBuilder.Entity<ApplicationTeamMember>()
-                        .OwnsOne(p => p.SocialNetworks);
         }
     }
 }

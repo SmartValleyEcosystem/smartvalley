@@ -9,9 +9,5 @@ namespace SmartValley.Domain.Interfaces
         Task<int> AddAsync(Application application);
 
         Task<Application> GetByProjectIdAsync(long projectId);
-
-        Task<IReadOnlyCollection<Category>> GetCategoriesAsync();
-
-        Task<IReadOnlyCollection<Stage>> GetStagesAsync();
     }
 }

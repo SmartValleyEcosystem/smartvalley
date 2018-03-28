@@ -32,12 +32,5 @@ namespace SmartValley.Data.SQL.Repositories
             EditContext.Entity(projectTeamMember).Property(p => p.PhotoUrl).IsModified = true;
             return EditContext.SaveAsync();
         }
-
-        public Task<int> UpdateAsync(ProjectTeamMember teamMember)
-        {
-            EditContext.ProjectTeamMembers.Attach(teamMember).State = EntityState.Modified;
-            EditContext.Entity(teamMember.SocialNetworks).State = EntityState.Modified;
-            return EditContext.SaveAsync();
-        }
     }
 }

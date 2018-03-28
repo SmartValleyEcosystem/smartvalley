@@ -52,6 +52,9 @@ namespace SmartValley.WebApi.Projects
             return details;
         }
 
+        public Task<ProjectDetails> GetDetailsByUserIdAsync(long userId)
+            => _projectRepository.GetByAuthorIdAsync(userId);
+
         public Task<IReadOnlyCollection<ProjectTeamMember>> GetTeamAsync(long projectId)
             => _teamMemberRepository.GetByProjectIdAsync(projectId);
 
@@ -61,7 +64,7 @@ namespace SmartValley.WebApi.Projects
         public Task<int> GetQueryTotalCountAsync(ProjectsQuery projectsQuery)
             => _projectRepository.GetQueryTotalCountAsync(projectsQuery);
 
-        public Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorIdAsync(long authorId)
+        public Task<ProjectDetails> GetByAuthorIdAsync(long authorId)
             => _projectRepository.GetByAuthorIdAsync(authorId);
 
         public async Task<bool> IsAuthorizedToEditProjectTeamMemberAsync(long userId, long projectTeamMemberId)
@@ -109,18 +112,25 @@ namespace SmartValley.WebApi.Projects
 
             project.Name = request.Name;
             project.CountryId = country.Id;
-            project.CategoryId = (CategoryType) request.CategoryId;
+            project.Category = (Category) request.CategoryId;
             project.Description = request.Description;
             project.ContactEmail = request.ContactEmail;
             project.IcoDate = request.IcoDate;
             project.Website = request.Website;
             project.WhitePaperLink = request.WhitePaperLink;
-            project.StageId = (StageType) request.StageId;
-            project.SocialNetworks = SocialNetworkRequest.ToDomain(request.SocialNetworks);
+            project.Stage = (Stage) request.StageId;
+            project.Facebook = request.Facebook;
+            project.Reddit = request.Reddit;
+            project.BitcoinTalk = request.BitcoinTalk;
+            project.Telegram = request.Telegram;
+            project.Github = request.Github;
+            project.Medium = request.Medium;
+            project.Twitter = request.Twitter;
+            project.Linkedin = request.Linkedin;
 
             await UpdateTeamMembersAsync(request.TeamMembers.Where(t => t.Id != 0).ToArray(), project.Id);
             await AddTeamMembersAsync(request.TeamMembers.Where(t => t.Id == 0).ToArray(), project.Id);
-            await _projectRepository.UpdateAsync(project);
+            await _projectRepository.UpdateWholeAsync(project);
         }
 
         public async Task DeleteAsync(long projectId)
@@ -150,9 +160,10 @@ namespace SmartValley.WebApi.Projects
                 existingTeamMember.About = requestTeamMember.About;
                 existingTeamMember.FullName = requestTeamMember.FullName;
                 existingTeamMember.Role = requestTeamMember.Role;
-                existingTeamMember.SocialNetworks = SocialNetworkRequest.ToDomain(requestTeamMember.SocialNetworks);
+                existingTeamMember.Facebook = requestTeamMember.Facebook;
+                existingTeamMember.Linkedin = requestTeamMember.Linkedin;
 
-                await _teamMemberRepository.UpdateAsync(existingTeamMember);
+                await _teamMemberRepository.UpdateWholeAsync(existingTeamMember);
             }
         }
 
@@ -181,7 +192,7 @@ namespace SmartValley.WebApi.Projects
                           {
                               Name = request.Name,
                               CountryId = country.Id,
-                              CategoryId = (CategoryType) request.CategoryId,
+                              Category = (Category) request.Category,
                               Description = request.Description,
                               AuthorId = userId,
                               ExternalId = Guid.NewGuid(),
@@ -189,8 +200,15 @@ namespace SmartValley.WebApi.Projects
                               IcoDate = request.IcoDate,
                               Website = request.Website,
                               WhitePaperLink = request.WhitePaperLink,
-                              StageId = (StageType) request.StageId,
-                              SocialNetworks = SocialNetworkRequest.ToDomain(request.SocialNetworks)
+                              Stage = (Stage) request.Stage,
+                              Facebook = request.Facebook,
+                              Reddit = request.Reddit,
+                              BitcoinTalk = request.BitcoinTalk,
+                              Telegram = request.Telegram,
+                              Github = request.Github,
+                              Medium = request.Medium,
+                              Twitter = request.Twitter,
+                              Linkedin = request.Linkedin
                           };
 
             await _projectRepository.AddAsync(project);
@@ -223,7 +241,8 @@ namespace SmartValley.WebApi.Projects
                                                                  FullName = m.FullName,
                                                                  About = m.About,
                                                                  Role = m.Role,
-                                                                 SocialNetworks = SocialNetworkRequest.ToDomain(m.SocialNetworks)
+                                                                 Facebook = m.Facebook,
+                                                                 Linkedin = m.Linkedin
                                                              })
                                                 .ToArray();
 

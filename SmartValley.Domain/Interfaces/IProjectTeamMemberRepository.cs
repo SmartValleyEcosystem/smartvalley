@@ -16,6 +16,6 @@ namespace SmartValley.Domain.Interfaces
 
         Task<int> RemoveAsync(ProjectTeamMember teamMember);
 
-        Task<int> UpdateAsync(ProjectTeamMember teamMember);
+        Task<int> UpdateWholeAsync(ProjectTeamMember existingTeamMember);
     }
 }

@@ -28,8 +28,6 @@ namespace SmartValley.Data.SQL.Core
         IQueryable<ExpertApplication> ExpertApplications { get; }
         IQueryable<ExpertApplicationArea> ExpertApplicationAreas { get; }
         IQueryable<Country> Countries { get; }
-        IQueryable<Category> Categories { get; }
-        IQueryable<Stage> Stages { get; }
         IQueryable<ScoringApplicationQuestion> ScoringApplicationQuestions { get; }
         IQueryable<ScoringApplication> ScoringApplications { get; }
 

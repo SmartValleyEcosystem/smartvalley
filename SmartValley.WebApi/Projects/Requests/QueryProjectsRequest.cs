@@ -20,11 +20,11 @@ namespace SmartValley.WebApi.Projects.Requests
         
         public string SearchString { get; set; }
 
-        public StageType? StageType { get; set; }
+        public Stage? Stage { get; set; }
 
         public string CountryCode { get; set; }
 
-        public CategoryType? CategoryType { get; set; }
+        public Category? Category { get; set; }
 
         public int? MinimumScore { get; set; }
 

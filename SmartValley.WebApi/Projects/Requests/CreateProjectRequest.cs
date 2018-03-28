@@ -11,10 +11,10 @@ namespace SmartValley.WebApi.Projects.Requests
         public string Name { get; set; }
 
         [Required]
-        public int CategoryId { get; set; }
+        public int Category { get; set; }
 
         [Required]
-        public int StageId { get; set; }
+        public int Stage { get; set; }
 
         [Required]
         public string CountryCode { get; set; }
@@ -36,7 +36,29 @@ namespace SmartValley.WebApi.Projects.Requests
 
         public string ExternalId { get; set; }
 
-        public SocialNetworkRequest SocialNetworks { get; set; }
+        [Url, MaxLength(500)]
+        public string Facebook { get; set; }
+
+        [Url, MaxLength(500)]
+        public string Linkedin { get; set; }
+
+        [Url, MaxLength(500)]
+        public string BitcoinTalk { get; set; }
+
+        [Url, MaxLength(500)]
+        public string Medium { get; set; }
+
+        [Url, MaxLength(500)]
+        public string Reddit { get; set; }
+
+        [Url, MaxLength(500)]
+        public string Telegram { get; set; }
+
+        [Url, MaxLength(500)]
+        public string Twitter { get; set; }
+
+        [Url, MaxLength(500)]
+        public string Github { get; set; }
 
         public IReadOnlyCollection<ProjectTeamMemberRequest> TeamMembers { get; set; }
     }

@@ -1,8 +1,8 @@
-import {TeamMemberRequest} from './team-member-request';
+import {TeamMemberRequest} from '../project/team-member-request';
 
 export interface SubmitApplicationRequest {
   name: string;
-  projectArea: string;
+  category: string;
   projectId: string;
   description: string;
   projectStatus: string;

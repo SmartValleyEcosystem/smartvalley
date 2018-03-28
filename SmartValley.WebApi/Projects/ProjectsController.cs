@@ -46,7 +46,7 @@ namespace SmartValley.WebApi.Projects
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> PutAsync([FromQuery] long id, [FromBody] UpdateProjectRequest request)
+        public async Task<IActionResult> PutAsync(long id, [FromBody] UpdateProjectRequest request)
         {
             var isAuthorized = await _projectService.IsAuthorizedToEditProjectAsync(id, User.GetUserId());
             if (!isAuthorized)
@@ -146,9 +146,9 @@ namespace SmartValley.WebApi.Projects
                 request.Count,
                 request.OnlyScored,
                 request.SearchString,
-                request.StageType,
+                request.Stage,
                 request.CountryCode,
-                request.CategoryType,
+                request.Category,
                 request.MinimumScore,
                 request.MaximumScore,
                 request.OrderBy,
@@ -173,16 +173,38 @@ namespace SmartValley.WebApi.Projects
         }
 
         [HttpGet]
+        [Authorize]
         [Route("my")]
-        public async Task<CollectionResponse<MyProjectsItemResponse>> GetMyProjectsAsync()
+        public async Task<MyProjectResponse> GetMyProjectAsync()
         {
-            var projectScorings = await _projectService.GetByAuthorIdAsync(User.GetUserId());
+            var project = await _projectService.GetDetailsByUserIdAsync(User.GetUserId());
+            if (project == null)
+                return null;
 
-            var items = new List<MyProjectsItemResponse>();
-            foreach (var projectScoring in projectScorings)
-                items.Add(await CreateMyProjectsItemResponseAsync(projectScoring));
+            project.TeamMembers = await _projectService.GetTeamAsync(project.Project.Id);
 
-            return new CollectionResponse<MyProjectsItemResponse> {Items = items};
+            return new MyProjectResponse
+                   {
+                       Id = project.Project.Id,
+                       Name = project.Project.Name,
+                       Category = (int) project.Project.Category,
+                       Description = project.Project.Description,
+                       Stage = (int) project.Project.Stage,
+                       CountryCode = project.Country.Code,
+                       TeamMembers = project.TeamMembers?.Select(ProjectTeamMemberResponse.Create).ToArray(),
+                       IcoDate = project.Project.IcoDate,
+                       Website = project.Project.Website,
+                       ContactEmail = project.Project.ContactEmail,
+                       WhitePaperLink = project.Project.WhitePaperLink,
+                       Facebook = project.Project.Facebook,
+                       Reddit = project.Project.Reddit,
+                       BitcoinTalk = project.Project.BitcoinTalk,
+                       Telegram = project.Project.Telegram,
+                       Github = project.Project.Github,
+                       Medium = project.Project.Medium,
+                       Twitter = project.Project.Twitter,
+                       Linkedin = project.Project.Linkedin
+                   };
         }
 
         [HttpGet]
@@ -194,18 +216,6 @@ namespace SmartValley.WebApi.Projects
                    {
                        Items = projects.Select(ProjectResponse.Create).ToArray()
                    };
-        }
-
-        private async Task<MyProjectsItemResponse> CreateMyProjectsItemResponseAsync(ProjectDetails projectDetails)
-        {
-            var project = projectDetails.Project;
-            var scoring = projectDetails.Scoring;
-
-            if (scoring != null)
-                return MyProjectsItemResponse.Create(projectDetails);
-
-            var votingDetails = await _votingService.GetVotingProjectDetailsAsync(project.Id);
-            return MyProjectsItemResponse.Create(projectDetails, votingDetails, _clock.UtcNow);
         }
     }
 }

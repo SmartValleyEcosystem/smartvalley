@@ -2,17 +2,21 @@ body {
   font-size: 14px;
   font-family: Roboto-Regular;
 }
+
 .description {
   margin-bottom: 40px;
 }
+
 .settings-block {
   background: #fff;
   padding: 16px 40px 32px;
   margin-bottom: 16px;
 }
+
 .settings-block_last {
   margin-bottom: 0;
 }
+
 .settings-title {
   font-family: Roboto-Bold;
   margin: 0;
@@ -23,32 +27,40 @@ body {
   margin-bottom: 3px;
   color: #a4a2b0;
 }
+
 .control-label {
   margin-bottom: 5px;
   width: auto;
 }
+
 label {
   cursor: pointer;
 }
+
 .wide-input {
   width: 680px;
 }
+
 .control-row {
   margin-bottom: 20px;
 }
+
 .save-btn {
   margin: 60px 0;
   width: 100px;
 }
+
 textarea {
   min-height: 132px;
   padding: 10px;
 }
+
 .input-attention {
   font-size: 12px;
   color: #a4a2b0;
   margin: 5px 0 0;
 }
+
 .socials__add-button {
   font-family: Roboto-Regular;
   font-size: 14px;
@@ -58,20 +70,25 @@ textarea {
   display: inline-block;
   margin-top: 10px;
 }
+
 .socials__row {
   display: flex;
   margin-bottom: 10px;
 }
+
 .socials__input {
   margin-left: 20px;
   width: 480px;
 }
+
 .socials__labels-wrapper {
   display: flex;
 }
+
 .socials__link-label {
   margin-left: 247px;
 }
+
 .member-name {
   font-family: Roboto-Bold;
   font-size: 24px;
@@ -81,7 +98,8 @@ textarea {
   margin-bottom: 16px;
   color: #a4a2b0;
 }
-.socials__remove {
+
+.socials__remove, .member__remove {
   cursor: pointer;
   display: inline-block;
   background-image: url(/assets/img/controls/cross.svg);
@@ -91,4 +109,8 @@ textarea {
   margin-left: 20px;
   position: relative;
   top: 8px;
+}
+
+.member__remove {
+  top: 1px;
 }

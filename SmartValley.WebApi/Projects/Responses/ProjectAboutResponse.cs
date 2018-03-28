@@ -34,14 +34,14 @@ namespace SmartValley.WebApi.Projects.Responses
                    {
                        ProjectId = project.Id,
                        Description = project.Description,
-                       Facebook = project.SocialNetworks.Facebook,
-                       Linkedin = project.SocialNetworks.Linkedin,
-                       BitcoinTalk = project.SocialNetworks.BitcoinTalk,
-                       Medium = project.SocialNetworks.Medium,
-                       Reddit = project.SocialNetworks.Reddit,
-                       Telegram = project.SocialNetworks.Telegram,
-                       Twitter = project.SocialNetworks.Twitter,
-                       Github = project.SocialNetworks.Github,
+                       Facebook = project.Facebook,
+                       Linkedin = project.Linkedin,
+                       BitcoinTalk = project.BitcoinTalk,
+                       Medium = project.Medium,
+                       Reddit = project.Reddit,
+                       Telegram = project.Telegram,
+                       Twitter = project.Twitter,
+                       Github = project.Github,
                        TeamMembers = teamMembers.Select(ProjectTeamMemberResponse.Create).ToList()
                    };
         }

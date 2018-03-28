@@ -175,7 +175,7 @@ export class RegisterExpertComponent implements OnInit {
     input.append('documentNumber', form.number);
     input.append('documentType', form.selectedDocumentType);
     input.append('facebookLink', form.facebook);
-    input.append('linkedInLink', form.linkedin);
+    input.append('linkedInLink', form.linkedIn);
     input.append('firstName', form.firstName);
     input.append('lastName', form.secondName);
     input.append('description', form.description);
@@ -243,7 +243,7 @@ export class RegisterExpertComponent implements OnInit {
       form.number +
       form.selectedDocumentType +
       form.facebook +
-      form.linkedin +
+      form.linkedIn +
       form.firstName +
       form.secondName +
       form.description +

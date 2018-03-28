@@ -16,7 +16,7 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public string Facebook { get; set; }
 
-        public string LinkenIn { get; set; }
+        public string LinkedIn { get; set; }
 
         public static ProjectTeamMemberResponse Create(ProjectTeamMember teamMember)
         {
@@ -27,8 +27,8 @@ namespace SmartValley.WebApi.Projects.Responses
                        About = teamMember.About,
                        PhotoUrl = teamMember.PhotoUrl,
                        Role = teamMember.Role,
-                       Facebook = teamMember.SocialNetworks.Facebook,
-                       LinkenIn = teamMember.SocialNetworks.Linkedin
+                       Facebook = teamMember.Facebook,
+                       LinkedIn = teamMember.Linkedin
                    };
         }
     }

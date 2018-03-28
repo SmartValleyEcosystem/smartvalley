@@ -26,10 +26,10 @@ namespace SmartValley.Data.SQL.Repositories
                             .Join(ReadContext.Applications, p => p.project.Id, a => a.ProjectId, (current, application) => new {current.project, current.scoring, application})
                             .Join(ReadContext.Countries, p => p.project.CountryId, c => c.Id, (current, country) => new {current.project, current.scoring, current.application, country})
                             .Where(o => !query.OnlyScored || o.scoring.Score.HasValue)
-                            .Where(o => !query.StageType.HasValue || o.project.StageId == query.StageType.Value)
+                            .Where(o => !query.Stage.HasValue || o.project.Stage == query.Stage.Value)
                             .Where(o => string.IsNullOrEmpty(query.SearchString) || o.project.Name.ToUpper().Contains(query.SearchString.ToUpper()))
                             .Where(o => string.IsNullOrEmpty(query.CountryCode) || o.country.Code == query.CountryCode.ToUpper())
-                            .Where(o => !query.CategoryType.HasValue || o.project.CategoryId == query.CategoryType.Value)
+                            .Where(o => !query.Category.HasValue || o.project.Category == query.Category.Value)
                             .Where(o => !query.MinimumScore.HasValue || o.scoring.Score >= query.MinimumScore.Value)
                             .Where(o => !query.MaximumScore.HasValue || o.scoring.Score <= query.MaximumScore.Value);
 
@@ -71,21 +71,14 @@ namespace SmartValley.Data.SQL.Repositories
         public Task<int> GetQueryTotalCountAsync(ProjectsQuery projectsQuery)
             => GetQueryable(projectsQuery, false, false).CountAsync();
 
-        public async Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorIdAsync(long authorId)
+        public Task<ProjectDetails> GetByAuthorIdAsync(long authorId)
         {
-            return await (from project in ReadContext.Projects
-                          from scoring in ReadContext.Scorings.Where(s => s.ProjectId == project.Id).DefaultIfEmpty()
-                          from application in ReadContext.Applications.Where(a => a.ProjectId == project.Id).DefaultIfEmpty()
-                          join country in ReadContext.Countries on project.CountryId equals country.Id
-                          where project.AuthorId == authorId
-                          select new ProjectDetails(project, scoring, application, country)).ToArrayAsync();
-        }
-
-        public Task<int> UpdateAsync(Project project)
-        {
-            EditContext.Projects.Attach(project).State = EntityState.Modified;
-            EditContext.Entity(project.SocialNetworks).State = EntityState.Modified;
-            return EditContext.SaveAsync();
+            return (from project in ReadContext.Projects
+                    from scoring in ReadContext.Scorings.Where(s => s.ProjectId == project.Id).DefaultIfEmpty()
+                    from application in ReadContext.Applications.Where(a => a.ProjectId == project.Id).DefaultIfEmpty()
+                    join country in ReadContext.Countries on project.CountryId equals country.Id
+                    where project.AuthorId == authorId
+                    select new ProjectDetails(project, scoring, application, country)).FirstOrDefaultAsync();
         }
 
         public async Task<IReadOnlyCollection<ProjectDetails>> GetForScoringAsync(AreaType areaType, long expertId)

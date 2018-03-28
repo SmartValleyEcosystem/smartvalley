@@ -1,12 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl} from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/throttleTime';
 import 'rxjs/add/observable/fromEvent';
-import {ApplicationApiClient} from '../../../api/application/application-api.client';
 import {TranslateService} from '@ngx-translate/core';
 import {Country} from '../../../services/common/country';
-import {CommonService} from '../../../services/common/common.service';
+import {DictionariesService} from '../../../services/common/dictionaries.service';
 
 @Component({
   selector: 'app-country-autocomplete',
@@ -24,7 +22,7 @@ export class CountryAutocompleteComponent implements OnInit {
   public selectedCountry: string;
   public selectedCountryCode: string;
 
-  constructor(private commonService: CommonService,
+  constructor(private dictionariesService: DictionariesService,
               private translateService: TranslateService) { }
 
   public ngOnInit() {
@@ -32,7 +30,7 @@ export class CountryAutocompleteComponent implements OnInit {
     this.isSearchInputInFocus = false;
     this.hideCountryList();
 
-    this.allCountriesList = this.commonService.countries;
+    this.allCountriesList = this.dictionariesService.countries;
     this.countries = this.allCountriesList;
     this.selectedCountry = '';
     this.selectedCountryCode = '';

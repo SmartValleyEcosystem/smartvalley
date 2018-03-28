@@ -6,7 +6,7 @@
       <a *ngIf="isAuthenticated" class="header-nav__link" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + accountLink">{{'Header.Account' | translate }}</a>
       <a *ngIf="isAdmin" class="header-nav__link" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + adminPanelLink">{{'Header.Admin' | translate }}</a>
     </nav>
-    <button class="main-btn get-score-btn" (click)="navigateToApplication()">{{ 'Header.GetScoreForMyProject' | translate }}</button>
+    <button class="main-btn get-score-btn" (click)="navigateToProjectApplication()">{{ 'Header.GetScoreForMyProject' | translate }}</button>
     <button class="main-btn" (click)="navigateToScoring()">{{ 'Header.BecomeAnExpert' | translate }}</button>
     <span *ngIf="isAuthenticated" class="header-nav__login-logout" (click)="logout()">
       {{'Header.Logout' | translate }}

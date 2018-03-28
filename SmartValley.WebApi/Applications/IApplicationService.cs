@@ -10,9 +10,5 @@ namespace SmartValley.WebApi.Applications
         Task CreateAsync(long userId, ApplicationRequest applicationRequest);
 
         Task<IReadOnlyCollection<Country>> GetCountriesAsync();
-
-        Task<IReadOnlyCollection<Category>> GetCategoriesAsync();
-
-        Task<IReadOnlyCollection<Stage>> GetStagesAsync();
     }
 }

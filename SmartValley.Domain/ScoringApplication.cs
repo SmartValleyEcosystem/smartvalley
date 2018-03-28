@@ -17,7 +17,7 @@ namespace SmartValley.Domain
 
         public string ProjectName { get; set; }
 
-        public string ProjectArea { get; set; }
+        public string Category { get; set; }
 
         public string Status { get; set; }
 

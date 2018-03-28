@@ -19,10 +19,10 @@ namespace SmartValley.Domain.Entities
         public long CountryId { get; set; }
 
         [Required]
-        public CategoryType CategoryId { get; set; }
+        public Category Category { get; set; }
 
         [Required]
-        public StageType StageId { get; set; }
+        public Stage Stage { get; set; }
 
         [Required]
         public long AuthorId { get; set; }
@@ -45,14 +45,32 @@ namespace SmartValley.Domain.Entities
         [Url, MaxLength(200)]
         public string ImageUrl { get; set; }
 
-        public SocialNetworks SocialNetworks { get; set; }
+        [Url, MaxLength(500)]
+        public string Facebook { get; set; }
+
+        [Url, MaxLength(500)]
+        public string Linkedin { get; set; }
+
+        [Url, MaxLength(500)]
+        public string BitcoinTalk { get; set; }
+
+        [Url, MaxLength(500)]
+        public string Medium { get; set; }
+
+        [Url, MaxLength(500)]
+        public string Reddit { get; set; }
+
+        [Url, MaxLength(500)]
+        public string Telegram { get; set; }
+
+        [Url, MaxLength(500)]
+        public string Twitter { get; set; }
+
+        [Url, MaxLength(500)]
+        public string Github { get; set; }
 
         public User Author { get; set; }
 
         public Country Country { get; set; }
-
-        public Category Category { get; set; }
-
-        public Stage Stage { get; set; }
     }
 }

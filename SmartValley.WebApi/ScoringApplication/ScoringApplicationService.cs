@@ -55,7 +55,7 @@ namespace SmartValley.WebApi.ScoringApplication
 
             scoringApplication.ProjectId = project.Id;
             scoringApplication.ProjectName = saveScoringApplicationRequest.ProjectName;
-            scoringApplication.ProjectArea = saveScoringApplicationRequest.ProjectArea;
+            scoringApplication.Category = saveScoringApplicationRequest.Category;
             scoringApplication.Status = saveScoringApplicationRequest.Status;
             scoringApplication.ProjectDescription = saveScoringApplicationRequest.ProjectDescription;
             scoringApplication.CountryId = country.Id;

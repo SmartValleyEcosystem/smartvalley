@@ -32,7 +32,7 @@ namespace SmartValley.WebApi.Votings.Responses
                        Name = projectDetails.Project.Name,
                        ExternalId = projectDetails.Project.ExternalId.ToString(),
                        Country = projectDetails.Country.Code,
-                       CategoryId = (int) projectDetails.Project.CategoryId,
+                       CategoryId = (int) projectDetails.Project.Category,
                        Description = projectDetails.Project.Description,
                        MyVoteTokenAmount = investorVotes?.InvestorTokenVote,
                        IsVotedByMe = investorVotes?.InvestorTokenVote > 0,

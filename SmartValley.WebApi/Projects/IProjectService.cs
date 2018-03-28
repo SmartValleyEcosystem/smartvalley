@@ -12,6 +12,8 @@ namespace SmartValley.WebApi.Projects
     {
         Task<ProjectDetails> GetDetailsAsync(long projectId);
 
+        Task<ProjectDetails> GetDetailsByUserIdAsync(long userId);
+
         Task<IReadOnlyCollection<ProjectDetails>> QueryAsync(ProjectsQuery projectsQuery);
 
         Task<int> GetQueryTotalCountAsync(ProjectsQuery projectsQuery);
@@ -36,7 +38,7 @@ namespace SmartValley.WebApi.Projects
 
         Task DeleteAsync(long projectId);
 
-        Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorIdAsync(long authorId);
+        Task<ProjectDetails> GetByAuthorIdAsync(long authorId);
 
         Task UpdateImageAsync(long projectId, AzureFile image);
 

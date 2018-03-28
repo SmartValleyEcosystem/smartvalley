@@ -80,9 +80,9 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  async navigateToApplication() {
+  async navigateToProjectApplication() {
     if (await this.authenticationService.authenticateAsync()) {
-      await this.router.navigate([Paths.Application]);
+      await this.router.navigate([Paths.Project]);
     }
   }
 }

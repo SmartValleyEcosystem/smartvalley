@@ -24,12 +24,12 @@ namespace SmartValley.Domain.Interfaces
 
         Task<IReadOnlyCollection<ProjectDetails>> GetAllByNameAsync(string projectName);
 
-        Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorIdAsync(long authorId);
+        Task<ProjectDetails> GetByAuthorIdAsync(long authorId);
 
         Task<int> RemoveAsync(Project project);
 
-        Task<int> UpdateAsync(Project project);
-
         Task<int> UpdateAsync(Project project, params Expression<Func<Project, object>>[] properties);
+
+        Task<int> UpdateWholeAsync(Project project);
     }
 }

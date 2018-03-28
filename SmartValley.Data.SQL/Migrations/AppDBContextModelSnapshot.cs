@@ -71,9 +71,15 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<long>("ApplicationId");
 
+                    b.Property<string>("Facebook")
+                        .HasMaxLength(500);
+
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(100);
+
+                    b.Property<string>("Linkedin")
+                        .HasMaxLength(500);
 
                     b.Property<string>("PhotoUrl")
                         .HasMaxLength(200);
@@ -123,21 +129,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasIndex("ScoringId", "AreaId");
 
                     b.ToTable("AreaScorings");
-                });
-
-            modelBuilder.Entity("SmartValley.Domain.Entities.Category", b =>
-                {
-                    b.Property<int>("Id");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.Country", b =>
@@ -292,7 +283,10 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<long>("AuthorId");
 
-                    b.Property<int>("CategoryId");
+                    b.Property<string>("BitcoinTalk")
+                        .HasMaxLength(500);
+
+                    b.Property<int>("Category");
 
                     b.Property<string>("ContactEmail")
                         .HasMaxLength(50);
@@ -305,16 +299,37 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<Guid>("ExternalId");
 
+                    b.Property<string>("Facebook")
+                        .HasMaxLength(500);
+
+                    b.Property<string>("Github")
+                        .HasMaxLength(500);
+
                     b.Property<DateTimeOffset?>("IcoDate");
 
                     b.Property<string>("ImageUrl")
                         .HasMaxLength(200);
 
+                    b.Property<string>("Linkedin")
+                        .HasMaxLength(500);
+
+                    b.Property<string>("Medium")
+                        .HasMaxLength(500);
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<int>("StageId");
+                    b.Property<string>("Reddit")
+                        .HasMaxLength(500);
+
+                    b.Property<int>("Stage");
+
+                    b.Property<string>("Telegram")
+                        .HasMaxLength(500);
+
+                    b.Property<string>("Twitter")
+                        .HasMaxLength(500);
 
                     b.Property<string>("Website")
                         .HasMaxLength(200);
@@ -326,16 +341,12 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("CategoryId");
-
                     b.HasIndex("CountryId");
 
                     b.HasIndex("ExternalId")
                         .IsUnique();
 
                     b.HasIndex("Name");
-
-                    b.HasIndex("StageId");
 
                     b.ToTable("Projects");
                 });
@@ -348,9 +359,15 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<string>("About")
                         .HasMaxLength(500);
 
+                    b.Property<string>("Facebook")
+                        .HasMaxLength(500);
+
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(100);
+
+                    b.Property<string>("Linkedin")
+                        .HasMaxLength(500);
 
                     b.Property<string>("PhotoUrl")
                         .HasMaxLength(200);
@@ -484,21 +501,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("ScoringOffers");
                 });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.Stage", b =>
-                {
-                    b.Property<int>("Id");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
-
-                    b.ToTable("Stages");
-                });
-
             modelBuilder.Entity("SmartValley.Domain.Entities.User", b =>
                 {
                     b.Property<long>("Id")
@@ -581,6 +583,8 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<string>("BitcointalkLink");
 
+                    b.Property<string>("Category");
+
                     b.Property<string>("ContactEmail");
 
                     b.Property<long?>("CountryId");
@@ -596,8 +600,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<string>("LinkedInLink");
 
                     b.Property<string>("MediumLink");
-
-                    b.Property<string>("ProjectArea");
 
                     b.Property<string>("ProjectDescription");
 
@@ -718,42 +720,6 @@ namespace SmartValley.Data.SQL.Migrations
                         .WithMany()
                         .HasForeignKey("ApplicationId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.OwnsOne("SmartValley.Domain.Entities.SocialNetworks", "SocialNetworks", b1 =>
-                        {
-                            b1.Property<long?>("ApplicationTeamMemberId");
-
-                            b1.Property<string>("BitcoinTalk")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Facebook")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Github")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Linkedin")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Medium")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Reddit")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Telegram")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Twitter")
-                                .HasMaxLength(500);
-
-                            b1.ToTable("ApplicationTeamMembers");
-
-                            b1.HasOne("SmartValley.Domain.Entities.ApplicationTeamMember")
-                                .WithOne("SocialNetworks")
-                                .HasForeignKey("SmartValley.Domain.Entities.SocialNetworks", "ApplicationTeamMemberId")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.AreaScoring", b =>
@@ -831,56 +797,10 @@ namespace SmartValley.Data.SQL.Migrations
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SmartValley.Domain.Entities.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("SmartValley.Domain.Entities.Country", "Country")
                         .WithMany("Projects")
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SmartValley.Domain.Entities.Stage", "Stage")
-                        .WithMany()
-                        .HasForeignKey("StageId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.OwnsOne("SmartValley.Domain.Entities.SocialNetworks", "SocialNetworks", b1 =>
-                        {
-                            b1.Property<long>("ProjectId");
-
-                            b1.Property<string>("BitcoinTalk")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Facebook")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Github")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Linkedin")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Medium")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Reddit")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Telegram")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Twitter")
-                                .HasMaxLength(500);
-
-                            b1.ToTable("Projects");
-
-                            b1.HasOne("SmartValley.Domain.Entities.Project")
-                                .WithOne("SocialNetworks")
-                                .HasForeignKey("SmartValley.Domain.Entities.SocialNetworks", "ProjectId")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.ProjectTeamMember", b =>
@@ -889,42 +809,6 @@ namespace SmartValley.Data.SQL.Migrations
                         .WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.OwnsOne("SmartValley.Domain.Entities.SocialNetworks", "SocialNetworks", b1 =>
-                        {
-                            b1.Property<long>("ProjectTeamMemberId");
-
-                            b1.Property<string>("BitcoinTalk")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Facebook")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Github")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Linkedin")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Medium")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Reddit")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Telegram")
-                                .HasMaxLength(500);
-
-                            b1.Property<string>("Twitter")
-                                .HasMaxLength(500);
-
-                            b1.ToTable("ProjectTeamMembers");
-
-                            b1.HasOne("SmartValley.Domain.Entities.ProjectTeamMember")
-                                .WithOne("SocialNetworks")
-                                .HasForeignKey("SmartValley.Domain.Entities.SocialNetworks", "ProjectTeamMemberId")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.Scoring", b =>

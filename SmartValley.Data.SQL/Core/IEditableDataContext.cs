@@ -29,8 +29,6 @@ namespace SmartValley.Data.SQL.Core
         DbSet<ExpertApplication> ExpertApplications { get; }
         DbSet<ExpertApplicationArea> ExpertApplicationAreas { get; }
         DbSet<Country> Countries { get; }
-        DbSet<Category> Categories { get; }
-        DbSet<Stage> Stages { get; }
         DbSet<ScoringApplication> ScoringApplications { get; }
 
         Task<int> SaveAsync();

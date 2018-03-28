@@ -16,6 +16,8 @@ namespace SmartValley.WebApi.Experts
                     return Domain.Entities.AreaType.Tech;
                 case AreaType.Lawyer:
                     return Domain.Entities.AreaType.Lawyer;
+                case AreaType.Marketer:
+                    return Domain.Entities.AreaType.Marketer;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(areaType), areaType, null);
             }
@@ -33,6 +35,8 @@ namespace SmartValley.WebApi.Experts
                     return AreaType.Tech;
                 case Domain.Entities.AreaType.Lawyer:
                     return AreaType.Lawyer;
+                case Domain.Entities.AreaType.Marketer:
+                    return AreaType.Marketer;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(areaType), areaType, null);
             }

@@ -16,15 +16,14 @@ export class SelectComponent implements OnInit {
   public selectedInput = false;
   public selectedItem: string;
   public selectedItemId: number;
-  public itemsValues: SelectItem[];
   @Input() placeholder: string;
   @Input() items: SelectItem[];
   @Input() elementId: string;
   @Input() elementName: string;
   @Input() form?: FormGroup;
-  @Input() isNeedToTranslate? = false;
 
-  constructor( private translateService: TranslateService ) { }
+  constructor(private translateService: TranslateService) {
+  }
 
   public async ngOnInit() {
     this.isSelectListHovered = false;
@@ -59,9 +58,6 @@ export class SelectComponent implements OnInit {
 
   public selectItem(label, value) {
     this.selectedItem = label;
-    if (this.isNeedToTranslate) {
-      this.selectedItem = this.translateService.instant(label);
-    }
     this.selectedItemId = value;
     this.isAutocompleteHidden = true;
   }

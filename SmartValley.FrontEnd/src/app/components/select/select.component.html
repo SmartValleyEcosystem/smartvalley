@@ -3,7 +3,7 @@
          (focusout)="searchInputFocusStatusSwitch(false); hideSelectList();"
          [class.select-__input_focused]="selectedInput"
          (input)="onSelectInputChange()"
-         [(ngModel)]="selectedItem"
+         [(ngModel)]="selectedItemId"
          [formControlName]="elementName"
          [placeholder]="placeholder" type="text" class="input project-select-input" id="{{elementId}}" name="{{elementName}}">
   <ul (mouseenter) ="selectListHoverStatusSwitch(true) "  (mouseleave) ="selectListHoverStatusSwitch(false); hideSelectList();"

@@ -39,31 +39,5 @@ namespace SmartValley.WebApi.Applications
                                                      }).ToArray()
                    };
         }
-
-        [HttpGet("categories")]
-        public async Task<CollectionResponse<CategoryResponse>> GetCategoriesAsync()
-        {
-            var categories = await _service.GetCategoriesAsync();
-            return new CollectionResponse<CategoryResponse>
-                   {
-                       Items = categories.Select(c => new CategoryResponse
-                                                      {
-                                                          Id = c.Id
-                                                      }).ToArray()
-                   };
-        }
-
-        [HttpGet("stages")]
-        public async Task<CollectionResponse<StageResponse>> GetStagesAsync()
-        {
-            var stages = await _service.GetStagesAsync();
-            return new CollectionResponse<StageResponse>
-                   {
-                       Items = stages.Select(s => new StageResponse
-                                                  {
-                                                      Id = s.Id
-                                                  }).ToArray()
-                   };
-        }
     }
 }

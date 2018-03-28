@@ -1,6 +1,6 @@
-import {TeamMemberResponse} from '../application/team-member-response';
 import {ScoringStatus} from '../../services/scoring-status.enum';
 import {VotingStatus} from '../../services/voting-status.enum';
+import {TeamMemberResponse} from './team-member-response';
 
 export interface ProjectDetailsResponse {
   name: string;

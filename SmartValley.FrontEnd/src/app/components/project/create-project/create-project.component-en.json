@@ -1,12 +1,12 @@
 {
-  "Application": {
+  "CreateProject": {
     "Title": "Create project",
     "PageDescription": "Only you could see project after creation. Project have to be scored for showing in the main list.",
     "CreateNewProject": "Create new project for scoring",
     "CommonInformation": "Common information",
     "Name": "Name",
     "NamePlaceholder": "Project name",
-    "ProjectArea": "Project area",
+    "Category": "Project area",
     "ProjectAreaPlaceholder": "Biotechnology",
     "Description": "Description",
     "DescriptionPlaceholder": "Main goal, features, idea, etc.",
@@ -38,6 +38,7 @@
     "Save": "Save",
     "Dialog": "Your project for scoring is being created. Please wait for completion of transaction.",
     "ProjectCreated": "Project created",
+    "ProjectUpdated": "Project updated",
     "ProjectEnqueuedForVoting": "Project has been enqueued for voting.",
     "DescriptionPlaceholder": "Main goal, features, idea, etc.",
     "Http": "http://",

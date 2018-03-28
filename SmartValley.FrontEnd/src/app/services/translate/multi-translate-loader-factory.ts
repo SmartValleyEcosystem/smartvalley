@@ -7,9 +7,11 @@ export function multiTranslateLoaderFactory() {
     'services/balance/balance-service',
     'services/translate/common',
     'services/voting/voting-service',
+    'services/common/countries',
+    'services/common/categories',
+    'services/common/stages',
     'components/header/header.component',
-    'components/application/application.component',
-    'components/my-projects/my-projects.component',
+    'components/project/create-project/create-project.component',
     'components/landing/landing.component',
     'components/voting/voting.component',
     'components/admin-panel/admin-panel.component',
@@ -47,9 +49,6 @@ export function multiTranslateLoaderFactory() {
     'components/authentication/register/register.component',
     'components/authentication/register-confirm/register-confirm.component',
     'components/select/select.component',
-    'services/translate/countries',
-    'services/translate/categories',
-    'components/common/confirm-email/confirm-email.component',
-    'services/translate/stages'
+    'components/common/confirm-email/confirm-email.component'
   ]);
 }

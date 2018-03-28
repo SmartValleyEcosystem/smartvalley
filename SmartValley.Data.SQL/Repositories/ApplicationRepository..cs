@@ -18,11 +18,5 @@ namespace SmartValley.Data.SQL.Repositories
         {
             return ReadContext.Applications.FirstOrDefaultAsync(a => a.ProjectId == projectId);
         }
-
-        public async Task<IReadOnlyCollection<Category>> GetCategoriesAsync()
-            => await ReadContext.Categories.ToArrayAsync();
-
-        public async Task<IReadOnlyCollection<Stage>> GetStagesAsync()
-            => await ReadContext.Stages.ToArrayAsync();
     }
 }

@@ -34,9 +34,29 @@ namespace SmartValley.WebApi.Projects.Requests
         [EmailAddress]
         public string ContactEmail { get; set; }
 
-        public string ExternalId { get; set; }
+        [Url, MaxLength(500)]
+        public string Facebook { get; set; }
 
-        public SocialNetworkRequest SocialNetworks { get; set; }
+        [Url, MaxLength(500)]
+        public string Linkedin { get; set; }
+
+        [Url, MaxLength(500)]
+        public string BitcoinTalk { get; set; }
+
+        [Url, MaxLength(500)]
+        public string Medium { get; set; }
+
+        [Url, MaxLength(500)]
+        public string Reddit { get; set; }
+
+        [Url, MaxLength(500)]
+        public string Telegram { get; set; }
+
+        [Url, MaxLength(500)]
+        public string Twitter { get; set; }
+
+        [Url, MaxLength(500)]
+        public string Github { get; set; }
 
         public IReadOnlyCollection<ProjectTeamMemberRequest> TeamMembers { get; set; }
     }

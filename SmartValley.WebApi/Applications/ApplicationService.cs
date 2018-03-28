@@ -41,12 +41,6 @@ namespace SmartValley.WebApi.Applications
         public Task<IReadOnlyCollection<Country>> GetCountriesAsync()
             => _countryRepository.GetAllAsync();
 
-        public Task<IReadOnlyCollection<Category>> GetCategoriesAsync()
-            => _applicationRepository.GetCategoriesAsync();
-
-        public Task<IReadOnlyCollection<Stage>> GetStagesAsync()
-            => _applicationRepository.GetStagesAsync();
-
 
         private Task AddTeamMembersAsync(ApplicationRequest applicationRequest, long applicationId)
         {
@@ -96,7 +90,7 @@ namespace SmartValley.WebApi.Applications
                           {
                               Name = request.Name,
                               CountryId = country.Id,
-                              CategoryId = (CategoryType) request.CategoryType,
+                              Category = (Category) request.CategoryType,
                               Description = request.Description,
                               AuthorId = userId,
                               ExternalId = Guid.Parse(request.ProjectId)
