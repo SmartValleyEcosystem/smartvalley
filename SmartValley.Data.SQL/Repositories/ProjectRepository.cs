@@ -18,14 +18,14 @@ namespace SmartValley.Data.SQL.Repositories
         {
         }
 
-        private IQueryable<ProjectDetails> GetScoredQueryable(SearchProjectsQuery query, bool enablePaging = true, bool enableSorting = true)
+        private IQueryable<ProjectDetails> GetQueryable(ProjectsQuery query, bool enablePaging = true, bool enableSorting = true)
         {
             var queryable = ReadContext
                             .Projects
                             .Join(ReadContext.Scorings, p => p.Id, s => s.ProjectId, (project, scoring) => new {project, scoring})
                             .Join(ReadContext.Applications, p => p.project.Id, a => a.ProjectId, (current, application) => new {current.project, current.scoring, application})
                             .Join(ReadContext.Countries, p => p.project.CountryId, c => c.Id, (current, country) => new {current.project, current.scoring, current.application, country})
-                            .Where(o => o.scoring.Score.HasValue)
+                            .Where(o => !query.OnlyScored || o.scoring.Score.HasValue)
                             .Where(o => !query.StageType.HasValue || o.project.StageId == query.StageType.Value)
                             .Where(o => string.IsNullOrEmpty(query.SearchString) || o.project.Name.ToUpper().Contains(query.SearchString.ToUpper()))
                             .Where(o => string.IsNullOrEmpty(query.CountryCode) || o.country.Code == query.CountryCode.ToUpper())
@@ -65,11 +65,11 @@ namespace SmartValley.Data.SQL.Repositories
             return queryable.Select(o => new ProjectDetails(o.project, o.scoring, o.application, o.country));
         }
 
-        public async Task<IReadOnlyCollection<ProjectDetails>> GetScoredAsync(SearchProjectsQuery projectsQuery)
-            => await GetScoredQueryable(projectsQuery).ToArrayAsync();
+        public async Task<IReadOnlyCollection<ProjectDetails>> QueryAsync(ProjectsQuery projectsQuery)
+            => await GetQueryable(projectsQuery).ToArrayAsync();
 
-        public Task<int> GetScoredTotalCountAsync(SearchProjectsQuery projectsQuery)
-            => GetScoredQueryable(projectsQuery, false, false).CountAsync();
+        public Task<int> GetQueryTotalCountAsync(ProjectsQuery projectsQuery)
+            => GetQueryable(projectsQuery, false, false).CountAsync();
 
         public async Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorIdAsync(long authorId)
         {

@@ -4,8 +4,9 @@ import {Paths} from '../../paths';
 import {ProjectCardType} from '../../services/project-card-type';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ScoredProject} from '../../api/expert/scored-project';
-import {ProjectFilter} from '../../api/project/project-filter';
+import {ProjectQuery} from '../../api/project/project-query';
 import {ProjectsOrderBy} from '../../api/application/projects-order-by.enum';
+import {ProjectResponse} from '../../api/project/project-response';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,7 @@ import {ProjectsOrderBy} from '../../api/application/projects-order-by.enum';
 export class LandingComponent implements OnInit {
 
   public ProjectCardType = ProjectCardType;
-  public scoredProjects: ScoredProject[];
+  public projects: ScoredProject[];
   public projectsLink: string;
 
   constructor(private router: Router,
@@ -24,12 +25,26 @@ export class LandingComponent implements OnInit {
 
   public async ngOnInit() {
     this.projectsLink = Paths.ProjectList;
-    const projectResponse = await this.projectApiClient.getFilteredProjectsAsync(<ProjectFilter>{
+    const projectResponse = await this.projectApiClient.queryProjectsAsync(<ProjectQuery>{
       offset: 0,
       count: 10,
+      onlyScored: false,
       orderBy: ProjectsOrderBy.ScoringEndDate
     });
-    this.scoredProjects = projectResponse.items;
+    this.projects = projectResponse.items.map(p => this.createScoredProject(p));
+  }
+
+  private createScoredProject(response: ProjectResponse): ScoredProject {
+    return <ScoredProject> {
+      id: response.id,
+      address: response.address,
+      category: response.category,
+      country: response.country,
+      description: response.description,
+      name: response.name,
+      score: response.score,
+      scoringEndDate: response.scoringEndDate
+    };
   }
 
   public getProjectLink(id) {

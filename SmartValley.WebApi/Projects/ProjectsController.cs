@@ -22,6 +22,7 @@ namespace SmartValley.WebApi.Projects
     public class ProjectsController : Controller
     {
         private const int FileSizeLimitBytes = 5242880;
+
         private readonly IProjectService _projectService;
         private readonly IVotingService _votingService;
         private readonly IClock _clock;
@@ -72,7 +73,7 @@ namespace SmartValley.WebApi.Projects
 
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> Delete(long id)
+        public async Task<IActionResult> DeleteAsync(long id)
         {
             var isAuthorized = await _projectService.IsAuthorizedToEditProjectAsync(id, User.GetUserId());
             if (!isAuthorized)
@@ -137,13 +138,13 @@ namespace SmartValley.WebApi.Projects
                    };
         }
 
-        [HttpGet]
-        [Route("scored")]
-        public async Task<PartialCollectionResponse<ProjectResponse>> GetScoredAsync([FromQuery] GetScoredProjectsRequest request)
+        [HttpGet("query")]
+        public async Task<PartialCollectionResponse<ProjectResponse>> QueryAsync([FromQuery] QueryProjectsRequest request)
         {
-            var projectsQuery = new SearchProjectsQuery(
+            var projectsQuery = new ProjectsQuery(
                 request.Offset,
                 request.Count,
+                request.OnlyScored,
                 request.SearchString,
                 request.StageType,
                 request.CountryCode,
@@ -151,11 +152,11 @@ namespace SmartValley.WebApi.Projects
                 request.MinimumScore,
                 request.MaximumScore,
                 request.OrderBy,
-                request.Direction
+                request.SortDirection
             );
-            var projects = await _projectService.GetScoredAsync(projectsQuery);
+            var projects = await _projectService.QueryAsync(projectsQuery);
 
-            var totalCount = await _projectService.GetScoredTotalCountAsync(projectsQuery);
+            var totalCount = await _projectService.GetQueryTotalCountAsync(projectsQuery);
 
             var projectResponses = projects.Select(ProjectResponse.Create).ToArray();
 

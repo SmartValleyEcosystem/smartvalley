@@ -11,7 +11,7 @@ import {ScoringProjectResponse} from './scoring-project-response';
 import {ScoredProject} from '../expert/scored-project';
 import {SearchProjectResponse} from './search-projects-response';
 import {CreateProjectRequest} from './create-project-request';
-import {ProjectFilter} from './project-filter';
+import {ProjectQuery} from './project-query';
 import {isNullOrUndefined} from 'util';
 
 @Injectable()
@@ -50,7 +50,7 @@ export class ProjectApiClient extends BaseApiClient {
       .toPromise();
   }
 
-  public getProjectsBySearchString(searchString: string): Promise<CollectionResponse<SearchProjectResponse>> {
+  public getProjectsBySearchStringAsync(searchString: string): Promise<CollectionResponse<SearchProjectResponse>> {
     const parameters = new HttpParams().append('SearchString', searchString);
 
     return this.http
@@ -58,23 +58,24 @@ export class ProjectApiClient extends BaseApiClient {
       .toPromise();
   }
 
-  public getFilteredProjectsAsync(filters: ProjectFilter): Promise<CollectionResponse<ScoredProject>> {
+  public queryProjectsAsync(query: ProjectQuery): Promise<CollectionResponse<ProjectResponse>> {
     const checkParam = (param) => isNullOrUndefined(param) ? '' : param.toString();
 
     const parameters = new HttpParams()
-      .append('offset', filters.offset.toString())
-      .append('count', filters.count.toString())
-      .append('SearchString', checkParam(filters.searchString))
-      .append('StageType', checkParam(filters.stageType))
-      .append('CountryCode', checkParam(filters.countryCode))
-      .append('CategoryType', checkParam(filters.categoryType))
-      .append('MinimumScore', checkParam(filters.minimumScore))
-      .append('MaximumScore', checkParam(filters.maximumScore))
-      .append('OrderBy', checkParam(filters.orderBy))
-      .append('Direction', checkParam(filters.direction));
+      .append('offset', query.offset.toString())
+      .append('count', query.count.toString())
+      .append('onlyScored', query.onlyScored.toString())
+      .append('searchString', checkParam(query.searchString))
+      .append('stageType', checkParam(query.stageType))
+      .append('countryCode', checkParam(query.countryCode))
+      .append('categoryType', checkParam(query.categoryType))
+      .append('minimumScore', checkParam(query.minimumScore))
+      .append('maximumScore', checkParam(query.maximumScore))
+      .append('orderBy', checkParam(query.orderBy))
+      .append('sortDirection', checkParam(query.direction));
 
     return this.http
-      .get<CollectionResponse<ScoredProject>>(this.baseApiUrl + '/projects/scored', {params: parameters})
+      .get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/projects/query', {params: parameters})
       .toPromise();
   }
 }

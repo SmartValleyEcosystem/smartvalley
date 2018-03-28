@@ -12,9 +12,9 @@ namespace SmartValley.WebApi.Projects
     {
         Task<ProjectDetails> GetDetailsAsync(long projectId);
 
-        Task<IReadOnlyCollection<ProjectDetails>> GetScoredAsync(SearchProjectsQuery projectsQuery);
+        Task<IReadOnlyCollection<ProjectDetails>> QueryAsync(ProjectsQuery projectsQuery);
 
-        Task<int> GetScoredTotalCountAsync(SearchProjectsQuery projectsQuery);
+        Task<int> GetQueryTotalCountAsync(ProjectsQuery projectsQuery);
 
         Task<bool> IsAuthorizedToSeeEstimatesAsync(long userId, long projectId);
 

@@ -109,7 +109,7 @@ import {ExpertOffersHistoryComponent} from './components/expert/expert-offers-hi
 import {ExpertWorkPlaceComponent} from './components/expert/expert-work-place/expert-work-place.component';
 import {OffersApiClient} from './api/expert/offers-api-client';
 import {ExpertOffersComponent} from './components/expert/expert-offers/expert-offers.component';
-import {roundNumberPipe} from './utils/round-number.pipe';
+import {RoundNumberPipe} from './utils/round-number.pipe';
 import {SearchWithAutocompleteComponent} from './components/search-with-autocomplete/search-with-autocomplete.component';
 import {ProjectListComponent} from './components/project-list/project-list.component';
 import {CountryAutocompleteComponent} from './components/project-list/country-autocomplete/country-autocomplete.component';
@@ -177,7 +177,7 @@ import {WelcomeModalComponent} from './components/common/welcome-modal/welcome-m
     ExpertWorkPlaceComponent,
     ExpertOffersComponent,
     ExpertOffersHistoryComponent,
-    roundNumberPipe,
+    RoundNumberPipe,
     SearchWithAutocompleteComponent,
     ProjectListComponent,
     ScoringCostComponent,

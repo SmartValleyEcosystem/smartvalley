@@ -2,18 +2,19 @@
 
 namespace SmartValley.Domain
 {
-    public class SearchProjectsQuery
+    public class ProjectsQuery
     {
-        public SearchProjectsQuery(int offset,
-                                   int count,
-                                   string searchString,
-                                   StageType? stageType,
-                                   string countryCode,
-                                   CategoryType? categoryType,
-                                   int? minimumScore,
-                                   int? maximumScore,
-                                   ProjectsOrderBy? orderBy,
-                                   SortDirection? direction)
+        public ProjectsQuery(int offset,
+                             int count,
+                             bool onlyScored,
+                             string searchString,
+                             StageType? stageType,
+                             string countryCode,
+                             CategoryType? categoryType,
+                             int? minimumScore,
+                             int? maximumScore,
+                             ProjectsOrderBy? orderBy,
+                             SortDirection? direction)
         {
             Offset = offset;
             Count = count;
@@ -25,11 +26,14 @@ namespace SmartValley.Domain
             MaximumScore = maximumScore;
             OrderBy = orderBy;
             Direction = direction;
+            OnlyScored = onlyScored;
         }
 
         public int Offset { get; }
 
         public int Count { get; }
+
+        public bool OnlyScored { get; }
 
         public string SearchString { get; }
 

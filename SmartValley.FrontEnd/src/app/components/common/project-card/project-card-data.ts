@@ -46,7 +46,7 @@ export class ProjectCardData {
     return <ProjectCardData>{
       id: response.id,
       name: response.name,
-      area: response.area,
+      area: response.category.toString(),
       country: response.country,
       score: response.score,
       description: response.description,

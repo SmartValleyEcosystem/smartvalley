@@ -1,9 +1,10 @@
 import {ProjectsOrderBy} from '../application/projects-order-by.enum';
 import {SortDirection} from '../sort-direction.enum';
 
-export interface ProjectFilter {
+export interface ProjectQuery {
   offset: number;
   count: number;
+  onlyScored: boolean;
   searchString?: string;
   stageType?: number;
   countryCode?: string;

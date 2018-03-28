@@ -1,6 +1,6 @@
 <app-search-with-autocomplete></app-search-with-autocomplete>
 <div class="content">
-  <p-table [value]="scoredProjects">
+  <p-table [value]="projects">
     <ng-template pTemplate="header">
       <tr>
         <th class="table__main-col">{{ 'Landing.RecentlyScored' | translate }}</th>
@@ -14,9 +14,10 @@
       <tr>
         <td class="project-name"><a [routerLink]="getProjectLink(project.id)">{{project.name}}</a></td>
         <td>{{ 'Countries.' + project.country | translate }}</td>
-        <td>{{ 'Categories.' + project.categoryId | translate }}</td>
+        <td>{{ 'Categories.' + project.category | translate }}</td>
         <td>{{ project.scoringEndDate | date: 'yyyy-MM-dd' }}</td>
-        <td class="scoring-col">{{project.score | roundNumberPipe}}/100</td>
+        <td *ngif="project.score" class="scoring-col">{{project.score | roundNumberPipe}}/100</td>
+        <td *ngif="!project.score" class="scoring-col">&mdash;</td>
       </tr>
     </ng-template>
     <ng-template pTemplate="footer" let-columns>

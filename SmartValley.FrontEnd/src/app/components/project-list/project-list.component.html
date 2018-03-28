@@ -25,7 +25,7 @@
       <input type="submit" class="ghost-btn apply-filters" value="{{ 'ProjectList.ApplyFilters' | translate }}">
       <span (click)="clearFilters()" class="clear-form">{{ 'ProjectList.ClearFilters' | translate }}</span>
     </form>
-    <p-table [value]="scoredProjects">
+    <p-table [value]="projects">
       <ng-template pTemplate="header">
         <tr>
           <th><span class="sortable" [ngClass]="{
@@ -55,7 +55,8 @@
           <td>{{ 'Countries.' + project.country | translate }}</td>
           <td>{{ 'Categories.' + project.categoryId | translate }}</td>
           <td>{{ project.scoringEndDate | date:'yyyy-MM-dd' }}</td>
-          <td class="scoring-col">{{project.score | roundNumberPipe}}/100</td>
+          <td *ngif="project.score" class="scoring-col">{{project.score | roundNumberPipe}}/100</td>
+          <td *ngif="!project.score" class="scoring-col">&mdash;</td>
         </tr>
       </ng-template>
     </p-table>

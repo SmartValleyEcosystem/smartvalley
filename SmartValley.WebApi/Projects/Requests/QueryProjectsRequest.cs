@@ -4,9 +4,9 @@ using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Projects.Requests
 {
-    public class GetScoredProjectsRequest
+    public class QueryProjectsRequest
     {
-        public GetScoredProjectsRequest()
+        public QueryProjectsRequest()
         {
             Count = 100;
         }
@@ -16,6 +16,8 @@ namespace SmartValley.WebApi.Projects.Requests
         [Range(1, 100)]
         public int Count { get; set; }
 
+        public bool OnlyScored { get; set; }
+        
         public string SearchString { get; set; }
 
         public StageType? StageType { get; set; }
@@ -30,6 +32,6 @@ namespace SmartValley.WebApi.Projects.Requests
 
         public ProjectsOrderBy? OrderBy { get; set; }
 
-        public SortDirection? Direction { get; set; }
+        public SortDirection? SortDirection { get; set; }
     }
 }

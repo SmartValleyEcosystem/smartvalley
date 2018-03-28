@@ -55,11 +55,11 @@ namespace SmartValley.WebApi.Projects
         public Task<IReadOnlyCollection<ProjectTeamMember>> GetTeamAsync(long projectId)
             => _teamMemberRepository.GetByProjectIdAsync(projectId);
 
-        public Task<IReadOnlyCollection<ProjectDetails>> GetScoredAsync(SearchProjectsQuery projectsQuery)
-            => _projectRepository.GetScoredAsync(projectsQuery);
+        public Task<IReadOnlyCollection<ProjectDetails>> QueryAsync(ProjectsQuery projectsQuery)
+            => _projectRepository.QueryAsync(projectsQuery);
 
-        public Task<int> GetScoredTotalCountAsync(SearchProjectsQuery projectsQuery)
-            => _projectRepository.GetScoredTotalCountAsync(projectsQuery);
+        public Task<int> GetQueryTotalCountAsync(ProjectsQuery projectsQuery)
+            => _projectRepository.GetQueryTotalCountAsync(projectsQuery);
 
         public Task<IReadOnlyCollection<ProjectDetails>> GetByAuthorIdAsync(long authorId)
             => _projectRepository.GetByAuthorIdAsync(authorId);

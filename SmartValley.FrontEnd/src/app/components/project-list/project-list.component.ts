@@ -8,6 +8,8 @@ import {CountryAutocompleteComponent} from './country-autocomplete/country-autoc
 import {CategorySelectComponent} from './category-select/category-select.component';
 import {ProjectsOrderBy} from '../../api/application/projects-order-by.enum';
 import {SortDirection} from '../../api/sort-direction.enum';
+import {ProjectResponse} from '../../api/project/project-response';
+import {ProjectQuery} from '../../api/project/project-query';
 
 @Component({
   selector: 'app-project-list',
@@ -18,7 +20,7 @@ export class ProjectListComponent implements OnInit {
 
   public ASC: SortDirection = SortDirection.Ascending;
   public DESC: SortDirection = SortDirection.Descending;
-  public scoredProjects: ScoredProject[];
+  public projects: ScoredProject[];
   public scoringRatingFrom: number;
   public scoringRatingTo: number;
   public sortedBy: ProjectsOrderBy;
@@ -45,18 +47,17 @@ export class ProjectListComponent implements OnInit {
     await this.updateProjectsAsync();
   }
 
-  public async getFilteredProjectsAsync() {
-    return await this.projectApiClient.getFilteredProjectsAsync({
-      offset: this.currentPage * this.projectOnPageCount,
-      count: this.projectOnPageCount,
-      searchString: this.projectSearch,
-      minimumScore: this.scoringRatingFrom,
-      maximumScore: this.scoringRatingTo,
-      countryCode: this.country.selectedCountryCode,
-      categoryType: this.category.selectedCategoryId,
-      orderBy: this.sortedBy,
-      direction: this.sortDirection
-    });
+  private createScoredProject(response: ProjectResponse): ScoredProject {
+    return <ScoredProject> {
+      id: response.id,
+      address: response.address,
+      category: response.category,
+      country: response.country,
+      description: response.description,
+      name: response.name,
+      score: response.score,
+      scoringEndDate: response.scoringEndDate
+    };
   }
 
   public getProjectLink(id) {
@@ -70,8 +71,19 @@ export class ProjectListComponent implements OnInit {
   }
 
   public async updateProjectsAsync() {
-    const projectsResponse = await this.getFilteredProjectsAsync();
-    this.scoredProjects = projectsResponse.items;
+    const projectsResponse = await this.projectApiClient.queryProjectsAsync(<ProjectQuery>{
+      offset: this.currentPage * this.projectOnPageCount,
+      count: this.projectOnPageCount,
+      onlyScored: false,
+      searchString: this.projectSearch,
+      minimumScore: this.scoringRatingFrom,
+      maximumScore: this.scoringRatingTo,
+      countryCode: this.country.selectedCountryCode,
+      categoryType: this.category.selectedCategoryId,
+      orderBy: this.sortedBy,
+      direction: this.sortDirection
+    });
+    this.projects = projectsResponse.items.map(p => this.createScoredProject(p));
     this.totalProjects = projectsResponse.totalCount;
   }
 
