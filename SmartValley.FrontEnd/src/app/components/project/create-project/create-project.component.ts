@@ -13,6 +13,9 @@ import {isNullOrUndefined} from 'util';
 import * as moment from 'moment';
 import {TeamMemberRequest} from '../../../api/project/team-member-request';
 import {UpdateProjectRequest} from '../../../api/project/update-project-request';
+import {DialogService} from '../../../services/dialog-service';
+import {Paths} from '../../../paths';
+import {ErrorCode} from '../../../shared/error-code.enum';
 
 @Component({
   selector: 'app-create-project',
@@ -32,6 +35,7 @@ export class CreateProjectComponent implements OnInit {
   public socialFormGroup: FormGroup;
 
   private isEditing = false;
+  private projectId: number;
 
   @ViewChild('name') public nameRow: ElementRef;
   @ViewChild('category') public categoryRow: ElementRef;
@@ -40,11 +44,14 @@ export class CreateProjectComponent implements OnInit {
   @ViewChild('description') public descriptionRow: ElementRef;
   @ViewChildren('required') public requiredFields: QueryList<any>;
 
+
   constructor(private formBuilder: FormBuilder,
               private notificationsService: NotificationsService,
               private projectApiClient: ProjectApiClient,
               private translateService: TranslateService,
-              private dictionariesService: DictionariesService) {
+              private dictionariesService: DictionariesService,
+              private dialogService: DialogService,
+              private router: Router) {
 
     this.categories = this.dictionariesService.categories.map(i => <SelectItem>{
       label: i.value,
@@ -298,6 +305,7 @@ export class CreateProjectComponent implements OnInit {
     if (data == null) {
       return;
     }
+    this.projectId = data.id;
     this.isEditing = true;
     const enumItems = Object.keys(SocialMediaTypeEnum)
       .filter(value => isNaN(+value));
@@ -366,4 +374,20 @@ export class CreateProjectComponent implements OnInit {
   }
 
 
+  public async deleteProjectAsync(): Promise<void> {
+    const shouldDelete = await this.dialogService.showDeleteProjectModalAsync();
+    if (shouldDelete) {
+      try {
+        await this.projectApiClient.deleteAsync(this.projectId);
+      } catch (e) {
+        if (e.error.errorCode === ErrorCode.ProjectCouldntBeRemoved) {
+          this.notificationsService.warn(
+            this.translateService.instant('Common.Failed'),
+            this.translateService.instant('CreateProject.ProjectCouldntbeRemoved')
+          );
+        }
+      }
+      await this.router.navigate([Paths.Root]);
+    }
+  }
 }

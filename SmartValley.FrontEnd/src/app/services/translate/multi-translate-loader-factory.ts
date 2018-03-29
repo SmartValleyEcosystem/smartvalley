@@ -38,6 +38,7 @@ export function multiTranslateLoaderFactory() {
     'components/common/create-new-expert-modal/create-new-expert-modal.component',
     'components/admin-panel/admin-experts-list/admin-expert-list.component',
     'components/common/edit-expert-modal/edit-expert-modal.component',
+    'components/common/delete-project-modal/delete-project-modal.component',
     'components/common/experts-count-selection-modal/experts-count-selection-modal.component',
     'components/expert/expert.component',
     'components/expert/expert-work-place/expert-work-place.component',

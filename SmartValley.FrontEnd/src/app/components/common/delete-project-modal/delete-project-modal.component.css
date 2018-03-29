@@ -1,0 +1,66 @@
+img {
+  width: 148px;
+  height: 148px;
+  display: block;
+  margin: 0 auto;
+  padding-top: 1em;
+}
+
+.dialog {
+  width: 400px;
+  height: 270px;
+  background-color: #ffffff;
+  padding: 61px 40px!important;
+  position: relative;
+}
+
+.dialog-title {
+  width: 359px;
+  height: 40px;
+  font-family: Roboto-Regular;
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 1.25;
+  letter-spacing: -0.1px;
+  text-align: left;
+  color: #000000;
+  margin: 40px 0 0 0;
+}
+
+.dialog-content {
+  font-family: Roboto-Regular;
+  font-size: 14px;
+  line-height: 1.43;
+  text-align: left;
+  color: #000000;
+  width: 338px;
+  height: 20px;
+  margin: 20px 0 0 0;
+  padding: 0;
+  text-align: center;
+}
+
+.dialog-button {
+  width: 150px;
+  height: 36px;
+  margin-top: 40px;
+}
+
+.dialog-close {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: 36px;
+  height: 36px;
+  background-color: rgba(216, 216, 216, 0);
+  font-size: 37px;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  padding: 0;
+  outline: none;
+}
+
+.dialog-close .material-icons {
+  font-size: 35px;
+}

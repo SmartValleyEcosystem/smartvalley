@@ -114,3 +114,15 @@ textarea {
 .member__remove {
   top: 1px;
 }
+
+.link-btn {
+  background: none !important;
+  border: none;
+  padding: 0 !important;
+  font: inherit;
+  /*border is optional*/
+  cursor: pointer;
+  color: #5d49f2;
+  text-decoration: none !important;
+  margin-left: 490px;
+}

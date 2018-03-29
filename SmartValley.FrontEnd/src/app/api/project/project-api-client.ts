@@ -29,6 +29,10 @@ export class ProjectApiClient extends BaseApiClient {
     await this.http.put(`${this.baseApiUrl}/projects/${request.id}/`, request).toPromise();
   }
 
+ public async deleteAsync(projectId: number): Promise<void> {
+    await this.http.delete(`${this.baseApiUrl}/projects/${projectId}/`).toPromise();
+  }
+
   async getDetailsByIdAsync(id: number): Promise<ProjectDetailsResponse> {
     return this.http.get<ProjectDetailsResponse>(`${this.baseApiUrl}/projects/${id}/details`)
       .toPromise();

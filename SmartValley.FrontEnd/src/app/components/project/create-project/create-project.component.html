@@ -135,5 +135,6 @@
       <span class="socials__add-button" (click)="addTeamMember()">{{ 'CreateProject.AddTeamMember' | translate }}</span>
     </div>
     <input type="submit" class="main-btn save-btn" value="{{ 'CreateProject.Save' | translate }}">
+    <input *ngIf="isEditing" type="button" class="link-btn" (click)="deleteProjectAsync()" value="{{ 'CreateProject.Delete' | translate }}">
   </form>
 </div>

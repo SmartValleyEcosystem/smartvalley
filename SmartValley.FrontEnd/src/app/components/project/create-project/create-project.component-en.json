@@ -36,6 +36,7 @@
     "Blockchain": "Which blockchain you want to use?",
     "MvpLink": "Prototype/MVP link",
     "Save": "Save",
+    "Delete": "Delete this project",
     "Dialog": "Your project for scoring is being created. Please wait for completion of transaction.",
     "ProjectCreated": "Project created",
     "ProjectUpdated": "Project updated",
@@ -56,6 +57,7 @@
     "Role": "Role",
     "LinkedinLink": "Link to Linkedin",
     "RolePlaceholder": "For ex., CTO",
-    "FacebookLink": "Link to Facebook"
+    "FacebookLink": "Link to Facebook",
+    "ProjectCouldntbeRemoved": "Project could not be removed"
   }
 }

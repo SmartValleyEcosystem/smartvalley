@@ -26,6 +26,7 @@ import {EditExpertModalData} from '../components/common/edit-expert-modal/edit-e
 import {ScoringCostComponent} from '../components/common/scoring-cost-modal/scoring-cost.component';
 import {WelcomeModalComponent} from '../components/common/welcome-modal/welcome-modal.component';
 import {WelcomeModalData} from '../components/common/welcome-modal/welcome-modal-data';
+import {DeleteProjectModalComponent} from '../components/common/delete-project-modal/delete-project-modal.component';
 
 @Injectable()
 export class DialogService {
@@ -141,6 +142,10 @@ export class DialogService {
     return this.openModalAsync(EditExpertModalComponent, expertData);
   }
 
+  public async showDeleteProjectModalAsync(): Promise<boolean> {
+    return this.openModalAsync(DeleteProjectModalComponent, {});
+  }
+
   private openModal<TComponent, TData>(componentType: ComponentType<TComponent>,
                                        data: TData,
                                        disableClose: boolean = false): MatDialogRef<TComponent> {
@@ -154,4 +159,6 @@ export class DialogService {
       .afterClosed()
       .toPromise<boolean>();
   }
+
+
 }

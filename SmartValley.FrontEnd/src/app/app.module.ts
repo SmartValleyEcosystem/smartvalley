@@ -123,6 +123,7 @@ import {RegisterConfirmComponent} from './components/authentication/register-con
 import {RegisterComponent} from './components/authentication/register/register.component';
 import {CreateProjectComponent} from './components/project/create-project/create-project.component';
 import {WelcomeModalComponent} from './components/common/welcome-modal/welcome-modal.component';
+import { DeleteProjectModalComponent } from './components/common/delete-project-modal/delete-project-modal.component';
 
 @NgModule({
   declarations: [
@@ -185,7 +186,8 @@ import {WelcomeModalComponent} from './components/common/welcome-modal/welcome-m
     RegisterComponent,
     ConfirmEmailComponent,
     RegisterConfirmComponent,
-    WelcomeModalComponent
+    WelcomeModalComponent,
+    DeleteProjectModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -201,7 +203,8 @@ import {WelcomeModalComponent} from './components/common/welcome-modal/welcome-m
     SetExpertsModalComponent,
     ChangeEmailModalComponent,
     ScoringCostComponent,
-    WelcomeModalComponent
+    WelcomeModalComponent,
+    DeleteProjectModalComponent
   ],
   imports: [
     FileUploadModule,
