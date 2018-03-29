@@ -25,7 +25,7 @@
       <input type="submit" class="ghost-btn apply-filters" value="{{ 'ProjectList.ApplyFilters' | translate }}">
       <span (click)="clearFilters()" class="clear-form">{{ 'ProjectList.ClearFilters' | translate }}</span>
     </form>
-    <p-table [value]="projects">
+    <p-table class="table" [value]="projects">
       <ng-template pTemplate="header">
         <tr>
           <th><span class="sortable" [ngClass]="{
@@ -58,9 +58,11 @@
           <ng-template #elseEndDate>
             <td>&mdash;</td>
           </ng-template>
-          <td *ngIf="project.score; else elseScore" class="scoring-col">{{project.score | roundNumberPipe}}/100</td>
+          <td *ngIf="project.score; else elseScore" class="scoring-col">
+            <span class="primary-color-text">{{project.score | roundNumberPipe}}</span>
+            <span [ngClass]="project.score === 100 ? 'primary-color-text' : 'gray-color-text'">/100</span></td>
           <ng-template #elseScore>
-            <td class="scoring-col">&mdash;</td>
+            <td class="gray-color-text scoring-col">&mdash;</td>
           </ng-template>
         </tr>
       </ng-template>
