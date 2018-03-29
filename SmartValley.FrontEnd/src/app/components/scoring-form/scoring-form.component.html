@@ -1,0 +1,202 @@
+<div class="content">
+  <h1 class="title">{{ 'ScoringApplication.Title' | translate }}</h1>
+  <p>{{ 'ScoringApplication.PageDescription' | translate }}</p>
+  <form [formGroup]="questionFormGroup" autocomplete="off" class="partitions-page" (ngSubmit)="onSubmit()">
+    <div class="partition">
+      <h2 class="partition-title" id="partition_common">{{ 'ScoringApplication.CommonTitle' | translate }}</h2>
+      <div class="partition-block" formGroupName="commonGroup">
+        <div class="form-control-row">
+          <p class="control-label">
+            <label for="control_name">{{ 'ScoringApplication.Name' | translate }}</label>
+          </p>
+          <input class="input input-name" formControlName="name" type="text" id="control_name" placeholder="{{ 'ScoringApplication.Name' | translate }}">
+        </div>
+        <div class="control-row">
+          <p class="control-label">
+            <label for="project-area">{{ 'ScoringApplication.ProjectArea' | translate }}</label>
+          </p>
+          <app-select [isNeedToTranslate]="true" class="select-component input-component" formControlName="projectArea" [elementId]="'project-area'" [placeholder]="'ScoringApplication.AllAreas' | translate" [items]="categories"></app-select>
+        </div>
+        <div class="control-row control-row__flex">
+          <div>
+            <p class="control-label">
+              <label for="stage">{{ 'ScoringApplication.Stage' | translate }}</label>
+            </p>
+            <app-select [isNeedToTranslate]="true" class="input-component" formControlName="stage" [elementId]="'stage'" [items]="stages" [placeholder]="'ScoringApplication.AllStages' | translate"></app-select>
+          </div>
+          <div class="raised-wrapper">
+            <p class="control-label">
+              <label for="control_raised">{{ 'ScoringApplication.Raised' | translate }}</label>
+            </p>
+            <input class="input input-raised" type="text" formControlName="raised" name="control_raised" id="control_raised" placeholder="{{ 'ScoringApplication.Raised' | translate }}">
+          </div>
+        </div>
+        <div class="control-row">
+          <p class="control-label">
+            <label for="country">{{ 'ScoringApplication.Country' | translate }}</label>
+          </p>
+          <app-autocomplete class="input-component" formControlName="country" [elementClass]="'wide-autocomplete'" [elementId]="'country'" [placeholder]="'ScoringApplication.AllCountries' | translate" [allItems]="countries"></app-autocomplete>
+        </div>
+        <div class="form-control-row">
+          <p class="control-label">
+            <label for="control_description">{{ 'ScoringApplication.Description' | translate }}</label>
+          </p>
+          <textarea class="input" formControlName="description" name="control_description" id="control_description" cols="30" rows="10"></textarea>
+        </div>
+        <div class="form-control-row">
+          <p class="control-label">
+            <label for="control_website">{{ 'ScoringApplication.Website' | translate }}</label>
+          </p>
+          <input class="input" formControlName="website" type="text" name="control_website" id="control_website">
+        </div>
+        <div class="form-control-row">
+          <p class="control-label">
+            <label for="control_link-to-wp">{{ 'ScoringApplication.LinkToWP' | translate }}</label>
+          </p>
+          <input class="input" formControlName="linkToWP" type="text" name="control_link-to-wp" id="control_link-to-wp">
+        </div>
+        <div class="form-control-row">
+          <p class="control-label">
+            <label for="control_ico-date">{{ 'ScoringApplication.ICODate' | translate }}</label>
+          </p>
+          <p-calendar [inputId]="'control_ico-date'" formControlName="icoDate" [inputStyleClass]="'input input-date'"></p-calendar>
+        </div>
+        <div class="form-control-row">
+          <p class="control-label">
+            <label for="control_email">{{ 'ScoringApplication.ContactEmail' | translate }}</label>
+          </p>
+          <input class="input" type="text" formControlName="email" name="control_email" id="control_email">
+        </div>
+      </div>
+      <h2 class="partition-title" id="partition_social">{{ 'ScoringApplication.SocialMedia' | translate }}</h2>
+      <div class="partition-block" formGroupName="socialsGroup">
+        <div class="socials__labels-wrapper">
+          <p class="control-label">
+            <label>{{ 'ScoringApplication.Network' | translate }}</label>
+          </p>
+          <p class="control-label socials__link-label">
+            <label>{{ 'ScoringApplication.Link' | translate }}</label>
+          </p>
+        </div>
+        <div *ngFor="let social of activeSocials; first as isFirst" class="socials__row">
+          <app-select class="input-component"  formControlName="{{'social_' + social}}" [elementId]="'social_'+ social" [items]="socials" [placeholder]="'ScoringApplication.SocialMediaPlaceholder' | translate"></app-select>
+          <input type="text" [formControlName]="'social-link_' + social" class="input socials__input" placeholder="{{ 'ScoringApplication.Http' | translate }}">
+          <span (click)="removeSocialMedia(social)" class="socials__remove" *ngIf="!isFirst"></span>
+        </div>
+        <span class="socials__add-button" (click)="addSocialMedia()">{{ 'ScoringApplication.AddMore' | translate }}</span>
+        <p class="control-label">{{ 'ScoringApplication.LinkToArticle' | translate }}</p>
+        <div *ngFor="let article of activeArticleLink; first as isFirst" class="socials__row">
+          <input type="text" [formControlName]="'article-link_' + article" class="input input-wide" placeholder="{{ 'ScoringApplication.Http' | translate }}">
+          <span (click)="removeArticleLink(article)" class="socials__remove" *ngIf="!isFirst"></span>
+        </div>
+        <span class="socials__add-button" (click)="addArticleLink()">{{ 'ScoringApplication.AddLink' | translate }}</span>
+      </div>
+      <div formGroupName="teamGroup">
+        <h2 class="partition-title" id="partition_team">{{ 'ScoringApplication.TeamTitle' | translate }}</h2>
+        <div class="partition-block">
+          <div *ngFor="let member of activeTeamMembers; first as isFirst">
+            <h3 class="member-name">{{ 'ScoringApplication.Member' | translate }} {{ member }}</h3>
+            <div class="control-row">
+              <p class="control-label">
+                <label for="team_member_name_{{member}}">{{ 'ScoringApplication.FullName' | translate }}</label>
+              </p>
+              <input class="input" formControlName="team_member_name_{{member}}" id="team_member_name_{{member}}" />
+            </div>
+            <div class="control-row">
+              <p class="control-label">
+                <label for="team_member_role_{{member}}">{{ 'ScoringApplication.Role' | translate }}</label>
+              </p>
+              <input class="input" formControlName="team_member_role_{{member}}" id="team_member_role_{{member}}" />
+            </div>
+            <div class="control-row">
+              <p class="control-label">
+                <label for="team_member_linkedin_{{member}}">{{ 'ScoringApplication.TeamLinkLinkedin' | translate }}</label>
+              </p>
+              <input class="input" formControlName="team_member_linkedin_{{member}}" placeholder="{{ 'ScoringApplication.Http' | translate}}" id="team_member_linkedin_{{member}}" />
+            </div>
+            <div class="control-row">
+              <p class="control-label">
+                <label for="team_member_facebook_{{member}}">{{ 'ScoringApplication.TeamLinkFacebook' | translate }}</label>
+              </p>
+              <input class="input" formControlName="team_member_facebook_{{member}}" placeholder="{{ 'ScoringApplication.Http' | translate}}" id="team_member_facebook_{{member}}" />
+            </div>
+            <div class="control-row">
+              <p class="control-label">
+                <label for="team_member_experience_{{member}}">{{ 'ScoringApplication.Experience' | translate }}</label>
+              </p>
+              <textarea class="input" formControlName="team_member_experience_{{member}}" placeholder="{{ 'ScoringApplication.ExperiencePlaceholder' | translate}}" id="team_member_experience_{{member}}" ></textarea>
+            </div>
+          </div>
+          <span class="socials__add-button" (click)="addTeamMember()">{{ 'ScoringApplication.AddTeam' | translate }}</span>
+        </div>
+      </div>
+      <div formGroupName="questionsGroup" *ngFor="let partition of partitions; let index = index;">
+        <h2 class="partition-title" id="partition_{{partition.order}}">{{index + 2}}. {{partition.name | translate}}</h2>
+        <div class="partition-block">
+          <div class="control-row" *ngFor="let question of partition.questions; let questionIndex = index" [ngSwitch]="getQuestionTypeById(question.type)">
+            <div *ngIf="isParentQuestionAnswered(question.parentId)">
+              <div *ngSwitchCase="questionTypeLine">
+                <p class="control-label">
+                  <label for="control_{{question.id}}">{{ question.key | translate }}</label>
+                </p>
+                <input class="input" type="text" formControlName="{{'control_' + question.id}}" id="control_{{question.id}}">
+              </div>
+              <div *ngSwitchCase="questionTypeMultiLine">
+                <p class="control-label">
+                  <label for="control_{{question.id}}">{{ question.key | translate }}</label>
+                </p>
+                <textarea class="input" formControlName="{{'control_' + question.id}}" id="control_{{questionIndex}}" cols="30" rows="10"></textarea>
+              </div>
+              <div *ngSwitchCase="questionTypeCombobox">
+                <p class="control-label">
+                  <label for="control_{{question.id}}">{{ question.key | translate }}</label>
+                </p>
+                <app-select class="input-component" formControlName="{{'control_' + question.id}}" [elementId]="'control_' + question.id" [items]="[]"></app-select>
+              </div>
+              <div *ngSwitchCase="questionTypeDateTime">
+                <p class="control-label">
+                  <label for="control_{{question.id}}">{{ question.key | translate }}</label>
+                </p>
+                <p-calendar [inputId]="'control_' + question.id" formControlName="{{'control_' + question.id}}" [inputStyleClass]="'input input-date'"></p-calendar>
+              </div>
+              <div *ngSwitchCase="questionTypeCheckBox">
+                <p class="control-label">
+                  <label for="control_{{question.id}}">{{ question.key | translate }}</label>
+                </p>
+                <app-input-switch [labelOff]="'ScoringApplication.No' | translate" [labelOn]="'ScoringApplication.Yes' | translate" class="input-component" formControlName="{{'control_' + question.id}}"></app-input-switch>
+              </div>
+              <div *ngSwitchCase="questionTypeUrl">
+                <p class="control-label">
+                  <label for="control_{{question.id}}">{{ question.key | translate }}</label>
+                </p>
+                <input class="input" type="text" formControlName="{{'control_' + question.id}}" id="control_{{question.id}}">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="partitions-menu">
+      <sticky [sticky-offset-top]="20">
+        <ul class="partitions-list">
+          <li class="partition-item" (click)="scrollToElement('common')">
+            {{ 'ScoringApplication.CommonTitle' | translate }}
+          </li>
+          <li class="partition-item" (click)="scrollToElement('social')">
+            {{ 'ScoringApplication.SocialMedia' | translate }}
+          </li>
+          <li class="partition-item" (click)="scrollToElement('team')">
+            {{ 'ScoringApplication.TeamTitle' | translate }}
+          </li>
+          <li class="partition-item" (click)="scrollToElement(partition.order)" *ngFor="let partition of partitions; let index = index;">
+            {{index + 2}}. {{partition.name | translate}}
+          </li>
+        </ul>
+        <div class="partition-menu__inputs">
+          <input (click)="saveDraftAsync()" type="button" class="main-btn" value="{{ 'ScoringApplication.SaveDraft' | translate }}">
+          <input type="submit" class="main-btn" value="{{ 'ScoringApplication.SendForScore' | translate }}">
+        </div>
+      </sticky>
+    </div>
+  </form>
+</div>

@@ -1,39 +1,86 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, forwardRef, OnChanges} from '@angular/core';
+import {FormGroup, FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import {SelectItem} from 'primeng/api';
-import {FormGroup} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-select',
   templateUrl: './select.component.html',
-  styleUrls: ['./select.component.css']
+  styleUrls: ['./select.component.css'],
+  providers: [
+    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => SelectComponent), multi: true },
+    { provide: NG_VALIDATORS, useExisting: forwardRef(() => SelectComponent), multi: true }
+  ]
 })
-export class SelectComponent implements OnInit {
+export class SelectComponent implements ControlValueAccessor, OnChanges {
 
-  public isAutocompleteHidden: boolean;
+  public propagateChange: any = () => {};
+  public validateFn: any = () => {};
+  public isSelectHidden: boolean;
   public isSelectListHovered: boolean;
   public isSearchInputInFocus: boolean;
   public selectedInput = false;
-  public selectedItem: string;
-  public selectedItemId: number;
+
+  public selectedItemLabel: string;
+  @Input('selectedItemValue') _selectedItemValue: string|number|null = null;
+
   @Input() placeholder: string;
   @Input() items: SelectItem[];
   @Input() elementId: string;
   @Input() elementName: string;
   @Input() form?: FormGroup;
+  @Input() isNeedToTranslate? = false;
+  @Input() defaultValue?: string|number;
 
-  constructor(private translateService: TranslateService) {
+  constructor( private translateService: TranslateService ) {}
+
+  get selectedItemValue() {
+    return this._selectedItemValue;
   }
 
-  public async ngOnInit() {
+  set selectedItemValue(value: string|number) {
+    this._selectedItemValue = value;
+    this.propagateChange(value);
+  }
+
+  public ngOnChanges(inputs) {
+    this.propagateChange(this.selectedItemValue);
+  }
+
+  public writeValue(value) {
+    if (value) {
+      this.selectedItemValue = value;
+    }
+  }
+
+  public ngOnInit() {
+    this.selectedItemLabel = '';
+    this.selectedItemValue = '';
     this.isSelectListHovered = false;
     this.isSearchInputInFocus = false;
-    this.selectedItem = '';
     this.hideSelectList();
+    if (this.defaultValue) {
+      this.setDefaultValue();
+    }
+  }
+
+  public setDefaultValue() {
+    for (const item of this.items) {
+      if (item.value === this.defaultValue) {
+        this.selectedItemLabel = this.isNeedToTranslate ? this.translateService.instant(item.label) : item.label;
+      }
+    }
+    this.selectedItemValue = this.defaultValue;
+  }
+
+  public registerOnTouched() {}
+
+  public validate(c: FormControl) {
+    return this.validateFn(c);
   }
 
   public showSelectList() {
-    this.isAutocompleteHidden = false;
+    this.isSelectHidden = false;
     this.selectedInput = true;
   }
 
@@ -44,7 +91,7 @@ export class SelectComponent implements OnInit {
     if (this.isSearchInputInFocus) {
       return;
     }
-    this.isAutocompleteHidden = true;
+    this.isSelectHidden = true;
     this.selectedInput = false;
   }
 
@@ -56,19 +103,28 @@ export class SelectComponent implements OnInit {
     this.isSearchInputInFocus = status;
   }
 
-  public selectItem(label, value) {
-    this.selectedItem = label;
-    this.selectedItemId = value;
-    this.isAutocompleteHidden = true;
+  public selectItem(label: string, value: string|number|null) {
+    this.selectedItemLabel = label;
+    if (this.isNeedToTranslate) {
+      this.selectedItemLabel = this.translateService.instant(label);
+    }
+    this.selectedItemValue = value;
+    this.isSelectHidden = true;
   }
 
   public onSelectInputChange() {
-    this.selectedItem = '';
-    this.selectedItemId = undefined;
+    this.selectedItemValue = '';
   }
 
   public clearItems() {
-    this.selectItem('', '');
+    this.selectedItemValue = '';
+    this.selectedItemLabel = '';
+    this.isSelectHidden = true;
+  }
+
+  registerOnChange(fn) {
+    this.propagateChange = fn;
   }
 
 }
+
