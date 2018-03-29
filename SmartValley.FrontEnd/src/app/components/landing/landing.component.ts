@@ -34,6 +34,10 @@ export class LandingComponent implements OnInit {
     this.projects = projectResponse.items.map(p => this.createScoredProject(p));
   }
 
+  public navigateToProject(id){
+    this.router.navigate([Paths.Report + '/' + id]);
+  }
+
   private createScoredProject(response: ProjectResponse): ScoredProject {
     return <ScoredProject> {
       id: response.id,
