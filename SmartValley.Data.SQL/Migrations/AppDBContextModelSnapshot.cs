@@ -510,8 +510,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("BitcointalkLink");
-
                     b.Property<string>("Category");
 
                     b.Property<string>("ContactEmail");
@@ -520,23 +518,13 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<DateTimeOffset>("Created");
 
-                    b.Property<string>("FacebookLink");
-
-                    b.Property<string>("GitHubLink");
-
-                    b.Property<string>("ICODate");
-
-                    b.Property<string>("LinkedInLink");
-
-                    b.Property<string>("MediumLink");
+                    b.Property<string>("IcoDate");
 
                     b.Property<string>("ProjectDescription");
 
                     b.Property<long>("ProjectId");
 
                     b.Property<string>("ProjectName");
-
-                    b.Property<string>("RedditLink");
 
                     b.Property<DateTimeOffset?>("Saved");
 
@@ -545,10 +533,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<string>("Status");
 
                     b.Property<DateTimeOffset?>("Submitted");
-
-                    b.Property<string>("TelegramLink");
-
-                    b.Property<string>("TwitterLink");
 
                     b.Property<string>("WhitePaper");
 
@@ -787,6 +771,50 @@ namespace SmartValley.Data.SQL.Migrations
                         .WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.OwnsOne("SmartValley.Domain.Entities.SocialNetworks", "SocialNetworks", b1 =>
+                        {
+                            b1.Property<long?>("ScoringApplicationId");
+
+                            b1.Property<string>("BitcoinTalk")
+                                .HasColumnName("BitcointalkLink")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Facebook")
+                                .HasColumnName("FacebookLink")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Github")
+                                .HasColumnName("GitHubLink")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Linkedin")
+                                .HasColumnName("LinkedInLink")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Medium")
+                                .HasColumnName("MediumLink")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Reddit")
+                                .HasColumnName("RedditLink")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Telegram")
+                                .HasColumnName("TelegramLink")
+                                .HasMaxLength(500);
+
+                            b1.Property<string>("Twitter")
+                                .HasColumnName("TwitterLink")
+                                .HasMaxLength(500);
+
+                            b1.ToTable("ScoringApplications");
+
+                            b1.HasOne("SmartValley.Domain.ScoringApplication")
+                                .WithOne("SocialNetworks")
+                                .HasForeignKey("SmartValley.Domain.Entities.SocialNetworks", "ScoringApplicationId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
                 });
 
             modelBuilder.Entity("SmartValley.Domain.ScoringApplicationAdviser", b =>

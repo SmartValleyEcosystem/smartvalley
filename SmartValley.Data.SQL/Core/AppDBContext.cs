@@ -286,6 +286,20 @@ namespace SmartValley.Data.SQL.Core
                         .HasIndex(x => x.ProjectId)
                         .IsUnique();
 
+            modelBuilder.Entity<ScoringApplication>()
+                        .OwnsOne(x => x.SocialNetworks,
+                                 sn =>
+                                 {
+                                     sn.Property(x => x.Github).HasColumnName("GitHubLink");
+                                     sn.Property(x => x.BitcoinTalk).HasColumnName("BitcointalkLink");
+                                     sn.Property(x => x.Facebook).HasColumnName("FacebookLink");
+                                     sn.Property(x => x.Linkedin).HasColumnName("LinkedInLink");
+                                     sn.Property(x => x.Medium).HasColumnName("MediumLink");
+                                     sn.Property(x => x.Reddit).HasColumnName("RedditLink");
+                                     sn.Property(x => x.Telegram).HasColumnName("TelegramLink");
+                                     sn.Property(x => x.Twitter).HasColumnName("TwitterLink");
+                                 });
+
             modelBuilder.Entity<ScoringApplicationQuestion>()
                         .HasIndex(x => x.Key)
                         .IsUnique();

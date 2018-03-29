@@ -1,4 +1,5 @@
-﻿using SmartValley.Domain.Entities;
+﻿using SmartValley.Domain;
+using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Projects.Responses
 {
@@ -29,6 +30,18 @@ namespace SmartValley.WebApi.Projects.Responses
                        Role = teamMember.Role,
                        Facebook = teamMember.Facebook,
                        LinkedIn = teamMember.Linkedin
+                   };
+        }
+
+        public static ProjectTeamMemberResponse Create(ScoringApplicationTeamMember teamMember)
+        {
+            return new ProjectTeamMemberResponse
+                   {
+                       FullName = teamMember.FullName,
+                       About = teamMember.About,
+                       Role = teamMember.ProjectRole,
+                       Facebook = teamMember.FacebookLink,
+                       LinkedIn = teamMember.LinkedInLink
                    };
         }
     }

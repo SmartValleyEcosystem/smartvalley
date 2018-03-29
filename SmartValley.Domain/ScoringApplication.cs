@@ -27,25 +27,11 @@ namespace SmartValley.Domain
 
         public string WhitePaper { get; set; }
 
-        public string ICODate { get; set; }
+        public string IcoDate { get; set; }
 
         public string ContactEmail { get; set; }
 
-        public string FacebookLink { get; set; }
-
-        public string BitcointalkLink { get; set; }
-
-        public string MediumLink { get; set; }
-
-        public string RedditLink { get; set; }
-
-        public string TelegramLink { get; set; }
-
-        public string TwitterLink { get; set; }
-
-        public string GitHubLink { get; set; }
-
-        public string LinkedInLink { get; set; }
+        public SocialNetworks SocialNetworks { get; set; }
 
         public long? CountryId { get; set; }
 
