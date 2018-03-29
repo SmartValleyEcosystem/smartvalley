@@ -6,6 +6,8 @@ import {BalanceService} from '../../services/balance/balance.service';
 import {Balance} from '../../services/balance/balance';
 import {BlockiesService} from '../../services/blockies-service';
 import {UserContext} from '../../services/authentication/user-context';
+import {ExpertApiClient} from '../../api/expert/expert-api-client';
+import {ExpertApplicationStatus} from '../../services/expert/expert-application-status.enum';
 
 @Component({
   selector: 'app-header',
@@ -28,7 +30,8 @@ export class HeaderComponent implements OnInit {
               private balanceService: BalanceService,
               private blockiesService: BlockiesService,
               private authenticationService: AuthenticationService,
-              private userContext: UserContext) {
+              private userContext: UserContext,
+              private expertApiClient: ExpertApiClient) {
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
     this.userContext.userContextChanged.subscribe((user) => this.updateAccount(user));
   }
@@ -70,13 +73,17 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  async receiveEth() {
-    await this.balanceService.receiveEtherAsync();
-  }
-
-  async navigateToScoring() {
+  async navigateToExpertApplication() {
     if (await this.authenticationService.authenticateAsync()) {
-      await this.router.navigate([Paths.RegisterExpert]);
+      const address = this.userContext.getCurrentUser().account;
+      const expertStatusResponse = await this.expertApiClient.getExpertStatusAsync(address);
+      if (expertStatusResponse.status === ExpertApplicationStatus.Pending) {
+        await this.router.navigate([Paths.ExpertStatus]);
+      } else if (expertStatusResponse.status === ExpertApplicationStatus.Accepted) {
+        await this.router.navigate([Paths.Expert]);
+      } else {
+        await this.router.navigate([Paths.RegisterExpert]);
+      }
     }
   }
 

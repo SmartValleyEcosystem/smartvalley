@@ -30,8 +30,8 @@ const countries = <Country[]>require('../../../assets/countryList.json');
 export class RegisterExpertComponent implements OnInit {
 
   public registryForm: FormGroup;
-  public isLetterShow = false;
-  public isKYCShow = false;
+  public showLetter = false;
+  public showKYC = false;
   public isProjectCreating: boolean;
 
   public sex: SelectItem[];
@@ -63,12 +63,12 @@ export class RegisterExpertComponent implements OnInit {
   }
 
   public showNext() {
-    if (this.isLetterShow === false) {
-      this.isLetterShow = true;
+    if (this.showLetter === false) {
+      this.showLetter = true;
       return;
     }
-    if (this.isKYCShow === false) {
-      this.isKYCShow = true;
+    if (this.showKYC === false) {
+      this.showKYC = true;
       return;
     }
   }
@@ -160,7 +160,6 @@ export class RegisterExpertComponent implements OnInit {
   }
 
   private createExpertApplicationRequest(transactionHash: string, areas: Array<AreaType>): CreateExpertApplicationRequest {
-    const user = this.userContext.getCurrentUser();
     const form = this.registryForm.value;
     const input = new FormData();
     input.append('scan', this.document);
@@ -168,14 +167,13 @@ export class RegisterExpertComponent implements OnInit {
     input.append('cv', this.cv);
     input.append('transactionHash', transactionHash);
     input.append('sex', (<number>form.selectedSex).toString());
-    input.append('applicantAddress', user.account);
     input.append('birthDate', moment(form.birthDate).toISOString());
     input.append('city', form.city);
     input.append('countryIsoCode', form.country.code);
     input.append('documentNumber', form.number);
     input.append('documentType', form.selectedDocumentType);
     input.append('facebookLink', form.facebook);
-    input.append('linkedInLink', form.linkedIn);
+    input.append('linkedInLink', form.linkedin);
     input.append('firstName', form.firstName);
     input.append('lastName', form.secondName);
     input.append('description', form.description);
@@ -207,7 +205,6 @@ export class RegisterExpertComponent implements OnInit {
     }
 
     const applicationHash = this.getApplicationHash(areas);
-
     const transactionHash = await this.applyToContractAsync(areas, applicationHash);
     if (transactionHash == null) {
       return false;

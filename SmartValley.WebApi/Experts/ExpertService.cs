@@ -38,16 +38,14 @@ namespace SmartValley.WebApi.Experts
             _clock = clock;
         }
 
-        public async Task CreateApplicationAsync(CreateExpertApplicationRequest request, AzureFile cv, AzureFile scan, AzureFile photo)
+        public async Task CreateApplicationAsync(CreateExpertApplicationRequest request, long userId, AzureFile cv, AzureFile scan, AzureFile photo)
         {
-            var user = await _userRepository.GetByAddressAsync(request.ApplicantAddress);
-
             var expertApplication = new ExpertApplication
                                     {
                                         FirstName = request.FirstName,
                                         LastName = request.LastName,
                                         Sex = request.Sex,
-                                        ApplicantId = user.Id,
+                                        ApplicantId = userId,
                                         BirthDate = request.BirthDate,
                                         Country = request.CountryIsoCode,
                                         City = request.City,
