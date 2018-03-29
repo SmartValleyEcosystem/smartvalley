@@ -368,6 +368,13 @@ a, button, span {
   cursor: pointer;
 }
 
+.title{
+  font-size: 32px;
+  font-family: Roboto-Bold;
+  color: #000;
+  margin-bottom: 20px;
+}
+
 @font-face {
   font-family: "AvenirNextCyr-Bold";
   src: url("/assets/fonts/AvenirNextCyr-Bold.otf") format("opentype");

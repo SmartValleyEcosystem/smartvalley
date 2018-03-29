@@ -17,6 +17,7 @@ export class Paths {
   public static readonly ConfirmEmail = 'auth/confirm/:token';
   public static readonly AdminExpertApplication = 'admin/expert/application';
   public static readonly ProjectList = 'projects';
+  public static readonly ScoringForm = 'scoring-form';
   public static readonly Register = 'register';
   public static readonly ConfirmRegister = 'confirm';
 }

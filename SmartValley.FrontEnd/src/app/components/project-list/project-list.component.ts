@@ -28,7 +28,6 @@ export class ProjectListComponent implements OnInit {
   public projectSearch: string;
   public projectOnPageCount = 10;
   public totalProjects: number;
-  public currentPage = 0;
   @ViewChild(CountryAutocompleteComponent) country: CountryAutocompleteComponent;
   @ViewChild(CategorySelectComponent) category: CategorySelectComponent;
 
@@ -44,7 +43,7 @@ export class ProjectListComponent implements OnInit {
     this.scoringRatingTo = 100;
     this.projectSearch = '';
 
-    await this.updateProjectsAsync();
+    await this.updateProjectsAsync(0);
   }
 
   private createScoredProject(response: ProjectResponse): ScoredProject {
@@ -67,12 +66,12 @@ export class ProjectListComponent implements OnInit {
   }
 
   public async submitFilters() {
-    await this.updateProjectsAsync();
+    await this.updateProjectsAsync(0);
   }
 
-  public async updateProjectsAsync() {
+  public async updateProjectsAsync(page: number) {
     const projectsResponse = await this.projectApiClient.queryProjectsAsync(<ProjectQuery>{
-      offset: this.currentPage * this.projectOnPageCount,
+      offset: page * this.projectOnPageCount,
       count: this.projectOnPageCount,
       onlyScored: false,
       searchString: this.projectSearch,
@@ -87,19 +86,20 @@ export class ProjectListComponent implements OnInit {
     this.totalProjects = projectsResponse.totalCount;
   }
 
-  public clearFilters() {
+  public async clearFilters() {
     this.scoringRatingFrom = 0;
     this.scoringRatingTo = 100;
     this.country.selectedCountry = '';
     this.country.selectedCountryCode = '';
     this.category.selectedCategory = '';
+    this.category.selectedCategoryId = null;
     this.projectSearch = '';
+
+    await this.updateProjectsAsync(0);
   }
 
   public async changePage(event) {
-    this.currentPage = event.page;
-
-    await this.updateProjectsAsync();
+    await this.updateProjectsAsync(event.page);
   }
 
   public async sortByName() {
@@ -123,8 +123,7 @@ export class ProjectListComponent implements OnInit {
       }
     }
     this.sortedBy = orderBy;
-
-    await this.updateProjectsAsync();
+    await this.updateProjectsAsync(0);
   }
 
   public isSortableField(sortField: string): boolean {

@@ -1,5 +1,5 @@
 import {ScoringProjectStatus} from '../../services/scoring-project-status.enum';
-import {AreaExpertResponse} from './area-expert-response';
+import {AreaExpertResponse} from '../project/area-expert-response';
 
 export interface ScoringProjectResponse {
   projectId: number;

@@ -20,18 +20,20 @@ namespace SmartValley.Data.SQL.Repositories
 
         private IQueryable<ProjectDetails> GetQueryable(ProjectsQuery query, bool enablePaging = true, bool enableSorting = true)
         {
-            var queryable = ReadContext
-                            .Projects
-                            .Join(ReadContext.Scorings, p => p.Id, s => s.ProjectId, (project, scoring) => new {project, scoring})
-                            .Join(ReadContext.Applications, p => p.project.Id, a => a.ProjectId, (current, application) => new {current.project, current.scoring, application})
-                            .Join(ReadContext.Countries, p => p.project.CountryId, c => c.Id, (current, country) => new {current.project, current.scoring, current.application, country})
-                            .Where(o => !query.OnlyScored || o.scoring.Score.HasValue)
-                            .Where(o => !query.Stage.HasValue || o.project.Stage == query.Stage.Value)
-                            .Where(o => string.IsNullOrEmpty(query.SearchString) || o.project.Name.ToUpper().Contains(query.SearchString.ToUpper()))
-                            .Where(o => string.IsNullOrEmpty(query.CountryCode) || o.country.Code == query.CountryCode.ToUpper())
-                            .Where(o => !query.Category.HasValue || o.project.Category == query.Category.Value)
-                            .Where(o => !query.MinimumScore.HasValue || !o.scoring.Score.HasValue || o.scoring.Score >= query.MinimumScore.Value)
-                            .Where(o => !query.MaximumScore.HasValue || !o.scoring.Score.HasValue || o.scoring.Score <= query.MaximumScore.Value);
+            var queryable = from project in ReadContext.Projects
+                            join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId into s
+                            from scoring in s.DefaultIfEmpty()
+                            join application in ReadContext.Applications on project.Id equals application.ProjectId into a
+                            from application in a.DefaultIfEmpty()
+                            join country in ReadContext.Countries on project.CountryId equals country.Id
+                            where !query.OnlyScored || scoring.Score.HasValue
+                            where !query.Stage.HasValue || project.Stage == query.Stage.Value
+                            where string.IsNullOrEmpty(query.SearchString) || project.Name.ToUpper().Contains(query.SearchString.ToUpper())
+                            where string.IsNullOrEmpty(query.CountryCode) || country.Code == query.CountryCode.ToUpper()
+                            where !query.Category.HasValue || project.Category == query.Category.Value
+                            where !query.MinimumScore.HasValue || !scoring.Score.HasValue || scoring.Score >= query.MinimumScore.Value
+                            where !query.MaximumScore.HasValue || !scoring.Score.HasValue || scoring.Score <= query.MaximumScore.Value
+                            select new {project, scoring, application, country};
 
             if (enableSorting && query.OrderBy.HasValue)
             {

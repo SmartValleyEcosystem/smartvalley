@@ -115,6 +115,9 @@ import {PaginatorModule} from 'primeng/paginator';
 import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-assigned.guard';
 import {SelectComponent} from './components/select/select.component';
 import {AutocompleteComponent} from './components/autocomplete/autocomplete.component';
+import {ScoringFormComponent} from './components/scoring-form/scoring-form.component';
+import {StickyModule} from 'ng2-sticky-kit';
+import {InputSwitchComponent} from './components/input-switch/input-switch.component';
 import {ScoringService} from './services/scoring/scoring.service';
 import {ScoringContractClient} from './services/contract-clients/scoring-contract-client';
 import {ScoringCostComponent} from './components/common/scoring-cost-modal/scoring-cost.component';
@@ -123,7 +126,8 @@ import {RegisterConfirmComponent} from './components/authentication/register-con
 import {RegisterComponent} from './components/authentication/register/register.component';
 import {CreateProjectComponent} from './components/project/create-project/create-project.component';
 import {WelcomeModalComponent} from './components/common/welcome-modal/welcome-modal.component';
-import { DeleteProjectModalComponent } from './components/common/delete-project-modal/delete-project-modal.component';
+import {ScoringApplicationApiClient} from './api/scoring-application/scoring-application-api-client';
+import {DeleteProjectModalComponent} from './components/common/delete-project-modal/delete-project-modal.component';
 
 @NgModule({
   declarations: [
@@ -181,8 +185,10 @@ import { DeleteProjectModalComponent } from './components/common/delete-project-
     ScoringCostComponent,
     CountryAutocompleteComponent,
     CategorySelectComponent,
+    ScoringFormComponent,
     SelectComponent,
     AutocompleteComponent,
+    InputSwitchComponent,
     RegisterComponent,
     ConfirmEmailComponent,
     RegisterConfirmComponent,
@@ -223,6 +229,7 @@ import { DeleteProjectModalComponent } from './components/common/delete-project-
     MaterialModule,
     AppRoutingModule,
     FormsModule,
+    StickyModule,
     ReactiveFormsModule,
     NgbModule.forRoot(),
     SimpleNotificationsModule.forRoot(),
@@ -294,7 +301,8 @@ import { DeleteProjectModalComponent } from './components/common/delete-project-
     EnumHelper,
     OffersApiClient,
     ScoringService,
-    ScoringContractClient
+    ScoringContractClient,
+    ScoringApplicationApiClient
   ],
   bootstrap: [AppComponent]
 })

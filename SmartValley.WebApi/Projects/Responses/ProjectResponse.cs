@@ -1,5 +1,6 @@
 ﻿using System;
 using SmartValley.Domain;
+using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Projects.Responses
 {
@@ -13,7 +14,7 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public string Country { get; set; }
 
-        public int CategoryId { get; set; }
+        public Category Category { get; set; }
 
         public string Description { get; set; }
 
@@ -28,7 +29,7 @@ namespace SmartValley.WebApi.Projects.Responses
                        Id = projectDetails.Project.Id,
                        Name = projectDetails.Project.Name,
                        Country = projectDetails.Country.Code,
-                       CategoryId = (int) projectDetails.Project.Category,
+                       Category = projectDetails.Project.Category,
                        Description = projectDetails.Project.Description,
                        Address = projectDetails.Scoring?.ContractAddress,
                        Score = projectDetails.Scoring?.Score,

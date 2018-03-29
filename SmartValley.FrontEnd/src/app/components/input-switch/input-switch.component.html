@@ -1,0 +1,5 @@
+<div class="input-switch">
+  <span>{{switcherValue}}</span>
+  <div [class.selected]="switcherValue" class="input-switch__on" (click)="changeValue(true)">{{labelOn}}</div>
+  <div [class.selected]="switcherValue === false" class="input-switch__off" (click)="changeValue(false)">{{labelOff}}</div>
+</div>

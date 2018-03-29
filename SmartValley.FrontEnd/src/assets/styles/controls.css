@@ -22,9 +22,6 @@
   cursor: pointer;
   outline: none;
 }
-textarea {
-  padding: 10px;
-}
 .input {
   height: 36px;
   color: #000;
@@ -34,7 +31,11 @@ textarea {
   border: solid 1px #a4a2b0;
   outline: none;
 }
-
+textarea.input {
+  padding: 10px;
+  min-height: 132px;
+  width: 640px;
+}
 .sortable {
   cursor: pointer;
   position: relative;
@@ -118,4 +119,15 @@ p-calendar.ng-dirty.ng-invalid .ui-inputtext {
 }
 input.ng-valid {
   border-color: #a4a2b0 !important;
+}
+
+/* input switch style */
+.ui-inputswitch	{
+  height: 36px !important;
+  border-radius: 18px !important;
+  background-color: red !important;
+  border: solid 1px #a4a2b0 !important;
+  font-family: Roboto-Regular !important;
+  font-size: 14px !important;
+  color: #000 !important;
 }

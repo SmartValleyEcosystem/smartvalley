@@ -1,0 +1,110 @@
+.partition-title {
+  font-family: Roboto-Bold;
+  margin: 0;
+  font-size: 24px;
+  text-align: left;
+  background: #fff;
+  padding: 16px 40px;
+  margin-bottom: 3px;
+  color: #a4a2b0;
+}
+.partition-block {
+  background: #fff;
+  padding: 16px 40px 32px;
+  margin-bottom: 16px;
+}
+.partition {
+  width: 780px;
+}
+.partitions-list {
+  list-style: none;
+}
+.partition-item {
+  font-family: Roboto-Bold;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #5d49f2;
+  cursor: pointer;
+  padding-bottom: 10px;
+}
+.partitions-page,
+.control-row__flex {
+  display: flex;
+}
+.control-label {
+  width: auto;
+  height: auto;
+  margin-bottom: 10px;
+}
+label {
+  cursor: pointer;
+}
+.control-row {
+  margin-bottom: 20px;
+}
+.partition-menu__inputs {
+  padding-left: 40px;
+}
+.partition-menu__inputs input {
+  margin-right: 20px;
+}
+.form-control-row {
+  margin-bottom: 10px;
+}
+.input-name, .input-wide {
+  width: 640px;
+}
+.raised-wrapper {
+  margin-left: 20px;
+}
+.input-raised {
+  background-image: url(/assets/img/controls/dollar-icon.png);
+  background-repeat: no-repeat;
+  background-position: 215px 9px;
+  padding-right: 30px;
+}
+.socials__add-button {
+  font-family: Roboto-Regular;
+  font-size: 14px;
+  line-height: 1.43;
+  color: #5d49f2;
+  cursor: pointer;
+  display: inline-block;
+  margin: 10px 0;
+}
+.socials__row {
+  display: flex;
+  margin-bottom: 10px;
+}
+.socials__input {
+  margin-left: 20px;
+  width: 480px;
+}
+.socials__labels-wrapper {
+  display: flex;
+}
+.socials__link-label {
+  margin-left: 247px;
+}
+.socials__remove {
+  cursor: pointer;
+  display: inline-block;
+  background-image: url(/assets/img/controls/cross.svg);
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  margin-left: 20px;
+  position: relative;
+  top: 8px;
+}
+.member-name {
+  font-family: Roboto-Bold;
+  font-size: 24px;
+  text-align: left;
+  background: #fff;
+  padding: 0;
+  margin-bottom: 16px;
+  color: #a4a2b0;
+}
