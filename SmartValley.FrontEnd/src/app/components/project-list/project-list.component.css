@@ -76,6 +76,53 @@ p {
   width: 76px;
 }
 
+.empty-result {
+  margin-top: 20px;
+}
+
+.empty-result__title {
+  width: 552px;
+  height: 32px;
+  font-family: Roboto-Regular;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1.33;
+  letter-spacing: -0.1px;
+  text-align: left;
+  color: #a4a2b0;
+}
+
+.email{
+  margin-bottom: 160px;
+  margin-top: 20px;
+  position: relative;
+  width: 380px;
+  height: 60px;
+}
+
+.email-input{
+  width: 333px;
+  height: 36px;
+}
+
+.email__button{
+  border-radius: 0 30px 30px 0 !important;
+  min-width: 95px;
+  position: absolute;
+  right: 0;
+}
+
+.empty-result__text{
+  width: 621px;
+  height: 20px;
+  font-family: Roboto-Regular;
+  font-size: 14px;
+  line-height: 1.43;
+  text-align: left;
+  color: #000000;
+  margin-top: 20px;
+}
+
 .table th {
   padding: 24px 0px 24px 40px !important;
 }

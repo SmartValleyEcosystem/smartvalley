@@ -3,8 +3,10 @@
   <div class="search-controls">
     <form name="filters" (ngSubmit)="submitFilters()" class="search-form" autocomplete="off">
       <div class="search-controls-wrapper">
-        <input  [(ngModel)]="projectSearch" class="input search-input" type="text" name="searchInput" placeholder="{{ 'ProjectList.ProjectNamePlaceholder' | translate }}">
-        <input class="main-btn search-submit" (click)="submitFilters()" type="button" value="{{ 'ProjectList.Search' | translate }}" name="searchSubmit">
+        <input [(ngModel)]="projectSearch" class="input search-input" type="text" name="searchInput"
+               placeholder="{{ 'ProjectList.ProjectNamePlaceholder' | translate }}">
+        <input class="main-btn search-submit" (click)="submitFilters()" type="button"
+               value="{{ 'ProjectList.Search' | translate }}" name="searchSubmit">
       </div>
       <div class="filters-wrapper">
         <div class="filter-item">
@@ -17,56 +19,73 @@
           <p>
             <label class="control-label" for="scoring-filter-from">{{ 'ProjectList.ScoringRating' | translate }}</label>
           </p>
-          <input class="input scoring-input" type="number" min="0" max="100" name="scoringRatingFrom" [(ngModel)]="scoringRatingFrom" placeholder="0" id="scoring-filter-from">
+          <input class="input scoring-input" type="number" min="0" max="100" name="scoringRatingFrom"
+                 [(ngModel)]="scoringRatingFrom" placeholder="0" id="scoring-filter-from">
           –
-          <input class="input scoring-input" type="number" min="0" max="100" name="scoringRatingTo" [(ngModel)]="scoringRatingTo" placeholder="100" id="scoring-filter-to">
+          <input class="input scoring-input" type="number" min="0" max="100" name="scoringRatingTo"
+                 [(ngModel)]="scoringRatingTo" placeholder="100" id="scoring-filter-to">
         </div>
       </div>
       <input type="submit" class="ghost-btn apply-filters" value="{{ 'ProjectList.ApplyFilters' | translate }}">
       <span (click)="clearFilters()" class="clear-form">{{ 'ProjectList.ClearFilters' | translate }}</span>
     </form>
-    <p-table class="table" [value]="projects">
-      <ng-template pTemplate="header">
-        <tr>
-          <th><span class="sortable" [ngClass]="{
+
+    <div *ngIf="projects.length >0; else emptyResultBlock;">
+      <p-table class="table" [value]="projects">
+        <ng-template pTemplate="header">
+          <tr>
+            <th><span class="sortable" [ngClass]="{
               'sortable__active' : isSortableField('Name'),
               'sortable__active_desc' : isSortableDirection(DESC),
               'sortable__active_asc' : isSortableDirection(ASC)
              }"
-              (click)="sortByName()">{{ 'ProjectList.Name' | translate }}</span></th>
-          <th>{{ 'ProjectList.Country' | translate }}</th>
-          <th>{{ 'ProjectList.ProjectCategory' | translate }}</th>
-          <th><span class="sortable" [ngClass]="{
+                      (click)="sortByName()">{{ 'ProjectList.Name' | translate }}</span></th>
+            <th>{{ 'ProjectList.Country' | translate }}</th>
+            <th>{{ 'ProjectList.ProjectCategory' | translate }}</th>
+            <th><span class="sortable" [ngClass]="{
                 'sortable__active' : isSortableField('ScoringEndDate'),
                 'sortable__active_desc' : isSortableDirection(DESC),
                 'sortable__active_asc' : isSortableDirection(ASC)
               }"
-              (click)="sortByDate()">{{ 'ProjectList.ScoringDate' | translate }}</span></th>
-          <th><span class="sortable" [ngClass]="{
+                      (click)="sortByDate()">{{ 'ProjectList.ScoringDate' | translate }}</span></th>
+            <th><span class="sortable" [ngClass]="{
                 'sortable__active' : isSortableField('ScoringRating') ,
                 'sortable__active_desc' : isSortableDirection(DESC),
                 'sortable__active_asc' : isSortableDirection(ASC)
               }" (click)="sortByRating()">{{ 'ProjectList.ScoringRating' | translate }}</span></th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-project>
-        <tr>
-          <td class="project-name"><a [routerLink]="getProjectLink(project.id)" >{{project.name}}</a></td>
-          <td>{{ 'Countries.' + project.country | translate }}</td>
-          <td>{{ 'Categories.' + project.category | translate }}</td>
-          <td *ngIf="project.scoringEndDate; else elseEndDate" >{{ project.scoringEndDate | date:'yyyy-MM-dd' }}</td>
-          <ng-template #elseEndDate>
-            <td>&mdash;</td>
-          </ng-template>
-          <td *ngIf="project.score; else elseScore" class="scoring-col">
-            <span class="primary-color-text">{{project.score | roundNumberPipe}}</span>
-            <span [ngClass]="project.score === 100 ? 'primary-color-text' : 'gray-color-text'">/100</span></td>
-          <ng-template #elseScore>
-            <td class="gray-color-text scoring-col">&mdash;</td>
-          </ng-template>
-        </tr>
-      </ng-template>
-    </p-table>
-    <p-paginator [rows]="projectOnPageCount" [totalRecords]="totalProjects" (onPageChange)="changePage($event)"></p-paginator>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-project>
+          <tr>
+            <td class="project-name"><a [routerLink]="getProjectLink(project.id)">{{project.name}}</a></td>
+            <td>{{ 'Countries.' + project.country | translate }}</td>
+            <td>{{ 'Categories.' + project.category | translate }}</td>
+            <td *ngIf="project.scoringEndDate; else elseEndDate">{{ project.scoringEndDate | date:'yyyy-MM-dd' }}</td>
+            <ng-template #elseEndDate>
+              <td>&mdash;</td>
+            </ng-template>
+            <td *ngIf="project.score; else elseScore" class="scoring-col">
+              <span class="primary-color-text">{{project.score | roundNumberPipe}}</span>
+              <span [ngClass]="project.score === 100 ? 'primary-color-text' : 'gray-color-text'">/100</span></td>
+            <ng-template #elseScore>
+              <td class="gray-color-text scoring-col">&mdash;</td>
+            </ng-template>
+          </tr>
+        </ng-template>
+      </p-table>
+      <p-paginator [rows]="projectOnPageCount" [totalRecords]="totalProjects"
+                   (onPageChange)="changePage($event)"></p-paginator>
+    </div>
+    <ng-template #emptyResultBlock>
+      <div class="empty-result">
+        <div class="empty-result__title">{{ 'ProjectList.EmptyResultTitle' | translate }}</div>
+        <div class="empty-result__text">{{ 'ProjectList.EmptyResultText' | translate }}</div>
+        <div class="email">
+          <label class="control-label">{{ 'ProjectList.Email' | translate }}</label>
+          <input class="input email-input" placeholder="{{ 'ProjectList.EmailPlaceHolder' | translate }}" />
+          <input class="email__button main-btn" value="{{ 'ProjectList.Subscribe' | translate }}" type="button"/>
+        </div>
+      </div>
+    </ng-template>
   </div>
 </div>
