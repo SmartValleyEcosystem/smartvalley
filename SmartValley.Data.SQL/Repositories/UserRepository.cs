@@ -31,9 +31,6 @@ namespace SmartValley.Data.SQL.Repositories
         public Task<User> GetByEmailAsync(string email)
             => ReadContext.Users.FirstOrDefaultAsync(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
 
-        public Task<User> GetByConfirmedEmailAsync(string email)
-            => ReadContext.Users.FirstOrDefaultAsync(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase) && u.IsEmailConfirmed);
-
         public async Task AddRoleAsync(Address address, RoleType type)
         {
             var user = await ReadContext.Users.FirstOrDefaultAsync(i => i.Address == address);

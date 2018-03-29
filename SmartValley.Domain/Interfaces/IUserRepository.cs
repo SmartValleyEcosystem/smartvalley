@@ -15,8 +15,6 @@ namespace SmartValley.Domain.Interfaces
 
         Task<User> GetByEmailAsync(string email);
 
-        Task<User> GetByConfirmedEmailAsync(string email);
-
         Task<int> UpdateWholeAsync(User user);
 
         Task<IReadOnlyCollection<User>> GetByRoleAsync(RoleType type);
