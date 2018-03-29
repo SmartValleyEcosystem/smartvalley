@@ -6,7 +6,7 @@ using SmartValley.WebApi.ScoringApplication.Responses;
 
 namespace SmartValley.WebApi.ScoringApplication
 {
-    [Route("api/projects/{projectId}/scoringapplications")]
+    [Route("api/projects/{projectId}/scoring/applications")]
     [Authorize]
     public class ScoringApplicationController : Controller
     {
@@ -24,9 +24,7 @@ namespace SmartValley.WebApi.ScoringApplication
             var scoringApplication = await _scoringApplicationService.GetApplicationAsync(projectId);
 
             if (scoringApplication == null)
-            {
                 return ScoringApplicationBlankResponse.CreateEmpty(questions);
-            }
 
             return ScoringApplicationBlankResponse.InitializeFromApplication(questions, scoringApplication);
         }

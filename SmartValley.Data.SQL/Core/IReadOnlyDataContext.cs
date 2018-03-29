@@ -8,13 +8,11 @@ namespace SmartValley.Data.SQL.Core
 {
     public interface IReadOnlyDataContext : IDisposable
     {
-        IQueryable<Application> Applications { get; }
         IQueryable<Project> Projects { get; }
         IQueryable<Scoring> Scorings { get; }
         IQueryable<ScoringOffer> ScoringOffers { get; }
         IQueryable<AreaScoring> AreaScorings { get; }
         IQueryable<EstimateComment> EstimateComments { get; }
-        IQueryable<ApplicationTeamMember> ApplicationTeamMembers { get; }
         IQueryable<ProjectTeamMember> ProjectTeamMembers { get; }
         IQueryable<ScoringCriterion> ScoringCriteria { get; }
         IQueryable<Voting> Votings { get; }
@@ -30,6 +28,9 @@ namespace SmartValley.Data.SQL.Core
         IQueryable<Country> Countries { get; }
         IQueryable<ScoringApplicationQuestion> ScoringApplicationQuestions { get; }
         IQueryable<ScoringApplication> ScoringApplications { get; }
+        IQueryable<ScoringApplicationAnswer> ScoringApplicationAnswers { get; }
+        IQueryable<ScoringApplicationTeamMember> ScoringApplicationTeamMembers { get; }
+        IQueryable<ScoringApplicationAdviser> ScoringApplicationAdvisers { get; }
 
         IQueryable<T> GetAll<T>() where T : class;
     }

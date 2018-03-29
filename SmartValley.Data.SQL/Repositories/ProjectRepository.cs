@@ -18,13 +18,64 @@ namespace SmartValley.Data.SQL.Repositories
         {
         }
 
+        public async Task<IReadOnlyCollection<ProjectDetails>> QueryAsync(ProjectsQuery projectsQuery)
+            => await GetQueryable(projectsQuery).ToArrayAsync();
+
+        public Task<int> GetQueryTotalCountAsync(ProjectsQuery projectsQuery)
+            => GetQueryable(projectsQuery, false, false).CountAsync();
+
+        public Task<ProjectDetails> GetByAuthorIdAsync(long authorId)
+        {
+            return (from project in ReadContext.Projects
+                    from scoring in ReadContext.Scorings.Where(s => s.ProjectId == project.Id).DefaultIfEmpty()
+                    join country in ReadContext.Countries on project.CountryId equals country.Id
+                    where project.AuthorId == authorId
+                    select new ProjectDetails(project, scoring, country)).FirstOrDefaultAsync();
+        }
+
+        public async Task<IReadOnlyCollection<ProjectDetails>> GetForScoringAsync(AreaType areaType, long expertId)
+        {
+            var scoredProjects = (from scoringCriterion in ReadContext.ScoringCriteria
+                                  join comment in ReadContext.EstimateComments on scoringCriterion.Id equals comment.ScoringCriterionId
+                                  join scoring in ReadContext.Scorings on comment.ScoringId equals scoring.Id
+                                  join areaScoring in ReadContext.AreaScorings on scoring.Id equals areaScoring.ScoringId
+                                  where comment.ExpertId == expertId && scoringCriterion.AreaType == areaType ||
+                                        areaScoring.AreaId == areaType && areaScoring.Score.HasValue
+                                  select comment.ScoringId).Distinct();
+
+            return await (from project in ReadContext.Projects
+                          join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
+                          join country in ReadContext.Countries on project.CountryId equals country.Id
+                          where !scoredProjects.Contains(scoring.Id)
+                          select new ProjectDetails(project, scoring, country)).ToArrayAsync();
+        }
+
+        public Task<Project> GetByExternalIdAsync(Guid externalId)
+            => ReadContext.Projects.FirstAsync(project => project.ExternalId == externalId);
+
+        public async Task<IReadOnlyCollection<ProjectDetails>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds)
+        {
+            return await (from project in ReadContext.Projects
+                          join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
+                          join country in ReadContext.Countries on project.CountryId equals country.Id
+                          where externalIds.Contains(project.ExternalId)
+                          select new ProjectDetails(project, scoring, country)).ToArrayAsync();
+        }
+
+        public async Task<IReadOnlyCollection<ProjectDetails>> GetAllByNameAsync(string projectName)
+        {
+            return await (from project in ReadContext.Projects
+                          join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
+                          join country in ReadContext.Countries on project.CountryId equals country.Id
+                          where project.Name.Contains(projectName)
+                          select new ProjectDetails(project, scoring, country)).ToArrayAsync();
+        }
+
         private IQueryable<ProjectDetails> GetQueryable(ProjectsQuery query, bool enablePaging = true, bool enableSorting = true)
         {
             var queryable = from project in ReadContext.Projects
                             join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId into s
                             from scoring in s.DefaultIfEmpty()
-                            join application in ReadContext.Applications on project.Id equals application.ProjectId into a
-                            from application in a.DefaultIfEmpty()
                             join country in ReadContext.Countries on project.CountryId equals country.Id
                             where !query.OnlyScored || scoring.Score.HasValue
                             where !query.Stage.HasValue || project.Stage == query.Stage.Value
@@ -33,7 +84,7 @@ namespace SmartValley.Data.SQL.Repositories
                             where !query.Category.HasValue || project.Category == query.Category.Value
                             where !query.MinimumScore.HasValue || !scoring.Score.HasValue || scoring.Score >= query.MinimumScore.Value
                             where !query.MaximumScore.HasValue || !scoring.Score.HasValue || scoring.Score <= query.MaximumScore.Value
-                            select new {project, scoring, application, country};
+                            select new {project, scoring, country};
 
             if (enableSorting && query.OrderBy.HasValue)
             {
@@ -69,64 +120,7 @@ namespace SmartValley.Data.SQL.Repositories
                             .Take(query.Count);
             }
 
-            return queryable.Select(o => new ProjectDetails(o.project, o.scoring, o.application, o.country));
-        }
-
-        public async Task<IReadOnlyCollection<ProjectDetails>> QueryAsync(ProjectsQuery projectsQuery)
-            => await GetQueryable(projectsQuery).ToArrayAsync();
-
-        public Task<int> GetQueryTotalCountAsync(ProjectsQuery projectsQuery)
-            => GetQueryable(projectsQuery, false, false).CountAsync();
-
-        public Task<ProjectDetails> GetByAuthorIdAsync(long authorId)
-        {
-            return (from project in ReadContext.Projects
-                    from scoring in ReadContext.Scorings.Where(s => s.ProjectId == project.Id).DefaultIfEmpty()
-                    from application in ReadContext.Applications.Where(a => a.ProjectId == project.Id).DefaultIfEmpty()
-                    join country in ReadContext.Countries on project.CountryId equals country.Id
-                    where project.AuthorId == authorId
-                    select new ProjectDetails(project, scoring, application, country)).FirstOrDefaultAsync();
-        }
-
-        public async Task<IReadOnlyCollection<ProjectDetails>> GetForScoringAsync(AreaType areaType, long expertId)
-        {
-            var scoredProjects = (from scoringCriterion in ReadContext.ScoringCriteria
-                                  join comment in ReadContext.EstimateComments on scoringCriterion.Id equals comment.ScoringCriterionId
-                                  join scoring in ReadContext.Scorings on comment.ScoringId equals scoring.Id
-                                  join areaScoring in ReadContext.AreaScorings on scoring.Id equals areaScoring.ScoringId
-                                  where comment.ExpertId == expertId && scoringCriterion.AreaType == areaType ||
-                                        areaScoring.AreaId == areaType && areaScoring.Score.HasValue
-                                  select comment.ScoringId).Distinct();
-
-            return await (from project in ReadContext.Projects
-                          join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
-                          join application in ReadContext.Applications on project.Id equals application.ProjectId
-                          join country in ReadContext.Countries on project.CountryId equals country.Id
-                          where !scoredProjects.Contains(scoring.Id)
-                          select new ProjectDetails(project, scoring, application, country)).ToArrayAsync();
-        }
-
-        public Task<Project> GetByExternalIdAsync(Guid externalId)
-            => ReadContext.Projects.FirstAsync(project => project.ExternalId == externalId);
-
-        public async Task<IReadOnlyCollection<ProjectDetails>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds)
-        {
-            return await (from project in ReadContext.Projects
-                          join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
-                          join application in ReadContext.Applications on project.Id equals application.ProjectId
-                          join country in ReadContext.Countries on project.CountryId equals country.Id
-                          where externalIds.Contains(project.ExternalId)
-                          select new ProjectDetails(project, scoring, application, country)).ToArrayAsync();
-        }
-
-        public async Task<IReadOnlyCollection<ProjectDetails>> GetAllByNameAsync(string projectName)
-        {
-            return await (from project in ReadContext.Projects
-                          join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
-                          join application in ReadContext.Applications on project.Id equals application.ProjectId
-                          join country in ReadContext.Countries on project.CountryId equals country.Id
-                          where project.Name.Contains(projectName)
-                          select new ProjectDetails(project, scoring, application, country)).ToArrayAsync();
+            return queryable.Select(o => new ProjectDetails(o.project, o.scoring, o.country));
         }
     }
 }

@@ -17,25 +17,11 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public string Description { get; set; }
 
-        public string Status { get; set; }
-
         public string WhitePaperLink { get; set; }
-
-        public string BlockChainType { get; set; }
 
         public string Country { get; set; }
 
-        public string FinanceModelLink { get; set; }
-
-        public string MvpLink { get; set; }
-
-        public string SoftCap { get; set; }
-
-        public string HardCap { get; set; }
-
         public string VotingAddress { get; set; }
-
-        public bool AttractedInvestments { get; set; }
 
         public double? Score { get; set; }
 
@@ -64,14 +50,7 @@ namespace SmartValley.WebApi.Projects.Responses
                        CategoryId = (int) details.Project.Category,
                        Score = details.Scoring?.Score,
                        ScoringContractAddress = details.Scoring?.ContractAddress,
-                       AttractedInvestments = details.Application?.InvestmentsAreAttracted ?? false,
-                       BlockChainType = details.Application?.BlockchainType,
-                       FinanceModelLink = details.Application?.FinancialModelLink,
-                       HardCap = details.Application?.HardCap,
-                       SoftCap = details.Application?.SoftCap,
-                       MvpLink = details.Application?.MvpLink,
-                       Status = details.Application?.ProjectStatus,
-                       WhitePaperLink = details.Application?.WhitePaperLink,
+                       WhitePaperLink = details.Project?.WhitePaperLink,
                        TeamMembers = details.TeamMembers.Select(ProjectTeamMemberResponse.Create).ToList(),
                        ScoringStatus = scoringStatus,
                        VotingStatus = details.Scoring == null ? (votingDetails?.GetVotingStatus(now) ?? VotingStatus.InProgress) : VotingStatus.None,

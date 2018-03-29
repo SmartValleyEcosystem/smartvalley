@@ -18,6 +18,7 @@ namespace SmartValley.Domain.Interfaces
         Task SetAcceptedAsync(ExpertApplicationDetails applicationDetails, List<int> areas);
 
         Task SetRejectedAsync(ExpertApplicationDetails applicationDetails);
+
         Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(Address address);
     }
 }

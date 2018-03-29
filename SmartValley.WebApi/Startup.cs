@@ -26,7 +26,6 @@ using SmartValley.Data.SQL.Core;
 using SmartValley.Data.SQL.Repositories;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Admin;
-using SmartValley.WebApi.Applications;
 using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.Estimates;
 using SmartValley.WebApi.ExceptionHandler;
@@ -47,13 +46,13 @@ namespace SmartValley.WebApi
 
         private readonly IHostingEnvironment _currentEnvironment;
 
-        public IConfiguration Configuration { get; }
-
         public Startup(IConfiguration configuration, IHostingEnvironment currentEnvironment)
         {
             Configuration = configuration;
             _currentEnvironment = currentEnvironment;
         }
+
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // ReSharper disable once UnusedMember.Global
@@ -125,13 +124,10 @@ namespace SmartValley.WebApi
             services.AddDbContext<AppDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient(x => AppDBContext.CreateEditable(dbOptions));
             services.AddTransient(x => AppDBContext.CreateReadOnly(dbOptions));
-            services.AddTransient<IApplicationTeamMemberRepository, ApplicationTeamMemberRepository>();
-            services.AddTransient<IApplicationRepository, ApplicationRepository>();
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IScoringRepository, ScoringRepository>();
             services.AddTransient<IScoringOffersRepository, ScoringOffersRepository>();
             services.AddTransient<IEstimateCommentRepository, EstimateCommentRepository>();
-            services.AddTransient<IApplicationService, ApplicationService>();
             services.AddTransient<IVotingService, VotingService>();
             services.AddTransient<IProjectService, ProjectService>();
             services.AddTransient<IEstimationService, EstimationService>();
@@ -141,7 +137,6 @@ namespace SmartValley.WebApi
             services.AddTransient<IVotingRepository, VotingRepository>();
             services.AddTransient<IVotingProjectRepository, VotingProjectRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IRoleRepository, RolesRepository>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IUserRepository, UserRepository>();
