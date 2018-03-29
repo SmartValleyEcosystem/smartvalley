@@ -58,7 +58,7 @@ namespace SmartValley.WebApi.Projects
 
         [HttpPut("{id}/image")]
         [Authorize]
-        public async Task<IActionResult> UpdateImageAsync([FromQuery] long id, IFormFile image)
+        public async Task<IActionResult> UpdateImageAsync(long id, IFormFile image)
         {
             if (image != null && image.Length > FileSizeLimitBytes)
                 throw new AppErrorException(ErrorCode.InvalidFileUploaded);
@@ -102,7 +102,7 @@ namespace SmartValley.WebApi.Projects
         }
 
         [HttpGet("{id}")]
-        public async Task<ProjectSummaryResponse> GetSummaryAsync([FromQuery] long id)
+        public async Task<ProjectSummaryResponse> GetSummaryAsync(long id)
         {
             var project = await _projectService.GetAsync(id);
             var scoring = await _scoringService.GetByProjectIdAsync(id);
@@ -111,7 +111,7 @@ namespace SmartValley.WebApi.Projects
         }
 
         [HttpGet("{id}/about")]
-        public async Task<ProjectAboutResponse> GetAboutAsync([FromQuery] long id)
+        public async Task<ProjectAboutResponse> GetAboutAsync(long id)
         {
             var project = await _projectService.GetAsync(id);
             var teamMembers = await _projectService.GetTeamAsync(id);
@@ -120,7 +120,7 @@ namespace SmartValley.WebApi.Projects
         }
 
         [HttpGet("{id}/details")]
-        public async Task<ProjectDetailsResponse> GetDetailsAsync([FromQuery] long id)
+        public async Task<ProjectDetailsResponse> GetDetailsAsync(long id)
         {
             var details = await _projectService.GetDetailsAsync(id);
             var votingDetails = await _votingService.GetVotingProjectDetailsAsync(id);
@@ -177,7 +177,7 @@ namespace SmartValley.WebApi.Projects
         [Route("my")]
         public async Task<MyProjectResponse> GetMyProjectAsync()
         {
-            var project = await _projectService.GetDetailsByUserIdAsync(User.GetUserId());
+            var project = await _projectService.GetByAuthorIdAsync(User.GetUserId());
             if (project == null)
                 return null;
 

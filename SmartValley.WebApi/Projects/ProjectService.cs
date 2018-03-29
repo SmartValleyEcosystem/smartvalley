@@ -47,9 +47,6 @@ namespace SmartValley.WebApi.Projects
             return details;
         }
 
-        public Task<ProjectDetails> GetDetailsByUserIdAsync(long userId)
-            => _projectRepository.GetByAuthorIdAsync(userId);
-
         public Task<IReadOnlyCollection<ProjectTeamMember>> GetTeamAsync(long projectId)
             => _teamMemberRepository.GetByProjectIdAsync(projectId);
 
