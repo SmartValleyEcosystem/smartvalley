@@ -1,7 +1,7 @@
 .loading-logo {
   text-align: center;
-  top: 50%;
-  margin-top: 30vh;
+  position: relative;
+  top: 35vh;
 }
 
 .loading-logo img {

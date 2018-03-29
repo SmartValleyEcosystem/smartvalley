@@ -18,10 +18,6 @@ namespace SmartValley.WebApi.Experts.Requests
         [MaxLength(50)]
         public string LastName { get; set; }
 
-        [Required]
-        [MaxLength(42)]
-        public string ApplicantAddress { get; set; }
-
         public DateTime BirthDate { get; set; }
 
         public Sex Sex { get; set; }

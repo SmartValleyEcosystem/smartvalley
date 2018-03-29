@@ -53,11 +53,11 @@
         </p-fileUpload>
       </div>
     </div>
-    <div [ngClass]="!isLetterShow ? '' : 'main-btn'" class="row">
+    <div [ngClass]="!showLetter ? '' : 'main-btn'" class="row">
       <button (click)="showNext()" class="col-3 btn btn-primary">{{ 'Application.Next' | translate }}
       </button>
     </div>
-    <div [ngClass]="isLetterShow ? 'is-active' : ''" class="sw-card sw-content" style="padding: 2em;">
+    <div [ngClass]="showLetter ? 'is-active' : ''" class="sw-card sw-content" style="padding: 2em;">
       <div class="row">
         <h3 class="col-10">{{ 'RegisterExpert.MotivationLetter' | translate }}</h3>
       </div>
@@ -78,11 +78,11 @@
         </div>
       </div>
     </div>
-    <div [ngClass]="isLetterShow && !isKYCShow ? '' : 'legal-btn'" class="row">
+    <div [ngClass]="showLetter && !showKYC ? '' : 'legal-btn'" class="row">
       <button (click)="showNext()" class="col-3 btn btn-primary">{{ 'Application.Next' | translate }}
       </button>
     </div>
-    <div [ngClass]="isKYCShow ? 'is-active' : ''" class="sw-card sw-content" style="padding: 2em;">
+    <div [ngClass]="showKYC ? 'is-active' : ''" class="sw-card sw-content" style="padding: 2em;">
       <div class="row">
         <h3 class="col-10">{{ 'RegisterExpert.KYC' | translate }}</h3>
       </div>
@@ -109,12 +109,11 @@
           <p-fileUpload mode="advanced" auto="true" name="photo[]" customUpload="true" [showUploadButton]="false"
                         [showCancelButton]="false" name="document[]" customUpload="true" accept="image/*"
                         maxFileSize="5242880" (uploadHandler)="onPhotoUpload($event)">
-
           </p-fileUpload>
         </div>
       </div>
     </div>
-    <div [ngClass]="isKYCShow ? '' : 'submit-btn'" class="row">
+    <div [ngClass]="showKYC ? '' : 'submit-btn'" class="row">
       <button (click)="applyAsync()" [disabled]="isProjectCreating" class="col-3 btn btn-primary">
         {{ 'Application.Submit' | translate }}
       </button>

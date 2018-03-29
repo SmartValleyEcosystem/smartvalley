@@ -10,7 +10,7 @@ namespace SmartValley.WebApi.Experts
 {
     public interface IExpertService
     {
-        Task CreateApplicationAsync(CreateExpertApplicationRequest request, AzureFile cv, AzureFile scan, AzureFile photo);
+        Task CreateApplicationAsync(CreateExpertApplicationRequest request, long userId, AzureFile cv, AzureFile scan, AzureFile photo);
 
         Task<ExpertApplicationDetails> GetApplicationByIdAsync(long id);
 
