@@ -1,18 +1,31 @@
 * {
   font-family: Roboto-Regular;
 }
+
 .search {
   height: 232px;
   background-color: #222034;
   margin-top: -20px;
   color: #fff;
 }
+
+.search-icon{
+  font-family: 'Material Icons' !important;
+  position: absolute;
+  z-index: 10;
+  color: grey;
+  top: 16px;
+  left: 20px;
+  font-size: 30px;
+}
+
 .search__title {
-  margin: 0;
   padding-top: 40px;
   position: relative;
   font-size: 32px;
+  margin: 0 0 0 21px;
 }
+
 .search__title:before {
   content: '';
   display: block;
@@ -24,9 +37,12 @@
   left: -20px;
   top: 20px;
 }
+
 .search-controls {
   margin-top: 30px;
+  position: relative;
 }
+
 .search-controls__submit {
   width: 149px;
   height: 60px;
@@ -36,24 +52,31 @@
   outline: none;
   display: inline-block;
   margin-left: -5px;
+  position: absolute;
+  right: 0;
 }
+
+.search-form {
+  position: relative;
+}
+
 .search-controls__input {
-  width: 1000px;
+  width: 1103px;
   height: 60px;
   border-radius: 30px 0 0 30px;
   background-color: #fff;
   border: solid 1px #a4a2b0;
   outline: none;
   padding-left: 70px;
-  background-image: url(/assets/img/search.svg);
-  background-repeat: no-repeat;
-  background-position: 20px 17px;
-  -webkit-transition: border-radius 0.5s;
   transition: border-radius 0.5s;
+  position: absolute;
+  left: 0;
 }
+
 .search-controls__input_square {
   border-radius: 30px 0 0;
 }
+
 .search-controls__project-list {
   position: absolute;
   width: 1000px;
@@ -63,25 +86,31 @@
   padding: 0;
   z-index: 2;
 }
+
 .search-controls__project-list li {
   border-left: solid 1px #a4a2b0;
   border-right: solid 1px #a4a2b0;
 }
+
 .search-controls__project-list li:last-child {
   border-bottom: solid 1px #a4a2b0;
 }
+
 .search-controls__project-item {
   height: 80px;
   padding: 10px 75px;
 }
+
 .search-controls__project-item:hover {
   background-color: rgba(229, 229, 229, 0.4);
   cursor: pointer;
 }
+
 .project-info {
   font-size: 12px;
   color: #a4a2b0;
 }
+
 .project-info, .project-name {
   margin: 0;
 }

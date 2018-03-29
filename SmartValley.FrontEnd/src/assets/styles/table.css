@@ -20,6 +20,7 @@
 .table__main-col {
   font-size: 24px;
   font-weight: bold;
+  vertical-align: middle !important;
 }
 .ui-table-wrapper table tr {
   border-bottom: solid 2px #eeedf5;
