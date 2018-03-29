@@ -11,19 +11,19 @@
         <input class="input wide-input" id="project-name" formControlName="name"
                placeholder="{{ 'CreateProject.NamePlaceholder' | translate }}">
       </div>
-      <div #area class="control-row">
+      <div #category class="control-row">
         <p class="control-label">
           <label for="category">{{ 'CreateProject.Category' | translate }}</label>
         </p>
-        <app-select class="select-component input-component" [form]="applicationForm"
-                    [elementName]="'category'" [elementId]="'category'" [items]="categories"
+        <app-select class="select-component input-component" formControlName="category"
+                    [elementId]="'category'" [items]="categories"
                     [placeholder]="'CreateProject.AllAreas' | translate"></app-select>
       </div>
       <div #stage class="control-row">
         <p class="control-label">
           <label for="stage">{{ 'CreateProject.Stage' | translate }}</label>
         </p>
-        <app-select class="input-component" [elementName]="'stage'" [form]="applicationForm"
+        <app-select class="input-component" formControlName="stage"
                     [elementId]="'stage'" [items]="stages"
                     [placeholder]="'CreateProject.AllStages' | translate"></app-select>
       </div>
@@ -31,8 +31,8 @@
         <p class="control-label">
           <label for="country">{{ 'CreateProject.Country' | translate }}</label>
         </p>
-        <app-autocomplete class="input-component" [isNeedToTranslate]="true" [form]="applicationForm"
-                          [elementClass]="'wide-autocomplete'" [elementId]="'country'" [elementName]="'country'"
+        <app-autocomplete class="input-component" [isNeedToTranslate]="true"
+                          [elementClass]="'wide-autocomplete'" [elementId]="'country'" formControlName="country"
                           [placeholder]="'CreateProject.AllCountries' | translate"
                           [allItems]="countries"></app-autocomplete>
       </div>
@@ -83,7 +83,7 @@
         </p>
       </div>
       <div *ngFor="let social of activeSocials; first as isFirst" class="socials__row" [formGroup]="socialFormGroup">
-        <app-select class="input-component" [form]="socialFormGroup" [elementName]="'social__' + social"
+        <app-select class="input-component" formControlName="{{'social__' + social}}"
                     [elementId]="'social__'+ social" [items]="socials"
                     [placeholder]="'CreateProject.SocialMedia' | translate"></app-select>
         <input [formControlName]="'social-link__' + social" class="input socials__input"
