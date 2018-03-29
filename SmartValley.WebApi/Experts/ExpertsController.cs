@@ -179,7 +179,7 @@ namespace SmartValley.WebApi.Experts
             }
 
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
-            await _expertService.CreateApplicationAsync(request, cv.ToAzureFile(), scan.ToAzureFile(), photo.ToAzureFile());
+            await _expertService.CreateApplicationAsync(request, User.GetUserId(), cv.ToAzureFile(), scan.ToAzureFile(), photo.ToAzureFile());
 
             return new EmptyResponse();
         }
