@@ -8,6 +8,7 @@ using SmartValley.Application.Extensions;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
+using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Projects.Requests;
@@ -27,12 +28,19 @@ namespace SmartValley.WebApi.Projects
         private readonly IVotingService _votingService;
         private readonly IClock _clock;
         private readonly IScoringService _scoringService;
+        private readonly ICountryRepository _countryRepository;
 
-        public ProjectsController(IProjectService projectService, IVotingService votingService, IClock clock, IScoringService scoringService)
+        public ProjectsController(
+            IProjectService projectService,
+            IVotingService votingService,
+            IClock clock,
+            IScoringService scoringService,
+            ICountryRepository countryRepository)
         {
             _projectService = projectService;
             _votingService = votingService;
             _scoringService = scoringService;
+            _countryRepository = countryRepository;
             _clock = clock;
         }
 
@@ -106,8 +114,9 @@ namespace SmartValley.WebApi.Projects
         {
             var project = await _projectService.GetAsync(id);
             var scoring = await _scoringService.GetByProjectIdAsync(id);
+            var country = await _countryRepository.GetByIdAsync(project.CountryId);
 
-            return ProjectSummaryResponse.Create(project, scoring);
+            return ProjectSummaryResponse.Create(project, country, scoring);
         }
 
         [HttpGet("{id}/about")]
