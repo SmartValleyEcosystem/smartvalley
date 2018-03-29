@@ -53,7 +53,7 @@
         <tr>
           <td class="project-name"><a [routerLink]="getProjectLink(project.id)" >{{project.name}}</a></td>
           <td>{{ 'Countries.' + project.country | translate }}</td>
-          <td>{{ 'Categories.' + project.categoryId | translate }}</td>
+          <td>{{ 'Categories.' + project.category | translate }}</td>
           <td *ngIf="project.scoringEndDate; else elseEndDate" >{{ project.scoringEndDate | date:'yyyy-MM-dd' }}</td>
           <ng-template #elseEndDate>
             <td>&mdash;</td>
