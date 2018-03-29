@@ -19,7 +19,7 @@ body {
 }
 
 .mat-progress-spinner circle, .mat-spinner circle {
-  stroke: rgb(72, 138, 232);
+  stroke: #ffd038;
 }
 
 .mat-toolbar {
