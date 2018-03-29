@@ -34,7 +34,7 @@ export class CreateProjectComponent implements OnInit {
   public membersGroup: FormGroup;
   public socialFormGroup: FormGroup;
 
-  private isEditing = false;
+  public isEditing = false;
   private projectId: number;
 
   @ViewChild('name') public nameRow: ElementRef;

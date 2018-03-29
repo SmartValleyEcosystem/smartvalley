@@ -24,7 +24,6 @@ export class InitializationService {
               private scoringExpertsManagerContractClient: ScoringExpertsManagerContractClient,
               private votingManagerContractClient: VotingManagerContractClient,
               private votingContractClient: VotingContractClient,
-              private balanceService: BalanceService,
               private authenticationService: AuthenticationService,
               private areaService: AreaService,
               private dictionariesService: DictionariesService) {
@@ -48,7 +47,6 @@ export class InitializationService {
       this.scoringExpertsManagerContractClient.initializeAsync(),
       this.votingManagerContractClient.initializeAsync(),
       this.votingContractClient.initializeAsync(),
-      this.balanceService.updateBalanceAsync(),
       this.expertContractClient.initializeAsync(),
       this.areaService.initializeAsync(),
       this.dictionariesService.initializeAsync()
