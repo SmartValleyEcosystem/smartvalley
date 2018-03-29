@@ -16,8 +16,6 @@ namespace SmartValley.Data.SQL.Core
         {
         }
 
-        IQueryable<Application> IReadOnlyDataContext.Applications => Applications.AsNoTracking();
-
         IQueryable<Project> IReadOnlyDataContext.Projects => Projects.AsNoTracking();
 
         IQueryable<Scoring> IReadOnlyDataContext.Scorings => Scorings.AsNoTracking();
@@ -27,8 +25,6 @@ namespace SmartValley.Data.SQL.Core
         IQueryable<AreaScoring> IReadOnlyDataContext.AreaScorings => AreaScorings.AsNoTracking();
 
         IQueryable<EstimateComment> IReadOnlyDataContext.EstimateComments => EstimateComments.AsNoTracking();
-
-        IQueryable<ApplicationTeamMember> IReadOnlyDataContext.ApplicationTeamMembers => ApplicationTeamMembers.AsNoTracking();
 
         IQueryable<ProjectTeamMember> IReadOnlyDataContext.ProjectTeamMembers => ProjectTeamMembers.AsNoTracking();
 
@@ -60,11 +56,15 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<ScoringApplication> IReadOnlyDataContext.ScoringApplications => ScoringApplications.AsNoTracking();
 
+        IQueryable<ScoringApplicationAnswer> IReadOnlyDataContext.ScoringApplicationAnswers => ScoringApplicationAnswers.AsNoTracking();
+
+        IQueryable<ScoringApplicationTeamMember> IReadOnlyDataContext.ScoringApplicationTeamMembers => ScoringApplicationTeamMembers.AsNoTracking();
+
+        IQueryable<ScoringApplicationAdviser> IReadOnlyDataContext.ScoringApplicationAdvisers => ScoringApplicationAdvisers.AsNoTracking();
+
         public DbSet<ProjectTeamMember> ProjectTeamMembers { get; set; }
 
         public DbSet<Country> Countries { get; set; }
-
-        public DbSet<Application> Applications { get; set; }
 
         public DbSet<Project> Projects { get; set; }
 
@@ -75,8 +75,6 @@ namespace SmartValley.Data.SQL.Core
         public DbSet<AreaScoring> AreaScorings { get; set; }
 
         public DbSet<EstimateComment> EstimateComments { get; set; }
-
-        public DbSet<ApplicationTeamMember> ApplicationTeamMembers { get; set; }
 
         public DbSet<ScoringCriterion> ScoringCriteria { get; set; }
 

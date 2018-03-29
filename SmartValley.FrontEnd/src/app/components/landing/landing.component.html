@@ -11,7 +11,7 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-project>
-      <tr>
+      <tr (click)="navigateToProject(project.id)">
         <td class="project-name"><a [routerLink]="getProjectLink(project.id)">{{project.name}}</a></td>
         <td>{{ 'Countries.' + project.country | translate }}</td>
         <td>{{ 'Categories.' + project.category | translate }}</td>

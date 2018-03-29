@@ -8,12 +8,10 @@ namespace SmartValley.Domain
         public ProjectDetails(
             Project project,
             Scoring scoring,
-            Application application,
             Country country)
         {
             Project = project;
             Scoring = scoring;
-            Application = application;
             Country = country;
         }
 
@@ -22,8 +20,6 @@ namespace SmartValley.Domain
         public Country Country { get; }
 
         public Scoring Scoring { get; }
-
-        public Application Application { get; }
 
         public IReadOnlyCollection<ProjectTeamMember> TeamMembers { get; set; }
     }

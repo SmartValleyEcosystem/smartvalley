@@ -8,14 +8,12 @@ using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Projects.Requests;
-using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Projects
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ProjectService : IProjectService
     {
-        private readonly IApplicationRepository _applicationRepository;
         private readonly IProjectRepository _projectRepository;
         private readonly IScoringRepository _scoringRepository;
         private readonly IProjectTeamMemberRepository _teamMemberRepository;
@@ -24,7 +22,6 @@ namespace SmartValley.WebApi.Projects
         private readonly ProjectStorageProvider _projectStorageProvider;
 
         public ProjectService(
-            IApplicationRepository applicationRepository,
             IProjectRepository projectRepository,
             IScoringRepository scoringRepository,
             IProjectTeamMemberRepository teamMemberRepository,
@@ -32,7 +29,6 @@ namespace SmartValley.WebApi.Projects
             ProjectTeamMembersStorageProvider projectTeamMembersStorageProvider,
             ProjectStorageProvider projectStorageProvider)
         {
-            _applicationRepository = applicationRepository;
             _projectRepository = projectRepository;
             _scoringRepository = scoringRepository;
             _teamMemberRepository = teamMemberRepository;
@@ -45,10 +41,9 @@ namespace SmartValley.WebApi.Projects
         {
             var project = await FindAsync(projectId);
             var projectScoring = await _scoringRepository.GetByProjectIdAsync(projectId);
-            var application = await _applicationRepository.GetByProjectIdAsync(projectId);
             var teamMembers = await _teamMemberRepository.GetByProjectIdAsync(projectId);
             var country = await _countryRepository.GetByIdAsync(project.CountryId);
-            var details = new ProjectDetails(project, projectScoring, application, country) {TeamMembers = teamMembers};
+            var details = new ProjectDetails(project, projectScoring, country) {TeamMembers = teamMembers};
             return details;
         }
 
