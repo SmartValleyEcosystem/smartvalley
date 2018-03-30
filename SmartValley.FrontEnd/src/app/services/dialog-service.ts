@@ -27,6 +27,7 @@ import {ScoringCostComponent} from '../components/common/scoring-cost-modal/scor
 import {WelcomeModalComponent} from '../components/common/welcome-modal/welcome-modal.component';
 import {WelcomeModalData} from '../components/common/welcome-modal/welcome-modal-data';
 import {DeleteProjectModalComponent} from '../components/common/delete-project-modal/delete-project-modal.component';
+import {WaitingModalComponent} from '../components/common/waiting-modal/waiting-modal.component';
 
 @Injectable()
 export class DialogService {
@@ -144,6 +145,10 @@ export class DialogService {
 
   public async showDeleteProjectModalAsync(): Promise<boolean> {
     return this.openModalAsync(DeleteProjectModalComponent, {});
+  }
+
+  public async showWaitingModal(): Promise<boolean> {
+    return this.openModalAsync(WaitingModalComponent, {});
   }
 
   private openModal<TComponent, TData>(componentType: ComponentType<TComponent>,

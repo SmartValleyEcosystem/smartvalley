@@ -1,6 +1,7 @@
 <div class="content">
   <form (ngSubmit)="submitAsync()" novalidate [formGroup]="applicationForm" autocomplete="off">
-    <h1 class="title">{{ 'CreateProject.Title' | translate }}</h1>
+    <h1 *ngIf="!isEditProjectRoute" class="title">{{ 'CreateProject.Title' | translate }}</h1>
+    <h1 *ngIf="isEditProjectRoute" class="title">{{ 'CreateProject.EditTitle' | translate }}</h1>
     <p class="description">{{ 'CreateProject.PageDescription' | translate }}</p>
     <h2 class="settings-title">{{ 'CreateProject.CommonInformation' | translate }}</h2>
     <div class="settings-block">

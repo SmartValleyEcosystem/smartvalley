@@ -1,0 +1,45 @@
+<div *ngIf="projectInfo" class="info-wrapper">
+  <h2 class="info-title">{{ 'MyProjectAbout.Description' | translate }}</h2>
+  <div class="info-block">
+    <p>
+      {{projectInfo.description}}
+    </p>
+  </div>
+  <h2 class="info-title">{{ 'MyProjectAbout.CoreTeam' | translate }}</h2>
+  <div class="info-block">
+    <ul class="team-list">
+      <li *ngFor="let member of projectInfo.teamMembers">
+        <img class="member-image" src="{{ member.photoUrl }}" alt="">
+        <p class="member-name">{{ member.fullName }}</p>
+        <p class="member-role">{{ member.role }}</p>
+        <div class="social-links">
+          <a *ngIf="member.facebook" href="{{ member.facebook}}" class="social-link social-link__facebook"><i class="fa fa-facebook" aria-hidden="true"></a>
+          <a *ngIf="member.telegram" href="{{ member.telegram}}" class="social-link social-link__telegram"><i class="fa fa-telegram" aria-hidden="true"></a>
+          <a *ngIf="member.twitter" href="{{ member.twitter}}" class="social-link social-link__twitter"><i class="fa fa-twitter" aria-hidden="true"></a>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <h2 class="info-title">{{ 'MyProjectAbout.SocialMedia' | translate }}</h2>
+  <div class="info-block info-block__last">
+    <ul class="social-list">
+      <li *ngFor="let social of [
+        'facebook',
+        'github',
+        'linkedin',
+        'medium',
+        'reddit',
+        'twitter',
+        'youtube',
+        'bitcointalk',
+        'instagram'
+      ]" class="social-item">
+        <i class="fa fa-{{social == 'bitcointalk' ? 'bitcoin' : social}}" aria-hidden="true"></i> &nbsp;
+        <a *ngIf="projectInfo[social]" href="{{ projectInfo[social] }}" class="social-link">{{social}}</a>
+        <span *ngIf="!projectInfo[social]" class="social-link">{{social}}</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+

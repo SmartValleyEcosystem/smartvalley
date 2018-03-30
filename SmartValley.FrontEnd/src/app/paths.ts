@@ -20,4 +20,5 @@ export class Paths {
   public static readonly ScoringApplication = 'scoring/application';
   public static readonly Register = 'register';
   public static readonly ConfirmRegister = 'confirm';
+  public static readonly MyProject = 'project';
 }

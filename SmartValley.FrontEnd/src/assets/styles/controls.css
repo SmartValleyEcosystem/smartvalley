@@ -121,13 +121,22 @@ input.ng-valid {
   border-color: #a4a2b0 !important;
 }
 
-/* input switch style */
-.ui-inputswitch	{
-  height: 36px !important;
-  border-radius: 18px !important;
-  background-color: red !important;
-  border: solid 1px #a4a2b0 !important;
-  font-family: Roboto-Regular !important;
-  font-size: 14px !important;
-  color: #000 !important;
+/* angular-material tabs styles */
+
+.mat-tab-label-content	{
+  font-family: Roboto-Bold;
+  font-size: 24px;
+  color: #5d49f2;
+}
+.mat-tab-label-active .mat-tab-label-content {
+  color: #000;
+}
+.mat-ink-bar {
+  display: none;
+}
+.mat-tab-labels {
+  border-bottom: none !important;
+}
+.mat-tab-body-wrapper {
+  margin-top: 24px !important;
 }

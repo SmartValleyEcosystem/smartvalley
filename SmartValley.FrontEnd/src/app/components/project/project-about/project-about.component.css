@@ -1,0 +1,78 @@
+.info-title {
+  font-family: Roboto-Bold;
+  margin: 0;
+  font-size: 24px;
+  text-align: left;
+  background: #fff;
+  padding: 16px 40px;
+  margin-bottom: 3px;
+  color: #a4a2b0;
+}
+.info-block {
+  background: #fff;
+  padding: 16px 40px 32px;
+  margin-bottom: 16px;
+}
+.info-block__last {
+  margin-bottom: 50px;
+}
+.team-list {
+  justify-content: space-around;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.team-list,
+.social-links {
+  display: flex;
+  text-align: center;
+}
+.social-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: baseline;
+}
+.social-item {
+  width: 250px;
+  list-style: none;
+  margin-bottom: 15px;
+  padding: 0;
+}
+.social-links {
+  margin-top: 14px;
+  justify-content: space-around;
+}
+.member-image {
+  width: 96px;
+  height: 96px;
+  display: inline-block;
+  border: solid 2px #eeedf5;
+  border-radius: 100px;
+  margin-bottom: 16px;
+}
+.member-name,
+.member-role {
+  font-family: Roboto-Bold;
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+}
+.member-name {
+  margin-bottom: 20px;
+  width: 112px;
+  color: #5d49f2;
+}
+.member-role {
+  font-family: Roboto-Regular;
+  color: #a4a2b0;
+}
+.social-link {
+  text-transform: capitalize;
+  font-family: Roboto-Bold;
+  font-size: 14px;
+  color: #5d49f2;
+  text-decoration: none;
+}
+.fa {
+  color: #231a5d;
+}
