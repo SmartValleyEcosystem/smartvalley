@@ -16,7 +16,7 @@
           <li *ngFor="let project of projects" (click)="navigateToProject(project.id)"
               class="search-controls__project-item">
             <p class="project-name">{{project.name}}</p>
-            <p class="project-info">{{project.country}}</p>
+            <p class="project-info">{{ 'Countries.' + project.country | translate }}</p>
             <p class="project-info">{{project.category}}</p>
           </li>
         </ul>
