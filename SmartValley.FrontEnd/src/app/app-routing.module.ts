@@ -30,7 +30,7 @@ import {RegisterComponent} from './components/authentication/register/register.c
 import {RegisterConfirmComponent} from './components/authentication/register-confirm/register-confirm.component';
 import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
 import {CreateProjectComponent} from './components/project/create-project/create-project.component';
-import {ScoringApplicationComponent} from "./components/scoring-application/scoring-application.component";
+import {ScoringApplicationComponent} from './components/scoring-application/scoring-application.component';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -128,7 +128,7 @@ const appRoutes: Routes = [
       },
       {path: Paths.ProjectList, component: ProjectListComponent},
       {path: Paths.ProjectList + '/:search', component: ProjectListComponent},
-      {path: Paths.ScoringForm + '/:id', component: ScoringApplicationComponent}
+      {path: Paths.ScoringApplication + '/:id', component: ScoringApplicationComponent}
     ]
   },
   {path: '**', redirectTo: Paths.Root}

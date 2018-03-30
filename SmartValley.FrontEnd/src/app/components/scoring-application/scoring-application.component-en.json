@@ -7,7 +7,7 @@
     "CommonTitle": "0. Common information",
     "SocialMedia": "1. Social media",
     "SaveDraft": "Save draft",
-    "SendForScore": "SendForScore",
+    "SendForScore": "Submit to scoring",
     "Description": "Description",
     "Name": "Name",
     "Website": "Website",
@@ -32,8 +32,8 @@
     "Member": "Member",
     "FullName": "Full name",
     "Role": "Role",
-    "TeamLinkLinkedin": "Link to Linkedin",
-    "TeamLinkFacebook": "Link to Facebook",
+    "LinkLinkedin": "Link to Linkedin",
+    "LinkFacebook": "Link to Facebook",
     "Experience": "Experience and achievements",
     "ExperiencePlaceholder": "Success stories and previous jobs briefly",
     "AddTeam": "+ Add team member",
@@ -196,6 +196,12 @@
     "100_500RealUsersAnswer": "100-500",
     "500_1000RealUsersAnswer": "500-1000",
     "1000_10000RealUsersAnswer": "1000-10000",
-    "10000+RealUsersAnswer": "10000+"
+    "10000+RealUsersAnswer": "10000+",
+
+    "Adviser": "Adviser",
+    "AdvisersTitle": "4. Advisers",
+    "AddAdviser": "+ Add adviser",
+    "Reason": "Reason",
+    "About": "About",
   }
 }

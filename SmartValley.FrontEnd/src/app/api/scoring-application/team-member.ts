@@ -1,4 +1,4 @@
-export interface TeamMemberItem {
+export interface TeamMember {
   fullName: string;
   projectRole: string;
   about: string;
