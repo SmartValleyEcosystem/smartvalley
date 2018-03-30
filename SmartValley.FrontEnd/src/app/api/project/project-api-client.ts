@@ -76,7 +76,7 @@ export class ProjectApiClient extends BaseApiClient {
       .append('searchString', checkParam(query.searchString))
       .append('stageType', checkParam(query.stageType))
       .append('countryCode', checkParam(query.countryCode))
-      .append('categoryType', checkParam(query.categoryType))
+      .append('category', checkParam(query.categoryType))
       .append('minimumScore', checkParam(query.minimumScore))
       .append('maximumScore', checkParam(query.maximumScore))
       .append('orderBy', checkParam(query.orderBy))
