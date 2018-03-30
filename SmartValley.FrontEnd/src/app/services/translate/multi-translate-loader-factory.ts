@@ -50,7 +50,7 @@ export function multiTranslateLoaderFactory() {
     'components/authentication/register/register.component',
     'components/authentication/register-confirm/register-confirm.component',
     'components/select/select.component',
-    'components/scoring-form/scoring-form.component',
+    'components/scoring-application/scoring-application.component',
     'components/common/confirm-email/confirm-email.component'
   ]);
 }

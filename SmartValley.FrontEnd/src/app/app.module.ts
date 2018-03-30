@@ -115,7 +115,7 @@ import {PaginatorModule} from 'primeng/paginator';
 import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-assigned.guard';
 import {SelectComponent} from './components/select/select.component';
 import {AutocompleteComponent} from './components/autocomplete/autocomplete.component';
-import {ScoringFormComponent} from './components/scoring-form/scoring-form.component';
+import {ScoringApplicationComponent} from './components/scoring-application/scoring-application.component';
 import {StickyModule} from 'ng2-sticky-kit';
 import {InputSwitchComponent} from './components/input-switch/input-switch.component';
 import {ScoringService} from './services/scoring/scoring.service';
@@ -185,7 +185,7 @@ import {DeleteProjectModalComponent} from './components/common/delete-project-mo
     ScoringCostComponent,
     CountryAutocompleteComponent,
     CategorySelectComponent,
-    ScoringFormComponent,
+    ScoringApplicationComponent,
     SelectComponent,
     AutocompleteComponent,
     InputSwitchComponent,

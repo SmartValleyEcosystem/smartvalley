@@ -39,6 +39,17 @@
     "AddTeam": "+ Add team member",
     "TeamTitle": "3. Team",
 
+    "ProjectGroup": "Project",
+    "TeamGroup": "Team",
+    "BusinessFinanceGroup": "Business/Finance",
+    "TechnicalDetailsGroup": "Technical details",
+    "PrototypeMVPGroup": "Prototype/MVP",
+    "ICOGroup": "ICO",
+    "TokenGroup": "Token",
+    "ProductGroup": "Product",
+    "MarketingGroup": "Marketing",
+    "LegalGroup": "Legal",
+
     "ProjectNameQuestion": "Project name",
     "ProjectAreaQuestion": "Industry",
     "ProjectCurrentStatusQuestion": "Current status",
@@ -72,6 +83,7 @@
     "DoesYourTeamMembersHaveOtherIcoProjectExperienceQuestion": "Does anyone on your team have experience with ICO projects?",
     "TeamMembersOtherIcoProjectExperienceDesciprionQuestion": "Describe it",
     "DoesYourTeamMembersHaveFundingAttractingExperienceQuestion": "Do team members have experience attracting financing?",
+    "TeamMembersFundingAttractingExperienceDescriptionQuestion": "Describe it",
     "DoesYourTeamMembersHaveFinancialOffencesQuestion": "Has anyone on your team broken financial regulations?",
     "TeamMembersFinancialOffencesDescriptionQuestion": "Describe it",
 
@@ -171,6 +183,19 @@
     "CountryOfIncorporationQuestion": "Country of incorporation",
     "LinkToCompanyRegistrationDocumentQuestion": "Link to the company registration document in the country of incorporation",
     "DoYouNeedAdditionalLicencesQuestion": "Will you need additional licenses for yor operations?",
-    "AdditionalLicencesDescriptionQuestion": "Which ones? Which have you already obtained? Attach links"
+    "AdditionalLicencesDescriptionQuestion": "Which ones? Which have you already obtained? Attach links",
+
+    "OwnedCapitalAnswer": "Own capital",
+    "AttractedCapitalAnswer": "Borrowed capital",
+    "OwnedAndAttractedCapitalAnswer": "Own & Borrowed capital",
+    "HasNoCapitalAnswer": "The project has no capital",
+    "UtilityTokenTypeAnswer": "Utility",
+    "SecurityTokenTypeAnswer": "Security",
+    "0RealUsersAnswer": "0",
+    "0_100RealUsersAnswer": "0-100",
+    "100_500RealUsersAnswer": "100-500",
+    "500_1000RealUsersAnswer": "500-1000",
+    "1000_10000RealUsersAnswer": "1000-10000",
+    "10000+RealUsersAnswer": "10000+"
   }
 }

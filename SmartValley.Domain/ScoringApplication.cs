@@ -76,12 +76,12 @@ namespace SmartValley.Domain
             }
         }
 
-        public void UpdateAnswers(IDictionary<int, string> answers)
+        public void UpdateAnswers(IReadOnlyCollection<ScoringApplicationAnswer> answers)
         {
             Answers.Clear();
             foreach (var answer in answers)
             {
-                SetAnswer(answer.Key, answer.Value);
+                SetAnswer(answer.QuestionId, answer.Value);
             }
         }
 

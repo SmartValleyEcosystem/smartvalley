@@ -1,5 +1,4 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
-import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ActivatedRoute} from '@angular/router';
 import {ScoringApplicationResponse} from '../../api/scoring-application/scoring-application-response';
 import {ScoringApplicationPartition} from '../../api/scoring-application/scoring-application-partition';
@@ -9,16 +8,16 @@ import {SelectItem} from 'primeng/api';
 import {TranslateService} from '@ngx-translate/core';
 import {SocialMediaTypeEnum} from '../../services/project/social-media-type.enum';
 import {TeamMemberItem} from '../../api/scoring-application/team-member-item';
-import {Question} from '../../api/scoring-application/question';
 import {DictionariesService} from '../../services/common/dictionaries.service';
 import {ScoringApplicationApiClient} from '../../api/scoring-application/scoring-application-api-client';
+import {Answer} from '../../api/scoring-application/answer';
 
 @Component({
-  selector: 'app-scoring-form',
-  templateUrl: './scoring-form.component.html',
-  styleUrls: ['./scoring-form.component.css']
+  selector: 'app-scoring-application',
+  templateUrl: './scoring-application.component.html',
+  styleUrls: ['./scoring-application.component.css']
 })
-export class ScoringFormComponent implements OnInit {
+export class ScoringApplicationComponent implements OnInit {
 
   public projectId: number;
   public questions: ScoringApplicationResponse;
@@ -163,21 +162,15 @@ export class ScoringFormComponent implements OnInit {
     await this.scoringApplicationApiClient.saveScoringApplicationProjectAsync(this.projectId, draftRequest);
   }
 
-  public getAnswers(): Question[] {
-    let answers = [];
+  public getAnswers(): Answer[] {
+    const answers = [];
     for ( const partition of this.questions.partitions ) {
       for (const question of partition.questions) {
-        const currentAnswer = {
-          id: question.id,
-          key: question.key,
-          type: question.type,
-          extendedInfo: question.extendedInfo,
-          parentId: question.parentId,
-          parentTriggerValue: question.parentTriggerValue,
-          answer: this.questionsGroup.value['control_' + question.id],
-          order: question.order
+        const answer = {
+          questionId: question.id,
+          value: this.questionsGroup.value['control_' + question.id]
         };
-        answers.push(currentAnswer);
+        answers.push(answer);
       }
     }
     return answers;

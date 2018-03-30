@@ -33,14 +33,14 @@ namespace SmartValley.WebApi.ScoringApplication.Requests
         {
             return new SocialNetworks
                    {
-                       BitcoinTalk = request.BitcoinTalk,
-                       Facebook = request.Facebook,
-                       Github = request.Github,
-                       Linkedin = request.Linkedin,
-                       Reddit = request.Reddit,
-                       Medium = request.Medium,
-                       Telegram = request.Telegram,
-                       Twitter = request.Twitter
+                       BitcoinTalk = request?.BitcoinTalk,
+                       Facebook = request?.Facebook,
+                       Github = request?.Github,
+                       Linkedin = request?.Linkedin,
+                       Reddit = request?.Reddit,
+                       Medium = request?.Medium,
+                       Telegram = request?.Telegram,
+                       Twitter = request?.Twitter
                    };
         }
     }

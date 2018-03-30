@@ -17,10 +17,7 @@ export class ScoringApplicationApiClient extends BaseApiClient {
   }
 
   public async saveScoringApplicationProjectAsync(projectId: number, requestData: SaveScoringApplicationRequest) {
-    await this.http.post(this.baseApiUrl + `/projects/${projectId}/scoring/applications/`, {
-      projectId: projectId,
-      saveScoringApplicationRequest: requestData
-    }).toPromise();
+    await this.http.post(this.baseApiUrl + `/projects/${projectId}/scoring/applications/`, requestData).toPromise();
   }
 
   public async submitScoringApplicationProjectAsync(projectId: number) {

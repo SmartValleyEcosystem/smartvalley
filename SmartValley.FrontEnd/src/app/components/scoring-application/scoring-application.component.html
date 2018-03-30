@@ -131,43 +131,43 @@
         </div>
       </div>
       <div formGroupName="questionsGroup" *ngFor="let partition of partitions; let index = index;">
-        <h2 class="partition-title" id="partition_{{partition.order}}">{{index + 2}}. {{partition.name | translate}}</h2>
+        <h2 class="partition-title" id="partition_{{partition.order}}">{{index + 2}}. {{ 'ScoringApplication.' + partition.name | translate}}</h2>
         <div class="partition-block">
           <div class="control-row" *ngFor="let question of partition.questions; let questionIndex = index" [ngSwitch]="getQuestionTypeById(question.type)">
             <div *ngIf="isParentQuestionAnswered(question.parentId)">
               <div *ngSwitchCase="questionTypeLine">
                 <p class="control-label">
-                  <label for="control_{{question.id}}">{{ question.key | translate }}</label>
+                  <label for="control_{{question.id}}">{{ 'ScoringApplication.' + question.key | translate }}</label>
                 </p>
                 <input class="input" type="text" formControlName="{{'control_' + question.id}}" id="control_{{question.id}}">
               </div>
               <div *ngSwitchCase="questionTypeMultiLine">
                 <p class="control-label">
-                  <label for="control_{{question.id}}">{{ question.key | translate }}</label>
+                  <label for="control_{{question.id}}">{{ 'ScoringApplication.' + question.key | translate }}</label>
                 </p>
                 <textarea class="input" formControlName="{{'control_' + question.id}}" id="control_{{questionIndex}}" cols="30" rows="10"></textarea>
               </div>
               <div *ngSwitchCase="questionTypeCombobox">
                 <p class="control-label">
-                  <label for="control_{{question.id}}">{{ question.key | translate }}</label>
+                  <label for="control_{{question.id}}">{{ 'ScoringApplication.' + question.key | translate }}</label>
                 </p>
                 <app-select class="input-component" formControlName="{{'control_' + question.id}}" [elementId]="'control_' + question.id" [items]="[]"></app-select>
               </div>
               <div *ngSwitchCase="questionTypeDateTime">
                 <p class="control-label">
-                  <label for="control_{{question.id}}">{{ question.key | translate }}</label>
+                  <label for="control_{{question.id}}">{{ 'ScoringApplication.' + question.key | translate }}</label>
                 </p>
                 <p-calendar [inputId]="'control_' + question.id" formControlName="{{'control_' + question.id}}" [inputStyleClass]="'input input-date'"></p-calendar>
               </div>
               <div *ngSwitchCase="questionTypeCheckBox">
                 <p class="control-label">
-                  <label for="control_{{question.id}}">{{ question.key | translate }}</label>
+                  <label for="control_{{question.id}}">{{ 'ScoringApplication.' + question.key | translate }}</label>
                 </p>
                 <app-input-switch [labelOff]="'ScoringApplication.No' | translate" [labelOn]="'ScoringApplication.Yes' | translate" class="input-component" formControlName="{{'control_' + question.id}}"></app-input-switch>
               </div>
               <div *ngSwitchCase="questionTypeUrl">
                 <p class="control-label">
-                  <label for="control_{{question.id}}">{{ question.key | translate }}</label>
+                  <label for="control_{{question.id}}">{{ 'ScoringApplication.' + question.key | translate }}</label>
                 </p>
                 <input class="input" type="text" formControlName="{{'control_' + question.id}}" id="control_{{question.id}}">
               </div>
@@ -189,7 +189,7 @@
             {{ 'ScoringApplication.TeamTitle' | translate }}
           </li>
           <li class="partition-item" (click)="scrollToElement(partition.order)" *ngFor="let partition of partitions; let index = index;">
-            {{index + 2}}. {{partition.name | translate}}
+            {{index + 2}}. {{ 'ScoringApplication.' + partition.name | translate}}
           </li>
         </ul>
         <div class="partition-menu__inputs">
