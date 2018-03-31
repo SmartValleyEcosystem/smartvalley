@@ -13,6 +13,8 @@ import {CreateProjectRequest} from './create-project-request';
 import {ProjectQuery} from './project-query';
 import {isNullOrUndefined} from 'util';
 import {UpdateProjectRequest} from './update-project-request';
+import {ProjectSummaryResponse} from './project-summary-response';
+import {ProjectAboutResponse} from './project-about-response';
 
 @Injectable()
 export class ProjectApiClient extends BaseApiClient {
@@ -76,7 +78,7 @@ export class ProjectApiClient extends BaseApiClient {
       .append('searchString', checkParam(query.searchString))
       .append('stageType', checkParam(query.stageType))
       .append('countryCode', checkParam(query.countryCode))
-      .append('categoryType', checkParam(query.categoryType))
+      .append('category', checkParam(query.categoryType))
       .append('minimumScore', checkParam(query.minimumScore))
       .append('maximumScore', checkParam(query.maximumScore))
       .append('orderBy', checkParam(query.orderBy))
@@ -86,4 +88,17 @@ export class ProjectApiClient extends BaseApiClient {
       .get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/projects/query', {params: parameters})
       .toPromise();
   }
+
+  public async getProjectSummaryAsync(projectId: number): Promise<ProjectSummaryResponse> {
+    return this.http
+      .get<ProjectSummaryResponse>(this.baseApiUrl + `/projects/${projectId}`)
+      .toPromise();
+  }
+
+  public async getMyProjectExtraInfoByIdAsync(projectId: number): Promise<ProjectAboutResponse> {
+    return this.http
+      .get<ProjectAboutResponse>(this.baseApiUrl + `/projects/${projectId}/about`)
+      .toPromise();
+  }
+
 }

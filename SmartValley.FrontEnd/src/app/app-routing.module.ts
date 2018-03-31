@@ -26,11 +26,12 @@ import {ExpertStatusGuard} from './services/guards/expert-status.guard';
 import {ExpertApplicationStatus} from './services/expert/expert-application-status.enum';
 import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-assigned.guard';
 import {ProjectListComponent} from './components/project-list/project-list.component';
-import {ScoringFormComponent} from './components/scoring-form/scoring-form.component';
 import {RegisterComponent} from './components/authentication/register/register.component';
 import {RegisterConfirmComponent} from './components/authentication/register-confirm/register-confirm.component';
 import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
-import {CreateProjectComponent} from './components/project/create-project/create-project.component';
+import {CreateProjectComponent} from './components/create-project/create-project.component';
+import {ProjectComponent} from './components/project/project.component';
+import {ScoringApplicationComponent} from './components/scoring-application/scoring-application.component';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -80,6 +81,7 @@ const appRoutes: Routes = [
         pathMatch: 'full',
         component: CreateProjectComponent
       },
+      {path: Paths.ProjectEdit, component: CreateProjectComponent},
       {path: Paths.Report + '/:id', pathMatch: 'full', component: ReportComponent},
       {
         path: Paths.ExpertStatus,
@@ -128,7 +130,8 @@ const appRoutes: Routes = [
       },
       {path: Paths.ProjectList, component: ProjectListComponent},
       {path: Paths.ProjectList + '/:search', component: ProjectListComponent},
-      {path: Paths.ScoringForm + '/:id', component: ScoringFormComponent}
+      {path: Paths.MyProject + '/:id', component: ProjectComponent},
+      {path: Paths.ScoringApplication + '/:id', component: ScoringApplicationComponent}
     ]
   },
   {path: '**', redirectTo: Paths.Root}

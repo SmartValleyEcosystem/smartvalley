@@ -1,0 +1,14 @@
+.main-btn, .ghost-btn {
+  padding-top: 5px;
+  height: 35px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  width: 200px;
+  margin-bottom: 20px;
+  float: right;
+  clear: both;
+}
+.ghost-btn {
+  color: #000;
+}

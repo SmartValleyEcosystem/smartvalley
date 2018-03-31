@@ -6,14 +6,14 @@ namespace SmartValley.WebApi.ScoringApplication.Requests
     {
         public SaveScoringApplicationRequest()
         {
-            Answers = new Dictionary<int, string>();
+            Answers = new List<ScoringApplicationAnswerRequest>();
             Advisers = new List<AdviserRequest>();
             TeamMembers = new List<TeamMemberRequest>();
         }
 
         public string ProjectName { get; set; }
 
-        public string Category { get; set; }
+        public string ProjectArea { get; set; }
 
         public string Status { get; set; }
 
@@ -25,27 +25,13 @@ namespace SmartValley.WebApi.ScoringApplication.Requests
 
         public string WhitePaper { get; set; }
 
-        public string ICODate { get; set; }
+        public string IcoDate { get; set; }
 
         public string ContactEmail { get; set; }
 
-        public string FacebookLink { get; set; }
+        public SocialNetworkRequest SocialNetworks { get; set; }
 
-        public string BitcointalkLink { get; set; }
-
-        public string MediumLink { get; set; }
-
-        public string RedditLink { get; set; }
-
-        public string TelegramLink { get; set; }
-
-        public string TwitterLink { get; set; }
-
-        public string GitHubLink { get; set; }
-
-        public string LinkedInLink { get; set; }
-
-        public IDictionary<int, string> Answers { get; set; }
+        public IReadOnlyCollection<ScoringApplicationAnswerRequest> Answers { get; set; }
 
         public IReadOnlyCollection<TeamMemberRequest> TeamMembers { get; set; }
 

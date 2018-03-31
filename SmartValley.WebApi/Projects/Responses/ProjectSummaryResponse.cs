@@ -31,14 +31,14 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public double? Score { get; set; }
 
-        public static ProjectSummaryResponse Create(Project project, Domain.Entities.Scoring scoring)
+        public static ProjectSummaryResponse Create(Project project, Country country, Domain.Entities.Scoring scoring)
         {
             return new ProjectSummaryResponse
                    {
                        Id = project.Id,
                        Name = project.Name,
                        ImageUrl = project.ImageUrl,
-                       CountryCode = project.Country.Code,
+                       CountryCode = country.Code,
                        StageId = (int) project.Stage,
                        IcoDate = project.IcoDate,
                        Website = project.Website,

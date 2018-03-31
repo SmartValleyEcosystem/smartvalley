@@ -55,22 +55,15 @@ namespace SmartValley.WebApi.ScoringApplication
 
             scoringApplication.ProjectId = project.Id;
             scoringApplication.ProjectName = saveScoringApplicationRequest.ProjectName;
-            scoringApplication.Category = saveScoringApplicationRequest.Category;
-            scoringApplication.Status = saveScoringApplicationRequest.Status;
+            scoringApplication.Category = saveScoringApplicationRequest.ProjectArea.ToString();
+            scoringApplication.Status = saveScoringApplicationRequest.Status.ToString();
             scoringApplication.ProjectDescription = saveScoringApplicationRequest.ProjectDescription;
             scoringApplication.CountryId = country.Id;
             scoringApplication.Site = saveScoringApplicationRequest.Site;
             scoringApplication.WhitePaper = saveScoringApplicationRequest.WhitePaper;
-            scoringApplication.ICODate = saveScoringApplicationRequest.ICODate;
+            scoringApplication.IcoDate = saveScoringApplicationRequest.IcoDate;
             scoringApplication.ContactEmail = saveScoringApplicationRequest.ContactEmail;
-            scoringApplication.FacebookLink = saveScoringApplicationRequest.FacebookLink;
-            scoringApplication.BitcointalkLink = saveScoringApplicationRequest.BitcointalkLink;
-            scoringApplication.MediumLink = saveScoringApplicationRequest.MediumLink;
-            scoringApplication.RedditLink = saveScoringApplicationRequest.RedditLink;
-            scoringApplication.TelegramLink = saveScoringApplicationRequest.TelegramLink;
-            scoringApplication.TwitterLink = saveScoringApplicationRequest.TwitterLink;
-            scoringApplication.GitHubLink = saveScoringApplicationRequest.GitHubLink;
-            scoringApplication.LinkedInLink = saveScoringApplicationRequest.LinkedInLink;
+            scoringApplication.SocialNetworks = SocialNetworkRequest.ToDomain(saveScoringApplicationRequest.SocialNetworks);
 
             scoringApplication.Saved = _clock.UtcNow;
 
@@ -96,7 +89,9 @@ namespace SmartValley.WebApi.ScoringApplication
             }).ToList();
 
             scoringApplication.UpdateAdvisers(newAdvisers);
-            scoringApplication.UpdateAnswers(saveScoringApplicationRequest.Answers);
+
+            var scoringApplicationAnswers = saveScoringApplicationRequest.Answers.Select(Requests.ScoringApplicationAnswerRequest.ToDomain).ToList();
+            scoringApplication.UpdateAnswers(scoringApplicationAnswers);
 
             await _scoringApplicationRepository.SaveChangesAsync();
         }

@@ -29,6 +29,7 @@ import {ErrorInterceptor} from './api/error-interceptor';
 import {AdminContractClient} from './services/contract-clients/admin-contract-client';
 import {ScoringApiClient} from './api/scoring/scoring-api-client';
 import {ProjectCardComponent} from './components/common/project-card/project-card.component';
+import {ProjectInfoComponent} from './components/project-info/project-info.component';
 import {ProjectApiClient} from './api/project/project-api-client';
 import {ReportComponent} from './components/report/report.component';
 import {EstimatesApiClient} from './api/estimates/estimates-api-client';
@@ -115,7 +116,7 @@ import {PaginatorModule} from 'primeng/paginator';
 import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-assigned.guard';
 import {SelectComponent} from './components/select/select.component';
 import {AutocompleteComponent} from './components/autocomplete/autocomplete.component';
-import {ScoringFormComponent} from './components/scoring-form/scoring-form.component';
+import {ScoringApplicationComponent} from './components/scoring-application/scoring-application.component';
 import {StickyModule} from 'ng2-sticky-kit';
 import {InputSwitchComponent} from './components/input-switch/input-switch.component';
 import {ScoringService} from './services/scoring/scoring.service';
@@ -124,10 +125,14 @@ import {ScoringCostComponent} from './components/common/scoring-cost-modal/scori
 import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
 import {RegisterConfirmComponent} from './components/authentication/register-confirm/register-confirm.component';
 import {RegisterComponent} from './components/authentication/register/register.component';
-import {CreateProjectComponent} from './components/project/create-project/create-project.component';
+import {CreateProjectComponent} from './components/create-project/create-project.component';
 import {WelcomeModalComponent} from './components/common/welcome-modal/welcome-modal.component';
 import {ScoringApplicationApiClient} from './api/scoring-application/scoring-application-api-client';
 import {DeleteProjectModalComponent} from './components/common/delete-project-modal/delete-project-modal.component';
+import {ProjectComponent} from './components/project/project.component';
+import {ProjectAboutComponent} from './components/project/project-about/project-about.component';
+import {WaitingModalComponent} from './components/common/waiting-modal/waiting-modal.component';
+
 
 @NgModule({
   declarations: [
@@ -142,6 +147,7 @@ import {DeleteProjectModalComponent} from './components/common/delete-project-mo
     FooterComponent,
     EstimateComponent,
     ProjectCardComponent,
+    ProjectInfoComponent,
     ReportComponent,
     CriteriaComponent,
     TransactionAwaitingModalComponent,
@@ -185,7 +191,7 @@ import {DeleteProjectModalComponent} from './components/common/delete-project-mo
     ScoringCostComponent,
     CountryAutocompleteComponent,
     CategorySelectComponent,
-    ScoringFormComponent,
+    ScoringApplicationComponent,
     SelectComponent,
     AutocompleteComponent,
     InputSwitchComponent,
@@ -193,7 +199,10 @@ import {DeleteProjectModalComponent} from './components/common/delete-project-mo
     ConfirmEmailComponent,
     RegisterConfirmComponent,
     WelcomeModalComponent,
-    DeleteProjectModalComponent
+    DeleteProjectModalComponent,
+    ProjectComponent,
+    ProjectAboutComponent,
+    WaitingModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -210,7 +219,8 @@ import {DeleteProjectModalComponent} from './components/common/delete-project-mo
     ChangeEmailModalComponent,
     ScoringCostComponent,
     WelcomeModalComponent,
-    DeleteProjectModalComponent
+    DeleteProjectModalComponent,
+    WaitingModalComponent
   ],
   imports: [
     FileUploadModule,

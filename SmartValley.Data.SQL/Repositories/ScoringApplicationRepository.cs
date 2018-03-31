@@ -18,10 +18,11 @@ namespace SmartValley.Data.SQL.Repositories
         public Task<ScoringApplication> GetByProjectIdAsync(long projectId)
         {
             return _editContext.ScoringApplications
-                                     .Include(x => x.Answers)
-                                     .Include(x => x.Advisers)
-                                     .Include(x => x.TeamMembers)
-                                     .FirstOrDefaultAsync(x => x.ProjectId == projectId);
+                               .Include(x => x.Answers)
+                               .Include(x => x.Advisers)
+                               .Include(x => x.TeamMembers)
+                               .Include(x => x.Country)
+                               .FirstOrDefaultAsync(x => x.ProjectId == projectId);
         }
 
         public void Add(ScoringApplication scoringApplication)

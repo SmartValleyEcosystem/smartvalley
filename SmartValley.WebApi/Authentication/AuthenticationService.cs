@@ -67,11 +67,10 @@ namespace SmartValley.WebApi.Authentication
             if (!IsSignedMessageValid(request.Address, request.SignedText, request.Signature))
                 throw new AppErrorException(ErrorCode.InvalidSignature);
 
-            var user = await _userRepository.GetByConfirmedEmailAsync(request.Email);
-            if (user != null)
+            if (await DoesEmailExistAsync(request.Email))
                 throw new AppErrorException(ErrorCode.EmailAlreadyExists);
 
-            user = await _userRepository.GetByAddressAsync(request.Address);
+            var user = await _userRepository.GetByAddressAsync(request.Address);
             if (user != null)
             {
                 if (user.IsEmailConfirmed)
@@ -113,8 +112,8 @@ namespace SmartValley.WebApi.Authentication
         public async Task ConfirmEmailAsync(string token)
         {
             var tokenValues = _mailTokenService.DecryptToken(token).Split(' ');
-            string address = tokenValues[0];
-            string email = tokenValues[1];
+            var address = tokenValues[0];
+            var email = tokenValues[1];
             var user = await _userRepository.GetByAddressAsync(address);
             if (user == null || !_mailTokenService.CheckEmailConfirmationToken(address, email, token))
                 throw new AppErrorException(ErrorCode.IncorrectData);
@@ -126,7 +125,7 @@ namespace SmartValley.WebApi.Authentication
 
         public async Task ResendEmailAsync(Address address)
         {
-            if (_memoryCache.TryGetValue(MemoryCacheEmailKey + address, out bool isEmailSended))
+            if (_memoryCache.TryGetValue(MemoryCacheEmailKey + address, out bool wasEmailSent))
                 throw new AppErrorException(ErrorCode.EmailAlreadySent);
 
             var user = await _userRepository.GetByAddressAsync(address);
@@ -144,8 +143,7 @@ namespace SmartValley.WebApi.Authentication
             if (_memoryCache.TryGetValue(MemoryCacheEmailKey + address, out bool isEmailSent))
                 throw new AppErrorException(ErrorCode.EmailAlreadySent);
 
-            var user = await _userRepository.GetByEmailAsync(email);
-            if (user != null)
+            if (await DoesEmailExistAsync(email))
                 throw new AppErrorException(ErrorCode.EmailAlreadyExists);
 
             await _mailService.SendUpdateEmailAsync(address, email);
@@ -164,6 +162,12 @@ namespace SmartValley.WebApi.Authentication
                 return null;
 
             return user.Email;
+        }
+
+        private async Task<bool> DoesEmailExistAsync(string email)
+        {
+            var user = await _userRepository.GetByEmailAsync(email);
+            return user != null;
         }
 
         private static ClaimsIdentity CreateClaimsIdentity(User user, IReadOnlyCollection<Role> roles)

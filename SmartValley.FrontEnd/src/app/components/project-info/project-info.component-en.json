@@ -1,0 +1,10 @@
+{
+  "ProjectCard": {
+    "ProjectArea": "Project area",
+    "Country": "Country",
+    "Status": "Status",
+    "ICOdate": "ICO date",
+    "Website": "Website",
+    "OpenWP": "Open White paper"
+  }
+}

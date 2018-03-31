@@ -2,21 +2,26 @@
   <div class="content">
     <h1 class="search__title">{{ 'SearchWithAutoComplete.Title' | translate }}</h1>
     <div class="search-controls">
-      <form name="search-form" (ngSubmit)="submit();">
+      <i class="search-icon material-icons">search</i>
+      <form class="search-form" name="search-form" (ngSubmit)="submit();">
         <input (focus)="searchInputFocusStatusSwitch(true); showProjectList();"
                (focusout)="searchInputFocusStatusSwitch(false); hideProjectList();"
                [class.search-controls__input_square]="squareInput"
                [formControl]="inputSearch"
-               placeholder="{{ 'SearchWithAutoComplete.Placeholder' | translate}}" type="text" class="search-controls__input">
-        <ul (mouseenter) ="projectListHoverStatusSwitch(true) "  (mouseleave) ="projectListHoverStatusSwitch(false); hideProjectList();"
+               placeholder="{{ 'SearchWithAutoComplete.Placeholder' | translate}}" type="text"
+               class="search-controls__input">
+        <ul (mouseenter)="projectListHoverStatusSwitch(true) "
+            (mouseleave)="projectListHoverStatusSwitch(false); hideProjectList();"
             class="search-controls__project-list" [class.hidden]="isAutocompleteHidden">
-          <li *ngFor="let project of projects" (click)="navigateToProject(project.id)" class="search-controls__project-item">
+          <li *ngFor="let project of projects" (click)="navigateToProject(project.id)"
+              class="search-controls__project-item">
             <p class="project-name">{{project.name}}</p>
-            <p class="project-info">{{project.country}}</p>
+            <p class="project-info">{{ 'Countries.' + project.country | translate }}</p>
             <p class="project-info">{{project.category}}</p>
           </li>
         </ul>
-        <input type="submit" value="{{ 'SearchWithAutoComplete.Search' |translate }}" class="main-btn search-controls__submit">
+        <input type="submit" value="{{ 'SearchWithAutoComplete.Search' |translate }}"
+               class="main-btn search-controls__submit">
       </form>
     </div>
   </div>

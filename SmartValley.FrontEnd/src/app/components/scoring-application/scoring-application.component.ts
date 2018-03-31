@@ -1,5 +1,4 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
-import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ActivatedRoute} from '@angular/router';
 import {ScoringApplicationResponse} from '../../api/scoring-application/scoring-application-response';
 import {ScoringApplicationPartition} from '../../api/scoring-application/scoring-application-partition';
@@ -8,17 +7,19 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {SelectItem} from 'primeng/api';
 import {TranslateService} from '@ngx-translate/core';
 import {SocialMediaTypeEnum} from '../../services/project/social-media-type.enum';
-import {TeamMemberItem} from '../../api/scoring-application/team-member-item';
-import {Question} from '../../api/scoring-application/question';
+import {TeamMember} from '../../api/scoring-application/team-member';
+import {SaveScoringApplicationRequest} from '../../api/scoring-application/save-scoring-application-request';
 import {DictionariesService} from '../../services/common/dictionaries.service';
 import {ScoringApplicationApiClient} from '../../api/scoring-application/scoring-application-api-client';
+import {Answer} from '../../api/scoring-application/answer';
+import {Adviser} from '../../api/scoring-application/adviser';
 
 @Component({
-  selector: 'app-scoring-form',
-  templateUrl: './scoring-form.component.html',
-  styleUrls: ['./scoring-form.component.css']
+  selector: 'app-scoring-application',
+  templateUrl: './scoring-application.component.html',
+  styleUrls: ['./scoring-application.component.css']
 })
-export class ScoringFormComponent implements OnInit {
+export class ScoringApplicationComponent implements OnInit {
 
   public projectId: number;
   public questions: ScoringApplicationResponse;
@@ -26,7 +27,7 @@ export class ScoringFormComponent implements OnInit {
   public questionControlType = QuestionControlType;
   public questionTypeLine = QuestionControlType[0];
   public questionTypeMultiLine = QuestionControlType[1];
-  public questionTypeCombobox = QuestionControlType[2];
+  public questionTypeComboBox = QuestionControlType[2];
   public questionTypeDateTime = QuestionControlType[3];
   public questionTypeCheckBox = QuestionControlType[4];
   public questionTypeUrl = QuestionControlType[5];
@@ -34,6 +35,7 @@ export class ScoringFormComponent implements OnInit {
   public activeSocials: number[] = [];
   public activeArticleLink: number[] = [];
   public activeTeamMembers: number[] = [];
+  public activeAdvisers: number[] = [];
   public categories: SelectItem[];
   public stages: SelectItem[];
   public countries: SelectItem[];
@@ -49,7 +51,7 @@ export class ScoringFormComponent implements OnInit {
 
   async ngOnInit() {
     this.createCommonForm();
-    this.categories =  this.dictionariesService.categories.map(i => <SelectItem>{
+    this.categories = this.dictionariesService.categories.map(i => <SelectItem>{
       label: i.value,
       value: i.id
     });
@@ -84,6 +86,10 @@ export class ScoringFormComponent implements OnInit {
     return this.questionFormGroup.get('teamGroup') as FormGroup;
   }
 
+  get advisersGroup(): FormGroup {
+    return this.questionFormGroup.get('advisersGroup') as FormGroup;
+  }
+
   public createCommonForm() {
     const commonFormControls = {
       name: [''],
@@ -101,7 +107,8 @@ export class ScoringFormComponent implements OnInit {
       commonGroup: this.formBuilder.group(commonFormControls),
       socialsGroup: this.formBuilder.group([]),
       questionsGroup: this.formBuilder.group([]),
-      teamGroup: this.formBuilder.group([])
+      teamGroup: this.formBuilder.group([]),
+      advisersGroup: this.formBuilder.group([])
     });
   }
 
@@ -132,13 +139,13 @@ export class ScoringFormComponent implements OnInit {
   }
 
   public async onSubmit() {
-    this.saveDraftAsync();
+    await this.saveDraftAsync();
     await this.scoringApplicationApiClient.submitScoringApplicationProjectAsync(this.projectId);
   }
 
   public async saveDraftAsync() {
     const socials = this.getSocialsValues();
-    const draftRequest = {
+    const draftRequest = <SaveScoringApplicationRequest>{
       projectName: this.questionFormGroup.get('commonGroup').get('name').value,
       projectArea: this.questionFormGroup.get('commonGroup').get('projectArea').value,
       status: this.questionFormGroup.get('commonGroup').get('stage').value,
@@ -156,59 +163,54 @@ export class ScoringFormComponent implements OnInit {
       twitterLink: socials['Twitter'],
       gitHubLink: socials['Github'],
       linkedInLink: socials['LinkedIn'],
-      answers: this.getAnswers(),
+      answers: this.getQuestionsWithAnswers(),
       teamMembers: this.getTeamMembers(),
-      advisers: []
+      advisers: this.getAdvisers()
     };
     await this.scoringApplicationApiClient.saveScoringApplicationProjectAsync(this.projectId, draftRequest);
   }
 
-  public getAnswers(): Question[] {
-    let answers = [];
-    for ( const partition of this.questions.partitions ) {
-      for (const question of partition.questions) {
-        const currentAnswer = {
-          id: question.id,
-          key: question.key,
-          type: question.type,
-          extendedInfo: question.extendedInfo,
-          parentId: question.parentId,
-          parentTriggerValue: question.parentTriggerValue,
-          answer: this.questionsGroup.value['control_' + question.id],
-          order: question.order
-        };
-        answers.push(currentAnswer);
-      }
-    }
-    return answers;
+  public getQuestionsWithAnswers(): Answer[] {
+    return this.questions.partitions
+      .map(p => p.questions)
+      .reduce((a, b) => a.concat(b))
+      .map(q => <Answer>{
+        questionId: q.id,
+        value: this.questionsGroup.value['control_' + q.id]
+      });
   }
 
   public getSocialsValues() {
-
     const socialEnum = SocialMediaTypeEnum;
-    let socialsValues = {};
 
-    for (let social of this.activeSocials) {
+    const socialsValues = {};
+
+    for (const social of this.activeSocials) {
       socialsValues[socialEnum[this.socialsGroup.value['social_' + social]]] = this.socialsGroup.value['social-link_' + social];
     }
 
     return socialsValues;
   }
 
-  public getTeamMembers(): TeamMemberItem[] {
-    let teamMembers: TeamMemberItem[] = [];
-    for (let member of this.activeTeamMembers) {
-      let currentMember = {
-        fullName: this.teamGroup.value['team_member_name_' + member],
-        projectRole: this.teamGroup.value['team_member_role_' + member],
-        about: this.teamGroup.value['team_member_experience_' + member],
-        facebookLink: this.teamGroup.value['team_member_facebook_' + member],
-        linkedInLink: this.teamGroup.value['team_member_linkedin_' + member],
-        additionalInformation: this.teamGroup.value['team_experience_name_' + member]
-      };
-      teamMembers.push(currentMember);
-    }
-    return teamMembers;
+  public getTeamMembers(): TeamMember[] {
+    return this.activeTeamMembers.map(t => <TeamMember>{
+      fullName: this.teamGroup.value['team_member_name_' + t],
+      projectRole: this.teamGroup.value['team_member_role_' + t],
+      about: this.teamGroup.value['team_member_experience_' + t],
+      facebookLink: this.teamGroup.value['team_member_facebook_' + t],
+      linkedInLink: this.teamGroup.value['team_member_linkedin_' + t],
+      additionalInformation: this.teamGroup.value['team_experience_name_' + t]
+    });
+  }
+
+  public getAdvisers(): Adviser[] {
+    return this.activeAdvisers.map(a => <Adviser>{
+      fullName: this.advisersGroup.value['adviser_name_' + a],
+      about: this.advisersGroup.value['adviser_about_' + a],
+      reason: this.advisersGroup.value['adviser_reason_' + a],
+      facebookLink: this.advisersGroup.value['adviser_facebook_' + a],
+      linkedInLink: this.advisersGroup.value['adviser_linkedin_' + a]
+    });
   }
 
   public addSocialMedia() {
@@ -218,7 +220,7 @@ export class ScoringFormComponent implements OnInit {
   }
 
   public removeSocialMedia(id: number) {
-    this.activeSocials = this.activeSocials.filter( a => a !== id);
+    this.activeSocials = this.activeSocials.filter(a => a !== id);
   }
 
   public addArticleLink() {
@@ -227,19 +229,30 @@ export class ScoringFormComponent implements OnInit {
   }
 
   public removeArticleLink(id: number) {
-    this.activeArticleLink = this.activeArticleLink.filter( a => a !== id);
+    this.activeArticleLink = this.activeArticleLink.filter(a => a !== id);
   }
 
   public addTeamMember() {
-    this.teamGroup.addControl('team_member_name_' + (this.activeTeamMembers.length + 1), new FormControl(''));
-    this.teamGroup.addControl('team_member_role_' + (this.activeTeamMembers.length + 1), new FormControl(''));
-    this.teamGroup.addControl('team_member_linkedin_' + (this.activeTeamMembers.length + 1), new FormControl(''));
-    this.teamGroup.addControl('team_member_facebook_' + (this.activeTeamMembers.length + 1), new FormControl(''));
-    this.teamGroup.addControl('team_member_experience_' + (this.activeTeamMembers.length + 1), new FormControl(''));
-    this.activeTeamMembers.push(this.activeTeamMembers.length + 1);
+    const newTeamMemberNumber = (this.activeTeamMembers.length + 1);
+    this.teamGroup.addControl('team_member_name_' + newTeamMemberNumber, new FormControl(''));
+    this.teamGroup.addControl('team_member_role_' + newTeamMemberNumber, new FormControl(''));
+    this.teamGroup.addControl('team_member_linkedin_' + newTeamMemberNumber, new FormControl(''));
+    this.teamGroup.addControl('team_member_facebook_' + newTeamMemberNumber, new FormControl(''));
+    this.teamGroup.addControl('team_member_experience_' + newTeamMemberNumber, new FormControl(''));
+    this.activeTeamMembers.push(newTeamMemberNumber);
+  }
+
+  public addAdviser() {
+    const newAdviserNumber = this.activeAdvisers.length + 1;
+    this.advisersGroup.addControl('adviser_name_' + newAdviserNumber, new FormControl(''));
+    this.advisersGroup.addControl('adviser_about_' + newAdviserNumber, new FormControl(''));
+    this.advisersGroup.addControl('adviser_reason_' + newAdviserNumber, new FormControl(''));
+    this.advisersGroup.addControl('adviser_facebook_' + newAdviserNumber, new FormControl(''));
+    this.advisersGroup.addControl('adviser_linkedin_' + newAdviserNumber, new FormControl(''));
+    this.activeAdvisers.push(newAdviserNumber);
   }
 
   public removeTeamMember(id) {
-    this.activeTeamMembers = this.activeTeamMembers.filter( a => a !== id);
+    this.activeTeamMembers = this.activeTeamMembers.filter(a => a !== id);
   }
 }

@@ -8,11 +8,14 @@
     </nav>
     <button class="main-btn get-score-btn" (click)="navigateToProjectApplication()">{{ 'Header.GetScoreForMyProject' | translate }}</button>
     <button class="main-btn" (click)="navigateToExpertApplication()">{{ 'Header.BecomeAnExpert' | translate }}</button>
-    <span *ngIf="isAuthenticated" class="header-nav__login-logout" (click)="logout()">
-      {{'Header.Logout' | translate }}
-    </span>
-    <span *ngIf="!isAuthenticated" class="header-nav__login-logout" (click)="loginAsync()">
-      {{'Header.Login' | translate }}
-    </span>
+    <nav class="header-nav header-nav__authenticated">
+      <a *ngIf="isAuthenticated" class="header-nav__link" (click)="navigateToMyProject()" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + myProjectLink">{{'Header.MyProject' | translate }}</a>
+      <span *ngIf="isAuthenticated" class="header-nav__login-logout" (click)="logout()">
+          {{'Header.Logout' | translate }}
+        </span>
+      <span *ngIf="!isAuthenticated" class="header-nav__login-logout" (click)="loginAsync()">
+          {{'Header.Login' | translate }}
+        </span>
+    </nav>
   </div>
 </div>

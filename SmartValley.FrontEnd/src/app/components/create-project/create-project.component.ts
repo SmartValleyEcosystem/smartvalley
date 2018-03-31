@@ -1,21 +1,22 @@
 import {Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {CreateProjectRequest} from '../../../api/project/create-project-request';
-import {SocialMediaTypeEnum} from '../../../services/project/social-media-type.enum';
+import {CreateProjectRequest} from '../../api/project/create-project-request';
+import {SocialMediaTypeEnum} from '../../services/project/social-media-type.enum';
 import {SelectItem} from 'primeng/api';
 import {TranslateService} from '@ngx-translate/core';
-import {DictionariesService} from '../../../services/common/dictionaries.service';
-import {ProjectApiClient} from '../../../api/project/project-api-client';
+import {DictionariesService} from '../../services/common/dictionaries.service';
+import {ProjectApiClient} from '../../api/project/project-api-client';
 import {NotificationsService} from 'angular2-notifications';
 import {Router} from '@angular/router';
 import {v4 as uuid} from 'uuid';
 import {isNullOrUndefined} from 'util';
 import * as moment from 'moment';
-import {TeamMemberRequest} from '../../../api/project/team-member-request';
-import {UpdateProjectRequest} from '../../../api/project/update-project-request';
-import {DialogService} from '../../../services/dialog-service';
-import {Paths} from '../../../paths';
-import {ErrorCode} from '../../../shared/error-code.enum';
+import {TeamMemberRequest} from '../../api/project/team-member-request';
+import {UpdateProjectRequest} from '../../api/project/update-project-request';
+import {DialogService} from '../../services/dialog-service';
+import {Paths} from '../../paths';
+import {ErrorCode} from '../../shared/error-code.enum';
+import {MyProjectResponse} from '../../api/project/my-project-response';
 
 @Component({
   selector: 'app-create-project',
@@ -33,8 +34,10 @@ export class CreateProjectComponent implements OnInit {
   public currentMemberId = 1;
   public membersGroup: FormGroup;
   public socialFormGroup: FormGroup;
+  public isEditProjectRoute = false;
 
   public isEditing = false;
+  public editingData: MyProjectResponse;
   private projectId: number;
 
   @ViewChild('name') public nameRow: ElementRef;
@@ -78,6 +81,7 @@ export class CreateProjectComponent implements OnInit {
     this.activeSocials = [1];
     this.membersAmount.push(this.currentMemberId);
     this.createForm();
+    this.isEditProjectRoute = this.router.url === '/' + Paths.ProjectEdit;
 
     const memberGroupFields = {
       ['id__' + this.membersAmount[this.membersAmount.length - 1]]: '',
@@ -305,6 +309,7 @@ export class CreateProjectComponent implements OnInit {
     if (data == null) {
       return;
     }
+    this.editingData = data;
     this.projectId = data.id;
     this.isEditing = true;
     const enumItems = Object.keys(SocialMediaTypeEnum)

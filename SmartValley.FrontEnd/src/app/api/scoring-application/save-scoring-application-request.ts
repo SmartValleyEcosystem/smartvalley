@@ -1,5 +1,6 @@
-import {Question} from './question';
-import {TeamMemberItem} from './team-member-item';
+import {TeamMember} from './team-member';
+import {Adviser} from './adviser';
+import {Answer} from './answer';
 
 export interface SaveScoringApplicationRequest {
   projectName: string;
@@ -19,7 +20,7 @@ export interface SaveScoringApplicationRequest {
   twitterLink: string;
   gitHubLink: string;
   linkedInLink: string;
-  answers: Question[];
-  teamMembers: TeamMemberItem[];
-  advisers: any;
+  answers: Answer[];
+  teamMembers: TeamMember[];
+  advisers: Adviser[];
 }

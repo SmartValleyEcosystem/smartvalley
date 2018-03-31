@@ -110,13 +110,13 @@
             </div>
             <div class="control-row">
               <p class="control-label">
-                <label for="team_member_linkedin_{{member}}">{{ 'ScoringApplication.TeamLinkLinkedin' | translate }}</label>
+                <label for="team_member_linkedin_{{member}}">{{ 'ScoringApplication.LinkLinkedin' | translate }}</label>
               </p>
               <input class="input" formControlName="team_member_linkedin_{{member}}" placeholder="{{ 'ScoringApplication.Http' | translate}}" id="team_member_linkedin_{{member}}" />
             </div>
             <div class="control-row">
               <p class="control-label">
-                <label for="team_member_facebook_{{member}}">{{ 'ScoringApplication.TeamLinkFacebook' | translate }}</label>
+                <label for="team_member_facebook_{{member}}">{{ 'ScoringApplication.LinkFacebook' | translate }}</label>
               </p>
               <input class="input" formControlName="team_member_facebook_{{member}}" placeholder="{{ 'ScoringApplication.Http' | translate}}" id="team_member_facebook_{{member}}" />
             </div>
@@ -130,44 +130,83 @@
           <span class="socials__add-button" (click)="addTeamMember()">{{ 'ScoringApplication.AddTeam' | translate }}</span>
         </div>
       </div>
+      <div formGroupName="advisersGroup">
+        <h2 class="partition-title" id="partition_advisers">{{ 'ScoringApplication.AdvisersTitle' | translate }}</h2>
+        <div class="partition-block">
+          <div *ngFor="let adviser of activeAdvisers; first as isFirst">
+            <h3 class="member-name">{{ 'ScoringApplication.Adviser' | translate }} {{ adviser }}</h3>
+            <div class="control-row">
+              <p class="control-label">
+                <label for="adviser_name_{{adviser}}">{{ 'ScoringApplication.FullName' | translate }}</label>
+              </p>
+              <input class="input" formControlName="adviser_name_{{adviser}}" id="adviser_name_{{adviser}}" />
+            </div>
+            <div class="control-row">
+              <p class="control-label">
+                <label for="adviser_reason_{{adviser}}">{{ 'ScoringApplication.Reason' | translate }}</label>
+              </p>
+              <textarea class="input" formControlName="adviser_reason_{{adviser}}" id="adviser_reason_{{adviser}}" ></textarea>
+            </div>
+            <div class="control-row">
+              <p class="control-label">
+                <label for="adviser_about_{{adviser}}">{{ 'ScoringApplication.About' | translate }}</label>
+              </p>
+              <textarea class="input" formControlName="adviser_about_{{adviser}}" id="adviser_about_{{adviser}}" ></textarea>
+            </div>
+            <div class="control-row">
+              <p class="control-label">
+                <label for="adviser_linkedin_{{adviser}}">{{ 'ScoringApplication.LinkLinkedin' | translate }}</label>
+              </p>
+              <input class="input" formControlName="adviser_linkedin_{{adviser}}" placeholder="{{ 'ScoringApplication.Http' | translate}}" id="adviser_linkedin_{{adviser}}" />
+            </div>
+            <div class="control-row">
+              <p class="control-label">
+                <label for="adviser_facebook_{{adviser}}">{{ 'ScoringApplication.LinkFacebook' | translate }}</label>
+              </p>
+              <input class="input" formControlName="adviser_facebook_{{adviser}}" placeholder="{{ 'ScoringApplication.Http' | translate}}" id="adviser_facebook_{{adviser}}" />
+            </div>
+          </div>
+          <span class="socials__add-button" (click)="addAdviser()">{{ 'ScoringApplication.AddAdviser' | translate }}</span>
+        </div>
+      </div>
       <div formGroupName="questionsGroup" *ngFor="let partition of partitions; let index = index;">
-        <h2 class="partition-title" id="partition_{{partition.order}}">{{index + 2}}. {{partition.name | translate}}</h2>
+        <h2 class="partition-title" id="partition_{{partition.order}}">{{index + 2}}. {{ 'ScoringApplication.' + partition.name | translate}}</h2>
         <div class="partition-block">
           <div class="control-row" *ngFor="let question of partition.questions; let questionIndex = index" [ngSwitch]="getQuestionTypeById(question.type)">
             <div *ngIf="isParentQuestionAnswered(question.parentId)">
               <div *ngSwitchCase="questionTypeLine">
                 <p class="control-label">
-                  <label for="control_{{question.id}}">{{ question.key | translate }}</label>
+                  <label for="control_{{question.id}}">{{ 'ScoringApplication.' + question.key | translate }}</label>
                 </p>
                 <input class="input" type="text" formControlName="{{'control_' + question.id}}" id="control_{{question.id}}">
               </div>
               <div *ngSwitchCase="questionTypeMultiLine">
                 <p class="control-label">
-                  <label for="control_{{question.id}}">{{ question.key | translate }}</label>
+                  <label for="control_{{question.id}}">{{ 'ScoringApplication.' + question.key | translate }}</label>
                 </p>
                 <textarea class="input" formControlName="{{'control_' + question.id}}" id="control_{{questionIndex}}" cols="30" rows="10"></textarea>
               </div>
-              <div *ngSwitchCase="questionTypeCombobox">
+              <div *ngSwitchCase="questionTypeComboBox">
                 <p class="control-label">
-                  <label for="control_{{question.id}}">{{ question.key | translate }}</label>
+                  <label for="control_{{question.id}}">{{ 'ScoringApplication.' + question.key | translate }}</label>
                 </p>
                 <app-select class="input-component" formControlName="{{'control_' + question.id}}" [elementId]="'control_' + question.id" [items]="[]"></app-select>
               </div>
               <div *ngSwitchCase="questionTypeDateTime">
                 <p class="control-label">
-                  <label for="control_{{question.id}}">{{ question.key | translate }}</label>
+                  <label for="control_{{question.id}}">{{ 'ScoringApplication.' + question.key | translate }}</label>
                 </p>
                 <p-calendar [inputId]="'control_' + question.id" formControlName="{{'control_' + question.id}}" [inputStyleClass]="'input input-date'"></p-calendar>
               </div>
               <div *ngSwitchCase="questionTypeCheckBox">
                 <p class="control-label">
-                  <label for="control_{{question.id}}">{{ question.key | translate }}</label>
+                  <label for="control_{{question.id}}">{{ 'ScoringApplication.' + question.key | translate }}</label>
                 </p>
                 <app-input-switch [labelOff]="'ScoringApplication.No' | translate" [labelOn]="'ScoringApplication.Yes' | translate" class="input-component" formControlName="{{'control_' + question.id}}"></app-input-switch>
               </div>
               <div *ngSwitchCase="questionTypeUrl">
                 <p class="control-label">
-                  <label for="control_{{question.id}}">{{ question.key | translate }}</label>
+                  <label for="control_{{question.id}}">{{ 'ScoringApplication.' + question.key | translate }}</label>
                 </p>
                 <input class="input" type="text" formControlName="{{'control_' + question.id}}" id="control_{{question.id}}">
               </div>
@@ -188,8 +227,11 @@
           <li class="partition-item" (click)="scrollToElement('team')">
             {{ 'ScoringApplication.TeamTitle' | translate }}
           </li>
+          <li class="partition-item" (click)="scrollToElement('advisers')">
+            {{ 'ScoringApplication.AdvisersTitle' | translate }}
+          </li>
           <li class="partition-item" (click)="scrollToElement(partition.order)" *ngFor="let partition of partitions; let index = index;">
-            {{index + 2}}. {{partition.name | translate}}
+            {{index + 5}}. {{ 'ScoringApplication.' + partition.name | translate}}
           </li>
         </ul>
         <div class="partition-menu__inputs">

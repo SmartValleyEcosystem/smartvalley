@@ -56,7 +56,8 @@ namespace SmartValley.Data.SQL.Repositories
         public async Task<IReadOnlyCollection<ProjectDetails>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds)
         {
             return await (from project in ReadContext.Projects
-                          join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
+                          join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId into s
+                          from scoring in s.DefaultIfEmpty()
                           join country in ReadContext.Countries on project.CountryId equals country.Id
                           where externalIds.Contains(project.ExternalId)
                           select new ProjectDetails(project, scoring, country)).ToArrayAsync();
@@ -65,7 +66,8 @@ namespace SmartValley.Data.SQL.Repositories
         public async Task<IReadOnlyCollection<ProjectDetails>> GetAllByNameAsync(string projectName)
         {
             return await (from project in ReadContext.Projects
-                          join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
+                          join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId into s
+                          from scoring in s.DefaultIfEmpty()
                           join country in ReadContext.Countries on project.CountryId equals country.Id
                           where project.Name.Contains(projectName)
                           select new ProjectDetails(project, scoring, country)).ToArrayAsync();

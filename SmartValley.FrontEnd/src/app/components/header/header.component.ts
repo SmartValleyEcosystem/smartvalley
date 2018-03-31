@@ -8,6 +8,7 @@ import {BlockiesService} from '../../services/blockies-service';
 import {UserContext} from '../../services/authentication/user-context';
 import {ExpertApiClient} from '../../api/expert/expert-api-client';
 import {ExpertApplicationStatus} from '../../services/expert/expert-application-status.enum';
+import {ProjectApiClient} from '../../api/project/project-api-client';
 
 @Component({
   selector: 'app-header',
@@ -25,11 +26,13 @@ export class HeaderComponent implements OnInit {
   public projectsLink: string;
   public accountLink: string;
   public adminPanelLink: string;
+  public myProjectLink: string;
 
   constructor(private router: Router,
               private balanceService: BalanceService,
               private blockiesService: BlockiesService,
               private authenticationService: AuthenticationService,
+              private projectApiClient: ProjectApiClient,
               private userContext: UserContext,
               private expertApiClient: ExpertApiClient) {
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
@@ -39,10 +42,11 @@ export class HeaderComponent implements OnInit {
   async ngOnInit() {
     const currentUser = this.userContext.getCurrentUser();
     this.updateAccount(currentUser);
-    this.projectsLink = Paths.Root;
+    this.projectsLink = Paths.ProjectList;
     this.accountLink = Paths.Account;
     this.adminPanelLink = Paths.Admin;
     await this.balanceService.updateBalanceAsync();
+   
   }
 
   private updateAccount(user: User): void {
@@ -92,5 +96,10 @@ export class HeaderComponent implements OnInit {
     if (await this.authenticationService.authenticateAsync()) {
       await this.router.navigate([Paths.Project]);
     }
+  }
+
+  async navigateToMyProject() {
+    let myProjectIdResponse = await this.projectApiClient.getMyProjectAsync();
+    await this.router.navigate([Paths.MyProject + '/' + myProjectIdResponse.id]);
   }
 }

@@ -61,7 +61,7 @@ export class SearchWithAutocompleteComponent implements OnInit {
   }
 
   public async searchRequestAsync(search) {
-    let searchResult = await this.projectApiClient.getProjectsBySearchStringAsync(search);
+    const searchResult = await this.projectApiClient.getProjectsBySearchStringAsync(search);
     this.projects = searchResult.items;
   }
 

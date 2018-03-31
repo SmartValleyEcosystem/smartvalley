@@ -1,0 +1,24 @@
+<div *ngIf="!isProjectExists" class="content">
+  <h1 class="title">{{ 'MyProject.Title' | translate }}</h1>
+</div>
+<div *ngIf="isProjectExists" class="content">
+  <h1 class="title">{{ project.name }}</h1>
+  <app-project-info *ngIf="project" [project]="project" >
+    <a *ngIf="!isApplicationScoringExist" (click)="navigateToApplicationScoring()" class="main-btn">{{ 'MyProject.GetScore' | translate }}</a>
+    <span *ngIf="isApplicationScoringExist" (click)="showWaitingModal()" class="main-btn">{{ 'MyProject.SendScore' | translate }}</span>
+    <a [routerLink]="'/' + editProjectsLink" class="ghost-btn">{{ 'MyProject.EditInformation' | translate }}</a>
+  </app-project-info>
+
+  <mat-tab-group>
+    <mat-tab label="{{ 'MyProject.About' | translate }}">
+      <app-project-about [projectId]="projectId"></app-project-about>
+    </mat-tab>
+    <mat-tab label="{{ 'MyProject.ScoringApplication' | translate }}">
+      2
+    </mat-tab>
+    <mat-tab label="{{ 'MyProject.ScoringReport' | translate }}">
+      3
+    </mat-tab>
+  </mat-tab-group>
+
+</div>

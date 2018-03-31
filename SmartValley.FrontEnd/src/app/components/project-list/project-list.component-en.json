@@ -9,6 +9,11 @@
     "Search": "Search",
     "ProjectCategory": "Project area",
     "ScoringDate": "Scoring date",
-    "Name": "Name"
+    "Name": "Name",
+    "Email": "Email",
+    "EmptyResultTitle": "We couldn’t find any results applying to your search",
+    "Subscribe": "Subscribe",
+    "EmptyResultText": "Try another filter or subscribe for news and we’ll tell you when any project appears in this category.",
+    "EmailPlaceHolder": "For ex., asd152@gmail.com"
   }
 }

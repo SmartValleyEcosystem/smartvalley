@@ -27,25 +27,11 @@ namespace SmartValley.Domain
 
         public string WhitePaper { get; set; }
 
-        public string ICODate { get; set; }
+        public string IcoDate { get; set; }
 
         public string ContactEmail { get; set; }
 
-        public string FacebookLink { get; set; }
-
-        public string BitcointalkLink { get; set; }
-
-        public string MediumLink { get; set; }
-
-        public string RedditLink { get; set; }
-
-        public string TelegramLink { get; set; }
-
-        public string TwitterLink { get; set; }
-
-        public string GitHubLink { get; set; }
-
-        public string LinkedInLink { get; set; }
+        public SocialNetworks SocialNetworks { get; set; }
 
         public long? CountryId { get; set; }
 
@@ -90,12 +76,12 @@ namespace SmartValley.Domain
             }
         }
 
-        public void UpdateAnswers(IDictionary<int, string> answers)
+        public void UpdateAnswers(IReadOnlyCollection<ScoringApplicationAnswer> answers)
         {
             Answers.Clear();
             foreach (var answer in answers)
             {
-                SetAnswer(answer.Key, answer.Value);
+                SetAnswer(answer.QuestionId, answer.Value);
             }
         }
 

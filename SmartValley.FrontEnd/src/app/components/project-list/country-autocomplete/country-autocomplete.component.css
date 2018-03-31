@@ -1,12 +1,19 @@
 p {
   margin: 0;
 }
+
+.search-icon{
+  top: 7px;
+  position: absolute;
+  right: 10px;
+  color: #a4a2b0;
+  cursor: pointer;
+  user-select: none;
+}
+
 .filter-country {
   width: 255px;
-  padding-right: 45px;
-  background-image: url(/assets/img/search.svg);
-  background-repeat: no-repeat;
-  background-position: 215px 4px;
+  cursor: pointer;
   -webkit-transition: border-radius 0.5s;
   transition: border-radius 0.5s;
 }
@@ -43,5 +50,5 @@ p {
   cursor: pointer;
 }
 .search-controls__input_square {
-  border-radius: 30px 30px 0 0;
+  border-radius: 18px 18px 0 0;
 }

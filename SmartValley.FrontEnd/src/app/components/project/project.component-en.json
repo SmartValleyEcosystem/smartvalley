@@ -1,0 +1,11 @@
+{
+  "MyProject": {
+    "Title": "My project",
+    "About": "About",
+    "ScoringReport": "Scoring report",
+    "GetScore": "Get score for this project",
+    "EditInformation": "Edit information",
+    "SendScore": "Send for score",
+    "ScoringApplication": "Scoring Application"
+  }
+}
