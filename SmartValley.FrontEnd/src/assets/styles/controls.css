@@ -10,7 +10,7 @@
   text-align: center;
   color: #ffffff !important;
   cursor: pointer;
-  outline: none;
+  outline: none !important;
 }
 .ghost-btn {
   font-family: "Roboto-Regular";
