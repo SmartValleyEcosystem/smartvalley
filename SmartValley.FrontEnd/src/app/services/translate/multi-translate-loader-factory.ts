@@ -46,7 +46,6 @@ export function multiTranslateLoaderFactory() {
     'components/expert/expert-offers-history/expert-offers-history.component',
     'components/project-list/project-list.component',
     'components/search-with-autocomplete/search-with-autocomplete.component',
-    'components/project-list/category-select/category-select.component',
     'components/authentication/register/register.component',
     'components/authentication/register-confirm/register-confirm.component',
     'components/select/select.component',

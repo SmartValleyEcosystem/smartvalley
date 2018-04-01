@@ -110,8 +110,6 @@ import {ExpertOffersComponent} from './components/expert/expert-offers/expert-of
 import {RoundNumberPipe} from './utils/round-number.pipe';
 import {SearchWithAutocompleteComponent} from './components/search-with-autocomplete/search-with-autocomplete.component';
 import {ProjectListComponent} from './components/project-list/project-list.component';
-import {CountryAutocompleteComponent} from './components/project-list/country-autocomplete/country-autocomplete.component';
-import {CategorySelectComponent} from './components/project-list/category-select/category-select.component';
 import {PaginatorModule} from 'primeng/paginator';
 import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-assigned.guard';
 import {SelectComponent} from './components/select/select.component';
@@ -189,8 +187,6 @@ import {WaitingModalComponent} from './components/common/waiting-modal/waiting-m
     SearchWithAutocompleteComponent,
     ProjectListComponent,
     ScoringCostComponent,
-    CountryAutocompleteComponent,
-    CategorySelectComponent,
     ScoringApplicationComponent,
     SelectComponent,
     AutocompleteComponent,

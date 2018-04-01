@@ -4,12 +4,14 @@ import {ScoredProject} from '../../api/expert/scored-project';
 import {Paths} from '../../paths';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {Router} from '@angular/router';
-import {CountryAutocompleteComponent} from './country-autocomplete/country-autocomplete.component';
 import {CategorySelectComponent} from './category-select/category-select.component';
 import {ProjectsOrderBy} from '../../api/application/projects-order-by.enum';
 import {SortDirection} from '../../api/sort-direction.enum';
 import {ProjectResponse} from '../../api/project/project-response';
 import {ProjectQuery} from '../../api/project/project-query';
+import {SelectItem} from 'primeng/api';
+import {DictionariesService} from '../../services/common/dictionaries.service';
+import {AutocompleteComponent} from '../autocomplete/autocomplete.component';
 
 @Component({
   selector: 'app-project-list',
@@ -21,6 +23,8 @@ export class ProjectListComponent implements OnInit {
   public ASC: SortDirection = SortDirection.Ascending;
   public DESC: SortDirection = SortDirection.Descending;
   public projects: ScoredProject[];
+  public countries: SelectItem[];
+  public categories: SelectItem[];
   public scoringRatingFrom: number;
   public scoringRatingTo: number;
   public sortedBy: ProjectsOrderBy;
@@ -28,12 +32,22 @@ export class ProjectListComponent implements OnInit {
   public projectSearch: string;
   public projectOnPageCount = 10;
   public totalProjects: number;
-  @ViewChild(CountryAutocompleteComponent) country: CountryAutocompleteComponent;
-  @ViewChild(CategorySelectComponent) category: CategorySelectComponent;
+  public selectedCountryCode: string;
+  public selectedCategoryId: number;
 
   constructor(private router: Router,
               private expertApiClient: ExpertApiClient,
+              private dictionariesService: DictionariesService,
               private projectApiClient: ProjectApiClient) {
+    this.countries = this.dictionariesService.countries.map(i => <SelectItem>{
+      label: i.name,
+      value: i.code
+    });
+
+    this.categories = this.dictionariesService.categories.map(i => <SelectItem>{
+      label: i.value,
+      value: i.id
+    });
   }
 
   async ngOnInit() {
@@ -44,6 +58,14 @@ export class ProjectListComponent implements OnInit {
     this.projectSearch = '';
 
     await this.updateProjectsAsync(0);
+  }
+
+  public selectedCountry(countryCode: string) {
+    this.selectedCountryCode = countryCode;
+  }
+
+  public selectedCategory(categoryId: number) {
+    this.selectedCategoryId = categoryId;
   }
 
   private createScoredProject(response: ProjectResponse): ScoredProject {
@@ -70,6 +92,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   public async updateProjectsAsync(page: number) {
+    debugger
     const projectsResponse = await this.projectApiClient.queryProjectsAsync(<ProjectQuery>{
       offset: page * this.projectOnPageCount,
       count: this.projectOnPageCount,
@@ -77,8 +100,8 @@ export class ProjectListComponent implements OnInit {
       searchString: this.projectSearch,
       minimumScore: this.scoringRatingFrom,
       maximumScore: this.scoringRatingTo,
-      countryCode: this.country.selectedCountryCode,
-      categoryType: this.category.selectedCategoryId,
+      countryCode: this.selectedCountryCode,
+      categoryType: this.selectedCategoryId,
       orderBy: this.sortedBy,
       direction: this.sortDirection
     });
@@ -89,10 +112,8 @@ export class ProjectListComponent implements OnInit {
   public async clearFilters() {
     this.scoringRatingFrom = 0;
     this.scoringRatingTo = 100;
-    this.country.selectedCountry = '';
-    this.country.selectedCountryCode = '';
-    this.category.selectedCategory = '';
-    this.category.selectedCategoryId = null;
+    this.selectedCountryCode = '';
+    this.selectedCategoryId = null;
     this.projectSearch = '';
 
     await this.updateProjectsAsync(0);

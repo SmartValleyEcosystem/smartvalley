@@ -10,10 +10,24 @@
       </div>
       <div class="filters-wrapper">
         <div class="filter-item">
-          <app-country-autocomplete></app-country-autocomplete>
+          <p>
+            <label class="control-label" for="category">{{ 'CreateProject.Country' | translate }}</label>
+          </p>
+          <app-autocomplete class="input-component" [isNeedToTranslate]="true"
+                            [elementClass]="'wide-autocomplete'" [elementId]="'country'"
+                            [placeholder]="'CreateProject.AllCountries' | translate"
+                            (onSelect)="selectedCountry($event)"
+                            [allItems]="countries"></app-autocomplete>
         </div>
         <div class="filter-item">
-          <app-category-select></app-category-select>
+          <p>
+            <label class="control-label" for="category">{{ 'CreateProject.Category' | translate }}</label>
+          </p>
+          <app-autocomplete class="input-component" [isNeedToTranslate]="true"
+                            [elementClass]="'wide-autocomplete'" [elementId]="'category'"
+                            [placeholder]="'CreateProject.AllAreas' | translate"
+                            (onSelect)="selectedCategory($event)"
+                            [allItems]="categories"></app-autocomplete>
         </div>
         <div class="filter-item">
           <p>
