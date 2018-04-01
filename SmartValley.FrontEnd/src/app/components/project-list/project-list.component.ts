@@ -4,14 +4,12 @@ import {ScoredProject} from '../../api/expert/scored-project';
 import {Paths} from '../../paths';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {Router} from '@angular/router';
-import {CategorySelectComponent} from './category-select/category-select.component';
 import {ProjectsOrderBy} from '../../api/application/projects-order-by.enum';
 import {SortDirection} from '../../api/sort-direction.enum';
 import {ProjectResponse} from '../../api/project/project-response';
 import {ProjectQuery} from '../../api/project/project-query';
 import {SelectItem} from 'primeng/api';
 import {DictionariesService} from '../../services/common/dictionaries.service';
-import {AutocompleteComponent} from '../autocomplete/autocomplete.component';
 
 @Component({
   selector: 'app-project-list',
@@ -92,7 +90,6 @@ export class ProjectListComponent implements OnInit {
   }
 
   public async updateProjectsAsync(page: number) {
-    debugger
     const projectsResponse = await this.projectApiClient.queryProjectsAsync(<ProjectQuery>{
       offset: page * this.projectOnPageCount,
       count: this.projectOnPageCount,
