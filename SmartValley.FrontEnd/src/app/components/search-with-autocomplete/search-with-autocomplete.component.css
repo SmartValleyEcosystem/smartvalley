@@ -9,7 +9,7 @@
   color: #fff;
 }
 
-.search-icon{
+.search-icon {
   font-family: 'Material Icons' !important;
   position: absolute;
   z-index: 10;
@@ -79,7 +79,7 @@
 
 .search-controls__project-list {
   position: absolute;
-  width: 1000px;
+  width: 1031px;
   background: #fff;
   list-style: none;
   color: #000;
@@ -98,7 +98,7 @@
 
 .search-controls__project-item {
   height: 80px;
-  padding: 10px 75px;
+  padding: 20px 70px;
 }
 
 .search-controls__project-item:hover {
