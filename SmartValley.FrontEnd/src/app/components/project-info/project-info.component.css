@@ -4,45 +4,53 @@
   margin-bottom: 32px;
   padding: 30px 40px;
 }
+
 .project-card__info {
   font-size: 12px;
-  width: 300px;
 }
+
 .project-card__image {
   width: 200px;
 }
+
 .project-card__info-wrapper,
 .project-card,
 .avatar-socials {
   display: flex;
 }
+
 .avatar-socials {
   width: 90px;
   justify-content: space-around;
 }
+
 .project-card__controls {
-  margin-left: 50px;
-  width: 500px;
+  flex: 1;
 }
+
 .title-list, .values-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
+
 .title-list li, .values-list li {
-  padding-bottom:10px;
+  padding-bottom: 10px;
 }
+
 .title-list {
   color: #a4a2b0;
   text-align: right;
   margin-right: 20px;
 }
+
 a {
   text-decoration: none;
   font-family: Roboto-Bold;
   font-size: 12px;
   color: #5d49f2;
 }
+
 a.ghost-btn {
   font-family: Roboto-Regular;
   margin-top: 15px;
@@ -50,6 +58,7 @@ a.ghost-btn {
   height: 23px;
   color: #000;
 }
+
 .project-avatar {
   width: 90px;
   height: 90px;

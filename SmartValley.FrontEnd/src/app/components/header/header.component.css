@@ -73,6 +73,11 @@ button:focus {
   border-radius: 1em;
 }
 
+.header-nav__authenticated {
+  text-align: right;
+  margin: 0 !important;
+}
+
 .header-content {
   align-items: center;
   width: 1180px;
@@ -95,7 +100,7 @@ button:focus {
   color: #a4a2b0;
   text-decoration: none;
   display: inline-block;
-  margin-right: 20px;
+  margin-left: 47px;
   cursor: pointer;
 }
 
@@ -113,9 +118,11 @@ button:focus {
   margin-left: 47px;
   cursor: pointer;
 }
+
 .fake-menu-wrapper {
   position: relative;
 }
+
 .fake-menu-label {
   position: absolute;
   width: 100%;
