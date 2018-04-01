@@ -9,6 +9,7 @@ import {UserContext} from '../../services/authentication/user-context';
 import {ExpertApiClient} from '../../api/expert/expert-api-client';
 import {ExpertApplicationStatus} from '../../services/expert/expert-application-status.enum';
 import {ProjectApiClient} from '../../api/project/project-api-client';
+import {isNullOrUndefined} from 'util';
 
 @Component({
   selector: 'app-header',
@@ -21,6 +22,7 @@ export class HeaderComponent implements OnInit {
   public showReceiveEtherButton: boolean;
   public isAuthenticated: boolean;
   public isAdmin: boolean;
+  public haveProject: boolean;
   public accountAddress: string;
   public accountImgUrl: string;
   public projectsLink: string;
@@ -36,21 +38,25 @@ export class HeaderComponent implements OnInit {
               private userContext: UserContext,
               private expertApiClient: ExpertApiClient) {
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
-    this.userContext.userContextChanged.subscribe((user) => this.updateAccount(user));
+    this.userContext.userContextChanged.subscribe(async (user) => await this.updateAccountAsync(user));
   }
 
   async ngOnInit() {
     const currentUser = this.userContext.getCurrentUser();
-    this.updateAccount(currentUser);
+    await this.updateAccountAsync(currentUser);
     this.projectsLink = Paths.ProjectList;
     this.accountLink = Paths.Account;
     this.adminPanelLink = Paths.Admin;
     await this.balanceService.updateBalanceAsync();
-   
   }
 
-  private updateAccount(user: User): void {
+  private async updateAccountAsync(user: User): Promise<void> {
     if (user) {
+      const myProjectIdResponse = await this.projectApiClient.getMyProjectAsync();
+      if (!isNullOrUndefined(myProjectIdResponse)) {
+        this.myProjectLink = Paths.MyProject + '/' + myProjectIdResponse.id;
+        this.haveProject = true;
+      }
       this.isAuthenticated = true;
       this.accountAddress = user.account;
       this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
@@ -58,6 +64,8 @@ export class HeaderComponent implements OnInit {
     } else {
       this.isAuthenticated = false;
       this.isAdmin = false;
+      this.haveProject = false;
+      this.myProjectLink = '';
     }
   }
 
@@ -96,10 +104,5 @@ export class HeaderComponent implements OnInit {
     if (await this.authenticationService.authenticateAsync()) {
       await this.router.navigate([Paths.Project]);
     }
-  }
-
-  async navigateToMyProject() {
-    let myProjectIdResponse = await this.projectApiClient.getMyProjectAsync();
-    await this.router.navigate([Paths.MyProject + '/' + myProjectIdResponse.id]);
   }
 }
