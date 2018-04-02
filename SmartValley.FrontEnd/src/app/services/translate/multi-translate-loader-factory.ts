@@ -6,7 +6,6 @@ export function multiTranslateLoaderFactory() {
     'services/authentication/authentication-service',
     'services/balance/balance-service',
     'services/translate/common',
-    'services/voting/voting-service',
     'services/common/countries',
     'services/common/categories',
     'services/common/stages',

@@ -1,7 +1,0 @@
-{
-  "VotingService": {
-    "Success": "Vote submitted.",
-    "Error": "Vote failed. Please try again later.",
-    "VoteTransactionDialog": "Vote submitting is in progress. Please wait for completion of transaction."
-  }
-}

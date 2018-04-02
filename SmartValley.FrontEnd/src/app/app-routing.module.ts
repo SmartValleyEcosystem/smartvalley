@@ -11,7 +11,6 @@ import {ShouldHaveEthGuard} from './services/balance/should-have-eth.guard';
 import {AccountComponent} from './components/account/account.component';
 import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-authenticated.guard';
 import {ShouldBeAdminGuard} from './services/authentication/should-be-admin.guard';
-import {VotingCardComponent} from './components/voting-card/voting-card.component';
 import {AdminPanelComponent} from './components/admin-panel/admin-panel.component';
 import {ExpertStatusComponent} from './components/expert-status/expert-status.component';
 import {ExpertComponent} from './components/expert/expert.component';
@@ -40,12 +39,6 @@ const appRoutes: Routes = [
         canActivate: [ShouldBeAdminGuard]
       },
       {path: Paths.AdminExpertApplication + '/:id', pathMatch: 'full', component: AdminExpertApplicationComponent},
-      {
-        path: Paths.Voting + '/:id',
-        pathMatch: 'full',
-        component: VotingCardComponent,
-        canActivate: [ShouldBeAdminGuard]
-      },
       {
         path: Paths.Register,
         pathMatch: 'full',

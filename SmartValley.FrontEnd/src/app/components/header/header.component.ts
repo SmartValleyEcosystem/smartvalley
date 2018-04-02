@@ -10,6 +10,7 @@ import {ExpertApiClient} from '../../api/expert/expert-api-client';
 import {ExpertApplicationStatus} from '../../services/expert/expert-application-status.enum';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {isNullOrUndefined} from 'util';
+import {ProjectService} from '../../services/project/project.service';
 
 @Component({
   selector: 'app-header',
@@ -36,7 +37,13 @@ export class HeaderComponent implements OnInit {
               private authenticationService: AuthenticationService,
               private projectApiClient: ProjectApiClient,
               private userContext: UserContext,
-              private expertApiClient: ExpertApiClient) {
+              private expertApiClient: ExpertApiClient,
+              private projectService: ProjectService) {
+    this.projectService.projectsDeleted.subscribe(async () => {
+      this.haveProject = false;
+      this.myProjectLink = '';
+    });
+    this.projectService.projectsCreated.subscribe(async () => await this.updateProjectsAsync();
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
     this.userContext.userContextChanged.subscribe(async (user) => await this.updateAccountAsync(user));
   }
@@ -50,13 +57,17 @@ export class HeaderComponent implements OnInit {
     await this.balanceService.updateBalanceAsync();
   }
 
+  private async updateProjectsAsync(): Promise<void> {
+    const myProjectIdResponse = await this.projectApiClient.getMyProjectAsync();
+    if (!isNullOrUndefined(myProjectIdResponse)) {
+      this.myProjectLink = Paths.MyProject + '/' + myProjectIdResponse.id;
+      this.haveProject = true;
+    }
+  }
+
   private async updateAccountAsync(user: User): Promise<void> {
     if (user) {
-      const myProjectIdResponse = await this.projectApiClient.getMyProjectAsync();
-      if (!isNullOrUndefined(myProjectIdResponse)) {
-        this.myProjectLink = Paths.MyProject + '/' + myProjectIdResponse.id;
-        this.haveProject = true;
-      }
+      this.updateProjectsAsync();
       this.isAuthenticated = true;
       this.accountAddress = user.account;
       this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);

@@ -17,6 +17,7 @@ import {Paths} from '../../paths';
 import {ErrorCode} from '../../shared/error-code.enum';
 import {MyProjectResponse} from '../../api/project/my-project-response';
 import {StringExtensions} from '../../utils/string-extensions';
+import {ProjectService} from '../../services/project/project.service';
 
 @Component({
   selector: 'app-create-project',
@@ -50,6 +51,7 @@ export class CreateProjectComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private notificationsService: NotificationsService,
               private projectApiClient: ProjectApiClient,
+              private projectService: ProjectService,
               private translateService: TranslateService,
               private dictionariesService: DictionariesService,
               private dialogService: DialogService,
@@ -348,7 +350,7 @@ export class CreateProjectComponent implements OnInit {
   private async updateProjectAsync(): Promise<void> {
     const request = this.getUpdateProjectRequest();
 
-    await this.projectApiClient.updateAsync(request);
+    await this.projectService.updateAsync(request);
 
     this.notificationsService.success(
       this.translateService.instant('Common.Success'),
@@ -362,7 +364,7 @@ export class CreateProjectComponent implements OnInit {
   private async createProjectAsync(): Promise<void> {
     const request = this.getCreateProjectRequest();
 
-    await this.projectApiClient.createAsync(request);
+    await this.projectService.createAsync(request);
 
     this.notificationsService.success(
       this.translateService.instant('Common.Success'),
@@ -378,7 +380,7 @@ export class CreateProjectComponent implements OnInit {
     const shouldDelete = await this.dialogService.showDeleteProjectModalAsync();
     if (shouldDelete) {
       try {
-        await this.projectApiClient.deleteAsync(this.projectId);
+        await this.projectService.deleteAsync(this.projectId);
       } catch (e) {
         if (e.error.errorCode === ErrorCode.ProjectCouldntBeRemoved) {
           this.notificationsService.warn(

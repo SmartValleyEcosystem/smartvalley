@@ -1,10 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ScoringCriterionService} from '../criteria/scoring-criterion.service';
 import {PromiseUtils} from '../../utils/promise-utils';
-import {BalanceService} from '../balance/balance.service';
 import {ScoringManagerContractClient} from '../contract-clients/scoring-manager-contract-client';
-import {VotingManagerContractClient} from '../contract-clients/voting-manager-contract-client';
-import {VotingContractClient} from '../contract-clients/voting-contract-client';
 import {AuthenticationService} from '../authentication/authentication-service';
 import {AdminContractClient} from '../contract-clients/admin-contract-client';
 import {ExpertsRegistryContractClient} from '../contract-clients/experts-registry-contract-client';
@@ -22,8 +19,6 @@ export class InitializationService {
               private expertContractClient: ExpertsRegistryContractClient,
               private scoringManagerContractClient: ScoringManagerContractClient,
               private scoringExpertsManagerContractClient: ScoringExpertsManagerContractClient,
-              private votingManagerContractClient: VotingManagerContractClient,
-              private votingContractClient: VotingContractClient,
               private authenticationService: AuthenticationService,
               private areaService: AreaService,
               private dictionariesService: DictionariesService) {
@@ -45,8 +40,6 @@ export class InitializationService {
       this.adminContractClient.initializeAsync(),
       this.scoringManagerContractClient.initializeAsync(),
       this.scoringExpertsManagerContractClient.initializeAsync(),
-      this.votingManagerContractClient.initializeAsync(),
-      this.votingContractClient.initializeAsync(),
       this.expertContractClient.initializeAsync(),
       this.areaService.initializeAsync(),
       this.dictionariesService.initializeAsync()

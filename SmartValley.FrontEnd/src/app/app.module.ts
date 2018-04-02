@@ -60,12 +60,8 @@ import {CompositeGuard} from './services/guards/composite.guard';
 import {GuardFactory} from './services/guards/guard-factory';
 import {DashIfEmptyPipe} from './utils/dash-if-empty.pipe';
 import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-authenticated.guard';
-import {VotingService} from './services/voting/voting-service';
-import {VotingCardComponent} from './components/voting-card/voting-card.component';
-import {VotingManagerContractClient} from './services/contract-clients/voting-manager-contract-client';
 import {ScoringExpertsManagerContractClient} from './services/contract-clients/scoring-experts-manager-contract-client';
 import {FreeScoringConfirmationModalComponent} from './components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component';
-import {VotingContractClient} from './services/contract-clients/voting-contract-client';
 import {VoteModalComponent} from './components/common/vote-modal/vote-modal.component';
 import {FormatDatePipe} from './utils/format-date.pipe';
 import {AuthenticationApiClient} from './api/authentication/authentication-api-client';
@@ -124,11 +120,11 @@ import {ProjectComponent} from './components/project/project.component';
 import {ProjectAboutComponent} from './components/project/project-about/project-about.component';
 import {WaitingModalComponent} from './components/common/waiting-modal/waiting-modal.component';
 import {ScoringApplicationComponent} from './components/project/scoring-application/scoring-application.component';
+import {ProjectService} from './services/project/project.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    VotingCardComponent,
     MetamaskHowtoComponent,
     LandingComponent,
     HeaderComponent,
@@ -147,7 +143,6 @@ import {ScoringApplicationComponent} from './components/project/scoring-applicat
     ProjectInformationComponent,
     AccountComponent,
     DashIfEmptyPipe,
-    VotingCardComponent,
     EditScoringApplicationComponent,
     FreeScoringConfirmationModalComponent,
     VoteModalComponent,
@@ -274,10 +269,7 @@ import {ScoringApplicationComponent} from './components/project/scoring-applicat
     ScoringCriterionService,
     Web3Service,
     DialogService,
-    VotingService,
     ScoringManagerContractClient,
-    VotingManagerContractClient,
-    VotingContractClient,
     BlockiesService,
     BalanceService,
     InitializationService,
@@ -295,6 +287,7 @@ import {ScoringApplicationComponent} from './components/project/scoring-applicat
     EnumHelper,
     OffersApiClient,
     ScoringService,
+    ProjectService,
     ScoringContractClient,
     ScoringApplicationApiClient
   ],
