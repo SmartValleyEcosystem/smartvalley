@@ -189,6 +189,9 @@
               {{index + 2}}. {{'EditScoringApplication.' + partition.name | translate}}
             </li>
           </ul>
+          <div class="partition-menu__inputs">
+            <input (click)="navigateToEdit()" type="button" class="main-btn" value="{{ 'ScoringApplication.EditTextButton' | translate }}">
+          </div>
         </sticky>
       </div>
     </div>

@@ -61,4 +61,8 @@ export class ScoringApplicationComponent implements OnInit {
   public navigateToCreateForm() {
     this.router.navigate([Paths.ScoringApplication + this.projectId]);
   }
+
+  public navigateToEdit() {
+    this.router.navigate([Paths.ScoringApplication + '/' + this.projectId]);
+  }
 }
