@@ -110,6 +110,8 @@ export class RegisterExpertComponent implements OnInit {
       return;
     }
 
+    this.isProjectCreating = true;
+
     const isSucceeded = await this.submitAsync();
     if (isSucceeded) {
       await this.router.navigate([Paths.Root]);
@@ -186,7 +188,7 @@ export class RegisterExpertComponent implements OnInit {
     input.append('photo', this.photo);
     input.append('cv', this.cv);
     input.append('transactionHash', transactionHash);
-    input.append('sex', +form.selectedSex);
+    input.append('sex', form.selectedSex ? SexEnum.Male.toString() : SexEnum.Female.toString());
     input.append('birthDate', moment(form.birthDate).toISOString());
     input.append('city', form.city);
     input.append('countryIsoCode', form.country.code);
@@ -264,7 +266,7 @@ export class RegisterExpertComponent implements OnInit {
       form.firstName +
       form.secondName +
       form.description +
-      form.why);
+      form.why;
 
     areas.forEach(a => applicationStr.concat(a.toString()));
     return '0x' + Md5.hashStr(applicationStr, false).toString();
