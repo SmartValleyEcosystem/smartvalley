@@ -23,11 +23,9 @@
           <p>
             <label class="control-label" for="category">{{ 'CreateProject.Category' | translate }}</label>
           </p>
-          <app-autocomplete class="input-component" [isNeedToTranslate]="true"
-                            [elementClass]="'wide-autocomplete'" [elementId]="'category'"
-                            [placeholder]="'CreateProject.AllAreas' | translate"
-                            (onSelect)="selectedCategory($event)"
-                            [allItems]="categories"></app-autocomplete>
+          <app-select class="input-component" formControlName="category"
+                      [elementId]="'category'" [items]="categories"
+                      [placeholder]="'CreateProject.AllAreas' | translate"></app-select>
         </div>
         <div class="filter-item">
           <p>

@@ -1,15 +1,20 @@
-<input (focus)="searchInputFocusStatusSwitch(true); showSelectList();"
-       (focusout)="searchInputFocusStatusSwitch(false); hideSelectList();"
-       [class.select-__input_focused]="selectedInput"
-       (input)="onSelectInputChange()"
-       [value]="selectedItemLabel"
-       [placeholder]="placeholder" type="text" class="input project-select-input" id="{{elementId}}" name="{{elementName}}">
-<ul (mouseenter) ="selectListHoverStatusSwitch(true) "  (mouseleave) ="selectListHoverStatusSwitch(false); hideSelectList();"
-    class="select-list" [class.hidden]="isSelectHidden">
-  <li (click)="clearItems()" class="select-item">
-    <p class="select-item-name select-item-name__off">{{ 'Select.NoSelected' | translate }}</p>
-  </li>
-  <li *ngFor="let item of items" (click)="selectItem(item.label, item.value)" class="select-item">
-    <p class="select-item-name">{{item.label | translate}}</p>
-  </li>
-</ul>
+<div style="position: relative;width: 280px;">
+  <i class="search-icon material-icons">expand_more</i>
+  <input readonly (focus)="searchInputFocusStatusSwitch(true); showSelectList();"
+         (focusout)="searchInputFocusStatusSwitch(false); hideSelectList();"
+         [class.select-__input_focused]="selectedInput"
+         (input)="onSelectInputChange()"
+         [value]="selectedItemLabel"
+         [placeholder]="placeholder" type="text" class="input project-select-input" id="{{elementId}}"
+         name="{{elementName}}">
+  <ul (mouseenter)="selectListHoverStatusSwitch(true) "
+      (mouseleave)="selectListHoverStatusSwitch(false); hideSelectList();"
+      class="select-list" [class.hidden]="isSelectHidden">
+    <li (click)="clearItems()" class="select-item">
+      <p class="select-item-name select-item-name__off">{{ 'Select.NoSelected' | translate }}</p>
+    </li>
+    <li *ngFor="let item of items" (click)="selectItem(item.label, item.value)" class="select-item">
+      <p class="select-item-name">{{item.label | translate}}</p>
+    </li>
+  </ul>
+</div>

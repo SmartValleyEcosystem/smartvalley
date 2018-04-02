@@ -10,6 +10,7 @@ import {ProjectResponse} from '../../api/project/project-response';
 import {ProjectQuery} from '../../api/project/project-query';
 import {SelectItem} from 'primeng/api';
 import {DictionariesService} from '../../services/common/dictionaries.service';
+import {SelectComponent} from '../select/select.component';
 
 @Component({
   selector: 'app-project-list',
@@ -31,7 +32,7 @@ export class ProjectListComponent implements OnInit {
   public projectOnPageCount = 10;
   public totalProjects: number;
   public selectedCountryCode: string;
-  public selectedCategoryId: number;
+  @ViewChild(SelectComponent) category: SelectComponent;
 
   constructor(private router: Router,
               private expertApiClient: ExpertApiClient,
@@ -60,10 +61,6 @@ export class ProjectListComponent implements OnInit {
 
   public selectedCountry(countryCode: string) {
     this.selectedCountryCode = countryCode;
-  }
-
-  public selectedCategory(categoryId: number) {
-    this.selectedCategoryId = categoryId;
   }
 
   private createScoredProject(response: ProjectResponse): ScoredProject {
@@ -98,7 +95,7 @@ export class ProjectListComponent implements OnInit {
       minimumScore: this.scoringRatingFrom,
       maximumScore: this.scoringRatingTo,
       countryCode: this.selectedCountryCode,
-      categoryType: this.selectedCategoryId,
+      categoryType: this.category.selectedItemValue,
       orderBy: this.sortedBy,
       direction: this.sortDirection
     });
@@ -110,7 +107,7 @@ export class ProjectListComponent implements OnInit {
     this.scoringRatingFrom = 0;
     this.scoringRatingTo = 100;
     this.selectedCountryCode = '';
-    this.selectedCategoryId = null;
+    this.category = null;
     this.projectSearch = '';
 
     await this.updateProjectsAsync(0);

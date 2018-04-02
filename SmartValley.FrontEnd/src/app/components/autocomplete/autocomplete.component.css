@@ -22,8 +22,17 @@
   border-left: solid 1px #a4a2b0;
   border-right: solid 1px #a4a2b0;
   border-bottom: solid 1px #a4a2b0;
-
 }
+
+.search-icon{
+  position: absolute;
+  right: 10px;
+  top: 7px;
+  color: rgba(216, 216, 216, 0);
+  color: #a4a2b0;
+  cursor: pointer;
+}
+
 .autocomplete-item {
   min-height: 30px;
   padding: 5px;

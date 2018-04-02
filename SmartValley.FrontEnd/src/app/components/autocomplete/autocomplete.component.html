@@ -1,12 +1,17 @@
-<input (focus)="searchInputFocusStatusSwitch(true); showItemsList();"
-       (focusout)="searchInputFocusStatusSwitch(false); hideItemsList();"
-       [class.autocomplete-item__focused]="squareInput"
-       (input)="onAutocompleteInputChange($event)"
-       [value]="selectedItemLabel"
-       [placeholder]="placeholder" type="text" class="input filter-autocomplete" id="{{elementId}}" name="{{elementName}}">
-<ul (mouseenter) ="selectListHoverStatusSwitch(true) "  (mouseleave) ="selectListHoverStatusSwitch(false); hideItemsList();"
-    class="autocomplete-list" [class.hidden]="isAutocompleteHidden">
-  <li *ngFor="let item of items" (click)="selectItem(item.label, item.value)" class="autocomplete-item">
-    <p class="item-name">{{ item.label | translate }}</p>
-  </li>
-</ul>
+<div style="position: relative;width: 255px;">
+  <i class="search-icon material-icons">search</i>
+  <input (focus)="searchInputFocusStatusSwitch(true); showItemsList();"
+         (focusout)="searchInputFocusStatusSwitch(false); hideItemsList();"
+         [class.autocomplete-item__focused]="squareInput"
+         (input)="onAutocompleteInputChange($event)"
+         [value]="selectedItemLabel"
+         [placeholder]="placeholder" type="text" class="input filter-autocomplete" id="{{elementId}}"
+         name="{{elementName}}">
+  <ul (mouseenter)="selectListHoverStatusSwitch(true) "
+      (mouseleave)="selectListHoverStatusSwitch(false); hideItemsList();"
+      class="autocomplete-list" [class.hidden]="isAutocompleteHidden">
+    <li *ngFor="let item of items" (click)="selectItem(item.label, item.value)" class="autocomplete-item">
+      <p class="item-name">{{ item.label | translate }}</p>
+    </li>
+  </ul>
+</div>

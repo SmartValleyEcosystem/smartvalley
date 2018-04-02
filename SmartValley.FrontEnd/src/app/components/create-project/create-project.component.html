@@ -16,10 +16,9 @@
         <p class="control-label">
           <label for="category">{{ 'CreateProject.Category' | translate }}</label>
         </p>
-        <app-autocomplete class="input-component" [isNeedToTranslate]="true"
-                          [elementClass]="'wide-autocomplete'" [elementId]="'category'" formControlName="category"
-                          [placeholder]="'CreateProject.AllAreas' | translate"
-                          [allItems]="categories"></app-autocomplete>
+        <app-select class="input-component" formControlName="category"
+                    [elementId]="'category'" [items]="categories"
+                    [placeholder]="'CreateProject.AllAreas' | translate"></app-select>
       </div>
       <div #stage class="control-row">
         <p class="control-label">
