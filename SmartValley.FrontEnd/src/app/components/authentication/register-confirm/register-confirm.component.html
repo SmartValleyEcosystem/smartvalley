@@ -7,7 +7,7 @@
         {{ 'Confirm.ButtonText' | translate }}
       </button></p>
       <div class="h-line"></div>
-      <p class="gray-text">
+      <p class="gray-text underline-text">
         {{ 'Confirm.HaventMail' | translate }}
         <button [disabled]="seconds > 0" class="sv-link" (click)="sendEmailAsync()">
           {{ 'Confirm.SendAgain' | translate }}</button>

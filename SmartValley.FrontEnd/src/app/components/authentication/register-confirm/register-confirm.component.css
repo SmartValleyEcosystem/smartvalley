@@ -18,7 +18,7 @@
   margin-bottom: 180px;
   padding-top: 40px;
   padding-left: 40px;
-  font-family: Roboto;
+  font-family: Roboto-Regular;
   line-height: 1.43;
   text-align: left;
   color: #000000;
@@ -41,14 +41,18 @@
 }
 
 .gray-text{
-  font-family: Roboto;
-  font-weight: bold;
+  font-family: Roboto-Regular;
   line-height: 1.33;
   letter-spacing: -0.1px;
   text-align: left;
   color: #a4a2b0;
   padding-top: 20px;
   padding-bottom: 20px;
+}
+
+.underline-text{
+  font-size: 0.8em;
+  margin-top: 4px;
 }
 
 .sv-link{
