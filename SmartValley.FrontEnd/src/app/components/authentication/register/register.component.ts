@@ -22,6 +22,9 @@ export class RegisterComponent {
   }
 
   async submitAsync() {
+    if (this.form.invalid) {
+      return;
+    }
     await this.authenticationService.registerAsync(this.form.value.email);
   }
 }
