@@ -17,8 +17,8 @@
       <div class="partition-item">{{member.fullName}}</div>
       <div class="role-text">{{member.role}}</div>
       <div class="member-socials">
-        <a href="{{member.linkedIn}}" class="social-icon social-icon__linkedin"></a>
-        <a href="{{member.facebook}}" class="social-icon social-icon__facebook"></a>
+        <a *ngIf="member.linkedIn" href="{{member.linkedIn}}" class="social-icon social-icon__linkedin"></a>
+        <a *ngIf="member.facebook" href="{{member.facebook}}" class="social-icon social-icon__facebook"></a>
       </div>
     </div>
   </div>
