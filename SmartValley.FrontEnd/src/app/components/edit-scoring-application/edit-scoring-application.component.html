@@ -125,7 +125,7 @@
         </div>
       </div>
       <div formGroupName="questionsGroup" *ngFor="let partition of partitions; let index = index;">
-        <h2 class="partition-title" id="partition_{{partition.order}}">{{index + 2}}. {{ 'EditScoringApplication.' + partition.name | translate}}</h2>
+        <h2 class="partition-title" id="partition_{{partition.order}}">{{index + 3}}. {{ 'EditScoringApplication.' + partition.name | translate}}</h2>
         <div class="partition-block">
           <div class="control-row" *ngFor="let question of partition.questions; let questionIndex = index" [ngSwitch]="getQuestionTypeById(question.type)">
             <div *ngIf="isParentQuestionAnswered(question.parentId)">
