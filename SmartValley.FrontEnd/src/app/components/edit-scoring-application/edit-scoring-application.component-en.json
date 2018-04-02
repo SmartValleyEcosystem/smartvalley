@@ -113,7 +113,7 @@
     "CrowdsaleDescriptionQuestion": "Describe the crowdsale terms, bonuses, and discounts",
     "TokenFunctionsDescriptionQuestion": "What function does your token perform? If there are several, describe them all",
     "TokenTypeQuestion": "What is your token type?",
-    "LicensingForSecurityTokenQuestion": "For a security token: hich licences did you obtain to guarantee compliance?",
+    "LicensingForSecurityTokenQuestion": "For a security token: which licences did you obtain to guarantee compliance?",
     "BuyerTokenValueQuestion": "What value does your token provide to its buyers?",
     "TokenValueGrowthFactorsQuestion": "List value growth factors for your tokens",
     "TokenNecessityForProjectQuestion": "Why can't your project work without a token?",
