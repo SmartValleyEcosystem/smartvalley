@@ -77,7 +77,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   public navigateToProject(id) {
-    this.router.navigate([Paths.Report + '/' + id]);
+    this.router.navigate([Paths.Project + '/' + id]);
   }
 
   public getProjectLink(id) {
