@@ -48,7 +48,7 @@
           <label for="website">{{ 'CreateProject.Website' | translate }}</label>
         </p>
         <input class="input" id="website" formControlName="website"
-               placeholder="{{ 'CreateProject.WWW' | translate }}">
+               placeholder="{{ 'CreateProject.Http' | translate }}">
       </div>
       <div class="control-row">
         <p class="control-label">
@@ -82,20 +82,20 @@
           <label for="email">{{ 'CreateProject.Link' | translate }}</label>
         </p>
       </div>
-      <div *ngFor="let social of selectedSocials; first as isFirst" class="socials__row" [formGroup]="socialFormGroup">
+      <div *ngFor="let social of selectedSocials;" class="socials__row" [formGroup]="socialFormGroup">
         <app-select class="input-component" formControlName="{{'social__' + social}}"
                     [elementId]="'social__'+ social" [items]="socials"
                     [placeholder]="'CreateProject.SocialMedia' | translate"></app-select>
         <input [formControlName]="'social-link__' + social" class="input socials__input"
                placeholder="{{ 'CreateProject.Http' | translate }}">
-        <span (click)="removeSocialMedia(social)" class="socials__remove" *ngIf="!isFirst"></span>
+        <span (click)="removeSocialMedia(social)" class="socials__remove"></span>
       </div>
       <span class="socials__add-button" (click)="addSocialMedia()">{{ 'CreateProject.AddMore' | translate }}</span>
     </div>
     <h2 class="settings-title">{{ 'CreateProject.Team' | translate }}</h2>
     <div class="settings-block settings-block_last" [formGroup]="membersGroup">
-      <div *ngFor="let member of selectedMembers; first as isFirst" class="member-wrapper">
-        <h3 class="member-name">{{ 'CreateProject.Member' | translate }} {{ member }} <span (click)="removeTeamMember(member)" class="member__remove" *ngIf="!isFirst"></span></h3>
+      <div *ngFor="let member of selectedMembers;" class="member-wrapper">
+        <h3 class="member-name">{{ 'CreateProject.Member' | translate }} {{ member }} <span (click)="removeTeamMember(member)" class="member__remove"></span></h3>
         <div class="control-row">
           <p class="control-label">
             <label for="full-name">{{ 'CreateProject.FullName' | translate }}</label>
@@ -121,7 +121,7 @@
             <label for="facebook">{{ 'CreateProject.FacebookLink' | translate }}</label>
           </p>
           <input class="input" id="facebook" [formControlName]="'facebook__' + member"
-                 placeholder="{{ 'CreateProject.FacebookLink' | translate }}">
+                 placeholder="{{ 'CreateProject.Http' | translate }}">
         </div>
         <div class="control-row">
           <p class="control-label">

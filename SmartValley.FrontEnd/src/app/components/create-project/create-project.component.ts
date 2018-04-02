@@ -86,8 +86,10 @@ export class CreateProjectComponent implements OnInit {
       ['id__' + this.selectedMembers[this.selectedMembers.length - 1]]: '',
       ['full-name__' + this.selectedMembers[this.selectedMembers.length - 1]]: ['', [Validators.maxLength(200)]],
       ['role__' + this.selectedMembers[this.selectedMembers.length - 1]]: ['', [Validators.maxLength(100)]],
-      ['linkedin__' + this.selectedMembers[this.selectedMembers.length - 1]]: ['', [Validators.maxLength(200)]],
-      ['facebook__' + this.selectedMembers[this.selectedMembers.length - 1]]: ['', [Validators.maxLength(200)]],
+      ['linkedin__' + this.selectedMembers[this.selectedMembers.length - 1]]: ['', [Validators.maxLength(200),
+        Validators.pattern('https?://.+')]],
+      ['facebook__' + this.selectedMembers[this.selectedMembers.length - 1]]: ['', [Validators.maxLength(200),
+        Validators.pattern('https?://.+')]],
       ['description__' + this.selectedMembers[this.selectedMembers.length - 1]]: ['', [Validators.maxLength(500)]],
     };
 
@@ -95,7 +97,7 @@ export class CreateProjectComponent implements OnInit {
 
     const socialGroupFields = {
       ['social__1']: '',
-      ['social-link__1']: ['', [Validators.maxLength(200)]]
+      ['social-link__1']: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]]
     };
     this.socialFormGroup = this.formBuilder.group(socialGroupFields);
 
@@ -108,7 +110,7 @@ export class CreateProjectComponent implements OnInit {
     this.socialFormGroup.addControl('social__' + this.selectedSocials[this.selectedSocials.length - 1],
       new FormControl(''));
     this.socialFormGroup.addControl('social-link__' + this.selectedSocials[this.selectedSocials.length - 1],
-      new FormControl('', [Validators.maxLength(200)]));
+      new FormControl('', [Validators.maxLength(200), Validators.pattern('https?://.+')]));
   }
 
   public setSocialMedia(network?: number, value?: string) {
@@ -130,11 +132,16 @@ export class CreateProjectComponent implements OnInit {
     this.selectedMembers.push(this.currentMemberId);
 
     this.membersGroup.addControl('id__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl(''));
-    this.membersGroup.addControl('full-name__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl(''));
-    this.membersGroup.addControl('role__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl(''));
-    this.membersGroup.addControl('linkedin__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl(''));
-    this.membersGroup.addControl('facebook__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl(''));
-    this.membersGroup.addControl('description__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl(''));
+    this.membersGroup.addControl('full-name__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl('',
+      [Validators.maxLength(200)]));
+    this.membersGroup.addControl('role__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl('',
+      [Validators.maxLength(100)]));
+    this.membersGroup.addControl('linkedin__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl('',
+      [Validators.maxLength(200), Validators.pattern('https?://.+')]));
+    this.membersGroup.addControl('facebook__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl('',
+      [Validators.maxLength(200), Validators.pattern('https?://.+')]));
+    this.membersGroup.addControl('description__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl('',
+      [Validators.maxLength(500)]));
   }
 
   public async submitAsync() {
