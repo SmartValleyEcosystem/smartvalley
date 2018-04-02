@@ -114,7 +114,7 @@ export class RegisterExpertComponent implements OnInit {
 
     const isSucceeded = await this.submitAsync();
     if (isSucceeded) {
-      await this.router.navigate([Paths.Root]);
+      await this.router.navigate([Paths.ExpertStatus]);
     }
   }
 
@@ -229,6 +229,7 @@ export class RegisterExpertComponent implements OnInit {
     const applicationHash = this.getApplicationHash(areas);
     const transactionHash = await this.applyToContractAsync(areas, applicationHash);
     if (transactionHash == null) {
+      this.isProjectCreating = false;
       return false;
     }
 

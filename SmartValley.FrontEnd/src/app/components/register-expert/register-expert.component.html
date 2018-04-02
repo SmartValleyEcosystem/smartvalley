@@ -9,8 +9,8 @@
         </p>
         <div class="areas-wrapper">
           <div *ngFor="let area of areas" class="area">
-            <p-checkbox id="{{ area.value }}" [(ngModel)]="selectedAreas" value="{{area.value}}" inputId="ny"></p-checkbox>
-            <label for="{{ area.value }}">{{area.label}}</label>
+            <p-checkbox id="{{ area.value }}" [(ngModel)]="selectedAreas" value="{{area.value}}" inputId="{{ 'ny_' + area.value }}"></p-checkbox>
+            <label for="{{ 'ny_' + area.value }}">{{area.label}}</label>
           </div>
         </div>
       </div>
