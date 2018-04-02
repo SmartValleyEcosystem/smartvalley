@@ -76,6 +76,10 @@ export class ProjectListComponent implements OnInit {
     };
   }
 
+  public navigateToProject(id) {
+    this.router.navigate([Paths.Report + '/' + id]);
+  }
+
   public getProjectLink(id) {
     return decodeURIComponent(
       this.router.createUrlTree([Paths.Report + '/' + id]).toString()
