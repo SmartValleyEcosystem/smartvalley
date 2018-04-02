@@ -31,8 +31,8 @@ export class ProjectComponent implements OnInit {
     if ( this.project ) {
       this.isProjectExists = true;
     }
-    let applicationScoringRequest = await this.scoringApplicationApiClient.getScoringApplicationsAsync(this.projectId);
-    this.isApplicationScoringExist = applicationScoringRequest.created ? true : false;
+    const applicationScoringRequest = await this.scoringApplicationApiClient.getScoringApplicationsAsync(this.projectId);
+    this.isApplicationScoringExist = !!applicationScoringRequest.created;
   }
 
   public navigateToApplicationScoring() {
@@ -42,5 +42,4 @@ export class ProjectComponent implements OnInit {
   public showWaitingModal() {
     this.dialogService.showWaitingModal();
   }
-
 }

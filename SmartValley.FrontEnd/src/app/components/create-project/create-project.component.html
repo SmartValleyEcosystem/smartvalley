@@ -2,7 +2,6 @@
   <form (ngSubmit)="submitAsync()" novalidate [formGroup]="applicationForm" autocomplete="off">
     <h1 *ngIf="!isEditProjectRoute" class="title">{{ 'CreateProject.Title' | translate }}</h1>
     <h1 *ngIf="isEditProjectRoute" class="title">{{ 'CreateProject.EditTitle' | translate }}</h1>
-    <p class="description">{{ 'CreateProject.PageDescription' | translate }}</p>
     <h2 class="settings-title">{{ 'CreateProject.CommonInformation' | translate }}</h2>
     <div class="settings-block">
       <div #name class="control-row">
@@ -83,7 +82,7 @@
           <label for="email">{{ 'CreateProject.Link' | translate }}</label>
         </p>
       </div>
-      <div *ngFor="let social of activeSocials; first as isFirst" class="socials__row" [formGroup]="socialFormGroup">
+      <div *ngFor="let social of selectedSocials; first as isFirst" class="socials__row" [formGroup]="socialFormGroup">
         <app-select class="input-component" formControlName="{{'social__' + social}}"
                     [elementId]="'social__'+ social" [items]="socials"
                     [placeholder]="'CreateProject.SocialMedia' | translate"></app-select>
@@ -95,7 +94,7 @@
     </div>
     <h2 class="settings-title">{{ 'CreateProject.Team' | translate }}</h2>
     <div class="settings-block settings-block_last" [formGroup]="membersGroup">
-      <div *ngFor="let member of membersAmount; first as isFirst" class="member-wrapper">
+      <div *ngFor="let member of selectedMembers; first as isFirst" class="member-wrapper">
         <h3 class="member-name">{{ 'CreateProject.Member' | translate }} {{ member }} <span (click)="removeTeamMember(member)" class="member__remove" *ngIf="!isFirst"></span></h3>
         <div class="control-row">
           <p class="control-label">

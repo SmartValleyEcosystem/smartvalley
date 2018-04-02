@@ -2,7 +2,6 @@
   "CreateProject": {
     "Title": "Create project",
     "EditTitle": "Edit project",
-    "PageDescription": "Only you could see project after creation. Project have to be scored for showing in the main list.",
     "CreateNewProject": "Create new project for scoring",
     "CommonInformation": "Common information",
     "Name": "Name",

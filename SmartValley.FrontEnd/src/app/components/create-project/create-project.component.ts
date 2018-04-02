@@ -29,9 +29,9 @@ export class CreateProjectComponent implements OnInit {
   public stages: SelectItem[];
   public countries: SelectItem[];
   public socials: SelectItem[];
-  public activeSocials: number[];
-  public membersAmount: number[] = [];
-  public currentMemberId = 1;
+  public selectedSocials: number[] = [];
+  public selectedMembers: number[] = [];
+  public currentMemberId = 0;
   public membersGroup: FormGroup;
   public socialFormGroup: FormGroup;
   public isEditProjectRoute = false;
@@ -77,18 +77,16 @@ export class CreateProjectComponent implements OnInit {
   }
 
   public async ngOnInit() {
-    this.activeSocials = [1];
-    this.membersAmount.push(this.currentMemberId);
     this.createForm();
     this.isEditProjectRoute = this.router.url === '/' + Paths.ProjectEdit;
 
     const memberGroupFields = {
-      ['id__' + this.membersAmount[this.membersAmount.length - 1]]: '',
-      ['full-name__' + this.membersAmount[this.membersAmount.length - 1]]: ['', [Validators.maxLength(200)]],
-      ['role__' + this.membersAmount[this.membersAmount.length - 1]]: ['', [Validators.maxLength(100)]],
-      ['linkedin__' + this.membersAmount[this.membersAmount.length - 1]]: ['', [Validators.maxLength(200)]],
-      ['facebook__' + this.membersAmount[this.membersAmount.length - 1]]: ['', [Validators.maxLength(200)]],
-      ['description__' + this.membersAmount[this.membersAmount.length - 1]]: ['', [Validators.maxLength(500)]],
+      ['id__' + this.selectedMembers[this.selectedMembers.length - 1]]: '',
+      ['full-name__' + this.selectedMembers[this.selectedMembers.length - 1]]: ['', [Validators.maxLength(200)]],
+      ['role__' + this.selectedMembers[this.selectedMembers.length - 1]]: ['', [Validators.maxLength(100)]],
+      ['linkedin__' + this.selectedMembers[this.selectedMembers.length - 1]]: ['', [Validators.maxLength(200)]],
+      ['facebook__' + this.selectedMembers[this.selectedMembers.length - 1]]: ['', [Validators.maxLength(200)]],
+      ['description__' + this.selectedMembers[this.selectedMembers.length - 1]]: ['', [Validators.maxLength(500)]],
     };
 
     this.membersGroup = this.formBuilder.group(memberGroupFields);
@@ -103,38 +101,38 @@ export class CreateProjectComponent implements OnInit {
   }
 
   public addSocialMedia() {
-    this.activeSocials.push(this.activeSocials.length + 1);
+    this.selectedSocials.push(this.selectedSocials.length + 1);
 
-    this.socialFormGroup.addControl('social__' + this.activeSocials[this.activeSocials.length - 1],
+    this.socialFormGroup.addControl('social__' + this.selectedSocials[this.selectedSocials.length - 1],
       new FormControl(''));
-    this.socialFormGroup.addControl('social-link__' + this.activeSocials[this.activeSocials.length - 1],
+    this.socialFormGroup.addControl('social-link__' + this.selectedSocials[this.selectedSocials.length - 1],
       new FormControl(['', [Validators.maxLength(200)]]));
   }
 
   public setSocialMedia(network?: number, value?: string) {
-    this.socialFormGroup.controls['social__' + this.activeSocials[this.activeSocials.length - 1]].setValue(network);
-    this.socialFormGroup.controls['social-link__' + this.activeSocials[this.activeSocials.length - 1]].setValue(value);
+    this.socialFormGroup.controls['social__' + this.selectedSocials[this.selectedSocials.length - 1]].setValue(network);
+    this.socialFormGroup.controls['social-link__' + this.selectedSocials[this.selectedSocials.length - 1]].setValue(value);
   }
 
   public removeSocialMedia(id: number) {
-    this.activeSocials = this.activeSocials.filter(a => a !== id);
+    this.selectedSocials = this.selectedSocials.filter(a => a !== id);
   }
 
   public removeTeamMember(id: number) {
     this.currentMemberId--;
-    this.membersAmount = this.membersAmount.filter(a => a !== id);
+    this.selectedMembers = this.selectedMembers.filter(a => a !== id);
   }
 
   public addTeamMember() {
     this.currentMemberId++;
-    this.membersAmount.push(this.currentMemberId);
+    this.selectedMembers.push(this.currentMemberId);
 
-    this.membersGroup.addControl('id__' + this.membersAmount[this.membersAmount.length - 1], new FormControl(''));
-    this.membersGroup.addControl('full-name__' + this.membersAmount[this.membersAmount.length - 1], new FormControl(''));
-    this.membersGroup.addControl('role__' + this.membersAmount[this.membersAmount.length - 1], new FormControl(''));
-    this.membersGroup.addControl('linkedin__' + this.membersAmount[this.membersAmount.length - 1], new FormControl(''));
-    this.membersGroup.addControl('facebook__' + this.membersAmount[this.membersAmount.length - 1], new FormControl(''));
-    this.membersGroup.addControl('description__' + this.membersAmount[this.membersAmount.length - 1], new FormControl(''));
+    this.membersGroup.addControl('id__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl(''));
+    this.membersGroup.addControl('full-name__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl(''));
+    this.membersGroup.addControl('role__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl(''));
+    this.membersGroup.addControl('linkedin__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl(''));
+    this.membersGroup.addControl('facebook__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl(''));
+    this.membersGroup.addControl('description__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl(''));
   }
 
   public async submitAsync() {
@@ -148,7 +146,7 @@ export class CreateProjectComponent implements OnInit {
   }
 
   private getTeamMemberRequests(): TeamMemberRequest[] {
-    return this.membersAmount.map(m => <TeamMemberRequest> {
+    return this.selectedMembers.map(m => <TeamMemberRequest> {
       id: this.membersGroup.value['id__' + m] === '' ? 0 : this.membersGroup.value['id__' + m],
       fullName: this.membersGroup.value['full-name__' + m],
       role: this.membersGroup.value['role__' + m],
@@ -159,12 +157,12 @@ export class CreateProjectComponent implements OnInit {
   }
 
   public setTeamMember(id?: number, name?: string, role?: string, linkedin?: string, facebook?: string, description?: string) {
-    this.membersGroup.controls['id__' + this.membersAmount[this.membersAmount.length - 1]].setValue(id);
-    this.membersGroup.controls['full-name__' + this.membersAmount[this.membersAmount.length - 1]].setValue(name);
-    this.membersGroup.controls['role__' + this.membersAmount[this.membersAmount.length - 1]].setValue(role);
-    this.membersGroup.controls['linkedin__' + this.membersAmount[this.membersAmount.length - 1]].setValue(linkedin);
-    this.membersGroup.controls['facebook__' + this.membersAmount[this.membersAmount.length - 1]].setValue(facebook);
-    this.membersGroup.controls['description__' + this.membersAmount[this.membersAmount.length - 1]].setValue(description);
+    this.membersGroup.controls['id__' + this.selectedMembers[this.selectedMembers.length - 1]].setValue(id);
+    this.membersGroup.controls['full-name__' + this.selectedMembers[this.selectedMembers.length - 1]].setValue(name);
+    this.membersGroup.controls['role__' + this.selectedMembers[this.selectedMembers.length - 1]].setValue(role);
+    this.membersGroup.controls['linkedin__' + this.selectedMembers[this.selectedMembers.length - 1]].setValue(linkedin);
+    this.membersGroup.controls['facebook__' + this.selectedMembers[this.selectedMembers.length - 1]].setValue(facebook);
+    this.membersGroup.controls['description__' + this.selectedMembers[this.selectedMembers.length - 1]].setValue(description);
   }
 
   private getSocialNetworkLink(socialsArray: any, socialNetwork: string): string {
@@ -193,7 +191,7 @@ export class CreateProjectComponent implements OnInit {
 
   private getCreateProjectRequest(): CreateProjectRequest {
     const socialsArray = [];
-    for (let i = 1; i <= this.activeSocials.length; i++) {
+    for (let i = 1; i <= this.selectedSocials.length; i++) {
       const network = {
         network: SocialMediaTypeEnum[this.socialFormGroup.value['social__' + i]],
         link: this.socialFormGroup.value['social-link__' + i]
@@ -226,7 +224,7 @@ export class CreateProjectComponent implements OnInit {
 
   private getUpdateProjectRequest(): UpdateProjectRequest {
     const socialsArray = [];
-    for (let i = 1; i <= this.activeSocials.length; i++) {
+    for (let i = 1; i <= this.selectedSocials.length; i++) {
       const network = {
         network: SocialMediaTypeEnum[this.socialFormGroup.value['social__' + i]],
         link: this.socialFormGroup.value['social-link__' + i]
