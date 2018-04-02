@@ -106,7 +106,7 @@ export class CreateProjectComponent implements OnInit {
     this.socialFormGroup.addControl('social__' + this.selectedSocials[this.selectedSocials.length - 1],
       new FormControl(''));
     this.socialFormGroup.addControl('social-link__' + this.selectedSocials[this.selectedSocials.length - 1],
-      new FormControl(['', [Validators.maxLength(200)]]));
+      new FormControl('', [Validators.maxLength(200)]));
   }
 
   public setSocialMedia(network?: number, value?: string) {
