@@ -5,7 +5,10 @@
     "ApplyText": "First you need to evaluate your current position. What do you know right now that you are close to being an expert in? You are probably already an expert, or close to one, at what you are currently doing, so you can easily build upon that expertise and take it to the next level. This is a much easier, less time-intensive route to take than learning something entirely new.However, if what you are currently doing no longer interests you, you'll need to figure out what does. Make this your first priority. Whatever route you take, what you choose to be an expert in has to be inspiring so that the necessary reading and learning seem effortless to you because it resonates with every fiber of your being. Everyone has one--some have more than one--you just need to find it.",
     "ApplyNow": "Apply now",
     "ApplyAgain": "Apply again",
-    "RejectedText": "Your application has been rejected.",
-    "PendingText": "Your application is under review."
+    "RejectedText": "We're really sorry but we can't offer you expert position.",
+    "PendingTitle": "Great! Well done",
+    "PendingText1": "We will read you apply carefully and send further instructions on this email: ",
+    "PendingText2": "Be pacient. We check applicants for several days because we need a really good team.",
+    "PendingText3": "Thank you."
   }
 }

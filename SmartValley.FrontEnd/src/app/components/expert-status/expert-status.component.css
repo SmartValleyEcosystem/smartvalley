@@ -1,3 +1,32 @@
+.title {
+  width: 300px;
+  height: 40px;
+  font-family: Roboto-Bold;
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 1.25;
+  letter-spacing: -0.1px;
+  text-align: left;
+  color: #000000;
+  margin-bottom: 20px;
+}
+
+.text{
+  color: black;
+  font-size: 14px;
+  padding-left: 0;
+  word-break: break-all;
+  margin-bottom: 180px;
+}
+
+.text span{
+  font-family: Roboto-Bold;
+}
+
+
+
+
+
 .sw-list-projects {
   margin-top: 2em;
   flex: inherit;
@@ -78,7 +107,7 @@
 .timer {
   text-align: center;
   line-height: 1.5em;
-}
+  }
 
 .timer-title {
   text-align: center;
@@ -130,12 +159,6 @@
   bottom: 40px;
   right: 40px;
   position: absolute;
-}
-
-.text{
-  color: white;
-  padding-left: 0;
-  word-break: break-all;
 }
 
 .btn-space {

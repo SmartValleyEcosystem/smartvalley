@@ -1,50 +1,34 @@
-<div *ngIf="applicationStatus === ExpertApplicationStatus.None" class="container">
-  <div class="row mx-auto">
-    <div class="col-12 sm-title">
-      <h1 class="">{{ 'ExpertStatus.BecomeTitle' | translate }}</h1>
-    </div>
+<div *ngIf="applicationStatus === ExpertApplicationStatus.None" class="content">
+  <h1 class="title">{{ 'ExpertStatus.BecomeTitle' | translate }}</h1>
+  <div class="text">
+    <p>
+      {{ 'ExpertStatus.ApplyText' | translate }}
+    </p>
   </div>
-  <div class="row mx-auto">
-    <div class="text col-12">
-      <p>
-        {{ 'ExpertStatus.ApplyText' | translate }}
-      </p>
-    </div>
-    <a style="margin-top: 2.4em;" class="offset-5 col-2 sv-default-btn btn btn-primary"
-       (click)="apply()">{{ 'ExpertStatus.ApplyNow' | translate }}
-    </a>
+  <a style="margin-top: 2.4em;" class="offset-5 col-2 sv-default-btn btn btn-primary"
+     (click)="apply()">{{ 'ExpertStatus.ApplyNow' | translate }}
+  </a>
+</div>
+
+<div *ngIf="applicationStatus === ExpertApplicationStatus.Pending" class="content">
+  <h1 class="title">{{ 'ExpertStatus.PendingTitle' | translate }}</h1>
+  <div class="text">
+    <p>
+      {{ 'ExpertStatus.PendingText1' | translate }} <span>{{ userEmail }}</span>.
+    </p>
+    <p>{{ 'ExpertStatus.PendingText2' | translate }}</p>
+    <p>{{ 'ExpertStatus.PendingText3' | translate }}</p>
   </div>
 </div>
 
-<div *ngIf="applicationStatus === ExpertApplicationStatus.Pending" class="container">
-  <div class="row mx-auto">
-    <div class="col-12 sm-title">
-      <h1 class="">{{ 'ExpertStatus.Title' | translate }}</h1>
-    </div>
+<div *ngIf="applicationStatus === ExpertApplicationStatus.Rejected" class="content">
+  <h1 class="title">{{ 'ExpertStatus.Title' | translate }}</h1>
+  <div class="text">
+    <p>
+      {{ 'ExpertStatus.RejectedText' | translate }}
+    </p>
   </div>
-  <div class="row mx-auto">
-    <div class="text col-12">
-      <p>
-        {{ 'ExpertStatus.PendingText' | translate }}
-      </p>
-    </div>
-  </div>
-</div>
-
-<div *ngIf="applicationStatus === ExpertApplicationStatus.Rejected" class="container">
-  <div class="row mx-auto">
-    <div class="col-12 sm-title">
-      <h1 class="">{{ 'ExpertStatus.Title' | translate }}</h1>
-    </div>
-  </div>
-  <div class="row mx-auto">
-    <div class="text col-12">
-      <p>
-        {{ 'ExpertStatus.RejectedText' | translate }}
-      </p>
-    </div>
-    <a style="margin-top: 2.4em;" class="offset-5 col-2 sv-default-btn btn btn-primary"
-       (click)="apply()">{{ 'ExpertStatus.ApplyAgain' | translate }}
-    </a>
-  </div>
+  <a style="margin-top: 2.4em;" class="offset-5 col-2 sv-default-btn btn btn-primary"
+     (click)="apply()">{{ 'ExpertStatus.ApplyAgain' | translate }}
+  </a>
 </div>

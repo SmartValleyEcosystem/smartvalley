@@ -16,6 +16,8 @@ export class ExpertStatusComponent implements OnInit {
 
   public applicationStatus: ExpertApplicationStatus;
 
+  public userEmail: string;
+
   constructor(private route: ActivatedRoute,
               private expertApiClient: ExpertApiClient,
               private userContext: UserContext,
@@ -23,7 +25,9 @@ export class ExpertStatusComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const address = this.userContext.getCurrentUser().account;
+    const user = this.userContext.getCurrentUser();
+    const address = user.account;
+    this.userEmail = user.email;
     const expertStatusResponse = await this.expertApiClient.getExpertStatusAsync(address);
     this.applicationStatus = expertStatusResponse.status;
   }
