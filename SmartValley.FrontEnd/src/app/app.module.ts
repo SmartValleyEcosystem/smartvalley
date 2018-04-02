@@ -125,7 +125,6 @@ import {ProjectAboutComponent} from './components/project/project-about/project-
 import {WaitingModalComponent} from './components/common/waiting-modal/waiting-modal.component';
 import {ScoringApplicationComponent} from './components/project/scoring-application/scoring-application.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,

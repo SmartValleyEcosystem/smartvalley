@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SmartValley.Domain.Core;
 
@@ -9,7 +8,8 @@ namespace SmartValley.Domain.Entities
     {
         public long Id { get; set; }
 
-        [Required, MaxLength(50)]
+        [Required]
+        [MaxLength(150)]
         public string Name { get; set; }
 
         [Required]
@@ -28,7 +28,7 @@ namespace SmartValley.Domain.Entities
         public long AuthorId { get; set; }
 
         [Required]
-        [MaxLength(1000)]
+        [MaxLength(2000)]
         public string Description { get; set; }
 
         [MaxLength(200)]
@@ -39,34 +39,35 @@ namespace SmartValley.Domain.Entities
 
         public DateTimeOffset? IcoDate { get; set; }
 
-        [Url, MaxLength(50)]
+        [EmailAddress]
+        [MaxLength(200)]
         public string ContactEmail { get; set; }
 
         [Url, MaxLength(200)]
         public string ImageUrl { get; set; }
 
-        [Url, MaxLength(500)]
+        [Url, MaxLength(200)]
         public string Facebook { get; set; }
 
-        [Url, MaxLength(500)]
+        [Url, MaxLength(200)]
         public string Linkedin { get; set; }
 
-        [Url, MaxLength(500)]
+        [Url, MaxLength(200)]
         public string BitcoinTalk { get; set; }
 
-        [Url, MaxLength(500)]
+        [Url, MaxLength(200)]
         public string Medium { get; set; }
 
-        [Url, MaxLength(500)]
+        [Url, MaxLength(200)]
         public string Reddit { get; set; }
 
-        [Url, MaxLength(500)]
+        [Url, MaxLength(200)]
         public string Telegram { get; set; }
 
-        [Url, MaxLength(500)]
+        [Url, MaxLength(200)]
         public string Twitter { get; set; }
 
-        [Url, MaxLength(500)]
+        [Url, MaxLength(200)]
         public string Github { get; set; }
 
         public User Author { get; set; }

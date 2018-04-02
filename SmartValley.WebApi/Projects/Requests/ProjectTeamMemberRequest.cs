@@ -11,16 +11,19 @@ namespace SmartValley.WebApi.Projects.Requests
     {
         public long Id { get; set; }
 
+        [MaxLength(200)]
         public string FullName { get; set; }
 
+        [MaxLength(100)]
         public string Role { get; set; }
 
+        [MaxLength(500)]
         public string About { get; set; }
 
-        [Url, MaxLength(500)]
+        [Url, MaxLength(200)]
         public string Facebook { get; set; }
 
-        [Url, MaxLength(500)]
+        [Url, MaxLength(200)]
         public string Linkedin { get; set; }
     }
 }

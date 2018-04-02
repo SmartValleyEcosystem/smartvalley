@@ -8,7 +8,6 @@ import {DictionariesService} from '../../services/common/dictionaries.service';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {NotificationsService} from 'angular2-notifications';
 import {Router} from '@angular/router';
-import {v4 as uuid} from 'uuid';
 import {isNullOrUndefined} from 'util';
 import * as moment from 'moment';
 import {TeamMemberRequest} from '../../api/project/team-member-request';
@@ -17,6 +16,7 @@ import {DialogService} from '../../services/dialog-service';
 import {Paths} from '../../paths';
 import {ErrorCode} from '../../shared/error-code.enum';
 import {MyProjectResponse} from '../../api/project/my-project-response';
+import {StringExtensions} from '../../utils/string-extensions';
 
 @Component({
   selector: 'app-create-project',
@@ -46,7 +46,6 @@ export class CreateProjectComponent implements OnInit {
   @ViewChild('country') public countryRow: ElementRef;
   @ViewChild('description') public descriptionRow: ElementRef;
   @ViewChildren('required') public requiredFields: QueryList<any>;
-
 
   constructor(private formBuilder: FormBuilder,
               private notificationsService: NotificationsService,
@@ -85,18 +84,18 @@ export class CreateProjectComponent implements OnInit {
 
     const memberGroupFields = {
       ['id__' + this.membersAmount[this.membersAmount.length - 1]]: '',
-      ['full-name__' + this.membersAmount[this.membersAmount.length - 1]]: '',
-      ['role__' + this.membersAmount[this.membersAmount.length - 1]]: '',
-      ['linkedin__' + this.membersAmount[this.membersAmount.length - 1]]: '',
-      ['facebook__' + this.membersAmount[this.membersAmount.length - 1]]: '',
-      ['description__' + this.membersAmount[this.membersAmount.length - 1]]: '',
+      ['full-name__' + this.membersAmount[this.membersAmount.length - 1]]: ['', [Validators.maxLength(200)]],
+      ['role__' + this.membersAmount[this.membersAmount.length - 1]]: ['', [Validators.maxLength(100)]],
+      ['linkedin__' + this.membersAmount[this.membersAmount.length - 1]]: ['', [Validators.maxLength(200)]],
+      ['facebook__' + this.membersAmount[this.membersAmount.length - 1]]: ['', [Validators.maxLength(200)]],
+      ['description__' + this.membersAmount[this.membersAmount.length - 1]]: ['', [Validators.maxLength(500)]],
     };
 
     this.membersGroup = this.formBuilder.group(memberGroupFields);
 
     const socialGroupFields = {
       ['social__1']: '',
-      ['social-link__1']: ''
+      ['social-link__1']: ['', [Validators.maxLength(200)]]
     };
     this.socialFormGroup = this.formBuilder.group(socialGroupFields);
 
@@ -106,8 +105,10 @@ export class CreateProjectComponent implements OnInit {
   public addSocialMedia() {
     this.activeSocials.push(this.activeSocials.length + 1);
 
-    this.socialFormGroup.addControl('social__' + this.activeSocials[this.activeSocials.length - 1], new FormControl(''));
-    this.socialFormGroup.addControl('social-link__' + this.activeSocials[this.activeSocials.length - 1], new FormControl(''));
+    this.socialFormGroup.addControl('social__' + this.activeSocials[this.activeSocials.length - 1],
+      new FormControl(''));
+    this.socialFormGroup.addControl('social-link__' + this.activeSocials[this.activeSocials.length - 1],
+      new FormControl(['', [Validators.maxLength(200)]]));
   }
 
   public setSocialMedia(network?: number, value?: string) {
@@ -147,20 +148,14 @@ export class CreateProjectComponent implements OnInit {
   }
 
   private getTeamMemberRequests(): TeamMemberRequest[] {
-    const teamMemberRequests: TeamMemberRequest[] = [];
-    for (const i of this.membersAmount) {
-      const currentMember = <TeamMemberRequest> {
-        id: this.membersGroup.value['id__' + i] === '' ? 0 : this.membersGroup.value['id__' + i],
-        fullName: this.membersGroup.value['full-name__' + i],
-        role: this.membersGroup.value['role__' + i],
-        about: this.membersGroup.value['description__' + i],
-        facebook: this.membersGroup.value['facebook__' + i],
-        linkedin: this.membersGroup.value['linkedin__' + i]
-      };
-
-      teamMemberRequests.push(currentMember);
-    }
-    return teamMemberRequests;
+    return this.membersAmount.map(m => <TeamMemberRequest> {
+      id: this.membersGroup.value['id__' + m] === '' ? 0 : this.membersGroup.value['id__' + m],
+      fullName: this.membersGroup.value['full-name__' + m],
+      role: this.membersGroup.value['role__' + m],
+      about: this.membersGroup.value['description__' + m],
+      facebook: StringExtensions.nullIfEmpty(this.membersGroup.value['facebook__' + m]),
+      linkedin: StringExtensions.nullIfEmpty(this.membersGroup.value['linkedin__' + m])
+    });
   }
 
   public setTeamMember(id?: number, name?: string, role?: string, linkedin?: string, facebook?: string, description?: string) {
@@ -177,17 +172,17 @@ export class CreateProjectComponent implements OnInit {
     if (isNullOrUndefined(item)) {
       return null;
     }
-    return item.link;
+    return StringExtensions.nullIfEmpty(item.link);
   }
 
   private createForm() {
     this.applicationForm = this.formBuilder.group({
       id: [0],
-      name: ['', [Validators.required, Validators.maxLength(50)]],
+      name: ['', [Validators.required, Validators.maxLength(150)]],
       description: ['', [Validators.required, Validators.maxLength(2000)]],
-      website: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
-      whitePaperLink: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
-      contactEmail: ['', Validators.maxLength(100)],
+      website: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
+      whitePaperLink: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
+      contactEmail: ['', Validators.maxLength(200)],
       icoDate: [''],
       category: ['', [Validators.required]],
       stage: ['', [Validators.required]],
@@ -208,17 +203,15 @@ export class CreateProjectComponent implements OnInit {
 
     const form = this.applicationForm.value;
     return <CreateProjectRequest>{
-      externalId: uuid(),
-      contactEmail: form.contactEmail,
+      contactEmail: StringExtensions.nullIfEmpty(form.contactEmail),
       countryCode: form.country,
       name: form.name,
       description: form.description,
       icoDate: form.icoDate,
       stage: form.stage,
       category: form.category,
-      whitePaperLink: form.whitePaperLink,
-      projectId: uuid(),
-      website: form.website,
+      whitePaperLink: StringExtensions.nullIfEmpty(form.whitePaperLink),
+      website: StringExtensions.nullIfEmpty(form.website),
       teamMembers: this.getTeamMemberRequests(),
       bitcointalk: this.getSocialNetworkLink(socialsArray, 'bitcointalk'),
       facebook: this.getSocialNetworkLink(socialsArray, 'facebook'),
@@ -243,16 +236,15 @@ export class CreateProjectComponent implements OnInit {
     const form = this.applicationForm.value;
     return <UpdateProjectRequest>{
       id: form.id,
-      contactEmail: form.contactEmail,
+      contactEmail: StringExtensions.nullIfEmpty(form.contactEmail),
       countryCode: form.country,
       name: form.name,
       description: form.description,
       icoDate: form.icoDate,
       stage: form.stage,
       category: form.category,
-      whitePaperLink: form.whitePaperLink,
-      projectId: uuid(),
-      website: form.website,
+      whitePaperLink: StringExtensions.nullIfEmpty(form.whitePaperLink),
+      website: StringExtensions.nullIfEmpty(form.website),
       teamMembers: this.getTeamMemberRequests(),
       bitcointalk: this.getSocialNetworkLink(socialsArray, 'bitcointalk'),
       facebook: this.getSocialNetworkLink(socialsArray, 'facebook'),
@@ -302,7 +294,6 @@ export class CreateProjectComponent implements OnInit {
       }
     }
   }
-
 
   private async loadMyProjectDataAsync() {
     const data = await this.projectApiClient.getMyProjectAsync();

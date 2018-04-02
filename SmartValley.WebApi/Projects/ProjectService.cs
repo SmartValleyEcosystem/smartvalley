@@ -39,7 +39,7 @@ namespace SmartValley.WebApi.Projects
 
         public async Task<ProjectDetails> GetDetailsAsync(long projectId)
         {
-            var project = await FindAsync(projectId);
+            var project = await GetAsync(projectId);
             var projectScoring = await _scoringRepository.GetByProjectIdAsync(projectId);
             var teamMembers = await _teamMemberRepository.GetByProjectIdAsync(projectId);
             var country = await _countryRepository.GetByIdAsync(project.CountryId);
@@ -62,13 +62,13 @@ namespace SmartValley.WebApi.Projects
         public async Task<bool> IsAuthorizedToEditProjectTeamMemberAsync(long userId, long projectTeamMemberId)
         {
             var projectTeamMember = await _teamMemberRepository.GetByIdAsync(projectTeamMemberId);
-            var project = await FindAsync(projectTeamMember.ProjectId);
+            var project = await GetAsync(projectTeamMember.ProjectId);
             return project.AuthorId == userId;
         }
 
         public async Task<bool> IsAuthorizedToEditProjectAsync(long projectId, long userId)
         {
-            var project = await FindAsync(projectId);
+            var project = await GetAsync(projectId);
             return project.AuthorId == userId;
         }
 
@@ -77,7 +77,7 @@ namespace SmartValley.WebApi.Projects
 
         public async Task<bool> IsAuthorizedToSeeEstimatesAsync(long userId, long projectId)
         {
-            var project = await FindAsync(projectId);
+            var project = await GetAsync(projectId);
             var scoring = await _scoringRepository.GetByProjectIdAsync(projectId);
 
             return scoring.Score != null || project.AuthorId != userId;
@@ -104,13 +104,13 @@ namespace SmartValley.WebApi.Projects
 
             project.Name = request.Name;
             project.CountryId = country.Id;
-            project.Category = (Category) request.CategoryId;
+            project.Category = (Category) request.Category;
             project.Description = request.Description;
             project.ContactEmail = request.ContactEmail;
             project.IcoDate = request.IcoDate;
             project.Website = request.Website;
             project.WhitePaperLink = request.WhitePaperLink;
-            project.Stage = (Stage) request.StageId;
+            project.Stage = (Stage) request.Stage;
             project.Facebook = request.Facebook;
             project.Reddit = request.Reddit;
             project.BitcoinTalk = request.BitcoinTalk;
@@ -179,7 +179,6 @@ namespace SmartValley.WebApi.Projects
         private async Task<long> AddProjectAsync(long userId, CreateProjectRequest request)
         {
             var country = await GetCountryAsync(request.CountryCode);
-
             var project = new Project
                           {
                               Name = request.Name,
@@ -208,21 +207,15 @@ namespace SmartValley.WebApi.Projects
         }
 
         private async Task<Country> GetCountryAsync(string code)
-        {
-            var country = await _countryRepository.GetByCodeAsync(code);
-            if (country == null)
-                throw new AppErrorException(ErrorCode.CountryNotFound);
-            return country;
-        }
+            => await _countryRepository.GetByCodeAsync(code) ?? throw new AppErrorException(ErrorCode.CountryNotFound);
 
-        private async Task<string> UploadImageAndGetUrlAsync(long projectId, AzureFile image)
+        private Task<string> UploadImageAndGetUrlAsync(long projectId, AzureFile image)
         {
             if (image == null)
                 return null;
 
             var imageName = $"project-{projectId}/image-{Guid.NewGuid()}{image.Extension}";
-            var imageUrl = await _projectStorageProvider.UploadAndGetUriAsync(imageName, image);
-            return imageUrl;
+            return _projectStorageProvider.UploadAndGetUriAsync(imageName, image);
         }
 
         private async Task<ProjectTeamMember[]> AddTeamMembersAsync(IReadOnlyCollection<ProjectTeamMemberRequest> teamMemberRequests, long projectId)
@@ -240,16 +233,6 @@ namespace SmartValley.WebApi.Projects
 
             await _teamMemberRepository.AddRangeAsync(teamMembers);
             return teamMembers;
-        }
-
-        private async Task<Project> FindAsync(long projectId)
-        {
-            var project = await _projectRepository.GetByIdAsync(projectId);
-
-            if (project == null)
-                throw new AppErrorException(ErrorCode.ProjectNotFound);
-
-            return project;
         }
     }
 }

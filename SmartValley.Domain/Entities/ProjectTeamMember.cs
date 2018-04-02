@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
@@ -11,7 +10,7 @@ namespace SmartValley.Domain.Entities
         public long ProjectId { get; set; }
 
         [Required]
-        [MaxLength(100)]
+        [MaxLength(200)]
         public string FullName { get; set; }
 
         [Required]
@@ -24,10 +23,10 @@ namespace SmartValley.Domain.Entities
         [Url, MaxLength(200)]
         public string PhotoUrl { get; set; }
 
-        [Url, MaxLength(500)]
+        [Url, MaxLength(200)]
         public string Facebook { get; set; }
 
-        [Url, MaxLength(500)]
+        [Url, MaxLength(200)]
         public string Linkedin { get; set; }
 
         public Project Project { get; set; }
