@@ -64,6 +64,33 @@ textarea.input {
   background-image: url(/assets/img/table-controls/arrow-down-white.svg);
 }
 
+/* switch control*/
+
+.input-switch__on,
+.input-switch__off {
+  text-align: center;
+  padding: 5px 15px;
+  background: transparent;
+  border: 1px solid #a4a2b0;
+  height: 36px;
+}
+.input-switch__on {
+  border-radius: 18px 0 0 18px;
+  border-right: none;
+}
+.input-switch__off {
+  border-radius: 0 18px 18px 0;
+}
+.selected {
+  background: #231a5d;
+  color: #fff;
+}
+.sex-switch .input-switch__off,
+.sex-switch .input-switch__on {
+  width: 90px;
+}
+
+
 /* ng prime paginator restyle */
 
 body .ui-paginator {
@@ -120,8 +147,16 @@ p-calendar.ng-dirty.ng-invalid .ui-inputtext {
 input.ng-valid {
   border-color: #a4a2b0 !important;
 }
+.input-component.ng-dirty.ng-invalid .ui-inputtext.input-date,
+.input-component.ng-dirty.ng-invalid .input {
+  border-color: red !important;
+}
+.ng-dirty .ng-invalid .input-switch .input-switch__on,
+.ng-dirty .ng-invalid .input-switch .input-switch__off {
+  border-color: red !important;
+}
 
-/* angular-material tabs styles */
+/* angular-material tabs */
 
 .mat-tab-label-content	{
   font-family: Roboto-Bold;
@@ -139,4 +174,53 @@ input.ng-valid {
 }
 .mat-tab-body-wrapper {
   margin-top: 24px !important;
+}
+
+/* ng-prime upload */
+
+.ui-fileupload-choose.ui-button {
+  font-family: "Roboto-Regular";
+  height: 36px;
+  background-color: transparent;
+  border: solid 1px #5d49f2;
+  border-radius: 18px !important;
+  cursor: pointer;
+  outline: none;
+  padding-top: 5px;
+  color: #000;
+}
+.ui-fileupload-content.ui-widget-content.ui-corner-bottom {
+  border: none;
+}
+body .ui-widget-content {
+  background-color: #fff !important;
+}
+body .ui-button {
+  background-color: transparent !important;
+}
+body .ui-button .fa-close:before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-image: url(/assets/img/controls/cross.svg);
+  background-size: cover;
+}
+
+
+/* ng-prime checkbox */
+
+body .ui-chkbox .ui-chkbox-box {
+  border-radius: 100px;
+  width: 24px;
+  height: 24px;
+}
+body .ui-chkbox .ui-chkbox-box.ui-state-active {
+  background-color: #fff !important;
+  padding-top: 2px;
+  color: #5d49f2;
+}
+
+.ui-chkbox-box .fa-check:before {
+  color: #5d49f2;
 }

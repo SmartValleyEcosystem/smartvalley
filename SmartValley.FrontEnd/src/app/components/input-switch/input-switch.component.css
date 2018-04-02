@@ -2,26 +2,6 @@
   display: none;
 }
 .input-switch {
-  width: 112px;
   display: flex;
   cursor: pointer;
-}
-.input-switch__on,
-.input-switch__off {
-  padding: 5px 15px;
-  background: transparent;
-  border: 1px solid #a4a2b0;
-  width: 56px;
-  height: 36px;
-}
-.input-switch__on {
-  border-radius: 18px 0 0 18px;
-  border-right: none;
-}
-.input-switch__off {
-  border-radius: 0 18px 18px 0;
-}
-.selected {
-  background: #231a5d;
-  color: #fff;
 }

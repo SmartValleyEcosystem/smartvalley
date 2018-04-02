@@ -389,7 +389,7 @@ a {
 .mat-dialog-container {
   color: rgb(32, 32, 32);
   max-width: 600px;
-  background: transparent;
+  background: #fff;
   box-shadow: none !important;
 }
 
@@ -432,6 +432,27 @@ a, button, span {
   font-family: Roboto-Bold;
   color: #000;
   margin-bottom: 20px;
+}
+
+.settings-block {
+  background: #fff;
+  padding: 16px 40px 32px;
+  margin-bottom: 16px;
+}
+
+.settings-block_last {
+  margin-bottom: 0;
+}
+
+.settings-title {
+  font-family: Roboto-Bold;
+  margin: 0;
+  font-size: 24px;
+  text-align: left;
+  background: #fff;
+  padding: 16px 40px;
+  margin-bottom: 3px;
+  color: #a4a2b0;
 }
 
 @font-face {

@@ -1,70 +1,46 @@
-.row {
-  margin: 1em 0em;
+.control-label {
+  margin-bottom: 4px;
+  width: auto;
 }
-.ui-chkbox-label{
-  margin-left: 0.5em;
-  margin-top: 0.5em;
-}
-.row > span {
-  padding-top: 0.6em;
-  padding-right: 1.5em;
-}
-
-.form-control {
-  padding: 0.6em 1.2em 0.6em 1.2em;
-  border-color: rgb(70, 137, 232);
-}
-
-.row-title {
-  margin: 2em 0em;
-}
-
-.row-primary {
-  background-color: rgb(248, 248, 248);
-}
-
-.row-content {
-  padding-bottom: 1em;
-}
-
-.btn {
+.control-label label {
   cursor: pointer;
-  padding-top: 1em;
-  padding-bottom: 1em;
+}
+.control-row__flexed {
+  display: flex;
 }
 
-.is-active .row-content {
-  display: block;
+.control-row__flexed .control-wrapper:last-child {
+  margin-left: 20px;
 }
 
-.submit-btn, .finance-btn, .legal-btn, .team-btn {
-  display: none;
+.areas {
+  margin-bottom: 20px;
 }
 
-.sw-members > div{
-  padding-top: 1em;
-  padding-bottom: 1em;
+.control-row {
+  margin-bottom: 20px;
 }
-
-.padding-zero{
-  padding: 0;
-  font-size: 0.9em;
-  padding-top: 0.5em;
+.notify {
+  margin-top: 4px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: #a4a2b0;
 }
-
-.main-btn {
-  display: none;
+.input-wide {
+  width: 480px;
 }
-
-.row-content {
-  display: none;
+.submit-btn {
+  margin-bottom: 80px;
 }
-
-textarea {
-  height: 10em;
-  resize: none;
+.areas-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  width: 400px;
+  margin-top: 10px;
 }
-
-label.mat-checkbox-layout > div.mat-checkbox-inner-container {
-  margin-left: 6.2em;
+.area {
+  width: 200px;
+}
+.mat-dialog-container {
+  background: #fff !important;
 }

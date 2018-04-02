@@ -1,4 +1,4 @@
-import {Component, Input, forwardRef, OnChanges, OnInit} from '@angular/core';
+import {Component, Input, forwardRef, OnChanges, ElementRef, OnInit} from '@angular/core';
 import {FormGroup, FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import {SelectItem} from 'primeng/api';
 import {TranslateService} from '@ngx-translate/core';
@@ -29,7 +29,8 @@ export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit 
   @Input() isNeedToTranslate? = false;
   @Input() defaultValue?: string|number;
 
-  constructor( private translateService: TranslateService ) {}
+  constructor( private translateService: TranslateService,
+               private nativeElement: ElementRef ) {}
 
   public propagateChange: any = () => {};
 

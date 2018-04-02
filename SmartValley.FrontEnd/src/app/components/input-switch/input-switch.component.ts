@@ -19,6 +19,7 @@ export class InputSwitchComponent implements ControlValueAccessor, OnChanges {
   @Input() elementName: string;
   @Input() labelOn?: string;
   @Input() labelOff?: string;
+  @Input() styleClass?: string;
 
   get switcherValue() {
     return this._switcherValue;

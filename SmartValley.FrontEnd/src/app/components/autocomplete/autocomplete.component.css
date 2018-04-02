@@ -1,6 +1,5 @@
 .filter-autocomplete {
   padding-right: 45px;
-  background-image: url(/assets/img/search.svg);
   background-repeat: no-repeat;
   background-position: 215px 4px;
   -webkit-transition: border-radius 0.5s;

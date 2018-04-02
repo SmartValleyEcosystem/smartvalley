@@ -1,122 +1,141 @@
-<div class="container">
-  <div class="row mx-auto">
-    <div class="col-12 sm-title">
-      <h1 class="">{{ 'RegisterExpert.Title' | translate }}</h1>
-      <h3 style="margin-bottom: 0">{{ 'RegisterExpert.ExpertTypeTitle' | translate }}</h3>
-    </div>
-  </div>
-  <div style="display: inline-block; margin-right: 2em; color:white;margin-bottom: 1em;" *ngFor="let area of areas">
-    <p-checkbox [(ngModel)]="selectedAreas" value="{{area.value}}" inputId="ny"></p-checkbox>
-    <span style="vertical-align: middle; margin-left: 1em;">{{area.label}}</span>
-  </div>
-  <form [formGroup]="registryForm" novalidate>
-    <div class="sw-card sw-content" style="padding: 2em;">
-      <div class="row">
-        <h3 class="col-10">{{ 'Application.BasicInformation' | translate }}</h3>
-      </div>
-      <div #name class="row">
-        <span class="col-2">{{ 'RegisterExpert.FirstName' | translate }}</span>
-        <input class="form-control col-4" formControlName="firstName"
-               placeholder="{{ 'RegisterExpert.NamePlaceholder' | translate }}" #required>
-        <span class="col-2">{{ 'RegisterExpert.SecondName' | translate }}</span>
-        <input class="form-control col-4" formControlName="secondName"
-               placeholder="{{ 'RegisterExpert.SecondNamePlaceholder' | translate }}" #required>
-      </div>
-      <div #birthDate class="row">
-        <span class="col-2">{{ 'RegisterExpert.BirthDate' | translate }}</span>
-        <p-calendar [showIcon]="true" class="padding-zero col-4" formControlName="birthDate" #required></p-calendar>
-        <span class="col-2">{{ 'RegisterExpert.Sex' | translate }}</span>
-        <p-dropdown class="col-4 padding-zero" [options]="sex" formControlName="selectedSex"></p-dropdown>
-      </div>
-      <div #place class="row">
-        <span class="col-2">{{ 'RegisterExpert.Country' | translate }}</span>
-        <p-dropdown class="col-4 padding-zero" [options]="countries" formControlName="country"></p-dropdown>
-        <span class="col-2">{{ 'RegisterExpert.City' | translate }}</span>
-        <input class="form-control col-4" formControlName="city" #required>
-      </div>
-      <div class="row">
-        <span class="col-2">{{ 'RegisterExpert.LinkedinLink' | translate }}</span>
-        <input class="form-control col-10" formControlName="linkedin"
-               placeholder="https://" #required>
-      </div>
-      <div class="row">
-        <span class="col-2">{{ 'RegisterExpert.FacebookLink' | translate }}</span>
-        <input class="form-control col-10" formControlName="facebook"
-               placeholder="https://" #required>
-      </div>
-      <div class="row">
-        <span class="col-3">{{ 'RegisterExpert.UploadCv' | translate }}:</span>
-        <p-fileUpload mode="advanced" auto="true" name="cv[]" customUpload="true" [showUploadButton]="false"
-                      [showCancelButton]="false" accept=".pdf,.doc,.docx" maxFileSize="5242880"
-                      (uploadHandler)="onCvUpload($event)">
+<div class="content" xmlns="http://www.w3.org/1999/html">
+  <h1 class="title">{{ 'RegisterExpert.Title' | translate }}</h1>
 
+    <h2 class="settings-title">{{ 'CreateProject.CommonInformation' | translate }}</h2>
+    <div class="settings-block">
+      <div class="areas">
+        <p class="control-label">
+          {{ 'RegisterExpert.ExpertTypeLabel' | translate }}
+        </p>
+        <div class="areas-wrapper">
+          <div *ngFor="let area of areas" class="area">
+            <p-checkbox id="{{ area.value }}" [(ngModel)]="selectedAreas" value="{{area.value}}" inputId="ny"></p-checkbox>
+            <label for="{{ area.value }}">{{area.label}}</label>
+          </div>
+        </div>
+      </div>
+      <form [formGroup]="registryForm" autocomplete="off" novalidate>
+        <div #name class="control-row control-row__flexed">
+          <div class="control-wrapper">
+            <p class="control-label">
+              <label for="firstName">{{ 'RegisterExpert.FirstName' | translate }}</label>
+            </p>
+            <input class="input" formControlName="firstName" id="firstName" placeholder="{{ 'RegisterExpert.NamePlaceholder' | translate }}" #required>
+          </div>
+          <div class="control-wrapper">
+            <p class="control-label">
+              <label for="secondName">{{ 'RegisterExpert.SecondName' | translate }}</label>
+            </p>
+            <input class="input" formControlName="secondName" id="secondName" placeholder="{{ 'RegisterExpert.SecondNamePlaceholder' | translate }}" #required>
+          </div>
+        </div>
+        <div #birthDate class="control-row">
+          <p class="control-label">
+            <label for="birthDate">{{ 'RegisterExpert.BirthDate' | translate }}</label>
+          </p>
+          <p-calendar class="input-component" [inputId]="'birthDate'" formControlName="birthDate" [inputStyleClass]="'input input-date'" #required></p-calendar>
+        </div>
+        <div class="control-row">
+          <p class="control-label">
+            <label for="sex">{{ 'RegisterExpert.Sex' | translate }}</label>
+          </p>
+          <p class="notify">{{ 'RegisterExpert.SexNotify' | translate }}</p>
+          <app-input-switch [styleClass]="'sex-switch'" [labelOff]="'RegisterExpert.Female' | translate" [labelOn]="'RegisterExpert.Male' | translate" class="input-component" formControlName="selectedSex"></app-input-switch>
+        </div>
+        <div #place class="control-row control-row__flexed">
+          <div class="control-wrapper">
+            <p class="control-label">
+              <label for="country">{{ 'RegisterExpert.Country' | translate }}</label>
+            </p>
+            <app-autocomplete class="input-component" [elementId]="'category'" formControlName="country" [placeholder]="'RegisterExpert.Country' | translate" [allItems]="countries" #required></app-autocomplete>
+          </div>
+          <div class="control-wrapper">
+            <p class="control-label">
+              <label for="city">{{ 'RegisterExpert.City' | translate }}</label>
+            </p>
+            <input class="input" placeholder="{{ 'RegisterExpert.City' | translate }}" formControlName="city" id="city" #required>
+          </div>
+        </div>
+        <div class="control-row">
+          <p class="control-label">
+            <label for="facebook">{{ 'RegisterExpert.FacebookLink' | translate }}</label>
+          </p>
+          <p class="notify">{{ 'RegisterExpert.SocialNotify' | translate }}</p>
+          <input class="input input-wide" id="facebook" formControlName="facebook" placeholder="http://" #required>
+        </div>
+        <div class="control-row">
+          <p class="control-label">
+            <label for="linkedin">{{ 'RegisterExpert.LinkedinLink' | translate }}</label>
+          </p>
+          <input class="input input-wide" placeholder="http://" formControlName="linkedin" id="linkedin" #required>
+        </div>
+        <div class="control-row">
+          <p class="control-label">
+            <label>{{ 'RegisterExpert.CV' | translate }}</label>
+          </p>
+          <p class="notify">{{ 'RegisterExpert.CvNotify' | translate }}</p>
+          <p-fileUpload mode="advanced" auto="true" name="cv[]" customUpload="true" [showUploadButton]="false"
+                        [showCancelButton]="false" accept=".pdf,.doc,.docx" maxFileSize="5242880"
+                        (uploadHandler)="onCvUpload($event)">
+          </p-fileUpload>
+        </div>
+      </form>
+    </div>
+
+  <form [formGroup]="registryForm" autocomplete="off" (ngSubmit)="applyAsync()" novalidate>
+    <h2 class="settings-title">{{ 'RegisterExpert.MotivationLetter' | translate }}</h2>
+    <div class="settings-block">
+      <div class="control-row">
+        <p class="control-label">
+          <label for="why">{{ 'RegisterExpert.Why' | translate }}</label>
+        </p>
+        <textarea id="why" placeholder="{{ 'RegisterExpert.WhyPlaceholder' | translate }}" class="input" formControlName="why" #required></textarea>
+      </div>
+      <div class="control-row">
+        <p class="control-label">
+          <label for="description">{{ 'RegisterExpert.Describe' | translate }}</label>
+        </p>
+        <textarea class="input" id="description" placeholder="{{ 'RegisterExpert.DescribePlaceholder' | translate }}" formControlName="description" #required></textarea>
+      </div>
+    </div>
+
+    <h2 class="settings-title">{{ 'RegisterExpert.KYC' | translate }}</h2>
+    <div class="settings-block">
+      <div class="control-row control-row__flexed">
+        <div class="control-wrapper">
+          <p class="control-label">
+            <label for="selectedDocumentType">{{ 'RegisterExpert.DocumentType' | translate }}</label>
+          </p>
+          <app-select class="input-component" [elementId]="'selectedDocumentType'" formControlName="selectedDocumentType" [placeholder]="'RegisterExpert.DocumentType' | translate" [items]="documentTypes" #required></app-select>
+          <p class="notify">{{ 'RegisterExpert.DocumentNotify' | translate }}</p>
+        </div>
+        <div class="control-wrapper">
+          <p class="control-label">
+            <label for="number">{{ 'RegisterExpert.DocumentNumber' | translate }}</label>
+          </p>
+          <input class="input" formControlName="number" id="number" #required>
+        </div>
+      </div>
+      <div class="control-row">
+        <p class="control-label">
+          <label>{{ 'RegisterExpert.UploadDocumentLabel' | translate }}</label>
+        </p>
+        <p class="notify">{{ 'RegisterExpert.UploadNotify' | translate }}</p>
+        <p-fileUpload mode="advanced" auto="true" name="doc[]" customUpload="true" [showUploadButton]="false"
+                      [showCancelButton]="false" name="document[]" customUpload="true" accept="image/*"
+                      maxFileSize="5242880" (uploadHandler)="onDocumentUpload($event)">
+        </p-fileUpload>
+      </div>
+      <div class="control-row">
+        <p class="control-label">
+          <label>{{ 'RegisterExpert.UploadPhotoLabel' | translate }}</label>
+        </p>
+        <p-fileUpload mode="advanced" auto="true" name="photo[]" customUpload="true" [showUploadButton]="false"
+                      [showCancelButton]="false" name="document[]" customUpload="true" accept="image/*"
+                      maxFileSize="5242880" (uploadHandler)="onPhotoUpload($event)">
         </p-fileUpload>
       </div>
     </div>
-    <div [ngClass]="!showLetter ? '' : 'main-btn'" class="row">
-      <button (click)="showNext()" class="col-3 btn btn-primary">{{ 'Application.Next' | translate }}
-      </button>
-    </div>
-    <div [ngClass]="showLetter ? 'is-active' : ''" class="sw-card sw-content" style="padding: 2em;">
-      <div class="row">
-        <h3 class="col-10">{{ 'RegisterExpert.MotivationLetter' | translate }}</h3>
-      </div>
-      <div class="row-content">
-        <div class="row">
-          <span class="col-12">{{ 'RegisterExpert.Description' | translate }}</span>
-        </div>
-        <div class="row">
-          <textarea class="form-control col-10 offset-2" formControlName="description" #required>
-        </textarea>
-        </div>
-        <div class="row">
-          <span class="col-12">{{ 'RegisterExpert.Why' | translate }}</span>
-        </div>
-        <div>
-          <textarea class="form-control col-10 offset-2" formControlName="why" #required>
-        </textarea>
-        </div>
-      </div>
-    </div>
-    <div [ngClass]="showLetter && !showKYC ? '' : 'legal-btn'" class="row">
-      <button (click)="showNext()" class="col-3 btn btn-primary">{{ 'Application.Next' | translate }}
-      </button>
-    </div>
-    <div [ngClass]="showKYC ? 'is-active' : ''" class="sw-card sw-content" style="padding: 2em;">
-      <div class="row">
-        <h3 class="col-10">{{ 'RegisterExpert.KYC' | translate }}</h3>
-      </div>
-      <div class="row-content">
-        <div class="row">
-          <span class="col-3">{{ 'RegisterExpert.DocumentType' | translate }}</span>
-          <p-dropdown [style]="{'width':'140px'}" class="col-4 padding-zero" [options]="documentTypes"
-                      formControlName="selectedDocumentType"></p-dropdown>
-        </div>
-        <div class="row">
-          <span class="col-3">{{ 'RegisterExpert.DocumentNumber' | translate }}</span>
-          <input class="form-control col-9" formControlName="number" #required>
-        </div>
-        <div class="row">
-          <span class="col-3">{{ 'RegisterExpert.UploadDocument' | translate }}:</span>
-          <p-fileUpload mode="advanced" auto="true" name="doc[]" customUpload="true" [showUploadButton]="false"
-                        [showCancelButton]="false" name="document[]" customUpload="true" accept="image/*"
-                        maxFileSize="5242880" (uploadHandler)="onDocumentUpload($event)">
-
-          </p-fileUpload>
-        </div>
-        <div class="row">
-          <span class="col-3">{{ 'RegisterExpert.UploadPhoto' | translate }}:</span>
-          <p-fileUpload mode="advanced" auto="true" name="photo[]" customUpload="true" [showUploadButton]="false"
-                        [showCancelButton]="false" name="document[]" customUpload="true" accept="image/*"
-                        maxFileSize="5242880" (uploadHandler)="onPhotoUpload($event)">
-          </p-fileUpload>
-        </div>
-      </div>
-    </div>
-    <div [ngClass]="showKYC ? '' : 'submit-btn'" class="row">
-      <button (click)="applyAsync()" [disabled]="isProjectCreating" class="col-3 btn btn-primary">
-        {{ 'Application.Submit' | translate }}
-      </button>
-    </div>
+    <input (click)="applyAsync()" [disabled]="isProjectCreating" class="main-btn submit-btn" type="submit" value="{{ 'RegisterExpert.Submit' | translate }}">
   </form>
 </div>

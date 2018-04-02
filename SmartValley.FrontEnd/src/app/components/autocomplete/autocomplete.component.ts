@@ -1,4 +1,4 @@
-import {Component, Input, Output, forwardRef, OnChanges, EventEmitter, OnInit} from '@angular/core';
+import {Component, Input, Output, forwardRef, OnChanges, EventEmitter, ElementRef, OnInit} from '@angular/core';
 import {SelectItem} from 'primeng/api';
 import {FormGroup, FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
@@ -33,7 +33,8 @@ export class AutocompleteComponent implements ControlValueAccessor, OnChanges, O
   @Input() defaultValue?: string | number;
   @Output() onSelect: EventEmitter<string | number | null> = new EventEmitter<string | number | null>();
 
-  constructor(private translateService: TranslateService) {
+  constructor(private translateService: TranslateService,
+              private nativeElement: ElementRef) {
   }
 
   public propagateChange: any = () => {};

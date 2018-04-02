@@ -43,7 +43,7 @@ export class HeaderComponent implements OnInit {
       this.haveProject = false;
       this.myProjectLink = '';
     });
-    this.projectService.projectsCreated.subscribe(async () => await this.updateProjectsAsync();
+    this.projectService.projectsCreated.subscribe(async () => await this.updateProjectsAsync());
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
     this.userContext.userContextChanged.subscribe(async (user) => await this.updateAccountAsync(user));
   }

@@ -3,7 +3,6 @@ p {
 }
 .project-select-input {
   width: 280px;
-  background-image: url(/assets/img/arrow_down.svg);
   background-repeat: no-repeat;
   background-position: 245px 5px;
   padding-right: 35px;

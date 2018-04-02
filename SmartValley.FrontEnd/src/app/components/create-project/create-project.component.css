@@ -7,27 +7,6 @@ body {
   margin-bottom: 40px;
 }
 
-.settings-block {
-  background: #fff;
-  padding: 16px 40px 32px;
-  margin-bottom: 16px;
-}
-
-.settings-block_last {
-  margin-bottom: 0;
-}
-
-.settings-title {
-  font-family: Roboto-Bold;
-  margin: 0;
-  font-size: 24px;
-  text-align: left;
-  background: #fff;
-  padding: 16px 40px;
-  margin-bottom: 3px;
-  color: #a4a2b0;
-}
-
 .control-label {
   margin-bottom: 5px;
   width: auto;

@@ -95,12 +95,13 @@ export class RegisterExpertComponent implements OnInit {
       facebook: ['', [Validators.required, Validators.maxLength(400), Validators.pattern('https?://.+')]],
       why: ['', [Validators.required, Validators.maxLength(1500)]],
       description: ['', [Validators.required, Validators.maxLength(1500)]],
-      country: [this.countries[0].value],
+      country:  ['', [Validators.required]],
       city: ['', [Validators.required, Validators.maxLength(50)]],
-      selectedSex: [SexEnum.Male],
+      selectedSex: ['', [Validators.required]],
       selectedDocumentType: [DocumentEnum.Passport],
       birthDate: ['', [Validators.required, Validators.maxLength(100)]],
-      number: ['', [Validators.required, Validators.maxLength(30)]]
+      number: ['', [Validators.required, Validators.maxLength(30)]],
+      documentTypes: [this.documentTypes],
     });
   }
 
@@ -128,8 +129,15 @@ export class RegisterExpertComponent implements OnInit {
   }
 
   private setInvalid(element: ElementRef) {
-    element.nativeElement.classList.add('ng-invalid');
-    element.nativeElement.classList.add('ng-dirty');
+    if (element.nativeElement.nativeElement) {
+      element.nativeElement.nativeElement.classList.add('ng-invalid');
+      element.nativeElement.nativeElement.classList.add('ng-dirty');
+      return;
+    }
+    if (element.nativeElement) {
+      element.nativeElement.classList.add('ng-invalid');
+      element.nativeElement.classList.add('ng-dirty');
+    }
   }
 
   private validateForm(): boolean {
@@ -138,9 +146,22 @@ export class RegisterExpertComponent implements OnInit {
     }
 
     const invalidElements = this.requiredFields.filter(
-      i => i.el !== undefined ?
-        i.el.nativeElement.classList.contains('ng-invalid')
-        : i.nativeElement.classList.contains('ng-invalid'));
+      (i) => {
+        let elem = false;
+
+        if (i.el) {
+          elem = i.el.nativeElement.classList.contains('ng-invalid');
+        }
+
+        if (i.nativeElement) {
+          if (i.nativeElement.nativeElement) {
+            return elem = i.nativeElement.nativeElement.classList.contains('ng-invalid');
+          }
+          elem = i.nativeElement.classList.contains('ng-invalid');
+        }
+
+        return elem;
+      });
 
     if (invalidElements.length > 0) {
       for (let a = 0; a < invalidElements.length; a++) {
@@ -155,8 +176,7 @@ export class RegisterExpertComponent implements OnInit {
 
   private scrollToElement(element: ElementRef) {
     const offsetTop1 = element.nativeElement.offsetTop;
-    const offsetTop3 = element.nativeElement.offsetParent.offsetParent.offsetTop;
-    window.scrollTo({left: 0, top: offsetTop1 + offsetTop3, behavior: 'smooth'});
+    window.scrollTo({left: 0, top: offsetTop1 - 40, behavior: 'smooth'});
   }
 
   private createExpertApplicationRequest(transactionHash: string, areas: Array<AreaType>): CreateExpertApplicationRequest {
@@ -166,7 +186,7 @@ export class RegisterExpertComponent implements OnInit {
     input.append('photo', this.photo);
     input.append('cv', this.cv);
     input.append('transactionHash', transactionHash);
-    input.append('sex', (<number>form.selectedSex).toString());
+    input.append('sex', +form.selectedSex);
     input.append('birthDate', moment(form.birthDate).toISOString());
     input.append('city', form.city);
     input.append('countryIsoCode', form.country.code);
@@ -233,7 +253,7 @@ export class RegisterExpertComponent implements OnInit {
 
   private getApplicationHash(areas: Array<AreaType>): string {
     const form = this.registryForm.value;
-    const applicationStr = (<number>form.selectedSex).toString() +
+    const applicationStr = (+form.selectedSex) +
       moment(form.birthDate).toISOString() +
       form.city +
       form.country.code +
@@ -244,7 +264,7 @@ export class RegisterExpertComponent implements OnInit {
       form.firstName +
       form.secondName +
       form.description +
-      form.why;
+      form.why);
 
     areas.forEach(a => applicationStr.concat(a.toString()));
     return '0x' + Md5.hashStr(applicationStr, false).toString();
