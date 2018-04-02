@@ -13,7 +13,6 @@ using SmartValley.WebApi.ScoringApplication.Responses;
 namespace SmartValley.WebApi.ScoringApplication
 {
     [Route("api/projects/{projectId}/scoring/applications")]
-    [Authorize]
     public class ScoringApplicationController : Controller
     {
         private readonly IScoringApplicationService _scoringApplicationService;
@@ -40,13 +39,13 @@ namespace SmartValley.WebApi.ScoringApplication
             return ScoringApplicationBlankResponse.InitializeFromApplication(questions, scoringApplication);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task SaveAsync(long projectId, [FromBody]SaveScoringApplicationRequest saveScoringApplicationRequest)
         {
             await _scoringApplicationService.SaveApplicationAsync(projectId, saveScoringApplicationRequest);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         [Route("submit")]
         public async Task SubmitAsync(long projectId)
         {
