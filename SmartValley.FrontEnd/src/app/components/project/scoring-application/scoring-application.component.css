@@ -85,6 +85,7 @@
 .partitions-list {
   list-style: none;
   margin-top: 16px;
+  padding-left: 160px;
 }
 
 .partition-item {
@@ -117,7 +118,7 @@ label {
 }
 
 .partition-menu__inputs {
-  padding-left: 40px;
+  padding-left: 160px;
 }
 
 .partition-menu__inputs input {
