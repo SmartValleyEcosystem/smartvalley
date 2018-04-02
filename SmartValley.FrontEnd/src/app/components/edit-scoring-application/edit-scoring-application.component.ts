@@ -97,7 +97,6 @@ export class EditScoringApplicationComponent implements OnInit {
       projectStage: [''],
       projectCategory: [''],
       icoDate: [''],
-      raised: [''],
       website: [''],
       description: [''],
       linkToWP: [''],

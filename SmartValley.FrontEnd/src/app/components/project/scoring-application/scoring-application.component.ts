@@ -59,7 +59,7 @@ export class ScoringApplicationComponent implements OnInit {
   }
 
   public navigateToCreateForm() {
-    this.router.navigate([Paths.ScoringApplication + this.projectId]);
+    this.router.navigate([Paths.ScoringApplication + '/' + this.projectId]);
   }
 
   public navigateToEdit() {

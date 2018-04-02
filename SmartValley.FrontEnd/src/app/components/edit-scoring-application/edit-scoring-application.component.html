@@ -17,18 +17,12 @@
           </p>
           <app-select [isNeedToTranslate]="true" class="select-component input-component" formControlName="projectCategory" [elementId]="'project-category'" [placeholder]="'EditScoringApplication.AllCategories' | translate" [items]="categories"></app-select>
         </div>
-        <div class="control-row control-row__flex">
+        <div class="control-row">
           <div>
             <p class="control-label">
                 <label for="project-stage">{{ 'EditScoringApplication.ProjectStage' | translate }}</label>
             </p>
             <app-select [isNeedToTranslate]="true" class="input-component" formControlName="projectStage" [elementId]="'project-stage'" [items]="stages" [placeholder]="'EditScoringApplication.AllStages' | translate"></app-select>
-          </div>
-          <div class="raised-wrapper">
-            <p class="control-label">
-              <label for="control_raised">{{ 'EditScoringApplication.Raised' | translate }}</label>
-            </p>
-            <input class="input input-raised" type="text" formControlName="raised" name="control_raised" id="control_raised" placeholder="{{ 'EditScoringApplication.Raised' | translate }}">
           </div>
         </div>
         <div class="control-row">
