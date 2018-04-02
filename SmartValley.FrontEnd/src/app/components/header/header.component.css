@@ -104,6 +104,10 @@ button:focus {
   cursor: pointer;
 }
 
+.header-nav__link:hover {
+  color: white;
+}
+
 .header-nav__link_selected {
   color: #fff;
 }
@@ -113,10 +117,14 @@ button:focus {
 }
 
 .header-nav__login-logout {
-  color: #fff;
+  color: #a4a2b0;
   display: inline-block;
   margin-left: 47px;
   cursor: pointer;
+}
+
+.header-nav__login-logout:hover {
+  color: white;
 }
 
 .fake-menu-wrapper {

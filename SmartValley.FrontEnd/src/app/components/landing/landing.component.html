@@ -19,14 +19,17 @@
         <ng-template #elseEndDate>
           <td>&mdash;</td>
         </ng-template>
-        <td *ngIf="project.score; else elseScore" class="scoring-col">{{project.score | roundNumberPipe}}/100</td>
+        <td *ngIf="project.score; else elseScore" class="scoring-col">
+          <span class="primary-color-text">{{project.score | roundNumberPipe}}</span>
+          <span [ngClass]="project.score === 100 ? 'primary-color-text' : 'gray-color-text'">/100</span>
+        </td>
         <ng-template #elseScore>
           <td class="scoring-col">&mdash;</td>
         </ng-template>
       </tr>
     </ng-template>
     <ng-template pTemplate="footer" let-columns>
-      <tr>
+      <tr (click)="navigateToProjectsList()">
         <td class="bottom-link" colspan="5"><a [routerLink]="'/' + projectsLink">{{ 'Landing.SeeAll' | translate }}</a>
         </td>
       </tr>
