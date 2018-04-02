@@ -4,11 +4,6 @@
     <div class="search-controls">
       <i class="search-icon material-icons">search</i>
       <form class="search-form" name="search-form" (ngSubmit)="submit();">
-        <input (focus)="searchInputFocusStatusSwitch(true); showProjectList();"
-               (focusout)="searchInputFocusStatusSwitch(false); hideProjectList();"
-               [formControl]="inputSearch"
-               placeholder="{{ 'SearchWithAutoComplete.Placeholder' | translate}}" type="text"
-               class="search-controls__input">
         <ul (mouseenter)="projectListHoverStatusSwitch(true) "
             (mouseleave)="projectListHoverStatusSwitch(false); hideProjectList();"
             class="search-controls__project-list" [class.hidden]="isAutocompleteHidden">
@@ -19,6 +14,12 @@
             <p class="project-info">{{project.category}}</p>
           </li>
         </ul>
+        <input (focus)="searchInputFocusStatusSwitch(true); showProjectList();"
+               (focusout)="searchInputFocusStatusSwitch(false); hideProjectList();"
+               [class.search-controls__input_square]="squareInput"
+               [formControl]="inputSearch"
+               placeholder="{{ 'SearchWithAutoComplete.Placeholder' | translate}}" type="text"
+               class="search-controls__input">
         <input type="submit" value="{{ 'SearchWithAutoComplete.Search' |translate }}"
                class="main-btn search-controls__submit">
       </form>
