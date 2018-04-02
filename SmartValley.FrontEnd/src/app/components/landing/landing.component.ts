@@ -35,7 +35,7 @@ export class LandingComponent implements OnInit {
   }
 
   public navigateToProject(id) {
-    this.router.navigate([Paths.Report + '/' + id]);
+    this.router.navigate([Paths.Project + '/' + id]);
   }
 
   public navigateToProjectsList() {
@@ -57,7 +57,7 @@ export class LandingComponent implements OnInit {
 
   public getProjectLink(id) {
     return decodeURIComponent(
-      this.router.createUrlTree([Paths.Report + '/' + id]).toString()
+      this.router.createUrlTree([Paths.Project + '/' + id]).toString()
     );
   }
 }

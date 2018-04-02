@@ -82,7 +82,7 @@ export class ProjectListComponent implements OnInit {
 
   public getProjectLink(id) {
     return decodeURIComponent(
-      this.router.createUrlTree([Paths.Report + '/' + id]).toString()
+      this.router.createUrlTree([Paths.Project + '/' + id]).toString()
     );
   }
 

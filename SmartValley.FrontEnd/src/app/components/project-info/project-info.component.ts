@@ -1,8 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DictionariesService} from '../../services/common/dictionaries.service';
-import {ProjectResponse} from '../../api/project/project-response';
-import {MyProjectResponse} from '../../api/project/my-project-response';
-import {ProjectCardComponent} from '../common/project-card/project-card.component';
 import {ProjectSummaryResponse} from '../../api/project/project-summary-response';
 
 @Component({

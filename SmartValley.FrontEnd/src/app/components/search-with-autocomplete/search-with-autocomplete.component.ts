@@ -66,7 +66,7 @@ export class SearchWithAutocompleteComponent implements OnInit {
   }
 
   public navigateToProject(id) {
-    this.router.navigate([Paths.Report + '/' + id], {queryParams: {tab: Constants.ReportFormTab}});
+    this.router.navigate([Paths.Project + '/' + id], {queryParams: {tab: Constants.ReportFormTab}});
   }
 
   public submit() {

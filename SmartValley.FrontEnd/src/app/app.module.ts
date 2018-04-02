@@ -16,7 +16,6 @@ import {ExpertApiClient} from './api/expert/expert-api-client';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ScoringManagerContractClient} from './services/contract-clients/scoring-manager-contract-client';
 import {CheckboxModule} from 'primeng/checkbox';
-import {ScoringComponent} from './components/scoring/scoring.component';
 import {MatTabsModule} from '@angular/material';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
@@ -28,14 +27,11 @@ import {ContractApiClient} from './api/contract/contract-api-client';
 import {ErrorInterceptor} from './api/error-interceptor';
 import {AdminContractClient} from './services/contract-clients/admin-contract-client';
 import {ScoringApiClient} from './api/scoring/scoring-api-client';
-import {ProjectCardComponent} from './components/common/project-card/project-card.component';
 import {ProjectInfoComponent} from './components/project-info/project-info.component';
 import {ProjectApiClient} from './api/project/project-api-client';
-import {ReportComponent} from './components/report/report.component';
 import {EstimatesApiClient} from './api/estimates/estimates-api-client';
 import {VotingApiClient} from './api/voting/voting-api-client';
 import {UserApiClient} from './api/user/user-api-client';
-import {CriteriaComponent} from './components/report/criteria/criteria.component';
 import {ScoreColorsService} from './services/project/score-colors.service';
 import {DictionariesService} from './services/common/dictionaries.service';
 import {NgProgressInterceptor, NgProgressModule} from 'ngx-progressbar';
@@ -65,15 +61,12 @@ import {GuardFactory} from './services/guards/guard-factory';
 import {DashIfEmptyPipe} from './utils/dash-if-empty.pipe';
 import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-authenticated.guard';
 import {VotingService} from './services/voting/voting-service';
-import {VotingComponent} from './components/voting/voting.component';
 import {VotingCardComponent} from './components/voting-card/voting-card.component';
 import {VotingManagerContractClient} from './services/contract-clients/voting-manager-contract-client';
 import {ScoringExpertsManagerContractClient} from './services/contract-clients/scoring-experts-manager-contract-client';
 import {FreeScoringConfirmationModalComponent} from './components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component';
 import {VotingContractClient} from './services/contract-clients/voting-contract-client';
 import {VoteModalComponent} from './components/common/vote-modal/vote-modal.component';
-import {CompletedVotingComponent} from './components/completed-voting/completed-voting.component';
-import {CompletedVotingsComponent} from './components/completed-votings/completed-votings.component';
 import {FormatDatePipe} from './utils/format-date.pipe';
 import {AuthenticationApiClient} from './api/authentication/authentication-api-client';
 import {UserContext} from './services/authentication/user-context';
@@ -136,19 +129,14 @@ import {ScoringApplicationComponent} from './components/project/scoring-applicat
 @NgModule({
   declarations: [
     AppComponent,
-    VotingComponent,
     VotingCardComponent,
     MetamaskHowtoComponent,
     LandingComponent,
     HeaderComponent,
     CreateProjectComponent,
-    ScoringComponent,
     FooterComponent,
     EstimateComponent,
-    ProjectCardComponent,
     ProjectInfoComponent,
-    ReportComponent,
-    CriteriaComponent,
     TransactionAwaitingModalComponent,
     ScoringCostComponent,
     NullableLinkComponent,
@@ -164,8 +152,6 @@ import {ScoringApplicationComponent} from './components/project/scoring-applicat
     EditScoringApplicationComponent,
     FreeScoringConfirmationModalComponent,
     VoteModalComponent,
-    CompletedVotingComponent,
-    CompletedVotingsComponent,
     FormatDatePipe,
     AdminPanelComponent,
     AddAdminModalComponent,

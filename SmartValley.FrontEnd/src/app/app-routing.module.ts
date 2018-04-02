@@ -3,9 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 import {MetamaskHowtoComponent} from './components/metamask-howto/metamask-howto.component';
 import {LandingComponent} from './components/landing/landing.component';
-import {ScoringComponent} from './components/scoring/scoring.component';
 import {EstimateComponent} from './components/estimate/estimate.component';
-import {ReportComponent} from './components/report/report.component';
 import {InitializationGuard} from './services/initialization/initialization.guard';
 import {InitializationComponent} from './components/initialization/initialization.component';
 import {RootComponent} from './components/root/root.component';
@@ -13,11 +11,8 @@ import {ShouldHaveEthGuard} from './services/balance/should-have-eth.guard';
 import {AccountComponent} from './components/account/account.component';
 import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-authenticated.guard';
 import {ShouldBeAdminGuard} from './services/authentication/should-be-admin.guard';
-import {VotingComponent} from './components/voting/voting.component';
 import {VotingCardComponent} from './components/voting-card/voting-card.component';
-import {CompletedVotingComponent} from './components/completed-voting/completed-voting.component';
 import {AdminPanelComponent} from './components/admin-panel/admin-panel.component';
-import {CompletedVotingsComponent} from './components/completed-votings/completed-votings.component';
 import {ExpertStatusComponent} from './components/expert-status/expert-status.component';
 import {ExpertComponent} from './components/expert/expert.component';
 import {RegisterExpertComponent} from './components/register-expert/register-expert.component';
@@ -31,7 +26,6 @@ import {RegisterConfirmComponent} from './components/authentication/register-con
 import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
 import {CreateProjectComponent} from './components/create-project/create-project.component';
 import {EditScoringApplicationComponent} from './components/edit-scoring-application/edit-scoring-application.component';
-import {ScoringApplicationComponent} from './components/project/scoring-application/scoring-application.component';
 import {ProjectComponent} from './components/project/project.component';
 
 const appRoutes: Routes = [
@@ -39,7 +33,6 @@ const appRoutes: Routes = [
   {
     path: Paths.Root, component: RootComponent, canActivate: [InitializationGuard], children: [
       {path: Paths.Root, pathMatch: 'full', component: LandingComponent},
-      {path: Paths.Voting, pathMatch: 'full', component: VotingComponent},
       {
         path: Paths.Admin,
         pathMatch: 'full',
@@ -54,11 +47,6 @@ const appRoutes: Routes = [
         canActivate: [ShouldBeAdminGuard]
       },
       {
-        path: Paths.CompletedVoting + '/:address',
-        pathMatch: 'full',
-        component: CompletedVotingComponent
-      },
-      {
         path: Paths.Register,
         pathMatch: 'full',
         component: RegisterComponent
@@ -69,13 +57,7 @@ const appRoutes: Routes = [
         pathMatch: 'full',
         component: RegisterConfirmComponent
       },
-      {
-        path: Paths.CompletedVotings,
-        pathMatch: 'full',
-        component: CompletedVotingsComponent
-      },
       {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent},
-      {path: Paths.Scoring, pathMatch: 'full', component: ScoringComponent},
       {path: Paths.Account, pathMatch: 'full', component: AccountComponent, canActivate: [ShouldBeAuthenticatedGuard]},
       {
         path: Paths.Project,
@@ -83,7 +65,6 @@ const appRoutes: Routes = [
         component: CreateProjectComponent
       },
       {path: Paths.ProjectEdit, component: CreateProjectComponent},
-      {path: Paths.Report + '/:id', pathMatch: 'full', component: ReportComponent},
       {
         path: Paths.ExpertStatus,
         canActivate: [ExpertStatusGuard],

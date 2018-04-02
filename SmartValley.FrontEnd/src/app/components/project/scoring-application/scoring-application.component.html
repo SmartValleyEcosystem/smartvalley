@@ -17,13 +17,13 @@
           </div>
           <div class="control-row">
             <p class="control-label">
-              <label>{{ 'EditScoringApplication.ProjectArea' | translate }}</label>
+              <label>{{ 'EditScoringApplication.ProjectCategory' | translate }}</label>
             </p>
             <div class="main-text">{{'Categories.' + projectInfo.category | translate }}</div>
           </div>
           <div class="control-row">
             <p class="control-label">
-              <label>{{ 'EditScoringApplication.Stage' | translate }}</label>
+              <label>{{ 'EditScoringApplication.ProjectStage' | translate }}</label>
             </p>
             <div class="main-text">{{'Stages.' + projectInfo.stage | translate }}</div>
           </div>
@@ -125,7 +125,7 @@
           </div>
         </div>
         <div *ngFor="let partition of partitions; let index = index;">
-          <h2 class="partition-title" id="partition_{{partition.order}}">{{index + 2}}. {{partition.name |
+          <h2 class="partition-title" id="partition_{{partition.order}}">{{index + 2}}. {{'EditScoringApplication.' + partition.name |
             translate}}</h2>
           <div class="partition-block">
             <div class="control-row" *ngFor="let question of partition.questions; let questionIndex = index"
@@ -133,37 +133,37 @@
               <div *ngIf="isParentQuestionAnswered(question.parentId)">
                 <div *ngSwitchCase="questionTypeLine">
                   <p class="control-label">
-                    <label>{{ question.key | translate }}</label>
+                    <label>{{'EditScoringApplication.' + question.key | translate }}</label>
                   </p>
                   <div class="main-text">{{question.answer}}</div>
                 </div>
                 <div *ngSwitchCase="questionTypeMultiLine">
                   <p class="control-label">
-                    <label>{{ question.key | translate }}</label>
+                    <label>{{'EditScoringApplication.' + question.key | translate }}</label>
                   </p>
                   <div class="main-text">{{question.answer}}</div>
                 </div>
                 <div *ngSwitchCase="questionTypeCombobox">
                   <p class="control-label">
-                    <label>{{ question.key | translate }}</label>
+                    <label>{{'EditScoringApplication.' + question.key | translate }}</label>
                   </p>
                   <div class="main-text">{{question.answer}}</div>
                 </div>
                 <div *ngSwitchCase="questionTypeDateTime">
                   <p class="control-label">
-                    <label>{{ question.key | translate }}</label>
+                    <label>{{'EditScoringApplication.' + question.key | translate }}</label>
                   </p>
                   <div class="main-text">{{question.answer | formatDate}}</div>
                 </div>
                 <div *ngSwitchCase="questionTypeCheckBox">
                   <p class="control-label">
-                    <label>{{ question.key | translate }}</label>
+                    <label>{{'EditScoringApplication.' + question.key | translate }}</label>
                   </p>
                   <div class="main-text">{{question.answer}}</div>
                 </div>
                 <div *ngSwitchCase="questionTypeUrl">
                   <p class="control-label">
-                    <label>{{ question.key | translate }}</label>
+                    <label>{{'EditScoringApplication.' + question.key | translate }}</label>
                   </p>
                   <a class="partition-item" href="{{question.answer}}">{{question.answer}}</a>
                 </div>
@@ -186,7 +186,7 @@
             </li>
             <li class="partition-item" (click)="scrollToElement(partition.order)"
                 *ngFor="let partition of partitions; let index = index;">
-              {{index + 2}}. {{partition.name | translate}}
+              {{index + 2}}. {{'EditScoringApplication.' + partition.name | translate}}
             </li>
           </ul>
         </sticky>
