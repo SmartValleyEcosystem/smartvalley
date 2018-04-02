@@ -33,9 +33,11 @@ export class ScoringApplicationComponent implements OnInit {
 
   async ngOnInit() {
     const response = await this.scoringApplicationApiClient.getScoringApplicationsAsync(this.projectId);
-    this.projectInfo = response.projectInfo;
-    this.partitions = response.partitions;
-    this.isExistApplication = true;
+    if (!isNullOrUndefined(response.created)) {
+      this.projectInfo = response.projectInfo;
+      this.partitions = response.partitions;
+      this.isExistApplication = true;
+    }
   }
 
   public getQuestionTypeById(id: number) {
