@@ -73,11 +73,8 @@
   left: 0;
 }
 
-.search-controls__input_square {
-  border-radius: 30px 0 0;
-}
-
 .search-controls__project-list {
+  border-radius: 30px 0 0;
   position: absolute;
   width: 1031px;
   background: #fff;
@@ -90,6 +87,10 @@
 .search-controls__project-list li {
   border-left: solid 1px #a4a2b0;
   border-right: solid 1px #a4a2b0;
+}
+
+.search-controls__project-list li:first-child {
+  border-radius: 30px 0 0;
 }
 
 .search-controls__project-list li:last-child {

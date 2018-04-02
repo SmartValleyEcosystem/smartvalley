@@ -6,7 +6,6 @@
       <form class="search-form" name="search-form" (ngSubmit)="submit();">
         <input (focus)="searchInputFocusStatusSwitch(true); showProjectList();"
                (focusout)="searchInputFocusStatusSwitch(false); hideProjectList();"
-               [class.search-controls__input_square]="squareInput"
                [formControl]="inputSearch"
                placeholder="{{ 'SearchWithAutoComplete.Placeholder' | translate}}" type="text"
                class="search-controls__input">
