@@ -30,8 +30,9 @@ import {RegisterComponent} from './components/authentication/register/register.c
 import {RegisterConfirmComponent} from './components/authentication/register-confirm/register-confirm.component';
 import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
 import {CreateProjectComponent} from './components/create-project/create-project.component';
+import {EditScoringApplicationComponent} from './components/edit-scoring-application/edit-scoring-application.component';
+import {ScoringApplicationComponent} from './components/project/scoring-application/scoring-application.component';
 import {ProjectComponent} from './components/project/project.component';
-import {ScoringApplicationComponent} from './components/scoring-application/scoring-application.component';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -131,7 +132,7 @@ const appRoutes: Routes = [
       {path: Paths.ProjectList, component: ProjectListComponent},
       {path: Paths.ProjectList + '/:search', component: ProjectListComponent},
       {path: Paths.MyProject + '/:id', component: ProjectComponent},
-      {path: Paths.ScoringApplication + '/:id', component: ScoringApplicationComponent}
+      {path: Paths.ScoringApplication + '/:id', component: EditScoringApplicationComponent}
     ]
   },
   {path: '**', redirectTo: Paths.Root}
@@ -145,5 +146,6 @@ const appRoutes: Routes = [
     RouterModule
   ]
 })
+
 export class AppRoutingModule {
 }

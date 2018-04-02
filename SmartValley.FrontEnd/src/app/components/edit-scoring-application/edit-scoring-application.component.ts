@@ -15,11 +15,11 @@ import {Answer} from '../../api/scoring-application/answer';
 import {Adviser} from '../../api/scoring-application/adviser';
 
 @Component({
-  selector: 'app-scoring-application',
-  templateUrl: './scoring-application.component.html',
-  styleUrls: ['./scoring-application.component.css']
+  selector: 'app-edit-scoring-application',
+  templateUrl: './edit-scoring-application.component.html',
+  styleUrls: ['./edit-scoring-application.component.css']
 })
-export class ScoringApplicationComponent implements OnInit {
+export class EditScoringApplicationComponent implements OnInit {
 
   public projectId: number;
   public questions: ScoringApplicationResponse;

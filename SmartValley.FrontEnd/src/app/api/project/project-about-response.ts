@@ -6,6 +6,7 @@ export interface ProjectAboutResponse {
   facebook: string;
   linkedin: string;
   bitcoinTalk: string;
+  github: string;
   medium: string;
   reddit: string;
   telegram: string;

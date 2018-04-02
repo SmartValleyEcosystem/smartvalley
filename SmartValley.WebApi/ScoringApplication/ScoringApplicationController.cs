@@ -1,6 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartValley.Domain;
+using SmartValley.Domain.Entities;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.ScoringApplication.Requests;
 using SmartValley.WebApi.ScoringApplication.Responses;

@@ -9,8 +9,6 @@ namespace SmartValley.WebApi.ScoringApplication.Responses
     {
         public string Name { get; set; }
 
-        public string Area { get; set; }
-
         public string Description { get; set; }
 
         public string WebSite { get; set; }
@@ -22,6 +20,10 @@ namespace SmartValley.WebApi.ScoringApplication.Responses
         public string IcoDate { get; set; }
 
         public string ContactEmail { get; set; }
+
+        public int Category { get; set; }
+
+        public int Stage { get; set; }
 
         public SocialNetworks SocialNetworks { get; set; }
 
@@ -36,6 +38,8 @@ namespace SmartValley.WebApi.ScoringApplication.Responses
                        Name = project.Name,
                        Description = project.Description,
                        CountryCode = projectCountry.Code,
+                       Category = (int) project.Category,
+                       Stage = (int) project.Stage,
                        WebSite = project.Website,
                        WhitePaperLink = project.WhitePaperLink,
                        IcoDate = project.IcoDate.ToString(),

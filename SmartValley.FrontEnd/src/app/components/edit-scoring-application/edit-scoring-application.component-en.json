@@ -1,5 +1,5 @@
 {
-  "ScoringApplication": {
+  "EditScoringApplication": {
     "Title": "Form for score",
     "PageDescription": "After sending the form you can't edit it before complete of scoring.",
     "Yes": "Yes",
@@ -38,7 +38,6 @@
     "ExperiencePlaceholder": "Success stories and previous jobs briefly",
     "AddTeam": "+ Add team member",
     "TeamTitle": "3. Team",
-
     "ProjectGroup": "Project",
     "TeamGroup": "Team",
     "BusinessFinanceGroup": "Business/Finance",
@@ -49,7 +48,6 @@
     "ProductGroup": "Product",
     "MarketingGroup": "Marketing",
     "LegalGroup": "Legal",
-
     "ProjectNameQuestion": "Project name",
     "ProjectAreaQuestion": "Industry",
     "ProjectCurrentStatusQuestion": "Current status",
@@ -59,7 +57,6 @@
     "ProjectWhitepaperQuestion": "Does the project have a WP? If yes, provide link",
     "ProjectICODateQuestion": "ICO dates",
     "ProjectContactEmailQuestion": "Contact email",
-
     "ProjectFacebookLinkQuestion": "Facebook link",
     "ProjectBitcointalkLinkQuestion": "Bitcointalk link",
     "ProjectMediumLinkQuestion": "Medium link",
@@ -67,13 +64,11 @@
     "ProjectTelegramLinkQuestion": "Telegram link",
     "ProjectTwitterLinkQuestion": "Twitter link",
     "ProjectLinkedinQuestion": "Linkedin link",
-
     "DoYouHaveUniqueTechnologyQuestion": "Are you using a unique technology?",
     "UniqueTechnologyDescriptionQuestion": "Describe it",
     "FinancialFundsDescriptionQuestion": "Describe your current financial situation",
     "DoYouhaveICORoadmapQuestion": "Does the project have a business plan/product roadmap/development schedule for the pre-ICO, ICO, and post-ICO periods?",
     "ICORoadmapDescriptionLinkQuestion": "Provide a link",
-
     "DoYouNeedAdditionalEmployeesQuestion": "Do you require additional members for your team?",
     "AdditionalEmployeesWorkplaceDescriptionQuestion": "List lacking team members",
     "DoYouUseOutsourcingQuestion": "Are you using outsourcing?",
@@ -86,14 +81,12 @@
     "TeamMembersFundingAttractingExperienceDescriptionQuestion": "Describe it",
     "DoesYourTeamMembersHaveFinancialOffencesQuestion": "Has anyone on your team broken financial regulations?",
     "TeamMembersFinancialOffencesDescriptionQuestion": "Describe it",
-
     "IsItPossibleToAttractAdditionalFundsQuestion": "Do you have access to additional sources of financing (e.g., offline business connections)?",
     "HowMuchMoneyInvestedQuestion": "How much money have you already invested in the project?",
     "DoYouHaveFinancialModelQuestion": "Do you have a financial model? If yes, provide a link",
     "FinancialModelLinkQuestion": "Link to the financial model",
     "LinksToFinancialModelResearchQuestion": "Provide links to studies and research on which your financial model is based",
     "CurrentlyAvailableResources": "Which financial resources are currently availalble to your project?",
-
     "UsedBlockchainTypeQuestion": "Which blockchain do you plan to use and why?",
     "DoYouHaveAlgorithmsSourceCodeQuestion": "Do you have the source code for the tokens or other algorithms?",
     "AlgorithmsSourceCodeLinkQuestion": "Link to source codes",
@@ -102,7 +95,6 @@
     "PlanningCountUsersToAttractQuestion": "How many users do you plan to attract?",
     "PlanningPayloadQuestion": "How many queries a second/hour/day will the system have to process?",
     "PlanForPayloadIncreasingQuestion": "Imagine your project has become very popular and the number of users has grown by x1000. Which changes will you need to make for the system to support the higher load?",
-
     "DoYouHaveMVPQuestion": "Do you have an MVP/prototype?",
     "MVPFeatureDescriptionQuestion": "Describe its features",
     "LinkToMVPQuestion": "Link to the MVP/prototype",
@@ -113,14 +105,12 @@
     "MVPPlanningTimeSpendedQuestion": "How much time would it take to create such an MVP/prototype?",
     "DoYouHaveMVPSourceCodesQuestion": "Do you have source codes for the MVP/prototype?",
     "MVPSourceCodesLinkQuestion": "Link to the source codes for the MVP/prototype",
-
     "CollectingFundsPlanQuestion": "How do you plan to collect funds? (e.g., via a smart contract, ESCROW, etc.)",
     "MinimumIcoRaiseAmountQuestion": "What is the minimum amount you plan to raise at the ICO?",
     "MaximumIcoRaiseAmountQuestion": "What is the maxiumum amount you plan to raise at the ICO?",
     "IcoRaisedFundsSpendPurposeQuestion": "How will you spend the funds raised at the ICO?",
     "TokenDistributionPlanQuestion": "How will tokens be distributed among holders and on which terms? (e.g., 70% of tokens sold at the ICO, 30% reserved for the team with a 2-year vesting period)",
     "CrowdsaleDescriptionQuestion": "Describe the crowdsale terms, bonuses, and discounts",
-
     "TokenFunctionsDescriptionQuestion": "What function does your token perform? If there are several, describe them all",
     "TokenTypeQuestion": "What is your token type?",
     "LicensingForSecurityTokenQuestion": "For a security token: hich licences did you obtain to guarantee compliance?",
@@ -133,7 +123,6 @@
     "TokenPriceQuestion": "Undiscounted price of one token",
     "TokenQuantityLimitationQuestion": "How many tokens will be issued?",
     "WhenUserCanUseTokensQuestion": "When will holders be able to freely dispose of their tokens (that is, send them wherever they like)?",
-
     "DoesYourProductSolveConcreteProblemQuestion": "Does your project solve a specific issue?",
     "CanYouProveThatProblemExistsQuestion": "Can you prove the existence of this issue?",
     "LinksToProblemDescriptionQuestion": "Provide links to studies/articles on the topic",
@@ -141,7 +130,6 @@
     "ThreeWaysToUseThisProductQuestion": "Describe 3 scenarios of how your product can be used",
     "DoYouHaveBusinessModelQuestion": "Do you have a business model?",
     "BusinessModelDescriptionQuestion": "Describe it",
-
     "DoYouHavePartnershipsQuestion": "Do you already have any partnerships?",
     "PartnershipBenefitDescriptionQuestion": "Describe their benefits for your project",
     "DoYouHaveMarketingPlanQuestion": "Do you have a marketing plan?",
@@ -163,7 +151,6 @@
     "YourProjectRisksQuestion": "Describe the threats/risks to your project",
     "YourProjectBenefitFromBlockchainQuestion": "How will your product benefit from using blockchain?",
     "HoldersBenefitFromProjectTokenQuestion": "What is the benefit of your tokens to their holders?",
-
     "DoYouHaveTokenSaleAgreementQuestion": "Do you have a Token Sale Agreement?",
     "TokenSaleAgreementLinkQuestion": "Link to Token Sale Agreement",
     "DoYouHaveLegalOpinionQuestion": "Do you have a Legal Opinion document?",
@@ -184,7 +171,6 @@
     "LinkToCompanyRegistrationDocumentQuestion": "Link to the company registration document in the country of incorporation",
     "DoYouNeedAdditionalLicencesQuestion": "Will you need additional licenses for yor operations?",
     "AdditionalLicencesDescriptionQuestion": "Which ones? Which have you already obtained? Attach links",
-
     "OwnedCapitalAnswer": "Own capital",
     "AttractedCapitalAnswer": "Borrowed capital",
     "OwnedAndAttractedCapitalAnswer": "Own & Borrowed capital",
@@ -197,7 +183,6 @@
     "500_1000RealUsersAnswer": "500-1000",
     "1000_10000RealUsersAnswer": "1000-10000",
     "10000+RealUsersAnswer": "10000+",
-
     "Adviser": "Adviser",
     "AdvisersTitle": "4. Advisers",
     "AddAdviser": "+ Add adviser",

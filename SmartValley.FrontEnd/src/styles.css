@@ -7,6 +7,57 @@
   margin: 0 auto;
 }
 
+.social-icon {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  margin-right: 8px;
+  background-position: center;
+  background-size: cover;
+  display: inline-block;
+  top: 5px;
+}
+
+.social-icon__facebook {
+  background-image: url(/assets/img/social-icons/Fb.svg);
+}
+
+.social-icon__instagram {
+  background-image: url(/assets/img/social-icons/Instagram.svg);
+}
+
+.social-icon__telegram {
+  background-image: url(/assets/img/social-icons/telegram.svg);
+}
+
+.social-icon__bitcointalk {
+  background-image: url(/assets/img/social-icons/Bitcointalk.svg);
+}
+
+.social-icon__youtube {
+  background-image: url(/assets/img/social-icons/Youtube.svg);
+}
+
+.social-icon__github {
+  background-image: url(/assets/img/social-icons/Github.svg);
+}
+
+.social-icon__linkedin {
+  background-image: url(/assets/img/social-icons/Linkedin.svg);
+}
+
+.social-icon__medium {
+  background-image: url(/assets/img/social-icons/Medium.svg);
+}
+
+.social-icon__reddit {
+  background-image: url(/assets/img/social-icons/Reddit.svg);
+}
+
+.social-icon__twitter {
+  background-image: url(/assets/img/social-icons/Twitter.svg);
+}
+
 body {
   background: #eeedf5;
   font-family: 'Roboto-Regular';
@@ -368,7 +419,7 @@ a, button, span {
   cursor: pointer;
 }
 
-.title{
+.title {
   font-size: 32px;
   font-family: Roboto-Bold;
   color: #000;

@@ -1,26 +1,83 @@
-.info-title {
-  font-family: Roboto-Bold;
-  margin: 0;
-  font-size: 24px;
-  text-align: left;
-  background: #fff;
-  padding: 16px 40px;
-  margin-bottom: 3px;
-  color: #a4a2b0;
-}
-.info-block {
+.partition-block {
   background: #fff;
   padding: 16px 40px 32px;
-  margin-bottom: 16px;
 }
 .info-block__last {
   margin-bottom: 50px;
 }
+
+.member-column {
+  width: 150px;
+  word-wrap: break-word;
+  text-align: center;
+  margin: 30px 40px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.role-text {
+  color: #a4a2b0;
+}
+
+.member-photo-container {
+  height: 120px;
+  padding-bottom: 16px;
+}
+
+.member-photo {
+  width: 96px;
+  height: 96px;
+  border: solid 2px #eeedf5;
+  border-radius: 50%;
+}
+
+.empty-photo {
+  color: #a4a2b0;
+  font-size: 100px;
+}
+
+.member-socials {
+  margin-top: 10px;
+}
+
+.member-socials .social-icon {
+  margin: 0 4px;
+}
+
 .team-list {
   justify-content: space-around;
   list-style: none;
   padding: 0;
   margin: 0;
+}
+.partition-item {
+  font-family: Roboto-Bold;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #5d49f2;
+  cursor: pointer;
+  padding-bottom: 10px;
+}
+
+.partition-title {
+  font-family: Roboto-Bold;
+  font-size: 24px;
+  text-align: left;
+  background: #fff;
+  padding: 16px 40px;
+  margin: 16px 0 3px;
+  color: #a4a2b0;
+}
+
+.social-column .partition-item {
+  display: inline-block;
+}
+
+.social-column a {
+  text-decoration: none;
+  width: 230px;
+  display: inline-block;
 }
 .team-list,
 .social-links {

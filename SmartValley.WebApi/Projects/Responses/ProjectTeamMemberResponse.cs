@@ -22,27 +22,28 @@ namespace SmartValley.WebApi.Projects.Responses
         public static ProjectTeamMemberResponse Create(ProjectTeamMember teamMember)
         {
             return new ProjectTeamMemberResponse
-                   {
-                       Id = teamMember.Id,
-                       FullName = teamMember.FullName,
-                       About = teamMember.About,
-                       PhotoUrl = teamMember.PhotoUrl,
-                       Role = teamMember.Role,
-                       Facebook = teamMember.Facebook,
-                       LinkedIn = teamMember.Linkedin
-                   };
+            {
+                Id = teamMember.Id,
+                FullName = teamMember.FullName,
+                About = teamMember.About,
+                PhotoUrl = teamMember.PhotoUrl,
+                Role = teamMember.Role,
+                Facebook = teamMember.Facebook,
+                LinkedIn = teamMember.Linkedin
+            };
         }
 
         public static ProjectTeamMemberResponse Create(ScoringApplicationTeamMember teamMember)
         {
             return new ProjectTeamMemberResponse
-                   {
-                       FullName = teamMember.FullName,
-                       About = teamMember.About,
-                       Role = teamMember.ProjectRole,
-                       Facebook = teamMember.FacebookLink,
-                       LinkedIn = teamMember.LinkedInLink
-                   };
+            {
+                FullName = teamMember.FullName,
+                About = teamMember.About,
+                Role = teamMember.ProjectRole,
+                Facebook = teamMember.FacebookLink,
+                PhotoUrl = teamMember.PhotoUrl,
+                LinkedIn = teamMember.LinkedInLink
+            };
         }
     }
 }

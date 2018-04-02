@@ -114,7 +114,7 @@ import {PaginatorModule} from 'primeng/paginator';
 import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-assigned.guard';
 import {SelectComponent} from './components/select/select.component';
 import {AutocompleteComponent} from './components/autocomplete/autocomplete.component';
-import {ScoringApplicationComponent} from './components/scoring-application/scoring-application.component';
+import {EditScoringApplicationComponent} from './components/edit-scoring-application/edit-scoring-application.component';
 import {StickyModule} from 'ng2-sticky-kit';
 import {InputSwitchComponent} from './components/input-switch/input-switch.component';
 import {ScoringService} from './services/scoring/scoring.service';
@@ -130,6 +130,7 @@ import {DeleteProjectModalComponent} from './components/common/delete-project-mo
 import {ProjectComponent} from './components/project/project.component';
 import {ProjectAboutComponent} from './components/project/project-about/project-about.component';
 import {WaitingModalComponent} from './components/common/waiting-modal/waiting-modal.component';
+import {ScoringApplicationComponent} from './components/project/scoring-application/scoring-application.component';
 
 
 @NgModule({
@@ -160,6 +161,7 @@ import {WaitingModalComponent} from './components/common/waiting-modal/waiting-m
     AccountComponent,
     DashIfEmptyPipe,
     VotingCardComponent,
+    EditScoringApplicationComponent,
     FreeScoringConfirmationModalComponent,
     VoteModalComponent,
     CompletedVotingComponent,
@@ -196,6 +198,7 @@ import {WaitingModalComponent} from './components/common/waiting-modal/waiting-m
     RegisterConfirmComponent,
     WelcomeModalComponent,
     DeleteProjectModalComponent,
+    ScoringApplicationComponent,
     ProjectComponent,
     ProjectAboutComponent,
     WaitingModalComponent

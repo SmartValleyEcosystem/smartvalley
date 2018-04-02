@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49 (51002) - http://www.bohemiancoding.com/sketch -->
+    <title>ic/24/Youtube</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M10.5426215,3.68114648 C10.4335764,3.26542383 10.1122917,2.93801367 9.70435764,2.82690234 C8.96494792,2.625 6,2.625 6,2.625 C6,2.625 3.03506944,2.625 2.29564236,2.82690234 C1.88770833,2.93803125 1.56642361,3.26542383 1.45737847,3.68114648 C1.25925347,4.43466797 1.25925347,6.00682031 1.25925347,6.00682031 C1.25925347,6.00682031 1.25925347,7.57897266 1.45737847,8.33249414 C1.56642361,8.7482168 1.88770833,9.06198633 2.29564236,9.17309766 C3.03506944,9.375 6,9.375 6,9.375 C6,9.375 8.96493056,9.375 9.70435764,9.17309766 C10.1122917,9.06198633 10.4335764,8.7482168 10.5426215,8.33249414 C10.7407465,7.57897266 10.7407465,6.00682031 10.7407465,6.00682031 C10.7407465,6.00682031 10.7407465,4.43466797 10.5426215,3.68114648 Z M5.03029514,7.4342168 L5.03029514,4.57942383 L7.50840278,6.00685547 L5.03029514,7.4342168 Z" id="path-1"></path>
+    </defs>
+    <g id="Один-проект" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="About_project" transform="translate(-942.000000, -1230.000000)">
+            <g id="ic/24/Youtube" transform="translate(940.000000, 1228.000000)">
+                <g>
+                    <circle id="Oval" fill="#231A5D" cx="12" cy="12" r="10"></circle>
+                    <g id="Icons/Brands/youtube" transform="translate(6.000000, 6.000000)">
+                        <mask id="mask-2" fill="white">
+                            <use xlink:href="#path-1"></use>
+                        </mask>
+                        <use id="youtube" fill="#000000" fill-rule="nonzero" xlink:href="#path-1"></use>
+                        <g id="Colors/5th" mask="url(#mask-2)" fill="#FFFFFF" fill-rule="evenodd">
+                            <rect id="Rectangle" x="0" y="0" width="12" height="12"></rect>
+                        </g>
+                    </g>
+                    <rect id="Rectangle-4" fill-opacity="0" fill="#D8D8D8" x="0" y="0" width="24" height="24"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

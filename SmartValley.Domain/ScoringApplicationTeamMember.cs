@@ -14,6 +14,8 @@
 
         public string LinkedInLink { get; set; }
 
+        public string PhotoUrl { get; set; }
+
         public string AdditionalInformation { get; set; }
     }
 }

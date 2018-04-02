@@ -49,12 +49,13 @@ export function multiTranslateLoaderFactory() {
     'components/authentication/register/register.component',
     'components/authentication/register-confirm/register-confirm.component',
     'components/select/select.component',
+    'components/edit-scoring-application/edit-scoring-application.component',
     'components/common/confirm-email/confirm-email.component',
     'components/project/project.component',
     'components/project-info/project-info.component',
     'components/project/project-about/project-about.component',
     'components/common/waiting-modal/waiting-modal.component',
     'components/common/confirm-email/confirm-email.component',
-    'components/scoring-application/scoring-application.component'
+    'components/project/scoring-application/scoring-application.component'
   ]);
 }
