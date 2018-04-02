@@ -58,16 +58,16 @@ export class HeaderComponent implements OnInit {
   }
 
   private async updateProjectsAsync(): Promise<void> {
-    const myProjectIdResponse = await this.projectApiClient.getMyProjectAsync();
-    if (!isNullOrUndefined(myProjectIdResponse)) {
-      this.myProjectLink = Paths.MyProject + '/' + myProjectIdResponse.id;
+    const myProjectResponse = await this.projectApiClient.getMyProjectAsync();
+    if (!isNullOrUndefined(myProjectResponse)) {
+      this.myProjectLink = Paths.MyProject + '/' + myProjectResponse.id;
       this.haveProject = true;
     }
   }
 
   private async updateAccountAsync(user: User): Promise<void> {
     if (user) {
-      this.updateProjectsAsync();
+      await this.updateProjectsAsync();
       this.isAuthenticated = true;
       this.accountAddress = user.account;
       this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
@@ -113,7 +113,14 @@ export class HeaderComponent implements OnInit {
 
   async navigateToProjectApplication() {
     if (await this.authenticationService.authenticateAsync()) {
-      await this.router.navigate([Paths.Project]);
+      const myProjectResponse = await this.projectApiClient.getMyProjectAsync();
+      if (!isNullOrUndefined(myProjectResponse)) {
+        this.myProjectLink = Paths.MyProject + '/' + myProjectResponse.id;
+        await this.router.navigate([this.myProjectLink]);
+        this.haveProject = true;
+      } else {
+        await this.router.navigate([Paths.Project]);
+      }
     }
   }
 }
