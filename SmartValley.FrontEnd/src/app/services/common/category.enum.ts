@@ -28,4 +28,3 @@ export enum CategoryEnum {
   Sports = 26,
   Tourism = 27,
 }
-

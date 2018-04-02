@@ -1,6 +1,9 @@
 {
   "Stages": {
-    "0": "Pre-sale",
-    "1": "Stage"
+    "0": "Conception & Initiation",
+    "1": "Definition & Planning",
+    "2": "Launch or Execution",
+    "3": "Performance & Control",
+    "4": "Closure"
   }
 }

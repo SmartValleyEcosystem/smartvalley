@@ -41,7 +41,6 @@ namespace SmartValley.WebApi.Projects.Responses
                 About = teamMember.About,
                 Role = teamMember.ProjectRole,
                 Facebook = teamMember.FacebookLink,
-                PhotoUrl = teamMember.PhotoUrl,
                 LinkedIn = teamMember.LinkedInLink
             };
         }

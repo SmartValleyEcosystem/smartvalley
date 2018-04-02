@@ -1,28 +1,28 @@
 <div class="content">
-  <h1 class="title">{{ 'EditEditScoringApplication.Title' | translate }}</h1>
-  <p>{{ 'EditEditScoringApplication.PageDescription' | translate }}</p>
+  <h1 class="title">{{ 'EditScoringApplication.Title' | translate }}</h1>
+  <p>{{ 'EditScoringApplication.PageDescription' | translate }}</p>
   <form [formGroup]="questionFormGroup" autocomplete="off" class="partitions-page" (ngSubmit)="onSubmit()">
     <div class="partition">
-      <h2 class="partition-title" id="partition_common">{{ 'EditEditScoringApplication.CommonTitle' | translate }}</h2>
+      <h2 class="partition-title" id="partition_common">{{ 'EditScoringApplication.CommonTitle' | translate }}</h2>
       <div class="partition-block" formGroupName="commonGroup">
         <div class="form-control-row">
           <p class="control-label">
-            <label for="control_name">{{ 'EditEditScoringApplication.Name' | translate }}</label>
+            <label for="control_name">{{ 'EditScoringApplication.Name' | translate }}</label>
           </p>
-          <input class="input input-name" formControlName="name" type="text" id="control_name" placeholder="{{ 'EditEditScoringApplication.Name' | translate }}">
+          <input class="input input-name" formControlName="name" type="text" id="control_name" placeholder="{{ 'EditScoringApplication.Name' | translate }}">
         </div>
         <div class="control-row">
           <p class="control-label">
-            <label for="project-area">{{ 'EditEditScoringApplication.ProjectArea' | translate }}</label>
+              <label for="project-category">{{ 'EditScoringApplication.ProjectCategory' | translate }}</label>
           </p>
-          <app-select [isNeedToTranslate]="true" class="select-component input-component" formControlName="projectArea" [elementId]="'project-area'" [placeholder]="'EditScoringApplication.AllAreas' | translate" [items]="categories"></app-select>
+          <app-select [isNeedToTranslate]="true" class="select-component input-component" formControlName="projectCategory" [elementId]="'project-category'" [placeholder]="'EditScoringApplication.AllCategories' | translate" [items]="categories"></app-select>
         </div>
         <div class="control-row control-row__flex">
           <div>
             <p class="control-label">
-              <label for="stage">{{ 'EditScoringApplication.Stage' | translate }}</label>
+                <label for="project-stage">{{ 'EditScoringApplication.ProjectStage' | translate }}</label>
             </p>
-            <app-select [isNeedToTranslate]="true" class="input-component" formControlName="stage" [elementId]="'stage'" [items]="stages" [placeholder]="'EditScoringApplication.AllStages' | translate"></app-select>
+            <app-select [isNeedToTranslate]="true" class="input-component" formControlName="projectStage" [elementId]="'project-stage'" [items]="stages" [placeholder]="'EditScoringApplication.AllStages' | translate"></app-select>
           </div>
           <div class="raised-wrapper">
             <p class="control-label">

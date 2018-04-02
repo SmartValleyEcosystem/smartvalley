@@ -3,14 +3,10 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Converters;
-using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Domain.Core;
-using SmartValley.Domain.Entities;
 
 namespace SmartValley.Data.SQL.Migrations
 {
@@ -510,7 +506,7 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Category");
+                    b.Property<int?>("Category");
 
                     b.Property<string>("ContactEmail");
 
@@ -518,7 +514,7 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<DateTimeOffset>("Created");
 
-                    b.Property<string>("IcoDate");
+                    b.Property<DateTimeOffset?>("IcoDate");
 
                     b.Property<string>("ProjectDescription");
 
@@ -530,7 +526,7 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<string>("Site");
 
-                    b.Property<string>("Status");
+                    b.Property<int?>("Stage");
 
                     b.Property<DateTimeOffset?>("Submitted");
 

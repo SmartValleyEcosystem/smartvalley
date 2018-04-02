@@ -94,8 +94,8 @@ export class EditScoringApplicationComponent implements OnInit {
     const commonFormControls = {
       name: [''],
       country: [''],
-      stage: [''],
-      projectArea: [''],
+      projectStage: [''],
+      projectCategory: [''],
       icoDate: [''],
       raised: [''],
       website: [''],
@@ -147,8 +147,8 @@ export class EditScoringApplicationComponent implements OnInit {
     const socials = this.getSocialsValues();
     const draftRequest = <SaveScoringApplicationRequest>{
       projectName: this.questionFormGroup.get('commonGroup').get('name').value,
-      projectArea: this.questionFormGroup.get('commonGroup').get('projectArea').value,
-      status: this.questionFormGroup.get('commonGroup').get('stage').value,
+      projectCategory: this.questionFormGroup.get('commonGroup').get('projectCategory').value,
+      projectStage: this.questionFormGroup.get('commonGroup').get('projectStage').value,
       projectDescription: this.questionFormGroup.get('commonGroup').get('description').value,
       countryCode: this.questionFormGroup.get('commonGroup').get('country').value,
       site: this.questionFormGroup.get('commonGroup').get('website').value,

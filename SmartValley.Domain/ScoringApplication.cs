@@ -17,9 +17,9 @@ namespace SmartValley.Domain
 
         public string ProjectName { get; set; }
 
-        public string Category { get; set; }
+        public Category? Category { get; set; }
 
-        public string Status { get; set; }
+        public Stage? Stage { get; set; }
 
         public string ProjectDescription { get; set; }
 
@@ -27,7 +27,7 @@ namespace SmartValley.Domain
 
         public string WhitePaper { get; set; }
 
-        public string IcoDate { get; set; }
+        public DateTimeOffset? IcoDate { get; set; }
 
         public string ContactEmail { get; set; }
 

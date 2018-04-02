@@ -38,10 +38,6 @@ namespace SmartValley.WebApi.ScoringApplication
 
         public async Task SaveApplicationAsync(long projectId, SaveScoringApplicationRequest saveScoringApplicationRequest)
         {
-            var country = await _countryRepository.GetByCodeAsync(saveScoringApplicationRequest.CountryCode);
-            if (country == null)
-                throw new AppErrorException(ErrorCode.CountryNotFound);
-
             var project = await _projectRepository.GetByIdAsync(projectId);
             if (project == null)
                 throw new AppErrorException(ErrorCode.ProjectNotFound);
@@ -53,12 +49,24 @@ namespace SmartValley.WebApi.ScoringApplication
                 _scoringApplicationRepository.Add(scoringApplication);
             }
 
+            if (!string.IsNullOrEmpty(saveScoringApplicationRequest.CountryCode))
+            {
+                var country = await _countryRepository.GetByCodeAsync(saveScoringApplicationRequest.CountryCode);
+                if (country == null)
+                    throw new AppErrorException(ErrorCode.CountryNotFound);
+
+                scoringApplication.CountryId = country.Id;
+            }
+            else
+            {
+                scoringApplication.CountryId = null;
+            }
+
             scoringApplication.ProjectId = project.Id;
             scoringApplication.ProjectName = saveScoringApplicationRequest.ProjectName;
-            scoringApplication.Category = saveScoringApplicationRequest.ProjectArea.ToString();
-            scoringApplication.Status = saveScoringApplicationRequest.Status.ToString();
+            scoringApplication.Category = saveScoringApplicationRequest.ProjectCategory;
+            scoringApplication.Stage = saveScoringApplicationRequest.ProjectStage;
             scoringApplication.ProjectDescription = saveScoringApplicationRequest.ProjectDescription;
-            scoringApplication.CountryId = country.Id;
             scoringApplication.Site = saveScoringApplicationRequest.Site;
             scoringApplication.WhitePaper = saveScoringApplicationRequest.WhitePaper;
             scoringApplication.IcoDate = saveScoringApplicationRequest.IcoDate;
@@ -90,7 +98,7 @@ namespace SmartValley.WebApi.ScoringApplication
 
             scoringApplication.UpdateAdvisers(newAdvisers);
 
-            var scoringApplicationAnswers = saveScoringApplicationRequest.Answers.Select(Requests.ScoringApplicationAnswerRequest.ToDomain).ToList();
+            var scoringApplicationAnswers = saveScoringApplicationRequest.Answers.Select(ScoringApplicationAnswerRequest.ToDomain).ToList();
             scoringApplication.UpdateAnswers(scoringApplicationAnswers);
 
             await _scoringApplicationRepository.SaveChangesAsync();

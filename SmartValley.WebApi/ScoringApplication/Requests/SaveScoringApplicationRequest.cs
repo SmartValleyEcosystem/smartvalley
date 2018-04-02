@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.ScoringApplication.Requests
 {
@@ -13,9 +15,9 @@ namespace SmartValley.WebApi.ScoringApplication.Requests
 
         public string ProjectName { get; set; }
 
-        public string ProjectArea { get; set; }
+        public Category? ProjectCategory { get; set; }
 
-        public string Status { get; set; }
+        public Stage? ProjectStage { get; set; }
 
         public string ProjectDescription { get; set; }
 
@@ -25,7 +27,7 @@ namespace SmartValley.WebApi.ScoringApplication.Requests
 
         public string WhitePaper { get; set; }
 
-        public string IcoDate { get; set; }
+        public DateTimeOffset? IcoDate { get; set; }
 
         public string ContactEmail { get; set; }
 

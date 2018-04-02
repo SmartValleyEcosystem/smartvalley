@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SmartValley.Domain.Entities;
 using SmartValley.WebApi.Projects.Responses;
@@ -9,6 +10,10 @@ namespace SmartValley.WebApi.ScoringApplication.Responses
     {
         public string Name { get; set; }
 
+        public Category? Category { get; set; }
+
+        public Stage? Stage { get; set; }
+
         public string Description { get; set; }
 
         public string WebSite { get; set; }
@@ -17,13 +22,9 @@ namespace SmartValley.WebApi.ScoringApplication.Responses
 
         public string WhitePaperLink { get; set; }
 
-        public string IcoDate { get; set; }
+        public DateTimeOffset? IcoDate { get; set; }
 
         public string ContactEmail { get; set; }
-
-        public int Category { get; set; }
-
-        public int Stage { get; set; }
 
         public SocialNetworks SocialNetworks { get; set; }
 
@@ -36,13 +37,13 @@ namespace SmartValley.WebApi.ScoringApplication.Responses
             return new ProjectApplicationInfoResponse
                    {
                        Name = project.Name,
+                       Category = project.Category,
+                       Stage = project.Stage,
                        Description = project.Description,
                        CountryCode = projectCountry.Code,
-                       Category = (int) project.Category,
-                       Stage = (int) project.Stage,
                        WebSite = project.Website,
                        WhitePaperLink = project.WhitePaperLink,
-                       IcoDate = project.IcoDate.ToString(),
+                       IcoDate = project.IcoDate,
                        ContactEmail = project.ContactEmail,
                        SocialNetworks = new SocialNetworks
                                         {
@@ -64,8 +65,10 @@ namespace SmartValley.WebApi.ScoringApplication.Responses
             return new ProjectApplicationInfoResponse
                    {
                        Name = scoringApplication.ProjectName,
+                       Category = scoringApplication.Category,
+                       Stage = scoringApplication.Stage,
                        Description = scoringApplication.ProjectDescription,
-                       CountryCode = scoringApplication.Country.Code,
+                       CountryCode = scoringApplication.Country?.Code,
                        WebSite = scoringApplication.Site,
                        WhitePaperLink = scoringApplication.WhitePaper,
                        IcoDate = scoringApplication.IcoDate,

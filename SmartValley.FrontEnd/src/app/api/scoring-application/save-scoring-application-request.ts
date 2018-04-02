@@ -4,8 +4,8 @@ import {Answer} from './answer';
 
 export interface SaveScoringApplicationRequest {
   projectName: string;
-  projectArea: string;
-  status: string;
+  projectCategory: string;
+  projectStage: string;
   projectDescription: string;
   countryCode: string;
   site: string;
