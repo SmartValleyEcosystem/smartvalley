@@ -1,4 +1,4 @@
-import {Component, Input, Output, forwardRef, OnChanges, EventEmitter} from '@angular/core';
+import {Component, Input, Output, forwardRef, OnChanges, EventEmitter, OnInit} from '@angular/core';
 import {SelectItem} from 'primeng/api';
 import {FormGroup, FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
@@ -13,16 +13,15 @@ import {TranslateService} from '@ngx-translate/core';
     {provide: NG_VALIDATORS, useExisting: forwardRef(() => AutocompleteComponent), multi: true}
   ]
 })
-export class AutocompleteComponent implements ControlValueAccessor, OnChanges {
+export class AutocompleteComponent implements ControlValueAccessor, OnChanges, OnInit {
 
-  public propagateChange: any = () => {};
-  public validateFn: any = () => {};
   public items: SelectItem[] = [];
   public isAutocompleteHidden: boolean;
   public isAreaListHovered: boolean;
   public isSearchInputInFocus: boolean;
   public squareInput = false;
   public selectedItemLabel: string;
+
   @Input('selectedItemValue') _selectedItemValue: string | number | null = null;
   @Input() placeholder: string;
   @Input() allItems: SelectItem[] = [];
@@ -36,6 +35,10 @@ export class AutocompleteComponent implements ControlValueAccessor, OnChanges {
 
   constructor(private translateService: TranslateService) {
   }
+
+  public propagateChange: any = () => {};
+
+  public validateFn: any = () => {};
 
   get selectedItemValue(): string | number | null {
     return this._selectedItemValue;
@@ -128,5 +131,11 @@ export class AutocompleteComponent implements ControlValueAccessor, OnChanges {
 
   registerOnChange(fn) {
     this.propagateChange = fn;
+  }
+
+  public resetSelection() {
+    this.selectedItemValue = '';
+    this.selectedItemLabel = '';
+    this.isAutocompleteHidden = true;
   }
 }

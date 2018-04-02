@@ -10,7 +10,7 @@
   <ul (mouseenter)="selectListHoverStatusSwitch(true) "
       (mouseleave)="selectListHoverStatusSwitch(false); hideSelectList();"
       class="select-list" [class.hidden]="isSelectHidden">
-    <li (click)="clearItems()" class="select-item">
+    <li (click)="resetSelection()" class="select-item">
       <p class="select-item-name select-item-name__off">{{ 'Select.NoSelected' | translate }}</p>
     </li>
     <li *ngFor="let item of items" (click)="selectItem(item.label, item.value)" class="select-item">

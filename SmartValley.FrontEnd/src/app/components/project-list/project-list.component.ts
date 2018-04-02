@@ -11,6 +11,7 @@ import {ProjectQuery} from '../../api/project/project-query';
 import {SelectItem} from 'primeng/api';
 import {DictionariesService} from '../../services/common/dictionaries.service';
 import {SelectComponent} from '../select/select.component';
+import {AutocompleteComponent} from '../autocomplete/autocomplete.component';
 
 @Component({
   selector: 'app-project-list',
@@ -21,9 +22,9 @@ export class ProjectListComponent implements OnInit {
 
   public ASC: SortDirection = SortDirection.Ascending;
   public DESC: SortDirection = SortDirection.Descending;
-  public projects: ScoredProject[];
-  public countries: SelectItem[];
-  public categories: SelectItem[];
+  public projects: ScoredProject[] = [];
+  public countries: SelectItem[] = [];
+  public categories: SelectItem[] = [];
   public scoringRatingFrom: number;
   public scoringRatingTo: number;
   public sortedBy: ProjectsOrderBy;
@@ -32,7 +33,9 @@ export class ProjectListComponent implements OnInit {
   public projectOnPageCount = 10;
   public totalProjects: number;
   public selectedCountryCode: string;
+
   @ViewChild(SelectComponent) category: SelectComponent;
+  @ViewChild(AutocompleteComponent) country: AutocompleteComponent;
 
   constructor(private router: Router,
               private expertApiClient: ExpertApiClient,
@@ -111,7 +114,8 @@ export class ProjectListComponent implements OnInit {
     this.scoringRatingFrom = 0;
     this.scoringRatingTo = 100;
     this.selectedCountryCode = '';
-    this.category = null;
+    this.category.resetSelection();
+    this.country.resetSelection();
     this.projectSearch = '';
 
     await this.updateProjectsAsync(0);

@@ -1,4 +1,4 @@
-import {Component, Input, forwardRef, OnChanges} from '@angular/core';
+import {Component, Input, forwardRef, OnChanges, OnInit} from '@angular/core';
 import {FormGroup, FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import {SelectItem} from 'primeng/api';
 import {TranslateService} from '@ngx-translate/core';
@@ -12,18 +12,15 @@ import {TranslateService} from '@ngx-translate/core';
     { provide: NG_VALIDATORS, useExisting: forwardRef(() => SelectComponent), multi: true }
   ]
 })
-export class SelectComponent implements ControlValueAccessor, OnChanges {
+export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit {
 
-  public propagateChange: any = () => {};
-  public validateFn: any = () => {};
   public isSelectHidden: boolean;
   public isSelectListHovered: boolean;
   public isSearchInputInFocus: boolean;
   public selectedInput = false;
-
   public selectedItemLabel: string;
-  @Input('selectedItemValue') _selectedItemValue: string|number|null = null;
 
+  @Input('selectedItemValue') _selectedItemValue: string|number|null = null;
   @Input() placeholder: string;
   @Input() items: SelectItem[];
   @Input() elementId: string;
@@ -33,6 +30,10 @@ export class SelectComponent implements ControlValueAccessor, OnChanges {
   @Input() defaultValue?: string|number;
 
   constructor( private translateService: TranslateService ) {}
+
+  public propagateChange: any = () => {};
+
+  public validateFn: any = () => {};
 
   get selectedItemValue() {
     return this._selectedItemValue;
@@ -116,7 +117,7 @@ export class SelectComponent implements ControlValueAccessor, OnChanges {
     this.selectedItemValue = '';
   }
 
-  public clearItems() {
+  public resetSelection() {
     this.selectedItemValue = '';
     this.selectedItemLabel = '';
     this.isSelectHidden = true;
