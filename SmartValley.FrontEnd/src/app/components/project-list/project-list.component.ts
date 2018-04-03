@@ -26,8 +26,8 @@ export class ProjectListComponent implements OnInit {
   public checkProjects: boolean;
   public countries: SelectItem[] = [];
   public categories: SelectItem[] = [];
-  public scoringRatingFrom: number;
-  public scoringRatingTo: number;
+  public scoringRatingFrom?: number;
+  public scoringRatingTo?: number;
   public sortedBy: ProjectsOrderBy;
   public sortDirection: SortDirection;
   public projectSearch: string;
@@ -56,8 +56,6 @@ export class ProjectListComponent implements OnInit {
   async ngOnInit() {
     this.sortDirection = this.ASC;
     this.sortedBy = ProjectsOrderBy.ScoringEndDate;
-    this.scoringRatingFrom = 0;
-    this.scoringRatingTo = 100;
     this.projectSearch = '';
 
     await this.updateProjectsAsync(0);

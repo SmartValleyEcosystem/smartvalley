@@ -67,8 +67,9 @@ namespace SmartValley.Data.SQL.Repositories
                             where string.IsNullOrEmpty(query.SearchString) || project.Name.ToUpper().Contains(query.SearchString.ToUpper())
                             where string.IsNullOrEmpty(query.CountryCode) || country.Code == query.CountryCode.ToUpper()
                             where !query.Category.HasValue || project.Category == query.Category.Value
-                            where !query.MinimumScore.HasValue || !scoring.Score.HasValue || scoring.Score >= query.MinimumScore.Value
-                            where !query.MaximumScore.HasValue || !scoring.Score.HasValue || scoring.Score <= query.MaximumScore.Value
+                            where (!query.MinimumScore.HasValue && !scoring.Score.HasValue && !query.MaximumScore.HasValue) || 
+                            ((query.MinimumScore.HasValue && scoring.Score >= query.MinimumScore.Value) ||
+                            (query.MaximumScore.HasValue && scoring.Score <= query.MaximumScore.Value))
                             select new {project, scoring, country};
 
             if (enableSorting && query.OrderBy.HasValue)
