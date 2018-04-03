@@ -59,6 +59,7 @@ export class AutocompleteComponent implements ControlValueAccessor, OnChanges, O
     if (value) {
       this.selectedItemValue = value;
     }
+    this.setDefaultValue(this.selectedItemValue);
   }
 
   public ngOnInit() {
@@ -71,17 +72,17 @@ export class AutocompleteComponent implements ControlValueAccessor, OnChanges, O
 
     this.items = this.allItems;
     if (this.defaultValue) {
-      this.setDefaultValue();
+      this.setDefaultValue(this.defaultValue);
     }
   }
 
-  public setDefaultValue() {
+  public setDefaultValue(value) {
     for (const item of this.allItems) {
-      if (item.value === this.defaultValue) {
+      if (item.value === value) {
         this.selectedItemLabel = this.isNeedToTranslate ? this.translateService.instant(item.label) : item.label;
       }
     }
-    this.selectedItemValue = this.defaultValue;
+    this.selectedItemValue = value;
   }
 
   public registerOnTouched() {

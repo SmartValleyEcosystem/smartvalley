@@ -53,6 +53,7 @@ export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit 
     if (value) {
       this.selectedItemValue = value;
     }
+    this.setDefaultValue(value);
   }
 
   public ngOnInit() {
@@ -62,17 +63,17 @@ export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit 
     this.isSearchInputInFocus = false;
     this.hideSelectList();
     if (this.defaultValue) {
-      this.setDefaultValue();
+      this.setDefaultValue(this.defaultValue);
     }
   }
 
-  public setDefaultValue() {
+  public setDefaultValue(value) {
     for (const item of this.items) {
-      if (item.value === this.defaultValue) {
+      if (item.value === value) {
         this.selectedItemLabel = this.isNeedToTranslate ? this.translateService.instant(item.label) : item.label;
       }
     }
-    this.selectedItemValue = this.defaultValue;
+    this.selectedItemValue = value;
   }
 
   public registerOnTouched() {}

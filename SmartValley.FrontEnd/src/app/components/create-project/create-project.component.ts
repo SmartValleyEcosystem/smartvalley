@@ -320,12 +320,13 @@ export class CreateProjectComponent implements OnInit {
       }
       const link = property[1];
       if (!isNullOrUndefined(link)) {
-        this.setSocialMedia(i, link);
         this.addSocialMedia();
+        this.setSocialMedia(i, link);
       }
     }
 
     for (const t of data.teamMembers) {
+      this.addTeamMember();
       this.setTeamMember(
         t.id,
         t.fullName,
@@ -336,7 +337,6 @@ export class CreateProjectComponent implements OnInit {
       if (data.teamMembers.indexOf(t) === data.teamMembers.length - 1) {
         break;
       }
-      this.addTeamMember();
     }
 
     this.applicationForm.setValue({
