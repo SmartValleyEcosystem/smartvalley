@@ -20,49 +20,58 @@
             <p class="control-label">
               <label>{{ 'EditScoringApplication.ProjectCategory' | translate }}</label>
             </p>
-            <div class="main-text">{{'Categories.' + projectInfo.category | translate }}</div>
+            <div class="main-text">
+              <span>{{projectInfo.category ? ('Categories.' + projectInfo.category | translate) : '\u2014' }}</span>
+            </div>
           </div>
           <div class="control-row">
             <p class="control-label">
               <label>{{ 'EditScoringApplication.ProjectStage' | translate }}</label>
             </p>
-            <div class="main-text">{{'Stages.' + projectInfo.stage | translate }}</div>
+            <div class="main-text">
+              <span>{{projectInfo.stage ? ('Stages.' + projectInfo.stage | translate) : '\u2014' }}</span>
+            </div>
           </div>
           <div class="control-row">
             <p class="control-label">
               <label>{{ 'EditScoringApplication.Country' | translate }}</label>
             </p>
-            <div class="main-text">{{'Countries.' + projectInfo.countryCode | translate }}</div>
+            <div class="main-text">
+              <span>{{projectInfo.countryCode ? ('Countries.' + projectInfo.countryCode | translate) : '\u2014' }}</span>
+            </div>
           </div>
           <div class="control-row">
             <p class="control-label">
               <label>{{ 'EditScoringApplication.Description' | translate }}</label>
             </p>
-            <div class="main-text">{{projectInfo.description}}</div>
+            <div class="main-text">{{projectInfo.description | dashIfEmpty}}</div>
           </div>
           <div class="control-row">
             <p class="control-label">
               <label>{{ 'EditScoringApplication.Website' | translate }}</label>
             </p>
-            <a class="partition-item" href="{{projectInfo.webSite}}">{{projectInfo.webSite}}</a>
+            <a *ngIf="projectInfo.webSite" class="partition-item" href="{{projectInfo.webSite}}">{{projectInfo.webSite}}</a>
+            <span *ngIf="!projectInfo.webSite" class="main-text">&mdash;</span>
           </div>
           <div class="control-row">
             <p class="control-label">
               <label>{{ 'EditScoringApplication.LinkToWP' | translate }}</label>
             </p>
-            <a class="partition-item" href="{{projectInfo.whitePaperLink}}">{{projectInfo.whitePaperLink}}</a>
+            <a *ngIf="projectInfo.whitePaperLink" class="partition-item" href="{{projectInfo.whitePaperLink}}">{{projectInfo.whitePaperLink}}</a>
+            <span *ngIf="!projectInfo.whitePaperLink" class="main-text">&mdash;</span>
           </div>
           <div class="control-row">
             <p class="control-label">
               <label>{{ 'EditScoringApplication.ICODate' | translate }}</label>
             </p>
-            <div class="main-text">{{projectInfo.icoDate | formatDate}}</div>
+            <div class="main-text">{{projectInfo.icoDate | formatDate | dashIfEmpty}}</div>
           </div>
           <div class="control-row">
             <p class="control-label">
               <label>{{ 'EditScoringApplication.ContactEmail' | translate }}</label>
             </p>
-            <a class="partition-item" href="mailto:{{projectInfo.contactEmail}}">{{projectInfo.contactEmail}}</a>
+            <a *ngIf="projectInfo.contactEmail" class="partition-item" href="mailto:{{projectInfo.contactEmail}}">{{projectInfo.contactEmail}}</a>
+            <span *ngIf="!projectInfo.contactEmail" class="main-text">&mdash;</span>
           </div>
         </div>
         <h2 class="partition-title" id="partition_social">{{ 'EditScoringApplication.SocialMedia' | translate }}</h2>
@@ -126,47 +135,49 @@
           </div>
         </div>
         <div *ngFor="let partition of partitions; let index = index;">
-          <h2 class="partition-title" id="partition_{{partition.order}}">{{index + 3}}. {{'EditScoringApplication.' + partition.name |
-            translate}}</h2>
+          <h2 class="partition-title" id="partition_{{partition.order}}">
+            {{index + 3}}. {{'EditScoringApplication.' + partition.name | translate}}
+          </h2>
           <div class="partition-block">
-            <div class="control-row" *ngFor="let question of partition.questions; let questionIndex = index"
+            <div class="control-row" *ngFor="let question of partition.questions;"
                  [ngSwitch]="getQuestionTypeById(question.type)">
               <div *ngIf="isParentQuestionAnswered(question.parentId)">
                 <div *ngSwitchCase="questionTypeLine">
                   <p class="control-label">
                     <label>{{'EditScoringApplication.' + question.key | translate }}</label>
                   </p>
-                  <div class="main-text">{{question.answer}}</div>
+                  <div class="main-text">{{question.answer | dashIfEmpty}}</div>
                 </div>
                 <div *ngSwitchCase="questionTypeMultiLine">
                   <p class="control-label">
                     <label>{{'EditScoringApplication.' + question.key | translate }}</label>
                   </p>
-                  <div class="main-text">{{question.answer}}</div>
+                  <div class="main-text">{{question.answer | dashIfEmpty}}</div>
                 </div>
                 <div *ngSwitchCase="questionTypeCombobox">
                   <p class="control-label">
                     <label>{{'EditScoringApplication.' + question.key | translate }}</label>
                   </p>
-                  <div class="main-text">{{question.answer}}</div>
+                  <div class="main-text">{{question.answer | dashIfEmpty}}</div>
                 </div>
                 <div *ngSwitchCase="questionTypeDateTime">
                   <p class="control-label">
                     <label>{{'EditScoringApplication.' + question.key | translate }}</label>
                   </p>
-                  <div class="main-text">{{question.answer | formatDate}}</div>
+                  <div class="main-text">{{question.answer | formatDate | dashIfEmpty}}</div>
                 </div>
                 <div *ngSwitchCase="questionTypeCheckBox">
                   <p class="control-label">
                     <label>{{'EditScoringApplication.' + question.key | translate }}</label>
                   </p>
-                  <div class="main-text">{{question.answer}}</div>
+                  <div class="main-text">{{question.answer ? ('Boolean.' + question.answer | translate) : '\u2014' }}</div>
                 </div>
                 <div *ngSwitchCase="questionTypeUrl">
                   <p class="control-label">
                     <label>{{'EditScoringApplication.' + question.key | translate }}</label>
                   </p>
-                  <a class="partition-item" href="{{question.answer}}">{{question.answer}}</a>
+                  <a *ngIf="question.answer" class="partition-item" href="{{question.answer}}">{{question.answer}}</a>
+                  <span *ngIf="!question.answer" class="main-text">&mdash;</span>
                 </div>
               </div>
             </div>
