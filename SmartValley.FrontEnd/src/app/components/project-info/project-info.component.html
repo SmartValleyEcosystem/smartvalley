@@ -13,18 +13,21 @@
         <li>{{ 'ProjectCard.ProjectArea' | translate }}</li>
         <li>{{ 'ProjectCard.Country' | translate }}</li>
         <li>{{ 'ProjectCard.Status' | translate }}</li>
-        <li>{{ 'ProjectCard.ICOdate' | translate }}</li>
+        <li>{{ 'ProjectCard.IcoDate' | translate }}</li>
         <li>{{ 'ProjectCard.Website' | translate }}</li>
       </ul>
       <ul class="values-list">
         <li>{{ category }}</li>
         <li>{{ country }}</li>
         <li>{{ stage }}</li>
-        <li>{{ project.icoDate | formatDate }}</li>
-        <li><a href="{{ project.website }}" target="_blank">{{ project.website }}</a></li>
+        <li>{{ project.icoDate | formatDate | dashIfEmpty }}</li>
+        <li>
+          <a *ngIf="project.website" href="{{ project.website }}" target="_blank">{{ project.website }}</a>
+          <span *ngIf="!project.website">&mdash;</span>
+        </li>
       </ul>
     </div>
-    <a href="{{ project.whitePaperLink}}" class="ghost-btn" target="_blank">{{ 'ProjectCard.OpenWP' | translate }}</a>
+    <a *ngIf="project.whitePaperLink" href="{{ project.whitePaperLink}}" class="ghost-btn" target="_blank">{{ 'ProjectCard.OpenWP' | translate }}</a>
   </div>
   <div class="project-card__controls">
     <ng-content></ng-content>
