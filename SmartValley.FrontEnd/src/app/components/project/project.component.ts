@@ -25,6 +25,7 @@ export class ProjectComponent implements OnInit {
   public isCreateScoringApplicationCommandAvailable = false;
   public isSendForScoringCommandAvailable = false;
   public isEditProjectCommandAvailable = false;
+  public isScoringApplicationTabAvailable = true;
 
   constructor(private projectApiClient: ProjectApiClient,
               private dialogService: DialogService,
@@ -51,6 +52,8 @@ export class ProjectComponent implements OnInit {
         const applicationScoringRequest = await this.scoringApplicationApiClient.getScoringApplicationsAsync(this.projectId);
         this.isCreateScoringApplicationCommandAvailable = isNullOrUndefined(applicationScoringRequest.created);
         this.isSendForScoringCommandAvailable = !isNullOrUndefined(applicationScoringRequest.created);
+      } else {
+        this.isScoringApplicationTabAvailable = false;
       }
     }
   }
