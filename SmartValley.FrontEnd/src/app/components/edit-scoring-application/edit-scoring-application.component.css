@@ -108,3 +108,18 @@ label {
   margin-bottom: 16px;
   color: #a4a2b0;
 }
+.socials__remove, .member__remove {
+  cursor: pointer;
+  display: inline-block;
+  background-image: url(/assets/img/controls/cross.svg);
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  margin-left: 20px;
+  position: relative;
+  top: 8px;
+}
+
+.member__remove {
+  top: 1px;
+}

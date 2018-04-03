@@ -15,4 +15,5 @@ export interface ProjectApplicationInfoResponse {
   socialNetworks: SocialNetworksResponse;
   projectTeamMembers: Array<TeamMemberResponse>;
   projectAdvisers: Array<AdviserResponse>;
+  articles?: string;
 }

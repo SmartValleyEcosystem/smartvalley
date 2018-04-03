@@ -12,15 +12,9 @@ export interface SaveScoringApplicationRequest {
   whitePaper: string;
   icoDate: string;
   contactEmail: string;
-  facebookLink: string;
-  bitcointalkLink: string;
-  mediumLink: string;
-  redditLink: string;
-  telegramLink: string;
-  twitterLink: string;
-  gitHubLink: string;
-  linkedInLink: string;
+  socialNetworks: {[id: string]: string};
   answers: Answer[];
   teamMembers: TeamMember[];
   advisers: Adviser[];
+  articles: string;
 }

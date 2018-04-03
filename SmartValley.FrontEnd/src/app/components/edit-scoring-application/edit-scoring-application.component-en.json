@@ -1,6 +1,8 @@
 {
   "EditScoringApplication": {
     "Title": "Form for score",
+    "TeamLinkLinkedin": "Link to Linkedin",
+    "TeamLinkFacebook": "Link to Facebook",
     "PageDescription": "After sending the form you can't edit it before complete of scoring.",
     "Yes": "Yes",
     "No": "No",
@@ -183,7 +185,7 @@
     "1000_10000RealUsersAnswer": "1000-10000",
     "10000+RealUsersAnswer": "10000+",
     "Adviser": "Adviser",
-    "AdvisersTitle": "4. Advisers",
+    "AdvisersTitle": "3. Advisers",
     "AddAdviser": "+ Add adviser",
     "Reason": "Reason",
     "About": "About"

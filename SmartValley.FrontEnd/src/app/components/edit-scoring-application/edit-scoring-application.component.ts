@@ -16,6 +16,8 @@ import {Adviser} from '../../api/scoring-application/adviser';
 import {DialogService} from '../../services/dialog-service';
 import {isNullOrUndefined} from 'util';
 import {Paths} from '../../paths';
+import * as moment from 'moment';
+import {ProjectApplicationInfoResponse} from '../../api/scoring-application/project-application-info-response';
 
 @Component({
   selector: 'app-edit-scoring-application',
@@ -43,6 +45,7 @@ export class EditScoringApplicationComponent implements OnInit {
   public stages: SelectItem[];
   public countries: SelectItem[];
   public socials: SelectItem[];
+  public projectInfo: ProjectApplicationInfoResponse;
   public comboboxValues: {[id: number]: SelectItem[] };
 
   constructor(private scoringApplicationApiClient: ScoringApplicationApiClient,
@@ -77,9 +80,88 @@ export class EditScoringApplicationComponent implements OnInit {
     this.projectId = +this.route.snapshot.paramMap.get('id');
     this.questions = await this.scoringApplicationApiClient.getScoringApplicationsAsync(this.projectId);
     this.partitions = this.questions.partitions;
+    this.projectInfo = this.questions.projectInfo;
     this.comboboxValues = this.getQuestionSelectItems(this.partitions);
 
     this.addQuestionsFormControls(this.partitions);
+    await this.loadScoringApplicationDataAsync();
+  }
+
+  private async loadScoringApplicationDataAsync() {
+    if (this.questions) {
+      this.loadEditedQuestion(this.questions.partitions);
+    }
+
+    const data = this.projectInfo;
+    if (data == null) {
+      return;
+    }
+
+    if (this.projectInfo.articles) {
+      const articles = JSON.parse(this.projectInfo.articles);
+      for (const article of articles) {
+        this.addArticleLink();
+        this.socialsGroup.controls['article-link_' + this.activeArticleLink[this.activeArticleLink.length - 1]].setValue(article);
+      }
+    }
+
+    const enumItems = Object.keys(SocialMediaTypeEnum)
+      .filter(value => isNaN(+value));
+    for (let i = 0; i < enumItems.length; i++) {
+      const property = Object.entries(data.socialNetworks).find(c => c[0].toLowerCase() === enumItems[i].toLowerCase());
+      if (isNullOrUndefined(property)) {
+        continue;
+      }
+      const link = property[1];
+      if (!isNullOrUndefined(link)) {
+        this.addSocialMedia();
+        this.setSocialMedia(i, link);
+      }
+    }
+
+    for (const t of data.projectAdvisers) {
+      this.addAdviser();
+      this.setAdviser(
+        t.reason,
+        t.fullName,
+        t.about,
+        t.linkedInLink,
+        t.facebookLink);
+      if (data.projectAdvisers.indexOf(t) === data.projectAdvisers.length - 1) {
+        break;
+      }
+    }
+
+
+    for (const t of data.projectTeamMembers) {
+      this.addTeamMember();
+      this.setTeamMember(
+        t.id,
+        t.fullName,
+        t.role,
+        t.linkedIn,
+        t.facebook,
+        t.about);
+      if (data.projectTeamMembers.indexOf(t) === data.projectTeamMembers.length - 1) {
+        break;
+      }
+    }
+
+    this.commonGroup.setValue({
+      name: data.name,
+      projectCategory: data.category,
+      projectStage: data.stage,
+      country: data.countryCode,
+      description: data.description,
+      website: data.webSite,
+      linkToWP: data.whitePaperLink,
+      icoDate: moment(data.icoDate).toDate(),
+      email: data.contactEmail
+    });
+  }
+
+  get commonGroup(): FormGroup {
+    return this.questionFormGroup.get('commonGroup') as FormGroup;
   }
 
   get questionsGroup(): FormGroup {
@@ -156,7 +238,7 @@ export class EditScoringApplicationComponent implements OnInit {
           const selectItemsValues = JSON.parse(question.extendedInfo).Values;
           const currentQuestionItems = selectItemsValues.map(v => {
             return {
-              label: v,
+              label: this.translateService.instant('EditScoringApplication.' + v),
               value: v
             };
           });
@@ -226,6 +308,11 @@ export class EditScoringApplicationComponent implements OnInit {
     this.activeSocials.push(this.activeSocials.length + 1);
   }
 
+  public setSocialMedia(network?: number, value?: string) {
+    this.socialsGroup.controls['social_' + this.activeSocials[this.activeSocials.length - 1]].setValue(network);
+    this.socialsGroup.controls['social-link_' + this.activeSocials[this.activeSocials.length - 1]].setValue(value);
+  }
+
   public removeSocialMedia(id: number) {
     this.activeSocials = this.activeSocials.filter(a => a !== id);
   }
@@ -240,7 +327,7 @@ export class EditScoringApplicationComponent implements OnInit {
   }
 
   public addTeamMember() {
-    const newTeamMemberNumber = (this.activeTeamMembers.length + 1);
+    const newTeamMemberNumber = this.activeTeamMembers.length === 0 ? 1 : this.activeTeamMembers[this.activeTeamMembers.length - 1] + 1;
     this.teamGroup.addControl('team_member_name_' + newTeamMemberNumber, new FormControl(''));
     this.teamGroup.addControl('team_member_role_' + newTeamMemberNumber, new FormControl(''));
     this.teamGroup.addControl('team_member_linkedin_' + newTeamMemberNumber, new FormControl(''));
@@ -249,14 +336,34 @@ export class EditScoringApplicationComponent implements OnInit {
     this.activeTeamMembers.push(newTeamMemberNumber);
   }
 
+  public setTeamMember(id?: number, name?: string, role?: string, linkedin?: string, facebook?: string, description?: string) {
+    this.teamGroup.controls['team_member_name_' + this.activeTeamMembers[this.activeTeamMembers.length - 1]].setValue(name);
+    this.teamGroup.controls['team_member_role_' + this.activeTeamMembers[this.activeTeamMembers.length - 1]].setValue(role);
+    this.teamGroup.controls['team_member_linkedin_' + this.activeTeamMembers[this.activeTeamMembers.length - 1]].setValue(linkedin);
+    this.teamGroup.controls['team_member_facebook_' + this.activeTeamMembers[this.activeTeamMembers.length - 1]].setValue(facebook);
+    this.teamGroup.controls['team_member_experience_' + this.activeTeamMembers[this.activeTeamMembers.length - 1]].setValue(description);
+  }
+
   public addAdviser() {
-    const newAdviserNumber = this.activeAdvisers.length + 1;
+    const newAdviserNumber = this.activeAdvisers.length === 0 ? 1 : this.activeAdvisers[this.activeAdvisers.length - 1] + 1;
     this.advisersGroup.addControl('adviser_name_' + newAdviserNumber, new FormControl(''));
     this.advisersGroup.addControl('adviser_about_' + newAdviserNumber, new FormControl(''));
     this.advisersGroup.addControl('adviser_reason_' + newAdviserNumber, new FormControl(''));
     this.advisersGroup.addControl('adviser_facebook_' + newAdviserNumber, new FormControl(''));
     this.advisersGroup.addControl('adviser_linkedin_' + newAdviserNumber, new FormControl(''));
     this.activeAdvisers.push(newAdviserNumber);
+  }
+
+  public setAdviser (reason?: string, fullName?: string, about?: string, facebookLink?: string, linkedInLink?: string) {
+    this.advisersGroup.controls['adviser_about_' + this.activeAdvisers[this.activeAdvisers.length - 1]].setValue(about);
+    this.advisersGroup.controls['adviser_facebook_' + this.activeAdvisers[this.activeAdvisers.length - 1]].setValue(facebookLink);
+    this.advisersGroup.controls['adviser_linkedin_' + this.activeAdvisers[this.activeAdvisers.length - 1]].setValue(linkedInLink);
+    this.advisersGroup.controls['adviser_name_' + this.activeAdvisers[this.activeAdvisers.length - 1]].setValue(fullName);
+    this.advisersGroup.controls['adviser_reason_' + this.activeAdvisers[this.activeAdvisers.length - 1]].setValue(reason);
+  }
+
+  public removeAdviser (id) {
+    this.activeAdvisers = this.activeAdvisers.filter(a => a !== id);
   }
 
   public removeTeamMember(id) {
@@ -275,22 +382,37 @@ export class EditScoringApplicationComponent implements OnInit {
       whitePaper: this.questionFormGroup.get('commonGroup').get('linkToWP').value,
       icoDate: this.questionFormGroup.get('commonGroup').get('icoDate').value,
       contactEmail: this.questionFormGroup.get('commonGroup').get('email').value,
-      facebookLink: socials['Facebook'],
-      bitcointalkLink: socials['BitcoinTalk'],
-      mediumLink: socials['Medium'],
-      redditLink: socials['Reddit'],
-      telegramLink: socials['Telegram'],
-      twitterLink: socials['Twitter'],
-      gitHubLink: socials['Github'],
-      linkedInLink: socials['LinkedIn'],
+      socialNetworks: socials,
+      linkedIn: socials['LinkedIn'],
       answers: this.getQuestionsWithAnswers(),
       teamMembers: this.getTeamMembers(),
-      advisers: this.getAdvisers()
+      advisers: this.getAdvisers(),
+      articles: this.getArticles()
     };
     await this.scoringApplicationApiClient.saveScoringApplicationProjectAsync(this.projectId, draftRequest);
   }
 
   private async navigateToProjectAsync(): Promise<void> {
     await this.router.navigate([Paths.Project + '/' + this.projectId, {tab: 'application'}]);
+  }
+
+  public getArticles() {
+    let articleLinks = [];
+    for (let link of this.activeArticleLink) {
+      articleLinks.push(this.socialsGroup.value['article-link_' + link]);
+    }
+    return JSON.stringify(articleLinks);
+  }
+
+  public loadEditedQuestion(partitions) {
+    for (const partition of partitions) {
+      for (const question of partition.questions) {
+        this.questionsGroup.controls['control_' + question.id].setValue(question.answer);
+        if (question.type === QuestionControlType.CheckBox) {
+          const answer =  question.answer ? 1 : 0;
+          this.questionsGroup.controls['control_' + question.id].setValue(answer);
+        }
+      }
+    }
   }
 }
