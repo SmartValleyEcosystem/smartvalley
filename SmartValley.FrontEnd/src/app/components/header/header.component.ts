@@ -88,6 +88,10 @@ export class HeaderComponent implements OnInit {
     this.userContext.deleteCurrentUser();
   }
 
+  public async receiveEtherAsync(): Promise<boolean> {
+    return this.balanceService.receiveEtherAsync();
+  }
+
   private updateBalance(balance: Balance): void {
     if (balance != null) {
       this.currentBalance = balance.ethBalance;

@@ -115,6 +115,9 @@ button:focus {
 .get-score-btn {
   margin-right: 8px;
 }
+.receive-ether-btn {
+  margin-left: 8px;
+}
 
 .header-nav__login-logout {
   color: #a4a2b0;

@@ -3,19 +3,19 @@
     <a [routerLink]="['/']"><img class="logo" src="/assets/img/logo.png" alt="Smart valley"></a>
     <nav class="header-nav">
       <a class="header-nav__link" [routerLinkActiveOptions]="{ exact: true }" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + projectsLink">{{'Header.Projects' | translate }}</a>
-      <!-- <a *ngIf="isAuthenticated" class="header-nav__link" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + accountLink">{{'Header.Account' | translate }}</a> -->
       <a *ngIf="isAdmin" class="header-nav__link" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + adminPanelLink">{{'Header.Admin' | translate }}</a>
     </nav>
     <button *ngIf="!haveProject" class="main-btn get-score-btn" (click)="navigateToProjectApplication()">{{ 'Header.GetScoreForMyProject' | translate }}</button>
     <button class="main-btn" (click)="navigateToExpertApplication()">{{ 'Header.BecomeAnExpert' | translate }}</button>
+    <button *ngIf="showReceiveEtherButton" class="main-btn receive-ether-btn" (click)="receiveEtherAsync()">{{ 'Header.ReceiveEther' | translate }}</button>
     <nav class="header-nav__authenticated">
       <a *ngIf="isAuthenticated && haveProject" class="header-nav__link" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + myProjectLink">{{'Header.MyProject' | translate }}</a>
       <span *ngIf="isAuthenticated" class="header-nav__login-logout" (click)="logout()">
-          {{'Header.Logout' | translate }}
-        </span>
+        {{'Header.Logout' | translate }}
+      </span>
       <span *ngIf="!isAuthenticated" class="header-nav__login-logout" (click)="loginAsync()">
-          {{'Header.Login' | translate }}
-        </span>
+        {{'Header.Login' | translate }}
+      </span>
     </nav>
   </div>
 </div>
