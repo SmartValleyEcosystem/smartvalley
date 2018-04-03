@@ -232,14 +232,10 @@ export class CreateProjectComponent implements OnInit {
   }
 
   private getUpdateProjectRequest(): UpdateProjectRequest {
-    const socialsArray = [];
-    for (let i = 1; i <= this.selectedSocials.length; i++) {
-      const network = {
-        network: SocialMediaTypeEnum[this.socialFormGroup.value['social__' + i]],
-        link: this.socialFormGroup.value['social-link__' + i]
-      };
-      socialsArray.push(network);
-    }
+    const socialsArray = this.selectedSocials.map(i => <any>{
+      network: SocialMediaTypeEnum[this.socialFormGroup.value['social__' + i]],
+      link: this.socialFormGroup.value['social-link__' + i]
+    });
     const form = this.applicationForm.value;
     return <UpdateProjectRequest>{
       id: form.id,
