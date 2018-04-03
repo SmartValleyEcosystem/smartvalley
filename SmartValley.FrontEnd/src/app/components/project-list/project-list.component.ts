@@ -23,6 +23,7 @@ export class ProjectListComponent implements OnInit {
   public ASC: SortDirection = SortDirection.Ascending;
   public DESC: SortDirection = SortDirection.Descending;
   public projects: ScoredProject[] = [];
+  public checkProjects: boolean;
   public countries: SelectItem[] = [];
   public categories: SelectItem[] = [];
   public scoringRatingFrom: number;
@@ -108,6 +109,7 @@ export class ProjectListComponent implements OnInit {
     });
     this.projects = projectsResponse.items.map(p => this.createScoredProject(p));
     this.totalProjects = projectsResponse.totalCount;
+    this.checkProjects = true;
   }
 
   public async clearFilters() {
