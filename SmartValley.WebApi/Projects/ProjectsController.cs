@@ -215,16 +215,5 @@ namespace SmartValley.WebApi.Projects
                        Linkedin = project.Project.Linkedin
                    };
         }
-
-        [HttpGet]
-        [Route("forscoring")]
-        public async Task<CollectionResponse<ProjectResponse>> GetForScoringAsync([FromQuery] GetProjectsForScoringRequest request)
-        {
-            var projects = await _projectService.GetForScoringAsync(request.AreaType.ToDomain(), User.GetUserId());
-            return new CollectionResponse<ProjectResponse>
-                   {
-                       Items = projects.Select(ProjectResponse.Create).ToArray()
-                   };
-        }
     }
 }

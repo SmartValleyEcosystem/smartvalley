@@ -1,5 +1,4 @@
 import {ScoringStatus} from '../../services/scoring-status.enum';
-import {VotingStatus} from '../../services/voting-status.enum';
 import {TeamMemberResponse} from './team-member-response';
 
 export interface ProjectDetailsResponse {
@@ -19,10 +18,7 @@ export interface ProjectDetailsResponse {
   financeModelLink: string;
   teamMembers: Array<TeamMemberResponse>;
   authorAddress: string;
-  votingAddress?: string;
   score: number;
   scoringStatus: ScoringStatus;
-  votingStatus: VotingStatus;
-  votingEndDate: string;
   imageUrl: string;
 }

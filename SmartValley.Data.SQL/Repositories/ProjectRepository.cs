@@ -33,23 +33,6 @@ namespace SmartValley.Data.SQL.Repositories
                     select new ProjectDetails(project, scoring, country)).FirstOrDefaultAsync();
         }
 
-        public async Task<IReadOnlyCollection<ProjectDetails>> GetForScoringAsync(AreaType areaType, long expertId)
-        {
-            var scoredProjects = (from scoringCriterion in ReadContext.ScoringCriteria
-                                  join comment in ReadContext.EstimateComments on scoringCriterion.Id equals comment.ScoringCriterionId
-                                  join scoring in ReadContext.Scorings on comment.ScoringId equals scoring.Id
-                                  join areaScoring in ReadContext.AreaScorings on scoring.Id equals areaScoring.ScoringId
-                                  where comment.ExpertId == expertId && scoringCriterion.AreaType == areaType ||
-                                        areaScoring.AreaId == areaType && areaScoring.Score.HasValue
-                                  select comment.ScoringId).Distinct();
-
-            return await (from project in ReadContext.Projects
-                          join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
-                          join country in ReadContext.Countries on project.CountryId equals country.Id
-                          where !scoredProjects.Contains(scoring.Id)
-                          select new ProjectDetails(project, scoring, country)).ToArrayAsync();
-        }
-
         public Task<Project> GetByExternalIdAsync(Guid externalId)
             => ReadContext.Projects.FirstAsync(project => project.ExternalId == externalId);
 

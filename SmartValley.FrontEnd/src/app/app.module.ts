@@ -30,7 +30,6 @@ import {ScoringApiClient} from './api/scoring/scoring-api-client';
 import {ProjectInfoComponent} from './components/project-info/project-info.component';
 import {ProjectApiClient} from './api/project/project-api-client';
 import {EstimatesApiClient} from './api/estimates/estimates-api-client';
-import {VotingApiClient} from './api/voting/voting-api-client';
 import {UserApiClient} from './api/user/user-api-client';
 import {ScoreColorsService} from './services/project/score-colors.service';
 import {DictionariesService} from './services/common/dictionaries.service';
@@ -261,7 +260,6 @@ import {ProjectService} from './services/project/project.service';
     ExpertsRegistryContractClient,
     ScoringExpertsManagerContractClient,
     AdminApiClient,
-    VotingApiClient,
     AuthenticationApiClient,
     AuthenticationService,
     UserContext,

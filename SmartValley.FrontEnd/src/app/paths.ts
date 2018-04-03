@@ -9,7 +9,6 @@ export class Paths {
   public static readonly RegisterExpert = 'expert/register';
   public static readonly Initialization = 'initialization';
   public static readonly Account = 'account';
-  public static readonly Voting = 'voting';
   public static readonly Admin = 'admin';
   public static readonly ConfirmEmail = 'auth/confirm/:token';
   public static readonly AdminExpertApplication = 'admin/expert/application';

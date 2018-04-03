@@ -24,8 +24,6 @@ namespace SmartValley.WebApi.Projects
 
         Task UpdateTeamMemberPhotoAsync(long projectTeamMemberId, AzureFile photo);
 
-        Task<IReadOnlyCollection<ProjectDetails>> GetForScoringAsync(AreaType areaType, long expertId);
-
         Task<IReadOnlyCollection<ProjectDetails>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds);
 
         Task<IReadOnlyCollection<ProjectDetails>> GetProjectsByNameAsync(string projectName);

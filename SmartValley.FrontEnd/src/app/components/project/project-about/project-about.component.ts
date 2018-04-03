@@ -16,7 +16,7 @@ export class ProjectAboutComponent implements OnInit {
   }
 
   public async ngOnInit() {
-    this.projectInfo = await this.projectApiClient.getMyProjectExtraInfoByIdAsync(this.projectId);
+    this.projectInfo = await this.projectApiClient.getProjectAboutAsync(this.projectId);
   }
 
 }

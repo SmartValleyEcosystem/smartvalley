@@ -6,7 +6,6 @@ import {CollectionResponse} from '../collection-response';
 import {ProjectDetailsResponse} from './project-details-response';
 import {GetScoringProjectsRequest} from './get-scoring-projects-request';
 import {MyProjectResponse} from './my-project-response';
-import {AreaType} from '../scoring/area-type.enum';
 import {ScoringProjectResponse} from '../scoring-application/scoring-project-response';
 import {SearchProjectResponse} from './search-projects-response';
 import {CreateProjectRequest} from './create-project-request';
@@ -43,14 +42,6 @@ export class ProjectApiClient extends BaseApiClient {
     const statusesQuery = request.statuses.map(i => 'statuses=' + i.StatusId).join('&');
 
     return this.http.get<CollectionResponse<ScoringProjectResponse>>(this.baseApiUrl + '/projects/scoring/?' + statusesQuery)
-      .toPromise();
-  }
-
-  public async getForScoringAsync(areaType: AreaType): Promise<CollectionResponse<ProjectResponse>> {
-    const parameters = new HttpParams().append('areaType', areaType.toString());
-
-    return this.http
-      .get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/projects/forscoring', {params: parameters})
       .toPromise();
   }
 
@@ -95,7 +86,7 @@ export class ProjectApiClient extends BaseApiClient {
       .toPromise();
   }
 
-  public async getMyProjectExtraInfoByIdAsync(projectId: number): Promise<ProjectAboutResponse> {
+  public async getProjectAboutAsync(projectId: number): Promise<ProjectAboutResponse> {
     return this.http
       .get<ProjectAboutResponse>(this.baseApiUrl + `/projects/${projectId}/about`)
       .toPromise();

@@ -72,9 +72,6 @@ namespace SmartValley.WebApi.Projects
             return project.AuthorId == userId;
         }
 
-        public Task<IReadOnlyCollection<ProjectDetails>> GetForScoringAsync(AreaType areaType, long expertId)
-            => _projectRepository.GetForScoringAsync(areaType, expertId);
-
         public async Task<bool> IsAuthorizedToSeeEstimatesAsync(long userId, long projectId)
         {
             var project = await GetAsync(projectId);
