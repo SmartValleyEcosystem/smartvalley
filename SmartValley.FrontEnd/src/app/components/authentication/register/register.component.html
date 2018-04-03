@@ -8,7 +8,7 @@
              (keyup.enter)="submitAsync()"
              placeholder="{{ 'Register.InputPlaceholder' | translate }}"
       />
-      <input (click)="submitAsync()" class="email__button" value="{{ 'Register.ButtonText' | translate }}"/>
+      <input (click)="submitAsync()" [disabled]="form.invalid" class="email__button" value="{{ 'Register.ButtonText' | translate }}"/>
       <p class="gray-text underline-text">{{ 'Register.UnderlineText' | translate }}</p>
     </div>
   </div>

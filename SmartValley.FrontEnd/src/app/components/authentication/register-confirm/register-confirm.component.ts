@@ -55,7 +55,7 @@ export class RegisterConfirmComponent implements OnInit {
     const address = await this.web3Service.getCurrentAccountAsync();
     try {
       await this.authenticationApiClient.reSendEmailAsync(address);
-      this.seconds = 60;
+      this.seconds = 300;
       localStorage.setItem(this.secondsKey, this.seconds.toString());
     } catch (e) {
       this.notificationService.error(

@@ -70,6 +70,12 @@
   text-decoration: underline !important;
 }
 
+button.sv-link:disabled{
+  color: #a4a2b0 !important;
+  cursor: default !important;
+  text-decoration: none !important;
+}
+
 .text-bold{
   font-family: Roboto-Bold;
   line-height: 1.43;

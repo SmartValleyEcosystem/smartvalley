@@ -84,3 +84,8 @@
 .email__button:hover {
   cursor: pointer;
 }
+
+.email__button:disabled {
+  cursor: default !important;
+  background-color: #a4a2b0;
+}
