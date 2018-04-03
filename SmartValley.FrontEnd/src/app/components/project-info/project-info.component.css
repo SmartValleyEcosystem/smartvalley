@@ -53,7 +53,8 @@ a {
 
 a.ghost-btn {
   font-family: Roboto-Regular;
-  margin-top: 15px;
+  margin-top: 10px;
+  margin-left: 110px;
   display: inline-block;
   height: 23px;
   color: #000;
