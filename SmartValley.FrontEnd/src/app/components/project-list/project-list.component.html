@@ -14,7 +14,7 @@
             <label class="control-label">{{ 'CreateProject.Country' | translate }}</label>
           </p>
           <app-autocomplete class="input-component" [isNeedToTranslate]="true"
-                            [elementClass]="'wide-autocomplete'" [elementId]="'country'"
+                            [elementClass]="'wide-autocomplete'"
                             [placeholder]="'CreateProject.AllCountries' | translate"
                             (onSelect)="selectedCountry($event)"
                             [allItems]="countries">
