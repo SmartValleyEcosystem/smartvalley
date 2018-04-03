@@ -54,7 +54,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.sortDirection = this.ASC;
+    this.sortDirection = this.DESC;
     this.sortedBy = ProjectsOrderBy.ScoringEndDate;
     this.projectSearch = '';
 

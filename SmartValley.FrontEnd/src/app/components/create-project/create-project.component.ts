@@ -344,7 +344,7 @@ export class CreateProjectComponent implements OnInit {
       description: data.description,
       website: data.website,
       whitePaperLink: data.whitePaperLink,
-      icoDate: moment(data.icoDate).toDate(),
+      icoDate: isNullOrUndefined(data.icoDate) ? null : moment(data.icoDate).toDate(),
       contactEmail: data.contactEmail,
       social: [this.socials[0].value]
     });
