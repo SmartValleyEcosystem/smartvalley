@@ -5,7 +5,8 @@ import {ScoringApplicationApiClient} from '../../api/scoring-application/scoring
 import {ActivatedRoute, Router} from '@angular/router';
 import {DialogService} from '../../services/dialog-service';
 import {ProjectSummaryResponse} from '../../api/project/project-summary-response';
-import {isNullOrUndefined} from 'util';
+import {UserContext} from "../../services/authentication/user-context";
+import {isNullOrUndefined} from "util";
 
 @Component({
   selector: 'app-project',
@@ -19,15 +20,18 @@ export class ProjectComponent implements OnInit {
   public projectId: number;
   public project: ProjectSummaryResponse;
   public editProjectsLink = Paths.ProjectEdit;
-  public isApplicationScoringExist = false;
   public selectedTab = 0;
+
+  public isCreateScoringApplicationCommandAvailable = false;
+  public isSendForScoringCommandAvailable = false;
+  public isEditProjectCommandAvailable = false;
 
   constructor(private projectApiClient: ProjectApiClient,
               private dialogService: DialogService,
               private router: Router,
               private route: ActivatedRoute,
-              private scoringApplicationApiClient: ScoringApplicationApiClient) {
-  }
+              private scoringApplicationApiClient: ScoringApplicationApiClient,
+              private userContext: UserContext) { }
 
   public async ngOnInit() {
     this.projectId = +this.route.snapshot.paramMap.get('id');
@@ -39,9 +43,16 @@ export class ProjectComponent implements OnInit {
     this.project = await this.projectApiClient.getProjectSummaryAsync(this.projectId);
     if (this.project) {
       this.isProjectExists = true;
+
+      const currentUser = await this.userContext.getCurrentUser();
+      if (!isNullOrUndefined(currentUser) && this.project.userId === currentUser.id) {
+        this.isEditProjectCommandAvailable = true;
+
+        const applicationScoringRequest = await this.scoringApplicationApiClient.getScoringApplicationsAsync(this.projectId);
+        this.isCreateScoringApplicationCommandAvailable = isNullOrUndefined(applicationScoringRequest.created);
+        this.isSendForScoringCommandAvailable = !isNullOrUndefined(applicationScoringRequest.created);
+      }
     }
-    const applicationScoringRequest = await this.scoringApplicationApiClient.getScoringApplicationsAsync(this.projectId);
-    this.isApplicationScoringExist = !!applicationScoringRequest.created;
   }
 
   public navigateToApplicationScoringAsync(): Promise<boolean> {

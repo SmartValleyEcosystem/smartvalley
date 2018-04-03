@@ -31,6 +31,8 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public double? Score { get; set; }
 
+        public long UserId { get; set; }
+
         public static ProjectSummaryResponse Create(Project project, Country country, Domain.Entities.Scoring scoring)
         {
             return new ProjectSummaryResponse
@@ -49,7 +51,8 @@ namespace SmartValley.WebApi.Projects.Responses
                        ScoringStatus = scoring == null
                                            ? ScoringStatus.Pending
                                            : (scoring.Score.HasValue ? ScoringStatus.Finished : ScoringStatus.InProgress),
-                       Score = scoring?.Score
+                       Score = scoring?.Score,
+                       UserId = project.AuthorId
                    };
         }
     }

@@ -103,18 +103,5 @@ namespace SmartValley.WebApi.ScoringApplication
 
             await _scoringApplicationRepository.SaveChangesAsync();
         }
-
-        public async Task SubmitForScoreAsync(long projectId)
-        {
-            var scoringApplication = await _scoringApplicationRepository.GetByProjectIdAsync(projectId);
-            if (scoringApplication == null)
-                throw new AppErrorException(ErrorCode.ProjectScoringApplicationNotFound);
-
-            if (!scoringApplication.Submitted.HasValue)
-            {
-                scoringApplication.Submitted = _clock.UtcNow;
-                await _scoringApplicationRepository.SaveChangesAsync();
-            }
-        }
     }
 }

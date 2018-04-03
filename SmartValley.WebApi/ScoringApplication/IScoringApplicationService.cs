@@ -12,7 +12,5 @@ namespace SmartValley.WebApi.ScoringApplication
         Task<Domain.ScoringApplication> GetApplicationAsync(long projectId);
 
         Task SaveApplicationAsync(long projectId, SaveScoringApplicationRequest saveScoringApplicationRequest);
-
-        Task SubmitForScoreAsync(long projectId);
     }
 }

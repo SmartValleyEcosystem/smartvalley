@@ -4,9 +4,9 @@
 <div *ngIf="isProjectExists" class="content">
   <h1 class="title">{{ project.name }}</h1>
   <app-project-info *ngIf="project" [project]="project" >
-    <a *ngIf="!isApplicationScoringExist" (click)="navigateToApplicationScoringAsync()" class="main-btn">{{ 'MyProject.GetScore' | translate }}</a>
-    <span *ngIf="isApplicationScoringExist" (click)="showWaitingModal()" class="main-btn">{{ 'MyProject.SendScore' | translate }}</span>
-    <a [routerLink]="'/' + editProjectsLink" class="ghost-btn">{{ 'MyProject.EditInformation' | translate }}</a>
+    <a *ngIf="isCreateScoringApplicationCommandAvailable" (click)="navigateToApplicationScoringAsync()" class="main-btn">{{ 'MyProject.GetScore' | translate }}</a>
+    <span *ngIf="isSendForScoringCommandAvailable" (click)="showWaitingModal()" class="main-btn">{{ 'MyProject.SendScore' | translate }}</span>
+    <a *ngIf="isEditProjectCommandAvailable" [routerLink]="'/' + editProjectsLink" class="ghost-btn">{{ 'MyProject.EditInformation' | translate }}</a>
   </app-project-info>
 
   <mat-tab-group [selectedIndex]="selectedTab">

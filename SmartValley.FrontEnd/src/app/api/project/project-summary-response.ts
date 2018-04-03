@@ -12,4 +12,5 @@ export interface ProjectSummaryResponse {
   twitter: string;
   website: string;
   whitePaperLink: string;
+  userId: number;
 }

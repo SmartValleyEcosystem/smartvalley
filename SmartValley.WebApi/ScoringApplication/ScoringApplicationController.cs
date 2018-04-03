@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SmartValley.Domain;
-using SmartValley.Domain.Entities;
+using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.ScoringApplication.Requests;
 using SmartValley.WebApi.ScoringApplication.Responses;
@@ -18,7 +14,9 @@ namespace SmartValley.WebApi.ScoringApplication
         private readonly IScoringApplicationService _scoringApplicationService;
         private readonly IProjectService _projectService;
 
-        public ScoringApplicationController(IScoringApplicationService scoringApplicationService, IProjectService projectService)
+        public ScoringApplicationController(
+            IScoringApplicationService scoringApplicationService, 
+            IProjectService projectService)
         {
             _scoringApplicationService = scoringApplicationService;
             _projectService = projectService;
@@ -40,16 +38,14 @@ namespace SmartValley.WebApi.ScoringApplication
         }
 
         [HttpPost, Authorize]
-        public async Task SaveAsync(long projectId, [FromBody]SaveScoringApplicationRequest saveScoringApplicationRequest)
+        public async Task<IActionResult> SaveAsync(long projectId, [FromBody]SaveScoringApplicationRequest saveScoringApplicationRequest)
         {
-            await _scoringApplicationService.SaveApplicationAsync(projectId, saveScoringApplicationRequest);
-        }
+            var isAuthorizedToEditProjectAsync = await _projectService.IsAuthorizedToEditProjectAsync(projectId, User.GetUserId());
+            if (!isAuthorizedToEditProjectAsync)
+                return Unauthorized();
 
-        [HttpPost, Authorize]
-        [Route("submit")]
-        public async Task SubmitAsync(long projectId)
-        {
-            await _scoringApplicationService.SubmitForScoreAsync(projectId);
+            await _scoringApplicationService.SaveApplicationAsync(projectId, saveScoringApplicationRequest);
+            return NoContent();
         }
     }
 }

@@ -1,6 +1,7 @@
 {
   "ScoringApplication": {
-    "DoesNotExistText": "You should fill scoring form draft before. Only you can see this form before sending for score.",
+    "DoesNotExistTextWithProposalToCreate": "You should fill scoring form draft before. Only you can see this form before sending for score.",
+    "DoesNotExistText": "Scoring form doesn't applied yet.",
     "DoesNotExistButtonText": "Create from draft",
     "EditTextButton": "Edit application"
   }

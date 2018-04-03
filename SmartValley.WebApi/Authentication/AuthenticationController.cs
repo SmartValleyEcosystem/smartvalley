@@ -22,6 +22,7 @@ namespace SmartValley.WebApi.Authentication
 
             return new AuthenticationResponse
                    {
+                       Id = identity.Id,
                        Token = identity.Token,
                        Email = identity.Email,
                        Roles = identity.Roles

@@ -5,6 +5,8 @@ namespace SmartValley.WebApi.Authentication
 {
     public class Identity
     {
+        public long Id { get; }
+
         public Address Address { get; }
 
         public string Email { get; }
@@ -16,8 +18,9 @@ namespace SmartValley.WebApi.Authentication
         public IReadOnlyCollection<string> Roles { get; set; }
 
 
-        public Identity(Address address, string email, bool isAuthenticated, string token, IReadOnlyCollection<string> roles)
+        public Identity(long id, Address address, string email, bool isAuthenticated, string token, IReadOnlyCollection<string> roles)
         {
+            Id = id;
             Address = address;
             Email = email;
             IsAuthenticated = isAuthenticated;

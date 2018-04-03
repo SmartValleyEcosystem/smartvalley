@@ -1,6 +1,7 @@
-<div *ngIf="!isExistApplication; else applicationExistBlock;">
-  <div class="main-text">{{ 'ScoringApplication.DoesNotExistText' | translate }}</div>
-  <input (click)="navigateToCreateForm()" class="main-btn create-btn" type="button"
+<div *ngIf="!doesScoringApplicationExists; else applicationExistBlock;">
+  <div *ngIf="isCreateScoringApplicationCommandAvailable" class="main-text">{{ 'ScoringApplication.DoesNotExistTextWithProposalToCreate' | translate }}</div>
+  <div *ngIf="!isCreateScoringApplicationCommandAvailable" class="main-text">{{ 'ScoringApplication.DoesNotExistText' | translate }}</div>
+  <input *ngIf="isCreateScoringApplicationCommandAvailable" (click)="navigateToCreateForm()" class="main-btn create-btn" type="button"
          value="{{ 'ScoringApplication.DoesNotExistButtonText' | translate }}"/>
 </div>
 <ng-template #applicationExistBlock>
@@ -190,7 +191,7 @@
             </li>
           </ul>
           <div class="partition-menu__inputs">
-            <input (click)="navigateToEdit()" type="button" class="ghost-btn" value="{{ 'ScoringApplication.EditTextButton' | translate }}">
+            <input *ngIf="isEditScoringApplicationCommandAvailable" (click)="navigateToEdit()" type="button" class="ghost-btn" value="{{ 'ScoringApplication.EditTextButton' | translate }}">
           </div>
         </sticky>
       </div>

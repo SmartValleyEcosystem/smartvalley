@@ -122,12 +122,13 @@ export class AuthenticationService {
       signedText: messageToSign
     });
 
-    return <User>{
-      email: response.email,
-      account: account,
-      signature: signature,
-      token: response.token,
-      roles: response.roles
+      return <User>{
+        id: response.id,
+        email: response.email,
+        account: account,
+        signature: signature,
+        token: response.token,
+        roles: response.roles
     };
   }
 

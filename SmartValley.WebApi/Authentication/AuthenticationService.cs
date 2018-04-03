@@ -197,7 +197,7 @@ namespace SmartValley.WebApi.Authentication
                                        new SigningCredentials(AuthenticationOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256)) {Payload = {["TokenIssueDate"] = now}};
 
             var token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-            return new Identity(user.Address, user.Email, true, token, roles.Select(r => r.Name).ToArray());
+            return new Identity(user.Id, user.Address, user.Email, true, token, roles.Select(r => r.Name).ToArray());
         }
 
         private bool IsSignedMessageValid(Address address, string signedText, string signature)
