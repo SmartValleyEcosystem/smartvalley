@@ -95,6 +95,8 @@ namespace SmartValley.WebApi.Authentication
         public async Task<Identity> RefreshAccessTokenAsync(Address address)
         {
             var user = await _userRepository.GetByAddressAsync(address);
+            if (user == null)
+                throw new AppErrorException(ErrorCode.UserNotFound);
             return await GenerateJwtAsync(user);
         }
 

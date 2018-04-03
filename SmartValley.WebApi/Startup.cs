@@ -72,7 +72,7 @@ namespace SmartValley.WebApi
                                                                               ValidIssuer = AuthenticationOptions.Issuer,
                                                                               ValidateAudience = true,
                                                                               ValidAudience = AuthenticationOptions.Audience,
-                                                                              ValidateLifetime = true,
+                                                                              ValidateLifetime = false,
                                                                               IssuerSigningKey = AuthenticationOptions.GetSymmetricSecurityKey(),
                                                                               ValidateIssuerSigningKey = true
                                                                           };
