@@ -1,26 +1,53 @@
-.sw-card {
-  padding: 50px 80px;
+.title {
+  width: 378px;
+  height: 40px;
+  font-family: Roboto;
+  font-size: 32px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.25;
+  letter-spacing: -0.1px;
+  text-align: left;
+  color: #000000;
 }
 
-.sw-card h2 {
-  margin-bottom: 40px;
+.partition-block {
+  background: #fff;
+  padding: 16px 40px 32px;
 }
 
-div.text-center img {
-  margin-bottom: 20px;
+.partition-title {
+  font-family: Roboto-Bold;
+  font-size: 24px;
+  text-align: left;
+  background: #fff;
+  padding: 16px 40px;
+  margin: 16px 0 3px;
+  color: #a4a2b0;
 }
 
-.btn-row {
-  padding: .8em 0;
-  margin-left: 0em;
+.bold-text {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.43;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #000000;
+  margin-bottom: 8px;
+  margin-top: 32px;
 }
 
-.trans-btn {
-  background: transparent;
-  padding-top: 1em;
-  padding-bottom: 1em;
-  color: rgb(70, 137, 232);
-  border-color: rgb(70, 137, 232);
-  padding-top: 1em;
-  padding-bottom: 1em;
+.main-btn {
+  padding: 8px 13px;
+  width: 135px;
+  height: 36px;
+  display: block;
+}
+
+.width {
+  width: 800px;
 }

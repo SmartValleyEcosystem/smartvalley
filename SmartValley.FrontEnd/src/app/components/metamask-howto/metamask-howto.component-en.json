@@ -1,0 +1,29 @@
+{
+  "MetamaskHowTo": {
+    "Part": "Part",
+    "Title": "Instruction for registration",
+    "OurService": "Our Service using Ethereum blockchain.",
+    "IfYouWant": "If you want to participate you need to download Metamask and don’t forget to reload this page after all steps.",
+    "Describe": "Metamask is an Ethereum Browser, like Mist! It allows you all the same functions, features and ease of access from reqular Ethereum Wallets, and it allows you to interact with Dapps and Smart Contracts, and all without the need to download the blockchain or install any software, you can just install it as a Google Chrome Extension or a Firefox Add-on!",
+    "InstallingMetamask": "Installing Metamask",
+    "Step": "Step",
+    "GoToWebStore": "Go to the chrome WebStore and get Metamask Plugin.",
+    "GetMetamaskButtonText": "Get MetaMask",
+    "ClickToInstallChrome": "Click 'Add to Chrome' to install Metamask as Google chrome extensions.",
+    "ClickToInstallFirefox": "Click 'Add to Firefox' to install Metamask.",
+    "AddExtensionChrome": "Click 'Add Extension' to confirm and Metamask will be added.",
+    "AddExtensionFirefox": "Click 'Add' to confirm and Metamask will be added.",
+    "CreatingWallet": "Creating a new wallet",
+    "ClickLogo": "Click the Metamask logo.",
+    "AcceptTerms": "Read and accept to the Metamask terms and Conditions.",
+    "ClickMainNetwork": "Click 'Main Network;.",
+    "ChangeNetwork": "Change Main Network to 'Rinkeby Test Network'.",
+    "EnterPassword": "Enter a strong password and click 'Create'.",
+    "ClickSafe": "Metamask will now show you your seed. It is very important that you copy and store those 12 words, without them you cannot restore your wallet. Click 'I've copied it somewhere safe'.",
+    "Congratulations": "Congratulations! Your account is now created.",
+    "DontForget": "Don't forget get an eth.",
+    "YouNeedEther": "You need ether to work with ethereum blockchain.",
+    "ReloadPage": "Reload this page.",
+    "ReloadButtonText": "Reload"
+  }
+}
