@@ -72,16 +72,16 @@
             <label>{{ 'EditScoringApplication.Link' | translate }}</label>
           </p>
         </div>
-        <div *ngFor="let social of activeSocials; first as isFirst" class="socials__row">
+        <div *ngFor="let social of activeSocials;" class="socials__row">
           <app-select class="input-component"  formControlName="{{'social_' + social}}" [elementId]="'social_'+ social" [items]="socials" [placeholder]="'EditScoringApplication.SocialMediaPlaceholder' | translate"></app-select>
           <input type="text" [formControlName]="'social-link_' + social" class="input socials__input" placeholder="{{ 'EditScoringApplication.Http' | translate }}">
-          <span (click)="removeSocialMedia(social)" class="socials__remove" *ngIf="!isFirst"></span>
+          <span (click)="removeSocialMedia(social)" class="socials__remove"></span>
         </div>
         <span class="socials__add-button" (click)="addSocialMedia()">{{ 'EditScoringApplication.AddMore' | translate }}</span>
         <p class="control-label">{{ 'EditScoringApplication.LinkToArticle' | translate }}</p>
-        <div *ngFor="let article of activeArticleLink; first as isFirst" class="socials__row">
+        <div *ngFor="let article of activeArticleLink;" class="socials__row">
           <input type="text" [formControlName]="'article-link_' + article" class="input input-wide" placeholder="{{ 'EditScoringApplication.Http' | translate }}">
-          <span (click)="removeArticleLink(article)" class="socials__remove" *ngIf="!isFirst"></span>
+          <span (click)="removeArticleLink(article)" class="socials__remove"></span>
         </div>
         <span class="socials__add-button" (click)="addArticleLink()">{{ 'EditScoringApplication.AddLink' | translate }}</span>
       </div>
