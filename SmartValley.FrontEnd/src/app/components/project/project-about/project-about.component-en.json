@@ -2,6 +2,8 @@
   "MyProjectAbout": {
     "Description": "Description",
     "SocialMedia": "Social Media",
-    "CoreTeam": "Core Team"
+    "CoreTeam": "Core Team",
+    "NoTeamError": "No information about team.",
+    "NoSocialsError": "No information about social media."
   }
 }

@@ -7,55 +7,66 @@
   </div>
   <h2 class="partition-title">{{ 'MyProjectAbout.CoreTeam' | translate }}</h2>
   <div class="partition-block">
-    <div class="member-column" *ngFor="let member of projectInfo.teamMembers;">
-      <div class="member-photo-container">
-        <img *ngIf="member.photoUrl !== '' && member.photoUrl !== null; else withoutPhoto;" class="member-photo" [src]="member.photoUrl"/>
-        <ng-template #withoutPhoto>
-          <i class="empty-photo material-icons">account_circle</i>
-        </ng-template>
-      </div>
-      <div class="partition-item">{{member.fullName}}</div>
-      <div class="role-text">{{member.role}}</div>
-      <div class="member-socials">
-        <a *ngIf="member.linkedIn" href="{{member.linkedIn}}" class="social-icon social-icon__linkedin"></a>
-        <a *ngIf="member.facebook" href="{{member.facebook}}" class="social-icon social-icon__facebook"></a>
+    <div *ngIf="projectInfo.teamMembers.length > 0; else haveNoMembersBlock;">
+      <div class="member-column" *ngFor="let member of projectInfo.teamMembers;">
+        <div class="member-photo-container">
+          <img *ngIf="member.photoUrl !== '' && member.photoUrl !== null; else withoutPhoto;" class="member-photo"
+               [src]="member.photoUrl"/>
+          <ng-template #withoutPhoto>
+            <i class="empty-photo material-icons">account_circle</i>
+          </ng-template>
+        </div>
+        <div class="partition-item">{{member.fullName}}</div>
+        <div class="role-text">{{member.role}}</div>
+        <div class="member-socials">
+          <a *ngIf="member.linkedIn" href="{{member.linkedIn}}" class="social-icon social-icon__linkedin"></a>
+          <a *ngIf="member.facebook" href="{{member.facebook}}" class="social-icon social-icon__facebook"></a>
+        </div>
       </div>
     </div>
+    <ng-template #haveNoMembersBlock>
+      {{ 'MyProjectAbout.NoTeamError' | translate }}
+    </ng-template>
   </div>
   <h2 class="partition-title">{{ 'MyProjectAbout.SocialMedia' | translate }}</h2>
   <div class="partition-block social-column">
-    <a *ngIf="projectInfo.facebook" href="{{projectInfo.facebook}}">
-      <div class="social-icon social-icon__facebook"></div>
-      <div class="partition-item">Facebook</div>
-    </a>
-    <a *ngIf="projectInfo.bitcoinTalk" href="{{projectInfo.bitcoinTalk}}">
-      <div class="social-icon social-icon__bitcointalk"></div>
-      <div class="partition-item">BitcoinTalk</div>
-    </a>
-    <a *ngIf="projectInfo.github" href="{{projectInfo.github}}">
-      <div class="social-icon social-icon__github"></div>
-      <div class="partition-item">GitHub</div>
-    </a>
-    <a *ngIf="projectInfo.linkedin" href="{{projectInfo.linkedin}}">
-      <div class="social-icon social-icon__linkedin"></div>
-      <div class="partition-item">LinkedIn</div>
-    </a>
-    <a *ngIf="projectInfo.medium" href="{{projectInfo.medium}}">
-      <div class="social-icon social-icon__medium"></div>
-      <div class="partition-item">Medium</div>
-    </a>
-    <a *ngIf="projectInfo.reddit" href="{{projectInfo.reddit}}">
-      <div class="social-icon social-icon__reddit"></div>
-      <div class="partition-item">Reddit</div>
-    </a>
-    <a *ngIf="projectInfo.telegram" href="{{projectInfo.telegram}}">
-      <div class="social-icon social-icon__telegram"></div>
-      <div class="partition-item">Telegram</div>
-    </a>
-    <a *ngIf="projectInfo.twitter" href="{{projectInfo.twitter}}">
-      <div class="social-icon social-icon__twitter"></div>
-      <div class="partition-item">Twitter</div>
-    </a>
+    <div *ngIf="haveSocials; else haveNoSocialsBlock;">
+      <a *ngIf="projectInfo.facebook" href="{{projectInfo.facebook}}">
+        <div class="social-icon social-icon__facebook"></div>
+        <div class="partition-item">Facebook</div>
+      </a>
+      <a *ngIf="projectInfo.bitcoinTalk" href="{{projectInfo.bitcoinTalk}}">
+        <div class="social-icon social-icon__bitcointalk"></div>
+        <div class="partition-item">BitcoinTalk</div>
+      </a>
+      <a *ngIf="projectInfo.github" href="{{projectInfo.github}}">
+        <div class="social-icon social-icon__github"></div>
+        <div class="partition-item">GitHub</div>
+      </a>
+      <a *ngIf="projectInfo.linkedin" href="{{projectInfo.linkedin}}">
+        <div class="social-icon social-icon__linkedin"></div>
+        <div class="partition-item">LinkedIn</div>
+      </a>
+      <a *ngIf="projectInfo.medium" href="{{projectInfo.medium}}">
+        <div class="social-icon social-icon__medium"></div>
+        <div class="partition-item">Medium</div>
+      </a>
+      <a *ngIf="projectInfo.reddit" href="{{projectInfo.reddit}}">
+        <div class="social-icon social-icon__reddit"></div>
+        <div class="partition-item">Reddit</div>
+      </a>
+      <a *ngIf="projectInfo.telegram" href="{{projectInfo.telegram}}">
+        <div class="social-icon social-icon__telegram"></div>
+        <div class="partition-item">Telegram</div>
+      </a>
+      <a *ngIf="projectInfo.twitter" href="{{projectInfo.twitter}}">
+        <div class="social-icon social-icon__twitter"></div>
+        <div class="partition-item">Twitter</div>
+      </a>
+    </div>
+    <ng-template #haveNoSocialsBlock>
+      {{ 'MyProjectAbout.NoSocialsError' | translate }}
+    </ng-template>
   </div>
 </div>
 
