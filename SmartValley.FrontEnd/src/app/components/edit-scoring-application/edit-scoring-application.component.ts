@@ -13,6 +13,8 @@ import {DictionariesService} from '../../services/common/dictionaries.service';
 import {ScoringApplicationApiClient} from '../../api/scoring-application/scoring-application-api-client';
 import {Answer} from '../../api/scoring-application/answer';
 import {Adviser} from '../../api/scoring-application/adviser';
+import {DialogService} from '../../services/dialog-service';
+import {isNullOrUndefined} from 'util';
 import {Paths} from '../../paths';
 
 @Component({
@@ -41,11 +43,13 @@ export class EditScoringApplicationComponent implements OnInit {
   public stages: SelectItem[];
   public countries: SelectItem[];
   public socials: SelectItem[];
+  public comboboxValues: {[id: number]: SelectItem[] };
 
   constructor(private scoringApplicationApiClient: ScoringApplicationApiClient,
               private translateService: TranslateService,
               private dictionariesService: DictionariesService,
               private formBuilder: FormBuilder,
+              private dialogService: DialogService,
               private htmlElement: ElementRef,
               private route: ActivatedRoute,
               private router: Router) {
@@ -73,6 +77,8 @@ export class EditScoringApplicationComponent implements OnInit {
     this.projectId = +this.route.snapshot.paramMap.get('id');
     this.questions = await this.scoringApplicationApiClient.getScoringApplicationsAsync(this.projectId);
     this.partitions = this.questions.partitions;
+    this.comboboxValues = this.getQuestionSelectItems(this.partitions);
+
     this.addQuestionsFormControls(this.partitions);
   }
 
@@ -132,17 +138,38 @@ export class EditScoringApplicationComponent implements OnInit {
     return this.questionControlType[id];
   }
 
-  public isParentQuestionAnswered(id: number) {
+  public isParentQuestionAnswered(id: number, parentTriggerValue) {
     if (!id) {
       return true;
+    }
+    if ( !isNullOrUndefined(parentTriggerValue) ) {
+      return +this.questionFormGroup.get('questionsGroup').value['control_' + id] === +parentTriggerValue;
     }
     return this.questionFormGroup.get('questionsGroup').value['control_' + id];
   }
 
-  public async onSubmitAsync(): Promise<void> {
+  public getQuestionSelectItems (partitions: ScoringApplicationPartition[]): {[id: number]: SelectItem[]} {
+    const selectItems = {};
+    for (const partition of partitions) {
+      for (const question of partition.questions) {
+        if (question.extendedInfo) {
+          const selectItemsValues = JSON.parse(question.extendedInfo).Values;
+          const currentQuestionItems = selectItemsValues.map(v => {
+            return {
+              label: v,
+              value: v
+            };
+          });
+          selectItems[question.id] = currentQuestionItems;
+        }
+      }
+    }
+    return selectItems;
+  }
+
+  public async onSubmitAsync() {
+    this.dialogService.showWaitingModal();
     await this.saveDraftAsync();
-    await this.scoringApplicationApiClient.submitScoringApplicationProjectAsync(this.projectId);
-    await this.navigateToProjectAsync();
   }
 
   public async onSaveAsync(): Promise<void> {

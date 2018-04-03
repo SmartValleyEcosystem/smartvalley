@@ -167,7 +167,7 @@
         <h2 class="partition-title" id="partition_{{partition.order}}">{{index + 3}}. {{ 'EditScoringApplication.' + partition.name | translate}}</h2>
         <div class="partition-block">
           <div class="control-row" *ngFor="let question of partition.questions; let questionIndex = index" [ngSwitch]="getQuestionTypeById(question.type)">
-            <div *ngIf="isParentQuestionAnswered(question.parentId)">
+            <div *ngIf="isParentQuestionAnswered(question.parentId, question.parentTriggerValue)">
               <div *ngSwitchCase="questionTypeLine">
                 <p class="control-label">
                   <label for="control_{{question.id}}">{{ 'EditScoringApplication.' + question.key | translate }}</label>
@@ -184,7 +184,10 @@
                 <p class="control-label">
                   <label for="control_{{question.id}}">{{ 'EditScoringApplication.' + question.key | translate }}</label>
                 </p>
-                <app-select class="input-component" formControlName="{{'control_' + question.id}}" [elementId]="'control_' + question.id" [items]="[]"></app-select>
+                <app-select placeholder="{{ 'EditScoringApplication.' + question.key | translate }}"
+                            class="input-component" formControlName="{{'control_' + question.id}}"
+                            [elementId]="'control_' + question.id" [items]="comboboxValues[question.id]">
+                </app-select>
               </div>
               <div *ngSwitchCase="questionTypeDateTime">
                 <p class="control-label">
