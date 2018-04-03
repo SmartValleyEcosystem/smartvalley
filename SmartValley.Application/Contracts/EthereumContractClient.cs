@@ -70,8 +70,10 @@ namespace SmartValley.Application.Contracts
 
             private async Task<TransactionInput> CreateTransactionInputAsync(Function function, params object[] functionInput)
             {
-                var estimatedGasHex = await function.EstimateGasAsync(functionInput);
-                var gas = new HexBigInteger(estimatedGasHex.Value * (100 + AdditionalGasPercent) / 100);
+                //TODO ILT-925
+                //var estimatedGasHex = await function.EstimateGasAsync(functionInput);
+                //var gas = new HexBigInteger(estimatedGasHex.Value * (100 + AdditionalGasPercent) / 100);
+                var gas = new HexBigInteger(200000);
                 var gasPrice = new HexBigInteger(Web3.Convert.GetEthUnitValue(UnitConversion.EthUnit.Gwei) * GasPriceMultiplier);
 
                 return function.CreateTransactionInput(_contractOwner, gas, gasPrice, new HexBigInteger(0), functionInput);
