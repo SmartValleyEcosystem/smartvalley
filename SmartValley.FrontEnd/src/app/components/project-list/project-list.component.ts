@@ -111,8 +111,8 @@ export class ProjectListComponent implements OnInit {
   }
 
   public async clearFilters() {
-    this.scoringRatingFrom = 0;
-    this.scoringRatingTo = 100;
+    this.scoringRatingFrom = null;
+    this.scoringRatingTo = null;
     this.selectedCountryCode = '';
     this.category.resetSelection();
     this.country.resetSelection();
