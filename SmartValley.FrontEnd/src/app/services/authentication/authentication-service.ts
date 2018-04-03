@@ -18,6 +18,7 @@ import {AuthenticationRequest} from '../../api/authentication/authentication-req
 import {RegistrationRequest} from '../../api/authentication/registration-request';
 import {NotificationsService} from 'angular2-notifications';
 import {TranslateService} from '@ngx-translate/core';
+import {UserApiClient} from '../../api/user/user-api-client';
 
 @Injectable()
 export class AuthenticationService {
@@ -33,7 +34,8 @@ export class AuthenticationService {
               private translateService: TranslateService,
               private notificationsService: NotificationsService,
               private userContext: UserContext,
-              private authenticationApiClient: AuthenticationApiClient) {
+              private authenticationApiClient: AuthenticationApiClient,
+              private userApiClient: UserApiClient) {
 
     this.userContext.userContextChanged.subscribe((user) => {
       if (user == null) {
@@ -64,8 +66,8 @@ export class AuthenticationService {
       return false;
     }
 
-    const currentAccount = await this.web3Service.getCurrentAccountAsync();
-    if (currentAccount == null) {
+    const currentAccountAddress = await this.web3Service.getCurrentAccountAsync();
+    if (currentAccountAddress == null) {
       this.dialogService.showUnlockAccountAlert();
       return false;
     }
@@ -74,17 +76,37 @@ export class AuthenticationService {
       this.dialogService.showMetamaskManualAlert();
       return false;
     }
+
+    if (!await this.isRegistrationCompletedAsync(currentAccountAddress)) {
+      return false;
+    }
+
     let signature: string;
     try {
-      signature = await this.getSignatureAsync(currentAccount);
+      signature = await this.getSignatureAsync(currentAccountAddress);
     } catch (e) {
       return false;
     }
-    const user = await this.authenticateOnBackendAsync(currentAccount, signature, AuthenticationService.MESSAGE_TO_SIGN);
+    const user = await this.authenticateOnBackendAsync(currentAccountAddress, signature, AuthenticationService.MESSAGE_TO_SIGN);
     if (user == null) {
       return false;
     }
     this.startUserSession(user);
+    return true;
+  }
+
+  private async isRegistrationCompletedAsync(address: string): Promise<boolean> {
+    const userResponse = await this.userApiClient.getByAddressAsync(address);
+    if (isNullOrUndefined(userResponse.address)) {
+      await this.router.navigate([Paths.Register]);
+      return false;
+    }
+
+    if (!userResponse.isEmailConfirmed) {
+      await this.router.navigate([Paths.ConfirmRegister]);
+      return false;
+    }
+
     return true;
   }
 
@@ -93,36 +115,26 @@ export class AuthenticationService {
     if (user != null && user.account === account) {
       return user;
     }
-    try {
-      const response = await this.authenticationApiClient.authenticateAsync(<AuthenticationRequest>{
-        address: account,
-        signature: signature,
-        signedText: messageToSign
-      });
 
-      return <User>{
-        email: response.email,
-        account: account,
-        signature: signature,
-        token: response.token,
-        roles: response.roles
-      };
-    } catch (e) {
-      switch (e.error.errorCode) {
-        case ErrorCode.UserNotFound:
-          await this.router.navigate([Paths.Register]);
-          return null;
-        case ErrorCode.EmailNotConfirmed:
-          await this.router.navigate([Paths.ConfirmRegister]);
-          return null;
-      }
-    }
+    const response = await this.authenticationApiClient.authenticateAsync(<AuthenticationRequest>{
+      address: account,
+      signature: signature,
+      signedText: messageToSign
+    });
+
+    return <User>{
+      email: response.email,
+      account: account,
+      signature: signature,
+      token: response.token,
+      roles: response.roles
+    };
   }
 
   public async getSignatureAsync(currentAccount: string): Promise<string> {
-    let signature = this.userContext.getSignatureByAccount(currentAccount);
+    const signature = this.userContext.getSignatureByAccount(currentAccount);
     if (await this.shouldSignAccountAsync(currentAccount, signature)) {
-      signature = await this.web3Service.signAsync(AuthenticationService.MESSAGE_TO_SIGN, currentAccount);
+      return await this.web3Service.signAsync(AuthenticationService.MESSAGE_TO_SIGN, currentAccount);
     }
     return signature;
   }
@@ -224,8 +236,7 @@ export class AuthenticationService {
       return;
     }
     const savedSignature = this.userContext.getSignatureByAccount(currentAccount);
-    const isSavedSignatureValid = await this.checkSignatureAsync(currentAccount, savedSignature);
-    if (isSavedSignatureValid) {
+    if (await this.checkSignatureAsync(currentAccount, savedSignature)) {
       user = await this.authenticateOnBackendAsync(currentAccount, savedSignature, AuthenticationService.MESSAGE_TO_SIGN);
       this.userContext.saveCurrentUser(user);
     } else {
