@@ -1,7 +1,7 @@
 <div class="content">
   <h1 class="title">{{ 'EditScoringApplication.Title' | translate }}</h1>
   <p>{{ 'EditScoringApplication.PageDescription' | translate }}</p>
-  <form [formGroup]="questionFormGroup" autocomplete="off" class="partitions-page" (ngSubmit)="onSubmit()">
+  <form [formGroup]="questionFormGroup" autocomplete="off" class="partitions-page" (ngSubmit)="onSubmitAsync()">
     <div class="partition">
       <h2 class="partition-title" id="partition_common">{{ 'EditScoringApplication.CommonTitle' | translate }}</h2>
       <div class="partition-block" formGroupName="commonGroup">
@@ -124,6 +124,45 @@
           <span class="socials__add-button" (click)="addTeamMember()">{{ 'EditScoringApplication.AddTeam' | translate }}</span>
         </div>
       </div>
+      <div formGroupName="advisersGroup">
+        <h2 class="partition-title" id="partition_advisers">{{ 'ScoringApplication.AdvisersTitle' | translate }}</h2>
+        <div class="partition-block">
+          <div *ngFor="let adviser of activeAdvisers; first as isFirst">
+            <h3 class="member-name">{{ 'ScoringApplication.Adviser' | translate }} {{ adviser }}</h3>
+            <div class="control-row">
+              <p class="control-label">
+                <label for="adviser_name_{{adviser}}">{{ 'ScoringApplication.FullName' | translate }}</label>
+              </p>
+              <input class="input" formControlName="adviser_name_{{adviser}}" id="adviser_name_{{adviser}}" />
+            </div>
+            <div class="control-row">
+              <p class="control-label">
+                <label for="adviser_reason_{{adviser}}">{{ 'ScoringApplication.Reason' | translate }}</label>
+              </p>
+              <textarea class="input" formControlName="adviser_reason_{{adviser}}" id="adviser_reason_{{adviser}}" ></textarea>
+            </div>
+            <div class="control-row">
+              <p class="control-label">
+                <label for="adviser_about_{{adviser}}">{{ 'ScoringApplication.About' | translate }}</label>
+              </p>
+              <textarea class="input" formControlName="adviser_about_{{adviser}}" id="adviser_about_{{adviser}}" ></textarea>
+            </div>
+            <div class="control-row">
+              <p class="control-label">
+                <label for="adviser_linkedin_{{adviser}}">{{ 'ScoringApplication.LinkLinkedin' | translate }}</label>
+              </p>
+              <input class="input" formControlName="adviser_linkedin_{{adviser}}" placeholder="{{ 'ScoringApplication.Http' | translate}}" id="adviser_linkedin_{{adviser}}" />
+            </div>
+            <div class="control-row">
+              <p class="control-label">
+                <label for="adviser_facebook_{{adviser}}">{{ 'ScoringApplication.LinkFacebook' | translate }}</label>
+              </p>
+              <input class="input" formControlName="adviser_facebook_{{adviser}}" placeholder="{{ 'ScoringApplication.Http' | translate}}" id="adviser_facebook_{{adviser}}" />
+            </div>
+          </div>
+          <span class="socials__add-button" (click)="addAdviser()">{{ 'ScoringApplication.AddAdviser' | translate }}</span>
+        </div>
+      </div>
       <div formGroupName="questionsGroup" *ngFor="let partition of partitions; let index = index;">
         <h2 class="partition-title" id="partition_{{partition.order}}">{{index + 3}}. {{ 'EditScoringApplication.' + partition.name | translate}}</h2>
         <div class="partition-block">
@@ -141,7 +180,7 @@
                 </p>
                 <textarea class="input" formControlName="{{'control_' + question.id}}" id="control_{{questionIndex}}" cols="30" rows="10"></textarea>
               </div>
-              <div *ngSwitchCase="questionTypeCombobox">
+              <div *ngSwitchCase="questionTypeComboBox">
                 <p class="control-label">
                   <label for="control_{{question.id}}">{{ 'EditScoringApplication.' + question.key | translate }}</label>
                 </p>
@@ -163,7 +202,7 @@
                 <p class="control-label">
                   <label for="control_{{question.id}}">{{ 'EditScoringApplication.' + question.key | translate }}</label>
                 </p>
-                <input class="input" type="text" formControlName="{{'control_' + question.id}}" id="control_{{question.id}}">
+                <input class="input" type="text" formControlName="{{'control_' + question.id}}" id="{{'control_' + question.id}}">
               </div>
             </div>
           </div>
@@ -187,7 +226,7 @@
           </li>
         </ul>
         <div class="partition-menu__inputs">
-          <input (click)="saveDraftAsync()" type="button" class="main-btn" value="{{ 'EditScoringApplication.SaveDraft' | translate }}">
+          <input (click)="onSaveAsync()" type="button" class="main-btn" value="{{ 'EditScoringApplication.SaveDraft' | translate }}">
           <input type="submit" class="main-btn" value="{{ 'EditScoringApplication.SendForScore' | translate }}">
         </div>
       </sticky>

@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ScoringApplicationResponse} from '../../api/scoring-application/scoring-application-response';
 import {ScoringApplicationPartition} from '../../api/scoring-application/scoring-application-partition';
 import {QuestionControlType} from '../../api/scoring-application/question-control-type.enum';
@@ -13,6 +13,7 @@ import {DictionariesService} from '../../services/common/dictionaries.service';
 import {ScoringApplicationApiClient} from '../../api/scoring-application/scoring-application-api-client';
 import {Answer} from '../../api/scoring-application/answer';
 import {Adviser} from '../../api/scoring-application/adviser';
+import {Paths} from '../../paths';
 
 @Component({
   selector: 'app-edit-scoring-application',
@@ -46,7 +47,8 @@ export class EditScoringApplicationComponent implements OnInit {
               private dictionariesService: DictionariesService,
               private formBuilder: FormBuilder,
               private htmlElement: ElementRef,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
   async ngOnInit() {
@@ -137,36 +139,15 @@ export class EditScoringApplicationComponent implements OnInit {
     return this.questionFormGroup.get('questionsGroup').value['control_' + id];
   }
 
-  public async onSubmit() {
+  public async onSubmitAsync(): Promise<void> {
     await this.saveDraftAsync();
     await this.scoringApplicationApiClient.submitScoringApplicationProjectAsync(this.projectId);
+    await this.navigateToProjectAsync();
   }
 
-  public async saveDraftAsync() {
-    const socials = this.getSocialsValues();
-    const draftRequest = <SaveScoringApplicationRequest>{
-      projectName: this.questionFormGroup.get('commonGroup').get('name').value,
-      projectCategory: this.questionFormGroup.get('commonGroup').get('projectCategory').value,
-      projectStage: this.questionFormGroup.get('commonGroup').get('projectStage').value,
-      projectDescription: this.questionFormGroup.get('commonGroup').get('description').value,
-      countryCode: this.questionFormGroup.get('commonGroup').get('country').value,
-      site: this.questionFormGroup.get('commonGroup').get('website').value,
-      whitePaper: this.questionFormGroup.get('commonGroup').get('linkToWP').value,
-      icoDate: this.questionFormGroup.get('commonGroup').get('icoDate').value,
-      contactEmail: this.questionFormGroup.get('commonGroup').get('email').value,
-      facebookLink: socials['Facebook'],
-      bitcointalkLink: socials['BitcoinTalk'],
-      mediumLink: socials['Medium'],
-      redditLink: socials['Reddit'],
-      telegramLink: socials['Telegram'],
-      twitterLink: socials['Twitter'],
-      gitHubLink: socials['Github'],
-      linkedInLink: socials['LinkedIn'],
-      answers: this.getQuestionsWithAnswers(),
-      teamMembers: this.getTeamMembers(),
-      advisers: this.getAdvisers()
-    };
-    await this.scoringApplicationApiClient.saveScoringApplicationProjectAsync(this.projectId, draftRequest);
+  public async onSaveAsync(): Promise<void> {
+    await this.saveDraftAsync();
+    await this.navigateToProjectAsync();
   }
 
   public getQuestionsWithAnswers(): Answer[] {
@@ -253,5 +234,36 @@ export class EditScoringApplicationComponent implements OnInit {
 
   public removeTeamMember(id) {
     this.activeTeamMembers = this.activeTeamMembers.filter(a => a !== id);
+  }
+
+  private async saveDraftAsync() {
+    const socials = this.getSocialsValues();
+    const draftRequest = <SaveScoringApplicationRequest>{
+      projectName: this.questionFormGroup.get('commonGroup').get('name').value,
+      projectCategory: this.questionFormGroup.get('commonGroup').get('projectCategory').value,
+      projectStage: this.questionFormGroup.get('commonGroup').get('projectStage').value,
+      projectDescription: this.questionFormGroup.get('commonGroup').get('description').value,
+      countryCode: this.questionFormGroup.get('commonGroup').get('country').value,
+      site: this.questionFormGroup.get('commonGroup').get('website').value,
+      whitePaper: this.questionFormGroup.get('commonGroup').get('linkToWP').value,
+      icoDate: this.questionFormGroup.get('commonGroup').get('icoDate').value,
+      contactEmail: this.questionFormGroup.get('commonGroup').get('email').value,
+      facebookLink: socials['Facebook'],
+      bitcointalkLink: socials['BitcoinTalk'],
+      mediumLink: socials['Medium'],
+      redditLink: socials['Reddit'],
+      telegramLink: socials['Telegram'],
+      twitterLink: socials['Twitter'],
+      gitHubLink: socials['Github'],
+      linkedInLink: socials['LinkedIn'],
+      answers: this.getQuestionsWithAnswers(),
+      teamMembers: this.getTeamMembers(),
+      advisers: this.getAdvisers()
+    };
+    await this.scoringApplicationApiClient.saveScoringApplicationProjectAsync(this.projectId, draftRequest);
+  }
+
+  private async navigateToProjectAsync(): Promise<void> {
+    await this.router.navigate([Paths.Project + '/' + this.projectId, {tab: 'application'}]);
   }
 }
