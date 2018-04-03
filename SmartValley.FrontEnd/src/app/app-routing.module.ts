@@ -72,7 +72,7 @@ const appRoutes: Routes = [
       },
       {
         path: Paths.RegisterExpert,
-        canActivate: [ExpertStatusGuard],
+        canActivate: [ExpertStatusGuard, ShouldHaveEthGuard],
         component: RegisterExpertComponent,
         data: {
           expertStatuses: [

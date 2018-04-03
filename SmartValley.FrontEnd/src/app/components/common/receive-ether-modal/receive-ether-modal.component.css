@@ -1,6 +1,53 @@
-.sv-default-btn {
-  top: -1em;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
+.dialog {
+  width: 460px;
+  background-color: #ffffff;
+  padding: 40px 60px !important;
+  position: relative;
 }
 
+.dialog-title {
+  width: 286px;
+  height: 40px;
+  font-family: Roboto-Regular;
+  font-size: 32px;
+  font-weight: bold;
+  line-height: 1.25;
+  letter-spacing: -0.1px;
+  text-align: left;
+  color: #000000;
+}
+
+.dialog-content {
+  width: 338px;
+  height: 60px;
+  font-family: Roboto-Regular;
+  font-size: 14px;
+  line-height: 1.43;
+  text-align: left;
+  color: #000000;
+  margin: 60px 0 14px 0;
+  padding: 0;
+}
+
+.dialog-button {
+  width: 215px;
+}
+
+.dialog-close {
+  position: absolute;
+  right: 5px;
+  top: 0px;
+  width: 36px;
+  height: 36px;
+  background-color: rgba(216, 216, 216, 0);
+  font-size: 37px;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  padding: 0;
+  outline: none;
+}
+
+.dialog-close .material-icons {
+  font-size: 35px;
+}
