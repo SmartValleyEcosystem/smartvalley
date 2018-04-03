@@ -3,7 +3,7 @@
     "Part": "Part",
     "Title": "Instruction for registration",
     "OurService": "Our Service using Ethereum blockchain.",
-    "IfYouWant": "If you want to participate you need to download Metamask and don’t forget to reload this page after all steps.",
+    "IfYouWant": "If you want to participate you need to download <strong>Metamask</strong> and don’t forget to <strong>reload this page</strong> after all steps.",
     "Describe": "Metamask is an Ethereum Browser, like Mist! It allows you all the same functions, features and ease of access from reqular Ethereum Wallets, and it allows you to interact with Dapps and Smart Contracts, and all without the need to download the blockchain or install any software, you can just install it as a Google Chrome Extension or a Firefox Add-on!",
     "InstallingMetamask": "Installing Metamask",
     "Step": "Step",
