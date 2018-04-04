@@ -131,7 +131,7 @@
           <div *ngIf="projectInfo.projectTeamMembers.length > 0; else haveNoMembersBlock;">
             <div class="member-column" *ngFor="let member of projectInfo.projectTeamMembers;">
               <div class="member-photo-container">
-                <div class="avatar-wrapper" pTooltip="{{ member.about }}" tooltipPosition="right">
+                <div class="avatar-wrapper" [escape]="false" pTooltip="<p class='tooltip-text'>{{ member.about }}</p>" tooltipPosition="right">
                   <img *ngIf="member.photoUrl !== '' && member.photoUrl !== null; else withoutPhoto;" class="member-photo"
                        [src]="member.photoUrl"/>
                 </div>
