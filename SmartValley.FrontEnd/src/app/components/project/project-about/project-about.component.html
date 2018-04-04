@@ -10,13 +10,15 @@
     <div *ngIf="projectInfo.teamMembers.length > 0; else haveNoMembersBlock;">
       <div class="member-column" *ngFor="let member of projectInfo.teamMembers;">
         <div class="member-photo-container">
-          <img *ngIf="member.photoUrl !== '' && member.photoUrl !== null; else withoutPhoto;" class="member-photo"
-               [src]="member.photoUrl"/>
+          <div class="avatar-wrapper" pTooltip="{{ member.about }}" tooltipPosition="right">
+            <img *ngIf="member.photoUrl !== '' && member.photoUrl !== null; else withoutPhoto;" class="member-photo"
+                 [src]="member.photoUrl"/>
+          </div>
           <ng-template #withoutPhoto>
             <i class="empty-photo material-icons">account_circle</i>
           </ng-template>
         </div>
-        <div class="partition-item" style="cursor: default;">{{member.fullName}}</div>
+        <div class="partition-item">{{member.fullName}}</div>
         <div class="role-text">{{member.role}}</div>
         <div class="member-socials">
           <a *ngIf="member.linkedIn" href="{{member.linkedIn}}" class="social-icon social-icon__linkedin"></a>

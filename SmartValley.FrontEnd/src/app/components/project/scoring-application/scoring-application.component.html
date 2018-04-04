@@ -131,8 +131,10 @@
           <div *ngIf="projectInfo.projectTeamMembers.length > 0; else haveNoMembersBlock;">
             <div class="member-column" *ngFor="let member of projectInfo.projectTeamMembers;">
               <div class="member-photo-container">
-                <img *ngIf="member.photoUrl !== '' && member.photoUrl !== null; else withoutPhoto;" class="member-photo"
-                     [src]="member.photoUrl"/>
+                <div class="avatar-wrapper" pTooltip="{{ member.about }}" tooltipPosition="right">
+                  <img *ngIf="member.photoUrl !== '' && member.photoUrl !== null; else withoutPhoto;" class="member-photo"
+                       [src]="member.photoUrl"/>
+                </div>
                 <ng-template #withoutPhoto>
                   <i class="empty-photo material-icons">account_circle</i>
                 </ng-template>
@@ -154,8 +156,15 @@
           <div *ngIf="projectInfo.projectAdvisers.length > 0; else haveNoAdvisersBlock;">
             <div class="member-column" *ngFor="let adviser of projectInfo.projectAdvisers;">
               <div class="member-photo-container">
-                <img *ngIf="adviser.photoUrl !== '' && adviser.photoUrl !== null; else withoutPhoto;" class="member-photo"
-                     [src]="adviser.photoUrl"/>
+                <div class="avatar-wrapper" [escape]="false" pTooltip=
+                    "<p class='tooltip-title'>{{ 'ScoringApplication.About'| translate }}</p>
+                    <p class='tooltip-text'>{{ adviser.about }}</p>
+                    <p class='tooltip-title'>{{ 'ScoringApplication.Reason'| translate }}</p>
+                    <p class='tooltip-text'>{{ adviser.reason }}</p>"
+                     tooltipPosition="right">
+                  <img *ngIf="adviser.photoUrl !== '' && adviser.photoUrl !== null; else withoutPhoto;" class="member-photo"
+                       [src]="adviser.photoUrl"/>
+                </div>
                 <ng-template #withoutPhoto>
                   <i class="empty-photo material-icons">account_circle</i>
                 </ng-template>
