@@ -92,7 +92,7 @@ p {
   color: #a4a2b0;
 }
 
-.email{
+.email {
   margin-bottom: 160px;
   margin-top: 20px;
   position: relative;
@@ -100,19 +100,19 @@ p {
   height: 60px;
 }
 
-.email-input{
+.email-input {
   width: 333px;
   height: 36px;
 }
 
-.email__button{
+.email__button {
   border-radius: 0 30px 30px 0 !important;
   min-width: 95px;
   position: absolute;
   right: 0;
 }
 
-.empty-result__text{
+.empty-result__text {
   width: 621px;
   height: 20px;
   font-family: Roboto-Regular;
@@ -146,4 +146,7 @@ p {
 .project-name {
   font-size: 14px;
   font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
