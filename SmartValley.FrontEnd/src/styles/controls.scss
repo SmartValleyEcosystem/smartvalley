@@ -105,7 +105,10 @@ body .ui-widget-header {
   background-color: transparent !important;
   border: none !important;
 }
-body .ui-paginator .ui-paginator-first, body .ui-paginator .ui-paginator-prev, body .ui-paginator .ui-paginator-next, body .ui-paginator .ui-paginator-last {
+body .ui-paginator .ui-paginator-first,
+body .ui-paginator .ui-paginator-prev,
+body .ui-paginator .ui-paginator-next,
+body .ui-paginator .ui-paginator-last {
   color: #5d49f2 !important;
 }
 body .ui-paginator .ui-paginator-pages .ui-paginator-page {
