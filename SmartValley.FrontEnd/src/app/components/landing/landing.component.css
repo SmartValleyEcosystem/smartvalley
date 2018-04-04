@@ -43,6 +43,10 @@
   line-height: 1;
 }
 
+.table th:not(.table__main-col){
+  padding-bottom: 20px !important;
+}
+
 .sw-project-footer{
   text-align: right;
   max-width: calc(25% - 8px);
