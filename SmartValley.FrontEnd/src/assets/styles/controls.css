@@ -194,7 +194,7 @@ input.ng-valid {
   color: #000;
 }
 
-.ng-dirty.ng-invalid .ui-fileupload-choose.ui-button {
+p-fileUpload.ng-dirty.ng-invalid .ui-fileupload-choose.ui-button {
   border: solid 1px red !important;
 }
 
