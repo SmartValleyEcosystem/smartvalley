@@ -99,6 +99,7 @@ import {RoundNumberPipe} from './utils/round-number.pipe';
 import {SearchWithAutocompleteComponent} from './components/search-with-autocomplete/search-with-autocomplete.component';
 import {ProjectListComponent} from './components/project-list/project-list.component';
 import {PaginatorModule} from 'primeng/paginator';
+import {TooltipModule} from 'primeng/tooltip';
 import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-assigned.guard';
 import {SelectComponent} from './components/select/select.component';
 import {AutocompleteComponent} from './components/autocomplete/autocomplete.component';
@@ -223,6 +224,7 @@ import {ProjectService} from './services/project/project.service';
     SimpleNotificationsModule.forRoot(),
     NgProgressModule,
     PaginatorModule,
+    TooltipModule,
     MatIconModule,
     Ng2DeviceDetectorModule.forRoot(),
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),

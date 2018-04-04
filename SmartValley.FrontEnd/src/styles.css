@@ -455,6 +455,17 @@ a, button, span {
   color: #a4a2b0;
 }
 
+.tooltip-title {
+  padding: 0;
+  margin: 0;
+  font-family: Roboto-Bold;
+}
+
+.tooltip-text {
+  padding: 0;
+  margin: 0;
+}
+
 @font-face {
   font-family: "AvenirNextCyr-Bold";
   src: url("/assets/fonts/AvenirNextCyr-Bold.otf") format("opentype");

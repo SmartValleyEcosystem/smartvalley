@@ -5,6 +5,8 @@
     "DoesNotExistButtonText": "Create from draft",
     "EditTextButton": "Edit application",
     "1": "Yes",
-    "0": "No"
+    "0": "No",
+    "Reason": "Reason",
+    "About": "About"
   }
 }
