@@ -193,9 +193,15 @@ input.ng-valid {
   padding-top: 5px;
   color: #000;
 }
+
+.ng-dirty.ng-invalid .ui-fileupload-choose.ui-button {
+  border: solid 1px red !important;
+}
+
 .ui-fileupload-content.ui-widget-content.ui-corner-bottom {
   border: none;
 }
+
 body .ui-widget-content {
   background-color: #fff !important;
 }

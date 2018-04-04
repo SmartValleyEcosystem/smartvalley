@@ -17,7 +17,7 @@ import * as moment from 'moment';
 import {NotificationsService} from 'angular2-notifications';
 import {AreaService} from '../../services/expert/area.service';
 import {EnumHelper} from '../../utils/enum-helper';
-import {isUndefined} from 'util';
+import {isNullOrUndefined, isUndefined} from 'util';
 import {Md5} from 'ts-md5';
 
 const countries = <Country[]>require('../../../assets/countryList.json');
@@ -30,9 +30,7 @@ const countries = <Country[]>require('../../../assets/countryList.json');
 export class RegisterExpertComponent implements OnInit {
 
   public registryForm: FormGroup;
-  public showLetter = false;
-  public showKYC = false;
-  public isProjectCreating: boolean;
+  public isSubmitting: boolean;
 
   public sex: SelectItem[];
   public documentTypes: SelectItem[];
@@ -50,7 +48,6 @@ export class RegisterExpertComponent implements OnInit {
               private router: Router,
               private expertApiClient: ExpertApiClient,
               private dialogService: DialogService,
-              private userContext: UserContext,
               private notificationsService: NotificationsService,
               private translateService: TranslateService,
               private expertsRegistryContractClient: ExpertsRegistryContractClient,
@@ -60,17 +57,6 @@ export class RegisterExpertComponent implements OnInit {
 
   public ngOnInit(): void {
     this.createForm();
-  }
-
-  public showNext() {
-    if (this.showLetter === false) {
-      this.showLetter = true;
-      return;
-    }
-    if (this.showKYC === false) {
-      this.showKYC = true;
-      return;
-    }
   }
 
   private createForm() {
@@ -95,7 +81,7 @@ export class RegisterExpertComponent implements OnInit {
       facebook: ['', [Validators.required, Validators.maxLength(400), Validators.pattern('https?://.+')]],
       why: ['', [Validators.required, Validators.maxLength(1500)]],
       description: ['', [Validators.required, Validators.maxLength(1500)]],
-      country:  ['', [Validators.required]],
+      country: ['', [Validators.required]],
       city: ['', [Validators.required, Validators.maxLength(50)]],
       selectedSex: ['', [Validators.required]],
       selectedDocumentType: [DocumentEnum.Passport],
@@ -105,29 +91,62 @@ export class RegisterExpertComponent implements OnInit {
     });
   }
 
+
   public async applyAsync(): Promise<void> {
     if (!this.validateForm()) {
       return;
     }
 
-    this.isProjectCreating = true;
+    this.isSubmitting = true;
 
     const isSucceeded = await this.submitAsync();
     if (isSucceeded) {
       await this.router.navigate([Paths.ExpertStatus]);
     }
+    this.isSubmitting = false;
   }
 
   public onCvUpload(event: any) {
-    this.cv = event.files[0];
+    const element = this.requiredFields.find(f => f.name === 'cv');
+    if (event !== null) {
+      this.cv = event.files[0];
+      this.switchFileUploadValidity(element, true);
+    } else {
+      this.cv = null;
+      this.switchFileUploadValidity(element, false);
+    }
   }
 
   public onDocumentUpload(event: any) {
-    this.document = event.files[0];
+    const element = this.requiredFields.find(f => f.name === 'document');
+    if (event !== null) {
+      this.document = event.files[0];
+      this.switchFileUploadValidity(element, true);
+    } else {
+      this.document = null;
+      this.switchFileUploadValidity(element, false);
+    }
   }
 
   public onPhotoUpload(event: any) {
-    this.photo = event.files[0];
+    const element = this.requiredFields.find(f => f.name === 'photo');
+    if (event !== null) {
+      this.photo = event.files[0];
+      this.switchFileUploadValidity(element, true);
+    } else {
+      this.photo = null;
+      this.switchFileUploadValidity(element, false);
+    }
+  }
+
+  private switchFileUploadValidity(element: any, isValid: boolean) {
+    if (isValid) {
+      element.el.nativeElement.classList.remove('ng-invalid');
+      element.el.nativeElement.classList.remove('ng-dirty');
+    } else {
+      element.el.nativeElement.classList.add('ng-invalid');
+      element.el.nativeElement.classList.add('ng-dirty');
+    }
   }
 
   private setInvalid(element: ElementRef) {
@@ -143,7 +162,10 @@ export class RegisterExpertComponent implements OnInit {
   }
 
   private validateForm(): boolean {
-    if (!this.registryForm.invalid) {
+    if (!this.registryForm.invalid
+      && !isNullOrUndefined(this.photo)
+      && !isNullOrUndefined(this.cv)
+      && !isNullOrUndefined(this.document)) {
       return true;
     }
 
@@ -153,11 +175,14 @@ export class RegisterExpertComponent implements OnInit {
 
         if (i.el) {
           elem = i.el.nativeElement.classList.contains('ng-invalid');
+          if (i.files && i.files.length === 0) {
+            elem = i;
+          }
         }
 
         if (i.nativeElement) {
           if (i.nativeElement.nativeElement) {
-            return elem = i.nativeElement.nativeElement.classList.contains('ng-invalid');
+            return i.nativeElement.nativeElement.classList.contains('ng-invalid');
           }
           elem = i.nativeElement.classList.contains('ng-invalid');
         }
@@ -213,23 +238,10 @@ export class RegisterExpertComponent implements OnInit {
       this.notificationsService.error(this.translateService.instant('RegisterExpert.CategoryNotSelectedError'));
       return false;
     }
-    if (isUndefined(this.document)) {
-      this.notificationsService.error(this.translateService.instant('RegisterExpert.DocumentNotUploadedError'));
-      return false;
-    }
-    if (isUndefined(this.photo)) {
-      this.notificationsService.error(this.translateService.instant('RegisterExpert.PhotoNotUploadedError'));
-      return false;
-    }
-    if (isUndefined(this.cv)) {
-      this.notificationsService.error(this.translateService.instant('RegisterExpert.CVNotUploadedError'));
-      return false;
-    }
 
     const applicationHash = this.getApplicationHash(areas);
     const transactionHash = await this.applyToContractAsync(areas, applicationHash);
     if (transactionHash == null) {
-      this.isProjectCreating = false;
       return false;
     }
 
