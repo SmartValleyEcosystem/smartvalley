@@ -47,7 +47,7 @@ export class ProjectComponent implements OnInit {
 
       const applicationScoringRequest = await this.scoringApplicationApiClient.getScoringApplicationsAsync(this.projectId);
       const currentUser = await this.userContext.getCurrentUser();
-      if (!isNullOrUndefined(currentUser) && this.project.userId === currentUser.id) {
+      if (!isNullOrUndefined(currentUser) && this.project.authorId === currentUser.id) {
         this.isEditProjectCommandAvailable = true;
         this.isCreateScoringApplicationCommandAvailable = isNullOrUndefined(applicationScoringRequest.created);
         this.isSendForScoringCommandAvailable = !isNullOrUndefined(applicationScoringRequest.created);

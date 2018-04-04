@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
@@ -18,7 +17,9 @@ namespace SmartValley.WebApi.Users
         public Task<User> GetByAddressAsync(Address address)
             => _repository.GetByAddressAsync(address);
 
-        [HttpPut]
+        public Task<User> GetByIdAsync(long id)
+            => _repository.GetByIdAsync(id);
+
         public async Task UpdateAsync(Address address, string name, string about)
         {
             var user = await _repository.GetByAddressAsync(address);

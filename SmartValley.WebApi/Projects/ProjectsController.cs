@@ -14,6 +14,7 @@ using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Projects.Requests;
 using SmartValley.WebApi.Projects.Responses;
 using SmartValley.WebApi.Scoring;
+using SmartValley.WebApi.Users;
 using SmartValley.WebApi.Votings;
 using SmartValley.WebApi.WebApi;
 
@@ -29,18 +30,21 @@ namespace SmartValley.WebApi.Projects
         private readonly IClock _clock;
         private readonly IScoringService _scoringService;
         private readonly ICountryRepository _countryRepository;
+        private readonly IUserService _userService;
 
         public ProjectsController(
             IProjectService projectService,
             IVotingService votingService,
             IClock clock,
             IScoringService scoringService,
-            ICountryRepository countryRepository)
+            ICountryRepository countryRepository,
+            IUserService userService)
         {
             _projectService = projectService;
             _votingService = votingService;
             _scoringService = scoringService;
             _countryRepository = countryRepository;
+            _userService = userService;
             _clock = clock;
         }
 
@@ -115,8 +119,9 @@ namespace SmartValley.WebApi.Projects
             var project = await _projectService.GetAsync(id);
             var scoring = await _scoringService.GetByProjectIdAsync(id);
             var country = await _countryRepository.GetByIdAsync(project.CountryId);
+            var author = await _userService.GetByIdAsync(project.AuthorId);
 
-            return ProjectSummaryResponse.Create(project, country, scoring);
+            return ProjectSummaryResponse.Create(project, country, scoring, author);
         }
 
         [HttpGet("{id}/about")]

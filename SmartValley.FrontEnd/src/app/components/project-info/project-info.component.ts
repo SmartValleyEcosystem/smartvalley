@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DictionariesService} from '../../services/common/dictionaries.service';
 import {ProjectSummaryResponse} from '../../api/project/project-summary-response';
+import {BlockiesService} from '../../services/blockies-service';
 
 @Component({
   selector: 'app-project-info',
@@ -11,7 +12,9 @@ export class ProjectInfoComponent implements OnInit {
 
   @Input() project: ProjectSummaryResponse;
 
-  constructor(private dictionariesService: DictionariesService) { }
+  constructor(private dictionariesService: DictionariesService,
+              private blockiesService: BlockiesService) {
+  }
 
   public async ngOnInit() {
   }
@@ -28,4 +31,7 @@ export class ProjectInfoComponent implements OnInit {
     return this.dictionariesService.categories.find(i => i.id === this.project.scoringStatus).value.toString();
   }
 
+  public get imageUrl(): string {
+    return this.project.imageUrl || this.blockiesService.getImageForAddress(this.project.authorAddress);
+  }
 }

@@ -8,6 +8,8 @@ namespace SmartValley.WebApi.Users
     {
         Task<User> GetByAddressAsync(Address address);
 
+        Task<User> GetByIdAsync(long id);
+
         Task UpdateAsync(Address address, string name, string about);
     }
 }

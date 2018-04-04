@@ -52,7 +52,7 @@ export class ScoringApplicationComponent implements OnInit {
     const project = await this.projectApiClient.getProjectSummaryAsync(this.projectId);
     const currentUser = await this.userContext.getCurrentUser();
 
-    if (!isNullOrUndefined(currentUser) && currentUser.id === project.userId) {
+    if (!isNullOrUndefined(currentUser) && currentUser.id === project.authorId) {
       this.isCreateScoringApplicationCommandAvailable = isNullOrUndefined(response.created);
       this.isEditScoringApplicationCommandAvailable = !isNullOrUndefined(response.created);
     }

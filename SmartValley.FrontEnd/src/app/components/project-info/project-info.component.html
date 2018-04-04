@@ -1,6 +1,6 @@
 <div class="project-card">
   <div class="project-card__image">
-    <img class="project-avatar" src="{{ project.imageUrl }}" alt="">
+    <img class="project-avatar" src="{{ imageUrl }}" alt="">
     <div class="avatar-socials">
       <a *ngIf="project.facebook" href="{{ project.facebook}}"><i class="fa fa-facebook" aria-hidden="true"></i></a>
       <a *ngIf="project.telegram" href="{{ project.telegram}}"><i class="fa fa-telegram" aria-hidden="true"></i></a>
@@ -27,7 +27,9 @@
         </li>
       </ul>
     </div>
-    <a *ngIf="project.whitePaperLink" href="{{ project.whitePaperLink}}" class="ghost-btn" target="_blank">{{ 'ProjectCard.OpenWP' | translate }}</a>
+    <a *ngIf="project.whitePaperLink" href="{{ project.whitePaperLink}}" class="ghost-btn" target="_blank">
+      {{ 'ProjectCard.OpenWP' | translate }}
+    </a>
   </div>
   <div class="project-card__controls">
     <ng-content></ng-content>

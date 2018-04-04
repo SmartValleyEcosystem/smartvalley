@@ -24,7 +24,6 @@ export class UserApiClient extends BaseApiClient {
     return this.http.get<EmailResponse>(this.baseApiUrl + '/users/' + request.address + '/email', {params: parameters}).toPromise();
   }
 
-
   public async changeEmailAsync(address: string, email: string): Promise<void> {
     await this.http.put(this.baseApiUrl + '/users/' + address + '/email', {email: email}).toPromise();
   }
