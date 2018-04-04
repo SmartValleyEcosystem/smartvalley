@@ -33,6 +33,8 @@ namespace SmartValley.Domain
 
         public SocialNetworks SocialNetworks { get; set; }
 
+        public string Articles { get; set; }
+
         public long? CountryId { get; set; }
 
         public Country Country { get; set; }

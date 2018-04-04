@@ -72,6 +72,7 @@ namespace SmartValley.WebApi.ScoringApplication
             scoringApplication.IcoDate = saveScoringApplicationRequest.IcoDate;
             scoringApplication.ContactEmail = saveScoringApplicationRequest.ContactEmail;
             scoringApplication.SocialNetworks = SocialNetworkRequest.ToDomain(saveScoringApplicationRequest.SocialNetworks);
+            scoringApplication.Articles = saveScoringApplicationRequest.Articles;
 
             scoringApplication.Saved = _clock.UtcNow;
 

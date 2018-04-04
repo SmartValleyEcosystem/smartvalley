@@ -510,6 +510,8 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Articles");
+
                     b.Property<int?>("Category");
 
                     b.Property<string>("ContactEmail");

@@ -28,6 +28,8 @@ namespace SmartValley.WebApi.ScoringApplication.Responses
 
         public SocialNetworks SocialNetworks { get; set; }
 
+        public string Articles { get; set; }
+
         public IEnumerable<ProjectTeamMemberResponse> ProjectTeamMembers { get; set; }
 
         public IEnumerable<AdviserResponse> ProjectAdvisers { get; set; }
@@ -84,6 +86,7 @@ namespace SmartValley.WebApi.ScoringApplication.Responses
                                             Github = scoringApplication.SocialNetworks.Github,
                                             Linkedin = scoringApplication.SocialNetworks.Linkedin
                                         },
+                       Articles = scoringApplication.Articles,
                        ProjectTeamMembers = scoringApplication.TeamMembers.Select(ProjectTeamMemberResponse.Create),
                        ProjectAdvisers = scoringApplication.Advisers.Select(a => new AdviserResponse
                                                                                  {

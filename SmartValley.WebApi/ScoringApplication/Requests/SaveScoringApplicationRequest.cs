@@ -33,6 +33,8 @@ namespace SmartValley.WebApi.ScoringApplication.Requests
 
         public SocialNetworkRequest SocialNetworks { get; set; }
 
+        public string Articles { get; set; }
+
         public IReadOnlyCollection<ScoringApplicationAnswerRequest> Answers { get; set; }
 
         public IReadOnlyCollection<TeamMemberRequest> TeamMembers { get; set; }
