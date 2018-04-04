@@ -14,24 +14,31 @@ export class InputSwitchComponent implements ControlValueAccessor, OnChanges {
 
   public propagateChange: any = () => {};
   public validateFn: any = () => {};
-  @Input('switcherValue') _switcherValue = null;
+  @Input('switcherValue') _switcherValue: number|null = null;
   @Input() elementId: string;
   @Input() elementName: string;
   @Input() labelOn?: string;
   @Input() labelOff?: string;
   @Input() styleClass?: string;
+  @Input() defaultValue?: number|string|null;
 
   get switcherValue() {
     return this._switcherValue;
   }
 
-  set switcherValue(val: boolean|null) {
+  set switcherValue(val: number|null) {
     this._switcherValue = val;
     this.propagateChange(val);
   }
 
-  public changeValue(value: boolean|null) {
+  public changeValue(value: number|null) {
     this.switcherValue = value;
+  }
+
+  public ngOnInit() {
+    if (this.defaultValue) {
+      this.setDefaultValue(this.defaultValue);
+    }
   }
 
   ngOnChanges(inputs) {
@@ -41,6 +48,15 @@ export class InputSwitchComponent implements ControlValueAccessor, OnChanges {
     if (value) {
       this.switcherValue = value;
     }
+    this.setDefaultValue(value);
+  }
+
+  public setDefaultValue(value) {
+    let preparedValue: number|null = null;
+    if (value) {
+      preparedValue = +value;
+    }
+    this.switcherValue = preparedValue;
   }
 
   registerOnChange(fn) {

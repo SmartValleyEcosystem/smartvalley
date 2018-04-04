@@ -74,9 +74,13 @@ export class ScoringApplicationComponent implements OnInit {
     return this.questionControlType[id];
   }
 
-  public isParentQuestionAnswered(id: number) {
+  public isParentQuestionAnswered(id: number, parentTriggerValue) {
     if (!id) {
       return true;
+    }
+    if (parentTriggerValue) {
+      const parentQuestion = this.partitions.map(i => i.questions).reduce((l, r) => l.concat(r)).filter(i => i.id === id)[0];
+      return +parentQuestion.answer === +parentTriggerValue;
     }
     return this.partitions.map(i => i.questions).reduce((l, r) => l.concat(r)).some(i => i.id === id);
   }

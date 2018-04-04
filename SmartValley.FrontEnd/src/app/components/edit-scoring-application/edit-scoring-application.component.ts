@@ -120,31 +120,34 @@ export class EditScoringApplicationComponent implements OnInit {
       }
     }
 
-    for (const t of data.projectAdvisers) {
-      this.addAdviser();
-      this.setAdviser(
-        t.reason,
-        t.fullName,
-        t.about,
-        t.linkedInLink,
-        t.facebookLink);
-      if (data.projectAdvisers.indexOf(t) === data.projectAdvisers.length - 1) {
-        break;
+    if (data.projectAdvisers) {
+      for (const t of data.projectAdvisers) {
+        this.addAdviser();
+        this.setAdviser(
+          t.reason,
+          t.fullName,
+          t.about,
+          t.linkedInLink,
+          t.facebookLink);
+        if (data.projectAdvisers.indexOf(t) === data.projectAdvisers.length - 1) {
+          break;
+        }
       }
     }
 
-
-    for (const t of data.projectTeamMembers) {
-      this.addTeamMember();
-      this.setTeamMember(
-        t.id,
-        t.fullName,
-        t.role,
-        t.linkedIn,
-        t.facebook,
-        t.about);
-      if (data.projectTeamMembers.indexOf(t) === data.projectTeamMembers.length - 1) {
-        break;
+    if (data.projectTeamMembers) {
+      for (const t of data.projectTeamMembers) {
+        this.addTeamMember();
+        this.setTeamMember(
+          t.id,
+          t.fullName,
+          t.role,
+          t.linkedIn,
+          t.facebook,
+          t.about);
+        if (data.projectTeamMembers.indexOf(t) === data.projectTeamMembers.length - 1) {
+          break;
+        }
       }
     }
 
@@ -264,9 +267,12 @@ export class EditScoringApplicationComponent implements OnInit {
     return this.questions.partitions
       .map(p => p.questions)
       .reduce((a, b) => a.concat(b))
-      .map(q => <Answer>{
-        questionId: q.id,
-        value: this.questionsGroup.value['control_' + q.id]
+      .map(q => {
+        const questionValue = typeof(this.questionsGroup.value['control_' + q.id]) === 'boolean' ? +this.questionsGroup.value['control_' + q.id] : this.questionsGroup.value['control_' + q.id];
+        return <Answer>{
+          questionId: q.id,
+          value: questionValue
+        };
       });
   }
 
@@ -411,10 +417,6 @@ export class EditScoringApplicationComponent implements OnInit {
     for (const partition of partitions) {
       for (const question of partition.questions) {
         this.questionsGroup.controls['control_' + question.id].setValue(question.answer);
-        if (question.type === QuestionControlType.CheckBox) {
-          const answer =  question.answer ? 1 : 0;
-          this.questionsGroup.controls['control_' + question.id].setValue(answer);
-        }
       }
     }
   }

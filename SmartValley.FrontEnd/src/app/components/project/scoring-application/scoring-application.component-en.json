@@ -3,6 +3,8 @@
     "DoesNotExistTextWithProposalToCreate": "You should fill scoring form draft before. Only you can see this form before sending for score.",
     "DoesNotExistText": "Scoring form is not applied yet.",
     "DoesNotExistButtonText": "Create from draft",
-    "EditTextButton": "Edit application"
+    "EditTextButton": "Edit application",
+    "1": "Yes",
+    "0": "No"
   }
 }

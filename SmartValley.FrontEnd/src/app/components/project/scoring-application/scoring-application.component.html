@@ -177,7 +177,7 @@
           <div class="partition-block">
             <div class="control-row" *ngFor="let question of partition.questions;"
                  [ngSwitch]="getQuestionTypeById(question.type)">
-              <div *ngIf="isParentQuestionAnswered(question.parentId)">
+              <div *ngIf="isParentQuestionAnswered(question.parentId, question.parentTriggerValue)">
                 <div *ngSwitchCase="questionTypeLine">
                   <p class="control-label">
                     <label>{{'EditScoringApplication.' + question.key | translate }}</label>
@@ -206,8 +206,7 @@
                   <p class="control-label">
                     <label>{{'EditScoringApplication.' + question.key | translate }}</label>
                   </p>
-                  <div class="main-text">{{question.answer ? ('Boolean.' + question.answer | translate) : '\u2014' }}
-                  </div>
+                  <div class="main-text">{{question.answer ? ('ScoringApplication.' + question.answer | translate) : '\u2014' }}</div>
                 </div>
                 <div *ngSwitchCase="questionTypeUrl">
                   <p class="control-label">
