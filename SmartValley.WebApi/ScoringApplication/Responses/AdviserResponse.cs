@@ -11,5 +11,7 @@
         public string FacebookLink { get; set; }
 
         public string LinkedInLink { get; set; }
+
+        public string PhotoUrl { get; set; }
     }
 }

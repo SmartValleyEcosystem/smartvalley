@@ -1,7 +1,12 @@
 <div *ngIf="!doesScoringApplicationExists; else applicationExistBlock;">
-  <div *ngIf="isCreateScoringApplicationCommandAvailable" class="main-text">{{ 'ScoringApplication.DoesNotExistTextWithProposalToCreate' | translate }}</div>
-  <div *ngIf="!isCreateScoringApplicationCommandAvailable" class="main-text">{{ 'ScoringApplication.DoesNotExistText' | translate }}</div>
-  <input *ngIf="isCreateScoringApplicationCommandAvailable" (click)="navigateToCreateForm()" class="main-btn create-btn" type="button"
+  <div *ngIf="isCreateScoringApplicationCommandAvailable" class="main-text">{{
+    'ScoringApplication.DoesNotExistTextWithProposalToCreate' | translate }}
+  </div>
+  <div *ngIf="!isCreateScoringApplicationCommandAvailable" class="main-text">{{ 'ScoringApplication.DoesNotExistText' |
+    translate }}
+  </div>
+  <input *ngIf="isCreateScoringApplicationCommandAvailable" (click)="navigateToCreateForm()" class="main-btn create-btn"
+         type="button"
          value="{{ 'ScoringApplication.DoesNotExistButtonText' | translate }}"/>
 </div>
 <ng-template #applicationExistBlock>
@@ -50,7 +55,8 @@
             <p class="control-label">
               <label>{{ 'EditScoringApplication.Website' | translate }}</label>
             </p>
-            <a *ngIf="projectInfo.webSite" class="partition-item" href="{{projectInfo.webSite}}">{{projectInfo.webSite}}</a>
+            <a *ngIf="projectInfo.webSite" class="partition-item"
+               href="{{projectInfo.webSite}}">{{projectInfo.webSite}}</a>
             <span *ngIf="!projectInfo.webSite" class="main-text">&mdash;</span>
           </div>
           <div class="control-row">
@@ -76,47 +82,52 @@
         </div>
         <h2 class="partition-title" id="partition_social">{{ 'EditScoringApplication.SocialMedia' | translate }}</h2>
         <div class="partition-block social-column">
-          <a *ngIf="projectInfo.socialNetworks.facebook" href="{{projectInfo.socialNetworks.facebook}}">
+          <div *ngIf="haveSocials; else haveNoSocialsBlock;">
+            <a *ngIf="projectInfo.socialNetworks.facebook" href="{{projectInfo.socialNetworks.facebook}}">
             <div class="social-icon social-icon__facebook"></div>
             <div class="partition-item">Facebook</div>
           </a>
-          <a *ngIf="projectInfo.socialNetworks.bitcoinTalk" href="{{projectInfo.socialNetworks.bitcoinTalk}}">
-            <div class="social-icon social-icon__bitcointalk"></div>
-            <div class="partition-item">BitcoinTalk</div>
-          </a>
-          <a *ngIf="projectInfo.socialNetworks.github" href="{{projectInfo.socialNetworks.github}}">
-            <div class="social-icon social-icon__github"></div>
-            <div class="partition-item">GitHub</div>
-          </a>
-          <a *ngIf="projectInfo.socialNetworks.linkedin" href="{{projectInfo.socialNetworks.linkedin}}">
-            <div class="social-icon social-icon__linkedin"></div>
-            <div class="partition-item">LinkedIn</div>
-          </a>
-          <a *ngIf="projectInfo.socialNetworks.medium" href="{{projectInfo.socialNetworks.medium}}">
-            <div class="social-icon social-icon__medium"></div>
-            <div class="partition-item">Medium</div>
-          </a>
-          <a *ngIf="projectInfo.socialNetworks.reddit" href="{{projectInfo.socialNetworks.reddit}}">
-            <div class="social-icon social-icon__reddit"></div>
-            <div class="partition-item">Reddit</div>
-          </a>
-          <a *ngIf="projectInfo.socialNetworks.telegram" href="{{projectInfo.socialNetworks.telegram}}">
-            <div class="social-icon social-icon__telegram"></div>
-            <div class="partition-item">Telegram</div>
-          </a>
-          <a *ngIf="projectInfo.socialNetworks.twitter" href="{{projectInfo.socialNetworks.twitter}}">
-            <div class="social-icon social-icon__twitter"></div>
-            <div class="partition-item">Twitter</div>
-          </a>
+            <a *ngIf="projectInfo.socialNetworks.bitcoinTalk" href="{{projectInfo.socialNetworks.bitcoinTalk}}">
+              <div class="social-icon social-icon__bitcointalk"></div>
+              <div class="partition-item">BitcoinTalk</div>
+            </a>
+            <a *ngIf="projectInfo.socialNetworks.github" href="{{projectInfo.socialNetworks.github}}">
+              <div class="social-icon social-icon__github"></div>
+              <div class="partition-item">GitHub</div>
+            </a>
+            <a *ngIf="projectInfo.socialNetworks.linkedin" href="{{projectInfo.socialNetworks.linkedin}}">
+              <div class="social-icon social-icon__linkedin"></div>
+              <div class="partition-item">LinkedIn</div>
+            </a>
+            <a *ngIf="projectInfo.socialNetworks.medium" href="{{projectInfo.socialNetworks.medium}}">
+              <div class="social-icon social-icon__medium"></div>
+              <div class="partition-item">Medium</div>
+            </a>
+            <a *ngIf="projectInfo.socialNetworks.reddit" href="{{projectInfo.socialNetworks.reddit}}">
+              <div class="social-icon social-icon__reddit"></div>
+              <div class="partition-item">Reddit</div>
+            </a>
+            <a *ngIf="projectInfo.socialNetworks.telegram" href="{{projectInfo.socialNetworks.telegram}}">
+              <div class="social-icon social-icon__telegram"></div>
+              <div class="partition-item">Telegram</div>
+            </a>
+            <a *ngIf="projectInfo.socialNetworks.twitter" href="{{projectInfo.socialNetworks.twitter}}">
+              <div class="social-icon social-icon__twitter"></div>
+              <div class="partition-item">Twitter</div>
+            </a>
+          </div>
+          <ng-template #haveNoSocialsBlock>
+            {{ 'MyProjectAbout.NoSocialsError' | translate }}
+          </ng-template>
           <!--<p class="control-label">{{ 'EditScoringApplication.LinkToArticle' | translate }}</p>-->
           <!--<div *ngFor="let article of activeArticleLink; first as isFirst" class="socials__row">-->
           <!--<input type="text" [formControlName]="'article-link_' + article" class="input input-wide"-->
           <!--placeholder="{{ 'EditScoringApplication.Http' | translate }}">-->
           <!--</div>-->
         </div>
-        <div>
-          <h2 class="partition-title" id="partition_team">{{ 'EditScoringApplication.TeamTitle' | translate }}</h2>
-          <div class="partition-block">
+        <h2 class="partition-title" id="partition_team">{{ 'EditScoringApplication.TeamTitle' | translate }}</h2>
+        <div class="partition-block">
+          <div *ngIf="projectInfo.projectTeamMembers.length > 0; else haveNoMembersBlock;">
             <div class="member-column" *ngFor="let member of projectInfo.projectTeamMembers;">
               <div class="member-photo-container">
                 <img *ngIf="member.photoUrl !== '' && member.photoUrl !== null; else withoutPhoto;" class="member-photo"
@@ -133,6 +144,31 @@
               </div>
             </div>
           </div>
+          <ng-template #haveNoMembersBlock>
+            {{ 'MyProjectAbout.NoTeamError' | translate }}
+          </ng-template>
+        </div>
+        <h2 class="partition-title" id="partition_advisers">{{ 'EditScoringApplication.AdvisersTitle' | translate }}</h2>
+        <div class="partition-block">
+          <div *ngIf="projectInfo.projectAdvisers.length > 0; else haveNoAdvisersBlock;">
+            <div class="member-column" *ngFor="let adviser of projectInfo.projectAdvisers;">
+              <div class="member-photo-container">
+                <img *ngIf="adviser.photoUrl !== '' && adviser.photoUrl !== null; else withoutPhoto;" class="member-photo"
+                     [src]="adviser.photoUrl"/>
+                <ng-template #withoutPhoto>
+                  <i class="empty-photo material-icons">account_circle</i>
+                </ng-template>
+              </div>
+              <div class="partition-item" style="cursor: default;">{{adviser.fullName}}</div>
+              <div class="member-socials">
+                <a *ngIf="adviser.linkedInLink" href="{{adviser.linkedInLink}}" class="social-icon social-icon__linkedin"></a>
+                <a *ngIf="adviser.facebookLink" href="{{adviser.facebookLink}}" class="social-icon social-icon__facebook"></a>
+              </div>
+            </div>
+          </div>
+          <ng-template #haveNoAdvisersBlock>
+            {{ 'MyProjectAbout.NoTeamError' | translate }}
+          </ng-template>
         </div>
         <div *ngFor="let partition of partitions; let index = index;">
           <h2 class="partition-title" id="partition_{{partition.order}}">
@@ -170,7 +206,8 @@
                   <p class="control-label">
                     <label>{{'EditScoringApplication.' + question.key | translate }}</label>
                   </p>
-                  <div class="main-text">{{question.answer ? ('Boolean.' + question.answer | translate) : '\u2014' }}</div>
+                  <div class="main-text">{{question.answer ? ('Boolean.' + question.answer | translate) : '\u2014' }}
+                  </div>
                 </div>
                 <div *ngSwitchCase="questionTypeUrl">
                   <p class="control-label">
@@ -196,13 +233,17 @@
             <li class="partition-item" (click)="scrollToElement('team')">
               {{ 'EditScoringApplication.TeamTitle' | translate }}
             </li>
+            <li class="partition-item" (click)="scrollToElement('advisers')">
+              {{ 'EditScoringApplication.AdvisersTitle' | translate }}
+            </li>
             <li class="partition-item" (click)="scrollToElement(partition.order)"
                 *ngFor="let partition of partitions; let index = index;">
-              {{index + 3}}. {{'EditScoringApplication.' + partition.name | translate}}
+              {{index + 4}}. {{'EditScoringApplication.' + partition.name | translate}}
             </li>
           </ul>
           <div class="partition-menu__inputs">
-            <input *ngIf="isEditScoringApplicationCommandAvailable" (click)="navigateToEdit()" type="button" class="ghost-btn" value="{{ 'ScoringApplication.EditTextButton' | translate }}">
+            <input *ngIf="isEditScoringApplicationCommandAvailable" (click)="navigateToEdit()" type="button"
+                   class="ghost-btn" value="{{ 'ScoringApplication.EditTextButton' | translate }}">
           </div>
         </sticky>
       </div>
