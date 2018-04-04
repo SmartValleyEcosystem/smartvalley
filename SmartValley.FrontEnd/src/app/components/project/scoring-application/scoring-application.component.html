@@ -131,7 +131,7 @@
           <div *ngIf="projectInfo.projectTeamMembers.length > 0; else haveNoMembersBlock;">
             <div class="member-column" *ngFor="let member of projectInfo.projectTeamMembers;">
               <div class="member-photo-container">
-                <div class="avatar-wrapper" [escape]="false" pTooltip="<p class='tooltip-text'>{{ member.about }}</p>" tooltipPosition="right">
+                <div class="avatar-wrapper" [tooltipDisabled]="!member.about" [escape]="false" pTooltip="<p class='tooltip-text'>{{ member.about }}</p>" tooltipPosition="right">
                   <img *ngIf="member.photoUrl !== '' && member.photoUrl !== null; else withoutPhoto;" class="member-photo"
                        [src]="member.photoUrl"/>
                 </div>
@@ -156,11 +156,11 @@
           <div *ngIf="projectInfo.projectAdvisers.length > 0; else haveNoAdvisersBlock;">
             <div class="member-column" *ngFor="let adviser of projectInfo.projectAdvisers;">
               <div class="member-photo-container">
-                <div class="avatar-wrapper" [escape]="false" pTooltip=
-                    "<p class='tooltip-title'>{{ 'ScoringApplication.About'| translate }}</p>
-                    <p class='tooltip-text'>{{ adviser.about }}</p>
-                    <p class='tooltip-title'>{{ 'ScoringApplication.Reason'| translate }}</p>
-                    <p class='tooltip-text'>{{ adviser.reason }}</p>"
+                <div class="avatar-wrapper" [tooltipDisabled]="(!adviser.about && !adviser.reason)" [escape]="false" pTooltip=
+                    "<p class='tooltip-title {{ !adviser.about ? 'hidden' : ''}}'>{{ 'ScoringApplication.About'| translate }}</p>
+                    <p class='tooltip-text {{ !adviser.about ? 'hidden' : ''}}'>{{ adviser.about }}</p>
+                    <p class='tooltip-title {{ !adviser.reason ? 'hidden' : ''}}'>{{ 'ScoringApplication.Reason'| translate }}</p>
+                    <p class='tooltip-text {{ !adviser.reason ? 'hidden' : ''}}'>{{ adviser.reason }}</p>"
                      tooltipPosition="right">
                   <img *ngIf="adviser.photoUrl !== '' && adviser.photoUrl !== null; else withoutPhoto;" class="member-photo"
                        [src]="adviser.photoUrl"/>
