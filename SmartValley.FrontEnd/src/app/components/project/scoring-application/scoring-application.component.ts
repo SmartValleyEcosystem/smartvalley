@@ -19,6 +19,7 @@ export class ScoringApplicationComponent implements OnInit {
   @Input() public projectId: number;
   public projectInfo: ProjectApplicationInfoResponse;
   public haveSocials: boolean;
+  public articles: string[];
   public partitions: ScoringApplicationPartition[];
   public questionControlType = QuestionControlType;
   public questionTypeLine = QuestionControlType[0];
@@ -44,6 +45,7 @@ export class ScoringApplicationComponent implements OnInit {
 
     if (!isNullOrUndefined(response.created)) {
       this.projectInfo = response.projectInfo;
+      this.articles = JSON.parse(this.projectInfo.articles);
       this.haveSocials = this.checkSocials();
       this.partitions = response.partitions;
       this.doesScoringApplicationExists = true;
