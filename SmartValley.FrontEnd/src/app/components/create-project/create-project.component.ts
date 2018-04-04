@@ -128,8 +128,8 @@ export class CreateProjectComponent implements OnInit {
   }
 
   public addTeamMember() {
-    this.currentMemberId++;
-    this.selectedMembers.push(this.currentMemberId);
+    const newTeamMemberNumber = this.selectedMembers.length === 0 ? 1 : this.selectedMembers[this.selectedMembers.length - 1] + 1;
+    this.selectedMembers.push(newTeamMemberNumber);
 
     this.membersGroup.addControl('id__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl(''));
     this.membersGroup.addControl('full-name__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl('',

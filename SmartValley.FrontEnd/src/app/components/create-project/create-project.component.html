@@ -94,8 +94,8 @@
     </div>
     <h2 class="settings-title">{{ 'CreateProject.Team' | translate }}</h2>
     <div class="settings-block settings-block_last" [formGroup]="membersGroup">
-      <div *ngFor="let member of selectedMembers;" class="member-wrapper">
-        <h3 class="member-name">{{ 'CreateProject.Member' | translate }} {{ member }} <span (click)="removeTeamMember(member)" class="member__remove"></span></h3>
+      <div *ngFor="let member of selectedMembers; let index = index;" class="member-wrapper">
+        <h3 class="member-name">{{ 'CreateProject.Member' | translate }} {{ index + 1 }} <span (click)="removeTeamMember(member)" class="member__remove"></span></h3>
         <div class="control-row">
           <p class="control-label">
             <label for="full-name">{{ 'CreateProject.FullName' | translate }}</label>
