@@ -1,5 +1,5 @@
 <div style="position: relative;width: 255px;">
-  <i class="search-icon material-icons">search</i>
+  <i class="search-icon material-icons" (click)="showItemsList()">search</i>
   <input (focus)="searchInputFocusStatusSwitch(true); showItemsList();"
          (focusout)="searchInputFocusStatusSwitch(false); hideItemsList();"
          [class.autocomplete-item__focused]="squareInput"

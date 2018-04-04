@@ -1,5 +1,5 @@
 <div style="position: relative;width: 280px;">
-  <i class="search-icon material-icons">expand_more</i>
+  <i class="search-icon material-icons" (click)="showSelectList()">expand_more</i>
   <input readonly (focus)="searchInputFocusStatusSwitch(true); showSelectList();"
          (focusout)="searchInputFocusStatusSwitch(false); hideSelectList();"
          [class.select-__input_focused]="selectedInput"
