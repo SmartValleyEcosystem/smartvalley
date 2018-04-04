@@ -175,7 +175,7 @@ export class CreateProjectComponent implements OnInit {
   }
 
   private getSocialNetworkLink(socialsArray: any, socialNetwork: string): string {
-    const item = socialsArray.find(s => !isNullOrUndefined(s.network) && s.network.toLowerCase() === socialNetwork);
+    const item = socialsArray.find(s => !isNullOrUndefined(s.network) && s.network.toLowerCase() === socialNetwork.toLowerCase());
     if (isNullOrUndefined(item)) {
       return null;
     }
@@ -199,14 +199,10 @@ export class CreateProjectComponent implements OnInit {
   }
 
   private getCreateProjectRequest(): CreateProjectRequest {
-    const socialsArray = [];
-    for (let i = 1; i <= this.selectedSocials.length; i++) {
-      const network = {
-        network: SocialMediaTypeEnum[this.socialFormGroup.value['social__' + i]],
-        link: this.socialFormGroup.value['social-link__' + i]
-      };
-      socialsArray.push(network);
-    }
+    const socialsArray = this.selectedSocials.map(i => <any>{
+      network: SocialMediaTypeEnum[this.socialFormGroup.value['social__' + i]],
+      link: this.socialFormGroup.value['social-link__' + i]
+    });
 
     const form = this.applicationForm.value;
     return <CreateProjectRequest>{
