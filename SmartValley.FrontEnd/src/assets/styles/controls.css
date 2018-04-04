@@ -22,6 +22,10 @@
   cursor: pointer;
   outline: none;
 }
+.main-btn[disabled] {
+  background-color: #a4a2b0;
+  border-color: #969696;
+}
 .input {
   height: 36px;
   color: #000;

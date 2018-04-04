@@ -232,7 +232,7 @@
           </li>
         </ul>
         <div class="partition-menu__inputs">
-          <input (click)="onSaveAsync()" type="button" class="main-btn" value="{{ 'EditScoringApplication.SaveDraft' | translate }}">
+          <input (click)="onSaveAsync()" type="button" [disabled]="disabled" class="main-btn" value="{{ 'EditScoringApplication.SaveDraft' | translate }}">
           <input type="submit" class="main-btn" value="{{ 'EditScoringApplication.SendForScore' | translate }}">
         </div>
       </sticky>

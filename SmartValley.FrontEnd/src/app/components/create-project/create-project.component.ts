@@ -36,6 +36,7 @@ export class CreateProjectComponent implements OnInit {
   public membersGroup: FormGroup;
   public socialFormGroup: FormGroup;
   public isEditProjectRoute = false;
+  public isSubmitDisable = false;
 
   public isEditing = false;
   public editingData: MyProjectResponse;
@@ -149,9 +150,11 @@ export class CreateProjectComponent implements OnInit {
       return;
     }
 
+    this.isSubmitDisable = true;
     this.isEditing ?
       await this.updateProjectAsync() :
       await this.createProjectAsync();
+    this.isSubmitDisable = false;
   }
 
   private getTeamMemberRequests(): TeamMemberRequest[] {

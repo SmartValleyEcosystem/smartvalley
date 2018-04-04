@@ -46,6 +46,7 @@ export class EditScoringApplicationComponent implements OnInit {
   public countries: SelectItem[];
   public socials: SelectItem[];
   public projectInfo: ProjectApplicationInfoResponse;
+  public disabled = false;
   public comboboxValues: {[id: number]: SelectItem[] };
 
   constructor(private scoringApplicationApiClient: ScoringApplicationApiClient,
@@ -371,6 +372,7 @@ export class EditScoringApplicationComponent implements OnInit {
   }
 
   private async saveDraftAsync() {
+    this.disabled = true;
     const socials = this.getSocialsValues();
     const draftRequest = <SaveScoringApplicationRequest>{
       projectName: this.questionFormGroup.get('commonGroup').get('name').value,
@@ -390,6 +392,7 @@ export class EditScoringApplicationComponent implements OnInit {
       articles: this.getArticles()
     };
     await this.scoringApplicationApiClient.saveScoringApplicationProjectAsync(this.projectId, draftRequest);
+    this.disabled = false;
   }
 
   private async navigateToProjectAsync(): Promise<void> {
