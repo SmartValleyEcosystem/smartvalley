@@ -123,7 +123,7 @@
           </div>
           <p class="control-label">{{ 'EditScoringApplication.LinkToArticle' | translate }}</p>
           <div *ngIf="projectInfo.articles !== null">
-            <a style="display: block;" class="partition-item" href="{{article}}" *ngFor="let article of articles">article</a>
+            <a style="display: block;" class="partition-item" href="{{article}}" *ngFor="let article of articles">{{article}}</a>
           </div>
         </div>
         <h2 class="partition-title" id="partition_team">{{ 'EditScoringApplication.TeamTitle' | translate }}</h2>
@@ -173,7 +173,7 @@
         </div>
         <div *ngFor="let partition of partitions; let index = index;">
           <h2 class="partition-title" id="partition_{{partition.order}}">
-            {{index + 3}}. {{'EditScoringApplication.' + partition.name | translate}}
+            {{index + 4}}. {{'EditScoringApplication.' + partition.name | translate}}
           </h2>
           <div class="partition-block">
             <div class="control-row" *ngFor="let question of partition.questions;"
