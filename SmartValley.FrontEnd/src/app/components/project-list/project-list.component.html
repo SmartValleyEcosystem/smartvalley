@@ -48,7 +48,7 @@
         <p-table class="table" [value]="projects">
           <ng-template pTemplate="header">
             <tr>
-              <th><span class="sortable" [ngClass]="{
+              <th class="table__name_col"><span class="sortable" [ngClass]="{
               'sortable__active' : isSortableField('Name'),
               'sortable__active_desc' : isSortableDirection(DESC),
               'sortable__active_asc' : isSortableDirection(ASC)

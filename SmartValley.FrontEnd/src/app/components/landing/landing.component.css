@@ -45,6 +45,10 @@
   padding-bottom: 20px !important;
 }
 
+.table__main-col {
+  width: 346px;
+}
+
 .sw-project-footer{
   text-align: right;
   max-width: calc(25% - 8px);

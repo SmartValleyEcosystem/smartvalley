@@ -109,6 +109,10 @@
   margin-bottom: 10px;
 }
 
+.control-label label {
+  cursor: default !important;
+}
+
 label {
   cursor: pointer;
 }
