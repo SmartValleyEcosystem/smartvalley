@@ -130,13 +130,8 @@ button:focus {
   color: white;
 }
 
-.fake-menu-wrapper {
-  position: relative;
-}
-
-.fake-menu-label {
-  position: absolute;
-  width: 100%;
-  height: 21px;
-  cursor: pointer;
+@media (max-width: 1200px) {
+  .header-wrapper {
+    width: 1200px;
+  }
 }
