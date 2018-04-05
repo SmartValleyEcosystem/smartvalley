@@ -206,7 +206,7 @@
                   <p class="control-label">
                     <label>{{'EditScoringApplication.' + question.key | translate }}</label>
                   </p>
-                  <div class="main-text">{{question.answer | dashIfEmpty}}</div>
+                  <div class="main-text">{{('EditScoringApplication.' + question.answer | dashIfEmpty) | translate}}</div>
                 </div>
                 <div *ngSwitchCase="questionTypeDateTime">
                   <p class="control-label">

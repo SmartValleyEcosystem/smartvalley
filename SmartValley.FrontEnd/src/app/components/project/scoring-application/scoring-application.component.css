@@ -31,7 +31,7 @@
 
 .social-column a {
   text-decoration: none;
-  width: 230px;
+  width: 170px;
   display: inline-block;
 }
 
@@ -39,7 +39,7 @@
   width: 150px;
   word-wrap: break-word;
   text-align: center;
-  margin: 30px 40px;
+  margin: 30px 10px;
   display: inline-block;
   vertical-align: top;
 }

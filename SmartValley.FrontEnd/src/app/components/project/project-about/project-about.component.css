@@ -10,7 +10,7 @@
   width: 150px;
   word-wrap: break-word;
   text-align: center;
-  margin: 30px 40px;
+  margin: 30px 34px;
   display: inline-block;
   vertical-align: top;
 }
@@ -80,7 +80,7 @@ div.non-pointed {
 
 .social-column a {
   text-decoration: none;
-  width: 230px;
+  width: 270px;
   display: inline-block;
 }
 .team-list,
