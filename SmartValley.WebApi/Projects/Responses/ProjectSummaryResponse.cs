@@ -1,4 +1,5 @@
 ﻿using System;
+using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Projects.Responses
@@ -35,12 +36,15 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public long AuthorId { get; set; }
 
+        public bool IsApplicationSubmitted { get; set; }
+
         public string AuthorAddress { get; set; }
 
         public static ProjectSummaryResponse Create(
             Project project,
             Country country,
             Domain.Entities.Scoring scoring,
+            ScoringApplication scoringApplication,
             User author)
         {
             return new ProjectSummaryResponse
@@ -56,6 +60,7 @@ namespace SmartValley.WebApi.Projects.Responses
                        Facebook = project.Facebook,
                        Telegram = project.Telegram,
                        Twitter = project.Twitter,
+                       IsApplicationSubmitted = scoringApplication?.IsSubmitted ?? false,
                        ScoringStatus = scoring == null
                                            ? ScoringStatus.Pending
                                            : (scoring.Score.HasValue ? ScoringStatus.Finished : ScoringStatus.InProgress),

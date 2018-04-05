@@ -4,11 +4,19 @@
 <div *ngIf="isProjectExists" class="content">
   <h1 class="title">{{ project.name }}</h1>
   <app-project-info *ngIf="project" [project]="project" >
-    <a *ngIf="isCreateScoringApplicationCommandAvailable" (click)="navigateToApplicationScoringAsync()" class="main-btn">{{ 'MyProject.GetScore' | translate }}</a>
-    <span *ngIf="isSendForScoringCommandAvailable" (click)="showWaitingModal()" class="main-btn">{{ 'MyProject.SendScore' | translate }}</span>
-    <a *ngIf="isEditProjectCommandAvailable" [routerLink]="'/' + editProjectsLink" class="ghost-btn">{{ 'MyProject.EditInformation' | translate }}</a>
+    <div *ngIf="project.scoringId; else notScoring;">
+      Status <!-- TODO 787 -->
+    </div>
+    <ng-template #notScoring>
+      <div *ngIf="isAuthor">
+        <a *ngIf="!project.isApplicationSubmitted; else submitedBlock;" (click)="navigateToApplicationScoringAsync()" class="main-btn">{{ 'MyProject.GetScore' | translate }}</a>
+        <ng-template #submitedBlock>
+          <span (click)="navigateToPaymentAsync()" class="main-btn">{{ 'MyProject.SendScore' | translate }}</span>
+        </ng-template>
+        <a [routerLink]="'/' + editProjectsLink" class="ghost-btn">{{ 'MyProject.EditInformation' | translate }}</a>
+      </div>
+    </ng-template>
   </app-project-info>
-
   <mat-tab-group [selectedIndex]="selectedTab">
     <mat-tab label="{{ 'MyProject.About' | translate }}">
       <app-project-about [projectId]="projectId"></app-project-about>

@@ -15,4 +15,5 @@ export interface ProjectSummaryResponse {
   authorId: number;
   scoringId: number;
   authorAddress: string;
+  isApplicationSubmitted: boolean;
 }
