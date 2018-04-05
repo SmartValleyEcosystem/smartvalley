@@ -2,12 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Domain;
+using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
-using SmartValley.WebApi.ScoringApplication.Requests;
-using ScoringApplicationQuestion = SmartValley.Domain.Entities.ScoringApplicationQuestion;
+using SmartValley.WebApi.ScoringApplications.Requests;
 
-namespace SmartValley.WebApi.ScoringApplication
+namespace SmartValley.WebApi.ScoringApplications
 {
     public class ScoringApplicationService : IScoringApplicationService
     {
@@ -30,7 +30,7 @@ namespace SmartValley.WebApi.ScoringApplication
             _clock = clock;
         }
 
-        public Task<IReadOnlyCollection<ScoringApplicationQuestion>> GetQuestionsAsync() 
+        public Task<IReadOnlyCollection<ScoringApplicationQuestion>> GetQuestionsAsync()
             => _scoringApplicationQuestionsRepository.GetAllAsync();
 
         public Task<Domain.ScoringApplication> GetApplicationAsync(long projectId)
@@ -43,6 +43,9 @@ namespace SmartValley.WebApi.ScoringApplication
                 throw new AppErrorException(ErrorCode.ProjectNotFound);
 
             var scoringApplication = await _scoringApplicationRepository.GetByProjectIdAsync(projectId);
+            if (scoringApplication != null && scoringApplication.IsSubmitted)
+                throw new AppErrorException(ErrorCode.ScoringApplicationAlreadySubmitted);
+
             if (scoringApplication == null)
             {
                 scoringApplication = Domain.ScoringApplication.Create(_clock.UtcNow);
@@ -77,30 +80,38 @@ namespace SmartValley.WebApi.ScoringApplication
             scoringApplication.Saved = _clock.UtcNow;
 
             var newTeamMembers = saveScoringApplicationRequest.TeamMembers.Select(x => new ScoringApplicationTeamMember
-            {
-                FullName = x.FullName,
-                ProjectRole = x.ProjectRole,
-                About = x.About,
-                FacebookLink = x.FacebookLink,
-                LinkedInLink = x.LinkedInLink,
-                AdditionalInformation = x.AdditionalInformation
-            }).ToList();
+                                                                                       {
+                                                                                           FullName = x.FullName,
+                                                                                           ProjectRole = x.ProjectRole,
+                                                                                           About = x.About,
+                                                                                           FacebookLink = x.FacebookLink,
+                                                                                           LinkedInLink = x.LinkedInLink,
+                                                                                           AdditionalInformation = x.AdditionalInformation
+                                                                                       }).ToList();
 
             scoringApplication.UpdateTeamMembers(newTeamMembers);
 
             var newAdvisers = saveScoringApplicationRequest.Advisers.Select(x => new ScoringApplicationAdviser
-            {
-                FullName = x.FullName,
-                About = x.About,
-                Reason = x.Reason,
-                FacebookLink = x.FacebookLink,
-                LinkedInLink = x.LinkedInLink
-            }).ToList();
+                                                                                 {
+                                                                                     FullName = x.FullName,
+                                                                                     About = x.About,
+                                                                                     Reason = x.Reason,
+                                                                                     FacebookLink = x.FacebookLink,
+                                                                                     LinkedInLink = x.LinkedInLink
+                                                                                 }).ToList();
 
             scoringApplication.UpdateAdvisers(newAdvisers);
 
             var scoringApplicationAnswers = saveScoringApplicationRequest.Answers.Select(ScoringApplicationAnswerRequest.ToDomain).ToList();
             scoringApplication.UpdateAnswers(scoringApplicationAnswers);
+
+            await _scoringApplicationRepository.SaveChangesAsync();
+        }
+
+        public async Task SubmitApplicationAsync(long projectId)
+        {
+            var scoringApplication = await _scoringApplicationRepository.GetByProjectIdAsync(projectId);
+            scoringApplication.IsSubmitted = true;
 
             await _scoringApplicationRepository.SaveChangesAsync();
         }

@@ -1,4 +1,4 @@
-﻿namespace SmartValley.WebApi.ScoringApplication.Requests
+﻿namespace SmartValley.WebApi.ScoringApplications.Requests
 {
     public class ScoringApplicationAnswerRequest
     {

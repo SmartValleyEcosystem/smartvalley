@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 
-namespace SmartValley.WebApi.ScoringApplication.Responses
+namespace SmartValley.WebApi.ScoringApplications.Responses
 {
     public class ScoringApplicationBlankResponse
     {
@@ -13,9 +14,11 @@ namespace SmartValley.WebApi.ScoringApplication.Responses
 
         public ProjectApplicationInfoResponse ProjectInfo { get; set; }
 
-        public IEnumerable<ApplicationPartition> Partitions { get; set; }
+        public IEnumerable<ApplicationPartitionResponse> Partitions { get; set; }
 
-        public static ScoringApplicationBlankResponse CreateEmpty(IEnumerable<Domain.Entities.ScoringApplicationQuestion> questions, Project project, Country projectCountry, IReadOnlyCollection<ProjectTeamMember> projectTeamMembers)
+        public bool IsSubmitted { get; set; }
+
+        public static ScoringApplicationBlankResponse CreateEmpty(IEnumerable<ScoringApplicationQuestion> questions, Project project, Country projectCountry, IReadOnlyCollection<ProjectTeamMember> projectTeamMembers)
         {
             var partitions = CreatePartitions(questions);
             var projectInfo = ProjectApplicationInfoResponse.CreateFrom(project, projectCountry, projectTeamMembers);
@@ -23,11 +26,12 @@ namespace SmartValley.WebApi.ScoringApplication.Responses
             return new ScoringApplicationBlankResponse
                    {
                        ProjectInfo = projectInfo,
-                       Partitions = partitions
+                       Partitions = partitions,
+                       IsSubmitted = false
                    };
         }
 
-        public static ScoringApplicationBlankResponse InitializeFromApplication(IEnumerable<Domain.Entities.ScoringApplicationQuestion> questions, Domain.ScoringApplication application)
+        public static ScoringApplicationBlankResponse InitializeFromApplication(IEnumerable<ScoringApplicationQuestion> questions, ScoringApplication application)
         {
             var partitions = CreatePartitions(questions);
             var projectInfo = ProjectApplicationInfoResponse.CreateFrom(application);
@@ -40,15 +44,16 @@ namespace SmartValley.WebApi.ScoringApplication.Responses
                         };
 
             blank.SetAnswersFromApplication(application);
+            blank.IsSubmitted = application.IsSubmitted;
             return blank;
         }
 
-        private static IEnumerable<ApplicationPartition> CreatePartitions(IEnumerable<Domain.Entities.ScoringApplicationQuestion> questions)
+        private static IEnumerable<ApplicationPartitionResponse> CreatePartitions(IEnumerable<ScoringApplicationQuestion> questions)
         {
             return questions
-                   .GroupBy(x => new { x.GroupKey, x.GroupOrder })
+                   .GroupBy(x => new {x.GroupKey, x.GroupOrder})
                    .OrderBy(x => x.Key.GroupOrder)
-                   .Select(x => new ApplicationPartition
+                   .Select(x => new ApplicationPartitionResponse
                                 {
                                     Name = x.Key.GroupKey,
                                     Order = x.Key.GroupOrder,
@@ -57,9 +62,9 @@ namespace SmartValley.WebApi.ScoringApplication.Responses
                    .ToArray();
         }
 
-        private static ScoringApplicationQuestion CreateEmptyQuestion(Domain.Entities.ScoringApplicationQuestion q)
+        private static ScoringApplicationQuestionResponse CreateEmptyQuestion(Domain.Entities.ScoringApplicationQuestion q)
         {
-            return new ScoringApplicationQuestion
+            return new ScoringApplicationQuestionResponse
                    {
                        Id = q.Id,
                        Key = q.Key,

@@ -522,6 +522,8 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<DateTimeOffset?>("IcoDate");
 
+                    b.Property<bool>("IsSubmitted");
+
                     b.Property<string>("ProjectDescription");
 
                     b.Property<long>("ProjectId");

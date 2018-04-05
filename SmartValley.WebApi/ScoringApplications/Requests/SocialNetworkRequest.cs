@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using SmartValley.Domain.Entities;
 
-namespace SmartValley.WebApi.ScoringApplication.Requests
+namespace SmartValley.WebApi.ScoringApplications.Requests
 {
     public class SocialNetworkRequest
     {

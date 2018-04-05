@@ -14,7 +14,7 @@ namespace SmartValley.Data.SQL.Repositories
         {
             _editContext = editContext;
         }
-        
+
         public Task<ScoringApplication> GetByProjectIdAsync(long projectId)
         {
             return _editContext.ScoringApplications

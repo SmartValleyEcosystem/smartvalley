@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SmartValley.Domain.Entities;
 
-namespace SmartValley.WebApi.ScoringApplication.Requests
+namespace SmartValley.WebApi.ScoringApplications.Requests
 {
     public class SaveScoringApplicationRequest
     {

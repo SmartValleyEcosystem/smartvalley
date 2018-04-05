@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SmartValley.Domain.Entities;
-using SmartValley.WebApi.ScoringApplication.Requests;
+using SmartValley.WebApi.ScoringApplications.Requests;
 
-namespace SmartValley.WebApi.ScoringApplication
+namespace SmartValley.WebApi.ScoringApplications
 {
     public interface IScoringApplicationService
     {
@@ -11,6 +11,8 @@ namespace SmartValley.WebApi.ScoringApplication
 
         Task<Domain.ScoringApplication> GetApplicationAsync(long projectId);
 
-        Task SaveApplicationAsync(long projectId, SaveScoringApplicationRequest saveScoringApplicationRequest);
+        Task SaveApplicationAsync(long projectId, SaveScoringApplicationRequest request);
+
+        Task SubmitApplicationAsync(long projectId);
     }
 }

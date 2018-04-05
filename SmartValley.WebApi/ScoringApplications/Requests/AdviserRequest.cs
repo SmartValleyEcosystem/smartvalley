@@ -1,17 +1,15 @@
-﻿namespace SmartValley.WebApi.ScoringApplication.Responses
+﻿namespace SmartValley.WebApi.ScoringApplications.Requests
 {
-    public class AdviserResponse
+    public class AdviserRequest
     {
-        public string About { get; set; }
-
         public string FullName { get; set; }
+
+        public string About { get; set; }
 
         public string Reason { get; set; }
 
         public string FacebookLink { get; set; }
 
         public string LinkedInLink { get; set; }
-
-        public string PhotoUrl { get; set; }
     }
 }

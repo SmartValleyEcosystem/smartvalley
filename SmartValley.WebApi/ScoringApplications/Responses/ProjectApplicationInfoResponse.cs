@@ -4,7 +4,7 @@ using System.Linq;
 using SmartValley.Domain.Entities;
 using SmartValley.WebApi.Projects.Responses;
 
-namespace SmartValley.WebApi.ScoringApplication.Responses
+namespace SmartValley.WebApi.ScoringApplications.Responses
 {
     public class ProjectApplicationInfoResponse
     {

@@ -1,8 +1,8 @@
 ﻿using SmartValley.Domain.Entities;
 
-namespace SmartValley.WebApi.ScoringApplication.Responses
+namespace SmartValley.WebApi.ScoringApplications.Responses
 {
-    public class ScoringApplicationQuestion
+    public class ScoringApplicationQuestionResponse
     {
         public long Id { get; set; }
 

@@ -49,6 +49,8 @@ namespace SmartValley.Domain
 
         public ICollection<ScoringApplicationAdviser> Advisers { get; set; }
 
+        public bool IsSubmitted { get; set; }
+
         public static ScoringApplication Create(DateTimeOffset currentDate)
         {
             return new ScoringApplication

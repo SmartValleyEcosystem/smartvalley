@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Projects;
-using SmartValley.WebApi.ScoringApplication.Requests;
-using SmartValley.WebApi.ScoringApplication.Responses;
+using SmartValley.WebApi.ScoringApplications.Requests;
+using SmartValley.WebApi.ScoringApplications.Responses;
 
-namespace SmartValley.WebApi.ScoringApplication
+namespace SmartValley.WebApi.ScoringApplications
 {
     [Route("api/projects/{projectId}/scoring/applications")]
     public class ScoringApplicationController : Controller
@@ -15,7 +15,7 @@ namespace SmartValley.WebApi.ScoringApplication
         private readonly IProjectService _projectService;
 
         public ScoringApplicationController(
-            IScoringApplicationService scoringApplicationService, 
+            IScoringApplicationService scoringApplicationService,
             IProjectService projectService)
         {
             _scoringApplicationService = scoringApplicationService;
@@ -38,13 +38,24 @@ namespace SmartValley.WebApi.ScoringApplication
         }
 
         [HttpPost, Authorize]
-        public async Task<IActionResult> SaveAsync(long projectId, [FromBody]SaveScoringApplicationRequest saveScoringApplicationRequest)
+        public async Task<IActionResult> SaveAsync(long projectId, [FromBody] SaveScoringApplicationRequest saveScoringApplicationRequest)
         {
             var isAuthorizedToEditProjectAsync = await _projectService.IsAuthorizedToEditProjectAsync(projectId, User.GetUserId());
             if (!isAuthorizedToEditProjectAsync)
                 return Unauthorized();
 
             await _scoringApplicationService.SaveApplicationAsync(projectId, saveScoringApplicationRequest);
+            return NoContent();
+        }
+
+        [HttpPut("submit"), Authorize]
+        public async Task<IActionResult> SubmitAsync(long projectId)
+        {
+            var isAuthorizedToEditProjectAsync = await _projectService.IsAuthorizedToEditProjectAsync(projectId, User.GetUserId());
+            if (!isAuthorizedToEditProjectAsync)
+                return Unauthorized();
+
+            await _scoringApplicationService.SubmitApplicationAsync(projectId);
             return NoContent();
         }
     }
