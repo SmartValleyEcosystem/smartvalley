@@ -4,10 +4,12 @@
   border-top: #a4a2b0 1px solid;
   width: 1180px;
   color: #000;
-  height: 100px;
+  height: 60px;
   padding-top: 20px;
   padding-bottom: 45px;
   display: flex;
+  font-size: 14px;
+  font-weight: 400;
 }
 .footer-menu-list, .footer-menu-list a {
   list-style: none;
@@ -16,14 +18,30 @@
   font-weight: bold;
   color: #5d49f2;
 }
+
+.footer-menu-list li {
+  margin-bottom: 8px;
+}
+
 .footer-col {
-  width: 350px;
   margin: 0 100px 0 0;
 }
+
+.footer-col p {
+  margin-bottom: 0;
+}
+
 .footer-col__menu {
-  width: 370px;
+  width: 420px;
   margin: 0;
 }
 .social-icon:last-child {
   margin-right: 0;
+}
+
+.phone {
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+  color: black;
 }

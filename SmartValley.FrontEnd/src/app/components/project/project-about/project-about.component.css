@@ -60,6 +60,10 @@
   padding-bottom: 10px;
 }
 
+div.non-pointed {
+  cursor: default !important;
+}
+
 .partition-title {
   font-family: Roboto-Bold;
   font-size: 24px;

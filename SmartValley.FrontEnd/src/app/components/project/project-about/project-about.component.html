@@ -8,9 +8,9 @@
   <h2 class="partition-title">{{ 'MyProjectAbout.CoreTeam' | translate }}</h2>
   <div class="partition-block">
     <div *ngIf="projectInfo.teamMembers.length > 0; else haveNoMembersBlock;">
-      <div class="member-column" *ngFor="let member of projectInfo.teamMembers;">
+      <div class="member-column" [tooltipDisabled]="!member.about" [escape]="false" pTooltip="<p class='tooltip-text'>{{ member.about }}</p>" tooltipPosition="right" *ngFor="let member of projectInfo.teamMembers;">
         <div class="member-photo-container">
-          <div class="avatar-wrapper"  [tooltipDisabled]="!member.about" [escape]="false" pTooltip="<p class='tooltip-text'>{{ member.about }}</p>" tooltipPosition="right">
+          <div class="avatar-wrapper">
             <img *ngIf="member.photoUrl !== '' && member.photoUrl !== null; else withoutPhoto;" class="member-photo"
                  [src]="member.photoUrl"/>
           </div>
@@ -18,7 +18,7 @@
             <i class="empty-photo material-icons">account_circle</i>
           </ng-template>
         </div>
-        <div class="partition-item">{{member.fullName}}</div>
+        <div class="partition-item non-pointed">{{member.fullName}}</div>
         <div class="role-text">{{member.role}}</div>
         <div class="member-socials">
           <a *ngIf="member.linkedIn" href="{{member.linkedIn}}" class="social-icon social-icon__linkedin"></a>
