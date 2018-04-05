@@ -1,9 +1,0 @@
-{
-  "VoteModal": {
-    "Title": "Vote for",
-    "Balance": "SVT balance",
-    "TokensToVote": "How many tokens do you want to vote?",
-    "FrozenTill": "After your vote tokens will be frozen till",
-    "Vote": "Vote"
-  }
-}

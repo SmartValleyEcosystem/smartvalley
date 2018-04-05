@@ -4,7 +4,7 @@
       <h1>{{ 'Estimate.Title' | translate }}</h1>
     </div>
   </div>
-  <app-project-information [showBasicInfoCaption]="true" [projectDetails]="projectDetails"></app-project-information>
+  <!--<app-project-information [showBasicInfoCaption]="true" [projectDetails]="projectDetails"></app-project-information>-->
   <form [formGroup]="estimateForm" novalidate>
     <div *ngFor="let criterion of estimateForm.get('criteria')['controls'];" class="sw-card sw-content">
       <div [formGroup]="criterion">

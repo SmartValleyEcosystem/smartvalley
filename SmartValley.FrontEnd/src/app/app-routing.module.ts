@@ -13,7 +13,6 @@ import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-au
 import {ShouldBeAdminGuard} from './services/authentication/should-be-admin.guard';
 import {AdminPanelComponent} from './components/admin-panel/admin-panel.component';
 import {ExpertStatusComponent} from './components/expert-status/expert-status.component';
-import {ExpertComponent} from './components/expert/expert.component';
 import {RegisterExpertComponent} from './components/register-expert/register-expert.component';
 import {AdminExpertApplicationComponent} from './components/admin-panel/admin-expert-application/admin-expert-application.component';
 import {ExpertStatusGuard} from './services/guards/expert-status.guard';
@@ -81,22 +80,6 @@ const appRoutes: Routes = [
           ExpertApplicationStatus.None,
           ExpertApplicationStatus.Rejected
         ]
-      }
-    },
-    {
-      path: Paths.Expert + '/:tab',
-      component: ExpertComponent,
-      canActivate: [ExpertStatusGuard],
-      data: {
-        expertStatuses: [ExpertApplicationStatus.Accepted]
-      }
-    },
-    {
-      path: Paths.Expert,
-      component: ExpertComponent,
-      canActivate: [ExpertStatusGuard],
-      data: {
-        expertStatuses: [ExpertApplicationStatus.Accepted]
       }
     },
     {

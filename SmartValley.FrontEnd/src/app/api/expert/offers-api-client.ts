@@ -26,18 +26,6 @@ export class OffersApiClient extends BaseApiClient {
     }).toPromise();
   }
 
-  public getHistoryOffersListAsync(): Promise<CollectionResponse<ScoringOfferResponse>> {
-    return this.http.get<CollectionResponse<ScoringOfferResponse>>(`${this.baseApiUrl}/scoring/offers/history`).toPromise();
-  }
-
-  public getExpertOffersAsync(): Promise<CollectionResponse<ScoringOfferResponse>> {
-    return this.http.get<CollectionResponse<ScoringOfferResponse>>(`${this.baseApiUrl}/scoring/offers/accepted`).toPromise();
-  }
-
-  public getExpertPendingOffersAsync(): Promise<CollectionResponse<ScoringOfferResponse>> {
-    return this.http.get<CollectionResponse<ScoringOfferResponse>>(`${this.baseApiUrl}/scoring/offers/pending`).toPromise();
-  }
-
   public async acceptExpertOfferAsync(transactionHash: string, scoringId: number, areaId: AreaType) {
     await this.http.put(this.baseApiUrl + '/scoring/offers/accept/', <ChangeStatusExpertOfferRequest> {
       transactionHash: transactionHash,

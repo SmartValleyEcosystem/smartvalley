@@ -13,7 +13,6 @@ import {DialogService} from '../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
 import {Estimate} from '../../services/estimate';
 import {BalanceService} from '../../services/balance/balance.service';
-import {ScoringCriterionResponse} from '../../api/estimates/scoring-criterion-response';
 import {ScoringManagerContractClient} from '../../services/contract-clients/scoring-manager-contract-client';
 import {UserContext} from '../../services/authentication/user-context';
 import {ScoringCriterion} from '../../services/scoring-criterion';

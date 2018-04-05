@@ -10,16 +10,9 @@ import {TranslateService} from '@ngx-translate/core';
 import {AlertModalComponent} from '../components/common/alert-modal/alert-modal.component';
 import {AlertModalData} from '../components/common/alert-modal/alert-modal-data';
 import {Area} from './expert/area';
-import {FreeScoringConfirmationModalComponent} from '../components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component';
-import {VoteModalData} from '../components/common/vote-modal/vote-modal-data';
-import {VoteModalComponent} from '../components/common/vote-modal/vote-modal.component';
 import {AddAdminModalComponent} from '../components/common/add-admin-modal/add-admin-modal.component';
 import {CreateNewExpertModalComponent} from '../components/common/create-new-expert-modal/create-new-expert-modal.component';
 import {EditExpertModalComponent} from '../components/common/edit-expert-modal/edit-expert-modal.component';
-import {ExpertsCountSelectionModalComponent} from '../components/common/experts-count-selection-modal/experts-count-selection-modal.component';
-import {ExpertsCountSelectionModalData} from '../components/common/experts-count-selection-modal/experts-count-selection-modal-data';
-import {AreaType} from '../api/scoring/area-type.enum';
-import {AreaExpertsSettings} from '../components/common/experts-count-selection-modal/area-experts-settings';
 import {SetExpertsModalComponent} from '../components/common/set-experts-modal/set-experts-modal.component';
 import {ChangeEmailModalComponent} from '../components/common/change-email-modal/change-email-modal.component';
 import {EditExpertModalData} from '../components/common/edit-expert-modal/edit-expert-modal-data';
@@ -49,10 +42,6 @@ export class DialogService {
     return this.openModal(TransactionAwaitingModalComponent, data, true);
   }
 
-  public showFreeScoringConfirmationDialogAsync(): Promise<boolean> {
-    return this.openModalAsync(FreeScoringConfirmationModalComponent, {});
-  }
-
   public showCreateAdminDialogAsync(): Promise<string> {
     return this.openModal(AddAdminModalComponent, {})
       .afterClosed()
@@ -63,31 +52,6 @@ export class DialogService {
     return this.openModal(ScoringCostComponent, {})
       .afterClosed()
       .toPromise<void>();
-  }
-
-  public showExpertsCountSelectionDialogAsync(areas: Array<AreaType>): Promise<Array<number>> {
-    const data = <ExpertsCountSelectionModalData>{
-      settings: areas.map(a => <AreaExpertsSettings>{area: a, expertsCount: 3})
-    };
-    return this.openModal(ExpertsCountSelectionModalComponent, data, true)
-      .afterClosed()
-      .toPromise<Array<number>>();
-  }
-
-  public showVoteDialogAsync(projectName: string,
-                             currentBalance: number,
-                             currentVoteBalance: number,
-                             currentSprintEndDate: Date): Promise<number> {
-    const data = <VoteModalData>{
-      projectName: projectName,
-      currentBalance: currentBalance,
-      currentVoteBalance: currentVoteBalance,
-      currentSprintEndDate: currentSprintEndDate
-    };
-
-    return this.openModal(VoteModalComponent, data)
-      .afterClosed()
-      .toPromise<number>();
   }
 
   public async showChangeEmailDialogAsync(): Promise<string> {
@@ -164,6 +128,4 @@ export class DialogService {
       .afterClosed()
       .toPromise<boolean>();
   }
-
-
 }

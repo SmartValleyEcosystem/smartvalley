@@ -52,7 +52,6 @@ import {InitializationGuard} from './services/initialization/initialization.guar
 import {RootComponent} from './components/root/root.component';
 import {ReceiveEtherModalComponent} from './components/common/receive-ether-modal/receive-ether-modal.component';
 import {ShouldHaveEthGuard} from './services/balance/should-have-eth.guard';
-import {ProjectInformationComponent} from './components/common/project-information/project-information.component';
 import {AccountComponent} from './components/account/account.component';
 import {MatIconModule} from '@angular/material/icon';
 import {CompositeGuard} from './services/guards/composite.guard';
@@ -60,8 +59,6 @@ import {GuardFactory} from './services/guards/guard-factory';
 import {DashIfEmptyPipe} from './utils/dash-if-empty.pipe';
 import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-authenticated.guard';
 import {ScoringExpertsManagerContractClient} from './services/contract-clients/scoring-experts-manager-contract-client';
-import {FreeScoringConfirmationModalComponent} from './components/common/free-scoring-confirmation-modal/free-scoring-confirmation-modal.component';
-import {VoteModalComponent} from './components/common/vote-modal/vote-modal.component';
 import {FormatDatePipe} from './utils/format-date.pipe';
 import {AuthenticationApiClient} from './api/authentication/authentication-api-client';
 import {UserContext} from './services/authentication/user-context';
@@ -77,10 +74,8 @@ import {DropdownModule} from 'primeng/dropdown';
 import {ExpertsRegistryContractClient} from './services/contract-clients/experts-registry-contract-client';
 import {CalendarModule} from 'primeng/calendar';
 import {ExpertStatusComponent} from './components/expert-status/expert-status.component';
-import {ExpertComponent} from './components/expert/expert.component';
 import {RegisterExpertComponent} from './components/register-expert/register-expert.component';
 import {AdminExpertApplicationsListComponent} from './components/admin-panel/admin-expert-applications-list/admin-expert-applications-list.component';
-import {ExpertsCountSelectionModalComponent} from './components/common/experts-count-selection-modal/experts-count-selection-modal.component';
 import {AdminExpertApplicationComponent} from './components/admin-panel/admin-expert-application/admin-expert-application.component';
 import {AreaService} from './services/expert/area.service';
 import {EnumHelper} from './utils/enum-helper';
@@ -91,10 +86,7 @@ import {ExpertStatusGuard} from './services/guards/expert-status.guard';
 import {AdminScoringProjectsComponent} from './components/admin-panel/admin-scoring-projects/admin-scoring-projects.component';
 import {SetExpertsModalComponent} from './components/common/set-experts-modal/set-experts-modal.component';
 import {ChangeEmailModalComponent} from './components/common/change-email-modal/change-email-modal.component';
-import {ExpertOffersHistoryComponent} from './components/expert/expert-offers-history/expert-offers-history.component';
-import {ExpertWorkPlaceComponent} from './components/expert/expert-work-place/expert-work-place.component';
 import {OffersApiClient} from './api/expert/offers-api-client';
-import {ExpertOffersComponent} from './components/expert/expert-offers/expert-offers.component';
 import {RoundNumberPipe} from './utils/round-number.pipe';
 import {SearchWithAutocompleteComponent} from './components/search-with-autocomplete/search-with-autocomplete.component';
 import {ProjectListComponent} from './components/project-list/project-list.component';
@@ -121,7 +113,7 @@ import {ProjectAboutComponent} from './components/project/project-about/project-
 import {WaitingModalComponent} from './components/common/waiting-modal/waiting-modal.component';
 import {ScoringApplicationComponent} from './components/project/scoring-application/scoring-application.component';
 import {ProjectService} from './services/project/project.service';
-import { ScoringAboutComponent } from './components/scoring/scoring-about/scoring-about.component';
+import {ScoringAboutComponent} from './components/scoring/scoring-about/scoring-about.component';
 
 @NgModule({
   declarations: [
@@ -141,31 +133,23 @@ import { ScoringAboutComponent } from './components/scoring/scoring-about/scorin
     InitializationComponent,
     RootComponent,
     ReceiveEtherModalComponent,
-    ProjectInformationComponent,
     AccountComponent,
     DashIfEmptyPipe,
     EditScoringApplicationComponent,
-    FreeScoringConfirmationModalComponent,
-    VoteModalComponent,
     FormatDatePipe,
     AdminPanelComponent,
     AddAdminModalComponent,
     ExpertStatusComponent,
-    ExpertComponent,
     RegisterExpertComponent,
     AdminExpertApplicationsListComponent,
     AdminExpertApplicationComponent,
     AdminExpertsListComponent,
     CreateNewExpertModalComponent,
     EditExpertModalComponent,
-    ExpertsCountSelectionModalComponent,
     AdminExpertApplicationComponent,
     AdminScoringProjectsComponent,
     SetExpertsModalComponent,
     ChangeEmailModalComponent,
-    ExpertWorkPlaceComponent,
-    ExpertOffersComponent,
-    ExpertOffersHistoryComponent,
     RoundNumberPipe,
     SearchWithAutocompleteComponent,
     ProjectListComponent,
@@ -190,12 +174,9 @@ import { ScoringAboutComponent } from './components/scoring/scoring-about/scorin
     AlertModalComponent,
     MetamaskManualModalComponent,
     ReceiveEtherModalComponent,
-    FreeScoringConfirmationModalComponent,
-    VoteModalComponent,
     AddAdminModalComponent,
     CreateNewExpertModalComponent,
     EditExpertModalComponent,
-    ExpertsCountSelectionModalComponent,
     SetExpertsModalComponent,
     ChangeEmailModalComponent,
     ScoringCostComponent,

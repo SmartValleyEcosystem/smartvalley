@@ -1,8 +1,0 @@
-input.ng-dirty.ng-invalid{
-  border: none !important;
-  box-shadow: none !important;
-}
-
-.mat-raised-button[disabled]{
-  background-color: rgba(70, 137, 232, 0.5) !important;
-}
