@@ -26,88 +26,90 @@ import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-e
 import {CreateProjectComponent} from './components/create-project/create-project.component';
 import {EditScoringApplicationComponent} from './components/edit-scoring-application/edit-scoring-application.component';
 import {ProjectComponent} from './components/project/project.component';
+import {ScoringAboutComponent} from './components/scoring/scoring-about/scoring-about.component';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
   {
     path: Paths.Root, component: RootComponent, canActivate: [InitializationGuard], children: [
-      {path: Paths.Root, pathMatch: 'full', component: LandingComponent},
-      {
-        path: Paths.Admin,
-        pathMatch: 'full',
-        component: AdminPanelComponent,
-        canActivate: [ShouldBeAdminGuard]
-      },
-      {path: Paths.AdminExpertApplication + '/:id', pathMatch: 'full', component: AdminExpertApplicationComponent},
-      {
-        path: Paths.Register,
-        pathMatch: 'full',
-        component: RegisterComponent
-      },
-      {path: Paths.ConfirmEmail, component: ConfirmEmailComponent},
-      {
-        path: Paths.ConfirmRegister,
-        pathMatch: 'full',
-        component: RegisterConfirmComponent
-      },
-      {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent},
-      {path: Paths.Account, pathMatch: 'full', component: AccountComponent, canActivate: [ShouldBeAuthenticatedGuard]},
-      {
-        path: Paths.Project,
-        pathMatch: 'full',
-        component: CreateProjectComponent
-      },
-      {path: Paths.ProjectEdit, component: CreateProjectComponent},
-      {
-        path: Paths.ExpertStatus,
-        canActivate: [ExpertStatusGuard],
-        component: ExpertStatusComponent,
-        data: {
-          expertStatuses: [
-            ExpertApplicationStatus.None,
-            ExpertApplicationStatus.Rejected,
-            ExpertApplicationStatus.Pending
-          ]
-        }
-      },
-      {
-        path: Paths.RegisterExpert,
-        canActivate: [ExpertStatusGuard, ShouldHaveEthGuard],
-        component: RegisterExpertComponent,
-        data: {
-          expertStatuses: [
-            ExpertApplicationStatus.None,
-            ExpertApplicationStatus.Rejected
-          ]
-        }
-      },
-      {
-        path: Paths.Expert + '/:tab',
-        component: ExpertComponent,
-        canActivate: [ExpertStatusGuard],
-        data: {
-          expertStatuses: [ExpertApplicationStatus.Accepted]
-        }
-      },
-      {
-        path: Paths.Expert,
-        component: ExpertComponent,
-        canActivate: [ExpertStatusGuard],
-        data: {
-          expertStatuses: [ExpertApplicationStatus.Accepted]
-        }
-      },
-      {
-        path: Paths.Scoring + '/:id',
-        pathMatch: 'full',
-        component: EstimateComponent,
-        canActivate: [ShouldHaveEthGuard, ExpertShouldBeAssignedGuard]
-      },
-      {path: Paths.ProjectList, component: ProjectListComponent},
-      {path: Paths.ProjectList + '/:search', component: ProjectListComponent},
-      {path: Paths.MyProject + '/:id', component: ProjectComponent},
-      {path: Paths.ScoringApplication + '/:id', component: EditScoringApplicationComponent}
-    ]
+    {path: Paths.Root, pathMatch: 'full', component: LandingComponent},
+    {
+      path: Paths.Admin,
+      pathMatch: 'full',
+      component: AdminPanelComponent,
+      canActivate: [ShouldBeAdminGuard]
+    },
+    {path: Paths.AdminExpertApplication + '/:id', pathMatch: 'full', component: AdminExpertApplicationComponent},
+    {
+      path: Paths.Register,
+      pathMatch: 'full',
+      component: RegisterComponent
+    },
+    {path: Paths.ConfirmEmail, component: ConfirmEmailComponent},
+    {
+      path: Paths.ConfirmRegister,
+      pathMatch: 'full',
+      component: RegisterConfirmComponent
+    },
+    {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent},
+    {path: Paths.Scoring + '/:id/about/:areaType', component: ScoringAboutComponent},
+    {path: Paths.Account, pathMatch: 'full', component: AccountComponent, canActivate: [ShouldBeAuthenticatedGuard]},
+    {
+      path: Paths.Project,
+      pathMatch: 'full',
+      component: CreateProjectComponent
+    },
+    {path: Paths.ProjectEdit, component: CreateProjectComponent},
+    {
+      path: Paths.ExpertStatus,
+      canActivate: [ExpertStatusGuard],
+      component: ExpertStatusComponent,
+      data: {
+        expertStatuses: [
+          ExpertApplicationStatus.None,
+          ExpertApplicationStatus.Rejected,
+          ExpertApplicationStatus.Pending
+        ]
+      }
+    },
+    {
+      path: Paths.RegisterExpert,
+      canActivate: [ExpertStatusGuard, ShouldHaveEthGuard],
+      component: RegisterExpertComponent,
+      data: {
+        expertStatuses: [
+          ExpertApplicationStatus.None,
+          ExpertApplicationStatus.Rejected
+        ]
+      }
+    },
+    {
+      path: Paths.Expert + '/:tab',
+      component: ExpertComponent,
+      canActivate: [ExpertStatusGuard],
+      data: {
+        expertStatuses: [ExpertApplicationStatus.Accepted]
+      }
+    },
+    {
+      path: Paths.Expert,
+      component: ExpertComponent,
+      canActivate: [ExpertStatusGuard],
+      data: {
+        expertStatuses: [ExpertApplicationStatus.Accepted]
+      }
+    },
+    {
+      path: Paths.Scoring + '/:id',
+      pathMatch: 'full',
+      component: EstimateComponent,
+      canActivate: [ShouldHaveEthGuard, ExpertShouldBeAssignedGuard]
+    },
+    {path: Paths.ProjectList, component: ProjectListComponent},
+    {path: Paths.ProjectList + '/:search', component: ProjectListComponent},
+    {path: Paths.MyProject + '/:id', component: ProjectComponent},
+    {path: Paths.ScoringApplication + '/:id', component: EditScoringApplicationComponent}
+  ]
   },
   {path: '**', redirectTo: Paths.Root}
 ];

@@ -13,5 +13,6 @@ export interface ProjectSummaryResponse {
   website: string;
   whitePaperLink: string;
   authorId: number;
+  scoringId: number;
   authorAddress: string;
 }

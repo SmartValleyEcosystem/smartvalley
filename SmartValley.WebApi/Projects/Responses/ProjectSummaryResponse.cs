@@ -31,6 +31,8 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public double? Score { get; set; }
 
+        public long? ScoringId { get; set; }
+
         public long AuthorId { get; set; }
 
         public string AuthorAddress { get; set; }
@@ -57,6 +59,7 @@ namespace SmartValley.WebApi.Projects.Responses
                        ScoringStatus = scoring == null
                                            ? ScoringStatus.Pending
                                            : (scoring.Score.HasValue ? ScoringStatus.Finished : ScoringStatus.InProgress),
+                       ScoringId = scoring?.Id,
                        Score = scoring?.Score,
                        AuthorId = project.AuthorId,
                        AuthorAddress = author.Address

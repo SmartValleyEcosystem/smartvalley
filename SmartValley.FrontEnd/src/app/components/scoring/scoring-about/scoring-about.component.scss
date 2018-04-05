@@ -1,0 +1,23 @@
+.main-btn, .ghost-btn {
+  padding-top: 5px;
+  height: 35px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  width: 200px;
+  margin-bottom: 20px;
+  float: right;
+  clear: both;
+}
+
+.area {
+  float: right;
+  text-align: center;
+  width: 200px;
+  clear: both;
+}
+
+.area .text{
+  color: #a4a2b0;
+  display: inline-block;
+}

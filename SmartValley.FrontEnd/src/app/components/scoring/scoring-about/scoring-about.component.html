@@ -1,0 +1,14 @@
+<div *ngIf="!isProjectExists" class="content">
+  <h1 class="title">{{ 'MyProject.Title' | translate }}</h1>
+</div>
+<div *ngIf="isProjectExists" class="content">
+  <h1 class="title">{{ project.name }}</h1>
+  <app-project-info *ngIf="project" [project]="project">
+    <a (click)="acceptOfferAsync()" class="main-btn">{{ 'ScoringAbout.Accept' | translate }}</a>
+    <a (click)="declineOfferAsync()" class="ghost-btn">{{ 'ScoringAbout.Refuse' | translate }}</a>
+    <div class="area">
+      <div class="text">{{ 'ScoringAbout.NeedToScore' | translate }}:</div>
+      <strong>{{area.name}}</strong></div>
+  </app-project-info>
+  <app-project-about [projectId]="projectId"></app-project-about>
+</div>

@@ -121,6 +121,7 @@ import {ProjectAboutComponent} from './components/project/project-about/project-
 import {WaitingModalComponent} from './components/common/waiting-modal/waiting-modal.component';
 import {ScoringApplicationComponent} from './components/project/scoring-application/scoring-application.component';
 import {ProjectService} from './services/project/project.service';
+import { ScoringAboutComponent } from './components/scoring/scoring-about/scoring-about.component';
 
 @NgModule({
   declarations: [
@@ -181,7 +182,8 @@ import {ProjectService} from './services/project/project.service';
     ScoringApplicationComponent,
     ProjectComponent,
     ProjectAboutComponent,
-    WaitingModalComponent
+    WaitingModalComponent,
+    ScoringAboutComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
