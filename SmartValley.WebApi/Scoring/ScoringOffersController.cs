@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application;
-using SmartValley.Domain.Entities;
+using SmartValley.Domain;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Scoring.Requests;
@@ -31,39 +31,6 @@ namespace SmartValley.WebApi.Scoring
             _clock = clock;
         }
 
-        [HttpGet("pending")]
-        public async Task<CollectionResponse<ScoringOfferResponse>> GetAllPendingAsync()
-        {
-            var offers = await _scoringService.GetPendingOfferDetailsAsync(User.GetUserId());
-            var now = _clock.UtcNow;
-            return new CollectionResponse<ScoringOfferResponse>
-                   {
-                       Items = offers.Select(o => ScoringOfferResponse.Create(o, now)).ToArray()
-                   };
-        }
-
-        [HttpGet("accepted")]
-        public async Task<CollectionResponse<ScoringOfferResponse>> GetAllAcceptedAsync()
-        {
-            var offers = await _scoringService.GetAcceptedOfferDetailsAsync(User.GetUserId());
-            var now = _clock.UtcNow;
-            return new CollectionResponse<ScoringOfferResponse>
-                   {
-                       Items = offers.Select(o => ScoringOfferResponse.Create(o, now)).ToArray()
-                   };
-        }
-
-        [HttpGet("history")]
-        public async Task<CollectionResponse<ScoringOfferResponse>> GetHistoryAsync()
-        {
-            var now = _clock.UtcNow;
-            var offers = await _scoringService.GetExpertOffersHistoryAsync(User.GetUserId(), now);
-            return new CollectionResponse<ScoringOfferResponse>
-                   {
-                       Items = offers.Select(o => ScoringOfferResponse.Create(o, now)).ToArray()
-                   };
-        }
-
         [HttpPut("accept")]
         public async Task<EmptyResponse> AcceptAsync([FromBody] AcceptRejectOfferRequest request)
         {
@@ -84,7 +51,36 @@ namespace SmartValley.WebApi.Scoring
         public async Task<ScoringOfferStatusResponse> GetOfferStatusAsync(GetScoringOfferStatusRequest request)
         {
             var offer = await _scoringService.GetOfferAsync(request.ProjectId, request.AreaType.ToDomain(), User.GetUserId());
-            return new ScoringOfferStatusResponse {Status = GetOfferStatus(offer, _clock.UtcNow)};
+            var offerStatus = offer?.Status.ToApi(offer.ExpirationTimestamp, _clock.UtcNow);
+            return new ScoringOfferStatusResponse
+                   {
+                       Status = offerStatus,
+                       Exists = offerStatus.HasValue
+                   };
+        }
+
+        [HttpGet("query")]
+        public async Task<PartialCollectionResponse<ScoringOfferResponse>> QueryAsync([FromQuery] QueryScoringOffersRequest request)
+        {
+            var query = new OffersQuery
+                        {
+                            ExpertId = User.GetUserId(),
+                            OrderBy = request.OrderBy,
+                            SortDirection = request.SortDirection,
+                            OnlyTimedOut = request.Status == ScoringOfferStatus.Timeout,
+                            Status = request.Status?.ToDomain(),
+                            Offset = request.Offset,
+                            Count = request.Count
+                        };
+            var now = _clock.UtcNow;
+            var offers = await _scoringService.QueryOffersAsync(query, now);
+            var totalCount = await _scoringService.GetOffersQueryCountAsync(query, now);
+
+            return new PartialCollectionResponse<ScoringOfferResponse>(
+                request.Offset,
+                request.Count,
+                totalCount,
+                offers.Select(o => ScoringOfferResponse.Create(o, now)).ToArray());
         }
 
         [HttpPut]
@@ -93,26 +89,6 @@ namespace SmartValley.WebApi.Scoring
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
             await _scoringService.UpdateOffersAsync(request.ProjectExternalId);
             return new EmptyResponse();
-        }
-
-        private static OfferStatus GetOfferStatus(ScoringOffer offer, DateTimeOffset now)
-        {
-            if (offer == null)
-                return OfferStatus.None;
-
-            switch (offer.Status)
-            {
-                case ScoringOfferStatus.Pending:
-                    return offer.ExpirationTimestamp < now ? OfferStatus.Timeout : OfferStatus.Pending;
-                case ScoringOfferStatus.Accepted:
-                    return OfferStatus.Accepted;
-                case ScoringOfferStatus.Rejected:
-                    return OfferStatus.Rejected;
-                case ScoringOfferStatus.Finished:
-                    return OfferStatus.Finished;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
         }
     }
 }

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {StageEnum} from './stage.enum';
 import {Country} from './country';
 import {Countries} from './countries';
-import {CategoryEnum} from './category.enum';
+import {Category} from './category';
 import {TranslateService} from '@ngx-translate/core';
 import {SocialMediaTypeEnum} from '../project/social-media-type.enum';
 
@@ -12,7 +12,7 @@ export class DictionariesService {
 
   public stages: EnumItem<StageEnum>[] = [];
   public countries: Country[] = [];
-  public categories: EnumItem<CategoryEnum>[] = [];
+  public categories: EnumItem<Category>[] = [];
   public networks: EnumItem<SocialMediaTypeEnum>[] = [];
 
   constructor(private translateService: TranslateService) {
@@ -47,13 +47,13 @@ export class DictionariesService {
   }
 
   private async getCategoriesAsync() {
-    return await this.enumToTranslatedArray<CategoryEnum>(CategoryEnum, 'Categories.');
+    return await this.enumToTranslatedArray<Category>(Category, 'Categories.');
   }
 
   private async enumToTranslatedArray<E>(Enum: any, translationCategory: string): Promise<EnumItem<E>[]> {
     const items = Object.keys(Enum)
       .filter(value => isNaN(+value));
-    
+
     const enumItems = [];
     for (const item of items) {
       const id = Enum[item];

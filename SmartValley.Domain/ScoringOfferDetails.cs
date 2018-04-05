@@ -6,7 +6,7 @@ namespace SmartValley.Domain
 {
     public class ScoringOfferDetails
     {
-        public ScoringOfferStatus ScoringOfferStatus { get; }
+        public ScoringOfferStatus Status { get; }
 
         public DateTimeOffset ExpirationTimestamp { get; }
 
@@ -32,8 +32,10 @@ namespace SmartValley.Domain
 
         public long ProjectId { get; }
 
+        public double? FinalScore { get; set; }
+
         public ScoringOfferDetails(
-            ScoringOfferStatus scoringOfferStatus, 
+            ScoringOfferStatus status, 
             DateTimeOffset expirationTimestamp, 
             DateTimeOffset? estimatesDueDate, 
             Address scoringContractAddress, 
@@ -45,9 +47,10 @@ namespace SmartValley.Domain
             string description, 
             AreaType areaType, 
             Guid projectExternalId,
-            long projectId)
+            long projectId,
+            double? finalScore)
         {
-            ScoringOfferStatus = scoringOfferStatus;
+            Status = status;
             ExpirationTimestamp = expirationTimestamp;
             EstimatesDueDate = estimatesDueDate;
             ScoringContractAddress = scoringContractAddress;
@@ -60,6 +63,7 @@ namespace SmartValley.Domain
             AreaType = areaType;
             ProjectExternalId = projectExternalId;
             ProjectId = projectId;
+            FinalScore = finalScore;
         }
     }
 }

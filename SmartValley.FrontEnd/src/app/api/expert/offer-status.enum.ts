@@ -1,8 +1,7 @@
 export enum OfferStatus {
-  None = 0,
-  Pending = 1,
-  Accepted = 2,
-  Rejected = 3,
-  Finished = 4,
-  Timeout = 5
+  Pending = 0,
+  Accepted = 1,
+  Rejected = 2,
+  Finished = 3,
+  Timeout = 4
 }

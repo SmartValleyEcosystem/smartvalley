@@ -19,12 +19,10 @@ namespace SmartValley.Domain.Interfaces
 
         Task<bool> IsAcceptedAsync(long scoringId, long expertId, AreaType area);
 
-        Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllPendingByExpertAsync(long expertId, DateTimeOffset now);
-
-        Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllAcceptedByExpertAsync(long expertId, DateTimeOffset now);
-
-        Task<IReadOnlyCollection<ScoringOfferDetails>> GetExpertOffersHistoryAsync(long expertId, DateTimeOffset now);
-
         Task<IReadOnlyCollection<ScoringOffer>> GetByScoringIdAsync(long scoringId);
+
+        Task<IReadOnlyCollection<ScoringOfferDetails>> QueryAsync(OffersQuery query, DateTimeOffset now);
+
+        Task<int> GetQueryCountAsync(OffersQuery query, DateTimeOffset now);
     }
 }

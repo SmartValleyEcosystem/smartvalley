@@ -2,6 +2,8 @@
 {
     public class ScoringOfferStatusResponse
     {
-        public OfferStatus Status { get; set; }
+        public bool Exists { get; set; }
+
+        public ScoringOfferStatus? Status { get; set; }
     }
 }

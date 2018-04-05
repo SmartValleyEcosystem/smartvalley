@@ -16,12 +16,6 @@ namespace SmartValley.WebApi.Scoring
 
         Task<IReadOnlyCollection<ScoringProjectDetailsWithCounts>> GetScoringProjectsAsync(IReadOnlyCollection<ScoringProjectStatus> statuses);
 
-        Task<IReadOnlyCollection<ScoringOfferDetails>> GetPendingOfferDetailsAsync(long expertId);
-
-        Task<IReadOnlyCollection<ScoringOfferDetails>> GetAcceptedOfferDetailsAsync(long expertId);
-
-        Task<IReadOnlyCollection<ScoringOfferDetails>> GetExpertOffersHistoryAsync(long expertId, DateTimeOffset now);
-
         Task AcceptOfferAsync(long scoringId, long areaId, long expertId);
 
         Task RejectOfferAsync(long scoringId, long areaId, long expertId);
@@ -29,5 +23,9 @@ namespace SmartValley.WebApi.Scoring
         Task UpdateOffersAsync(Guid projectExternalId);
 
         Task<Domain.Entities.Scoring> GetByProjectIdAsync(long projectId);
+
+        Task<IReadOnlyCollection<ScoringOfferDetails>> QueryOffersAsync(OffersQuery query, DateTimeOffset now);
+
+        Task<int> GetOffersQueryCountAsync(OffersQuery query, DateTimeOffset now);
     }
 }

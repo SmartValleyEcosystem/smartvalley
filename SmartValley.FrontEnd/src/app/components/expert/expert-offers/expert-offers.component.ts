@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {OffersApiClient} from '../../../api/expert/offers-api-client';
-import {ExpertScoringOffer} from '../../../api/expert/expert-scoring-offer';
+import {ScoringOfferResponse} from '../../../api/expert/scoring-offer-response';
 import {AreaService} from '../../../services/expert/area.service';
 import {ScoringExpertsManagerContractClient} from '../../../services/contract-clients/scoring-experts-manager-contract-client';
 import {ExpertApiClient} from '../../../api/expert/expert-api-client';
@@ -15,7 +15,7 @@ import {BlockiesService} from '../../../services/blockies-service';
 })
 export class ExpertOffersComponent implements OnInit {
 
-  public expertOffers: ExpertScoringOffer[] = [];
+  public expertOffers: ScoringOfferResponse[] = [];
   public isAvailable = true;
 
   constructor(private offersApiClient: OffersApiClient,

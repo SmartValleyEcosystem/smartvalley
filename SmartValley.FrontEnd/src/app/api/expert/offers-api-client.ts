@@ -2,12 +2,13 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BaseApiClient} from '../base-api-client';
 import {CollectionResponse} from '../collection-response';
-import {ExpertScoringOffer} from './expert-scoring-offer';
+import {ScoringOfferResponse} from './scoring-offer-response';
 import {AreaType} from '../scoring/area-type.enum';
-import {ExpertHistoryOffer} from './expert-history-offer';
 import {ScoringOfferStatusResponse} from './scoring-offer-status-response';
 import {UpdateOffersRequest} from './update-offers-request';
 import {ChangeStatusExpertOfferRequest} from './change-status-expert-offer-request';
+import {isNullOrUndefined} from 'util';
+import {OffersQuery} from './offers-query';
 
 @Injectable()
 export class OffersApiClient extends BaseApiClient {
@@ -25,16 +26,16 @@ export class OffersApiClient extends BaseApiClient {
     }).toPromise();
   }
 
-  public getHistoryOffersListAsync(): Promise<CollectionResponse<ExpertHistoryOffer>> {
-    return this.http.get<CollectionResponse<ExpertHistoryOffer>>(`${this.baseApiUrl}/scoring/offers/history`).toPromise();
+  public getHistoryOffersListAsync(): Promise<CollectionResponse<ScoringOfferResponse>> {
+    return this.http.get<CollectionResponse<ScoringOfferResponse>>(`${this.baseApiUrl}/scoring/offers/history`).toPromise();
   }
 
-  public getExpertOffersAsync(): Promise<CollectionResponse<ExpertScoringOffer>> {
-    return this.http.get<CollectionResponse<ExpertScoringOffer>>(`${this.baseApiUrl}/scoring/offers/accepted`).toPromise();
+  public getExpertOffersAsync(): Promise<CollectionResponse<ScoringOfferResponse>> {
+    return this.http.get<CollectionResponse<ScoringOfferResponse>>(`${this.baseApiUrl}/scoring/offers/accepted`).toPromise();
   }
 
-  public getExpertPendingOffersAsync(): Promise<CollectionResponse<ExpertScoringOffer>> {
-    return this.http.get<CollectionResponse<ExpertScoringOffer>>(`${this.baseApiUrl}/scoring/offers/pending`).toPromise();
+  public getExpertPendingOffersAsync(): Promise<CollectionResponse<ScoringOfferResponse>> {
+    return this.http.get<CollectionResponse<ScoringOfferResponse>>(`${this.baseApiUrl}/scoring/offers/pending`).toPromise();
   }
 
   public async acceptExpertOfferAsync(transactionHash: string, scoringId: number, areaId: AreaType) {
@@ -58,5 +59,21 @@ export class OffersApiClient extends BaseApiClient {
       projectExternalId: projectExternalId,
       transactionHash: transactionHash
     }).toPromise();
+  }
+
+  public async queryAsync(query: OffersQuery): Promise<CollectionResponse<ScoringOfferResponse>> {
+    const checkParam = (param) => isNullOrUndefined(param) ? '' : param.toString();
+
+    const parameters = new HttpParams()
+      .append('offset', query.offset.toString())
+      .append('count', query.count.toString())
+      .append('status', checkParam(query.status))
+      .append('orderBy', checkParam(query.orderBy))
+      .append('sortDirection', checkParam(query.sortDirection));
+
+    return this.http.get<CollectionResponse<ScoringOfferResponse>>(
+      `${this.baseApiUrl}/scoring/offers/query`,
+      {params: parameters})
+      .toPromise();
   }
 }

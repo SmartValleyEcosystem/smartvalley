@@ -1,4 +1,4 @@
-export enum CategoryEnum {
+export enum Category {
   Art = 0,
   ArtificialIntelligence = 1,
   Banking = 2,

@@ -54,25 +54,71 @@ namespace SmartValley.Data.SQL.Repositories
             return offer?.Status == ScoringOfferStatus.Accepted;
         }
 
-        public async Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllAcceptedByExpertAsync(long expertId, DateTimeOffset now)
-            => await GetOffersQueryForExpert(expertId)
-                     .Where(o => o.ScoringOfferStatus == ScoringOfferStatus.Accepted && (!o.EstimatesDueDate.HasValue || o.EstimatesDueDate > now))
-                     .ToArrayAsync();
-
-        public async Task<IReadOnlyCollection<ScoringOfferDetails>> GetAllPendingByExpertAsync(long expertId, DateTimeOffset now)
-            => await GetOffersQueryForExpert(expertId)
-                     .Where(o => o.ScoringOfferStatus == ScoringOfferStatus.Pending && o.ExpirationTimestamp > now)
-                     .ToArrayAsync();
-
-        public async Task<IReadOnlyCollection<ScoringOfferDetails>> GetExpertOffersHistoryAsync(long expertId, DateTimeOffset now)
-        {
-            return await GetOffersQueryForExpert(expertId)
-                         .Where(o => o.ScoringOfferStatus != ScoringOfferStatus.Pending || o.ExpirationTimestamp < now)
-                         .ToArrayAsync();
-        }
-
         public async Task<IReadOnlyCollection<ScoringOffer>> GetByScoringIdAsync(long scoringId)
             => await _readContext.ScoringOffers.Where(o => o.ScoringId == scoringId).ToArrayAsync();
+
+        public async Task<IReadOnlyCollection<ScoringOfferDetails>> QueryAsync(OffersQuery query, DateTimeOffset now)
+            => await GetQueryable(query, now).ToArrayAsync();
+
+        public async Task<int> GetQueryCountAsync(OffersQuery query, DateTimeOffset now)
+            => await GetQueryable(query, now, false, false).CountAsync();
+
+        private IQueryable<ScoringOfferDetails> GetQueryable(OffersQuery query, DateTimeOffset now, bool enableSorting = true, bool enablePaging = true)
+        {
+            var queryable = from scoringOffer in _readContext.ScoringOffers
+                            join scoring in _readContext.Scorings on scoringOffer.ScoringId equals scoring.Id
+                            join project in _readContext.Projects on scoring.ProjectId equals project.Id
+                            join user in _readContext.Users on scoringOffer.ExpertId equals user.Id
+                            join country in _readContext.Countries on project.CountryId equals country.Id
+                            where user.Id == query.ExpertId
+                            where !query.OnlyTimedOut || scoringOffer.ExpirationTimestamp < now
+                            where !query.Status.HasValue || query.Status == scoringOffer.Status
+                            select new {scoringOffer, scoring, project, user, country};
+
+            if (enableSorting && query.OrderBy.HasValue)
+            {
+                switch (query.OrderBy.Value)
+                {
+                    case ScoringOffersOrderBy.Name:
+                        queryable = query.SortDirection == SortDirection.Ascending
+                                        ? queryable.OrderBy(o => o.project.Name)
+                                        : queryable.OrderByDescending(o => o.project.Name);
+                        break;
+                    case ScoringOffersOrderBy.Status:
+                        queryable = query.SortDirection == SortDirection.Ascending
+                                        ? queryable.OrderBy(o => o.scoringOffer.Status)
+                                        : queryable.OrderByDescending(o => o.scoringOffer.Status);
+                        break;
+                    case ScoringOffersOrderBy.Deadline:
+                        queryable = query.SortDirection == SortDirection.Ascending
+                                        ? queryable.OrderBy(o => o.scoringOffer.ExpirationTimestamp)
+                                        : queryable.OrderByDescending(o => o.scoringOffer.ExpirationTimestamp);
+                        break;
+                }
+            }
+
+            if (enablePaging)
+            {
+                queryable = queryable
+                            .Skip(query.Offset)
+                            .Take(query.Count);
+            }
+
+            return queryable.Select(o => new ScoringOfferDetails(o.scoringOffer.Status,
+                                                                 o.scoringOffer.ExpirationTimestamp,
+                                                                 o.scoring.EstimatesDueDate,
+                                                                 o.scoring.ContractAddress,
+                                                                 o.scoring.Id,
+                                                                 o.user.Id,
+                                                                 o.project.Name,
+                                                                 o.country.Code,
+                                                                 o.project.Category,
+                                                                 o.project.Description,
+                                                                 o.scoringOffer.AreaId,
+                                                                 o.project.ExternalId,
+                                                                 o.project.Id,
+                                                                 o.scoring.Score));
+        }
 
         private Task SetStatusAsync(long scoringId, long expertId, AreaType area, ScoringOfferStatus status)
         {
@@ -86,30 +132,6 @@ namespace SmartValley.Data.SQL.Repositories
 
             _editContext.ScoringOffers.Attach(scoringOffer).Property(s => s.Status).IsModified = true;
             return _editContext.SaveAsync();
-        }
-
-        private IQueryable<ScoringOfferDetails> GetOffersQueryForExpert(long expertId)
-        {
-            return from scoringOffer in _readContext.ScoringOffers
-                   join scoring in _readContext.Scorings on scoringOffer.ScoringId equals scoring.Id
-                   join project in _readContext.Projects on scoring.ProjectId equals project.Id
-                   join user in _readContext.Users on scoringOffer.ExpertId equals user.Id
-                   join country in _readContext.Countries on project.CountryId equals country.Id
-                   where user.Id == expertId
-                   select new ScoringOfferDetails(
-                       scoringOffer.Status,
-                       scoringOffer.ExpirationTimestamp,
-                       scoring.EstimatesDueDate,
-                       scoring.ContractAddress,
-                       scoring.Id,
-                       user.Id,
-                       project.Name,
-                       country.Code,
-                       project.Category,
-                       project.Description,
-                       scoringOffer.AreaId,
-                       project.ExternalId,
-                       project.Id);
         }
     }
 }

@@ -10,25 +10,27 @@ namespace SmartValley.WebApi.Scoring.Responses
 
         public long ProjectId { get; set; }
 
-        public long AreaId { get; set; }
+        public long Area { get; set; }
 
         public string Name { get; set; }
 
         public string ScoringContractAddress { get; set; }
 
-        public string Country { get; set; }
+        public string CountryCode { get; set; }
 
         public Category Category { get; set; }
 
         public string Description { get; set; }
 
-        public OfferStatus OfferStatus { get; set; }
+        public ScoringOfferStatus OfferStatus { get; set; }
 
         public Guid ProjectExternalId { get; set; }
 
         public DateTimeOffset ExpirationTimestamp { get; set; }
 
         public DateTimeOffset? EstimatesDueDate { get; set; }
+
+        public double? FinalScore { get; set; }
 
         public static ScoringOfferResponse Create(ScoringOfferDetails scoringOffer, DateTimeOffset now)
         {
@@ -38,35 +40,16 @@ namespace SmartValley.WebApi.Scoring.Responses
                        Category = scoringOffer.Category,
                        Name = scoringOffer.Name,
                        Description = scoringOffer.Description,
-                       AreaId = (long) scoringOffer.AreaType,
-                       Country = scoringOffer.CountryCode,
+                       Area = (long) scoringOffer.AreaType,
+                       CountryCode = scoringOffer.CountryCode,
                        ScoringId = scoringOffer.ScoringId,
                        ProjectExternalId = scoringOffer.ProjectExternalId,
                        ExpirationTimestamp = scoringOffer.ExpirationTimestamp,
                        EstimatesDueDate = scoringOffer.EstimatesDueDate,
-                       OfferStatus = GetStatus(scoringOffer, now),
-                       ProjectId = scoringOffer.ProjectId
+                       OfferStatus = scoringOffer.Status.ToApi(scoringOffer.ExpirationTimestamp, now),
+                       ProjectId = scoringOffer.ProjectId,
+                       FinalScore = scoringOffer.FinalScore
                    };
-        }
-
-        private static OfferStatus GetStatus(ScoringOfferDetails scoringOffer, DateTimeOffset now)
-        {
-            if (scoringOffer == null)
-                return OfferStatus.None;
-
-            switch (scoringOffer.ScoringOfferStatus)
-            {
-                case ScoringOfferStatus.Pending:
-                    return scoringOffer.ExpirationTimestamp < now ? OfferStatus.Timeout : OfferStatus.Pending;
-                case ScoringOfferStatus.Accepted:
-                    return OfferStatus.Accepted;
-                case ScoringOfferStatus.Rejected:
-                    return OfferStatus.Rejected;
-                case ScoringOfferStatus.Finished:
-                    return OfferStatus.Finished;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
         }
     }
 }

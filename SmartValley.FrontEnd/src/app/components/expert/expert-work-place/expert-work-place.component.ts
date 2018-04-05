@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ExpertScoringOffer} from '../../../api/expert/expert-scoring-offer';
+import {ScoringOfferResponse} from '../../../api/expert/scoring-offer-response';
 import {Router} from '@angular/router';
 import {Paths} from '../../../paths';
 import {OffersApiClient} from '../../../api/expert/offers-api-client';
@@ -12,7 +12,7 @@ import {AreaType} from '../../../api/scoring/area-type.enum';
 })
 export class ExpertWorkPlaceComponent implements OnInit {
 
-  public expertScoring: ExpertScoringOffer[] = [];
+  public expertScoring: ScoringOfferResponse[] = [];
 
   constructor(private offersApiClient: OffersApiClient,
               private router: Router) {

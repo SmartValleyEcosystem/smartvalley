@@ -13,11 +13,6 @@ import {ExpertResponse} from './expert-response';
 import {ExpertRequest} from './expert-request';
 import {ExpertDeleteRequest} from './expert-delete-request';
 import {ExpertUpdateRequest} from './expert-update-request';
-import {ExpertScoring} from './expert-scoring';
-import {ExpertHistoryOffer} from './expert-history-offer';
-import {Observable} from 'rxjs/Observable';
-import {of} from 'rxjs/observable/of';
-import {ExpertScoringOffer} from './expert-scoring-offer';
 import {ExpertAvailabilityStatusResponse} from './expert-availability-status-response';
 
 @Injectable()

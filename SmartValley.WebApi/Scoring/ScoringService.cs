@@ -101,15 +101,6 @@ namespace SmartValley.WebApi.Scoring
             return result;
         }
 
-        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetPendingOfferDetailsAsync(long expertId)
-            => _scoringOffersRepository.GetAllPendingByExpertAsync(expertId, _clock.UtcNow);
-
-        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetAcceptedOfferDetailsAsync(long expertId)
-            => _scoringOffersRepository.GetAllAcceptedByExpertAsync(expertId, _clock.UtcNow);
-
-        public Task<IReadOnlyCollection<ScoringOfferDetails>> GetExpertOffersHistoryAsync(long expertId, DateTimeOffset now)
-            => _scoringOffersRepository.GetExpertOffersHistoryAsync(expertId, now);
-
         public async Task AcceptOfferAsync(long scoringId, long areaId, long expertId)
         {
             await _scoringOffersRepository.AcceptAsync(scoringId, expertId, (AreaType) areaId);
@@ -153,6 +144,12 @@ namespace SmartValley.WebApi.Scoring
 
         public Task<Domain.Entities.Scoring> GetByProjectIdAsync(long projectId)
             => _scoringRepository.GetByProjectIdAsync(projectId);
+
+        public Task<IReadOnlyCollection<ScoringOfferDetails>> QueryOffersAsync(OffersQuery query, DateTimeOffset now)
+            => _scoringOffersRepository.QueryAsync(query, now);
+
+        public Task<int> GetOffersQueryCountAsync(OffersQuery query, DateTimeOffset now)
+            => _scoringOffersRepository.GetQueryCountAsync(query, now);
 
         private Task<IReadOnlyCollection<User>> GetExpertsForOffersAsync(IReadOnlyCollection<ScoringOfferInfo> contractOffers)
         {
@@ -224,7 +221,7 @@ namespace SmartValley.WebApi.Scoring
                        AreaId = offerInfo.Area,
                        ExpertId = expertId,
                        ScoringId = scoringId,
-                       Status = ScoringOfferStatus.Pending,
+                       Status = Domain.Entities.ScoringOfferStatus.Pending,
                        ExpirationTimestamp = offerInfo.ExpirationTimestamp.Value
                    };
         }

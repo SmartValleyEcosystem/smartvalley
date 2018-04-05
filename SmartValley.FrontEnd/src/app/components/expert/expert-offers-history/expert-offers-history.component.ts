@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {OffersApiClient} from '../../../api/expert/offers-api-client';
-import {ExpertHistoryOffer} from '../../../api/expert/expert-history-offer';
 import {ExpertOfferStatus} from '../../../services/expert/expert-offer-status.enum';
+import {ScoringOfferResponse} from '../../../api/expert/scoring-offer-response';
 
 @Component({
   selector: 'app-expert-offers-history',
@@ -10,31 +10,17 @@ import {ExpertOfferStatus} from '../../../services/expert/expert-offer-status.en
 })
 export class ExpertOffersHistoryComponent implements OnInit {
 
-    public offers: ExpertHistoryOffer[] = [];
+  public offers: ScoringOfferResponse[] = [];
 
-    constructor(private offersApiClient: OffersApiClient) { }
+  constructor(private offersApiClient: OffersApiClient) {
+  }
 
-    public renderTableRows(historyOfferItems: ExpertHistoryOffer[]) {
-        this.offers = [];
-        for (const offer of historyOfferItems) {
-            const historyOffer = <ExpertHistoryOffer>{
-                scoringId: offer.scoringId,
-                name: offer.name,
-                scoringOfferTimestamp: offer.scoringOfferTimestamp,
-                offerStatus: offer.offerStatus
-            };
-            this.offers.push(historyOffer);
-        }
-    }
+  public getExpertOfferStatusById(id) {
+    return ExpertOfferStatus[id];
+  }
 
-    public getExpertOfferStatusById(id) {
-      return ExpertOfferStatus[id];
-    }
-
-    async ngOnInit() {
-        let offersResponse = await this.offersApiClient.getHistoryOffersListAsync();
-        this.offers = offersResponse.items;
-        this.renderTableRows(this.offers);
-    }
-
+  async ngOnInit() {
+    const offersResponse = await this.offersApiClient.getHistoryOffersListAsync();
+    this.offers = offersResponse.items;
+  }
 }
