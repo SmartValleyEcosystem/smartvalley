@@ -1,13 +1,14 @@
 <div *ngIf="!doesScoringApplicationExists; else applicationExistBlock;">
-  <div *ngIf="isCreateScoringApplicationCommandAvailable" class="main-text">{{
-    'ScoringApplication.DoesNotExistTextWithProposalToCreate' | translate }}
+  <div *ngIf="isAuthor; else notAuthorBlock;">
+    <div class="main-text">{{ 'ScoringApplication.DoesNotExistTextWithProposalToCreate' | translate }}
+    </div>
+    <input (click)="navigateToCreateForm()" class="main-btn create-btn"
+           type="button"
+           value="{{ 'ScoringApplication.DoesNotExistButtonText' | translate }}"/>
   </div>
-  <div *ngIf="!isCreateScoringApplicationCommandAvailable" class="main-text">{{ 'ScoringApplication.DoesNotExistText' |
-    translate }}
-  </div>
-  <input *ngIf="isCreateScoringApplicationCommandAvailable" (click)="navigateToCreateForm()" class="main-btn create-btn"
-         type="button"
-         value="{{ 'ScoringApplication.DoesNotExistButtonText' | translate }}"/>
+  <ng-template #notAuthorBlock>
+    <div class="main-text">{{ 'ScoringApplication.DoesNotExistText' | translate }} </div>
+  </ng-template>
 </div>
 <ng-template #applicationExistBlock>
   <div class="content">
@@ -131,10 +132,13 @@
         <h2 class="partition-title" id="partition_team">{{ 'EditScoringApplication.TeamTitle' | translate }}</h2>
         <div class="partition-block">
           <div *ngIf="projectInfo.projectTeamMembers.length > 0; else haveNoMembersBlock;">
-            <div class="member-column" [tooltipDisabled]="!member.about" [escape]="false" pTooltip="<p class='tooltip-text'>{{ member.about }}</p>" tooltipPosition="right" *ngFor="let member of projectInfo.projectTeamMembers;">
+            <div class="member-column" [tooltipDisabled]="!member.about" [escape]="false"
+                 pTooltip="<p class='tooltip-text'>{{ member.about }}</p>" tooltipPosition="right"
+                 *ngFor="let member of projectInfo.projectTeamMembers;">
               <div class="member-photo-container">
                 <div class="avatar-wrapper">
-                  <img *ngIf="member.photoUrl !== '' && member.photoUrl !== null; else withoutPhoto;" class="member-photo"
+                  <img *ngIf="member.photoUrl !== '' && member.photoUrl !== null; else withoutPhoto;"
+                       class="member-photo"
                        [src]="member.photoUrl"/>
                 </div>
                 <ng-template #withoutPhoto>
@@ -153,18 +157,21 @@
             {{ 'MyProjectAbout.NoTeamError' | translate }}
           </ng-template>
         </div>
-        <h2 class="partition-title" id="partition_advisers">{{ 'EditScoringApplication.AdvisersTitle' | translate }}</h2>
+        <h2 class="partition-title" id="partition_advisers">{{ 'EditScoringApplication.AdvisersTitle' | translate
+          }}</h2>
         <div class="partition-block">
           <div *ngIf="projectInfo.projectAdvisers.length > 0; else haveNoAdvisersBlock;">
-            <div class="member-column"  *ngFor="let adviser of projectInfo.projectAdvisers;" [tooltipDisabled]="(!adviser.about && !adviser.reason)" [escape]="false" pTooltip=
-              "<p class='tooltip-title {{ !adviser.about ? 'hidden' : ''}}'>{{ 'ScoringApplication.About'| translate }}</p>
+            <div class="member-column" *ngFor="let adviser of projectInfo.projectAdvisers;"
+                 [tooltipDisabled]="(!adviser.about && !adviser.reason)" [escape]="false" pTooltip=
+                   "<p class='tooltip-title {{ !adviser.about ? 'hidden' : ''}}'>{{ 'ScoringApplication.About'| translate }}</p>
                     <p class='tooltip-text {{ !adviser.about ? 'hidden' : ''}}'>{{ adviser.about }}</p>
                     <p class='tooltip-title {{ !adviser.reason ? 'hidden' : ''}}'>{{ 'ScoringApplication.Reason'| translate }}</p>
                     <p class='tooltip-text {{ !adviser.reason ? 'hidden' : ''}}'>{{ adviser.reason }}</p>"
                  tooltipPosition="right">
               <div class="member-photo-container">
                 <div class="avatar-wrapper">
-                  <img *ngIf="adviser.photoUrl !== '' && adviser.photoUrl !== null; else withoutPhoto;" class="member-photo"
+                  <img *ngIf="adviser.photoUrl !== '' && adviser.photoUrl !== null; else withoutPhoto;"
+                       class="member-photo"
                        [src]="adviser.photoUrl"/>
                 </div>
                 <ng-template #withoutPhoto>
@@ -173,8 +180,10 @@
               </div>
               <div class="partition-item" style="cursor: default;">{{adviser.fullName}}</div>
               <div class="member-socials">
-                <a *ngIf="adviser.linkedInLink" href="{{adviser.linkedInLink}}" class="social-icon social-icon__linkedin"></a>
-                <a *ngIf="adviser.facebookLink" href="{{adviser.facebookLink}}" class="social-icon social-icon__facebook"></a>
+                <a *ngIf="adviser.linkedInLink" href="{{adviser.linkedInLink}}"
+                   class="social-icon social-icon__linkedin"></a>
+                <a *ngIf="adviser.facebookLink" href="{{adviser.facebookLink}}"
+                   class="social-icon social-icon__facebook"></a>
               </div>
             </div>
           </div>
@@ -218,7 +227,9 @@
                   <p class="control-label">
                     <label>{{'EditScoringApplication.' + question.key | translate }}</label>
                   </p>
-                  <div class="main-text">{{question.answer ? ('ScoringApplication.' + question.answer | translate) : '\u2014' }}</div>
+                  <div class="main-text">{{question.answer ? ('ScoringApplication.' + question.answer | translate) :
+                    '\u2014' }}
+                  </div>
                 </div>
                 <div *ngSwitchCase="questionTypeUrl">
                   <p class="control-label">
@@ -253,7 +264,7 @@
             </li>
           </ul>
           <div class="partition-menu__inputs">
-            <input *ngIf="isEditScoringApplicationCommandAvailable" (click)="navigateToEdit()" type="button"
+            <input *ngIf="isAuthor && !isApplicationSubmitted" (click)="navigateToEdit()" type="button"
                    class="ghost-btn" value="{{ 'ScoringApplication.EditTextButton' | translate }}">
           </div>
         </sticky>

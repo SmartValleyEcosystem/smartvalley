@@ -30,8 +30,8 @@ export class ScoringApplicationComponent implements OnInit {
   public questionTypeUrl = QuestionControlType[5];
 
   public doesScoringApplicationExists: boolean;
-  public isCreateScoringApplicationCommandAvailable = false;
-  public isEditScoringApplicationCommandAvailable = false;
+  public isAuthor: boolean;
+  public isApplicationSubmitted: boolean;
 
   constructor(private router: Router,
               private htmlElement: ElementRef,
@@ -49,14 +49,14 @@ export class ScoringApplicationComponent implements OnInit {
       this.haveSocials = this.checkSocials();
       this.partitions = response.partitions;
       this.doesScoringApplicationExists = true;
+      this.isApplicationSubmitted = response.isSubmitted;
     }
 
     const project = await this.projectApiClient.getProjectSummaryAsync(this.projectId);
     const currentUser = await this.userContext.getCurrentUser();
 
     if (!isNullOrUndefined(currentUser) && currentUser.id === project.authorId) {
-      this.isCreateScoringApplicationCommandAvailable = isNullOrUndefined(response.created);
-      this.isEditScoringApplicationCommandAvailable = !isNullOrUndefined(response.created);
+      this.isAuthor = true;
     }
   }
 

@@ -6,4 +6,5 @@ export interface ScoringApplicationResponse {
   created: string;
   saved: string;
   partitions: ScoringApplicationPartition[];
+  isSubmitted: boolean;
 }
