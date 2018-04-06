@@ -114,6 +114,7 @@ import {WaitingModalComponent} from './components/common/waiting-modal/waiting-m
 import {ScoringApplicationComponent} from './components/project/scoring-application/scoring-application.component';
 import {ProjectService} from './services/project/project.service';
 import {ScoringAboutComponent} from './components/scoring/scoring-about/scoring-about.component';
+import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scoring-application.guard';
 
 @NgModule({
   declarations: [
@@ -272,7 +273,8 @@ import {ScoringAboutComponent} from './components/scoring/scoring-about/scoring-
     ScoringService,
     ProjectService,
     ScoringContractClient,
-    ScoringApplicationApiClient
+    ScoringApplicationApiClient,
+    SubmittedScoringApplicationGuard
   ],
   bootstrap: [AppComponent]
 })

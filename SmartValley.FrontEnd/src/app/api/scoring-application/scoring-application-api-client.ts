@@ -21,6 +21,6 @@ export class ScoringApplicationApiClient extends BaseApiClient {
   }
 
   public async submitAsync(projectId: number) {
-    await this.http.put(this.baseApiUrl + `/projects/${projectId}/scoring/applications/submit`).toPromise();
+    await this.http.put(this.baseApiUrl + `/projects/${projectId}/scoring/applications/submit`, projectId).toPromise();
   }
 }

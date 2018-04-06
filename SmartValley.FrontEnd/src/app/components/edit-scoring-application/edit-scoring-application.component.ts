@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChildren} from '@angular/core';
+import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ScoringApplicationResponse} from '../../api/scoring-application/scoring-application-response';
 import {ScoringApplicationPartition} from '../../api/scoring-application/scoring-application-partition';
@@ -232,7 +232,7 @@ export class EditScoringApplicationComponent implements OnInit {
     return this.questionControlType[id];
   }
 
-  public isParentQuestionAnswered(id: number, parentTriggerValue: string): void {
+  public isParentQuestionAnswered(id: number, parentTriggerValue: string): boolean {
     if (!id) {
       return true;
     }
@@ -260,7 +260,7 @@ export class EditScoringApplicationComponent implements OnInit {
     return selectItems;
   }
 
-  public async onSubmitAsync(): void {
+  public async onSubmitAsync(): Promise<void> {
     const isValid = this.validateForm();
     if (isValid) {
       await this.saveDraftAsync();
@@ -448,7 +448,7 @@ export class EditScoringApplicationComponent implements OnInit {
     }
   }
 
-  private async saveDraftAsync(): void {
+  private async saveDraftAsync(): Promise<void> {
     this.disabled = true;
     const socials = this.getSocialsValues();
     const draftRequest = <SaveScoringApplicationRequest>{

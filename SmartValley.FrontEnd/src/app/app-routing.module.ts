@@ -26,6 +26,7 @@ import {CreateProjectComponent} from './components/create-project/create-project
 import {EditScoringApplicationComponent} from './components/edit-scoring-application/edit-scoring-application.component';
 import {ProjectComponent} from './components/project/project.component';
 import {ScoringAboutComponent} from './components/scoring/scoring-about/scoring-about.component';
+import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scoring-application.guard';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -91,7 +92,11 @@ const appRoutes: Routes = [
     {path: Paths.ProjectList, component: ProjectListComponent},
     {path: Paths.ProjectList + '/:search', component: ProjectListComponent},
     {path: Paths.MyProject + '/:id', component: ProjectComponent},
-    {path: Paths.ScoringApplication + '/:id', component: EditScoringApplicationComponent}
+    {
+      path: Paths.ScoringApplication + '/:id',
+      component: EditScoringApplicationComponent,
+      canActivate: [SubmittedScoringApplicationGuard]
+    }
   ]
   },
   {path: '**', redirectTo: Paths.Root}
