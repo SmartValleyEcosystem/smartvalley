@@ -1,7 +1,8 @@
 <div class="content">
   <h1 class="title">{{ 'EditScoringApplication.Title' | translate }}</h1>
   <p>{{ 'EditScoringApplication.PageDescription' | translate }}</p>
-  <form [formGroup]="questionFormGroup" autocomplete="off" class="partitions-page" (ngSubmit)="onSubmitAsync()">
+  <form *ngIf="questionFormGroup" [formGroup]="questionFormGroup" autocomplete="off" class="partitions-page"
+        (ngSubmit)="onSubmitAsync()">
     <div class="partition">
       <h2 class="partition-title" id="partition_common">{{ 'EditScoringApplication.CommonTitle' | translate }}</h2>
       <div class="partition-block" formGroupName="commonGroup">
@@ -9,57 +10,74 @@
           <p class="control-label">
             <label for="control_name">{{ 'EditScoringApplication.Name' | translate }}</label>
           </p>
-          <input class="input input-name" formControlName="name" type="text" id="control_name" placeholder="{{ 'EditScoringApplication.Name' | translate }}">
+          <input class="input input-name" formControlName="name" type="text" id="control_name"
+                 placeholder="{{ 'EditScoringApplication.Name' | translate }}" #required>
         </div>
         <div class="control-row">
           <p class="control-label">
-              <label for="project-category">{{ 'EditScoringApplication.ProjectCategory' | translate }}</label>
+            <label for="project-category">{{ 'EditScoringApplication.ProjectCategory' | translate }}</label>
           </p>
-          <app-select [isNeedToTranslate]="true" class="select-component input-component" formControlName="projectCategory" [elementId]="'project-category'" [placeholder]="'EditScoringApplication.AllCategories' | translate" [items]="categories"></app-select>
+          <app-select [isNeedToTranslate]="true" class="select-component input-component"
+                      formControlName="projectCategory" [elementId]="'project-category'"
+                      [placeholder]="'EditScoringApplication.AllCategories' | translate" [items]="categories"
+                      #required>
+          </app-select>
         </div>
         <div class="control-row">
           <div>
             <p class="control-label">
-                <label for="project-stage">{{ 'EditScoringApplication.ProjectStage' | translate }}</label>
+              <label for="project-stage">{{ 'EditScoringApplication.ProjectStage' | translate }}</label>
             </p>
-            <app-select [isNeedToTranslate]="true" class="input-component" formControlName="projectStage" [elementId]="'project-stage'" [items]="stages" [placeholder]="'EditScoringApplication.AllStages' | translate"></app-select>
+            <app-select [isNeedToTranslate]="true" class="input-component" formControlName="projectStage"
+                        [elementId]="'project-stage'" [items]="stages"
+                        [placeholder]="'EditScoringApplication.AllStages' | translate" #required>
+            </app-select>
           </div>
         </div>
         <div class="control-row">
           <p class="control-label">
             <label for="country">{{ 'EditScoringApplication.Country' | translate }}</label>
           </p>
-          <app-autocomplete class="input-component" formControlName="country" [elementClass]="'wide-autocomplete'" [elementId]="'country'" [placeholder]="'EditScoringApplication.AllCountries' | translate" [allItems]="countries"></app-autocomplete>
+          <app-autocomplete class="input-component" formControlName="country" [elementClass]="'wide-autocomplete'"
+                            [elementId]="'country'" [placeholder]="'EditScoringApplication.AllCountries' | translate"
+                            [allItems]="countries" #required>
+          </app-autocomplete>
         </div>
         <div class="form-control-row">
           <p class="control-label">
             <label for="control_description">{{ 'EditScoringApplication.Description' | translate }}</label>
           </p>
-          <textarea class="input" formControlName="description" name="control_description" id="control_description" cols="30" rows="10"></textarea>
+          <textarea class="input" formControlName="description" name="control_description" id="control_description"
+                    cols="30" rows="10" #required>
+          </textarea>
         </div>
         <div class="form-control-row">
           <p class="control-label">
             <label for="control_website">{{ 'EditScoringApplication.Website' | translate }}</label>
           </p>
-          <input class="input" formControlName="website" type="text" name="control_website" id="control_website">
+          <input class="input" formControlName="website" type="text" name="control_website" id="control_website"
+                 #required>
         </div>
         <div class="form-control-row">
           <p class="control-label">
             <label for="control_link-to-wp">{{ 'EditScoringApplication.LinkToWP' | translate }}</label>
           </p>
-          <input class="input" formControlName="linkToWP" type="text" name="control_link-to-wp" id="control_link-to-wp">
+          <input class="input" formControlName="linkToWP" type="text" name="control_link-to-wp" id="control_link-to-wp"
+                 #required>
         </div>
         <div class="form-control-row">
           <p class="control-label">
             <label for="control_ico-date">{{ 'EditScoringApplication.ICODate' | translate }}</label>
           </p>
-          <p-calendar [inputId]="'control_ico-date'" formControlName="icoDate" [inputStyleClass]="'input input-date'"></p-calendar>
+          <p-calendar [inputId]="'control_ico-date'" formControlName="icoDate"
+                      [inputStyleClass]="'input input-date'" #required>
+          </p-calendar>
         </div>
         <div class="form-control-row">
           <p class="control-label">
             <label for="control_email">{{ 'EditScoringApplication.ContactEmail' | translate }}</label>
           </p>
-          <input class="input" type="text" formControlName="email" name="control_email" id="control_email">
+          <input class="input" type="text" formControlName="email" name="control_email" id="control_email" #required>
         </div>
       </div>
       <h2 class="partition-title" id="partition_social">{{ 'EditScoringApplication.SocialMedia' | translate }}</h2>
@@ -73,139 +91,172 @@
           </p>
         </div>
         <div *ngFor="let social of activeSocials;" class="socials__row">
-          <app-select class="input-component"  formControlName="{{'social_' + social}}" [elementId]="'social_'+ social" [items]="socials" [placeholder]="'EditScoringApplication.SocialMediaPlaceholder' | translate"></app-select>
-          <input type="text" [formControlName]="'social-link_' + social" class="input socials__input" placeholder="{{ 'EditScoringApplication.Http' | translate }}">
+          <app-select class="input-component" formControlName="{{'social_' + social}}" [elementId]="'social_'+ social"
+                      [items]="socials"
+                      [placeholder]="'EditScoringApplication.SocialMediaPlaceholder' | translate" #required>
+          </app-select>
+          <input type="text" [formControlName]="'social-link_' + social" class="input socials__input"
+                 placeholder="{{ 'EditScoringApplication.Http' | translate }} " #required>
           <span (click)="removeSocialMedia(social)" class="socials__remove"></span>
         </div>
-        <span class="socials__add-button" (click)="addSocialMedia()">{{ 'EditScoringApplication.AddMore' | translate }}</span>
+        <span class="socials__add-button"
+              (click)="addSocialMedia()">{{ 'EditScoringApplication.AddMore' | translate }}</span>
         <p class="control-label">{{ 'EditScoringApplication.LinkToArticle' | translate }}</p>
         <div *ngFor="let article of activeArticleLink;" class="socials__row">
-          <input type="text" [formControlName]="'article-link_' + article" class="input input-wide" placeholder="{{ 'EditScoringApplication.Http' | translate }}">
+          <input type="text" [formControlName]="'article-link_' + article" class="input input-wide"
+                 placeholder="{{ 'EditScoringApplication.Http' | translate }}" #required>
           <span (click)="removeArticleLink(article)" class="socials__remove"></span>
         </div>
-        <span class="socials__add-button" (click)="addArticleLink()">{{ 'EditScoringApplication.AddLink' | translate }}</span>
+        <span class="socials__add-button"
+              (click)="addArticleLink()">{{ 'EditScoringApplication.AddLink' | translate }}</span>
       </div>
       <div formGroupName="teamGroup">
         <h2 class="partition-title" id="partition_team">{{ 'EditScoringApplication.TeamTitle' | translate }}</h2>
         <div class="partition-block">
           <div *ngFor="let member of activeTeamMembers; first as isFirst; let index = index">
-            <h3 class="member-name">{{ 'EditScoringApplication.Member' | translate }} {{ index + 1 }} <span (click)="removeTeamMember(member)" class="member__remove"></span></h3>
+            <h3 class="member-name">{{ 'EditScoringApplication.Member' | translate }} {{ index + 1 }} <span
+              (click)="removeTeamMember(member)" class="member__remove"></span></h3>
             <div class="control-row">
               <p class="control-label">
                 <label for="team_member_name_{{member}}">{{ 'EditScoringApplication.FullName' | translate }}</label>
               </p>
-              <input class="input" formControlName="team_member_name_{{member}}" id="team_member_name_{{member}}" />
+              <input class="input" formControlName="team_member_name_{{member}}" id="team_member_name_{{member}}"
+                     #required/>
             </div>
             <div class="control-row">
               <p class="control-label">
                 <label for="team_member_role_{{member}}">{{ 'EditScoringApplication.Role' | translate }}</label>
               </p>
-              <input class="input" formControlName="team_member_role_{{member}}" id="team_member_role_{{member}}" />
+              <input class="input" formControlName="team_member_role_{{member}}" id="team_member_role_{{member}}"
+                     #required/>
             </div>
             <div class="control-row">
               <p class="control-label">
-                <label for="team_member_linkedin_{{member}}">{{ 'EditScoringApplication.TeamLinkLinkedin' | translate }}</label>
+                <label for="team_member_linkedin_{{member}}">{{ 'EditScoringApplication.TeamLinkLinkedin' | translate}}</label>
               </p>
-              <input class="input" formControlName="team_member_linkedin_{{member}}" placeholder="{{ 'EditScoringApplication.Http' | translate}}" id="team_member_linkedin_{{member}}" />
+              <input class="input" formControlName="team_member_linkedin_{{member}}"
+                     placeholder="{{ 'EditScoringApplication.Http' | translate}}" id="team_member_linkedin_{{member}}"
+                     #required/>
             </div>
             <div class="control-row">
               <p class="control-label">
-                <label for="team_member_facebook_{{member}}">{{ 'EditScoringApplication.TeamLinkFacebook' | translate }}</label>
+                <label for="team_member_facebook_{{member}}">{{ 'EditScoringApplication.TeamLinkFacebook' | translate}}</label>
               </p>
-              <input class="input" formControlName="team_member_facebook_{{member}}" placeholder="{{ 'EditScoringApplication.Http' | translate}}" id="team_member_facebook_{{member}}" />
+              <input class="input" formControlName="team_member_facebook_{{member}}"
+                     placeholder="{{ 'EditScoringApplication.Http' | translate}}" id="team_member_facebook_{{member}}"
+                     #required/>
             </div>
             <div class="control-row">
               <p class="control-label">
-                <label for="team_member_experience_{{member}}">{{ 'EditScoringApplication.Experience' | translate }}</label>
+                <label for="team_member_experience_{{member}}">{{ 'EditScoringApplication.Experience' | translate}}</label>
               </p>
-              <textarea class="input" formControlName="team_member_experience_{{member}}" placeholder="{{ 'EditScoringApplication.ExperiencePlaceholder' | translate}}" id="team_member_experience_{{member}}" ></textarea>
+              <textarea class="input" formControlName="team_member_experience_{{member}}"
+                        placeholder="{{ 'EditScoringApplication.ExperiencePlaceholder' | translate}}"
+                        id="team_member_experience_{{member}}" #required>
+              </textarea>
             </div>
           </div>
-          <span class="socials__add-button" (click)="addTeamMember()">{{ 'EditScoringApplication.AddTeam' | translate }}</span>
+          <span class="socials__add-button"
+                (click)="addTeamMember()">{{ 'EditScoringApplication.AddTeam' | translate }}</span>
         </div>
       </div>
       <div formGroupName="advisersGroup">
-        <h2 class="partition-title" id="partition_advisers">{{ 'EditScoringApplication.AdvisersTitle' | translate }}</h2>
+        <h2 class="partition-title" id="partition_advisers">{{ 'EditScoringApplication.AdvisersTitle' | translate}}
+        </h2>
         <div class="partition-block">
           <div *ngFor="let adviser of activeAdvisers; first as isFirst; let index = index;">
-            <h3 class="member-name">{{ 'EditScoringApplication.Adviser' | translate }} {{ index + 1 }} <span (click)="removeAdviser(adviser)" class="member__remove"></span></h3>
+            <h3 class="member-name">{{ 'EditScoringApplication.Adviser' | translate }} {{ index + 1 }} <span
+              (click)="removeAdviser(adviser)" class="member__remove"></span></h3>
             <div class="control-row">
               <p class="control-label">
                 <label for="adviser_name_{{adviser}}">{{ 'EditScoringApplication.FullName' | translate }}</label>
               </p>
-              <input class="input" formControlName="adviser_name_{{adviser}}" id="adviser_name_{{adviser}}" />
+              <input class="input" formControlName="adviser_name_{{adviser}}" id="adviser_name_{{adviser}}" #required/>
             </div>
             <div class="control-row">
               <p class="control-label">
                 <label for="adviser_reason_{{adviser}}">{{ 'EditScoringApplication.Reason' | translate }}</label>
               </p>
-              <textarea class="input" formControlName="adviser_reason_{{adviser}}" id="adviser_reason_{{adviser}}" ></textarea>
+              <textarea class="input" formControlName="adviser_reason_{{adviser}}"
+                        id="adviser_reason_{{adviser}}" #required>
+              </textarea>
             </div>
             <div class="control-row">
               <p class="control-label">
                 <label for="adviser_about_{{adviser}}">{{ 'EditScoringApplication.About' | translate }}</label>
               </p>
-              <textarea class="input" formControlName="adviser_about_{{adviser}}" id="adviser_about_{{adviser}}" ></textarea>
+              <textarea class="input" formControlName="adviser_about_{{adviser}}"
+                        id="adviser_about_{{adviser}}" #required>
+              </textarea>
             </div>
             <div class="control-row">
               <p class="control-label">
-                <label for="adviser_linkedin_{{adviser}}">{{ 'EditScoringApplication.LinkLinkedin' | translate }}</label>
+                <label for="adviser_linkedin_{{adviser}}">{{ 'EditScoringApplication.LinkLinkedin' | translate}}</label>
               </p>
-              <input class="input" formControlName="adviser_linkedin_{{adviser}}" placeholder="{{ 'EditScoringApplication.Http' | translate}}" id="adviser_linkedin_{{adviser}}" />
+              <input class="input" formControlName="adviser_linkedin_{{adviser}}"
+                     placeholder="{{ 'EditScoringApplication.Http' | translate}}" id="adviser_linkedin_{{adviser}}" #required/>
             </div>
             <div class="control-row">
               <p class="control-label">
-                <label for="adviser_facebook_{{adviser}}">{{ 'EditScoringApplication.LinkFacebook' | translate }}</label>
+                <label for="adviser_facebook_{{adviser}}">{{ 'EditScoringApplication.LinkFacebook' | translate}}</label>
               </p>
-              <input class="input" formControlName="adviser_facebook_{{adviser}}" placeholder="{{ 'EditScoringApplication.Http' | translate}}" id="adviser_facebook_{{adviser}}" />
+              <input class="input" formControlName="adviser_facebook_{{adviser}}"
+                     placeholder="{{ 'EditScoringApplication.Http' | translate}}" id="adviser_facebook_{{adviser}}" #required/>
             </div>
           </div>
-          <span class="socials__add-button" (click)="addAdviser()">{{ 'EditScoringApplication.AddAdviser' | translate }}</span>
+          <span class="socials__add-button"
+                (click)="addAdviser()">{{ 'EditScoringApplication.AddAdviser' | translate }}</span>
         </div>
       </div>
       <div formGroupName="questionsGroup" *ngFor="let partition of partitions; let index = index;">
-        <h2 class="partition-title" id="partition_{{partition.order}}">{{index + 4}}. {{ 'EditScoringApplication.' + partition.name | translate}}</h2>
+        <h2 class="partition-title" id="partition_{{partition.order}}">{{index + 4}}. {{ 'EditScoringApplication.' +  partition.name | translate}}</h2>
         <div class="partition-block">
-          <div class="control-row" *ngFor="let question of partition.questions; let questionIndex = index" [ngSwitch]="getQuestionTypeById(question.type)">
+          <div class="control-row" *ngFor="let question of partition.questions; let questionIndex = index"
+               [ngSwitch]="getQuestionTypeById(question.type)">
             <div *ngIf="isParentQuestionAnswered(question.parentId, question.parentTriggerValue)">
               <div *ngSwitchCase="questionTypeLine">
                 <p class="control-label">
-                  <label for="control_{{question.id}}">{{ 'EditScoringApplication.' + question.key | translate }}</label>
+                  <label for="control_{{question.id}}">{{ 'EditScoringApplication.' + question.key | translate}}</label>
                 </p>
-                <input class="input" type="text" formControlName="{{'control_' + question.id}}" id="control_{{question.id}}">
+                <input class="input" type="text" formControlName="{{'control_' + question.id}}"
+                       id="control_{{question.id}}" #required>
               </div>
               <div *ngSwitchCase="questionTypeMultiLine">
                 <p class="control-label">
-                  <label for="control_{{question.id}}">{{ 'EditScoringApplication.' + question.key | translate }}</label>
+                  <label for="control_{{question.id}}">{{ 'EditScoringApplication.' + question.key | translate}}</label>
                 </p>
-                <textarea class="input" formControlName="{{'control_' + question.id}}" id="control_{{questionIndex}}" cols="30" rows="10"></textarea>
+                <textarea class="input" formControlName="{{'control_' + question.id}}" id="control_{{questionIndex}}"
+                          cols="30" rows="10" #required></textarea>
               </div>
               <div *ngSwitchCase="questionTypeComboBox">
                 <p class="control-label">
-                  <label for="control_{{question.id}}">{{ 'EditScoringApplication.' + question.key | translate }}</label>
+                  <label for="control_{{question.id}}">{{ 'EditScoringApplication.' + question.key | translate}}</label>
                 </p>
                 <app-select placeholder="{{ 'EditScoringApplication.' + question.key | translate }}"
                             class="input-component" formControlName="{{'control_' + question.id}}"
-                            [elementId]="'control_' + question.id" [items]="comboboxValues[question.id]">
+                            [elementId]="'control_' + question.id" [items]="comboboxValues[question.id]" #required>
                 </app-select>
               </div>
               <div *ngSwitchCase="questionTypeDateTime">
                 <p class="control-label">
-                  <label for="control_{{question.id}}">{{ 'EditScoringApplication.' + question.key | translate }}</label>
+                  <label for="control_{{question.id}}">{{ 'EditScoringApplication.' + question.key | translate}}</label>
                 </p>
-                <p-calendar [inputId]="'control_' + question.id" formControlName="{{'control_' + question.id}}" [inputStyleClass]="'input input-date'"></p-calendar>
+                <p-calendar [inputId]="'control_' + question.id" formControlName="{{'control_' + question.id}}"
+                            [inputStyleClass]="'input input-date'" #required></p-calendar>
               </div>
               <div *ngSwitchCase="questionTypeCheckBox">
                 <p class="control-label">
-                  <label for="control_{{question.id}}">{{ 'EditScoringApplication.' + question.key | translate }}</label>
+                  <label for="control_{{question.id}}">{{ 'EditScoringApplication.' + question.key | translate}}</label>
                 </p>
-                <app-input-switch [labelOff]="'EditScoringApplication.No' | translate" [labelOn]="'EditScoringApplication.Yes' | translate" class="input-component" formControlName="{{'control_' + question.id}}"></app-input-switch>
+                <app-input-switch [labelOff]="'EditScoringApplication.No' | translate"
+                                  [labelOn]="'EditScoringApplication.Yes' | translate" class="input-component"
+                                  formControlName="{{'control_' + question.id}}" #required></app-input-switch>
               </div>
               <div *ngSwitchCase="questionTypeUrl">
                 <p class="control-label">
-                  <label for="control_{{question.id}}">{{ 'EditScoringApplication.' + question.key | translate }}</label>
+                  <label for="control_{{question.id}}">{{ 'EditScoringApplication.' + question.key | translate}}</label>
                 </p>
-                <input class="input" type="text" formControlName="{{'control_' + question.id}}" id="{{'control_' + question.id}}">
+                <input class="input" type="text" formControlName="{{'control_' + question.id}}" id="{{'control_' + question.id}}" #required>
               </div>
             </div>
           </div>
@@ -215,24 +266,26 @@
     <div class="partitions-menu">
       <sticky [sticky-offset-top]="20">
         <ul class="partitions-list">
-          <li class="partition-item" (click)="scrollToElement('common')">
+          <li class="partition-item" (click)="scrollToPartition('common')">
             {{ 'EditScoringApplication.CommonTitle' | translate }}
           </li>
-          <li class="partition-item" (click)="scrollToElement('social')">
+          <li class="partition-item" (click)="scrollToPartition('social')">
             {{ 'EditScoringApplication.SocialMedia' | translate }}
           </li>
-          <li class="partition-item" (click)="scrollToElement('team')">
+          <li class="partition-item" (click)="scrollToPartition('team')">
             {{ 'EditScoringApplication.TeamTitle' | translate }}
           </li>
-          <li class="partition-item" (click)="scrollToElement('advisers')">
+          <li class="partition-item" (click)="scrollToPartition('advisers')">
             {{ 'EditScoringApplication.AdvisersTitle' | translate }}
           </li>
-          <li class="partition-item" (click)="scrollToElement(partition.order)" *ngFor="let partition of partitions; let index = index;">
+          <li class="partition-item" (click)="scrollToPartition(partition.order)"
+              *ngFor="let partition of partitions; let index = index;">
             {{index + 4}}. {{ 'EditScoringApplication.' + partition.name | translate}}
           </li>
         </ul>
         <div class="partition-menu__inputs">
-          <input (click)="onSaveAsync()" type="button" [disabled]="disabled" class="main-btn" value="{{ 'EditScoringApplication.SaveDraft' | translate }}">
+          <input (click)="onSaveAsync()" type="button" [disabled]="disabled" class="main-btn"
+                 value="{{ 'EditScoringApplication.SaveDraft' | translate }}">
           <input type="submit" class="main-btn" value="{{ 'EditScoringApplication.SendForScore' | translate }}">
         </div>
       </sticky>

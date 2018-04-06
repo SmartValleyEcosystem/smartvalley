@@ -163,6 +163,11 @@ input.ng-valid {
   border-color: red !important;
 }
 
+.ng-dirty .ng-valid .input-switch .input-switch__on,
+.ng-dirty .ng-valid .input-switch .input-switch__off {
+  border-color: #a4a2b0 !important;
+}
+
 /* angular-material tabs */
 
 .mat-tab-label-content	{
