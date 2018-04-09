@@ -41,12 +41,13 @@ namespace SmartValley.Application.Contracts.Scorings
             {
                 var area = (AreaType) dto.Areas[i];
                 var isCompleted = dto.AreaResults[i];
-                var score = dto.AreaScores[i] / Math.Pow(10, ScorePrecision);
+                var areaScore = dto.AreaScores[i] / Math.Pow(10, ScorePrecision);
 
-                areaScores[area] = isCompleted ? score : (double?) null;
+                areaScores[area] = isCompleted ? areaScore : (double?) null;
             }
 
-            return new ProjectScoringStatistics(dto.IsScored ? dto.Score : (int?) null, areaScores);
+            var score = dto.IsScored ? dto.Score / Math.Pow(10, ScorePrecision) : (double?) null;
+            return new ProjectScoringStatistics(score, areaScores);
         }
     }
 }

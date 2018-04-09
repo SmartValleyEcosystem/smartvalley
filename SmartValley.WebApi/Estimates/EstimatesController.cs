@@ -38,7 +38,7 @@ namespace SmartValley.WebApi.Estimates
         public async Task<IActionResult> PostAsync([FromBody] SubmitEstimatesRequest request)
         {
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
-            await _estimationService.SubmitEstimatesAsync(request);
+            await _estimationService.SubmitEstimatesAsync(User.GetUserId(), request);
             return NoContent();
         }
 

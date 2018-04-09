@@ -6,7 +6,7 @@ namespace SmartValley.WebApi.Estimates
 {
     public interface IEstimationService
     {
-        Task SubmitEstimatesAsync(SubmitEstimatesRequest request);
+        Task SubmitEstimatesAsync(long expertId, SubmitEstimatesRequest request);
 
         Task<ScoringStatisticsInArea> GetScoringStatisticsInAreaAsync(long projectId, Domain.Entities.AreaType areaType);
     }

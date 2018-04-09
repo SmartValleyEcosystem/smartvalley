@@ -31,6 +31,7 @@ namespace SmartValley.Data.SQL.Core
         DbSet<ScoringApplicationAnswer> ScoringApplicationAnswers { get; }
         DbSet<ScoringApplicationTeamMember> ScoringApplicationTeamMembers { get; }
         DbSet<ScoringApplicationAdviser> ScoringApplicationAdvisers { get; }
+        DbSet<ExpertScoringConclusion> ExpertScoringConclusions { get; }
 
         Task<int> SaveAsync();
         EntityEntry<T> Entity<T>(T x) where T : class;

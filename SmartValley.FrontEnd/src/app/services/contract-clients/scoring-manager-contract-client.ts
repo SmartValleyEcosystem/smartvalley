@@ -69,6 +69,7 @@ export class ScoringManagerContractClient implements ContractClient {
 
   public async submitEstimatesAsync(projectExternalId: string,
                                     areaType: AreaType,
+                                    conclusion: string,
                                     estimates: Array<Estimate>): Promise<string> {
     const contract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.userContext.getCurrentUser().account;
@@ -84,9 +85,11 @@ export class ScoringManagerContractClient implements ContractClient {
       commentHashes.push(commentHash);
     }
 
+    const conclusionHash = '0x' + Md5.hashStr(conclusion, false).toString();
     return await contract.submitEstimates(
       projectExternalId.replace(/-/g, ''),
       <number>areaType,
+      conclusionHash,
       scoringCriteriaIds,
       scores,
       commentHashes,

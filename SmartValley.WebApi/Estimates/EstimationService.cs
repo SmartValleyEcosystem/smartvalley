@@ -15,47 +15,44 @@ namespace SmartValley.WebApi.Estimates
     // ReSharper disable once ClassNeverInstantiated.Global
     public class EstimationService : IEstimationService
     {
-        private readonly IEstimateCommentRepository _estimateCommentRepository;
+        private readonly IEstimateRepository _estimateRepository;
         private readonly IScoringContractClient _scoringContractClient;
         private readonly IScoringRepository _scoringRepository;
         private readonly IScoringOffersRepository _scoringOffersRepository;
-        private readonly IExpertRepository _expertRepository;
         private readonly IClock _clock;
         private readonly IUserRepository _userRepository;
 
         public EstimationService(
-            IEstimateCommentRepository estimateCommentRepository,
+            IEstimateRepository estimateRepository,
             IScoringContractClient scoringContractClient,
             IScoringRepository scoringRepository,
             IScoringOffersRepository scoringOffersRepository,
-            IExpertRepository expertRepository,
             IClock clock,
             IUserRepository userRepository)
         {
-            _estimateCommentRepository = estimateCommentRepository;
+            _estimateRepository = estimateRepository;
             _scoringContractClient = scoringContractClient;
             _scoringRepository = scoringRepository;
             _scoringOffersRepository = scoringOffersRepository;
-            _expertRepository = expertRepository;
             _clock = clock;
             _userRepository = userRepository;
         }
 
-        public async Task SubmitEstimatesAsync(SubmitEstimatesRequest request)
+        public async Task SubmitEstimatesAsync(long expertId, SubmitEstimatesRequest request)
         {
             var scoring = await _scoringRepository.GetByProjectIdAsync(request.ProjectId);
-            var expert = await _expertRepository.GetByAddressAsync(request.ExpertAddress);
 
             var area = request.AreaType.ToDomain();
-            var isOfferAccepted = await _scoringOffersRepository.IsAcceptedAsync(scoring.Id, expert.UserId, area);
-            if (!isOfferAccepted)
+            if (!await _scoringOffersRepository.IsAcceptedAsync(scoring.Id, expertId, area))
                 throw new AppErrorException(ErrorCode.AcceptedOfferNotFound);
 
-            await AddEstimateCommentsAsync(expert.UserId, request.EstimateComments, scoring.Id);
+            await AddEstimateCommentsAsync(expertId, request.EstimateComments, scoring.Id);
+
+            await _estimateRepository.AddConclusionAsync(expertId, scoring.Id, area, request.Conclusion);
 
             await UpdateProjectScoringAsync(scoring, area);
 
-            await _scoringOffersRepository.FinishAsync(scoring.Id, expert.UserId, area);
+            await _scoringOffersRepository.FinishAsync(scoring.Id, expertId, area);
         }
 
         public async Task<ScoringStatisticsInArea> GetScoringStatisticsInAreaAsync(long projectId, AreaType areaType)
@@ -72,7 +69,7 @@ namespace SmartValley.WebApi.Estimates
         private async Task<IReadOnlyCollection<Estimate>> GetEstimatesAsync(long scoringId, string scoringContractAddress, AreaType areaType)
         {
             var estimateScores = await _scoringContractClient.GetEstimatesAsync(scoringContractAddress);
-            var comments = await _estimateCommentRepository.GetByScoringIdAsync(scoringId, areaType);
+            var comments = await _estimateRepository.GetByScoringIdAsync(scoringId, areaType);
             var expertAddresses = estimateScores.Select(x => x.ExpertAddress).ToArray();
             var users = await _userRepository.GetByAddressesAsync(expertAddresses);
 
@@ -111,7 +108,7 @@ namespace SmartValley.WebApi.Estimates
                             .Select(e => CreateEstimateComment(e, scoringId, expertId))
                             .ToArray();
 
-            return _estimateCommentRepository.AddRangeAsync(estimates);
+            return _estimateRepository.AddRangeAsync(estimates);
         }
 
         private static EstimateComment CreateEstimateComment(

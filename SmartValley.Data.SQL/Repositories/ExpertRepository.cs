@@ -44,7 +44,8 @@ namespace SmartValley.Data.SQL.Repositories
         public Task AddAsync(long expertId, IReadOnlyCollection<int> areas)
         {
             var expert = new Expert {UserId = expertId, IsAvailable = true};
-            _editContext.Experts.AddAsync(expert);
+            _editContext.Experts.Add(expert);
+
             var expertAreas = areas.Select(s => new ExpertArea
                                                 {
                                                     Expert = expert,
@@ -116,8 +117,8 @@ namespace SmartValley.Data.SQL.Repositories
             var expertUsersQuery = (from expert in _readContext.Experts
                                     join user in _readContext.Users on expert.UserId equals user.Id
                                     select new {expert, user})
-                .Skip(offset)
-                .Take(count);
+                                   .Skip(offset)
+                                   .Take(count);
 
             var expertAreas = await (from expertUser in expertUsersQuery
                                      join expertArea in _readContext.ExpertAreas on expertUser.user.Id equals expertArea.ExpertId

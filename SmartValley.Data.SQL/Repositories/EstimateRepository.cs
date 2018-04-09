@@ -9,9 +9,9 @@ using SmartValley.Domain.Interfaces;
 namespace SmartValley.Data.SQL.Repositories
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class EstimateCommentRepository : EntityCrudRepository<EstimateComment>, IEstimateCommentRepository
+    public class EstimateRepository : EntityCrudRepository<EstimateComment>, IEstimateRepository
     {
-        public EstimateCommentRepository(IReadOnlyDataContext readContext, IEditableDataContext editContext)
+        public EstimateRepository(IReadOnlyDataContext readContext, IEditableDataContext editContext)
             : base(readContext, editContext)
         {
         }
@@ -23,6 +23,17 @@ namespace SmartValley.Data.SQL.Repositories
                           where scoringCriterion.AreaType == areaType && estimate.ScoringId == scoringId
                           select estimate)
                        .ToArrayAsync();
+        }
+
+        public Task AddConclusionAsync(long expertId, long scoringId, AreaType area, string conclusion)
+        {
+            return EditContext.ExpertScoringConclusions.AddAsync(new ExpertScoringConclusion
+                                                                 {
+                                                                     ExpertId = expertId,
+                                                                     ScoringId = scoringId,
+                                                                     Area = area,
+                                                                     Conclusion = conclusion
+                                                                 });
         }
     }
 }

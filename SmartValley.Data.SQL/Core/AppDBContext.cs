@@ -62,6 +62,8 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<ScoringApplicationAdviser> IReadOnlyDataContext.ScoringApplicationAdvisers => ScoringApplicationAdvisers.AsNoTracking();
 
+        IQueryable<ExpertScoringConclusion> IReadOnlyDataContext.ExpertScoringConclusions => ExpertScoringConclusions.AsNoTracking();
+
         public DbSet<ProjectTeamMember> ProjectTeamMembers { get; set; }
 
         public DbSet<Country> Countries { get; set; }
@@ -107,6 +109,8 @@ namespace SmartValley.Data.SQL.Core
         public DbSet<ScoringApplicationTeamMember> ScoringApplicationTeamMembers { get; set; }
 
         public DbSet<ScoringApplicationAdviser> ScoringApplicationAdvisers { get; set; }
+
+        public DbSet<ExpertScoringConclusion> ExpertScoringConclusions { get; set; }
 
         public IQueryable<T> GetAll<T>() where T : class
         {
@@ -315,6 +319,15 @@ namespace SmartValley.Data.SQL.Core
             modelBuilder.Entity<ScoringApplicationQuestion>()
                         .Property(x => x.GroupOrder)
                         .IsRequired();
+
+            modelBuilder.Entity<ExpertScoringConclusion>()
+                        .HasKey(e => new {e.ScoringId, e.Area, e.ExpertId});
+
+            modelBuilder.Entity<ExpertScoringConclusion>()
+                        .HasOne(e => e.Expert);
+            
+            modelBuilder.Entity<ExpertScoringConclusion>()
+                        .HasOne(e => e.Scoring);
         }
     }
 }
