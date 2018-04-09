@@ -21,7 +21,6 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
 import {FooterComponent} from './components/footer/footer.component';
 import {SimpleNotificationsModule} from 'angular2-notifications';
-import {EstimateComponent} from './components/estimate/estimate.component';
 import {ScoringCriterionService} from './services/criteria/scoring-criterion.service';
 import {ContractApiClient} from './api/contract/contract-api-client';
 import {ErrorInterceptor} from './api/error-interceptor';
@@ -124,7 +123,6 @@ import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scor
     HeaderComponent,
     CreateProjectComponent,
     FooterComponent,
-    EstimateComponent,
     ProjectInfoComponent,
     TransactionAwaitingModalComponent,
     ScoringCostComponent,

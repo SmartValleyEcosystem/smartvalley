@@ -5,7 +5,7 @@ import {SubmitEstimatesRequest} from './submit-estimates-request';
 import {CollectionResponse} from '../collection-response';
 import {AreaType} from '../scoring/area-type.enum';
 import {GetEstimatesResponse} from './get-estimates-response';
-import {ScoringCriterionResponse} from './scoring-criterion-response';
+import {AreaScoringCriteriaResponse} from './area-scoring-criteria-response';
 
 @Injectable()
 export class EstimatesApiClient extends BaseApiClient {
@@ -27,7 +27,7 @@ export class EstimatesApiClient extends BaseApiClient {
       .toPromise();
   }
 
-  async getScoringCriteriaAsync(): Promise<CollectionResponse<ScoringCriterionResponse>> {
-    return await this.http.get<CollectionResponse<ScoringCriterionResponse>>(this.baseApiUrl + '/estimates/criteria').toPromise();
+  async getScoringCriteriaAsync(): Promise<CollectionResponse<AreaScoringCriteriaResponse>> {
+    return await this.http.get<CollectionResponse<AreaScoringCriteriaResponse>>(this.baseApiUrl + '/estimates/criteria').toPromise();
   }
 }

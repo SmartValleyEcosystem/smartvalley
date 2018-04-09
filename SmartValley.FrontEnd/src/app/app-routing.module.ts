@@ -3,7 +3,6 @@ import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 import {MetamaskHowtoComponent} from './components/metamask-howto/metamask-howto.component';
 import {LandingComponent} from './components/landing/landing.component';
-import {EstimateComponent} from './components/estimate/estimate.component';
 import {InitializationGuard} from './services/initialization/initialization.guard';
 import {InitializationComponent} from './components/initialization/initialization.component';
 import {RootComponent} from './components/root/root.component';
@@ -17,7 +16,6 @@ import {RegisterExpertComponent} from './components/register-expert/register-exp
 import {AdminExpertApplicationComponent} from './components/admin-panel/admin-expert-application/admin-expert-application.component';
 import {ExpertStatusGuard} from './services/guards/expert-status.guard';
 import {ExpertApplicationStatus} from './services/expert/expert-application-status.enum';
-import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-assigned.guard';
 import {ProjectListComponent} from './components/project-list/project-list.component';
 import {RegisterComponent} from './components/authentication/register/register.component';
 import {RegisterConfirmComponent} from './components/authentication/register-confirm/register-confirm.component';
@@ -82,12 +80,6 @@ const appRoutes: Routes = [
           ExpertApplicationStatus.Rejected
         ]
       }
-    },
-    {
-      path: Paths.Scoring + '/:id',
-      pathMatch: 'full',
-      component: EstimateComponent,
-      canActivate: [ShouldHaveEthGuard, ExpertShouldBeAssignedGuard]
     },
     {path: Paths.ProjectList, component: ProjectListComponent},
     {path: Paths.ProjectList + '/:search', component: ProjectListComponent},

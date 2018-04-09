@@ -54,12 +54,15 @@ namespace SmartValley.WebApi.Estimates
 
         [HttpGet]
         [Route("criteria")]
-        public async Task<CollectionResponse<ScoringCriterionResponse>> GetCriteriaAsync()
+        public async Task<CollectionResponse<AreaScoringCriteriaResponse>> GetCriteriaAsync()
         {
             var criteria = await _scoringCriterionRepository.GetAllAsync();
-            return new CollectionResponse<ScoringCriterionResponse>
+            return new CollectionResponse<AreaScoringCriteriaResponse>
                    {
-                       Items = criteria.Select(ScoringCriterionResponse.From).ToArray()
+                       Items = criteria
+                               .GroupBy(c => c.AreaType)
+                               .Select(g => AreaScoringCriteriaResponse.Create(g.Key.FromDomain(), g.ToArray()))
+                               .ToArray()
                    };
         }
     }
