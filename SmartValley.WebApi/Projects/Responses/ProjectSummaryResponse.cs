@@ -8,6 +8,8 @@ namespace SmartValley.WebApi.Projects.Responses
     {
         public long Id { get; set; }
 
+        public string ExternalId { get; set; }
+
         public string Name { get; set; }
 
         public string ImageUrl { get; set; }
@@ -15,6 +17,8 @@ namespace SmartValley.WebApi.Projects.Responses
         public string CountryCode { get; set; }
 
         public int StageId { get; set; }
+
+        public Category Category { get; set; }
 
         public DateTimeOffset? IcoDate { get; set; }
 
@@ -50,10 +54,12 @@ namespace SmartValley.WebApi.Projects.Responses
             return new ProjectSummaryResponse
                    {
                        Id = project.Id,
+                       ExternalId = project.ExternalId.ToString(),
                        Name = project.Name,
                        ImageUrl = project.ImageUrl,
                        CountryCode = country.Code,
                        StageId = (int) project.Stage,
+                       Category = project.Category,
                        IcoDate = project.IcoDate,
                        Website = project.Website,
                        WhitePaperLink = project.WhitePaperLink,

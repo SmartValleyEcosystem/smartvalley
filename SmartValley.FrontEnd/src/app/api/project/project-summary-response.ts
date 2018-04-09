@@ -2,6 +2,7 @@ import {ScoringStatus} from '../../services/scoring-status.enum';
 
 export interface ProjectSummaryResponse {
   id: number;
+  externalId: string;
   countryCode: string;
   facebook: string;
   icoDate: Date;
@@ -10,6 +11,7 @@ export interface ProjectSummaryResponse {
   score: number;
   scoringStatus: ScoringStatus;
   stageId: number;
+  category: number;
   telegram: string;
   twitter: string;
   website: string;

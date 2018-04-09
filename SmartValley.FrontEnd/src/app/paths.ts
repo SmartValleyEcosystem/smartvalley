@@ -4,6 +4,7 @@ export class Paths {
   public static readonly Project = 'project';
   public static readonly ProjectEdit = 'project/edit';
   public static readonly Scoring = 'scoring';
+  public static readonly ScoringOffer = 'scoring/offer';
   public static readonly ScoringList = 'scorings';
   public static readonly Expert = 'expert';
   public static readonly ExpertStatus = 'expert/status';

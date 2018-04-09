@@ -34,7 +34,7 @@ export function multiTranslateLoaderFactory() {
     'components/authentication/register/register.component',
     'components/authentication/register-confirm/register-confirm.component',
     'components/select/select.component',
-    'components/scoring/scoring-about/scoring-about.component',
+    'components/scoring/offer-details/offer-details.component',
     'components/metamask-howto/metamask-howto.component',
     'components/edit-scoring-application/edit-scoring-application.component',
     'components/common/confirm-email/confirm-email.component',

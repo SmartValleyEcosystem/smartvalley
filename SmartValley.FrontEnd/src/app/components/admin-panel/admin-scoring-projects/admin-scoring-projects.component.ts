@@ -15,7 +15,7 @@ import {DialogService} from '../../../services/dialog-service';
 import {isNullOrUndefined} from 'util';
 import {TranslateService} from '@ngx-translate/core';
 import {AreaService} from '../../../services/expert/area.service';
-import {OffersApiClient} from '../../../api/expert/offers-api-client';
+import {OffersApiClient} from '../../../api/scoring-offer/offers-api-client';
 
 @Component({
   selector: 'app-admin-scoring-projects',

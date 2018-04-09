@@ -16,6 +16,7 @@ import {RegisterExpertComponent} from './components/register-expert/register-exp
 import {AdminExpertApplicationComponent} from './components/admin-panel/admin-expert-application/admin-expert-application.component';
 import {ExpertStatusGuard} from './services/guards/expert-status.guard';
 import {ExpertApplicationStatus} from './services/expert/expert-application-status.enum';
+import {OfferStatusGuard} from './services/guards/offer-status.guard';
 import {ProjectListComponent} from './components/project-list/project-list.component';
 import {RegisterComponent} from './components/authentication/register/register.component';
 import {RegisterConfirmComponent} from './components/authentication/register-confirm/register-confirm.component';
@@ -23,8 +24,9 @@ import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-e
 import {CreateProjectComponent} from './components/create-project/create-project.component';
 import {EditScoringApplicationComponent} from './components/edit-scoring-application/edit-scoring-application.component';
 import {ProjectComponent} from './components/project/project.component';
-import {ScoringAboutComponent} from './components/scoring/scoring-about/scoring-about.component';
+import {OfferDetailsComponent} from './components/scoring/offer-details/offer-details.component';
 import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scoring-application.guard';
+import {OfferStatus} from './api/scoring-offer/offer-status.enum';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -50,7 +52,16 @@ const appRoutes: Routes = [
       component: RegisterConfirmComponent
     },
     {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent},
-    {path: Paths.Scoring + '/:id/about/:areaType', component: ScoringAboutComponent},
+    {
+      path: Paths.ScoringOffer + '/:id/:areaType',
+      component: OfferDetailsComponent,
+      canActivate: [OfferStatusGuard],
+      data: {
+        offerStatuses: [
+          OfferStatus.Pending
+        ]
+      }
+    },
     {path: Paths.Account, pathMatch: 'full', component: AccountComponent, canActivate: [ShouldBeAuthenticatedGuard]},
     {
       path: Paths.Project,

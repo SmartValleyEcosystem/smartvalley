@@ -85,13 +85,13 @@ import {ExpertStatusGuard} from './services/guards/expert-status.guard';
 import {AdminScoringProjectsComponent} from './components/admin-panel/admin-scoring-projects/admin-scoring-projects.component';
 import {SetExpertsModalComponent} from './components/common/set-experts-modal/set-experts-modal.component';
 import {ChangeEmailModalComponent} from './components/common/change-email-modal/change-email-modal.component';
-import {OffersApiClient} from './api/expert/offers-api-client';
+import {OffersApiClient} from './api/scoring-offer/offers-api-client';
 import {RoundNumberPipe} from './utils/round-number.pipe';
 import {SearchWithAutocompleteComponent} from './components/search-with-autocomplete/search-with-autocomplete.component';
 import {ProjectListComponent} from './components/project-list/project-list.component';
 import {PaginatorModule} from 'primeng/paginator';
 import {TooltipModule} from 'primeng/tooltip';
-import {ExpertShouldBeAssignedGuard} from './services/guards/expert-should-be-assigned.guard';
+import {OfferStatusGuard} from './services/guards/offer-status.guard';
 import {SelectComponent} from './components/select/select.component';
 import {AutocompleteComponent} from './components/autocomplete/autocomplete.component';
 import {EditScoringApplicationComponent} from './components/edit-scoring-application/edit-scoring-application.component';
@@ -112,7 +112,7 @@ import {ProjectAboutComponent} from './components/project/project-about/project-
 import {WaitingModalComponent} from './components/common/waiting-modal/waiting-modal.component';
 import {ScoringApplicationComponent} from './components/project/scoring-application/scoring-application.component';
 import {ProjectService} from './services/project/project.service';
-import {ScoringAboutComponent} from './components/scoring/scoring-about/scoring-about.component';
+import {OfferDetailsComponent} from './components/scoring/offer-details/offer-details.component';
 import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scoring-application.guard';
 
 @NgModule({
@@ -166,7 +166,7 @@ import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scor
     ProjectComponent,
     ProjectAboutComponent,
     WaitingModalComponent,
-    ScoringAboutComponent
+    OfferDetailsComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -263,7 +263,7 @@ import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scor
     GuardFactory,
     CompositeGuard,
     ExpertStatusGuard,
-    ExpertShouldBeAssignedGuard,
+    OfferStatusGuard,
     AreaService,
     AreaService,
     EnumHelper,

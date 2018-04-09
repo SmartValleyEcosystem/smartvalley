@@ -1,14 +1,14 @@
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {BaseApiClient} from '../base-api-client';
-import {CollectionResponse} from '../collection-response';
-import {ScoringOfferResponse} from './scoring-offer-response';
-import {AreaType} from '../scoring/area-type.enum';
 import {ScoringOfferStatusResponse} from './scoring-offer-status-response';
-import {UpdateOffersRequest} from './update-offers-request';
-import {ChangeStatusExpertOfferRequest} from './change-status-expert-offer-request';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {BaseApiClient} from '../base-api-client';
+import {ChangeStatusExpertOfferRequest} from '../expert/change-status-expert-offer-request';
+import {UpdateOffersRequest} from '../expert/update-offers-request';
+import {ScoringOfferResponse} from './scoring-offer-response';
+import {CollectionResponse} from '../collection-response';
 import {isNullOrUndefined} from 'util';
 import {OffersQuery} from './offers-query';
+import {Injectable} from '@angular/core';
+import {AreaType} from '../scoring/area-type.enum';
 
 @Injectable()
 export class OffersApiClient extends BaseApiClient {

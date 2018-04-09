@@ -28,7 +28,7 @@ export class ProjectInfoComponent implements OnInit {
   }
 
   public get category(): string {
-    return this.dictionariesService.categories.find(i => i.id === this.project.scoringStatus).value.toString();
+    return this.dictionariesService.categories.find(i => i.id === this.project.category).value.toString();
   }
 
   public get imageUrl(): string {

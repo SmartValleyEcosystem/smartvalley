@@ -1,0 +1,8 @@
+{
+  "OfferDetails": {
+    "Accept": "Accept for scoring",
+    "Refuse": "Refuse",
+    "NeedToScore": "Need to Score",
+    "Dialog": "Please wait for completion of transaction."
+  }
+}
