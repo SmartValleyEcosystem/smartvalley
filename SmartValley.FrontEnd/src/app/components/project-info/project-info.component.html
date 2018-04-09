@@ -2,9 +2,9 @@
   <div class="project-card__image">
     <img class="project-avatar" src="{{ imageUrl }}" alt="">
     <div class="avatar-socials">
-      <a *ngIf="project.facebook" href="{{ project.facebook}}"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-      <a *ngIf="project.telegram" href="{{ project.telegram}}"><i class="fa fa-telegram" aria-hidden="true"></i></a>
-      <a *ngIf="project.twitter" href="{{ project.twitter}}"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+      <a *ngIf="project.facebook" href="{{ project.facebook}}" class="social-icon social-icon__facebook"></a>
+      <a *ngIf="project.telegram" href="{{ project.telegram}}" class="social-icon social-icon__telegram"></a>
+      <a *ngIf="project.twitter" href="{{ project.twitter}}" class="social-icon social-icon__twitter"></a>
     </div>
   </div>
   <div class="project-card__info">

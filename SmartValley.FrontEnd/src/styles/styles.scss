@@ -17,50 +17,51 @@ html, body {
   height: 24px;
   position: relative;
   margin-right: 8px;
-  background-position: center;
   background-size: cover;
   display: inline-block;
   top: 5px;
+  background-color: #231a5d;
+  -webkit-mask-size: 24px;
 }
 
 .social-icon__facebook {
-  background-image: url(../assets/img/social-icons/Fb.svg);
+  -webkit-mask-image: url(../assets/img/social-icons/Fb.svg);
 }
 
 .social-icon__instagram {
-  background-image: url(../assets/img/social-icons/Instagram.svg);
+  -webkit-mask-image: url(../assets/img/social-icons/Instagram.svg);
 }
 
 .social-icon__telegram {
-  background-image: url(../assets/img/social-icons/telegram.svg);
+  -webkit-mask-image: url(../assets/img/social-icons/telegram.svg);
 }
 
 .social-icon__bitcointalk {
-  background-image: url(../assets/img/social-icons/Bitcointalk.svg);
+  -webkit-mask-image: url(../assets/img/social-icons/Bitcointalk.svg);
 }
 
 .social-icon__youtube {
-  background-image: url(../assets/img/social-icons/Youtube.svg);
+  -webkit-mask-image: url(../assets/img/social-icons/Youtube.svg);
 }
 
 .social-icon__github {
-  background-image: url(../assets/img/social-icons/Github.svg);
+  -webkit-mask-image: url(../assets/img/social-icons/Github.svg);
 }
 
 .social-icon__linkedin {
-  background-image: url(../assets/img/social-icons/Linkedin.svg);
+  -webkit-mask-image: url(../assets/img/social-icons/Linkedin.svg);
 }
 
 .social-icon__medium {
-  background-image: url(../assets/img/social-icons/Medium.svg);
+  -webkit-mask-image: url(../assets/img/social-icons/Medium.svg);
 }
 
 .social-icon__reddit {
-  background-image: url(../assets/img/social-icons/Reddit.svg);
+  -webkit-mask-image: url(../assets/img/social-icons/Reddit.svg);
 }
 
 .social-icon__twitter {
-  background-image: url(../assets/img/social-icons/Twitter.svg);
+  -webkit-mask-image: url(../assets/img/social-icons/Twitter.svg);
 }
 
 body {

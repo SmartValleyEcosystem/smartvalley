@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectSummaryResponse} from '../../api/project/project-summary-response';
 import {UserContext} from '../../services/authentication/user-context';
 import {isNullOrUndefined} from 'util';
+import {ScoringStatus} from '../../services/scoring-status.enum';
 
 @Component({
   selector: 'app-project',
@@ -22,6 +23,8 @@ export class ProjectComponent implements OnInit {
 
   public isAuthor = false;
   public isScoringApplicationTabAvailable = true;
+
+  public ScoringStatus = ScoringStatus;
 
   constructor(private projectApiClient: ProjectApiClient,
               private router: Router,

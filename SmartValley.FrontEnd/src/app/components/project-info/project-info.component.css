@@ -24,6 +24,11 @@
   justify-content: space-around;
 }
 
+.avatar-socials .social-icon {
+  margin-right: 0 !important;
+  background-color: #94929c;
+}
+
 .project-card__controls {
   flex: 1;
 }

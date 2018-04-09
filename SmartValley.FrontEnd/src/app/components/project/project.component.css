@@ -13,3 +13,33 @@
 .ghost-btn {
   color: #000;
 }
+
+.small-title {
+  font-family: Roboto-Regular;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1.33;
+  text-align: right;
+  color: #a4a2b0;
+  float: right;
+  clear: both;
+}
+
+.score {
+  font-family: Roboto-Regular;
+  font-size: 36px;
+  font-weight: bold;
+  line-height: 1;
+  letter-spacing: -0.2px;
+  text-align: right;
+  color: #a4a2b0;
+  float: right;
+  clear: both;
+  margin-top: 8px;
+  margin-bottom: 24px;
+}
+
+.score .main-number {
+  color: #5d49f2;
+  display: inline-block;
+}

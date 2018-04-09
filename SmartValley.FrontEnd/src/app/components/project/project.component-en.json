@@ -6,6 +6,8 @@
     "GetScore": "Get score for this project",
     "EditInformation": "Edit information",
     "SendScore": "Send for score",
-    "ScoringApplication": "Scoring Application"
+    "ScoringApplication": "Scoring Application",
+    "ProjectScore": "Project score",
+    "InProgress": "Scoring in progress"
   }
 }

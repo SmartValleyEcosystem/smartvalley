@@ -3,19 +3,31 @@
 </div>
 <div *ngIf="isProjectExists" class="content">
   <h1 class="title">{{ project.name }}</h1>
-  <app-project-info *ngIf="project" [project]="project" >
-    <div *ngIf="project.scoringId; else notScoring;">
-      Status <!-- TODO 787 -->
-    </div>
-    <ng-template #notScoring>
-      <div *ngIf="isAuthor">
-        <a *ngIf="!project.isApplicationSubmitted; else submitedBlock;" (click)="navigateToApplicationScoringAsync()" class="main-btn">{{ 'MyProject.GetScore' | translate }}</a>
-        <ng-template #submitedBlock>
-          <span (click)="navigateToPaymentAsync()" class="main-btn">{{ 'MyProject.SendScore' | translate }}</span>
-        </ng-template>
-        <a [routerLink]="'/' + editProjectsLink" class="ghost-btn">{{ 'MyProject.EditInformation' | translate }}</a>
+  <app-project-info *ngIf="project" [project]="project">
+    <div [ngSwitch]="project.scoringStatus">
+      <div *ngSwitchCase="ScoringStatus.Finished">
+        <div class="small-title">{{ 'MyProject.ProjectScore' | translate }}</div>
+        <div class="score">
+          <div class="main-number">{{project.score}}</div>/100
+        </div>
+        <a *ngIf="isAuthor" [routerLink]="'/' + editProjectsLink" class="ghost-btn">{{ 'MyProject.EditInformation' | translate }}</a>
       </div>
-    </ng-template>
+      <div *ngSwitchCase="ScoringStatus.InProgress">
+        <div class="score" style="font-size: 20px;">
+          {{ 'MyProject.InProgress' | translate }}
+        </div>
+      </div>
+      <div *ngSwitchCase="ScoringStatus.Pending">
+        <div *ngIf="isAuthor">
+          <a *ngIf="!project.isApplicationSubmitted; else submitedBlock;" (click)="navigateToApplicationScoringAsync()"
+             class="main-btn">{{ 'MyProject.GetScore' | translate }}</a>
+          <ng-template #submitedBlock>
+            <span (click)="navigateToPaymentAsync()" class="main-btn">{{ 'MyProject.SendScore' | translate }}</span>
+          </ng-template>
+          <a [routerLink]="'/' + editProjectsLink" class="ghost-btn">{{ 'MyProject.EditInformation' | translate }}</a>
+        </div>
+      </div>
+    </div>
   </app-project-info>
   <mat-tab-group [selectedIndex]="selectedTab">
     <mat-tab label="{{ 'MyProject.About' | translate }}">
