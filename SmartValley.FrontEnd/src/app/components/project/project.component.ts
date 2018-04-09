@@ -30,10 +30,22 @@ export class ProjectComponent implements OnInit {
               private router: Router,
               private route: ActivatedRoute,
               private userContext: UserContext) {
+
+    route.params.subscribe(val => {
+      this.reloadProjectAsync();
+    });
   }
 
   public async ngOnInit() {
-    this.projectId = +this.route.snapshot.paramMap.get('id');
+    await this.reloadProjectAsync();
+  }
+
+  private async reloadProjectAsync() {
+    const newProjectId = +this.route.snapshot.paramMap.get('id');
+    if (!isNullOrUndefined(this.projectId) && this.projectId === newProjectId) {
+      return;
+    }
+    this.projectId = newProjectId;
     const selectedTabName = this.route.snapshot.paramMap.get('tab');
     if (!isNullOrUndefined(selectedTabName) && this.tabItems.includes(selectedTabName)) {
       this.selectedTab = this.tabItems.indexOf(selectedTabName);
