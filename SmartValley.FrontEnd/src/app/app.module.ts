@@ -112,6 +112,8 @@ import {ProjectAboutComponent} from './components/project/project-about/project-
 import {WaitingModalComponent} from './components/common/waiting-modal/waiting-modal.component';
 import {ScoringApplicationComponent} from './components/project/scoring-application/scoring-application.component';
 import {ProjectService} from './services/project/project.service';
+import {ScoringPaymentComponent} from './components/scoring-payment/scoring-payment.component';
+import { ExpertSelectorComponent } from './components/scoring-payment/expert-selector/expert-selector.component';
 import {OfferDetailsComponent} from './components/scoring/offer-details/offer-details.component';
 import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scoring-application.guard';
 
@@ -166,6 +168,8 @@ import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scor
     ProjectComponent,
     ProjectAboutComponent,
     WaitingModalComponent,
+    ScoringPaymentComponent,
+    ExpertSelectorComponent,
     OfferDetailsComponent
   ],
   entryComponents: [

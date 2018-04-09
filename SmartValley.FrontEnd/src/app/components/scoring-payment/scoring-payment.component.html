@@ -1,0 +1,35 @@
+<div class="content">
+  <h1 class="title">{{ 'ScoringPayment.Title' | translate }}</h1>
+  <p class="instruction">{{ 'ScoringPayment.Instruction' | translate }}</p>
+  <p class="instruction instruction_bold">{{ 'ScoringPayment.InstructionDescription' | translate }}</p>
+  <div class="expert-panel">
+    <div class="expert-panel__total">
+      <div class="expert-panel__total-controls">
+        <h3 class="expert-panel__total-title">{{ 'ScoringPayment.Total' | translate }}</h3>
+        <ul class="cost-list">
+          <li>
+            <span class="cost-title">{{ 'ScoringPayment.Hired' | translate }}</span>
+            <span class="cost-value">{{ totalExperts }} {{ 'ScoringPayment.Experts' | translate }}</span>
+          </li>
+          <li>
+            <span class="cost-title">{{ 'ScoringPayment.Sum' | translate }}</span>
+            <span class="cost-value">{{ totalSum | roundNumberPipe: 2 }} {{ 'ScoringPayment.ETH' | translate }}</span>
+          </li>
+          <li>
+            <span class="cost-title">{{ 'ScoringPayment.Balance' | translate }}</span>
+            <span class="cost-value">{{currentBalance}} {{ 'ScoringPayment.ETH' | translate }}</span>
+          </li>
+        </ul>
+        <button (click)="payAsync()" class="main-btn">{{ 'ScoringPayment.Pay' | translate }} {{ totalSum| roundNumberPipe: 2 }} {{ 'ScoringPayment.ETH' | translate }}</button>
+      </div>
+    </div>
+    <div class="expert-panel__controls">
+      <ul class="expert-areas-list">
+        <li *ngFor="let area of areas">
+          <h3>{{ area.name }}</h3>
+          <app-expert-selector (selectedExpertsCountEmit)="getExperts($event)" [expertPanelId]="area.areaType" [cost]="areaCosts[area.areaType]"></app-expert-selector>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

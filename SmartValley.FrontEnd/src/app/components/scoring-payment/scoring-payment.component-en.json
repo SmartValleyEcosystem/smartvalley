@@ -1,0 +1,14 @@
+{
+  "ScoringPayment": {
+    "Title": "Choose experts number",
+    "Instruction": "Choose experts number for each expert area. After payment decentralized scoring will start. It takes 5-14 days.",
+    "InstructionDescription": "More experts – more objective score will be.",
+    "ETH": "ETH",
+    "Hired": "Hired",
+    "Sum": "Sum",
+    "Balance": "Balance",
+    "Experts": "experts",
+    "Total": "Total",
+    "Pay": "Pay"
+  }
+}

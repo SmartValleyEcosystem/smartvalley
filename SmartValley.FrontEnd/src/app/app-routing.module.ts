@@ -24,6 +24,7 @@ import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-e
 import {CreateProjectComponent} from './components/create-project/create-project.component';
 import {EditScoringApplicationComponent} from './components/edit-scoring-application/edit-scoring-application.component';
 import {ProjectComponent} from './components/project/project.component';
+import {ScoringPaymentComponent} from './components/scoring-payment/scoring-payment.component';
 import {OfferDetailsComponent} from './components/scoring/offer-details/offer-details.component';
 import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scoring-application.guard';
 import {OfferStatus} from './api/scoring-offer/offer-status.enum';
@@ -99,7 +100,8 @@ const appRoutes: Routes = [
       path: Paths.ScoringApplication + '/:id',
       component: EditScoringApplicationComponent,
       canActivate: [SubmittedScoringApplicationGuard]
-    }
+    },
+    {path: Paths.Project + '/:id/payment', component: ScoringPaymentComponent}
   ]
   },
   {path: '**', redirectTo: Paths.Root}

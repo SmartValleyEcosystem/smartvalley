@@ -18,7 +18,7 @@ export class ScoringService {
   public async getTotalScoringCostAsync(areas: Array<number>, areaExpertCounts: Array<number>): Promise<number> {
     let totalCost = 0;
     for (let i = 0; i < areas.length; i++) {
-      const estimateRewardInArea = await this.getScoringCostInAreaAsync(i);
+      const estimateRewardInArea = await this.getScoringCostInAreaAsync(areas[i]);
       const cost = estimateRewardInArea * areaExpertCounts[i];
       totalCost += cost;
     }

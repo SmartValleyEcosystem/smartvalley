@@ -1,0 +1,57 @@
+.expert {
+  width: 18px;
+  height: 43px;
+  background-size: cover;
+  background: #A4A2B0;
+  -webkit-mask-size: 100px;
+  -webkit-mask: url(/assets/img/controls/expert-selector/standing-up-man.svg) no-repeat;
+  fill: #A4A2B0;
+  margin-right: 4px;
+}
+.expert__selected {
+  background: #231a5d;
+  fill: #231a5d;
+}
+.experts-wrapper {
+  display: flex;
+  padding-left: 30px;
+}
+.expert-control {
+  font-size: 16px;
+  color: #000000;
+  text-align: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  background-color: #fff;
+  border: solid 1px #a4a2b0;
+  outline: none;
+  cursor: pointer;
+  position: absolute;
+}
+.expert-panel {
+  position: relative;
+  width: 163px;
+  margin-bottom: 40px;
+}
+.expert-control__remove {
+  top: 3px;
+  left: -15px;
+}
+.expert-control__add {
+  top: 3px;
+  right: -40px;
+}
+.expert-control__description {
+  text-align: center;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.43;
+  color: #000;
+  display: inline-block;
+  margin-top: 4px;
+  width: 100%;
+}
+.expert-control__attention {
+  font-family: Roboto-Bold;
+}
