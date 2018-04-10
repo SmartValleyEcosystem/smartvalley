@@ -60,13 +60,13 @@ export class AdminExpertApplicationComponent implements OnInit {
       city: response.city,
       linkedInLink: response.linkedInLink,
       facebookLink: response.facebookLink,
-      cvName: response.cvName,
+      cvUrl: response.cvUrl,
       description: response.description,
       why: response.why,
       documentType: this.enumHelper.getDocumentTypes().find(d => d.value === response.documentType).label,
       documentNumber: response.documentNumber,
-      scanName: response.scanName,
-      photoName: response.photoName,
+      scanUrl: response.scanUrl,
+      photoUrl: response.photoUrl,
       areaTypes: response.areas,
       areas: response.areas.map(a => {
         return <Area>{

@@ -16,9 +16,9 @@ export interface ExpertApplicationResponse {
   why: string;
   documentType: DocumentEnum;
   documentNumber: string;
-  scanName: string;
-  photoName: string;
-  cvName: string;
+  scanUrl: string;
+  photoUrl: string;
+  cvUrl: string;
   areas: number[];
 }
 

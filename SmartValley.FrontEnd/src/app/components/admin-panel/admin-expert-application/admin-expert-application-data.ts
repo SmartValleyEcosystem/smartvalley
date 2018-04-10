@@ -15,9 +15,9 @@ export interface AdminExpertApplicationData {
   why: string;
   documentType: string;
   documentNumber: string;
-  scanName: string;
-  photoName: string;
-  cvName: string;
+  scanUrl: string;
+  photoUrl: string;
+  cvUrl: string;
   areaTypes: number[];
   areas: Area[];
 }
