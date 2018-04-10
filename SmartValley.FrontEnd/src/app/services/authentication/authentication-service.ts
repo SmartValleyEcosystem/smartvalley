@@ -111,11 +111,6 @@ export class AuthenticationService {
   }
 
   private async authenticateOnBackendAsync(account: string, signature: string, messageToSign: string): Promise<User> {
-    const user = this.userContext.getCurrentUser();
-    if (user != null && user.account === account) {
-      return user;
-    }
-
     const response = await this.authenticationApiClient.authenticateAsync(<AuthenticationRequest>{
       address: account,
       signature: signature,
@@ -161,7 +156,7 @@ export class AuthenticationService {
 
   private startUserSession(newUser: User) {
     const user = this.userContext.getCurrentUser();
-    if (user != null && user.account === newUser.account && user.signature === newUser.signature) {
+    if (user != null && user.account === newUser.account && user.email === newUser.email && user.signature === newUser.signature) {
       return;
     }
     this.userContext.saveCurrentUser(newUser);
