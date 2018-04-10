@@ -27,7 +27,8 @@
       <ul class="expert-areas-list">
         <li *ngFor="let area of areas">
           <h3>{{ area.name }}</h3>
-          <app-expert-selector (selectedExpertsCountEmit)="getExperts($event)" [expertPanelId]="area.areaType" [cost]="areaCosts[area.areaType]"></app-expert-selector>
+          <app-expert-selector (selectedExpertsCountEmit)="getExperts($event)" [expertPanelId]="area.areaType"
+                               [cost]="areaCosts[area.areaType]" [initialExpertsAmount] = "initialExpertsAmount"></app-expert-selector>
         </li>
       </ul>
     </div>

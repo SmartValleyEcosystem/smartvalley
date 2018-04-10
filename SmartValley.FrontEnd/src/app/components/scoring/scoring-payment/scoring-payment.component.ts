@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import {AreaService} from '../../services/expert/area.service';
-import {Area} from '../../services/expert/area';
-import {ScoringService} from '../../services/scoring/scoring.service';
-import {Balance} from '../../services/balance/balance';
-import {BalanceService} from '../../services/balance/balance.service';
+import {Component, OnInit} from '@angular/core';
+import {AreaService} from '../../../services/expert/area.service';
+import {Area} from '../../../services/expert/area';
+import {ScoringService} from '../../../services/scoring/scoring.service';
+import {Balance} from '../../../services/balance/balance';
+import {BalanceService} from '../../../services/balance/balance.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
-import {ProjectApiClient} from '../../api/project/project-api-client';
-import {ProjectDetailsResponse} from '../../api/project/project-details-response';
-import {Paths} from '../../paths';
+import {ScoringApiClient} from '../../../api/scoring/scoring-api-client';
+import {ProjectApiClient} from '../../../api/project/project-api-client';
+import {ProjectDetailsResponse} from '../../../api/project/project-details-response';
+import {Paths} from '../../../paths';
 
 @Component({
   selector: 'app-scoring-payment',
@@ -19,12 +19,14 @@ export class ScoringPaymentComponent implements OnInit {
 
   public areas: Area[];
   public totalExperts = 0;
-  public areaExpersCount: {[id: number]: number} = {};
+  public expertsInArea: { [id: number]: number } = {};
   public currentBalance: number;
-  public areaCosts: {[id: number]: number} = {};
+  public areaCosts: { [id: number]: number } = {};
   public externalId: string;
   public totalSum = 0;
   public projectId: number;
+
+  public initialExpertsAmount = 3;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -39,18 +41,20 @@ export class ScoringPaymentComponent implements OnInit {
   public async ngOnInit() {
     this.areas = this.areaService.areas;
     for (let i = 0; this.areas.length > i; i++) {
-      this.areaExpersCount[this.areas[i].areaType] = 0;
+      this.expertsInArea[this.areas[i].areaType] = this.initialExpertsAmount;
       this.areaCosts[this.areas[i].areaType] = await this.scoringService.getScoringCostInAreaAsync(this.areas[i].areaType);
     }
     this.projectId = +this.route.snapshot.paramMap.get('id');
     const projectDetails: ProjectDetailsResponse = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
     this.externalId = projectDetails.externalId;
+    this.updateBalance(this.balanceService.balance);
+    this.calculateTotalExperts();
   }
 
-  public getExperts(expert: {[id: number]: number}) {
-    for (const expertId in this.areaExpersCount) {
+  public getExperts(expert: { [id: number]: number }) {
+    for (const expertId in this.expertsInArea) {
       if (expert[expertId]) {
-        this.areaExpersCount[expertId] = expert[expertId];
+        this.expertsInArea[expertId] = expert[expertId];
       }
     }
     this.calculateTotalExperts();
@@ -59,9 +63,9 @@ export class ScoringPaymentComponent implements OnInit {
   public calculateTotalExperts() {
     this.totalExperts = 0;
     this.totalSum = 0;
-    for (const expert in this.areaExpersCount) {
-      this.totalSum += (+this.areaCosts[expert] * this.areaExpersCount[expert]);
-      this.totalExperts += this.areaExpersCount[expert];
+    for (const expert in this.expertsInArea) {
+      this.totalSum += (+this.areaCosts[expert] * this.expertsInArea[expert]);
+      this.totalExperts += this.expertsInArea[expert];
     }
   }
 
@@ -72,11 +76,11 @@ export class ScoringPaymentComponent implements OnInit {
   }
 
   public async payAsync() {
-    let areas: number[] = [];
-    let areaExpertCounts: number[] = [];
-    for (const currentaArea in this.areaExpersCount) {
-      areas.push(+currentaArea);
-      areaExpertCounts.push(this.areaExpersCount[currentaArea]);
+    const areas: number[] = [];
+    const areaExpertCounts: number[] = [];
+    for (const currentArea in this.expertsInArea) {
+      areas.push(+currentArea);
+      areaExpertCounts.push(this.expertsInArea[currentArea]);
     }
 
     const transactionHash = await this.scoringService.startAsync(this.externalId, areas, areaExpertCounts);
