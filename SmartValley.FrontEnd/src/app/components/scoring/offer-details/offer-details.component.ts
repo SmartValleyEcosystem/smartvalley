@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectApiClient} from '../../../api/project/project-api-client';
 import {ProjectSummaryResponse} from '../../../api/project/project-summary-response';
 import {Area} from '../../../services/expert/area';
@@ -8,6 +8,7 @@ import {ScoringExpertsManagerContractClient} from '../../../services/contract-cl
 import {OffersApiClient} from '../../../api/scoring-offer/offers-api-client';
 import {DialogService} from '../../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
+import {Paths} from '../../../paths';
 
 @Component({
   selector: 'app-offer-details',
@@ -20,7 +21,8 @@ export class OfferDetailsComponent implements OnInit {
   public area: Area;
   public project: ProjectSummaryResponse;
 
-  constructor(private projectApiClient: ProjectApiClient,
+  constructor(private router: Router,
+              private projectApiClient: ProjectApiClient,
               private route: ActivatedRoute,
               private areaService: AreaService,
               private scoringExpertsManagerContractClient: ScoringExpertsManagerContractClient,
@@ -50,8 +52,7 @@ export class OfferDetailsComponent implements OnInit {
     await this.offersApiClient.acceptExpertOfferAsync(transactionHash, this.project.scoringId, this.area.areaType);
 
     transactionDialog.close();
-    //TODO redirect to expert's workplace - scoring application
-    // https://rassvet-capital.atlassian.net/browse/ILT-971
+    this.router.navigate([Paths.Project + '/' + this.project.id + '/scoring']);
   }
 
   public async declineOfferAsync() {
@@ -65,7 +66,6 @@ export class OfferDetailsComponent implements OnInit {
     await this.offersApiClient.declineExpertOfferAsync(transactionHash, this.project.scoringId, this.area.areaType);
 
     transactionDialog.close();
-    //TODO redirect to expert's workplace - offers list
-    // https://rassvet-capital.atlassian.net/browse/ILT-971
+    await this.router.navigate([Paths.ScoringList]);
   }
 }
