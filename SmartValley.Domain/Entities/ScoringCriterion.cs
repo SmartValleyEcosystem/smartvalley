@@ -1,4 +1,5 @@
-﻿using SmartValley.Domain.Core;
+﻿using System.Collections.Generic;
+using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
 {
