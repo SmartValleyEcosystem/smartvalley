@@ -440,7 +440,7 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<long>("ExpertId");
 
-                    b.Property<DateTimeOffset>("ExpirationTimestamp");
+                    b.Property<DateTimeOffset?>("ExpirationTimestamp");
 
                     b.Property<int>("Status");
 

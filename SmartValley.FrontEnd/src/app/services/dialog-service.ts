@@ -32,7 +32,7 @@ export class DialogService {
   }
 
   public showSetExpertsDialogAsync(areas: Array<Area>): Promise<any> {
-    return this.openModal(SetExpertsModalComponent, {areas: areas})
+    return this.openModal(SetExpertsModalComponent, {areas: areas}, false, '600px')
       .afterClosed()
       .toPromise<any>();
   }
@@ -117,8 +117,9 @@ export class DialogService {
 
   private openModal<TComponent, TData>(componentType: ComponentType<TComponent>,
                                        data: TData,
-                                       disableClose: boolean = false): MatDialogRef<TComponent> {
-    return this.dialog.open(componentType, {disableClose: disableClose, data: data});
+                                       disableClose: boolean = false,
+                                       width: string = null): MatDialogRef<TComponent> {
+    return this.dialog.open(componentType, {disableClose: disableClose, data: data, width: width == null ? '' : width});
   }
 
   private openModalAsync<TComponent, TData>(componentType: ComponentType<TComponent>,

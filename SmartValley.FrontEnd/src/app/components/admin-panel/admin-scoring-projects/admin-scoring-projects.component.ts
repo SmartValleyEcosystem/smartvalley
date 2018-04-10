@@ -103,6 +103,7 @@ export class AdminScoringProjectsComponent implements OnInit {
     const project = this.projects.find(i => i.projectExternalId === projectId);
     const areas = project.areasExperts.filter(i => i.acceptedCount < i.requiredCount).map(i => i.area);
     const areaExperts = await this.dialogService.showSetExpertsDialogAsync(areas);
+
     if (isNullOrUndefined(areaExperts)) {
       return;
     }

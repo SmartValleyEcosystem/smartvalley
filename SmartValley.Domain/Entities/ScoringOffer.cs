@@ -10,7 +10,7 @@ namespace SmartValley.Domain.Entities
 
         public AreaType AreaId { get; set; }
 
-        public DateTimeOffset ExpirationTimestamp { get; set; }
+        public DateTimeOffset? ExpirationTimestamp { get; set; }
 
         public ScoringOfferStatus Status { get; set; }
 

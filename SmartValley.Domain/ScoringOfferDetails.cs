@@ -8,7 +8,7 @@ namespace SmartValley.Domain
     {
         public ScoringOfferStatus Status { get; }
 
-        public DateTimeOffset ExpirationTimestamp { get; }
+        public DateTimeOffset? ExpirationTimestamp { get; }
 
         public DateTimeOffset? EstimatesDueDate { get; }
 
@@ -36,7 +36,7 @@ namespace SmartValley.Domain
 
         public ScoringOfferDetails(
             ScoringOfferStatus status, 
-            DateTimeOffset expirationTimestamp, 
+            DateTimeOffset? expirationTimestamp, 
             DateTimeOffset? estimatesDueDate, 
             Address scoringContractAddress, 
             long scoringId, 

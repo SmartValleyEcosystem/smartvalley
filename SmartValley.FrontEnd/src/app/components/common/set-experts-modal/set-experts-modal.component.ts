@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {SetExpertModalData} from './set-expert-modal-data';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {isNullOrUndefined} from 'util';
 
 @Component({
   selector: 'app-set-experts-modal',
@@ -21,9 +22,9 @@ export class SetExpertsModalComponent implements OnInit {
     const experts = [];
     for (const item of this.data.areas) {
       const group = this.formBuilder.group({
-        areaType: item.id,
+        areaType: item.areaType,
         title: item.name,
-        address: ''
+        address: null
       });
       experts.push(group);
     }
@@ -33,8 +34,8 @@ export class SetExpertsModalComponent implements OnInit {
     });
   }
 
-  setExperts(form) {
-    const areasExperts = form.value.categories;
+  public setExperts(form): void {
+    const areasExperts = form.value.categories.filter(a => !isNullOrUndefined(a.address));
     this.dialogRef.close(areasExperts);
   }
 }

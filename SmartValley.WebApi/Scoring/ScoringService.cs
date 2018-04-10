@@ -221,8 +221,8 @@ namespace SmartValley.WebApi.Scoring
                        AreaId = offerInfo.Area,
                        ExpertId = expertId,
                        ScoringId = scoringId,
-                       Status = Domain.Entities.ScoringOfferStatus.Pending,
-                       ExpirationTimestamp = offerInfo.ExpirationTimestamp.Value
+                       Status = offerInfo.Status,
+                       ExpirationTimestamp = offerInfo.ExpirationTimestamp
                    };
         }
 

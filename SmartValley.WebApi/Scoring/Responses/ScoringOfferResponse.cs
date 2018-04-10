@@ -26,7 +26,7 @@ namespace SmartValley.WebApi.Scoring.Responses
 
         public Guid ProjectExternalId { get; set; }
 
-        public DateTimeOffset ExpirationTimestamp { get; set; }
+        public DateTimeOffset? ExpirationTimestamp { get; set; }
 
         public DateTimeOffset? EstimatesDueDate { get; set; }
 

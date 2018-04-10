@@ -23,7 +23,7 @@ namespace SmartValley.WebApi.Scoring
             }
         }
 
-        public static ScoringOfferStatus ToApi(this Domain.Entities.ScoringOfferStatus status, DateTimeOffset expirationTimestamp, DateTimeOffset now)
+        public static ScoringOfferStatus ToApi(this Domain.Entities.ScoringOfferStatus status, DateTimeOffset? expirationTimestamp, DateTimeOffset now)
         {
             switch (status)
             {
