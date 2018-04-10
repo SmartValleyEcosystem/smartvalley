@@ -28,6 +28,7 @@ import {ScoringPaymentComponent} from './components/scoring-payment/scoring-paym
 import {OfferDetailsComponent} from './components/scoring/offer-details/offer-details.component';
 import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scoring-application.guard';
 import {OfferStatus} from './api/scoring-offer/offer-status.enum';
+import {ScoringListComponent} from './components/scoring-list/scoring-list.component';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -94,6 +95,7 @@ const appRoutes: Routes = [
       }
     },
     {path: Paths.ProjectList, component: ProjectListComponent},
+    {path: Paths.ScoringList, component: ScoringListComponent},
     {path: Paths.ProjectList + '/:search', component: ProjectListComponent},
     {path: Paths.MyProject + '/:id', component: ProjectComponent},
     {

@@ -116,6 +116,7 @@ import {ScoringPaymentComponent} from './components/scoring-payment/scoring-paym
 import { ExpertSelectorComponent } from './components/scoring-payment/expert-selector/expert-selector.component';
 import {OfferDetailsComponent} from './components/scoring/offer-details/offer-details.component';
 import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scoring-application.guard';
+import {ScoringListComponent} from './components/scoring-list/scoring-list.component';
 
 @NgModule({
   declarations: [
@@ -124,6 +125,7 @@ import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scor
     LandingComponent,
     HeaderComponent,
     CreateProjectComponent,
+    ScoringListComponent,
     FooterComponent,
     ProjectInfoComponent,
     TransactionAwaitingModalComponent,

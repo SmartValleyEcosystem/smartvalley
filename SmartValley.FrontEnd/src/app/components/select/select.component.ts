@@ -1,15 +1,16 @@
-import {Component, Input, forwardRef, OnChanges, ElementRef, OnInit} from '@angular/core';
-import {FormGroup, FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
+import {Component, Input, forwardRef, OnChanges, ElementRef, OnInit, Output, EventEmitter} from '@angular/core';
+import {FormGroup, FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS} from '@angular/forms';
 import {SelectItem} from 'primeng/api';
 import {TranslateService} from '@ngx-translate/core';
+import {isUndefined} from 'util';
 
 @Component({
   selector: 'app-select',
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.css'],
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => SelectComponent), multi: true },
-    { provide: NG_VALIDATORS, useExisting: forwardRef(() => SelectComponent), multi: true }
+    {provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => SelectComponent), multi: true},
+    {provide: NG_VALIDATORS, useExisting: forwardRef(() => SelectComponent), multi: true}
   ]
 })
 export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit {
@@ -20,29 +21,34 @@ export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit 
   public selectedInput = false;
   public selectedItemLabel: string;
 
-  @Input('selectedItemValue') _selectedItemValue: string|number|null = null;
+  @Input('selectedItemValue') _selectedItemValue: string | number | null = null;
   @Input() placeholder: string;
   @Input() items: SelectItem[];
   @Input() elementId: string;
   @Input() elementName: string;
   @Input() form?: FormGroup;
   @Input() isNeedToTranslate? = false;
-  @Input() defaultValue?: string|number;
+  @Input() hasEmptyValue = true;
+  @Input() defaultValue?: string | number;
+  @Output() onSelect: EventEmitter<string | number | null> = new EventEmitter<string | number | null>();
 
-  constructor( private translateService: TranslateService,
-               private nativeElement: ElementRef ) {}
+  constructor(private translateService: TranslateService) {
+  }
 
-  public propagateChange: any = () => {};
+  public propagateChange: any = () => {
+  };
 
-  public validateFn: any = () => {};
+  public validateFn: any = () => {
+  };
 
   get selectedItemValue() {
     return this._selectedItemValue;
   }
 
-  set selectedItemValue(value: string|number) {
+  set selectedItemValue(value: string | number) {
     this._selectedItemValue = value;
     this.propagateChange(value);
+    this.onSelect.emit(value);
   }
 
   public ngOnChanges(inputs) {
@@ -62,7 +68,7 @@ export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit 
     this.isSelectListHovered = false;
     this.isSearchInputInFocus = false;
     this.hideSelectList();
-    if (this.defaultValue) {
+    if (!isUndefined(this.defaultValue)) {
       this.setDefaultValue(this.defaultValue);
     }
   }
@@ -76,7 +82,8 @@ export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit 
     this.selectedItemValue = value;
   }
 
-  public registerOnTouched() {}
+  public registerOnTouched() {
+  }
 
   public validate(c: FormControl) {
     return this.validateFn(c);
@@ -106,7 +113,7 @@ export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit 
     this.isSearchInputInFocus = status;
   }
 
-  public selectItem(label: string, value: string|number|null) {
+  public selectItem(label: string, value: string | number | null) {
     this.selectedItemLabel = label;
     if (this.isNeedToTranslate) {
       this.selectedItemLabel = this.translateService.instant(label);

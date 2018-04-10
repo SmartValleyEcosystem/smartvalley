@@ -1,0 +1,19 @@
+{
+  "ScoringList": {
+    "Title": "Scoring",
+    "ShowStatus": "Show status",
+    "ScoringProgress": "Scoring progress",
+    "Timeout": "Time out",
+    "Scored": "Scored",
+    "Finished": "Finished",
+    "Refused": "Refused",
+    "Status": "Status",
+    "Deadline": "Deadline",
+    "Name": "Name",
+    "ContinueButton": "Continue scoring",
+    "ScoringInProgress": "Scoring in progress",
+    "AboutButton": "About project",
+    "Request": "Request. Payment: 0.01 ETH",
+    "TookTheOffer": "Took the offer. Payment: 0.01 ETH"
+  }
+}

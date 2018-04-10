@@ -6,9 +6,10 @@
       <a *ngIf="isAdmin" class="header-nav__link" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + adminPanelLink">{{'Header.Admin' | translate }}</a>
     </nav>
     <button *ngIf="!haveProject" class="main-btn get-score-btn" (click)="navigateToProjectApplication()">{{ 'Header.GetScoreForMyProject' | translate }}</button>
-    <button class="main-btn" (click)="navigateToExpertApplication()">{{ 'Header.BecomeAnExpert' | translate }}</button>
+    <button *ngIf="expertStatus !== ExpertApplicationStatus.Accepted" class="main-btn" (click)="navigateToExpertApplication()">{{ 'Header.BecomeAnExpert' | translate }}</button>
     <button *ngIf="showReceiveEtherButton" class="main-btn receive-ether-btn" (click)="receiveEtherAsync()">{{ 'Header.ReceiveEther' | translate }}</button>
     <nav class="header-nav__authenticated">
+      <a *ngIf="isAuthenticated && expertStatus === ExpertApplicationStatus.Accepted" class="header-nav__link" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + scroginsLink">{{'Header.Scoring' | translate }}</a>
       <a *ngIf="isAuthenticated && haveProject" class="header-nav__link" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + myProjectLink">{{'Header.MyProject' | translate }}</a>
       <span *ngIf="isAuthenticated" class="header-nav__login-logout" (click)="logout()">
         {{'Header.Logout' | translate }}

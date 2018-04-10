@@ -9,6 +9,6 @@ export class RoundNumberPipe implements PipeTransform {
     if (floatNumber) {
       return input.toFixed(floatNumber);
     }
-    return Math.floor(+input);
+    return Math.ceil(+input);
   }
 }

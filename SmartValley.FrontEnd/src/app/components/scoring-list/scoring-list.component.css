@@ -1,0 +1,209 @@
+.main-btn, .ghost-btn {
+  padding: 3px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  width: 120px;
+  height: 24px;
+  font-size: 12px;
+}
+
+.title {
+  width: 119px;
+  height: 40px;
+  font-family: Roboto-Bold;
+  font-size: 32px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.25;
+  letter-spacing: -0.1px;
+  text-align: left;
+  color: #000000;
+  margin-bottom: 20px;
+}
+
+.control-label {
+  width: 113.6px;
+  height: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: left;
+  color: #000000;
+  cursor: pointer;
+}
+
+.filters-wrapper {
+  display: flex;
+  margin-top: 20px;
+}
+
+p {
+  margin: 0;
+}
+
+.apply-filters {
+  margin: 20px 0;
+}
+
+.filter-item {
+  margin-right: 20px;
+}
+
+.filter-item:last-child {
+  margin-right: 0;
+}
+
+.search-input {
+  width: 533px;
+}
+
+.search-submit {
+  border-radius: 0 30px 30px 0 !important;
+  min-width: 95px;
+  position: absolute;
+  right: 0;
+}
+
+.search-controls-wrapper {
+  position: relative;
+  padding-bottom: 16px;
+  width: 580px;
+  height: 36px;
+}
+
+.clear-form {
+  cursor: pointer;
+  font-family: Roboto-Bold;
+  color: #a4a2b0;
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.scoring-input {
+  width: 76px;
+}
+
+.empty-result {
+  margin-top: 20px;
+  margin-bottom: 300px;
+}
+
+.empty-result__title {
+  width: 552px;
+  height: 32px;
+  font-family: Roboto-Regular;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1.33;
+  letter-spacing: -0.1px;
+  text-align: left;
+  color: #a4a2b0;
+}
+
+.email {
+  margin-bottom: 160px;
+  margin-top: 20px;
+  position: relative;
+  width: 380px;
+  height: 60px;
+}
+
+.email-input {
+  width: 333px;
+  height: 36px;
+}
+
+.email__button {
+  border-radius: 0 30px 30px 0 !important;
+  min-width: 95px;
+  position: absolute;
+  right: 0;
+}
+
+.empty-result__text {
+  width: 621px;
+  height: 20px;
+  font-family: Roboto-Regular;
+  font-size: 14px;
+  line-height: 1.43;
+  text-align: left;
+  color: #000000;
+  margin-top: 20px;
+}
+
+.table th {
+  padding: 24px 0px 24px 40px !important;
+}
+
+.scoring-input::-webkit-outer-spin-button,
+.scoring-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.scoring-col {
+  width: 46px;
+  height: 20px;
+  font-family: Roboto-Regular;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.43;
+  text-align: left;
+}
+
+.project-name {
+  font-size: 14px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 !important;
+  height: 56px;
+  display: flex;
+}
+
+.warning-border {
+  border-left-style: solid;
+  border-left-width: 4px;
+  border-left-color: #e64e41;
+}
+
+.attention-border {
+  border-left-style: solid;
+  border-left-width: 4px;
+  border-left-color: #ffd038;
+}
+
+.status-row{
+  position: relative;
+  height: 36px;
+}
+
+.status-row label{
+  position: absolute;
+  margin-top: 6px;
+  font-family: Roboto-Bold;
+  color: #000000;
+}
+
+.status-row app-select{
+  position: absolute;
+  left: 116px;
+}
+
+.padding-name {
+  padding: 18px 0 18px 40px !important;
+}
+
+.project-progress {
+  padding: 0 !important;
+}
+
+.padding-progress {
+  padding: 16px 0 16px 40px !important;
+}
+
+.table__name_col {
+  width: 346px;
+}

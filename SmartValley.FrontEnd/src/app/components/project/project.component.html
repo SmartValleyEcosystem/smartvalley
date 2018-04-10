@@ -8,7 +8,7 @@
       <div *ngSwitchCase="ScoringStatus.Finished">
         <div class="small-title">{{ 'MyProject.ProjectScore' | translate }}</div>
         <div class="score">
-          <div class="main-number">{{project.score}}</div>/100
+          <div class="main-number">{{project.score | roundNumberPipe}}</div>/100
         </div>
         <a *ngIf="isAuthor" [routerLink]="'/' + editProjectsLink" class="ghost-btn">{{ 'MyProject.EditInformation' | translate }}</a>
       </div>

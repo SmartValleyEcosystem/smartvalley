@@ -1,0 +1,109 @@
+<div class="content">
+  <h1 class="title">{{ 'ScoringList.Title' | translate }}</h1>
+  <div class="status-row  ">
+    <label for="status">{{ 'ScoringList.ShowStatus' | translate }}</label>
+    <app-select class="input-component"
+                [elementId]="'status'" [items]="offerStatuses"
+                (onSelect)="selectedStatusAsync($event)"
+                [hasEmptyValue]="false"
+                [defaultValue]="defaultStatus.value"
+                [placeholder]="'CreateProject.AllAreas' | translate">
+    </app-select>
+  </div>
+  <div class="search-controls">
+    <div *ngIf="checkOffers">
+      <div *ngIf="offers.length >0; else emptyResultBlock;">
+        <p-table class="table" [value]="offers">
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="table__name_col"><span class="sortable" [ngClass]="{
+              'sortable__active' : isSortableField('Name'),
+              'sortable__active_desc' : isSortableDirection(DESC),
+              'sortable__active_asc' : isSortableDirection(ASC)
+             }" (click)="sortByName()">{{ 'ScoringList.Name' | translate }}</span></th>
+              <th><span class="sortable" [ngClass]="{
+                'sortable__active' : isSortableField('Status') ,
+                'sortable__active_desc' : isSortableDirection(DESC),
+                'sortable__active_asc' : isSortableDirection(ASC)
+              }" (click)="sortByStatus()">{{ 'ScoringList.Status' | translate }}</span></th>
+              <th><span class="sortable" [ngClass]="{
+                'sortable__active' : isSortableField('Deadline'),
+                'sortable__active_desc' : isSortableDirection(DESC),
+                'sortable__active_asc' : isSortableDirection(ASC)
+              }" (click)="sortByDeadline()">{{ 'ScoringList.Deadline' | translate }}</span></th>
+              <th>{{ 'ScoringList.ScoringProgress' | translate }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-project>
+            <tr (click)="navigateToProject(project.projectId)">
+              <td class="project-name">
+                <div [ngClass]="project.score ? '' :
+                (project.offerStatus === OfferStatus.Pending ? 'warning-border' :
+                (project.offerStatus === OfferStatus.Accepted ? 'attention-border' : '')
+                )">
+                  <div class="padding-name">
+                    <a [routerLink]="getProjectLink(project.projectId)">{{project.name}}</a>
+                  </div>
+                </div>
+              </td>
+              <td [ngSwitch]="project.offerStatus">
+                <div *ngSwitchCase="OfferStatus.Finished">
+                  {{ 'ScoringList.Scored' | translate }}
+                </div>
+                <div *ngSwitchCase="OfferStatus.Timeout">
+                  {{ 'ScoringList.Timeout' | translate }}
+                </div>
+                <div *ngSwitchCase="OfferStatus.Rejected">
+                  {{ 'ScoringList.Refused' | translate }}
+                </div>
+                <div *ngSwitchCase="OfferStatus.Pending">
+                  {{ 'ScoringList.Request' | translate }}
+                </div>
+                <div *ngSwitchCase="OfferStatus.Accepted">
+                  {{ 'ScoringList.TookTheOffer' | translate }}
+                </div>
+              </td>
+              <td *ngIf="project.expirationTimestamp; else elseEndDate">{{ project.expirationTimestamp | date:'dd MMM HH:mm' }}
+              </td>
+              <ng-template #elseEndDate>
+                <td>&mdash;</td>
+              </ng-template>
+              <td *ngIf="project.finalScore; else elseScore" class="scoring-col gray-color-text">
+                {{ 'ScoringList.Finished' | translate }}:
+                <span class="primary-color-text">{{project.finalScore | roundNumberPipe}}</span>/100
+              </td>
+              <ng-template #elseScore>
+                <td class="project-progress gray-color-text scoring-col" [ngSwitch]="project.offerStatus">
+                  <div class="padding-progress" *ngSwitchCase="OfferStatus.Finished">{{ 'ScoringList.ScoringInProgress' | translate }}
+                  </div>
+                  <div class="padding-progress" *ngSwitchCase="OfferStatus.Timeout">{{ 'ScoringList.ScoringInProgress' | translate }}
+                  </div>
+                  <div class="padding-progress" *ngSwitchCase="OfferStatus.Rejected">{{ 'ScoringList.ScoringInProgress' | translate }}
+                  </div>
+                  <div class="padding-progress" *ngSwitchCase="OfferStatus.Pending">
+                    <a (click)="navigateToProjectScoring(project.projectId, project.area, $event)" class="main-btn">
+                      {{ 'ScoringList.AboutButton' | translate }}
+                    </a>
+                  </div>
+                  <div class="padding-progress" *ngSwitchCase="OfferStatus.Accepted">
+                    <a (click)="navigateToEstimateScoring(project.projectId, project.area)" class="ghost-btn" style="color: black !important;">
+                      {{ 'ScoringList.ContinueButton' | translate }}
+                    </a>
+                  </div>
+                </td>
+              </ng-template>
+            </tr>
+          </ng-template>
+        </p-table>
+        <p-paginator *ngIf="totalOffers > offersOnPageCount" [rows]="offersOnPageCount"
+                     [totalRecords]="totalOffers"
+                     (onPageChange)="changePage($event)"></p-paginator>
+      </div>
+      <ng-template #emptyResultBlock>
+        <div class="empty-result">
+          <div class="empty-result__title">{{ 'ProjectList.EmptyResultTitle' | translate }}</div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

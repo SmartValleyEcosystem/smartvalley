@@ -28,8 +28,11 @@ export class HeaderComponent implements OnInit {
   public accountImgUrl: string;
   public projectsLink: string;
   public accountLink: string;
+  public scroginsLink: string;
   public adminPanelLink: string;
   public myProjectLink: string;
+  public expertStatus?: ExpertApplicationStatus;
+  public ExpertApplicationStatus = ExpertApplicationStatus;
 
   constructor(private router: Router,
               private balanceService: BalanceService,
@@ -70,6 +73,9 @@ export class HeaderComponent implements OnInit {
       await this.updateProjectsAsync();
       this.isAuthenticated = true;
       this.accountAddress = user.account;
+      const expertStatusResponse = await this.expertApiClient.getExpertStatusAsync(this.accountAddress);
+      this.expertStatus = expertStatusResponse.status;
+      this.scroginsLink = Paths.ScoringList;
       this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
       this.isAdmin = user.roles.includes('Admin');
     } else {
@@ -103,12 +109,10 @@ export class HeaderComponent implements OnInit {
 
   async navigateToExpertApplication() {
     if (await this.authenticationService.authenticateAsync()) {
-      const address = this.userContext.getCurrentUser().account;
-      const expertStatusResponse = await this.expertApiClient.getExpertStatusAsync(address);
-      if (expertStatusResponse.status === ExpertApplicationStatus.Pending) {
+      if (this.expertStatus === ExpertApplicationStatus.Pending) {
         await this.router.navigate([Paths.ExpertStatus]);
-      } else if (expertStatusResponse.status === ExpertApplicationStatus.Accepted) {
-        await this.router.navigate([Paths.Expert]);
+      } else if (this.expertStatus === ExpertApplicationStatus.Accepted) {
+        await this.router.navigate([Paths.ScoringList]);
       } else {
         await this.router.navigate([Paths.RegisterExpert]);
       }

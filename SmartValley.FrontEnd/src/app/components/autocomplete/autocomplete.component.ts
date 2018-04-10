@@ -37,9 +37,11 @@ export class AutocompleteComponent implements ControlValueAccessor, OnChanges, O
               private nativeElement: ElementRef) {
   }
 
-  public propagateChange: any = () => {};
+  public propagateChange: any = () => {
+  };
 
-  public validateFn: any = () => {};
+  public validateFn: any = () => {
+  };
 
   get selectedItemValue(): string | number | null {
     return this._selectedItemValue;

@@ -5,12 +5,14 @@ import {Countries} from './countries';
 import {Category} from './category';
 import {TranslateService} from '@ngx-translate/core';
 import {SocialMediaTypeEnum} from '../project/social-media-type.enum';
+import {OfferStatus} from '../../api/scoring-offer/offer-status.enum';
 
 
 @Injectable()
 export class DictionariesService {
 
   public stages: EnumItem<StageEnum>[] = [];
+  public offerStatuses: EnumItem<OfferStatus>[] = [];
   public countries: Country[] = [];
   public categories: EnumItem<Category>[] = [];
   public networks: EnumItem<SocialMediaTypeEnum>[] = [];
@@ -24,6 +26,11 @@ export class DictionariesService {
     this.stages = await this.getStagesAsync();
     this.categories = await this.getCategoriesAsync();
     this.networks = this.getSocialMedias();
+    this.offerStatuses = await this.getOfferStatusesAsync();
+  }
+
+  public async getOfferStatusesAsync() {
+    return await this.enumToTranslatedArray<OfferStatus>(OfferStatus, 'OfferStatuses.');
   }
 
   public async getCountriesAsync(): Promise<Country[]> {
