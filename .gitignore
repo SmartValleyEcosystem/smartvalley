@@ -278,4 +278,3 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-SmartValley.FrontEnd/package-lock.json
