@@ -48,9 +48,15 @@ namespace SmartValley.WebApi.Estimates
 
             await AddEstimateCommentsAsync(expertId, request.EstimateComments, scoring.Id);
 
-            await _estimateRepository.AddConclusionAsync(expertId, scoring.Id, area, request.Conclusion);
-
+            var conclusion = new ExpertScoringConclusion
+                             {
+                                 ExpertId = expertId,
+                                 Area = area,
+                                 Conclusion = request.Conclusion
+                             };
+            scoring.AddConclusionForArea(conclusion);
             await UpdateProjectScoringAsync(scoring, area);
+            await _scoringRepository.SaveChangesAsync();
 
             await _scoringOffersRepository.FinishAsync(scoring.Id, expertId, area);
         }
@@ -62,8 +68,9 @@ namespace SmartValley.WebApi.Estimates
                 return ScoringStatisticsInArea.Empty;
 
             var estimates = await GetEstimatesAsync(scoring.Id, scoring.ContractAddress, areaType);
-            var areaScore = await _scoringRepository.GetAreaScoreAsync(scoring.Id, areaType);
-            return new ScoringStatisticsInArea(areaScore, estimates);
+            var areaScore = scoring.GetScoreForArea(areaType);
+            var conclusions = scoring.GetConclusionsForArea(areaType);
+            return new ScoringStatisticsInArea(areaScore, estimates, conclusions, scoring.ScoringOffers.ToArray());
         }
 
         private async Task<IReadOnlyCollection<Estimate>> GetEstimatesAsync(long scoringId, string scoringContractAddress, AreaType areaType)
@@ -93,13 +100,14 @@ namespace SmartValley.WebApi.Estimates
             {
                 scoring.Score = scoringStatistics.Score;
                 scoring.ScoringEndDate = _clock.UtcNow;
-
-                await _scoringRepository.UpdateWholeAsync(scoring);
+                scoring.Status = ScoringStatus.Finished;
             }
 
             var areaScore = scoringStatistics.AreaScores[area];
             if (areaScore.HasValue)
-                await _scoringRepository.SetAreaScoreAsync(scoring.Id, area, areaScore.Value);
+            {
+                scoring.SetScoreForArea(area, areaScore.Value);
+            }
         }
 
         private Task AddEstimateCommentsAsync(long expertId, IReadOnlyCollection<EstimateCommentRequest> estimateComments, long scoringId)

@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Converters;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SmartValley.Data.SQL.Core;
+using SmartValley.Domain;
 using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 
@@ -369,6 +370,8 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<DateTimeOffset?>("ScoringStartDate");
 
+                    b.Property<int>("Status");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProjectId")
@@ -724,7 +727,7 @@ namespace SmartValley.Data.SQL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SmartValley.Domain.Entities.Scoring", "Scoring")
-                        .WithMany()
+                        .WithMany("ExpertScoringConclusions")
                         .HasForeignKey("ScoringId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -771,7 +774,7 @@ namespace SmartValley.Data.SQL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SmartValley.Domain.Entities.Scoring", "Scoring")
-                        .WithMany()
+                        .WithMany("ScoringOffers")
                         .HasForeignKey("ScoringId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

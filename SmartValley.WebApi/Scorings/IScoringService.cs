@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 using SmartValley.WebApi.Projects;
-using SmartValley.WebApi.Scoring.Requests;
+using SmartValley.WebApi.Scorings.Requests;
 
-namespace SmartValley.WebApi.Scoring
+namespace SmartValley.WebApi.Scorings
 {
     public interface IScoringService
     {
@@ -22,7 +22,7 @@ namespace SmartValley.WebApi.Scoring
 
         Task UpdateOffersAsync(Guid projectExternalId);
 
-        Task<Domain.Entities.Scoring> GetByProjectIdAsync(long projectId);
+        Task<Scoring> GetByProjectIdAsync(long projectId);
 
         Task<IReadOnlyCollection<ScoringOfferDetails>> QueryOffersAsync(OffersQuery query, DateTimeOffset now);
 

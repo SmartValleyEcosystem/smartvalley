@@ -15,16 +15,12 @@ namespace SmartValley.Domain.Interfaces
 
         Task<Scoring> GetByProjectIdAsync(long projectId);
 
-        Task AddAreasAsync(IReadOnlyCollection<AreaScoring> areaScorings);
-
         Task<IReadOnlyCollection<ScoringProjectDetails>> GetScoringProjectsDetailsByScoringIdsAsync(IReadOnlyCollection<long> scoringIds);
 
         Task<IReadOnlyCollection<ScoringAreaStatistics>> GetIncompletedScoringAreaStatisticsAsync(DateTimeOffset tillDate);
 
         Task<bool> HasEnoughExpertsAsync(long scoringId);
 
-        Task<double?> GetAreaScoreAsync(long scoringId, AreaType areaType);
-
-        Task SetAreaScoreAsync(long scoringId, AreaType area, double score);
+        Task SaveChangesAsync();
     }
 }

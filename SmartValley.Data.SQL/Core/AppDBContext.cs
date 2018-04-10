@@ -257,6 +257,10 @@ namespace SmartValley.Data.SQL.Core
             modelBuilder.Entity<ScoringOffer>()
                         .HasIndex(e => new {e.ScoringId, e.AreaId, e.ExpertId});
 
+            modelBuilder.Entity<ScoringOffer>()
+                        .HasOne(o => o.Scoring)
+                        .WithMany(s => s.ScoringOffers);
+
             modelBuilder.Entity<EstimateComment>()
                         .HasOne(x => x.Expert);
 
@@ -325,9 +329,10 @@ namespace SmartValley.Data.SQL.Core
 
             modelBuilder.Entity<ExpertScoringConclusion>()
                         .HasOne(e => e.Expert);
-            
+
             modelBuilder.Entity<ExpertScoringConclusion>()
-                        .HasOne(e => e.Scoring);
+                        .HasOne(e => e.Scoring)
+                        .WithMany(s => s.ExpertScoringConclusions);
         }
     }
 }

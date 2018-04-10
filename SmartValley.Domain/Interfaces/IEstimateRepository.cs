@@ -8,8 +8,6 @@ namespace SmartValley.Domain.Interfaces
     {
         Task<int> AddRangeAsync(IEnumerable<EstimateComment> entities);
 
-        Task AddConclusionAsync(long expertId, long scoringId, AreaType area, string conclusion);
-
         Task<IReadOnlyCollection<EstimateComment>> GetByScoringIdAsync(long scoringId, AreaType areaType);
     }
 }

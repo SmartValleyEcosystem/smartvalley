@@ -12,10 +12,10 @@ using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Projects;
-using SmartValley.WebApi.Scoring.Requests;
+using SmartValley.WebApi.Scorings.Requests;
 using AreaType = SmartValley.Domain.Entities.AreaType;
 
-namespace SmartValley.WebApi.Scoring
+namespace SmartValley.WebApi.Scorings
 {
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ScoringService : IScoringService
@@ -63,9 +63,7 @@ namespace SmartValley.WebApi.Scoring
             if (offersEndDate == null)
                 throw new AppErrorException(ErrorCode.OffersNotFound);
 
-            var scoringId = await AddScoringAsync(projectExternalId, offersEndDate.Value);
-
-            await AddAreasAsync(areas, scoringId);
+            var scoringId = await AddScoringAsync(projectExternalId, offersEndDate.Value, areas);
 
             var experts = await GetExpertsForOffersAsync(contractOffers);
             var expertsDictionary = experts.ToDictionary(e => e.Address, e => e.Id);
@@ -142,7 +140,7 @@ namespace SmartValley.WebApi.Scoring
             await NotifyExpertsAsync(offers, experts);
         }
 
-        public Task<Domain.Entities.Scoring> GetByProjectIdAsync(long projectId)
+        public Task<Scoring> GetByProjectIdAsync(long projectId)
             => _scoringRepository.GetByProjectIdAsync(projectId);
 
         public Task<IReadOnlyCollection<ScoringOfferDetails>> QueryOffersAsync(OffersQuery query, DateTimeOffset now)
@@ -193,25 +191,26 @@ namespace SmartValley.WebApi.Scoring
             return offers;
         }
 
-        private async Task<long> AddScoringAsync(Guid projectExternalId, DateTimeOffset offersEndDate)
+        private async Task<long> AddScoringAsync(Guid projectExternalId, DateTimeOffset offersEndDate, IReadOnlyCollection<AreaRequest> areas)
         {
             var project = await _projectRepository.GetByExternalIdAsync(projectExternalId);
             var contractAddress = await _scoringManagerContractClient.GetScoringAddressAsync(projectExternalId);
-            var scoring = new Domain.Entities.Scoring
+
+            var scoring = new Scoring
                           {
                               ProjectId = project.Id,
                               ContractAddress = contractAddress,
                               CreationDate = _clock.UtcNow,
-                              OffersDueDate = offersEndDate
-                          };
+                              OffersDueDate = offersEndDate,
+                              Status = ScoringStatus.InProgress,
+                              AreaScorings = areas.Select(x => new AreaScoring
+                                                               {
+                                                                   AreaId = x.Area.ToDomain(),
+                                                                   ExpertsCount = x.ExpertsCount
+                                                               }).ToList()
+            };
             await _scoringRepository.AddAsync(scoring);
             return scoring.Id;
-        }
-
-        private Task AddAreasAsync(IReadOnlyCollection<AreaRequest> areas, long scoringId)
-        {
-            var areaScorings = areas.Select(a => CreateAreaScoring(a, scoringId)).ToArray();
-            return _scoringRepository.AddAreasAsync(areaScorings);
         }
 
         private static ScoringOffer CreateOffer(long scoringId, long expertId, ScoringOfferInfo offerInfo)
@@ -223,16 +222,6 @@ namespace SmartValley.WebApi.Scoring
                        ScoringId = scoringId,
                        Status = offerInfo.Status,
                        ExpirationTimestamp = offerInfo.ExpirationTimestamp
-                   };
-        }
-
-        private static AreaScoring CreateAreaScoring(AreaRequest areaRequest, long scoringId)
-        {
-            return new AreaScoring
-                   {
-                       AreaId = areaRequest.Area.ToDomain(),
-                       ScoringId = scoringId,
-                       ExpertsCount = areaRequest.ExpertsCount
                    };
         }
 

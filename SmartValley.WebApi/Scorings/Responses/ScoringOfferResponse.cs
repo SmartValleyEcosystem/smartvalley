@@ -2,7 +2,7 @@
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 
-namespace SmartValley.WebApi.Scoring.Responses
+namespace SmartValley.WebApi.Scorings.Responses
 {
     public class ScoringOfferResponse
     {

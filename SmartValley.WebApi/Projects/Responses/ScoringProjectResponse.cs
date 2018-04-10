@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SmartValley.WebApi.Scoring;
+using SmartValley.WebApi.Scorings;
 
 namespace SmartValley.WebApi.Projects.Responses
 {

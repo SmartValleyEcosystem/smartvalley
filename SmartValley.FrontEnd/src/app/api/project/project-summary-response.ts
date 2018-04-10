@@ -1,4 +1,4 @@
-import {ScoringStatus} from '../../services/scoring-status.enum';
+import {ScoringResponse} from "../scoring/scoring-response";
 
 export interface ProjectSummaryResponse {
   id: number;
@@ -8,8 +8,6 @@ export interface ProjectSummaryResponse {
   icoDate: Date;
   imageUrl: string;
   name: string;
-  score: number;
-  scoringStatus: ScoringStatus;
   stageId: number;
   category: number;
   telegram: string;
@@ -17,7 +15,7 @@ export interface ProjectSummaryResponse {
   website: string;
   whitePaperLink: string;
   authorId: number;
-  scoringId: number;
   authorAddress: string;
   isApplicationSubmitted: boolean;
+  scoring: ScoringResponse;
 }

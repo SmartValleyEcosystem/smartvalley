@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SmartValley.WebApi.Scoring.Requests
+namespace SmartValley.WebApi.Scorings.Requests
 {
     public class AcceptRejectOfferRequest
     {

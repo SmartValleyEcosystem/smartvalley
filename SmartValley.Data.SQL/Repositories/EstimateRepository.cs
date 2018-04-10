@@ -24,16 +24,5 @@ namespace SmartValley.Data.SQL.Repositories
                           select estimate)
                        .ToArrayAsync();
         }
-
-        public Task AddConclusionAsync(long expertId, long scoringId, AreaType area, string conclusion)
-        {
-            return EditContext.ExpertScoringConclusions.AddAsync(new ExpertScoringConclusion
-                                                                 {
-                                                                     ExpertId = expertId,
-                                                                     ScoringId = scoringId,
-                                                                     Area = area,
-                                                                     Conclusion = conclusion
-                                                                 });
-        }
     }
 }

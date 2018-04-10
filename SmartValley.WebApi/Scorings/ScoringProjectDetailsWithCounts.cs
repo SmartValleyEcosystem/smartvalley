@@ -4,7 +4,7 @@ using SmartValley.Domain;
 using SmartValley.Domain.Core;
 using SmartValley.WebApi.Projects;
 
-namespace SmartValley.WebApi.Scoring
+namespace SmartValley.WebApi.Scorings
 {
     public class ScoringProjectDetailsWithCounts : ScoringProjectDetails
     {

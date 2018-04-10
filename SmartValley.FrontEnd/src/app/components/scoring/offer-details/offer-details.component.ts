@@ -36,7 +36,7 @@ export class OfferDetailsComponent implements OnInit {
     const areaType = +this.route.snapshot.paramMap.get('areaType');
     this.area = this.areaService.areas.find(i => i.areaType === areaType);
     this.project = await this.projectApiClient.getProjectSummaryAsync(projectId);
-    if (this.project && this.area && this.project.scoringId) {
+    if (this.project && this.area && this.project.scoring.id) {
       this.isProjectExists = true;
     }
   }
@@ -49,7 +49,7 @@ export class OfferDetailsComponent implements OnInit {
       transactionHash
     );
 
-    await this.offersApiClient.acceptExpertOfferAsync(transactionHash, this.project.scoringId, this.area.areaType);
+    await this.offersApiClient.acceptExpertOfferAsync(transactionHash, this.project.scoring.id, this.area.areaType);
 
     transactionDialog.close();
     this.router.navigate([Paths.Project + '/' + this.project.id + '/scoring']);
@@ -63,7 +63,7 @@ export class OfferDetailsComponent implements OnInit {
       transactionHash
     );
 
-    await this.offersApiClient.declineExpertOfferAsync(transactionHash, this.project.scoringId, this.area.areaType);
+    await this.offersApiClient.declineExpertOfferAsync(transactionHash, this.project.scoring.id, this.area.areaType);
 
     transactionDialog.close();
     await this.router.navigate([Paths.ScoringList]);

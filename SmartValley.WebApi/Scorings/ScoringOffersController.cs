@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,11 +6,11 @@ using SmartValley.Application;
 using SmartValley.Domain;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Extensions;
-using SmartValley.WebApi.Scoring.Requests;
-using SmartValley.WebApi.Scoring.Responses;
+using SmartValley.WebApi.Scorings.Requests;
+using SmartValley.WebApi.Scorings.Responses;
 using SmartValley.WebApi.WebApi;
 
-namespace SmartValley.WebApi.Scoring
+namespace SmartValley.WebApi.Scorings
 {
     [Route("api/scoring/offers")]
     [Authorize]

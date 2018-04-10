@@ -19,20 +19,11 @@ namespace SmartValley.Data.SQL.Repositories
         }
 
         public Task<Scoring> GetByProjectIdAsync(long projectId)
-            => ReadContext.Scorings.FirstOrDefaultAsync(scoring => scoring.ProjectId == projectId);
-
-        public Task SetAreaScoreAsync(long scoringId, AreaType area, double score)
-        {
-            var areaScoring = new AreaScoring {ScoringId = scoringId, AreaId = area, Score = score};
-            EditContext.AreaScorings.Attach(areaScoring).Property(s => s.Score).IsModified = true;
-            return EditContext.SaveAsync();
-        }
-
-        public Task AddAreasAsync(IReadOnlyCollection<AreaScoring> areaScorings)
-        {
-            EditContext.AreaScorings.AddRange(areaScorings);
-            return EditContext.SaveAsync();
-        }
+            => EditContext.Scorings
+                          .Include(x => x.ExpertScoringConclusions)
+                          .Include(x => x.ScoringOffers).ThenInclude(x => x.Area)
+                          .Include(x => x.AreaScorings)
+                          .FirstOrDefaultAsync(scoring => scoring.ProjectId == projectId);
 
         public async Task<IReadOnlyCollection<ScoringAreaStatistics>> GetIncompletedScoringAreaStatisticsAsync(DateTimeOffset tillDate)
         {
@@ -126,12 +117,6 @@ namespace SmartValley.Data.SQL.Repositories
             return scoringAreaCounts.All(i => i.RequiredCount == i.Count);
         }
 
-        public async Task<double?> GetAreaScoreAsync(long scoringId, AreaType areaType)
-        {
-            var areaScoring = await ReadContext.AreaScorings.FirstOrDefaultAsync(a => a.ScoringId == scoringId && a.AreaId == areaType);
-            return areaScoring?.Score;
-        }
-
         public async Task<IReadOnlyCollection<ScoringProjectDetails>> GetScoringProjectsDetailsByScoringIdsAsync(IReadOnlyCollection<long> scoringIds)
         {
             return await (from project in ReadContext.Projects
@@ -146,6 +131,11 @@ namespace SmartValley.Data.SQL.Repositories
                               scoring.CreationDate, 
                               scoring.OffersDueDate))
                        .ToArrayAsync();
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await EditContext.SaveAsync();
         }
     }
 }

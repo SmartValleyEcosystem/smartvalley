@@ -13,7 +13,7 @@ using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Projects.Requests;
 using SmartValley.WebApi.Projects.Responses;
-using SmartValley.WebApi.Scoring;
+using SmartValley.WebApi.Scorings;
 using SmartValley.WebApi.Users;
 using SmartValley.WebApi.Votings;
 using SmartValley.WebApi.WebApi;

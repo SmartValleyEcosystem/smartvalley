@@ -4,11 +4,11 @@
 <div *ngIf="isProjectExists" class="content">
   <h1 class="title">{{ project.name }}</h1>
   <app-project-info *ngIf="project" [project]="project">
-    <div [ngSwitch]="project.scoringStatus">
+    <div [ngSwitch]="project.scoring.scoringStatus">
       <div *ngSwitchCase="ScoringStatus.Finished">
         <div class="small-title">{{ 'MyProject.ProjectScore' | translate }}</div>
         <div class="score">
-          <div class="main-number">{{project.score | roundNumberPipe}}</div>/100
+            <div class="main-number">{{project.scoring.score | roundNumberPipe}}</div>/100
         </div>
         <a *ngIf="isAuthor" [routerLink]="'/' + editProjectsLink" class="ghost-btn">{{ 'MyProject.EditInformation' | translate }}</a>
       </div>

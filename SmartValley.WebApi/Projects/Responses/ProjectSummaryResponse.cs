@@ -1,6 +1,7 @@
 ﻿using System;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
+using SmartValley.WebApi.Scorings.Responses;
 
 namespace SmartValley.WebApi.Projects.Responses
 {
@@ -32,11 +33,7 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public string Twitter { get; set; }
 
-        public ScoringStatus ScoringStatus { get; set; }
-
-        public double? Score { get; set; }
-
-        public long? ScoringId { get; set; }
+        public ScoringResponse Scoring { get; set; }
 
         public long AuthorId { get; set; }
 
@@ -47,7 +44,7 @@ namespace SmartValley.WebApi.Projects.Responses
         public static ProjectSummaryResponse Create(
             Project project,
             Country country,
-            Domain.Entities.Scoring scoring,
+            Scoring scoring,
             ScoringApplication scoringApplication,
             User author)
         {
@@ -67,11 +64,7 @@ namespace SmartValley.WebApi.Projects.Responses
                        Telegram = project.Telegram,
                        Twitter = project.Twitter,
                        IsApplicationSubmitted = scoringApplication?.IsSubmitted ?? false,
-                       ScoringStatus = scoring == null
-                                           ? ScoringStatus.Pending
-                                           : (scoring.Score.HasValue ? ScoringStatus.Finished : ScoringStatus.InProgress),
-                       ScoringId = scoring?.Id,
-                       Score = scoring?.Score,
+                       Scoring = ScoringResponse.FromScoring(scoring),
                        AuthorId = project.AuthorId,
                        AuthorAddress = author.Address
                    };

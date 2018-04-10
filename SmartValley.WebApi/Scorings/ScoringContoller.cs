@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application;
-using SmartValley.WebApi.Scoring.Requests;
+using SmartValley.WebApi.Scorings.Requests;
 
-namespace SmartValley.WebApi.Scoring
+namespace SmartValley.WebApi.Scorings
 {
     [Route("api/scoring")]
     [Authorize]

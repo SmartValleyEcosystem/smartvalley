@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SmartValley.WebApi.Scoring.Requests
+namespace SmartValley.WebApi.Scorings.Requests
 {
     public class StartProjectScoringRequest
     {
