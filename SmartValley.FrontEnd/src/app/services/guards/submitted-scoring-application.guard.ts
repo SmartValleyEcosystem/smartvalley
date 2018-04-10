@@ -14,7 +14,10 @@ export class SubmittedScoringApplicationGuard implements CanActivate {
                     state: RouterStateSnapshot): Promise<boolean> {
     const projectId = +next.paramMap.get('id');
     const application = await this.scoringApplicationApiClient.getScoringApplicationsAsync(projectId);
-    this.router.navigate([Paths.Project + '/' + projectId, {tab: 'application'}]);
-    return !application.isSubmitted;
+    if (application.isSubmitted) {
+      this.router.navigate([Paths.Project + '/' + projectId, {tab: 'application'}]);
+      return false;
+    }
+    return true;
   }
 }
