@@ -28,6 +28,7 @@ import {ScoringPaymentComponent} from './components/scoring/scoring-payment/scor
 import {OfferDetailsComponent} from './components/scoring/offer-details/offer-details.component';
 import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scoring-application.guard';
 import {OfferStatus} from './api/scoring-offer/offer-status.enum';
+import {ExpertScoringComponent} from './components/expert-scoring/expert-scoring.component';
 import {ScoringListComponent} from './components/scoring-list/scoring-list.component';
 
 const appRoutes: Routes = [
@@ -103,7 +104,8 @@ const appRoutes: Routes = [
       component: EditScoringApplicationComponent,
       canActivate: [SubmittedScoringApplicationGuard]
     },
-    {path: Paths.Project + '/:id/payment', component: ScoringPaymentComponent}
+    {path: Paths.Project + '/:id/payment', component: ScoringPaymentComponent},
+    {path: Paths.Project + '/:id/scoring/:areaType', canActivate: [OfferStatusGuard], component: ExpertScoringComponent}
   ]
   },
   {path: '**', redirectTo: Paths.Root}

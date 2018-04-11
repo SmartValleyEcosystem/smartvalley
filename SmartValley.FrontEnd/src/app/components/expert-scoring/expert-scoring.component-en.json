@@ -1,0 +1,14 @@
+{
+  "ExpertScoring": {
+    "Title": "Scoring:",
+    "Conclusion": "Conclusion",
+    "Finish": "Finish and send",
+    "SaveDraft": "Save draft",
+    "ConclusionLabel": "Common opinion about project",
+    "Comment": "Comment",
+    "CommentPlaceholder": "Explain your choise",
+    "ModalTitle": "Your report was sent",
+    "ModalDescription": "Wait for other experts. Thank you.",
+    "ModalOk": "Ok"
+  }
+}

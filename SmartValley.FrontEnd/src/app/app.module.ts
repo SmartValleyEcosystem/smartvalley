@@ -91,6 +91,7 @@ import {SearchWithAutocompleteComponent} from './components/search-with-autocomp
 import {ProjectListComponent} from './components/project-list/project-list.component';
 import {PaginatorModule} from 'primeng/paginator';
 import {TooltipModule} from 'primeng/tooltip';
+import {RadioButtonModule} from 'primeng/radiobutton';
 import {OfferStatusGuard} from './services/guards/offer-status.guard';
 import {SelectComponent} from './components/select/select.component';
 import {AutocompleteComponent} from './components/autocomplete/autocomplete.component';
@@ -112,8 +113,9 @@ import {ProjectAboutComponent} from './components/project/project-about/project-
 import {WaitingModalComponent} from './components/common/waiting-modal/waiting-modal.component';
 import {ScoringApplicationComponent} from './components/project/scoring-application/scoring-application.component';
 import {ProjectService} from './services/project/project.service';
+import {ExpertScoringComponent} from './components/expert-scoring/expert-scoring.component';
 import {ScoringPaymentComponent} from './components/scoring/scoring-payment/scoring-payment.component';
-import { ExpertSelectorComponent } from './components/scoring/scoring-payment/expert-selector/expert-selector.component';
+import {ExpertSelectorComponent} from './components/scoring/scoring-payment/expert-selector/expert-selector.component';
 import {OfferDetailsComponent} from './components/scoring/offer-details/offer-details.component';
 import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scoring-application.guard';
 import {ScoringListComponent} from './components/scoring-list/scoring-list.component';
@@ -172,7 +174,8 @@ import {ScoringListComponent} from './components/scoring-list/scoring-list.compo
     WaitingModalComponent,
     ScoringPaymentComponent,
     ExpertSelectorComponent,
-    OfferDetailsComponent
+    OfferDetailsComponent,
+    ExpertScoringComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -213,6 +216,7 @@ import {ScoringListComponent} from './components/scoring-list/scoring-list.compo
     NgProgressModule,
     PaginatorModule,
     TooltipModule,
+    RadioButtonModule,
     MatIconModule,
     Ng2DeviceDetectorModule.forRoot(),
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),

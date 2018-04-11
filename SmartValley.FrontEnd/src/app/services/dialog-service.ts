@@ -115,6 +115,15 @@ export class DialogService {
     return this.openModalAsync(WaitingModalComponent, {});
   }
 
+  public showSendReportDialog(): MatDialogRef<AlertModalComponent> {
+    const data = <AlertModalData>{
+      title: this.translateService.instant('ExpertScoring.ModalTitle'),
+      message: this.translateService.instant('ExpertScoring.ModalDescription'),
+      button: this.translateService.instant('ExpertScoring.ModalOk')
+    };
+    return this.openModal(AlertModalComponent, data);
+  }
+
   private openModal<TComponent, TData>(componentType: ComponentType<TComponent>,
                                        data: TData,
                                        disableClose: boolean = false,

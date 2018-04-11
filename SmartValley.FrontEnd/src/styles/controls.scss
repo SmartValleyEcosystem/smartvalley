@@ -169,6 +169,11 @@ input.ng-valid {
   border-color: #a4a2b0 !important;
 }
 
+.ng-invalid.ng-touched.ng-dirty textarea.ng-invalid,
+.ng-invalid.ng-touched.ng-dirty .ng-invalid .ui-radiobutton-box.ui-widget {
+  border: 1px solid red !important;
+}
+
 /* angular-material tabs */
 
 .mat-tab-label-content	{
@@ -239,7 +244,25 @@ body .ui-chkbox .ui-chkbox-box.ui-state-active {
   padding-top: 2px;
   color: #5d49f2;
 }
-
 .ui-chkbox-box .fa-check:before {
   color: #5d49f2;
+}
+
+/* ng-prime radio */
+
+body .ui-radiobutton-box {
+  width: 20px;
+  height: 20px;
+}
+body .ui-radiobutton-box.ui-state-active {
+  background-color: #fff !important;
+}
+body .ui-radiobutton .ui-radiobutton-box.ui-state-active .ui-radiobutton-icon.fa-circle {
+  color: #5d49f2 !important;
+  padding-top: 3px;
+  font-size: 12px;
+}
+body .ui-radiobutton .ui-radiobutton-box {
+  position: relative;
+  top: -3px;
 }

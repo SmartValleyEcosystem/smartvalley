@@ -45,6 +45,8 @@ export function multiTranslateLoaderFactory() {
     'components/common/waiting-modal/waiting-modal.component',
     'components/common/confirm-email/confirm-email.component',
     'components/project/scoring-application/scoring-application.component',
+    'components/expert-scoring/expert-scoring.component',
+    'components/common/waiting-modal/waiting-modal.component',
     'components/scoring/scoring-payment/scoring-payment.component'
   ]);
 }

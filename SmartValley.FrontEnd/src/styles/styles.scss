@@ -424,13 +424,14 @@ a, button, span {
 }
 
 .control-label {
-  width: 113.6px;
   height: 20px;
   font-size: 14px;
   font-weight: bold;
   text-align: left;
   color: #000000;
-  cursor: pointer;
+  label {
+    cursor: pointer;
+  }
 }
 
 .title {
