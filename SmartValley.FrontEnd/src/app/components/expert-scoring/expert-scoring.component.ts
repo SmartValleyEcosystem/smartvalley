@@ -1,8 +1,8 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ActivatedRoute} from '@angular/router';
-import {ProjectDetailsResponse} from '../../api/project/project-details-response';
 import {ScoringCriterionService} from '../../services/criteria/scoring-criterion.service';
+import {ProjectSummaryResponse} from '../../api/project/project-summary-response';
 import {Area} from '../../services/expert/area';
 import {AreaService} from '../../services/expert/area.service';
 import {ScoringCriteriaGroup} from '../../services/criteria/scoring-criteria-group';
@@ -11,7 +11,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AreaType} from '../../api/scoring/area-type.enum';
 import {SubmitEstimatesRequest} from '../../api/estimates/submit-estimates-request';
 import {ScoringManagerContractClient} from '../../services/contract-clients/scoring-manager-contract-client';
-import {Score} from '../../services/score.enum';
 import {EstimateCommentRequest} from '../../api/estimates/estimate-comment-request';
 import {Estimate} from '../../services/estimate';
 import {DialogService} from '../../services/dialog-service';
@@ -63,9 +62,9 @@ export class ExpertScoringComponent implements OnInit {
 
     this.scoringForm = this.formBuilder.group(scoringFields);
 
-    const projectDetails: ProjectDetailsResponse = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
-    this.projectName = projectDetails.name;
-    this.projectExternalId = projectDetails.externalId;
+    const projectSummary: ProjectSummaryResponse = await this.projectApiClient.getProjectSummaryAsync(this.projectId);
+    this.projectName = projectSummary.name;
+    this.projectExternalId = projectSummary.externalId;
   }
 
   private validateForm(): boolean {
