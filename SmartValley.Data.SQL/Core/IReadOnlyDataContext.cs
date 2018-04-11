@@ -15,8 +15,6 @@ namespace SmartValley.Data.SQL.Core
         IQueryable<EstimateComment> EstimateComments { get; }
         IQueryable<ProjectTeamMember> ProjectTeamMembers { get; }
         IQueryable<ScoringCriterion> ScoringCriteria { get; }
-        IQueryable<Voting> Votings { get; }
-        IQueryable<VotingProject> VotingProjects { get; }
         IQueryable<User> Users { get; }
         IQueryable<Role> Roles { get; }
         IQueryable<UserRole> UserRoles { get; }

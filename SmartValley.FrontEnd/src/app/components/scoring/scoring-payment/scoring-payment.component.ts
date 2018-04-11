@@ -7,8 +7,8 @@ import {BalanceService} from '../../../services/balance/balance.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ScoringApiClient} from '../../../api/scoring/scoring-api-client';
 import {ProjectApiClient} from '../../../api/project/project-api-client';
-import {ProjectDetailsResponse} from '../../../api/project/project-details-response';
 import {Paths} from '../../../paths';
+import {ProjectSummaryResponse} from "../../../api/project/project-summary-response";
 
 @Component({
   selector: 'app-scoring-payment',
@@ -45,8 +45,8 @@ export class ScoringPaymentComponent implements OnInit {
       this.areaCosts[this.areas[i].areaType] = await this.scoringService.getScoringCostInAreaAsync(this.areas[i].areaType);
     }
     this.projectId = +this.route.snapshot.paramMap.get('id');
-    const projectDetails: ProjectDetailsResponse = await this.projectApiClient.getDetailsByIdAsync(this.projectId);
-    this.externalId = projectDetails.externalId;
+    const projectSummary: ProjectSummaryResponse = await this.projectApiClient.getProjectSummaryAsync(this.projectId);
+    this.externalId = projectSummary.externalId;
     this.updateBalance(this.balanceService.balance);
     this.calculateTotalExperts();
   }

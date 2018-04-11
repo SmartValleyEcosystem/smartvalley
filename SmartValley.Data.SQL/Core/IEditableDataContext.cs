@@ -16,8 +16,6 @@ namespace SmartValley.Data.SQL.Core
         DbSet<EstimateComment> EstimateComments { get; }
         DbSet<ProjectTeamMember> ProjectTeamMembers { get; }
         DbSet<ScoringCriterion> ScoringCriteria { get; }
-        DbSet<Voting> Votings { get; }
-        DbSet<VotingProject> VotingProjects { get; }
         DbSet<User> Users { get; }
         DbSet<Role> Roles { get; }
         DbSet<UserRole> UserRoles { get; }

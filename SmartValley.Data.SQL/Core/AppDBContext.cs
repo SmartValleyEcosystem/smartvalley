@@ -30,10 +30,6 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<ScoringCriterion> IReadOnlyDataContext.ScoringCriteria => ScoringCriteria.AsNoTracking();
 
-        IQueryable<Voting> IReadOnlyDataContext.Votings => Votings.AsNoTracking();
-
-        IQueryable<VotingProject> IReadOnlyDataContext.VotingProjects => VotingProjects.AsNoTracking();
-
         IQueryable<User> IReadOnlyDataContext.Users => Users.AsNoTracking();
 
         IQueryable<Role> IReadOnlyDataContext.Roles => Roles.AsNoTracking();
@@ -79,10 +75,6 @@ namespace SmartValley.Data.SQL.Core
         public DbSet<EstimateComment> EstimateComments { get; set; }
 
         public DbSet<ScoringCriterion> ScoringCriteria { get; set; }
-
-        public DbSet<Voting> Votings { get; set; }
-
-        public DbSet<VotingProject> VotingProjects { get; set; }
 
         public DbSet<User> Users { get; set; }
 
@@ -174,18 +166,6 @@ namespace SmartValley.Data.SQL.Core
 
             modelBuilder.Entity<Scoring>()
                         .Property(b => b.ContractAddress)
-                        .HasConversion(
-                            v => v.ToString(),
-                            v => new Address(v));
-
-            modelBuilder.Entity<VotingProject>()
-                        .HasKey(v => new {v.ProjectId, v.VotingId});
-
-            modelBuilder.Entity<VotingProject>()
-                        .HasIndex(v => new {v.ProjectId, v.VotingId});
-
-            modelBuilder.Entity<Voting>()
-                        .Property(b => b.VotingAddress)
                         .HasConversion(
                             v => v.ToString(),
                             v => new Address(v));

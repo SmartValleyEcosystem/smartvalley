@@ -34,7 +34,6 @@ using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.ScoringApplications;
 using SmartValley.WebApi.Scorings;
 using SmartValley.WebApi.Users;
-using SmartValley.WebApi.Votings;
 using SmartValley.WebApi.WebApi;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -94,10 +93,6 @@ namespace SmartValley.WebApi
             services.AddSingleton<ProjectStorageProvider>();
             services.AddSingleton<ITokenContractClient, TokenContractClient>(
                 provider => new TokenContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().TokenContract));
-            services.AddSingleton<IVotingSprintContractClient, VotingSprintContractClient>(
-                provider => new VotingSprintContractClient(provider.GetService<EthereumContractClient>(),
-                                                           provider.GetService<NethereumOptions>().VotingSprintContract,
-                                                           provider.GetService<ITokenContractClient>()));
             services.AddSingleton<IVotingManagerContractClient, VotingManagerContractClient>(
                 provider => new VotingManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().VotingManagerContract));
             services.AddSingleton<IScoringContractClient, ScoringContractClient>(
@@ -128,14 +123,10 @@ namespace SmartValley.WebApi
             services.AddTransient<IScoringRepository, ScoringRepository>();
             services.AddTransient<IScoringOffersRepository, ScoringOffersRepository>();
             services.AddTransient<IEstimateRepository, EstimateRepository>();
-            services.AddTransient<IVotingService, VotingService>();
             services.AddTransient<IProjectService, ProjectService>();
             services.AddTransient<IEstimationService, EstimationService>();
             services.AddTransient<IScoringService, ScoringService>();
             services.AddTransient<IScoringCriterionRepository, ScoringCriterionRepository>();
-            services.AddTransient<IVotingService, VotingService>();
-            services.AddTransient<IVotingRepository, VotingRepository>();
-            services.AddTransient<IVotingProjectRepository, VotingProjectRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAdminService, AdminService>();

@@ -500,39 +500,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.Voting", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTimeOffset>("EndDate");
-
-                    b.Property<DateTimeOffset>("StartDate");
-
-                    b.Property<Address>("VotingAddress")
-                        .HasConversion(new ValueConverter<Address, string>(v => default(string), v => default(Address)))
-                        .HasMaxLength(42);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Votings");
-                });
-
-            modelBuilder.Entity("SmartValley.Domain.Entities.VotingProject", b =>
-                {
-                    b.Property<long>("ProjectId");
-
-                    b.Property<long>("VotingId");
-
-                    b.HasKey("ProjectId", "VotingId");
-
-                    b.HasIndex("VotingId");
-
-                    b.HasIndex("ProjectId", "VotingId");
-
-                    b.ToTable("VotingProjects");
-                });
-
             modelBuilder.Entity("SmartValley.Domain.ScoringApplication", b =>
                 {
                     b.Property<long>("Id")
@@ -789,19 +756,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasOne("SmartValley.Domain.Entities.User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SmartValley.Domain.Entities.VotingProject", b =>
-                {
-                    b.HasOne("SmartValley.Domain.Entities.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SmartValley.Domain.Entities.Voting", "Voting")
-                        .WithMany()
-                        .HasForeignKey("VotingId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

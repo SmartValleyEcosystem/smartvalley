@@ -9,13 +9,11 @@ using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
-using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Projects.Requests;
 using SmartValley.WebApi.Projects.Responses;
 using SmartValley.WebApi.Scorings;
 using SmartValley.WebApi.Users;
-using SmartValley.WebApi.Votings;
 using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Projects
@@ -26,8 +24,6 @@ namespace SmartValley.WebApi.Projects
         private const int FileSizeLimitBytes = 5242880;
 
         private readonly IProjectService _projectService;
-        private readonly IVotingService _votingService;
-        private readonly IClock _clock;
         private readonly IScoringService _scoringService;
         private readonly ICountryRepository _countryRepository;
         private readonly IUserService _userService;
@@ -35,19 +31,15 @@ namespace SmartValley.WebApi.Projects
 
         public ProjectsController(
             IProjectService projectService,
-            IVotingService votingService,
-            IClock clock,
             IScoringService scoringService,
             ICountryRepository countryRepository,
             IScoringApplicationRepository scoringApplicationRepository,
             IUserService userService)
         {
             _projectService = projectService;
-            _votingService = votingService;
             _scoringService = scoringService;
             _countryRepository = countryRepository;
             _userService = userService;
-            _clock = clock;
             _scoringApplicationRepository = scoringApplicationRepository;
         }
 
@@ -135,15 +127,6 @@ namespace SmartValley.WebApi.Projects
             var teamMembers = await _projectService.GetTeamAsync(id);
 
             return ProjectAboutResponse.Create(project, teamMembers);
-        }
-
-        [HttpGet("{id}/details")]
-        public async Task<ProjectDetailsResponse> GetDetailsAsync(long id)
-        {
-            var details = await _projectService.GetDetailsAsync(id);
-            var votingDetails = await _votingService.GetVotingProjectDetailsAsync(id);
-
-            return ProjectDetailsResponse.Create(details, votingDetails, _clock.UtcNow);
         }
 
         [HttpGet("search")]

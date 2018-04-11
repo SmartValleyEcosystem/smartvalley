@@ -3,7 +3,6 @@ import {Injectable} from '@angular/core';
 import {BaseApiClient} from '../base-api-client';
 import {ProjectResponse} from './project-response';
 import {CollectionResponse} from '../collection-response';
-import {ProjectDetailsResponse} from './project-details-response';
 import {GetScoringProjectsRequest} from './get-scoring-projects-request';
 import {MyProjectResponse} from './my-project-response';
 import {ScoringProjectResponse} from '../scoring-application/scoring-project-response';
@@ -31,11 +30,6 @@ export class ProjectApiClient extends BaseApiClient {
 
  public async deleteAsync(projectId: number): Promise<void> {
     await this.http.delete(`${this.baseApiUrl}/projects/${projectId}/`).toPromise();
-  }
-
-  async getDetailsByIdAsync(id: number): Promise<ProjectDetailsResponse> {
-    return this.http.get<ProjectDetailsResponse>(`${this.baseApiUrl}/projects/${id}/details`)
-      .toPromise();
   }
 
   async getScoringProjectsByCategoriesAsync(request: GetScoringProjectsRequest): Promise<CollectionResponse<ScoringProjectResponse>> {

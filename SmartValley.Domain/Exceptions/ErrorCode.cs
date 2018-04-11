@@ -6,8 +6,6 @@
         ServerError,
         ValidatationError,
         ProjectNotFound,
-        VotingSprintAlreadyInProgress,
-        NotEnoughProjectsForSprintStart,
         EmailAlreadyExists,
         InvalidSignature,
         EmailNotConfirmed,
