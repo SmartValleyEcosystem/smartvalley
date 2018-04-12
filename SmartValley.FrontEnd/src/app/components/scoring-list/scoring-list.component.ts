@@ -112,7 +112,7 @@ export class ScoringListComponent implements OnInit {
     this.router.navigate([Paths.ScoringOffer + '/' + projectId + '/' + area]);
   }
 
-  public navigateToEstimateScoring(projectId: number, area: number) {
+  public navigateToEstimateScoring(projectId: number, area: number, event: MouseEvent) {
     event.stopPropagation();
     this.router.navigate([Paths.Project + '/' + projectId + '/scoring/' + area]);
   }

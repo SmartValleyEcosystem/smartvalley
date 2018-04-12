@@ -86,7 +86,7 @@
                     </a>
                   </div>
                   <div class="padding-progress" *ngSwitchCase="OfferStatus.Accepted">
-                    <a (click)="navigateToEstimateScoring(project.projectId, project.area)" class="ghost-btn" style="color: black !important;">
+                    <a (click)="navigateToEstimateScoring(project.projectId, project.area, $event)" class="ghost-btn" style="color: black !important;">
                       {{ 'ScoringList.ContinueButton' | translate }}
                     </a>
                   </div>
