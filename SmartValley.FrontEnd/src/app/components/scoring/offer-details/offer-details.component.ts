@@ -75,7 +75,7 @@ export class OfferDetailsComponent implements OnInit {
     await this.router.navigate([Paths.ScoringList]);
   }
 
-  public navigateToEstimateScoring(projectId: number, area: number) {
-    this.router.navigate([Paths.Project + '/' + projectId + '/scoring/' + area]);
+  public navigateToEstimateScoring() {
+    this.router.navigate([Paths.Project + '/' + this.project.id + '/scoring/' + <number>this.area.areaType]);
   }
 }
