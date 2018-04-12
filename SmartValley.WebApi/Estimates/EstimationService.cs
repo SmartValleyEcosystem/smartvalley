@@ -18,7 +18,6 @@ namespace SmartValley.WebApi.Estimates
         private readonly IEstimateRepository _estimateRepository;
         private readonly IScoringContractClient _scoringContractClient;
         private readonly IScoringRepository _scoringRepository;
-        private readonly IScoringOffersRepository _scoringOffersRepository;
         private readonly IClock _clock;
         private readonly IUserRepository _userRepository;
 
@@ -26,14 +25,12 @@ namespace SmartValley.WebApi.Estimates
             IEstimateRepository estimateRepository,
             IScoringContractClient scoringContractClient,
             IScoringRepository scoringRepository,
-            IScoringOffersRepository scoringOffersRepository,
             IClock clock,
             IUserRepository userRepository)
         {
             _estimateRepository = estimateRepository;
             _scoringContractClient = scoringContractClient;
             _scoringRepository = scoringRepository;
-            _scoringOffersRepository = scoringOffersRepository;
             _clock = clock;
             _userRepository = userRepository;
         }
@@ -41,9 +38,9 @@ namespace SmartValley.WebApi.Estimates
         public async Task SubmitEstimatesAsync(long expertId, SubmitEstimatesRequest request)
         {
             var scoring = await _scoringRepository.GetByProjectIdAsync(request.ProjectId);
-
             var area = request.AreaType.ToDomain();
-            if (!await _scoringOffersRepository.IsAcceptedAsync(scoring.Id, expertId, area))
+
+            if (!scoring.IsOfferAccepted(expertId, area))
                 throw new AppErrorException(ErrorCode.AcceptedOfferNotFound);
 
             await AddEstimateCommentsAsync(expertId, request.EstimateComments, scoring.Id);
@@ -56,9 +53,8 @@ namespace SmartValley.WebApi.Estimates
                              };
             scoring.AddConclusionForArea(conclusion);
             await UpdateProjectScoringAsync(scoring, area);
+            scoring.FinishOffer(expertId, area);
             await _scoringRepository.SaveChangesAsync();
-
-            await _scoringOffersRepository.FinishAsync(scoring.Id, expertId, area);
         }
 
         public async Task<ScoringStatisticsInArea> GetScoringStatisticsInAreaAsync(long projectId, AreaType areaType)
@@ -68,9 +64,9 @@ namespace SmartValley.WebApi.Estimates
                 return ScoringStatisticsInArea.Empty;
 
             var estimates = await GetEstimatesAsync(scoring.Id, scoring.ContractAddress, areaType);
-            var areaScore = scoring.GetScoreForArea(areaType);
+            var areaScore = scoring.GetAreaScoring(areaType);
             var conclusions = scoring.GetConclusionsForArea(areaType);
-            return new ScoringStatisticsInArea(areaScore, estimates, conclusions, scoring.ScoringOffers.ToArray());
+            return new ScoringStatisticsInArea(areaScore.Score, areaScore.ExpertsCount, estimates, conclusions, scoring.ScoringOffers.ToArray());
         }
 
         private async Task<IReadOnlyCollection<Estimate>> GetEstimatesAsync(long scoringId, string scoringContractAddress, AreaType areaType)
@@ -93,7 +89,7 @@ namespace SmartValley.WebApi.Estimates
         private static Estimate CreateEstimate(EstimateScore score, EstimateComment comment)
             => new Estimate(score.ScoringCriterionId, score.Score, comment.Comment);
 
-        private async Task UpdateProjectScoringAsync(Domain.Entities.Scoring scoring, AreaType area)
+        private async Task UpdateProjectScoringAsync(Scoring scoring, AreaType area)
         {
             var scoringStatistics = await _scoringContractClient.GetScoringStatisticsAsync(scoring.ContractAddress);
             if (scoringStatistics.Score.HasValue)

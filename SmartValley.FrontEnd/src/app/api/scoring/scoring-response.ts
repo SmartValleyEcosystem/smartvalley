@@ -5,5 +5,6 @@ export interface ScoringResponse {
   id: number;
   scoringStatus: ScoringStatus;
   score: number;
+  requiredExpertsCount: number;
   offers: Array<ScoringOfferResponse>;
 }

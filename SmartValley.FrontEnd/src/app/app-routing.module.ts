@@ -105,7 +105,16 @@ const appRoutes: Routes = [
       canActivate: [SubmittedScoringApplicationGuard]
     },
     {path: Paths.Project + '/:id/payment', component: ScoringPaymentComponent},
-    {path: Paths.Project + '/:id/scoring/:areaType', canActivate: [OfferStatusGuard], component: ExpertScoringComponent}
+    {
+      path: Paths.Project + '/:id/scoring/:areaType',
+      component: ExpertScoringComponent,
+      canActivate: [OfferStatusGuard],
+      data: {
+        offerStatuses: [
+          OfferStatus.Accepted,
+        ]
+      }
+    }
   ]
   },
   {path: '**', redirectTo: Paths.Root}

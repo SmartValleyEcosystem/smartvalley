@@ -6,6 +6,8 @@ import {ProjectSummaryResponse} from '../../api/project/project-summary-response
 import {UserContext} from '../../services/authentication/user-context';
 import {isNullOrUndefined} from 'util';
 import {ScoringStatus} from '../../services/scoring-status.enum';
+import {OfferStatus} from '../../api/scoring-offer/offer-status.enum';
+import {ScoringResponse} from '../../api/scoring/scoring-response';
 
 @Component({
   selector: 'app-project',
@@ -23,6 +25,7 @@ export class ProjectComponent implements OnInit {
 
   public isAuthor = false;
   public isScoringApplicationTabAvailable = true;
+  public scoringCompletenessInPercents;
 
   public ScoringStatus = ScoringStatus;
 
@@ -52,8 +55,13 @@ export class ProjectComponent implements OnInit {
     }
 
     this.project = await this.projectApiClient.getProjectSummaryAsync(this.projectId);
+
     if (this.project) {
       this.isProjectExists = true;
+
+      if (this.project.scoring.scoringStatus === ScoringStatus.InProgress) {
+        this.scoringCompletenessInPercents = this.getScoringCompleteness(this.project.scoring);
+      }
 
       const currentUser = await this.userContext.getCurrentUser();
       if (!isNullOrUndefined(currentUser) && this.project.authorId === currentUser.id) {
@@ -68,5 +76,11 @@ export class ProjectComponent implements OnInit {
 
   public async navigateToPaymentAsync(): Promise<void> {
     await this.router.navigate([Paths.Project + '/' + this.projectId + '/payment']);
+  }
+
+  private getScoringCompleteness(scoring: ScoringResponse): number {
+    const finishedOffers = scoring.offers.filter(o => o.status === OfferStatus.Finished).length;
+    const totalOffers = scoring.requiredExpertsCount;
+    return Math.round(finishedOffers * 100 / totalOffers);
   }
 }

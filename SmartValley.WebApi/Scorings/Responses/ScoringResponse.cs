@@ -6,11 +6,18 @@ namespace SmartValley.WebApi.Scorings.Responses
 {
     public class ScoringResponse
     {
+        public ScoringResponse()
+        {
+            Offers = new List<ScoringOfferAreaResponse>();
+        }
+
         public long? Id { get; set; }
 
         public Domain.ScoringStatus ScoringStatus { get; set; }
 
         public double? Score { get; set; }
+
+        public long RequiredExpertsCount { get; set; }
 
         public IEnumerable<ScoringOfferAreaResponse> Offers { get; set; }
 
@@ -29,6 +36,7 @@ namespace SmartValley.WebApi.Scorings.Responses
                        ScoringStatus = scoring.Status,
                        Id = scoring.Id,
                        Score = scoring.Score,
+                       RequiredExpertsCount = scoring.AreaScorings.Sum(x => x.ExpertsCount),
                        Offers = scoring.ScoringOffers.Select(ScoringOfferAreaResponse.FromDomain)
                    };
         }

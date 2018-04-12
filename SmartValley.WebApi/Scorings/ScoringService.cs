@@ -13,6 +13,7 @@ using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.Scorings.Requests;
+using SmartValley.WebApi.Scorings.Responses;
 using AreaType = SmartValley.Domain.Entities.AreaType;
 
 namespace SmartValley.WebApi.Scorings
@@ -52,8 +53,11 @@ namespace SmartValley.WebApi.Scorings
             _daysToEndScoring = scoringOptions.DaysToEndScoring;
         }
 
-        public Task<ScoringOffer> GetOfferAsync(long projectId, AreaType areaType, long expertId)
-            => _scoringOffersRepository.GetAsync(projectId, areaType, expertId);
+        public async Task<ScoringOffer> GetOfferAsync(long projectId, AreaType areaType, long expertId)
+        {
+            var scoring = await _scoringRepository.GetByProjectIdAsync(projectId);
+            return scoring.GetOfferForExpertinArea(expertId, areaType);
+        }
 
         public async Task StartAsync(Guid projectExternalId, IReadOnlyCollection<AreaRequest> areas)
         {
@@ -124,9 +128,8 @@ namespace SmartValley.WebApi.Scorings
 
             var project = await _projectRepository.GetByExternalIdAsync(projectExternalId);
             var scoring = await _scoringRepository.GetByProjectIdAsync(project.Id);
-            var existingOffers = await _scoringOffersRepository.GetByScoringIdAsync(scoring.Id);
             var newOffers = contractOffers
-                            .Where(o => !existingOffers.Any(e => e.AreaId == o.Area && e.ExpertId == expertsDictionary[o.ExpertAddress]))
+                            .Where(o => !scoring.ScoringOffers.Any(e => e.AreaId == o.Area && e.ExpertId == expertsDictionary[o.ExpertAddress]))
                             .ToArray();
 
             if (!newOffers.Any())

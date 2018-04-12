@@ -15,12 +15,6 @@ namespace SmartValley.Domain.Interfaces
 
         Task RejectAsync(long scoringId, long expertId, AreaType area);
 
-        Task FinishAsync(long scoringId, long expertId, AreaType area);
-
-        Task<bool> IsAcceptedAsync(long scoringId, long expertId, AreaType area);
-
-        Task<IReadOnlyCollection<ScoringOffer>> GetByScoringIdAsync(long scoringId);
-
         Task<IReadOnlyCollection<ScoringOfferDetails>> QueryAsync(OffersQuery query, DateTimeOffset now);
 
         Task<int> GetQueryCountAsync(OffersQuery query, DateTimeOffset now);

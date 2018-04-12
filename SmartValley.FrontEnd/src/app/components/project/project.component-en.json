@@ -8,6 +8,7 @@
     "SendScore": "Send for score",
     "ScoringApplication": "Scoring Application",
     "ProjectScore": "Project score",
-    "InProgress": "Scoring in progress"
+    "InProgress": "Scoring in progress",
+    "CompletenessInPercents": "% completed"
   }
 }

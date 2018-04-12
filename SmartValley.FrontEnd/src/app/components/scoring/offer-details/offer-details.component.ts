@@ -9,6 +9,7 @@ import {OffersApiClient} from '../../../api/scoring-offer/offers-api-client';
 import {DialogService} from '../../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
 import {Paths} from '../../../paths';
+import {ScoringOfferStatusResponse} from "../../../api/scoring-offer/scoring-offer-status-response";
 
 @Component({
   selector: 'app-offer-details',
@@ -20,6 +21,7 @@ export class OfferDetailsComponent implements OnInit {
   public isProjectExists = false;
   public area: Area;
   public project: ProjectSummaryResponse;
+  public offer: ScoringOfferStatusResponse;
 
   constructor(private router: Router,
               private projectApiClient: ProjectApiClient,
@@ -36,6 +38,8 @@ export class OfferDetailsComponent implements OnInit {
     const areaType = +this.route.snapshot.paramMap.get('areaType');
     this.area = this.areaService.areas.find(i => i.areaType === areaType);
     this.project = await this.projectApiClient.getProjectSummaryAsync(projectId);
+    this.offer = await this.offersApiClient.getOfferStatusAsync(this.project.id, this.area.areaType);
+
     if (this.project && this.area && this.project.scoring.id) {
       this.isProjectExists = true;
     }
@@ -67,5 +71,9 @@ export class OfferDetailsComponent implements OnInit {
 
     transactionDialog.close();
     await this.router.navigate([Paths.ScoringList]);
+  }
+
+  public navigateToEstimateScoring(projectId: number, area: number) {
+    this.router.navigate([Paths.Project + '/' + projectId + '/scoring/' + area]);
   }
 }

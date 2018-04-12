@@ -113,7 +113,7 @@ export class ScoringListComponent implements OnInit {
   }
 
   navigateToEstimateScoring(projectId: number, area: number) {
-    this.router.navigate([Paths.Project + '/' + projectId + '/scoring']);
+    this.router.navigate([Paths.Project + '/' + projectId + '/scoring/' + area]);
   }
 
   public isSortableField(sortField: string): boolean {

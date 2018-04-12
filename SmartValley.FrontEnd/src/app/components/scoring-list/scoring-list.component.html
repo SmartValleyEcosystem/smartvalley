@@ -37,7 +37,7 @@
           <ng-template pTemplate="body" let-project>
             <tr (click)="navigateToProject(project.projectId)">
               <td class="project-name">
-                <div [ngClass]="project.score ? '' :
+                <div [ngClass]="project.finalScore ? '' :
                 (project.offerStatus === OfferStatus.Pending ? 'warning-border' :
                 (project.offerStatus === OfferStatus.Accepted ? 'attention-border' : '')
                 )">
