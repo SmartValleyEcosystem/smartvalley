@@ -9,6 +9,7 @@
     "CommentPlaceholder": "Explain your choise",
     "ModalTitle": "Your report was sent",
     "ModalDescription": "Wait for other experts. Thank you.",
-    "ModalOk": "Ok"
+    "ModalOk": "Ok",
+    "YourScore": "Your Score:"
   }
 }
