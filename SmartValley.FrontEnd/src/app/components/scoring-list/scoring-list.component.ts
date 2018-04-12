@@ -56,10 +56,6 @@ export class ScoringListComponent implements OnInit {
     await this.updateOffersAsync(0);
   }
 
-  public navigateToProject(id) {
-    this.router.navigate([Paths.Project + '/' + id]);
-  }
-
   public getProjectLink(id) {
     return decodeURIComponent(
       this.router.createUrlTree([Paths.Project + '/' + id]).toString()
@@ -107,12 +103,17 @@ export class ScoringListComponent implements OnInit {
     await this.updateOffersAsync(0);
   }
 
-  navigateToProjectScoring(projectId: number, area: number, event: MouseEvent) {
+  public navigateToProject(id) {
+    this.router.navigate([Paths.Project + '/' + id]);
+  }
+
+  public navigateToProjectScoring(projectId: number, area: number, event: MouseEvent) {
     event.stopPropagation();
     this.router.navigate([Paths.ScoringOffer + '/' + projectId + '/' + area]);
   }
 
-  navigateToEstimateScoring(projectId: number, area: number) {
+  public navigateToEstimateScoring(projectId: number, area: number) {
+    event.stopPropagation();
     this.router.navigate([Paths.Project + '/' + projectId + '/scoring/' + area]);
   }
 
