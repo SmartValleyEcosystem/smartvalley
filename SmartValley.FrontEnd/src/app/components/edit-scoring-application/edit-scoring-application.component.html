@@ -288,6 +288,7 @@
                  value="{{ 'EditScoringApplication.SaveDraft' | translate }}">
           <input type="submit" class="main-btn" value="{{ 'EditScoringApplication.SendForScore' | translate }}">
         </div>
+        <span class="saved-text" *ngIf="savedTime">Saved: {{savedTime | date:'HH:mm'}}</span>
       </sticky>
     </div>
   </form>

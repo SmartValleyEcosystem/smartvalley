@@ -48,6 +48,7 @@ export class EditScoringApplicationComponent implements OnInit {
   public projectInfo: ProjectApplicationInfoResponse;
   public disabled = false;
   public comboboxValues: { [id: number]: SelectItem[] };
+  public savedTime: Date;
 
   @ViewChildren('required') public requiredFields: QueryList<any>;
 
@@ -88,6 +89,8 @@ export class EditScoringApplicationComponent implements OnInit {
 
     this.addQuestionsFormControls(this.partitions);
     await this.loadScoringApplicationDataAsync();
+
+    setInterval(async () => await this.saveDraftAsync(), 60000);
   }
 
   private async loadScoringApplicationDataAsync(): Promise<void> {
@@ -470,6 +473,7 @@ export class EditScoringApplicationComponent implements OnInit {
     };
     await this.scoringApplicationApiClient.saveAsync(this.projectId, draftRequest);
     this.disabled = false;
+    this.savedTime = new Date(Date.now());
   }
 
   private async navigateToProjectAsync(): Promise<void> {
