@@ -4,9 +4,9 @@
 <div *ngIf="isProjectExists" class="content">
   <h1 class="title">{{ project.name }}</h1>
   <app-project-info *ngIf="project" [project]="project">
-    <a *ngIf="offer.offerStatus == OfferStatus.Pending" (click)="acceptOfferAsync()" class="main-btn">{{ 'OfferDetails.Accept' | translate }}</a>
-    <a *ngIf="offer.offerStatus == OfferStatus.Pending" (click)="declineOfferAsync()" class="ghost-btn">{{ 'OfferDetails.Refuse' | translate }}</a>
-    <a *ngIf="offer.offerStatus == OfferStatus.Accepted" (click)="navigateToEstimateScoring()" class="main-btn">{{ 'MyProject.ContinueButton' | translate }}</a>
+    <a *ngIf="offer.status == OfferStatus.Pending" (click)="acceptOfferAsync()" class="main-btn">{{ 'OfferDetails.Accept' | translate }}</a>
+    <a *ngIf="offer.status == OfferStatus.Pending" (click)="declineOfferAsync()" class="ghost-btn">{{ 'OfferDetails.Refuse' | translate }}</a>
+    <a *ngIf="offer.status == OfferStatus.Accepted" (click)="navigateToEstimateScoring()" class="main-btn">{{ 'MyProject.ContinueButton' | translate }}</a>
     <div class="area">
       <div class="text">{{ 'OfferDetails.NeedToScore' | translate }}:</div>
       <strong>{{area.name}}</strong></div>
