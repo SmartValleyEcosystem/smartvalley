@@ -39,7 +39,8 @@ export class ExpertScoringComponent implements OnInit {
               private projectApiClient: ProjectApiClient,
               private estimatesApiClient: EstimatesApiClient,
               private scoringCriterionService: ScoringCriterionService,
-              private scoringManagerContractClient: ScoringManagerContractClient) {}
+              private scoringManagerContractClient: ScoringManagerContractClient) {
+  }
 
   public async ngOnInit() {
     this.projectId = +this.route.snapshot.paramMap.get('id');
@@ -75,10 +76,10 @@ export class ExpertScoringComponent implements OnInit {
     let invalidElName = '';
 
     for (let control in this.scoringForm.controls) {
-        if (this.scoringForm.controls[control].status === "INVALID") {
-          invalidElName = control;
-          break;
-        }
+      if (this.scoringForm.controls[control].status === 'INVALID') {
+        invalidElName = control;
+        break;
+      }
     }
 
     const invalidElement = this.htmlElement.nativeElement.querySelector('[name=' + invalidElName + ']');
@@ -89,11 +90,12 @@ export class ExpertScoringComponent implements OnInit {
   }
 
   public async submitFormAsync() {
-    this.dialogService.showSendReportDialog();
     if (!this.validateForm()) {
       return;
     }
 
+    this.dialogService.showSendReportDialog();
+    
     const transactionHash = await this.scoringManagerContractClient.submitEstimatesAsync(
       this.projectExternalId,
       this.areaType,
@@ -114,16 +116,16 @@ export class ExpertScoringComponent implements OnInit {
 
   public getEstimate(): Estimate[] {
     return this.areasCriterion.map(group => group.criteria).reduce((l, r) => l.concat(r)).map(criteria => <Estimate> {
-        scoringCriterionId: criteria.id,
-        score: this.scoringForm.get('answer_' + criteria.id).value,
-        comments: this.scoringForm.get('comment_' + criteria.id).value
+      scoringCriterionId: criteria.id,
+      score: this.scoringForm.get('answer_' + criteria.id).value,
+      comments: this.scoringForm.get('comment_' + criteria.id).value
     });
   }
 
   public getAnswers(): EstimateCommentRequest[] {
     return this.areasCriterion.map(group => group.criteria).reduce((l, r) => l.concat(r)).map(criteria => <EstimateCommentRequest>{
-        scoringCriterionId: criteria.id,
-        comment: this.scoringForm.get('comment_' + criteria.id).value
+      scoringCriterionId: criteria.id,
+      comment: this.scoringForm.get('comment_' + criteria.id).value
     });
   }
 
