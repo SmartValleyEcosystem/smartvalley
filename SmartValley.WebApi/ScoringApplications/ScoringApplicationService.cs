@@ -43,12 +43,10 @@ namespace SmartValley.WebApi.ScoringApplications
                 throw new AppErrorException(ErrorCode.ProjectNotFound);
 
             var scoringApplication = await _scoringApplicationRepository.GetByProjectIdAsync(projectId);
-            if (scoringApplication != null && scoringApplication.IsSubmitted)
-                throw new AppErrorException(ErrorCode.ScoringApplicationAlreadySubmitted);
 
             if (scoringApplication == null)
             {
-                scoringApplication = Domain.ScoringApplication.Create(_clock.UtcNow);
+                scoringApplication = ScoringApplication.Create(_clock.UtcNow);
                 _scoringApplicationRepository.Add(scoringApplication);
             }
 
@@ -76,6 +74,7 @@ namespace SmartValley.WebApi.ScoringApplications
             scoringApplication.ContactEmail = saveScoringApplicationRequest.ContactEmail;
             scoringApplication.SocialNetworks = SocialNetworkRequest.ToDomain(saveScoringApplicationRequest.SocialNetworks);
             scoringApplication.Articles = saveScoringApplicationRequest.Articles;
+            scoringApplication.IsSubmitted = false;
 
             scoringApplication.Saved = _clock.UtcNow;
 

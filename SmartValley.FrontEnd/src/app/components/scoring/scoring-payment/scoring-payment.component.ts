@@ -8,7 +8,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ScoringApiClient} from '../../../api/scoring/scoring-api-client';
 import {ProjectApiClient} from '../../../api/project/project-api-client';
 import {Paths} from '../../../paths';
-import {ProjectSummaryResponse} from "../../../api/project/project-summary-response";
+import {ProjectSummaryResponse} from '../../../api/project/project-summary-response';
+import {DialogService} from '../../../services/dialog-service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-scoring-payment',
@@ -34,7 +36,9 @@ export class ScoringPaymentComponent implements OnInit {
               private projectApiClient: ProjectApiClient,
               private balanceService: BalanceService,
               private scoringApiClient: ScoringApiClient,
-              private scoringService: ScoringService) {
+              private scoringService: ScoringService,
+              private dialogService: DialogService,
+              private translateService: TranslateService) {
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
   }
 
@@ -84,7 +88,13 @@ export class ScoringPaymentComponent implements OnInit {
     }
 
     const transactionHash = await this.scoringService.startAsync(this.externalId, areas, areaExpertCounts);
-    await this.scoringApiClient.startAsync(this.externalId, areas, areaExpertCounts, transactionHash);
+
+    const dialog = this.dialogService.showTransactionDialog(this.translateService.instant('ScoringPayment.Dialog'),
+      transactionHash);
+
+    await this.scoringApiClient.startAsync(this.projectId, areas, areaExpertCounts, transactionHash);
+
+    dialog.close();
     this.router.navigate([Paths.MyProject + '/' + this.projectId]);
   }
 }

@@ -12,6 +12,7 @@ using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Projects;
+using SmartValley.WebApi.ScoringApplications;
 using SmartValley.WebApi.Scorings.Requests;
 using SmartValley.WebApi.Scorings.Responses;
 using AreaType = SmartValley.Domain.Entities.AreaType;
@@ -40,7 +41,8 @@ namespace SmartValley.WebApi.Scorings
             MailService mailService,
             IUserRepository userRepository,
             ScoringOptions scoringOptions,
-            IClock clock)
+            IClock clock
+        )
         {
             _projectRepository = projectRepository;
             _scoringRepository = scoringRepository;
@@ -50,6 +52,7 @@ namespace SmartValley.WebApi.Scorings
             _mailService = mailService;
             _userRepository = userRepository;
             _clock = clock;
+
             _daysToEndScoring = scoringOptions.DaysToEndScoring;
         }
 
@@ -59,15 +62,16 @@ namespace SmartValley.WebApi.Scorings
             return scoring.GetOfferForExpertinArea(expertId, areaType);
         }
 
-        public async Task StartAsync(Guid projectExternalId, IReadOnlyCollection<AreaRequest> areas)
+        public async Task StartAsync(long projectId, IReadOnlyCollection<AreaRequest> areas)
         {
-            var contractOffers = await _scoringExpertsManagerContractClient.GetOffersAsync(projectExternalId);
+            var project = await _projectRepository.GetByIdAsync(projectId);
+            var contractOffers = await _scoringExpertsManagerContractClient.GetOffersAsync(project.ExternalId);
             var offersEndDate = contractOffers.Max(i => i.ExpirationTimestamp);
 
             if (offersEndDate == null)
                 throw new AppErrorException(ErrorCode.OffersNotFound);
 
-            var scoringId = await AddScoringAsync(projectExternalId, offersEndDate.Value, areas);
+            var scoringId = await AddScoringAsync(project, offersEndDate.Value, areas);
 
             var experts = await GetExpertsForOffersAsync(contractOffers);
             var expertsDictionary = experts.ToDictionary(e => e.Address, e => e.Id);
@@ -194,11 +198,9 @@ namespace SmartValley.WebApi.Scorings
             return offers;
         }
 
-        private async Task<long> AddScoringAsync(Guid projectExternalId, DateTimeOffset offersEndDate, IReadOnlyCollection<AreaRequest> areas)
+        private async Task<long> AddScoringAsync(Project project, DateTimeOffset offersEndDate, IReadOnlyCollection<AreaRequest> areas)
         {
-            var project = await _projectRepository.GetByExternalIdAsync(projectExternalId);
-            var contractAddress = await _scoringManagerContractClient.GetScoringAddressAsync(projectExternalId);
-
+            var contractAddress = await _scoringManagerContractClient.GetScoringAddressAsync(project.ExternalId);
             var scoring = new Scoring
                           {
                               ProjectId = project.Id,
@@ -211,7 +213,7 @@ namespace SmartValley.WebApi.Scorings
                                                                    AreaId = x.Area.ToDomain(),
                                                                    ExpertsCount = x.ExpertsCount
                                                                }).ToList()
-            };
+                          };
             await _scoringRepository.AddAsync(scoring);
             return scoring.Id;
         }

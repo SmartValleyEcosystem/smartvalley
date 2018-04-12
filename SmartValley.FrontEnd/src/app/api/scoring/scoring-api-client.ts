@@ -10,12 +10,12 @@ export class ScoringApiClient extends BaseApiClient {
     super();
   }
 
-  public async startAsync(projectId: string,
+  public async startAsync(projectId: number,
                           areas: number[],
                           areaExpertCounts: number[],
                           transactionHash: string): Promise<void> {
     const request = <StartProjectScoringRequest>{
-      projectExternalId: projectId,
+      projectId: projectId,
       areas: areas.map((a, index) => <AreaRequest>{area: a, expertsCount: areaExpertCounts[index]}),
       transactionHash: transactionHash
     };

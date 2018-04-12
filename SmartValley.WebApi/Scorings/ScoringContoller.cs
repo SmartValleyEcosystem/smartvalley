@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application;
+using SmartValley.WebApi.ScoringApplications;
 using SmartValley.WebApi.Scorings.Requests;
 
 namespace SmartValley.WebApi.Scorings
@@ -25,7 +26,7 @@ namespace SmartValley.WebApi.Scorings
         {
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
 
-            await _scoringService.StartAsync(request.ProjectExternalId, request.Areas);
+            await _scoringService.StartAsync(request.ProjectId, request.Areas);
 
             return NoContent();
         }

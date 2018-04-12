@@ -6,18 +6,13 @@ import {Paths} from '../../paths';
 @Injectable()
 export class SubmittedScoringApplicationGuard implements CanActivate {
 
-  constructor(private scoringApplicationApiClient: ScoringApplicationApiClient,
-              private router: Router) {
+  constructor(private scoringApplicationApiClient: ScoringApplicationApiClient) {
   }
 
   async canActivate(next: ActivatedRouteSnapshot,
                     state: RouterStateSnapshot): Promise<boolean> {
     const projectId = +next.paramMap.get('id');
     const application = await this.scoringApplicationApiClient.getScoringApplicationsAsync(projectId);
-    if (application.isSubmitted) {
-      this.router.navigate([Paths.Project + '/' + projectId, {tab: 'application'}]);
-      return false;
-    }
-    return true;
+    return application.isSubmitted === next.data.shouldBeSubmitted;
   }
 }

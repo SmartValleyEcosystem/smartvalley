@@ -9,6 +9,7 @@
     "Balance": "Balance",
     "Experts": "experts",
     "Total": "Total",
-    "Pay": "Pay"
+    "Pay": "Pay",
+    "Dialog": "Payment is in progress. Please wait for completion of transaction."
   }
 }

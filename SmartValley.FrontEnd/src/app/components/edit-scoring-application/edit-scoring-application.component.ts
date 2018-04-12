@@ -265,7 +265,7 @@ export class EditScoringApplicationComponent implements OnInit {
     if (isValid) {
       await this.saveDraftAsync();
       await this.scoringApplicationApiClient.submitAsync(this.projectId);
-      await this.navigateToProjectAsync();
+      await this.router.navigate([Paths.Project + '/' + this.projectId + '/payment']);
     }
   }
 
