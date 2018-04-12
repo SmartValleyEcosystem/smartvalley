@@ -9,7 +9,8 @@ import {OffersApiClient} from '../../../api/scoring-offer/offers-api-client';
 import {DialogService} from '../../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
 import {Paths} from '../../../paths';
-import {ScoringOfferStatusResponse} from "../../../api/scoring-offer/scoring-offer-status-response";
+import {ScoringOfferStatusResponse} from '../../../api/scoring-offer/scoring-offer-status-response';
+import {OfferStatus} from '../../../api/scoring-offer/offer-status.enum';
 
 @Component({
   selector: 'app-offer-details',
@@ -22,6 +23,7 @@ export class OfferDetailsComponent implements OnInit {
   public area: Area;
   public project: ProjectSummaryResponse;
   public offer: ScoringOfferStatusResponse;
+  public OfferStatus = OfferStatus;
 
   constructor(private router: Router,
               private projectApiClient: ProjectApiClient,
