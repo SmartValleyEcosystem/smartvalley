@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
 import {ProjectApiClient} from '../../api/project/project-api-client';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ScoringCriterionService} from '../../services/criteria/scoring-criterion.service';
 import {ProjectSummaryResponse} from '../../api/project/project-summary-response';
 import {Area} from '../../services/expert/area';
@@ -14,6 +14,7 @@ import {ScoringManagerContractClient} from '../../services/contract-clients/scor
 import {EstimateCommentRequest} from '../../api/estimates/estimate-comment-request';
 import {Estimate} from '../../services/estimate';
 import {DialogService} from '../../services/dialog-service';
+import {Paths} from '../../paths';
 
 @Component({
   selector: 'app-expert-scoring',
@@ -39,7 +40,8 @@ export class ExpertScoringComponent implements OnInit {
               private projectApiClient: ProjectApiClient,
               private estimatesApiClient: EstimatesApiClient,
               private scoringCriterionService: ScoringCriterionService,
-              private scoringManagerContractClient: ScoringManagerContractClient) {
+              private scoringManagerContractClient: ScoringManagerContractClient,
+              private router: Router) {
   }
 
   public async ngOnInit() {
@@ -75,7 +77,7 @@ export class ExpertScoringComponent implements OnInit {
 
     let invalidElName = '';
 
-    for (let control in this.scoringForm.controls) {
+    for (const control in this.scoringForm.controls) {
       if (this.scoringForm.controls[control].status === 'INVALID') {
         invalidElName = control;
         break;
@@ -95,7 +97,7 @@ export class ExpertScoringComponent implements OnInit {
     }
 
     this.dialogService.showSendReportDialog();
-    
+
     const transactionHash = await this.scoringManagerContractClient.submitEstimatesAsync(
       this.projectExternalId,
       this.areaType,
@@ -129,4 +131,7 @@ export class ExpertScoringComponent implements OnInit {
     });
   }
 
+  async navigateToProjectApplication() {
+    await this.router.navigate([Paths.Project + '/' + this.projectId + '/application' ]);
+  }
 }

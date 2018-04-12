@@ -95,6 +95,6 @@ export class ScoringPaymentComponent implements OnInit {
     await this.scoringApiClient.startAsync(this.projectId, areas, areaExpertCounts, transactionHash);
 
     dialog.close();
-    this.router.navigate([Paths.MyProject + '/' + this.projectId]);
+    this.router.navigate([Paths.Project + '/' + this.projectId]);
   }
 }

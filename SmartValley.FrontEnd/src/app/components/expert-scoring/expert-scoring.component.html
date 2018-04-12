@@ -1,30 +1,35 @@
 <div class="content">
   <form name="scoringForm" [formGroup]="scoringForm" autocomplete="off" (ngSubmit)="submitFormAsync()">
     <h1 class="title">{{ 'ExpertScoring.Title' | translate }} {{ projectName }}</h1>
-      <div class="area-title">{{ 'ExpertScoring.YourScore' | translate }} {{areaTypeName}}</div>
-      <div *ngFor="let group of areasCriterion" class="group-wrapper">
-        <h2 class="settings-title">{{ group.name }}</h2>
-        <div class="settings-block">
-          <div *ngFor="let criteria of group.criteria; let index = index;" class="criteria">
-            <div class="question">{{index + 1}}. {{criteria.name}}</div>
-            <ul class="options-list">
-              <li *ngFor="let option of criteria.options">
-                <p-radioButton name="answer_{{criteria.id}}" formControlName="answer_{{criteria.id}}" value="{{option.score}}"
-                               label="{{option.score}} &mdash; {{option.description}}">
-                </p-radioButton>
-              </li>
-            </ul>
-            <div class="control-row">
-              <p class="control-label">
-                <label for="comment{{criteria.id}}">{{ 'ExpertScoring.Comment' | translate }}</label>
-              </p>
-              <textarea formControlName="comment_{{criteria.id}}"
-                        id="comment_{{criteria.id}}"
-                placeholder="{{ 'ExpertScoring.CommentPlaceholder' | translate }}" id="comment{{criteria.id}}" class="input" #required></textarea>
-            </div>
+    <div class="area-title-row">
+      <span class="area-title">{{ 'ExpertScoring.YourScore' | translate }} {{areaTypeName}}</span>
+      <button class="ghost-btn answers-btn" (click)="navigateToProjectApplication()">{{ 'ExpertScoring.SeeAnswers' | translate }}</button>
+    </div>
+    <div *ngFor="let group of areasCriterion" class="group-wrapper">
+      <h2 class="settings-title">{{ group.name }}</h2>
+      <div class="settings-block">
+        <div *ngFor="let criteria of group.criteria; let index = index;" class="criteria">
+          <div class="question">{{index + 1}}. {{criteria.name}}</div>
+          <ul class="options-list">
+            <li *ngFor="let option of criteria.options">
+              <p-radioButton name="answer_{{criteria.id}}" formControlName="answer_{{criteria.id}}"
+                             value="{{option.score}}"
+                             label="{{option.score}} &mdash; {{option.description}}">
+              </p-radioButton>
+            </li>
+          </ul>
+          <div class="control-row">
+            <p class="control-label">
+              <label for="comment{{criteria.id}}">{{ 'ExpertScoring.Comment' | translate }}</label>
+            </p>
+            <textarea formControlName="comment_{{criteria.id}}"
+                      id="comment_{{criteria.id}}"
+                      placeholder="{{ 'ExpertScoring.CommentPlaceholder' | translate }}" id="comment{{criteria.id}}"
+                      class="input" #required></textarea>
           </div>
         </div>
       </div>
+    </div>
     <div class="group-wrapper">
       <h2 class="settings-title">{{ 'ExpertScoring.Conclusion' | translate }}</h2>
       <div class="settings-block settings-block_last">

@@ -359,8 +359,8 @@ export class CreateProjectComponent implements OnInit {
       this.translateService.instant('CreateProject.ProjectUpdated')
     );
 
-    const myProjectIdResponse = await this.projectApiClient.getMyProjectAsync();
-    await this.router.navigate([Paths.MyProject + '/' + myProjectIdResponse.id]);
+    const projectResponse = await this.projectApiClient.getMyProjectAsync();
+    await this.router.navigate([Paths.Project + '/' + projectResponse.id]);
   }
 
   private async createProjectAsync(): Promise<void> {
@@ -374,7 +374,7 @@ export class CreateProjectComponent implements OnInit {
     );
 
     const myProjectIdResponse = await this.projectApiClient.getMyProjectAsync();
-    await this.router.navigate([Paths.MyProject + '/' + myProjectIdResponse.id]);
+    await this.router.navigate([Paths.Project + '/' + myProjectIdResponse.id]);
   }
 
 

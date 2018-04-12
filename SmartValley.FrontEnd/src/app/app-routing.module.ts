@@ -98,7 +98,8 @@ const appRoutes: Routes = [
       {path: Paths.ProjectList, component: ProjectListComponent},
       {path: Paths.ScoringList, component: ScoringListComponent},
       {path: Paths.ProjectList + '/:search', component: ProjectListComponent},
-      {path: Paths.MyProject + '/:id', component: ProjectComponent},
+      {path: Paths.Project + '/:id', component: ProjectComponent},
+      {path: Paths.Project + '/:id/:tab', component: ProjectComponent},
       {
         path: Paths.ScoringApplication + '/:id',
         component: EditScoringApplicationComponent,

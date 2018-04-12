@@ -63,7 +63,7 @@ export class HeaderComponent implements OnInit {
   private async updateProjectsAsync(): Promise<void> {
     const myProjectResponse = await this.projectApiClient.getMyProjectAsync();
     if (!isNullOrUndefined(myProjectResponse)) {
-      this.myProjectLink = Paths.MyProject + '/' + myProjectResponse.id;
+      this.myProjectLink = Paths.Project + '/' + myProjectResponse.id;
       this.haveProject = true;
     }
   }
@@ -123,7 +123,7 @@ export class HeaderComponent implements OnInit {
     if (await this.authenticationService.authenticateAsync()) {
       const myProjectResponse = await this.projectApiClient.getMyProjectAsync();
       if (!isNullOrUndefined(myProjectResponse)) {
-        this.myProjectLink = Paths.MyProject + '/' + myProjectResponse.id;
+        this.myProjectLink = Paths.Project + '/' + myProjectResponse.id;
         await this.router.navigate([this.myProjectLink]);
         this.haveProject = true;
       } else {
