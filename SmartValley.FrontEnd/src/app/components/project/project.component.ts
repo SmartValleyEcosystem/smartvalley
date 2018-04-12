@@ -37,6 +37,7 @@ export class ProjectComponent implements OnInit {
     route.params.subscribe(val => {
       this.reloadProjectAsync();
     });
+    this.userContext.userContextChanged.subscribe(async () => await this.reloadProjectAsync());
   }
 
   public async ngOnInit() {
