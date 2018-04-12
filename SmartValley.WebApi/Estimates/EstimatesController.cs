@@ -9,6 +9,8 @@ using SmartValley.WebApi.Estimates.Responses;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Projects;
+using SmartValley.WebApi.ScoringApplications.Requests;
+using SmartValley.WebApi.ScoringApplications.Responses;
 using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Estimates
@@ -62,6 +64,20 @@ namespace SmartValley.WebApi.Estimates
                        Items = criteria
                                .GroupBy(c => c.AreaType)
                                .Select(g => AreaScoringCriteriaResponse.Create(g.Key.FromDomain(), g.ToArray()))
+                               .ToArray()
+                   };
+        }
+
+        [HttpGet]
+        [Route("project/{projectId}/prompts/{areaType}")]
+        public async Task<CollectionResponse<CriterionPromptResponse>> GetCriterionPromptsAsync(CriterionPromptRequest request)
+        {
+            var prompts = await _estimationService.GetCriterionPromptsAsync(request.ProjectId, request.AreaType.ToDomain());
+            return new CollectionResponse<CriterionPromptResponse>
+                   {
+                       Items = prompts
+                               .GroupBy(p => p.CriterionId)
+                               .Select(g => CriterionPromptResponse.Create(g.Key, g.ToArray()))
                                .ToArray()
                    };
         }

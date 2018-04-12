@@ -276,7 +276,8 @@ namespace SmartValley.Data.SQL.Core
 
             modelBuilder.Entity<ScoringApplication>()
                         .HasMany(x => x.Answers)
-                        .WithOne()
+                        .WithOne(x=>x.ScoringApplication)
+                        .HasForeignKey(x=>x.ScoringApplicationId)
                         .IsRequired();
 
             modelBuilder.Entity<ScoringApplication>()
