@@ -150,7 +150,7 @@ input.ng-dirty.ng-invalid,
 .input-component.ng-invalid.ng-dirty .input,
 textarea.ng-dirty.ng-invalid,
 p-calendar.ng-dirty.ng-invalid .ui-inputtext {
-  border-color: red;
+  border-color: red !important;
 }
 input.ng-valid {
   border-color: #a4a2b0 !important;

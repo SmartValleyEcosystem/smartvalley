@@ -32,7 +32,8 @@ export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit 
   @Input() defaultValue?: string | number;
   @Output() onSelect: EventEmitter<string | number | null> = new EventEmitter<string | number | null>();
 
-  constructor(private translateService: TranslateService) {
+  constructor(private translateService: TranslateService,
+              private nativeElement: ElementRef) {
   }
 
   public propagateChange: any = () => {

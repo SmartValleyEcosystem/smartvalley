@@ -192,11 +192,11 @@ export class EditScoringApplicationComponent implements OnInit {
       country: ['', [Validators.required]],
       projectStage: ['', [Validators.required]],
       projectCategory: ['', [Validators.required]],
-      icoDate: [''],
-      website: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
-      description: ['', [Validators.required, Validators.maxLength(2000)]],
-      linkToWP: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
-      email: ['', [Validators.maxLength(200)]]
+      icoDate: ['', [Validators.required]],
+      website: ['', [Validators.required, Validators.maxLength(200), Validators.pattern('https?://.+')]],
+      description: ['', [Validators.required, Validators.required, Validators.maxLength(2000)]],
+      linkToWP: ['', [Validators.required, Validators.maxLength(200), Validators.pattern('https?://.+')]],
+      email: ['', [Validators.required, Validators.maxLength(200)]]
     };
     this.questionFormGroup = this.formBuilder.group({
       commonGroup: this.formBuilder.group(commonFormControls),
