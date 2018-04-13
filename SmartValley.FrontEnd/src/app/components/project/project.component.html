@@ -5,14 +5,14 @@
   <h1 class="title">{{ project.name }}</h1>
   <app-project-info *ngIf="project" [project]="project">
     <div [ngSwitch]="project.scoring.scoringStatus">
-      <div *ngSwitchCase="ScoringStatus.Finished">
+      <div *ngSwitchCase="ScoringStatusFinished">
         <div class="small-title">{{ 'MyProject.ProjectScore' | translate }}</div>
         <div class="score">
             <div class="main-number">{{project.scoring.score | roundNumberPipe}}</div>/100
         </div>
         <a *ngIf="isAuthor" [routerLink]="'/' + editProjectsLink" class="ghost-btn">{{ 'MyProject.EditInformation' | translate }}</a>
       </div>
-      <div *ngSwitchCase="ScoringStatus.InProgress">
+      <div *ngSwitchCase="ScoringStatusInProgress">
         <div class="score" style="font-size: 20px;">
           {{ 'MyProject.InProgress' | translate }}
         </div>
@@ -20,7 +20,7 @@
           {{scoringCompletenessInPercents}}{{ 'MyProject.CompletenessInPercents' | translate }}
         </div>
       </div>
-      <div *ngSwitchCase="ScoringStatus.Pending">
+      <div *ngSwitchCase="ScoringStatusPending">
         <div *ngIf="isAuthor">
           <a *ngIf="!project.isApplicationSubmitted; else submitedBlock;" (click)="navigateToApplicationScoringAsync()"
              class="main-btn">{{ 'MyProject.GetScore' | translate }}</a>
@@ -38,6 +38,9 @@
     </mat-tab>
     <mat-tab *ngIf="isScoringApplicationTabAvailable" label="{{ 'MyProject.ScoringApplication' | translate }}">
       <app-scoring-application [projectId]="projectId"></app-scoring-application>
+    </mat-tab>
+    <mat-tab label="{{ 'MyProject.ScoringReport' | translate }}">
+      <app-scoring-report [scoringStatus]="project.scoring.scoringStatus" [projectId]="projectId"></app-scoring-report>
     </mat-tab>
   </mat-tab-group>
 </div>

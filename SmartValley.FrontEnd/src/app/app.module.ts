@@ -119,6 +119,7 @@ import {ExpertSelectorComponent} from './components/scoring/scoring-payment/expe
 import {OfferDetailsComponent} from './components/scoring/offer-details/offer-details.component';
 import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scoring-application.guard';
 import {ScoringListComponent} from './components/scoring-list/scoring-list.component';
+import { ScoringReportComponent } from './components/project/scoring-report/scoring-report.component';
 
 @NgModule({
   declarations: [
@@ -175,7 +176,8 @@ import {ScoringListComponent} from './components/scoring-list/scoring-list.compo
     ScoringPaymentComponent,
     ExpertSelectorComponent,
     OfferDetailsComponent,
-    ExpertScoringComponent
+    ExpertScoringComponent,
+    ScoringReportComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,

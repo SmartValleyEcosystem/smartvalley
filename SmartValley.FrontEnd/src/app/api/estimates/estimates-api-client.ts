@@ -6,6 +6,11 @@ import {CollectionResponse} from '../collection-response';
 import {AreaType} from '../scoring/area-type.enum';
 import {GetEstimatesResponse} from './get-estimates-response';
 import {AreaScoringCriteriaResponse} from './area-scoring-criteria-response';
+import {ScoringAreaConslusionResponse} from '../scoring/scoring-area-conclusion-response';
+import {CriterionWithEstimatesResponse} from './criterion-with-estimates-response';
+import {ScoringOfferResponse} from '../scoring/scoring-offer-response';
+import {EstimateResponse} from './estimate-response';
+import {OfferStatus} from '../scoring-offer/offer-status.enum';
 
 @Injectable()
 export class EstimatesApiClient extends BaseApiClient {
@@ -18,6 +23,7 @@ export class EstimatesApiClient extends BaseApiClient {
   }
 
   async getAsync(projectId: number, areaType: AreaType): Promise<GetEstimatesResponse> {
+
     const parameters = new HttpParams()
       .append('projectId', projectId.toString())
       .append('areaType', areaType.toString());

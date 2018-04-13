@@ -194,6 +194,33 @@ input.ng-valid {
   margin-top: 24px !important;
 }
 
+.report-tab .mat-tab-label {
+  margin: 0 1px 0;
+}
+.report-tab .mat-tab-label {
+  height: auto;
+  &:hover {
+    box-shadow: 0 2px 10px 0 rgba(137, 137, 137, 0.5);
+  }
+}
+.report-tab .mat-tab-label-content {
+  width: 234px;
+  height: 155px;
+  background: #fff;
+  color: #5d49f2;
+  &:hover {
+    box-shadow: 0 2px 10px 0 rgba(137, 137, 137, 0.5);
+  }
+}
+.report-tab .mat-tab-list {
+  padding: 4px 0;
+}
+.report-tab .mat-tab-label-active .mat-tab-label-content {
+  background: #231a5d;
+  color: #fff;
+}
+
+
 /* ng-prime upload */
 
 .ui-fileupload-choose.ui-button {

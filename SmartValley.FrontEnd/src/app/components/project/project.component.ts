@@ -23,11 +23,13 @@ export class ProjectComponent implements OnInit {
   public editProjectsLink = Paths.ProjectEdit;
   public selectedTab = 0;
 
+  public ScoringStatusInProgress = ScoringStatus.InProgress;
+  public ScoringStatusFinished = ScoringStatus.Finished;
+  public ScoringStatusPending = ScoringStatus.Pending;
+
   public isAuthor = false;
   public isScoringApplicationTabAvailable = true;
   public scoringCompletenessInPercents;
-
-  public ScoringStatus = ScoringStatus;
 
   constructor(private projectApiClient: ProjectApiClient,
               private router: Router,
