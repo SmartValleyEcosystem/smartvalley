@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ScoringApplicationResponse} from '../../api/scoring-application/scoring-application-response';
 import {ScoringApplicationPartition} from '../../api/scoring-application/scoring-application-partition';
@@ -24,7 +24,7 @@ import {ProjectApplicationInfoResponse} from '../../api/scoring-application/proj
   templateUrl: './edit-scoring-application.component.html',
   styleUrls: ['./edit-scoring-application.component.css']
 })
-export class EditScoringApplicationComponent implements OnInit {
+export class EditScoringApplicationComponent implements OnInit, OnDestroy {
 
   public projectId: number;
   public questions: ScoringApplicationResponse;
@@ -51,6 +51,8 @@ export class EditScoringApplicationComponent implements OnInit {
   public savedTime: Date;
 
   @ViewChildren('required') public requiredFields: QueryList<any>;
+
+  private timer: NodeJS.Timer;
 
   constructor(private scoringApplicationApiClient: ScoringApplicationApiClient,
               private translateService: TranslateService,
@@ -90,7 +92,11 @@ export class EditScoringApplicationComponent implements OnInit {
     this.addQuestionsFormControls(this.partitions);
     await this.loadScoringApplicationDataAsync();
 
-    setInterval(async () => await this.saveDraftAsync(), 60000);
+    this.timer = setInterval(async () => await this.saveDraftAsync(), 60000);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.timer);
   }
 
   private async loadScoringApplicationDataAsync(): Promise<void> {
@@ -325,7 +331,8 @@ export class EditScoringApplicationComponent implements OnInit {
 
   public addSocialMedia(): void {
     this.socialsGroup.addControl('social_' + (this.activeSocials.length + 1), new FormControl('', [Validators.required]));
-    this.socialsGroup.addControl('social-link_' + (this.activeSocials.length + 1), new FormControl('', [Validators.required, Validators.pattern('https?://.+')]));
+    this.socialsGroup.addControl('social-link_' + (this.activeSocials.length + 1),
+      new FormControl('', [Validators.required, Validators.pattern('https?://.+')]));
     this.activeSocials.push(this.activeSocials.length + 1);
   }
 
@@ -341,7 +348,8 @@ export class EditScoringApplicationComponent implements OnInit {
   }
 
   public addArticleLink(): void {
-    this.socialsGroup.addControl('article-link_' + (this.activeArticleLink.length + 1), new FormControl('', [Validators.required, Validators.pattern('https?://.+')]));
+    this.socialsGroup.addControl('article-link_' + (this.activeArticleLink.length + 1),
+      new FormControl('', [Validators.required, Validators.pattern('https?://.+')]));
     this.activeArticleLink.push(this.activeArticleLink.length + 1);
   }
 
