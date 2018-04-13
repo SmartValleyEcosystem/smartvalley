@@ -29,11 +29,12 @@ export class ScoringReportComponent implements OnInit {
   constructor(private router: Router,
               private areaService: AreaService,
               private estimatesApiClient: EstimatesApiClient,
-              private scoringCriterionService: ScoringCriterionService) { }
+              private scoringCriterionService: ScoringCriterionService) {
+  }
 
   public async ngOnInit() {
     this.areas = this.areaService.areas;
-    for (let area of this.areas) {
+    for (const area of this.areas) {
       this.scoringCriterionResponse = this.scoringCriterionResponse.concat(this.scoringCriterionService.getByArea(area.areaType));
       this.scoringInfo = await this.estimatesApiClient.getAsync(this.projectId, area.areaType);
       this.areasScoringInfo.push({
@@ -45,7 +46,7 @@ export class ScoringReportComponent implements OnInit {
   }
 
   public getQuestionById(id: number): string {
-    return this.scoringCriterionResponse.map(s => s.criteria).reduce((l, r) => l.concat(r)).find( c => c.id === id ).name;
+    return this.scoringCriterionResponse.map(s => s.criteria).reduce((l, r) => l.concat(r)).find(c => c.id === id).name;
   }
 
   public async navigateToApplicationScoringAsync(): Promise<void> {
@@ -54,7 +55,9 @@ export class ScoringReportComponent implements OnInit {
 
   public getFinishedExperts(areaType: number): number {
     return this.areasScoringInfo.filter(a => a.areaType === areaType)
-      .map(e => e.scoringInfo.offers).reduce( (l, r) => r)
-      .filter( o => OfferStatus[o.status] === OfferStatus.Finished ).length;
+      .map(e => e.scoringInfo.offers)
+      .reduce((l, r) => l.concat(r))
+      .filter(o => o.status === OfferStatus.Finished)
+      .length;
   }
 }

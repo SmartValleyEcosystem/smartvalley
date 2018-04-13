@@ -70,7 +70,7 @@
             <label for="control_ico-date">{{ 'EditScoringApplication.ICODate' | translate }}</label>
           </p>
           <p-calendar [inputId]="'control_ico-date'" formControlName="icoDate"
-                      [inputStyleClass]="'input input-date'" #required>
+                      [inputStyleClass]="'input input-date'" dateFormat="dd.mm.yy" [yearNavigator]="true" yearRange="2000:2050" #required>
           </p-calendar>
         </div>
         <div class="form-control-row">
@@ -242,7 +242,8 @@
                   <label for="control_{{question.id}}">{{ 'EditScoringApplication.' + question.key | translate}}</label>
                 </p>
                 <p-calendar [inputId]="'control_' + question.id" formControlName="{{'control_' + question.id}}"
-                            [inputStyleClass]="'input input-date'" #required></p-calendar>
+                            [inputStyleClass]="'input input-date'" dateFormat="dd.mm.yy" [yearNavigator]="true" yearRange="2000:2050" #required>
+                </p-calendar>
               </div>
               <div *ngSwitchCase="questionTypeCheckBox">
                 <p class="control-label">

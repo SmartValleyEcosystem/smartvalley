@@ -62,7 +62,7 @@
           <label for="ico-date">{{ 'CreateProject.IcoDate' | translate }}</label>
         </p>
         <p-calendar [inputId]="'ico-date'" formControlName="icoDate"
-                    [inputStyleClass]="'input input-date'"></p-calendar>
+                    [inputStyleClass]="'input input-date'" dateFormat="dd.mm.yy" [yearNavigator]="true" yearRange="2000:2050"></p-calendar>
       </div>
       <div class="control-row">
         <p class="control-label">

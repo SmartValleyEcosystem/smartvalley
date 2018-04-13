@@ -16,7 +16,7 @@ import {ScoringResponse} from '../../api/scoring/scoring-response';
 })
 export class ProjectComponent implements OnInit {
 
-  public tabItems: string[] = ['about', 'application'];
+  public tabItems: string[] = ['about', 'application', 'report'];
   public isProjectExists = false;
   public projectId: number;
   public project: ProjectSummaryResponse;
