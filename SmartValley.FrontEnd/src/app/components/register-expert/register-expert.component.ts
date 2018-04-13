@@ -200,10 +200,16 @@ export class RegisterExpertComponent implements OnInit {
     }
     return false;
   }
-
-  private scrollToElement(element: ElementRef) {
-    const offsetTop1 = element.nativeElement.offsetTop;
-    window.scrollTo({left: 0, top: offsetTop1 - 40, behavior: 'smooth'});
+  private scrollToElement(element: ElementRef): void {
+    if (element.nativeElement.nativeElement) {
+      const offsetTop1 = element.nativeElement.nativeElement.offsetTop;
+      window.scrollTo({left: 0, top: offsetTop1 - 40, behavior: 'smooth'});
+      return;
+    }
+    if (element.nativeElement) {
+      const offsetTop1 = element.nativeElement.offsetTop;
+      window.scrollTo({left: 0, top: offsetTop1 - 40, behavior: 'smooth'});
+    }
   }
 
   private createExpertApplicationRequest(transactionHash: string, areas: Array<AreaType>): CreateExpertApplicationRequest {

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, forwardRef, OnChanges} from '@angular/core';
+import {Component, Input, OnInit, forwardRef, OnChanges, ElementRef} from '@angular/core';
 import {FormGroup, FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 
 @Component({
@@ -21,6 +21,9 @@ export class InputSwitchComponent implements ControlValueAccessor, OnChanges {
   @Input() labelOff?: string;
   @Input() styleClass?: string;
   @Input() defaultValue?: number|string|null;
+
+  constructor(private nativeElement: ElementRef) {
+  }
 
   get switcherValue() {
     return this._switcherValue;

@@ -435,8 +435,15 @@ export class EditScoringApplicationComponent implements OnInit {
   }
 
   private scrollToElement(element: ElementRef): void {
-    const offsetTop1 = element.nativeElement.offsetTop;
-    window.scrollTo({left: 0, top: offsetTop1 - 40, behavior: 'smooth'});
+    if (element.nativeElement.nativeElement) {
+      const offsetTop1 = element.nativeElement.nativeElement.offsetTop;
+      window.scrollTo({left: 0, top: offsetTop1 - 40, behavior: 'smooth'});
+      return;
+    }
+    if (element.nativeElement) {
+      const offsetTop1 = element.nativeElement.offsetTop;
+      window.scrollTo({left: 0, top: offsetTop1 - 40, behavior: 'smooth'});
+    }
   }
 
   private setInvalid(element: ElementRef): void {
