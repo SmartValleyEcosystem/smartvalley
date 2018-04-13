@@ -45,9 +45,6 @@ namespace SmartValley.WebApi.Estimates
         [HttpGet]
         public async Task<IActionResult> GetEstimatesInAreaAsync(GetEstimatesRequest request)
         {
-            if (!await _projectService.IsAuthorizedToSeeEstimatesAsync(User.GetUserId(), request.ProjectId))
-                return Unauthorized();
-
             var scoringStatistics = await _estimationService.GetScoringStatisticsInAreaAsync(request.ProjectId, request.AreaType.ToDomain());
             return Ok(ScoringStatisticsInAreaResponse.Create(scoringStatistics));
         }

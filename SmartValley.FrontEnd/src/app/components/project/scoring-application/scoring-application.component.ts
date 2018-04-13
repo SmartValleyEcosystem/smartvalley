@@ -8,6 +8,8 @@ import {ScoringApplicationPartition} from '../../../api/scoring-application/scor
 import {QuestionControlType} from '../../../api/scoring-application/question-control-type.enum';
 import {ProjectApiClient} from '../../../api/project/project-api-client';
 import {UserContext} from '../../../services/authentication/user-context';
+import {ScoringApiClient} from '../../../api/scoring/scoring-api-client';
+import {ProjectSummaryResponse} from '../../../api/project/project-summary-response';
 
 @Component({
   selector: 'app-scoring-application',
@@ -16,7 +18,7 @@ import {UserContext} from '../../../services/authentication/user-context';
 })
 export class ScoringApplicationComponent implements OnInit {
 
-  @Input() public projectId: number;
+  @Input() public project: ProjectSummaryResponse;
   public projectInfo: ProjectApplicationInfoResponse;
   public haveSocials: boolean;
   public articles: string[];
@@ -31,7 +33,7 @@ export class ScoringApplicationComponent implements OnInit {
 
   public doesScoringApplicationExists: boolean;
   public isAuthor: boolean;
-  public isApplicationSubmitted: boolean;
+  public isScoringPayed: boolean;
 
   constructor(private router: Router,
               private htmlElement: ElementRef,
@@ -41,7 +43,7 @@ export class ScoringApplicationComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const response = await this.scoringApplicationApiClient.getScoringApplicationsAsync(this.projectId);
+    const response = await this.scoringApplicationApiClient.getScoringApplicationsAsync(this.project.id);
 
     if (!isNullOrUndefined(response.created)) {
       this.projectInfo = response.projectInfo;
@@ -49,10 +51,11 @@ export class ScoringApplicationComponent implements OnInit {
       this.haveSocials = this.checkSocials();
       this.partitions = response.partitions;
       this.doesScoringApplicationExists = true;
-      this.isApplicationSubmitted = response.isSubmitted;
+
+      this.isScoringPayed = this.project.scoring.id !== null;
     }
 
-    const project = await this.projectApiClient.getProjectSummaryAsync(this.projectId);
+    const project = await this.projectApiClient.getProjectSummaryAsync(this.project.id);
     const currentUser = await this.userContext.getCurrentUser();
 
     if (!isNullOrUndefined(currentUser) && currentUser.id === project.authorId) {
@@ -95,10 +98,10 @@ export class ScoringApplicationComponent implements OnInit {
   }
 
   public navigateToCreateForm() {
-    this.router.navigate([Paths.ScoringApplication + '/' + this.projectId]);
+    this.router.navigate([Paths.ScoringApplication + '/' + this.project.id]);
   }
 
   public navigateToEdit() {
-    this.router.navigate([Paths.ScoringApplication + '/' + this.projectId]);
+    this.router.navigate([Paths.ScoringApplication + '/' + this.project.id]);
   }
 }

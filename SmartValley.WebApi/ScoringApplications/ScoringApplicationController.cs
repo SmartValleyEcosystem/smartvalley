@@ -23,7 +23,7 @@ namespace SmartValley.WebApi.ScoringApplications
         }
 
         [HttpGet]
-        public async Task<ScoringApplicationBlankResponse> GetByProjectIdAsync(long projectId)
+        public async Task<ScoringApplicationResponse> GetByProjectIdAsync(long projectId)
         {
             var questions = await _scoringApplicationService.GetQuestionsAsync();
             var scoringApplication = await _scoringApplicationService.GetApplicationAsync(projectId);
@@ -31,10 +31,10 @@ namespace SmartValley.WebApi.ScoringApplications
             if (scoringApplication == null)
             {
                 var project = await _projectService.GetDetailsAsync(projectId);
-                return ScoringApplicationBlankResponse.CreateEmpty(questions, project.Project, project.Country, project.TeamMembers);
+                return ScoringApplicationResponse.CreateEmpty(questions, project.Project, project.Country, project.TeamMembers);
             }
 
-            return ScoringApplicationBlankResponse.InitializeFromApplication(questions, scoringApplication);
+            return ScoringApplicationResponse.InitializeFromApplication(questions, scoringApplication);
         }
 
         [HttpPost, Authorize]

@@ -119,7 +119,8 @@ import {ExpertSelectorComponent} from './components/scoring/scoring-payment/expe
 import {OfferDetailsComponent} from './components/scoring/offer-details/offer-details.component';
 import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scoring-application.guard';
 import {ScoringListComponent} from './components/scoring-list/scoring-list.component';
-import { ScoringReportComponent } from './components/project/scoring-report/scoring-report.component';
+import {ScoringReportComponent} from './components/project/scoring-report/scoring-report.component';
+import {ScoringShouldNotExistGuard} from './services/guards/scoring-should-not-exist.guard';
 
 @NgModule({
   declarations: [
@@ -284,7 +285,8 @@ import { ScoringReportComponent } from './components/project/scoring-report/scor
     ProjectService,
     ScoringContractClient,
     ScoringApplicationApiClient,
-    SubmittedScoringApplicationGuard
+    SubmittedScoringApplicationGuard,
+    ScoringShouldNotExistGuard
   ],
   bootstrap: [AppComponent]
 })

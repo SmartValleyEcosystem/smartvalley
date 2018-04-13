@@ -37,7 +37,7 @@
       <app-project-about [projectId]="projectId"></app-project-about>
     </mat-tab>
     <mat-tab *ngIf="isScoringApplicationTabAvailable" label="{{ 'MyProject.ScoringApplication' | translate }}">
-      <app-scoring-application [projectId]="projectId"></app-scoring-application>
+      <app-scoring-application [project]="project"></app-scoring-application>
     </mat-tab>
     <mat-tab label="{{ 'MyProject.ScoringReport' | translate }}">
       <app-scoring-report [scoringStatus]="project.scoring.scoringStatus" [projectId]="projectId"></app-scoring-report>

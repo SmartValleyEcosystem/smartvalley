@@ -6,7 +6,7 @@ using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.ScoringApplications.Responses
 {
-    public class ScoringApplicationBlankResponse
+    public class ScoringApplicationResponse
     {
         public DateTimeOffset? Created { get; set; }
 
@@ -18,12 +18,12 @@ namespace SmartValley.WebApi.ScoringApplications.Responses
 
         public bool IsSubmitted { get; set; }
 
-        public static ScoringApplicationBlankResponse CreateEmpty(IEnumerable<ScoringApplicationQuestion> questions, Project project, Country projectCountry, IReadOnlyCollection<ProjectTeamMember> projectTeamMembers)
+        public static ScoringApplicationResponse CreateEmpty(IEnumerable<ScoringApplicationQuestion> questions, Project project, Country projectCountry, IReadOnlyCollection<ProjectTeamMember> projectTeamMembers)
         {
             var partitions = CreatePartitions(questions);
             var projectInfo = ProjectApplicationInfoResponse.CreateFrom(project, projectCountry, projectTeamMembers);
 
-            return new ScoringApplicationBlankResponse
+            return new ScoringApplicationResponse
                    {
                        ProjectInfo = projectInfo,
                        Partitions = partitions,
@@ -31,11 +31,11 @@ namespace SmartValley.WebApi.ScoringApplications.Responses
                    };
         }
 
-        public static ScoringApplicationBlankResponse InitializeFromApplication(IEnumerable<ScoringApplicationQuestion> questions, ScoringApplication application)
+        public static ScoringApplicationResponse InitializeFromApplication(IEnumerable<ScoringApplicationQuestion> questions, ScoringApplication application)
         {
             var partitions = CreatePartitions(questions);
             var projectInfo = ProjectApplicationInfoResponse.CreateFrom(application);
-            var blank = new ScoringApplicationBlankResponse
+            var blank = new ScoringApplicationResponse
                         {
                             ProjectInfo = projectInfo,
                             Partitions = partitions,

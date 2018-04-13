@@ -30,6 +30,7 @@ import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scor
 import {OfferStatus} from './api/scoring-offer/offer-status.enum';
 import {ExpertScoringComponent} from './components/expert-scoring/expert-scoring.component';
 import {ScoringListComponent} from './components/scoring-list/scoring-list.component';
+import {ScoringShouldNotExistGuard} from './services/guards/scoring-should-not-exist.guard';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -99,19 +100,16 @@ const appRoutes: Routes = [
       {path: Paths.ScoringList, component: ScoringListComponent},
       {path: Paths.ProjectList + '/:search', component: ProjectListComponent},
       {path: Paths.Project + '/:id', component: ProjectComponent},
-      {path: Paths.Project + '/:id/:tab', component: ProjectComponent},
+      {path: Paths.Project + '/:id/details/:tab', component: ProjectComponent},
       {
         path: Paths.ScoringApplication + '/:id',
         component: EditScoringApplicationComponent,
-        canActivate: [SubmittedScoringApplicationGuard],
-        data: {
-          shouldBeSubmitted: false
-        }
+        canActivate: [ScoringShouldNotExistGuard]
       },
       {
         path: Paths.Project + '/:id/payment',
         component: ScoringPaymentComponent,
-        canActivate: [SubmittedScoringApplicationGuard],
+        canActivate: [SubmittedScoringApplicationGuard, ScoringShouldNotExistGuard],
         data: {
           shouldBeSubmitted: true
         }

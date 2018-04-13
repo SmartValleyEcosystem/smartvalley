@@ -264,7 +264,7 @@
             </li>
           </ul>
           <div class="partition-menu__inputs">
-            <input *ngIf="isAuthor && !isApplicationSubmitted" (click)="navigateToEdit()" type="button"
+            <input *ngIf="isAuthor && !isScoringPayed" (click)="navigateToEdit()" type="button"
                    class="ghost-btn" value="{{ 'ScoringApplication.EditTextButton' | translate }}">
           </div>
         </sticky>

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application;
 using SmartValley.WebApi.ScoringApplications;
 using SmartValley.WebApi.Scorings.Requests;
+using SmartValley.WebApi.Scorings.Responses;
 
 namespace SmartValley.WebApi.Scorings
 {
@@ -18,6 +19,13 @@ namespace SmartValley.WebApi.Scorings
         {
             _scoringService = scoringService;
             _ethereumClient = ethereumClient;
+        }
+
+        [HttpGet]
+        public async Task<ScoringResponse> GetByProjectIdAsync(long projectId)
+        {
+            var scoring = await _scoringService.GetByProjectIdAsync(projectId);
+            return ScoringResponse.FromScoring(scoring);
         }
 
         [HttpPost]

@@ -492,7 +492,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
   }
 
   private async navigateToProjectAsync(): Promise<void> {
-    await this.router.navigate([Paths.Project + '/' + this.projectId, {tab: 'application'}]);
+    await this.router.navigate([Paths.Project + '/' + this.projectId + '/details/application']);
   }
 
   private getArticles(): string {
