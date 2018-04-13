@@ -103,8 +103,15 @@ export class ScoringListComponent implements OnInit {
     await this.updateOffersAsync(0);
   }
 
-  public navigateToProject(id) {
-    this.router.navigate([Paths.Project + '/' + id]);
+  public offerRowClickHandler(offer: ScoringOfferResponse, event: MouseEvent) {
+    event.stopPropagation();
+    if (offer.offerStatus === OfferStatus.Pending) {
+      this.navigateToProjectScoring(offer.projectId, offer.area, event);
+    }
+
+    if (offer.offerStatus === OfferStatus.Accepted) {
+      this.navigateToEstimateScoring(offer.projectId, offer.area, event);
+    }
   }
 
   public navigateToProjectScoring(projectId: number, area: number, event: MouseEvent) {

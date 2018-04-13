@@ -35,7 +35,7 @@
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-project>
-            <tr (click)="navigateToProject(project.projectId)">
+            <tr (click)="offerRowClickHandler(project, $event)">
               <td class="project-name">
                 <div [ngClass]="project.finalScore ? '' :
                 (project.offerStatus === OfferStatus.Pending ? 'warning-border' :
