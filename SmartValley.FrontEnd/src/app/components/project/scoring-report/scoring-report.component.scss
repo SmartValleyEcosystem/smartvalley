@@ -2,6 +2,7 @@
   width: 125px;
   margin: 0 auto;
 }
+
 .label-name {
   border-bottom: 3px solid #eeedf5;
   font-size: 14px;
@@ -10,22 +11,38 @@
   padding-bottom: 15px;
   text-align: center;
 }
+
 .label-score {
   font-size: 24px;
 }
+
 .max-score {
   color: #a4a2b0;
   font-size: 24px;
 }
+
 .question {
   font-family: Roboto-Bold;
   font-size: 14px;
   margin-bottom: 15px;
 }
+
 .scoring-question {
   padding: 20px 40px;
   background-color: #fff;
   border-bottom: solid 1px #e5e5e5;
+}
+
+.spinner-container {
+  position: relative;
+  min-height: 100px;
+  width: 100%;
+  mat-spinner {
+    right: 0;
+    position: absolute;
+    margin: auto;
+    left: 0;
+  }
 }
 
 .progress-scoring-list,
@@ -33,13 +50,14 @@
 .main-btn {
   margin-bottom: 55px;
 }
+
 .scoring-results {
   text-align: left;
   font-size: 12px;
   tr {
     line-height: 25px;
   }
-  thead{
+  thead {
     td {
       width: 150px;
     }
@@ -47,40 +65,49 @@
     color: #a4a2b0;
   }
 }
+
 .score_0 {
   color: #e4002b;
 }
+
 .score_1 {
   color: #f5a623;
 }
+
 .score_2 {
   color: #23b428;
 }
+
 .progress-scoring-list {
   list-style: none;
   display: flex;
   padding: 0;
 }
+
 .settings-title {
   margin-bottom: 2px;
   padding: 19px 12px;
 }
+
 .progress-scoring-item {
   position: relative;
   width: 235px;
   border: solid 1px #eeedf5;
 }
+
 .total {
   color: #a4a2b0;
   padding: 20px;
   background-color: #fff;
 }
+
 .total-score {
   position: relative;
   color: #000;
   display: inline-block;
   float: right;
 }
+
 .total-progress-bar {
   position: relative;
   bottom: 5px;
@@ -88,6 +115,7 @@
   height: 5px;
   background-color: #e5e5e5;
 }
+
 .total-progress-bar__ready {
   position: relative;
   height: 100%;

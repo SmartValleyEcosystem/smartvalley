@@ -19,7 +19,6 @@ import {OfferStatus} from '../../../api/scoring-offer/offer-status.enum';
 export class ScoringReportComponent implements OnInit {
 
   public areas: Area[];
-  public scoringInfo: GetEstimatesResponse;
   public areasScoringInfo: AreasScoringInfo[] = [];
   public scoringCriterionResponse: ScoringCriteriaGroup[] = [];
 
@@ -35,14 +34,17 @@ export class ScoringReportComponent implements OnInit {
 
   public async ngOnInit() {
     this.areas = this.areaService.areas;
+    const estimates = await this.estimatesApiClient.getAsync(this.projectId);
     for (const area of this.areas) {
-      this.scoringCriterionResponse = this.scoringCriterionResponse.concat(this.scoringCriterionService.getByArea(area.areaType));
-      this.scoringInfo = await this.estimatesApiClient.getAsync(this.projectId, area.areaType);
+      const estimatesForArea = estimates.items.find(e => e.areaType === area.areaType);
       this.areasScoringInfo.push({
-        areaType: area.areaType,
+        finishedExperts: estimatesForArea.offers.filter(o => o.status === OfferStatus.Finished).length,
+        totalExperts: estimatesForArea.requiredExpertsCount,
         areaName: area.name,
-        scoringInfo: this.scoringInfo
+        scoringInfo: estimatesForArea,
+        areaType: area.areaType
       });
+      this.scoringCriterionResponse = this.scoringCriterionResponse.concat(this.scoringCriterionService.getByArea(area.areaType));
     }
   }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SmartValley.Domain;
+using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Scorings.Responses;
 
 namespace SmartValley.WebApi.Estimates.Responses
@@ -17,6 +18,8 @@ namespace SmartValley.WebApi.Estimates.Responses
 
         public IReadOnlyCollection<ScoringOfferAreaResponse> Offers { get; set; }
 
+        public AreaType AreaType { get; set; }
+
         public static ScoringStatisticsInAreaResponse Create(ScoringStatisticsInArea scoringStatisticsInArea)
         {
             return new ScoringStatisticsInAreaResponse
@@ -29,7 +32,8 @@ namespace SmartValley.WebApi.Estimates.Responses
                            .Estimates
                            .GroupBy(e => e.ScoringCriterionId)
                            .Select(q => CriterionWithEstimatesResponse.Create(q.Key, q.ToArray()))
-                           .ToArray()
+                           .ToArray(),
+                       AreaType = scoringStatisticsInArea.AreaType.FromDomain()
                    };
         }
     }
