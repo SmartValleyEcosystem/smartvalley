@@ -1,0 +1,22 @@
+<div *ngIf="imgUrl; else emptyPhoto;" class="photo-container">
+  <div class="photo">
+    <img class="uploaded-photo" [src]="imgUrl"/>
+    <div class="button-container">
+      <button (click)="deleteFile()">{{'ExpertUploadPhoto.Delete' | translate }}</button>
+    </div>
+  </div>
+</div>
+<ng-template #emptyPhoto>
+  <label for="{{elementId}}" class="photo-container">
+    <div class="empty-photo">
+      <i class="material-icons">camera_alt</i>
+    </div>
+  </label>
+</ng-template>
+<div class="input-container">
+  <span class="button-label">100*100 px is a minimum recommended size. Format: PNG, JPEG.</span>
+  <label class="input input-button">
+    <span class="input-button__text">{{'ExpertUploadPhoto.Upload' | translate }}</span>
+    <input #input type="file" [name]="name" [accept]="accept" (change)="onChange($event)" id="{{elementId}}"/>
+  </label>
+</div>

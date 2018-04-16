@@ -8,6 +8,7 @@ import {isNullOrUndefined} from 'util';
 import {ScoringStatus} from '../../services/scoring-status.enum';
 import {OfferStatus} from '../../api/scoring-offer/offer-status.enum';
 import {ScoringResponse} from '../../api/scoring/scoring-response';
+import {ErrorCode} from '../../shared/error-code.enum';
 
 @Component({
   selector: 'app-project',
@@ -36,8 +37,8 @@ export class ProjectComponent implements OnInit {
               private route: ActivatedRoute,
               private userContext: UserContext) {
 
-    route.params.subscribe(val => {
-      this.reloadProjectAsync();
+    route.params.subscribe(async () => {
+      await this.reloadProjectAsync();
     });
     this.userContext.userContextChanged.subscribe(async () => await this.reloadProjectAsync());
   }
@@ -57,24 +58,30 @@ export class ProjectComponent implements OnInit {
       this.selectedTab = this.tabItems.indexOf(selectedTabName);
     }
 
-    this.project = await this.projectApiClient.getProjectSummaryAsync(this.projectId);
+    try {
+      this.project = await this.projectApiClient.getProjectSummaryAsync(this.projectId);
+      if (this.project) {
+        this.isProjectExists = true;
 
-    if (this.project) {
-      this.isProjectExists = true;
+        if (this.project.scoring.scoringStatus === ScoringStatus.InProgress) {
+          this.scoringCompletenessInPercents = this.getScoringCompleteness(this.project.scoring);
+        }
 
-      if (this.project.scoring.scoringStatus === ScoringStatus.InProgress) {
-        this.scoringCompletenessInPercents = this.getScoringCompleteness(this.project.scoring);
+        const currentUser = await this.userContext.getCurrentUser();
+        if (!isNullOrUndefined(currentUser) && this.project.authorId === currentUser.id) {
+          this.isAuthor = true;
+        }
       }
-
-      const currentUser = await this.userContext.getCurrentUser();
-      if (!isNullOrUndefined(currentUser) && this.project.authorId === currentUser.id) {
-        this.isAuthor = true;
+    } catch (e) {
+      switch (e.error.errorCode) {
+        case ErrorCode.ProjectNotFound:
+          await this.router.navigate([Paths.ProjectList]);
       }
     }
   }
 
   public async navigateToApplicationScoringAsync(): Promise<void> {
-    await this.router.navigate(['/' + Paths.ScoringApplication + '/' + this.projectId]);
+    await this.router.navigate([Paths.ScoringApplication + '/' + this.projectId]);
   }
 
   public async navigateToPaymentAsync(): Promise<void> {

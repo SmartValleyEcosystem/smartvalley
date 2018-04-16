@@ -37,33 +37,6 @@ export class AutocompleteComponent implements ControlValueAccessor, OnChanges, O
               private nativeElement: ElementRef) {
   }
 
-  public propagateChange: any = () => {
-  };
-
-  public validateFn: any = () => {
-  };
-
-  get selectedItemValue(): string | number | null {
-    return this._selectedItemValue;
-  }
-
-  set selectedItemValue(value: string | number) {
-    this._selectedItemValue = value;
-    this.propagateChange(value);
-    this.onSelect.emit(value);
-  }
-
-  public ngOnChanges(inputs) {
-    this.propagateChange(this.selectedItemValue);
-  }
-
-  public writeValue(value: string | number | null) {
-    if (value) {
-      this.selectedItemValue = value;
-    }
-    this.setDefaultValue(this.selectedItemValue);
-  }
-
   public ngOnInit() {
     this.selectedItemLabel = '';
     this.selectedItemValue = '';
@@ -85,13 +58,6 @@ export class AutocompleteComponent implements ControlValueAccessor, OnChanges, O
       }
     }
     this.selectedItemValue = value;
-  }
-
-  public registerOnTouched() {
-  }
-
-  public validate(c: FormControl) {
-    return this.validateFn(c);
   }
 
   public showItemsList() {
@@ -133,13 +99,47 @@ export class AutocompleteComponent implements ControlValueAccessor, OnChanges, O
     this.items = this.allItems.filter(c => c.label.toLowerCase().includes(event.target.value.toLowerCase()));
   }
 
-  registerOnChange(fn) {
-    this.propagateChange = fn;
-  }
-
   public resetSelection() {
     this.selectedItemValue = '';
     this.selectedItemLabel = '';
     this.isAutocompleteHidden = true;
+  }
+
+  public propagateChange: any = () => {
+  };
+
+  public validateFn: any = () => {
+  };
+
+  get selectedItemValue(): string | number | null {
+    return this._selectedItemValue;
+  }
+
+  set selectedItemValue(value: string | number) {
+    this._selectedItemValue = value;
+    this.propagateChange(value);
+    this.onSelect.emit(value);
+  }
+
+  public ngOnChanges(inputs) {
+    this.propagateChange(this.selectedItemValue);
+  }
+
+  public writeValue(value: string | number | null) {
+    if (value) {
+      this.selectedItemValue = value;
+    }
+    this.setDefaultValue(this.selectedItemValue);
+  }
+
+  public registerOnTouched() {
+  }
+
+  public validate(c: FormControl) {
+    return this.validateFn(c);
+  }
+
+  registerOnChange(fn) {
+    this.propagateChange = fn;
   }
 }

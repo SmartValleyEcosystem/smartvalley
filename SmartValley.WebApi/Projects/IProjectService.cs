@@ -28,9 +28,9 @@ namespace SmartValley.WebApi.Projects
 
         Task<IReadOnlyCollection<ProjectDetails>> GetProjectsByNameAsync(string projectName);
 
-        Task CreateAsync(long userId, CreateProjectRequest request);
+        Task<Project> CreateAsync(long userId, CreateProjectRequest request);
 
-        Task UpdateAsync(long projectId, UpdateProjectRequest request);
+        Task<Project> UpdateAsync(long projectId, UpdateProjectRequest request);
 
         Task DeleteAsync(long projectId);
 
@@ -41,5 +41,7 @@ namespace SmartValley.WebApi.Projects
         Task<IReadOnlyCollection<ProjectTeamMember>> GetTeamAsync(long projectId);
 
         Task<ProjectDetails> GetByAuthorIdAsync(long authorId);
+
+        Task DeleteTeamMemberPhotoAsync(long projectTeamMemberId);
     }
 }

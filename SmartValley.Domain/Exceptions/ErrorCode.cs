@@ -25,6 +25,9 @@
         ExpertNotFound,
         CountryNotFound,
         ProjectCouldntBeRemoved,
-        ProjectScoringApplicationNotFound
+        ProjectScoringApplicationNotFound,
+        ScoringApplicationAlreadySubmitted,
+        UserNotAuthor,
+        TeamMemberNotFound
     }
 }

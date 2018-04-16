@@ -99,6 +99,19 @@
           (click)="removeTeamMember(member)" class="member__remove"></span></h3>
         <div class="control-row">
           <p class="control-label">
+            <label [for]="'photo__'+ member">{{ 'CreateProject.Photo' | translate }}</label>
+          </p>
+          <app-member-upload-photo
+            #photo
+            [elementId]="'photo__'+ member"
+            class="input-component"
+            accept="image/*"
+            maxFileSize="5242880"
+            [formControlName]="'photo__'+ member"
+          ></app-member-upload-photo>
+        </div>
+        <div class="control-row">
+          <p class="control-label">
             <label for="full-name">{{ 'CreateProject.FullName' | translate }}</label>
           </p>
           <input class="input" id="full-name" [formControlName]="'full-name__'+ member">

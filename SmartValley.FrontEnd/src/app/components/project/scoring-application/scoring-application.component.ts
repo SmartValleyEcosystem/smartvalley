@@ -8,7 +8,6 @@ import {ScoringApplicationPartition} from '../../../api/scoring-application/scor
 import {QuestionControlType} from '../../../api/scoring-application/question-control-type.enum';
 import {ProjectApiClient} from '../../../api/project/project-api-client';
 import {UserContext} from '../../../services/authentication/user-context';
-import {ScoringApiClient} from '../../../api/scoring/scoring-api-client';
 import {ProjectSummaryResponse} from '../../../api/project/project-summary-response';
 
 @Component({
@@ -84,10 +83,10 @@ export class ScoringApplicationComponent implements OnInit {
       return true;
     }
     if (parentTriggerValue) {
-      const parentQuestion = this.partitions.map(i => i.questions).reduce((l, r) => l.concat(r)).filter(i => i.id === id)[0];
+      const parentQuestion = this.partitions.selectMany(i => i.questions).filter(i => i.id === id)[0];
       return +parentQuestion.answer === +parentTriggerValue;
     }
-    return this.partitions.map(i => i.questions).reduce((l, r) => l.concat(r)).some(i => i.id === id);
+    return this.partitions.selectMany(i => i.questions).some(i => i.id === id);
   }
 
   public scrollToElement(elementId: string) {

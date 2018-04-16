@@ -49,7 +49,7 @@ export class ScoringReportComponent implements OnInit {
   }
 
   public getQuestionById(id: number): string {
-    return this.scoringCriterionResponse.map(s => s.criteria).reduce((l, r) => l.concat(r)).find(c => c.id === id).name;
+    return this.scoringCriterionResponse.selectMany(s => s.criteria).find( c => c.id === id ).name;
   }
 
   public async navigateToApplicationScoringAsync(): Promise<void> {
@@ -58,8 +58,7 @@ export class ScoringReportComponent implements OnInit {
 
   public getFinishedExperts(areaType: number): number {
     return this.areasScoringInfo.filter(a => a.areaType === areaType)
-      .map(e => e.scoringInfo.offers)
-      .reduce((l, r) => l.concat(r))
+      .selectMany(e => e.scoringInfo.offers)
       .filter(o => o.status === OfferStatus.Finished)
       .length;
   }

@@ -16,6 +16,7 @@
     "UserNotFound": "User not found.",
     "EmailSendingErrorTitle": "Failed to send email",
     "EmailAlreadyExistErrorTitle": "Email already exist",
-    "EnterAnotherEmail": "Enter another email."
+    "EnterAnotherEmail": "Enter another email.",
+    "UploadPhotoErrorTitle": "Failed to upload photo"
   }
 }

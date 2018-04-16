@@ -7,7 +7,7 @@
          [value]="selectedItemLabel"
          [placeholder]="placeholder" type="text" class="input filter-autocomplete" id="{{elementId}}"
          name="{{elementName}}">
-  <ul (mouseenter)="selectListHoverStatusSwitch(true) "
+  <ul (mouseenter)="selectListHoverStatusSwitch(true)"
       (mouseleave)="selectListHoverStatusSwitch(false); hideItemsList();"
       class="autocomplete-list" [class.hidden]="isAutocompleteHidden">
     <li *ngFor="let item of items" (click)="selectItem(item.label, item.value)" class="autocomplete-item">

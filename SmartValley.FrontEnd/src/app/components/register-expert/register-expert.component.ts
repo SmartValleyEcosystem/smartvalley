@@ -82,6 +82,8 @@ export class RegisterExpertComponent implements OnInit {
       why: ['', [Validators.required, Validators.maxLength(1500)]],
       description: ['', [Validators.required, Validators.maxLength(1500)]],
       country: ['', [Validators.required]],
+      document: ['', [Validators.required]],
+      photo: ['', [Validators.required]],
       city: ['', [Validators.required, Validators.maxLength(50)]],
       selectedSex: ['', [Validators.required]],
       selectedDocumentType: [DocumentEnum.Passport],
@@ -117,28 +119,6 @@ export class RegisterExpertComponent implements OnInit {
     }
   }
 
-  public onDocumentUpload(event: any) {
-    const element = this.requiredFields.find(f => f.name === 'document');
-    if (event !== null) {
-      this.document = event.files[0];
-      this.switchFileUploadValidity(element, true);
-    } else {
-      this.document = null;
-      this.switchFileUploadValidity(element, false);
-    }
-  }
-
-  public onPhotoUpload(event: any) {
-    const element = this.requiredFields.find(f => f.name === 'photo');
-    if (event !== null) {
-      this.photo = event.files[0];
-      this.switchFileUploadValidity(element, true);
-    } else {
-      this.photo = null;
-      this.switchFileUploadValidity(element, false);
-    }
-  }
-
   private switchFileUploadValidity(element: any, isValid: boolean) {
     if (isValid) {
       element.el.nativeElement.classList.remove('ng-invalid');
@@ -163,9 +143,7 @@ export class RegisterExpertComponent implements OnInit {
 
   private validateForm(): boolean {
     if (!this.registryForm.invalid
-      && !isNullOrUndefined(this.photo)
-      && !isNullOrUndefined(this.cv)
-      && !isNullOrUndefined(this.document)) {
+      && !isNullOrUndefined(this.cv)) {
       return true;
     }
 
@@ -200,7 +178,8 @@ export class RegisterExpertComponent implements OnInit {
     }
     return false;
   }
-  private scrollToElement(element: ElementRef): void {
+
+  private scrollToElement(element: ElementRef) {
     if (element.nativeElement.nativeElement) {
       const offsetTop1 = element.nativeElement.nativeElement.offsetTop;
       window.scrollTo({left: 0, top: offsetTop1 - 40, behavior: 'smooth'});
@@ -209,14 +188,15 @@ export class RegisterExpertComponent implements OnInit {
     if (element.nativeElement) {
       const offsetTop1 = element.nativeElement.offsetTop;
       window.scrollTo({left: 0, top: offsetTop1 - 40, behavior: 'smooth'});
+      return;
     }
   }
 
   private createExpertApplicationRequest(transactionHash: string, areas: Array<AreaType>): CreateExpertApplicationRequest {
     const form = this.registryForm.value;
     const input = new FormData();
-    input.append('scan', this.document);
-    input.append('photo', this.photo);
+    input.append('scan', form.document);
+    input.append('photo', form.photo);
     input.append('cv', this.cv);
     input.append('transactionHash', transactionHash);
     input.append('sex', form.selectedSex ? SexEnum.Male.toString() : SexEnum.Female.toString());

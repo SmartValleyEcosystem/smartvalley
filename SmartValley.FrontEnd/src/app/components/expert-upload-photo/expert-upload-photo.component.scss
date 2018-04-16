@@ -1,0 +1,87 @@
+.uploaded-photo {
+  height: 180px;
+  position: absolute;
+  width: 180px;
+}
+
+.input-button {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  width: 120px;
+  height: 24px;
+  border-radius: 12px;
+  background-color: rgba(93, 73, 242, 0);
+  border: solid 1px #5d49f2;
+  margin: 0;
+}
+
+.input-button__text{
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  text-align: center;
+  padding: 2px;
+  font-family: Roboto-Bold;
+  user-select: none;
+}
+
+.input-button input[type="file"]{
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  opacity: 0;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  direction: ltr;
+  cursor: pointer;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  display: none;
+}
+
+.button-container {
+  position: absolute;
+  height: 180px;
+  width: 180px;
+  background-color: rgba(34, 32, 52, 0.63);
+  opacity: 0;
+}
+
+.button-container button {
+  width: 68px;
+  height: 24px;
+  border-radius: 12px;
+  background-color: rgba(93, 73, 242, 0);
+  border: solid 1px #ffffff;
+  color: white;
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+}
+
+.photo-container {
+  position: relative;
+  height: 180px;
+  margin-top: 13px;
+  display: inline-block;
+  user-select: none;
+}
+
+.photo-container:hover .button-container {
+  opacity: 1;
+}
+

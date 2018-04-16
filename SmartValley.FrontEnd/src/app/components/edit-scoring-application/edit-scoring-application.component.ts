@@ -285,8 +285,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
 
   public getQuestionsWithAnswers(): Answer[] {
     return this.questions.partitions
-      .map(p => p.questions)
-      .reduce((a, b) => a.concat(b))
+      .selectMany(p => p.questions)
       .map(q => {
         const questionValue = typeof(this.questionsGroup.value['control_' + q.id]) === 'boolean' ?
           +this.questionsGroup.value['control_' + q.id] : this.questionsGroup.value['control_' + q.id];

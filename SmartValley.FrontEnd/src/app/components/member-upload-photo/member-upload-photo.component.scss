@@ -1,0 +1,120 @@
+.uploaded-photo {
+  height: 96px;
+  position: absolute;
+  width: 96px;
+  border-radius: 50%;
+}
+
+.input-container {
+  display: inline-block;
+  height: 96px;
+  position: relative;
+  vertical-align: top;
+  margin: 13px 0 0 20px;
+}
+
+.input-button {
+  margin: 20px 0 0 0;
+  display: block;
+  position: relative;
+  cursor: pointer;
+  width: max-content;
+  height: 24px;
+  border-radius: 12px;
+  background-color: rgba(93, 73, 242, 0);
+  border: solid 1px #5d49f2;
+}
+
+.input-button__text {
+  cursor: pointer;
+  padding: 2px;
+  font-family: Roboto-Bold;
+  user-select: none;
+}
+
+.input-button input[type="file"] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  opacity: 0;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  direction: ltr;
+  cursor: pointer;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  display: none;
+}
+
+.empty-photo {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  border: solid 2px #eeedf5;
+  border-radius: 50%;
+  color: #eeedf5;
+  cursor: pointer;
+}
+
+.button-label {
+  color: #a4a2b0;
+}
+
+.photo {
+  position: relative;
+  width: 96px;
+  height: 96px;
+}
+
+.empty-photo i {
+  height: 24px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  text-align: center;
+}
+
+.button-container {
+  position: absolute;
+  height: 96px;
+  width: 96px;
+  background-color: rgba(34, 32, 52, 0.63);
+  opacity: 0;
+  border-radius: 50%;
+}
+
+.button-container button {
+  width: 68px;
+  height: 24px;
+  border-radius: 12px;
+  background-color: rgba(93, 73, 242, 0);
+  border: solid 1px #ffffff;
+  color: white;
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+}
+
+.photo-container {
+  position: relative;
+  height: 96px;
+  display: inline-block;
+  user-select: none;
+  margin: 13px 0 0 0;
+}
+
+.photo-container:hover .button-container {
+  opacity: 1;
+}
+
