@@ -79,6 +79,10 @@ body {
   stroke: #ffd038;
 }
 
+.mat-progress-spinner.spinner-primary circle, .mat-spinner.spinner-primary circle {
+  stroke: #231a5d !important;
+}
+
 .mat-toolbar {
   background: transparent !important;
   font-family: 'Roboto-Regular', sans-serif;
