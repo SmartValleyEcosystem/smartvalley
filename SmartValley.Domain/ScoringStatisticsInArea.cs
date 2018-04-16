@@ -9,13 +9,15 @@ namespace SmartValley.Domain
                                        long requiredExpertsCount,
                                        IReadOnlyCollection<Estimate> estimates,
                                        IReadOnlyCollection<ExpertScoringConclusion> conclusions,
-                                       IReadOnlyCollection<ScoringOffer> offers)
+                                       IReadOnlyCollection<ScoringOffer> offers,
+                                       AreaType areaType)
         {
             Score = score;
             RequiredExpertsCount = requiredExpertsCount;
             Estimates = estimates;
             Conclusions = conclusions;
             Offers = offers;
+            AreaType = areaType;
         }
 
         public double? Score { get; }
@@ -28,6 +30,6 @@ namespace SmartValley.Domain
 
         public IReadOnlyCollection<ScoringOffer> Offers { get; }
 
-        public static ScoringStatisticsInArea Empty => new ScoringStatisticsInArea(null, 0, new Estimate[0], new ExpertScoringConclusion[0], new ScoringOffer[0]);
+        public AreaType AreaType { get; }
     }
 }

@@ -16,11 +16,11 @@ namespace SmartValley.Data.SQL.Repositories
         {
         }
 
-        public async Task<IReadOnlyCollection<EstimateComment>> GetByScoringIdAsync(long scoringId, AreaType areaType)
+        public async Task<IReadOnlyCollection<EstimateComment>> GetByScoringIdAsync(long scoringId)
         {
             return await (from estimate in ReadContext.EstimateComments
                           join scoringCriterion in ReadContext.ScoringCriteria on estimate.ScoringCriterionId equals scoringCriterion.Id
-                          where scoringCriterion.AreaType == areaType && estimate.ScoringId == scoringId
+                          where estimate.ScoringId == scoringId
                           select estimate)
                        .ToArrayAsync();
         }

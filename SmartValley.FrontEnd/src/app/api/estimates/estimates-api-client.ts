@@ -22,14 +22,13 @@ export class EstimatesApiClient extends BaseApiClient {
     await this.http.post(this.baseApiUrl + '/estimates', request).toPromise();
   }
 
-  async getAsync(projectId: number, areaType: AreaType): Promise<GetEstimatesResponse> {
+  async getAsync(projectId: number): Promise<CollectionResponse<GetEstimatesResponse>> {
 
     const parameters = new HttpParams()
-      .append('projectId', projectId.toString())
-      .append('areaType', areaType.toString());
+      .append('projectId', projectId.toString());
 
     return this.http
-      .get<GetEstimatesResponse>(this.baseApiUrl + '/estimates', {params: parameters})
+      .get<CollectionResponse<GetEstimatesResponse>>(this.baseApiUrl + '/estimates', {params: parameters})
       .toPromise();
   }
 

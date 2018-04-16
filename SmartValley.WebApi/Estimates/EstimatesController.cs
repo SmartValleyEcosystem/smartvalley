@@ -18,18 +18,15 @@ namespace SmartValley.WebApi.Estimates
     {
         private readonly EthereumClient _ethereumClient;
         private readonly IEstimationService _estimationService;
-        private readonly IProjectService _projectService;
         private readonly IScoringCriterionRepository _scoringCriterionRepository;
 
         public EstimatesController(
             EthereumClient ethereumClient,
             IEstimationService estimationService,
-            IProjectService projectService,
             IScoringCriterionRepository scoringCriterionRepository)
         {
             _ethereumClient = ethereumClient;
             _estimationService = estimationService;
-            _projectService = projectService;
             _scoringCriterionRepository = scoringCriterionRepository;
         }
 
@@ -43,10 +40,13 @@ namespace SmartValley.WebApi.Estimates
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetEstimatesInAreaAsync(GetEstimatesRequest request)
+        public async Task<CollectionResponse<ScoringStatisticsInAreaResponse>> GetEstimatesAsync(long projectId)
         {
-            var scoringStatistics = await _estimationService.GetScoringStatisticsInAreaAsync(request.ProjectId, request.AreaType.ToDomain());
-            return Ok(ScoringStatisticsInAreaResponse.Create(scoringStatistics));
+            var scoringStatistics = await _estimationService.GetScoringStatisticsAsync(projectId);
+            return new CollectionResponse<ScoringStatisticsInAreaResponse>
+                   {
+                       Items = scoringStatistics.Select(ScoringStatisticsInAreaResponse.Create).ToArray()
+                   };
         }
 
         [HttpGet]
