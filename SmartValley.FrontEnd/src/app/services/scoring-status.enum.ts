@@ -1,5 +1,5 @@
 export enum ScoringStatus {
-  Pending,
-  InProgress,
-  Finished
+  Pending = 0,
+  InProgress = 1,
+  Finished = 2
 }

@@ -1,9 +1,13 @@
-<div *ngIf="scoringStatus === 0" class="content">
+<div *ngIf="scoringStatus !== 2 && !isAuthor" class="content">
+  <p>{{ 'ScoringReport.ProjectHaventScored' | translate }}</p>
+</div>
+
+<div *ngIf="scoringStatus === 0 && isAuthor" class="content">
   <p>{{ 'ScoringReport.ProjectHaventScored' | translate }}</p>
   <button (click)="navigateToApplicationScoringAsync()" class="main-btn">{{ 'ScoringReport.GetScore' | translate }}</button>
 </div>
 
-<div *ngIf="scoringStatus === 1" class="content">
+<div *ngIf="scoringStatus === 1 && isAuthor" class="content">
   <p>{{ 'ScoringReport.GetMoneyWhenAllScore' | translate }}</p>
   <ul class="progress-scoring-list">
     <li *ngFor="let scoringInfo of areasScoringInfo" class="progress-scoring-item">

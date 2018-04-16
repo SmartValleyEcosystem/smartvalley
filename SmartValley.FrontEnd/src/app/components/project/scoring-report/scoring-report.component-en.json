@@ -3,9 +3,9 @@
     "Expert": "Expert",
     "Score": "Score",
     "Comments": "Comments",
-    "ProjectHaventScored": "Your project haven't been scored yet",
+    "ProjectHaventScored": "Project has not been scored yet",
     "GetScore": "Get score for this project",
-    "GetMoneyWhenAllScore": "You wil get money when all experts give their score.",
+    "GetMoneyWhenAllScore": "You will get money when all experts submit their scores",
     "Finished": "Finished",
     "TotalExperts": "Total Experts"
   }

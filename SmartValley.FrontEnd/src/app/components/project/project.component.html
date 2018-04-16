@@ -40,7 +40,7 @@
       <app-scoring-application [project]="project"></app-scoring-application>
     </mat-tab>
     <mat-tab label="{{ 'MyProject.ScoringReport' | translate }}">
-      <app-scoring-report [scoringStatus]="project.scoring.scoringStatus" [projectId]="projectId"></app-scoring-report>
+      <app-scoring-report [scoringStatus]="project.scoring.scoringStatus" [projectId]="projectId" [isAuthor]="isAuthor"></app-scoring-report>
     </mat-tab>
   </mat-tab-group>
 </div>

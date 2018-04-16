@@ -25,6 +25,7 @@ export class ScoringReportComponent implements OnInit {
 
   @Input() projectId: number;
   @Input() scoringStatus: ScoringStatus;
+  @Input() isAuthor: boolean;
 
   constructor(private router: Router,
               private areaService: AreaService,

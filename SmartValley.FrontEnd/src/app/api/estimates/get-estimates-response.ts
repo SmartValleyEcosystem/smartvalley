@@ -1,6 +1,6 @@
 import {CriterionWithEstimatesResponse} from './criterion-with-estimates-response';
-import {ScoringOfferResponse} from "../scoring/scoring-offer-response";
-import {ScoringAreaConslusionResponse} from "../scoring/scoring-area-conclusion-response";
+import {ScoringOfferResponse} from '../scoring/scoring-offer-response';
+import {ScoringAreaConslusionResponse} from '../scoring/scoring-area-conclusion-response';
 
 export interface GetEstimatesResponse {
   score: number;
