@@ -132,13 +132,10 @@
         <h2 class="partition-title" id="partition_team">{{ 'EditScoringApplication.TeamTitle' | translate }}</h2>
         <div class="partition-block">
           <div *ngIf="projectInfo.projectTeamMembers.length > 0; else haveNoMembersBlock;">
-            <div class="member-column" [tooltipDisabled]="!member.about" [escape]="false"
-                 pTooltip="<p class='tooltip-text'>{{ member.about }}</p>" tooltipPosition="right"
-                 *ngFor="let member of projectInfo.projectTeamMembers;">
+            <div class="member-column" [tooltipDisabled]="!member.about" [escape]="false" pTooltip="<p class='tooltip-text'>{{ member.about }}</p>" tooltipPosition="right" *ngFor="let member of projectInfo.projectTeamMembers;">
               <div class="member-photo-container">
                 <div class="avatar-wrapper">
-                  <img *ngIf="member.photoUrl !== '' && member.photoUrl !== null; else withoutPhoto;"
-                       class="member-photo"
+                  <img *ngIf="member.photoUrl !== '' && member.photoUrl !== null; else withoutPhoto;" class="member-photo"
                        [src]="member.photoUrl"/>
                 </div>
                 <ng-template #withoutPhoto>
@@ -161,17 +158,15 @@
           }}</h2>
         <div class="partition-block">
           <div *ngIf="projectInfo.projectAdvisers.length > 0; else haveNoAdvisersBlock;">
-            <div class="member-column" *ngFor="let adviser of projectInfo.projectAdvisers;"
-                 [tooltipDisabled]="(!adviser.about && !adviser.reason)" [escape]="false" pTooltip=
-                   "<p class='tooltip-title {{ !adviser.about ? 'hidden' : ''}}'>{{ 'ScoringApplication.About'| translate }}</p>
+            <div class="member-column"  *ngFor="let adviser of projectInfo.projectAdvisers;" [tooltipDisabled]="(!adviser.about && !adviser.reason)" [escape]="false" pTooltip=
+              "<p class='tooltip-title {{ !adviser.about ? 'hidden' : ''}}'>{{ 'ScoringApplication.About'| translate }}</p>
                     <p class='tooltip-text {{ !adviser.about ? 'hidden' : ''}}'>{{ adviser.about }}</p>
                     <p class='tooltip-title {{ !adviser.reason ? 'hidden' : ''}}'>{{ 'ScoringApplication.Reason'| translate }}</p>
                     <p class='tooltip-text {{ !adviser.reason ? 'hidden' : ''}}'>{{ adviser.reason }}</p>"
                  tooltipPosition="right">
               <div class="member-photo-container">
                 <div class="avatar-wrapper">
-                  <img *ngIf="adviser.photoUrl !== '' && adviser.photoUrl !== null; else withoutPhoto;"
-                       class="member-photo"
+                  <img *ngIf="adviser.photoUrl !== '' && adviser.photoUrl !== null; else withoutPhoto;" class="member-photo"
                        [src]="adviser.photoUrl"/>
                 </div>
                 <ng-template #withoutPhoto>
