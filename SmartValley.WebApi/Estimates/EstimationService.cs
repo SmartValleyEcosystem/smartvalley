@@ -22,6 +22,25 @@ namespace SmartValley.WebApi.Estimates
         private readonly IClock _clock;
         private readonly IUserRepository _userRepository;
         private readonly IScoringCriterionRepository _scoringCriterionRepository;
+        private readonly IScoringApplicationRepository _scoringApplicationRepository;
+
+        private readonly IReadOnlyCollection<long> _criterionsWithTeamMemberPrompts = new List<long>
+                                                                             {
+                                                                                 14,
+                                                                                 18
+                                                                             };
+
+        private readonly IReadOnlyCollection<long> _criterionsWithAdviserPrompts = new List<long>
+                                                                          {
+                                                                              15,
+                                                                              16,
+                                                                              17
+                                                                          };
+
+        private readonly IReadOnlyCollection<long> _criterionsWithSocialNetworksPrompts = new List<long>
+                                                                                 {
+                                                                                     49
+                                                                                 };
 
         public EstimationService(
             IEstimateRepository estimateRepository,
@@ -29,7 +48,8 @@ namespace SmartValley.WebApi.Estimates
             IScoringRepository scoringRepository,
             IClock clock,
             IUserRepository userRepository,
-            IScoringCriterionRepository scoringCriterionRepository)
+            IScoringCriterionRepository scoringCriterionRepository,
+            IScoringApplicationRepository scoringApplicationRepository)
         {
             _estimateRepository = estimateRepository;
             _scoringContractClient = scoringContractClient;
@@ -37,6 +57,7 @@ namespace SmartValley.WebApi.Estimates
             _clock = clock;
             _userRepository = userRepository;
             _scoringCriterionRepository = scoringCriterionRepository;
+            _scoringApplicationRepository = scoringApplicationRepository;
         }
 
         public async Task SubmitEstimatesAsync(long expertId, SubmitEstimatesRequest request)
@@ -86,6 +107,60 @@ namespace SmartValley.WebApi.Estimates
                                                scoring.ScoringOffers
                                                       .Where(s => s.AreaId == areaType)
                                                       .ToArray(), areaType);
+        }
+
+        public async Task<IReadOnlyCollection<ScoringCriterionPrompt>> GetCriterionPromptsAsync(long projectId, AreaType areaType)
+        {
+            var scoringApplication = await _scoringApplicationRepository.GetByProjectIdAsync(projectId);
+            var criteriaPromps = await _scoringCriterionRepository.GetScoringCriterionPromptsAsync(scoringApplication.Id, areaType);
+
+            switch (areaType)
+            {
+                case AreaType.Hr:
+                    await AddHrCriterionPromptExceptions(scoringApplication.Id, criteriaPromps);
+                    break;
+                case AreaType.Marketer:
+                    var socialNetworks = (await _scoringApplicationRepository.GetByIdAsync(scoringApplication.Id)).SocialNetworks;
+
+                    foreach (var id in _criterionsWithSocialNetworksPrompts)
+                    {
+                        criteriaPromps.Add(new ScoringCriterionPrompt
+                                           {
+                                               CriterionId = id,
+                                               SocialNetworks = socialNetworks,
+                                               Type = ScoringCriterionPromptType.SocialNetwork
+                                           });
+                    }
+
+                    break;
+            }
+
+            return criteriaPromps.ToArray();
+        }
+
+        private async Task AddHrCriterionPromptExceptions(long scoringApplicationId, IList<ScoringCriterionPrompt> criteriaPromps)
+        {
+            var scoringApplication = await _scoringApplicationRepository.GetByIdAsync(scoringApplicationId);
+
+            foreach (var id in _criterionsWithTeamMemberPrompts)
+            {
+                criteriaPromps.Add(new ScoringCriterionPrompt
+                                   {
+                                       CriterionId = id,
+                                       TeamMembers = scoringApplication.TeamMembers.ToArray(),
+                                       Type = ScoringCriterionPromptType.TeamMembers
+                                   });
+            }
+
+            foreach (var id in _criterionsWithAdviserPrompts)
+            {
+                criteriaPromps.Add(new ScoringCriterionPrompt
+                                   {
+                                       CriterionId = id,
+                                       Advisers = scoringApplication.Advisers.ToArray(),
+                                       Type = ScoringCriterionPromptType.Advisers
+                                   });
+            }
         }
 
         private async Task<IReadOnlyCollection<Estimate>> GetEstimatesAsync(long scoringId, string scoringContractAddress)
