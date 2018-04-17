@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Paths} from '../../paths';
 import {Router} from '@angular/router';
 import {SortDirection} from '../../api/sort-direction.enum';
@@ -9,6 +9,7 @@ import {ScoringOfferResponse} from '../../api/scoring-offer/scoring-offer-respon
 import {OffersApiClient} from '../../api/scoring-offer/offers-api-client';
 import {OfferStatus} from '../../api/scoring-offer/offer-status.enum';
 import {OffersQuery} from '../../api/scoring-offer/offers-query';
+import {Paginator} from 'primeng/primeng';
 
 @Component({
   selector: 'app-scoring-list',
@@ -32,6 +33,8 @@ export class ScoringListComponent implements OnInit {
     value: null
   };
 
+
+  @ViewChild(Paginator) paginator: Paginator;
   public OfferStatus = OfferStatus;
 
   constructor(private router: Router,
@@ -54,6 +57,7 @@ export class ScoringListComponent implements OnInit {
   public async selectedStatusAsync(statusId: OfferStatus): Promise<void> {
     this.selectedOfferStatus = statusId;
     await this.updateOffersAsync(0);
+    this.paginator.changePage(0);
   }
 
   public getProjectLink(id) {
