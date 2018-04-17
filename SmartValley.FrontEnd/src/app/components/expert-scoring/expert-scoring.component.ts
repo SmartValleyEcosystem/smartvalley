@@ -127,7 +127,8 @@ export class ExpertScoringComponent implements OnInit {
   public getAnswers(): EstimateCommentRequest[] {
     return this.areasCriterion.selectMany(group => group.criteria).map(criteria => <EstimateCommentRequest>{
       scoringCriterionId: criteria.id,
-      comment: this.scoringForm.get('comment_' + criteria.id).value
+      comment: this.scoringForm.get('comment_' + criteria.id).value,
+      score: this.scoringForm.get('answer_' + criteria.id).value,
     });
   }
 

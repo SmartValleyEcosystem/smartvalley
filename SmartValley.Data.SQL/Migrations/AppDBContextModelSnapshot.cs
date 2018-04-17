@@ -3,10 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Converters;
+using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SmartValley.Data.SQL.Core;
+using SmartValley.Domain;
 using SmartValley.Domain.Core;
+using SmartValley.Domain.Entities;
 
 namespace SmartValley.Data.SQL.Migrations
 {
@@ -82,6 +87,8 @@ namespace SmartValley.Data.SQL.Migrations
                         .IsRequired();
 
                     b.Property<long>("ExpertId");
+
+                    b.Property<int?>("Score");
 
                     b.Property<long>("ScoringCriterionId");
 
@@ -590,8 +597,7 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<long>("QuestionId");
 
-                    b.Property<long?>("ScoringApplicationId")
-                        .IsRequired();
+                    b.Property<long>("ScoringApplicationId");
 
                     b.Property<string>("Value");
 
@@ -857,7 +863,7 @@ namespace SmartValley.Data.SQL.Migrations
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SmartValley.Domain.ScoringApplication")
+                    b.HasOne("SmartValley.Domain.ScoringApplication", "ScoringApplication")
                         .WithMany("Answers")
                         .HasForeignKey("ScoringApplicationId")
                         .OnDelete(DeleteBehavior.Cascade);

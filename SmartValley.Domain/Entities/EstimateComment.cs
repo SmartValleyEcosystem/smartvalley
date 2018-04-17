@@ -6,15 +6,17 @@ namespace SmartValley.Domain.Entities
     public class EstimateComment : IEntityWithId
     {
         public long Id { get; set; }
-        
+
+        [Required]
+        public string Comment { get; set; }
+
+        public Score? Score { get; set; }
+
         public long ScoringId { get; set; }
         
         public long ExpertId { get; set; }
         
         public long ScoringCriterionId { get; set; }
-
-        [Required]
-        public string Comment { get; set; }
 
         public Scoring Scoring { get; set; }
 
