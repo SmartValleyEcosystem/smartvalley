@@ -10,6 +10,8 @@
     "No": "No",
     "Cancel": "Cancel",
     "ServerError": "Server error",
+    "ToFewExpertsErroTitle": "To few experts.",
+    "ToFewExpertsErrorMessage": "Please choose 3 or more experts.",
     "Error": "Error",
     "TryAgain": "Please try again later",
     "Success": "Success",

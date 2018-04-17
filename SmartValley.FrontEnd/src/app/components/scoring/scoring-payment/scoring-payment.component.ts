@@ -11,6 +11,7 @@ import {Paths} from '../../../paths';
 import {ProjectSummaryResponse} from '../../../api/project/project-summary-response';
 import {DialogService} from '../../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
+import {NotificationsService} from 'angular2-notifications';
 
 @Component({
   selector: 'app-scoring-payment',
@@ -38,6 +39,7 @@ export class ScoringPaymentComponent implements OnInit {
               private scoringApiClient: ScoringApiClient,
               private scoringService: ScoringService,
               private dialogService: DialogService,
+              private notificationsService: NotificationsService,
               private translateService: TranslateService) {
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
   }
@@ -85,6 +87,13 @@ export class ScoringPaymentComponent implements OnInit {
     for (const currentArea in this.expertsInArea) {
       areas.push(+currentArea);
       areaExpertCounts.push(this.expertsInArea[currentArea]);
+    }
+
+    if (areaExpertCounts.some(i => i < 3)) {
+      this.notificationsService.error(
+        this.translateService.instant('Common.ToFewExpertsErroTitle'),
+        this.translateService.instant('Common.ToFewExpertsErrorMessage')
+      );
     }
 
     const transactionHash = await this.scoringService.startAsync(this.externalId, areas, areaExpertCounts);
