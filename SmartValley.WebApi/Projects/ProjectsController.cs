@@ -80,6 +80,17 @@ namespace SmartValley.WebApi.Projects
             return NoContent();
         }
 
+        [HttpDelete("{id}/image")]
+        [Authorize]
+        public async Task<IActionResult> DeleteImageAsync(long id)
+        {
+            if (!await _projectService.IsAuthorizedToEditProjectAsync(id, User.GetUserId()))
+                return Unauthorized();
+
+            await _projectService.DeleteProjectImageAsync(id);
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteAsync(long id)
@@ -216,7 +227,8 @@ namespace SmartValley.WebApi.Projects
                        Github = project.Project.Github,
                        Medium = project.Project.Medium,
                        Twitter = project.Project.Twitter,
-                       Linkedin = project.Project.Linkedin
+                       Linkedin = project.Project.Linkedin,
+                       ImageUrl = project.Project.ImageUrl
                    };
         }
     }

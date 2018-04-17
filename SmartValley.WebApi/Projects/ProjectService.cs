@@ -184,6 +184,17 @@ namespace SmartValley.WebApi.Projects
             await _projectRepository.UpdateAsync(project, p => p.ImageUrl);
         }
 
+        public async Task DeleteProjectImageAsync(long projectId)
+        {
+            var project = await _projectRepository.GetByIdAsync(projectId);
+            if (project == null) throw new AppErrorException(ErrorCode.ProjectNotFound);
+            if (project.ImageUrl == null) return;
+            var projectImageName = project.ImageUrl.Split("projects/")[1];
+            project.ImageUrl = null;
+            await _projectStorageProvider.DeleteAsync(projectImageName);
+            await _projectRepository.UpdateAsync(project, p => p.ImageUrl);
+        }
+
         public async Task<Project> GetAsync(long projectId)
             => await _projectRepository.GetByIdAsync(projectId) ?? throw new AppErrorException(ErrorCode.ProjectNotFound);
 

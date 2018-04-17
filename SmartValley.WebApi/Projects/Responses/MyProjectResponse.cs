@@ -15,6 +15,8 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public int Stage { get; set; }
 
+        public string ImageUrl { get; set; }
+
         public string CountryCode { get; set; }
 
         public string Description { get; set; }

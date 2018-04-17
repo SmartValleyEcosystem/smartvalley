@@ -2,6 +2,7 @@
   "CreateProject": {
     "Title": "Create project",
     "Photo": "Photo",
+    "ProjectImage": "Project image",
     "EditTitle": "Edit project",
     "CreateNewProject": "Create new project for scoring",
     "CommonInformation": "Common information",

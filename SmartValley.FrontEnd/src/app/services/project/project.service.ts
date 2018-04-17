@@ -7,6 +7,7 @@ import {NotificationsService} from 'angular2-notifications';
 import {ErrorCode} from '../../shared/error-code.enum';
 import {TranslateService} from '@ngx-translate/core';
 import {ProjectAboutResponse} from '../../api/project/project-about-response';
+import {AddProjectImageRequest} from '../../api/project/add-project-image-request';
 
 @Injectable()
 export class ProjectService {
@@ -27,6 +28,23 @@ export class ProjectService {
 
   public async updateAsync(request: UpdateProjectRequest): Promise<ProjectAboutResponse> {
     return await this.projectApiClient.updateAsync(request);
+  }
+
+  public async uploadProjectImageAsync(projectId: number, image: Blob): Promise<void> {
+    const input = new FormData();
+    input.append('id', projectId.toString());
+    input.append('image', image);
+    try {
+      await this.projectApiClient.uploadProjectImageAsync(<AddProjectImageRequest>{body: input});
+    } catch (e) {
+      switch (e.error.errorCode) {
+        case ErrorCode.InvalidFileUploaded:
+          this.notificationService.error(
+            this.translateService.instant('Common.UploadPhotoErrorTitle'),
+            this.translateService.instant('Common.TryAgain')
+          );
+      }
+    }
   }
 
   public async uploadTeamMemberPhotoAsync(memberId: string, photo: Blob): Promise<void> {

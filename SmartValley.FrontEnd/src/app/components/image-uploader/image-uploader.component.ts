@@ -7,15 +7,15 @@ import {
 } from '@angular/forms';
 
 @Component({
-  selector: 'app-expert-upload-photo',
-  templateUrl: './expert-upload-photo.component.html',
-  styleUrls: ['./expert-upload-photo.component.scss'],
+  selector: 'app-image-uploader',
+  templateUrl: './image-uploader.component.html',
+  styleUrls: ['./image-uploader.component.scss'],
   providers: [
-    {provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => ExpertUploadPhotoComponent), multi: true},
-    {provide: NG_VALIDATORS, useExisting: forwardRef(() => ExpertUploadPhotoComponent), multi: true}
+    {provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => ImageUploaderComponent), multi: true},
+    {provide: NG_VALIDATORS, useExisting: forwardRef(() => ImageUploaderComponent), multi: true}
   ]
 })
-export class ExpertUploadPhotoComponent implements ControlValueAccessor, OnChanges, OnInit {
+export class ImageUploaderComponent implements ControlValueAccessor, OnChanges, OnInit {
 
   private _value: File;
   public imgUrl: string;
@@ -80,8 +80,12 @@ export class ExpertUploadPhotoComponent implements ControlValueAccessor, OnChang
     this.propagateChange(this.value);
   }
 
-  public writeValue(value: File | null) {
+  public writeValue(value: File | null | string) {
     if (value) {
+      if (typeof value === 'string') {
+        this.imgUrl = value;
+        return;
+      }
       this.value = value;
     }
   }

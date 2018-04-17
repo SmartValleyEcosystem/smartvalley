@@ -120,27 +120,27 @@
           <label>{{ 'RegisterExpert.UploadDocumentLabel' | translate }}</label>
         </p>
         <p class="notify">{{ 'RegisterExpert.UploadNotify' | translate }}</p>
-        <app-expert-upload-photo
+        <app-image-uploader
           class="input-component"
           name="document"
           accept="image/*"
           maxFileSize="5242880"
           formControlName="document"
           #required>
-        </app-expert-upload-photo>
+        </app-image-uploader>
       </div>
       <div class="control-row">
         <p class="control-label">
           <label>{{ 'RegisterExpert.UploadPhotoLabel' | translate }}</label>
         </p>
-        <app-expert-upload-photo
+        <app-image-uploader
           class="input-component"
           name="photo"
           accept="image/*"
           maxFileSize="5242880"
           formControlName="photo"
           #required>
-        </app-expert-upload-photo>
+        </app-image-uploader>
       </div>
     </div>
     <input (click)="applyAsync()" [disabled]="isSubmitting" class="main-btn submit-btn" type="submit" value="{{ 'RegisterExpert.Submit' | translate }}">

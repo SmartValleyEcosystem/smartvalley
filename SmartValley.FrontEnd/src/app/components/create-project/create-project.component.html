@@ -71,6 +71,18 @@
         <input class="input" id="email" type="text" formControlName="contactEmail">
         <p class="input-attention">{{ 'CreateProject.ContactEmailLabel' | translate }}</p>
       </div>
+      <div class="control-row">
+        <p class="control-label">
+          <label for="email">{{ 'CreateProject.ProjectImage' | translate }}</label>
+        </p>
+        <app-image-uploader
+          class="input-component"
+          name="projectImage"
+          accept="image/*"
+          maxFileSize="5242880"
+          formControlName="projectImage"
+          #projectImage></app-image-uploader>
+      </div>
     </div>
     <h2 class="settings-title">{{ 'CreateProject.SocialMedia' | translate }}</h2>
     <div class="settings-block socials">

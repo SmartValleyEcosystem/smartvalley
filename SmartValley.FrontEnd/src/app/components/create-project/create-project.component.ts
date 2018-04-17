@@ -20,6 +20,7 @@ import {ProjectService} from '../../services/project/project.service';
 import {TeamMemberResponse} from '../../api/project/team-member-response';
 import {MemberUploadPhotoComponent} from '../member-upload-photo/member-upload-photo.component';
 import {StringExtensions} from '../../utils/string-extensions';
+import {ImageUploaderComponent} from '../image-uploader/image-uploader.component';
 
 @Component({
   selector: 'app-create-project',
@@ -51,6 +52,7 @@ export class CreateProjectComponent implements OnInit {
   @ViewChild('description') public descriptionRow: ElementRef;
   @ViewChildren('required') public requiredFields: QueryList<any>;
   @ViewChildren('photo') photos: QueryList<MemberUploadPhotoComponent>;
+  @ViewChild('projectImage') projectImage: ImageUploaderComponent;
 
   constructor(private formBuilder: FormBuilder,
               private notificationsService: NotificationsService,
@@ -198,6 +200,7 @@ export class CreateProjectComponent implements OnInit {
       website: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
       whitePaperLink: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
       contactEmail: ['', Validators.maxLength(200)],
+      projectImage: [''],
       icoDate: [''],
       category: ['', [Validators.required]],
       stage: ['', [Validators.required]],
@@ -351,6 +354,7 @@ export class CreateProjectComponent implements OnInit {
       description: data.description,
       website: data.website,
       whitePaperLink: data.whitePaperLink,
+      projectImage: data.imageUrl,
       icoDate: isNullOrUndefined(data.icoDate) ? null : moment(data.icoDate).toDate(),
       contactEmail: data.contactEmail,
       social: [this.socials.first().value]
@@ -362,7 +366,7 @@ export class CreateProjectComponent implements OnInit {
 
     const response = await this.projectService.updateAsync(request);
 
-    await this.sendPhotosAsync(response.teamMembers);
+    await Promise.all([this.sendProjectImageAsync(response.projectId), this.sendPhotosAsync(response.teamMembers)]);
 
     this.notificationsService.success(
       this.translateService.instant('Common.Success'),
@@ -378,7 +382,7 @@ export class CreateProjectComponent implements OnInit {
 
     const response = await this.projectService.createAsync(request);
 
-    await this.sendPhotosAsync(response.teamMembers);
+    await Promise.all([this.sendProjectImageAsync(response.projectId), this.sendPhotosAsync(response.teamMembers)]);
 
     this.notificationsService.success(
       this.translateService.instant('Common.Success'),
@@ -387,6 +391,16 @@ export class CreateProjectComponent implements OnInit {
 
     const myProjectIdResponse = await this.projectApiClient.getMyProjectAsync();
     await this.router.navigate([Paths.Project + '/' + myProjectIdResponse.id]);
+  }
+
+  private async sendProjectImageAsync(projectId: number): Promise<void> {
+    if (this.projectImage.imgUrl) {
+      if (this.projectImage.value) {
+        await this.projectService.uploadProjectImageAsync(projectId, this.projectImage.value);
+      }
+    } else {
+      await this.projectApiClient.deleteProjectImageAsync(projectId);
+    }
   }
 
   private async sendPhotosAsync(teamMembers: TeamMemberResponse[]): Promise<void> {

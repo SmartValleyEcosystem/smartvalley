@@ -43,5 +43,7 @@ namespace SmartValley.WebApi.Projects
         Task<ProjectDetails> GetByAuthorIdAsync(long authorId);
 
         Task DeleteTeamMemberPhotoAsync(long projectTeamMemberId);
+
+        Task DeleteProjectImageAsync(long projectId);
     }
 }

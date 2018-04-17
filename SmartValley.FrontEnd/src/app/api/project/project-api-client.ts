@@ -14,6 +14,7 @@ import {UpdateProjectRequest} from './update-project-request';
 import {ProjectSummaryResponse} from './project-summary-response';
 import {ProjectAboutResponse} from './project-about-response';
 import {AddProjectTeamMemberPhotoRequest} from './add-project-team-member-photo-request';
+import {AddProjectImageRequest} from './add-project-image-request';
 
 @Injectable()
 export class ProjectApiClient extends BaseApiClient {
@@ -31,6 +32,14 @@ export class ProjectApiClient extends BaseApiClient {
 
   public async uploadTeamMemberPhotoAsync(request: AddProjectTeamMemberPhotoRequest): Promise<void> {
     await this.http.put(`${this.baseApiUrl}/projects/teammember`, request.body).toPromise();
+  }
+
+  public async uploadProjectImageAsync(request: AddProjectImageRequest): Promise<void> {
+    await this.http.put(`${this.baseApiUrl}/projects/${request.body.id}/image`, request.body).toPromise();
+  }
+
+  public async deleteProjectImageAsync(id: number): Promise<void> {
+    await this.http.delete(`${this.baseApiUrl}/projects/${id}/image`).toPromise();
   }
 
   public async deleteTeamMemberPhotoAsync(id: number): Promise<void> {
