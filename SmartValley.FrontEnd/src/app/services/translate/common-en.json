@@ -19,6 +19,10 @@
     "EmailSendingErrorTitle": "Failed to send email",
     "EmailAlreadyExistErrorTitle": "Email already exist",
     "EnterAnotherEmail": "Enter another email.",
+    "RequiredSocialsErrorTitle": "Social medias required.",
+    "RequiredSocialsErrorMessage": "Please enter one or more social media.",
+    "RequiredMembersErrorTitle": "Team members required.",
+    "RequiredMembersErrorMessage": "Please enter one or more team member.",
     "UploadPhotoErrorTitle": "Failed to upload photo"
   }
 }

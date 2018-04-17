@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ScoringApplicationResponse} from '../../api/scoring-application/scoring-application-response';
 import {ScoringApplicationPartition} from '../../api/scoring-application/scoring-application-partition';
@@ -18,6 +18,7 @@ import {isNullOrUndefined} from 'util';
 import {Paths} from '../../paths';
 import * as moment from 'moment';
 import {ProjectApplicationInfoResponse} from '../../api/scoring-application/project-application-info-response';
+import {NotificationsService} from 'angular2-notifications';
 
 @Component({
   selector: 'app-edit-scoring-application',
@@ -50,15 +51,17 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
   public comboboxValues: { [id: number]: SelectItem[] };
   public savedTime: Date;
 
+  @ViewChild('socialsContainer') private socialsContainer: ElementRef;
+  @ViewChild('membersContainer') private membersContainer: ElementRef;
   @ViewChildren('required') public requiredFields: QueryList<any>;
 
   private timer: NodeJS.Timer;
 
   constructor(private scoringApplicationApiClient: ScoringApplicationApiClient,
               private translateService: TranslateService,
+              private notificationsService: NotificationsService,
               private dictionariesService: DictionariesService,
               private formBuilder: FormBuilder,
-              private dialogService: DialogService,
               private htmlElement: ElementRef,
               private route: ActivatedRoute,
               private router: Router) {
@@ -438,6 +441,25 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
       this.scrollToElement(firstElement);
       return false;
     }
+
+    if (this.activeSocials.length === 0 && this.activeArticleLink.length === 0) {
+      this.scrollToElement(this.socialsContainer);
+      this.notificationsService.error(
+        this.translateService.instant('Common.RequiredSocialsErrorTitle'),
+        this.translateService.instant('Common.RequiredSocialsErrorMessage')
+      );
+      return false;
+    }
+
+    if (this.activeTeamMembers.length === 0) {
+      this.scrollToElement(this.membersContainer);
+      this.notificationsService.error(
+        this.translateService.instant('Common.RequiredMembersErrorTitle'),
+        this.translateService.instant('Common.RequiredMembersErrorMessage')
+      );
+      return false;
+    }
+
     return true;
   }
 
