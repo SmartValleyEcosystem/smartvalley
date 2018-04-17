@@ -10,6 +10,7 @@ import {Paths} from '../../../paths';
 import {Router} from '@angular/router';
 import {ScoringStatus} from '../../../services/scoring-status.enum';
 import {OfferStatus} from '../../../api/scoring-offer/offer-status.enum';
+import {AreaType} from "../../../api/scoring/area-type.enum";
 
 @Component({
   selector: 'app-scoring-report',
@@ -46,6 +47,10 @@ export class ScoringReportComponent implements OnInit {
       });
       this.scoringCriterionResponse = this.scoringCriterionResponse.concat(this.scoringCriterionService.getByArea(area.areaType));
     }
+  }
+
+  public getMaxScoreByArea(areaType: AreaType): number {
+    return this.areaService.getMaxScore(+areaType);
   }
 
   public getQuestionById(id: number): string {

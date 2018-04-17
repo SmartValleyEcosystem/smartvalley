@@ -15,6 +15,9 @@
         public string GetAccountUrl()
             => $"{_root}/account";
 
+        public string GetScoringsListUrl()
+            => $"{_root}/scorings";
+
         public string GetRootUrl() => _root;
     }
 }

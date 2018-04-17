@@ -1,11 +1,11 @@
 .main-btn, .ghost-btn {
-  padding: 3px;
+  padding: 2px;
   display: block;
   text-align: center;
   text-decoration: none;
-  width: 120px;
-  height: 24px;
-  font-size: 12px;
+  width: 156px;
+  height: 28px;
+  font-size: 14px;
 }
 
 .title {

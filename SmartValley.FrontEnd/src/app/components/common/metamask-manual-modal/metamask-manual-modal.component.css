@@ -61,3 +61,7 @@ img {
 .dialog-close .material-icons {
   font-size: 35px;
 }
+
+button.main-btn.dialog-button {
+  background-color: #5d49f2;
+}

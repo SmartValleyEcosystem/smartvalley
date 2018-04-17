@@ -58,7 +58,7 @@ export class OfferDetailsComponent implements OnInit {
     await this.offersApiClient.acceptExpertOfferAsync(transactionHash, this.project.scoring.id, this.area.areaType);
 
     transactionDialog.close();
-    this.router.navigate([Paths.Project + '/' + this.project.id + '/scoring']);
+    await this.router.navigate([Paths.Project + '/' + this.project.id + '/scoring/' + <number>this.area.areaType]);
   }
 
   public async declineOfferAsync() {
@@ -75,7 +75,7 @@ export class OfferDetailsComponent implements OnInit {
     await this.router.navigate([Paths.ScoringList]);
   }
 
-  public navigateToEstimateScoring() {
-    this.router.navigate([Paths.Project + '/' + this.project.id + '/scoring/' + <number>this.area.areaType]);
+  public async navigateToEstimateScoring() {
+    await this.router.navigate([Paths.Project + '/' + this.project.id + '/scoring/' + <number>this.area.areaType]);
   }
 }

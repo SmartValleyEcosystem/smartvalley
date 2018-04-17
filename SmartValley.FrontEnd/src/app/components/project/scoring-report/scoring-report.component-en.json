@@ -5,7 +5,7 @@
     "Comments": "Comments",
     "ProjectHaventScored": "Project has not been scored yet",
     "GetScore": "Get score for this project",
-    "GetMoneyWhenAllScore": "You will get money when all experts submit their scores",
+    "ReportAppearAfterAllFinished": "Scoring report appear here after all experts score. You can't edit information or project form before completion score.",
     "Finished": "Finished",
     "TotalExperts": "Total Experts"
   }

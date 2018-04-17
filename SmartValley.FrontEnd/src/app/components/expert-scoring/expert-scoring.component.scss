@@ -2,7 +2,7 @@
   margin: 40px 0 60px;
 }
 .group-wrapper {
-  width: 790px;
+  width: 1000px;
 }
 .area-title {
   font-size: 24px;
@@ -11,7 +11,7 @@
 }
 .area-title-row {
   margin-bottom: 20px;
-  width: 790px;
+  width: 990px;
 }
 .submit-btn {
   margin-right: 20px;
@@ -32,4 +32,15 @@
   font-family: Roboto-Bold;
   font-size: 14px;
   color: #000;
+}
+
+.ghost-btn {
+  display: block;
+  text-align: center;
+  color: black;
+  padding: 6px;
+  text-decoration: none;
+  width: 200px;
+  height: 36px;
+  font-size: 14px;
 }
