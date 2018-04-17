@@ -20,7 +20,6 @@ namespace SmartValley.WebApi.Estimates
         private readonly IScoringContractClient _scoringContractClient;
         private readonly IScoringRepository _scoringRepository;
         private readonly IClock _clock;
-        private readonly IUserRepository _userRepository;
         private readonly IScoringCriterionRepository _scoringCriterionRepository;
 
         public EstimationService(
@@ -28,14 +27,12 @@ namespace SmartValley.WebApi.Estimates
             IScoringContractClient scoringContractClient,
             IScoringRepository scoringRepository,
             IClock clock,
-            IUserRepository userRepository,
             IScoringCriterionRepository scoringCriterionRepository)
         {
             _estimateRepository = estimateRepository;
             _scoringContractClient = scoringContractClient;
             _scoringRepository = scoringRepository;
             _clock = clock;
-            _userRepository = userRepository;
             _scoringCriterionRepository = scoringCriterionRepository;
         }
 
@@ -67,7 +64,7 @@ namespace SmartValley.WebApi.Estimates
             if (scoring == null)
                 return new ScoringStatisticsInArea[0];
 
-            var estimates = (await GetEstimatesAsync(scoring.Id, scoring.ContractAddress))
+            var estimates = (await GetEstimatesAsync(scoring.Id))
                 .ToLookup(e => e.AreaType);
 
             return Enum.GetValues(typeof(AreaType)).Cast<AreaType>()
@@ -88,22 +85,14 @@ namespace SmartValley.WebApi.Estimates
                                                       .ToArray(), areaType);
         }
 
-        private async Task<IReadOnlyCollection<Estimate>> GetEstimatesAsync(long scoringId, string scoringContractAddress)
+        private async Task<IReadOnlyCollection<Estimate>> GetEstimatesAsync(long scoringId)
         {
             var criteria = await _scoringCriterionRepository.GetAllAsync();
-            var estimateScores = await _scoringContractClient.GetEstimatesAsync(scoringContractAddress);
             var comments = await _estimateRepository.GetByScoringIdAsync(scoringId);
-            var expertAddresses = estimateScores.Select(x => x.ExpertAddress).ToArray();
-            var users = await _userRepository.GetByAddressesAsync(expertAddresses);
 
-            return (from user in users
-                    join comment in comments
-                        on user.Id equals comment.ExpertId
-                    join score in estimateScores
-                        on new {ScoringCriterionId = comment.ScoringCriterionId, Address = user.Address}
-                        equals new {ScoringCriterionId = score.ScoringCriterionId, Address = score.ExpertAddress}
-                    join criterion in criteria on score.ScoringCriterionId equals criterion.Id
-                    select new Estimate(score.ScoringCriterionId, score.Score, comment.Comment, criterion.AreaType))
+            return (from comment in comments
+                    join criterion in criteria on comment.ScoringCriterionId equals criterion.Id
+                    select new Estimate(comment.ScoringCriterionId, comment.Score.Value, comment.Comment, criterion.AreaType))
                 .ToArray();
         }
 
@@ -142,6 +131,7 @@ namespace SmartValley.WebApi.Estimates
                    {
                        ScoringId = scoringId,
                        ExpertId = expertId,
+                       Score = estimateComment.Score,
                        ScoringCriterionId = estimateComment.ScoringCriterionId,
                        Comment = estimateComment.Comment
                    };
