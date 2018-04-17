@@ -102,6 +102,9 @@ body .ui-paginator {
   margin-bottom: 100px !important;
   background-color: transparent !important;
 }
+body .admin-table .ui-paginator {
+  margin-bottom: -5px !important;
+}
 body .ui-widget-header {
   background-color: transparent !important;
   border: none !important;

@@ -156,3 +156,14 @@
   display: block;
   font-size: 1.1em;
 }
+
+.tab {
+  margin-bottom: 30px;
+}
+.button-link {
+  text-align: center;
+  display: inline-block;
+  padding: 10px 20px 28px 20px;
+  margin: 10px 0;
+  min-width: 120px;
+}

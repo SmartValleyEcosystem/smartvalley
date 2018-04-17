@@ -3,9 +3,11 @@
     <div class="list-item" *ngFor="let application of applications">
       <div class="col-4">{{application.lastName}} {{application.firstName}}</div>
       <div class="col-4">{{application.applyDate | formatDate}}</div>
-      <a class="col-2 item-btn btn btn-primary" (click)="viewForm(application.id)">
-        {{ 'AdminExpertApplications.Form' | translate }}
-      </a>
+      <div class="col-2 control-cell">
+        <a class="main-btn button-link" (click)="viewForm(application.id)">
+          {{ 'AdminExpertApplications.Form' | translate }}
+        </a>
+      </div>
     </div>
   </div>
 </div>
