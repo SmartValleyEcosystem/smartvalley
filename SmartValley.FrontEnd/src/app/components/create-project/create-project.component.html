@@ -137,7 +137,7 @@
     </div>
     <input type="submit" class="main-btn save-btn" [disabled]="isSubmitDisable"
            value="{{ 'CreateProject.Save' | translate }}">
-    <input *ngIf="isEditing" type="button" class="link-btn" (click)="deleteProjectAsync()"
+    <input *ngIf="isEditing && canRemove" type="button" class="link-btn" (click)="deleteProjectAsync()"
            value="{{ 'CreateProject.Delete' | translate }}">
   </form>
 </div>

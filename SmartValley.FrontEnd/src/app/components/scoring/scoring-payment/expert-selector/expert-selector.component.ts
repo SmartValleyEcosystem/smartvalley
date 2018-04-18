@@ -8,6 +8,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 export class ExpertSelectorComponent implements OnInit {
 
   public maximumExperts = 6;
+  public minimumExperts = 3;
   public experts: string[] = [];
   public selectedClass = 'expert__selected';
   public selectedExpertsCount: number;
@@ -40,7 +41,7 @@ export class ExpertSelectorComponent implements OnInit {
   }
 
   public removeExpert() {
-    if (this.selectedExpertsCount) {
+    if (this.selectedExpertsCount > this.minimumExperts) {
       this.experts[this.selectedExpertsCount - 1] = '';
       this.selectedExpertsCount--;
     }

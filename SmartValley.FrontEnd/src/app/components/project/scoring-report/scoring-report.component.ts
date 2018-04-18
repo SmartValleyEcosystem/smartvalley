@@ -36,16 +36,18 @@ export class ScoringReportComponent implements OnInit {
   public async ngOnInit() {
     this.areas = this.areaService.areas;
     const estimates = await this.estimatesApiClient.getAsync(this.projectId);
-    for (const area of this.areas) {
-      const estimatesForArea = estimates.items.find(e => e.areaType === area.areaType);
-      this.areasScoringInfo.push({
-        finishedExperts: estimatesForArea.offers.filter(o => o.status === OfferStatus.Finished).length,
-        totalExperts: estimatesForArea.requiredExpertsCount,
-        areaName: area.name,
-        scoringInfo: estimatesForArea,
-        areaType: area.areaType
-      });
-      this.scoringCriterionResponse = this.scoringCriterionResponse.concat(this.scoringCriterionService.getByArea(area.areaType));
+    if (estimates.items.length !== 0) {
+      for (const area of this.areas) {
+        const estimatesForArea = estimates.items.find(e => e.areaType === area.areaType);
+        this.areasScoringInfo.push({
+          finishedExperts: estimatesForArea.offers.filter(o => o.status === OfferStatus.Finished).length,
+          totalExperts: estimatesForArea.requiredExpertsCount,
+          areaName: area.name,
+          scoringInfo: estimatesForArea,
+          areaType: area.areaType
+        });
+        this.scoringCriterionResponse = this.scoringCriterionResponse.concat(this.scoringCriterionService.getByArea(area.areaType));
+      }
     }
   }
 

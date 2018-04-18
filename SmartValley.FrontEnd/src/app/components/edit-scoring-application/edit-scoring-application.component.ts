@@ -170,7 +170,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
       description: data.description,
       website: data.webSite,
       linkToWP: data.whitePaperLink,
-      icoDate: moment(data.icoDate).toDate(),
+      icoDate: data.icoDate == null ? '' : moment(data.icoDate).toDate(),
       email: data.contactEmail
     });
   }

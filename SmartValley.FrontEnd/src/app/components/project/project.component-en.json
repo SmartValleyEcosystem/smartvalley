@@ -2,7 +2,7 @@
   "MyProject": {
     "Title": "My project",
     "About": "About",
-    "ScoringReport": "Scoring report",
+    "ScoringReport": "Scoring Report",
     "GetScore": "Get score for this project",
     "EditInformation": "Edit information",
     "SendScore": "Send for score",
