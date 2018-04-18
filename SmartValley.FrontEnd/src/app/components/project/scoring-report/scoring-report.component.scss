@@ -53,13 +53,16 @@
 
 .scoring-results {
   text-align: left;
-  font-size: 12px;
+  font-size: 14px;
   tr {
     line-height: 25px;
   }
   thead {
     td {
       width: 150px;
+    }
+    td:last-child {
+      width: 600px;
     }
     font-family: Roboto-Bold;
     color: #a4a2b0;
@@ -86,7 +89,7 @@
 
 .settings-title {
   margin-bottom: 2px;
-  padding: 19px 12px;
+  padding: 20px 40px;
 }
 
 .progress-scoring-item {
@@ -121,4 +124,12 @@
   height: 100%;
   width: 0;
   background-color: #231a5d;
+}
+
+.empty-result {
+  margin-bottom: 200px;
+}
+
+.progress-scoring-item > .settings-title {
+  padding: 20px 20px;
 }

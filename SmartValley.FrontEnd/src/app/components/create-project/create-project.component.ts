@@ -17,6 +17,7 @@ import {Paths} from '../../paths';
 import {ErrorCode} from '../../shared/error-code.enum';
 import {MyProjectResponse} from '../../api/project/my-project-response';
 import {ProjectService} from '../../services/project/project.service';
+import {ScoringApiClient} from "../../api/scoring/scoring-api-client";
 import {TeamMemberResponse} from '../../api/project/team-member-response';
 import {MemberUploadPhotoComponent} from '../member-upload-photo/member-upload-photo.component';
 import {StringExtensions} from '../../utils/string-extensions';
@@ -42,6 +43,7 @@ export class CreateProjectComponent implements OnInit {
   public isSubmitDisable = false;
 
   public isEditing = false;
+  public canRemove = true;
   public editingData: MyProjectResponse;
   private projectId: number;
 
@@ -61,6 +63,7 @@ export class CreateProjectComponent implements OnInit {
               private translateService: TranslateService,
               private dictionariesService: DictionariesService,
               private dialogService: DialogService,
+              private scoringApiClient: ScoringApiClient,
               private router: Router) {
 
     this.categories = this.dictionariesService.categories.map(i => <SelectItem>{
@@ -312,9 +315,11 @@ export class CreateProjectComponent implements OnInit {
     if (data == null) {
       return;
     }
+    const scoringData = await this.scoringApiClient.getByProjectIdAsync(data.id);
     this.editingData = data;
     this.projectId = data.id;
     this.isEditing = true;
+    this.canRemove = scoringData.id == null;
     const enumItems = Object.keys(SocialMediaTypeEnum)
       .filter(value => isNaN(+value));
 

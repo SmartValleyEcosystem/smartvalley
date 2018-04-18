@@ -15,6 +15,7 @@ import {EstimateCommentRequest} from '../../api/estimates/estimate-comment-reque
 import {Estimate} from '../../services/estimate';
 import {DialogService} from '../../services/dialog-service';
 import {Paths} from '../../paths';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-expert-scoring',
@@ -41,6 +42,7 @@ export class ExpertScoringComponent implements OnInit {
               private estimatesApiClient: EstimatesApiClient,
               private scoringCriterionService: ScoringCriterionService,
               private scoringManagerContractClient: ScoringManagerContractClient,
+              private translateService: TranslateService,
               private router: Router) {
   }
 
@@ -96,13 +98,16 @@ export class ExpertScoringComponent implements OnInit {
       return;
     }
 
-    this.dialogService.showSendReportDialog();
-
     const transactionHash = await this.scoringManagerContractClient.submitEstimatesAsync(
       this.projectExternalId,
       this.areaType,
       this.scoringForm.get('conclusion').value,
       this.getEstimate()
+    );
+
+    const transactionDialog = this.dialogService.showTransactionDialog(
+      this.translateService.instant('OfferDetails.Dialog'),
+      transactionHash
     );
 
     const submitRequest: SubmitEstimatesRequest = {
@@ -113,7 +118,9 @@ export class ExpertScoringComponent implements OnInit {
       conclusion: this.scoringForm.get('conclusion').value
     };
     await this.estimatesApiClient.submitEstimatesAsync(submitRequest);
+    transactionDialog.close();
     this.dialogService.showSendReportDialog();
+    await this.router.navigate([Paths.ScoringList]);
   }
 
   public getEstimate(): Estimate[] {
@@ -132,7 +139,11 @@ export class ExpertScoringComponent implements OnInit {
     });
   }
 
+  public getProjectApplictionLink() {
+    return Paths.Project + '/' + this.projectId + '/details/application';
+  }
+
   async navigateToProjectApplication() {
-    await this.router.navigate([Paths.Project + '/' + this.projectId + '/application' ]);
+    await this.router.navigate([Paths.Project + '/' + this.projectId + '/details/application' ]);
   }
 }

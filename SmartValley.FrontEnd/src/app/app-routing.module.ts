@@ -109,7 +109,7 @@ const appRoutes: Routes = [
       {
         path: Paths.Project + '/:id/payment',
         component: ScoringPaymentComponent,
-        canActivate: [SubmittedScoringApplicationGuard, ScoringShouldNotExistGuard],
+        canActivate: [SubmittedScoringApplicationGuard, ScoringShouldNotExistGuard, ShouldHaveEthGuard],
         data: {
           shouldBeSubmitted: true
         }

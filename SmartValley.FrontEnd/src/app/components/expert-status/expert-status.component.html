@@ -22,13 +22,13 @@
 </div>
 
 <div *ngIf="applicationStatus === ExpertApplicationStatus.Rejected" class="content">
-  <h1 class="title">{{ 'ExpertStatus.Title' | translate }}</h1>
+  <h1 class="title">{{ 'ExpertStatus.RejectedTitle' | translate }}</h1>
   <div class="text">
     <p>
       {{ 'ExpertStatus.RejectedText' | translate }}
     </p>
+    <button class="main-btn"
+       (click)="apply()">{{ 'ExpertStatus.ApplyAgain' | translate }}
+    </button>
   </div>
-  <a style="margin-top: 2.4em;" class="offset-5 col-2 sv-default-btn btn btn-primary"
-     (click)="apply()">{{ 'ExpertStatus.ApplyAgain' | translate }}
-  </a>
 </div>

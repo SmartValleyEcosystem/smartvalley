@@ -30,7 +30,7 @@ namespace SmartValley.Application.Email
             template = template
                        .Replace("{SUBJECT}", "Please confirm email")
                        .Replace("{BODY}", "To complete registration please click the button below.")
-                       .Replace("{BUTTON}", "Start work")
+                       .Replace("{BUTTON}", "Start work")                       
                        .Replace("{BUTTONHREF}", _siteUrls.GetConfirmEmailUrl(token));
 
             await _mailSender.SendAsync(email, "Email confirmation", template);
@@ -58,9 +58,9 @@ namespace SmartValley.Application.Email
                        .Replace("{SUBJECT}", "Project scoring offer")
                        .Replace("{BODY}", "Click on the button below to view an offer.")
                        .Replace("{BUTTON}", "My Offers")
-                       .Replace("{BUTTONHREF}", null);
+                       .Replace("{BUTTONHREF}", _siteUrls.GetScoringsListUrl());
 
-            await _mailSender.SendAsync(email, "Email confirmation", template);
+            await _mailSender.SendAsync(email, "Project scoring offer", template);
         }
 
         public async Task SendExpertApplicationAcceptedAsync(string email, string name)
@@ -69,9 +69,9 @@ namespace SmartValley.Application.Email
 
             template = template
                        .Replace("{SUBJECT}", "Welcome to Smart Valley team")
-                       .Replace("{BODY}", $"{name}, you are part of our expert team now. Fill your profile and choose how to get projects for scoring.")
-                       .Replace("{BUTTON}", "Go to profile")
-                       .Replace("{BUTTONHREF}", _siteUrls.GetAccountUrl());
+                       .Replace("{BODY}", $"{name}, you are part of our expert team now.")
+                       .Replace("{BUTTON}", "Go to Smart Valley")
+                       .Replace("{BUTTONHREF}", _siteUrls.GetScoringsListUrl());
 
             await _mailSender.SendAsync(email, "Expert application approval", template);
         }

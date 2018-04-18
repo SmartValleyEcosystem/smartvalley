@@ -113,6 +113,8 @@ export class HeaderComponent implements OnInit {
         await this.router.navigate([Paths.ExpertStatus]);
       } else if (this.expertStatus === ExpertApplicationStatus.Accepted) {
         await this.router.navigate([Paths.ScoringList]);
+      } else if (this.expertStatus === ExpertApplicationStatus.Rejected) {
+        await this.router.navigate([Paths.ExpertStatus]);
       } else {
         await this.router.navigate([Paths.RegisterExpert]);
       }
