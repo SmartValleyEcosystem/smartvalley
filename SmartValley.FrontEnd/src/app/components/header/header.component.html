@@ -19,4 +19,20 @@
       </span>
     </nav>
   </div>
+  <div *ngIf="showExpertPanel" class="expert-panel">
+    <div class="expert-content">
+      <div class="activity-status">
+        {{ 'Header.Status' | translate }}:
+        <span [class.active]="isExpertActive" (click)="showChangeActivityModal(!isExpertActive);" [class.not-active]="!isExpertActive">
+          <span *ngIf="isExpertActive" class="icon active-icon"><i class="status-icon material-icons" (click)="showSelectList()">done</i></span>
+          <span *ngIf="isExpertActive" class="status-label">{{ 'Header.Active' | translate }}</span>
+          <span *ngIf="!isExpertActive" class="icon inactive-icon"><i class="status-icon material-icons" (click)="showSelectList()">stop</i></span>
+          <span *ngIf="!isExpertActive" class="status-label">{{ 'Header.Inactive' | translate }}</span>
+        </span>
+      </div>
+      <div class="balance">
+        {{ 'Header.Balance' | translate }}: <span class="current-balance">{{ currentBalance }}&nbsp;{{ 'Header.ETH' | translate }}</span>
+      </div>
+    </div>
+  </div>
 </div>

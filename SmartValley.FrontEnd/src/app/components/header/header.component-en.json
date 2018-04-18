@@ -12,6 +12,18 @@
     "BecomeAnExpert": "Become an expert",
     "Projects": "Projects",
     "MyProject": "My Project",
-    "ReceiveEther": "Get Ether"
+    "ReceiveEther": "Get Ether",
+    "Status": "Status",
+    "Inactive": "Inactive",
+    "Active": "Active",
+    "InactiveDescription": "(can take more projects)",
+    "ActiveDescription": "(can't take more projects)",
+    "ETH": "ETH",
+    "StatusChanging": "Status changing",
+    "ChangeToActive": "Yes, change to active",
+    "ChangeToInactive": "Yes, change to inactive",
+    "NoClose": "No, close",
+    "DialogDescriptionToInactive": "You can't get score request in inactive status. When you want to become active you should pay ETH",
+    "DialogDescriptionToActive": "You can get score request in active status. When you want to become inactive you should pay ETH"
   }
 }

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
-import {Router} from '@angular/router';
+import {NavigationEnd, Router} from '@angular/router';
 import {Paths} from '../../paths';
 import {BalanceService} from '../../services/balance/balance.service';
 import {Balance} from '../../services/balance/balance';
@@ -11,11 +11,13 @@ import {ExpertApplicationStatus} from '../../services/expert/expert-application-
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {isNullOrUndefined} from 'util';
 import {ProjectService} from '../../services/project/project.service';
+import {DialogService} from '../../services/dialog-service';
+import {User} from '../../services/authentication/user';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
 
@@ -33,19 +35,25 @@ export class HeaderComponent implements OnInit {
   public myProjectLink: string;
   public expertStatus?: ExpertApplicationStatus;
   public ExpertApplicationStatus = ExpertApplicationStatus;
+  public showExpertPanel = false;
+  public isUserExpert = false;
+  public isExpertActive: boolean;
 
-  constructor(private router: Router,
-              private balanceService: BalanceService,
+  constructor(private balanceService: BalanceService,
               private blockiesService: BlockiesService,
               private authenticationService: AuthenticationService,
+              private dialogService: DialogService,
               private projectApiClient: ProjectApiClient,
               private userContext: UserContext,
               private expertApiClient: ExpertApiClient,
+              private router: Router,
               private projectService: ProjectService) {
     this.projectService.projectsDeleted.subscribe(async () => {
       this.haveProject = false;
       this.myProjectLink = '';
     });
+
+    this.router.events.subscribe((event: Event) => this.checkExpertPanelVisibility(event: Event));
     this.projectService.projectsCreated.subscribe(async () => await this.updateProjectsAsync());
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
     this.userContext.userContextChanged.subscribe(async (user) => await this.updateAccountAsync(user));
@@ -58,7 +66,31 @@ export class HeaderComponent implements OnInit {
     this.accountLink = Paths.Account;
     this.adminPanelLink = Paths.Admin;
     await this.balanceService.updateBalanceAsync();
+    if (currentUser) {
+      this.isUserExpert = currentUser.isExpert;
+    }
+    if (this.isUserExpert) {
+      const availabilityExpert = await this.expertApiClient.getAvailabilityStatusAsync();
+      this.isExpertActive = availabilityExpert.isAvailable;
+    }
+    if (this.router.url !== '/' && this.isUserExpert) {
+      this.showExpertPanel = true;
+    }
   }
+
+  private checkExpertPanelVisibility(event: Event) {
+    if (event instanceof NavigationEnd) {
+      const currentUser = this.userContext.getCurrentUser();
+      if (event['url'] === '/') {
+        this.showExpertPanel = false;
+      }
+      if ( currentUser ) {
+        if (event['url'] !== '/' && currentUser.isExpert) {
+          this.showExpertPanel = true;
+        }
+      }
+    }
+  };
 
   private async updateProjectsAsync(): Promise<void> {
     const myProjectResponse = await this.projectApiClient.getMyProjectAsync();
@@ -70,6 +102,11 @@ export class HeaderComponent implements OnInit {
 
   private async updateAccountAsync(user: User): Promise<void> {
     if (user) {
+      if (user.isExpert && this.router.url !== '/') {
+        this.showExpertPanel = true;
+      }else {
+        this.showExpertPanel = false;
+      }
       await this.updateProjectsAsync();
       this.isAuthenticated = true;
       this.accountAddress = user.account;
@@ -79,6 +116,7 @@ export class HeaderComponent implements OnInit {
       this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
       this.isAdmin = user.roles.includes('Admin');
     } else {
+      this.showExpertPanel = false;
       this.isAuthenticated = false;
       this.isAdmin = false;
       this.haveProject = false;
@@ -132,5 +170,9 @@ export class HeaderComponent implements OnInit {
         await this.router.navigate([Paths.Project]);
       }
     }
+  }
+
+  public showChangeActivityModal(isExpertActive: boolean) {
+    this.dialogService.changeStatusDialog(isExpertActive, this.accountAddress);
   }
 }

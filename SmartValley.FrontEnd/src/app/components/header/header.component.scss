@@ -135,3 +135,66 @@ button:focus {
     width: 1200px;
   }
 }
+
+.expert-panel {
+  font-family: Roboto-Bold;
+  color: #a4a2b0;
+  margin-top: -20px;
+  margin-bottom: 20px;
+  background: #fff;
+  .expert-content {
+    display: flex;
+    justify-content: flex-end;
+    width: 1180px;
+    margin: 0 auto;
+    font-size: 14px;
+    height: 40px;
+    padding-top: 10px;
+    .current-balance {
+      color: #000;
+    }
+    .activity-status,
+    .balance {
+      display: inline-block;
+      margin-left: 20px;
+    }
+  }
+}
+
+.activity-status {
+  cursor: pointer;
+  .not-active {
+    color: #e64e41;
+  }
+  .active {
+    color: #23b428;
+  }
+}
+
+.icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #000;
+  border-radius: 100px;
+  margin: 0 5px;
+  position: absolute;
+}
+
+.inactive-icon {
+  border-color: #e64e41;
+}
+
+.active-icon {
+  border-color: #23b428;
+}
+
+.status-label {
+  padding-left: 30px;
+}
+
+.status-icon {
+  top: 0px;
+  position: relative;
+  font-size: 16px;
+}

@@ -1,0 +1,9 @@
+<div class="dialog">
+  <button class="dialog-close" mat-dialog-close><i class="material-icons">close</i></button>
+  <h2 class="dialog-title" mat-mat-title>{{data.title}}</h2>
+  <div class="dialog-content">
+    {{data.message}}
+  </div>
+  <button class="main-btn dialog-button" (click)="switchActivityAsync(data.activity, data.expertAddress)" mat-dialog-close>{{data.button}}</button>
+  <button class="ghost-btn dialog-button" mat-dialog-close>{{data.close}}</button>
+</div>

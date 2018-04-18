@@ -123,6 +123,7 @@ import {ImageUploaderComponent} from './components/image-uploader/image-uploader
 import {MemberUploadPhotoComponent} from './components/member-upload-photo/member-upload-photo.component';
 import {ScoringReportComponent} from './components/project/scoring-report/scoring-report.component';
 import {ScoringShouldNotExistGuard} from './services/guards/scoring-should-not-exist.guard';
+import { ChangeStatusModalComponent } from './components/common/change-status-modal/change-status-modal.component';
 
 @NgModule({
   declarations: [
@@ -182,7 +183,8 @@ import {ScoringShouldNotExistGuard} from './services/guards/scoring-should-not-e
     ImageUploaderComponent,
     MemberUploadPhotoComponent,
     ExpertScoringComponent,
-    ScoringReportComponent
+    ScoringReportComponent,
+    ChangeStatusModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -197,7 +199,8 @@ import {ScoringShouldNotExistGuard} from './services/guards/scoring-should-not-e
     ScoringCostComponent,
     WelcomeModalComponent,
     DeleteProjectModalComponent,
-    WaitingModalComponent
+    WaitingModalComponent,
+    ChangeStatusModalComponent
   ],
   imports: [
     FileUploadModule,
