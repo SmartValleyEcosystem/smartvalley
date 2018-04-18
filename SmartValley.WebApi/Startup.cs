@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using Nethereum.JsonRpc.IpcClient;
 using Nethereum.Signer;
 using Nethereum.Web3;
+using NServiceBus;
 using SmartValley.Application;
 using SmartValley.Application.AzureStorage;
 using SmartValley.Application.Contracts;
@@ -36,6 +37,7 @@ using SmartValley.WebApi.Scorings;
 using SmartValley.WebApi.Users;
 using SmartValley.WebApi.WebApi;
 using Swashbuckle.AspNetCore.Swagger;
+using Headers = SmartValley.WebApi.WebApi.Headers;
 
 namespace SmartValley.WebApi
 {
@@ -146,6 +148,9 @@ namespace SmartValley.WebApi
             var siteOptions = serviceProvider.GetService<SiteOptions>();
 
             ConfigureCorsPolicy(services, siteOptions);
+
+//            var endpointInstance = EndpointConfigurator.StartAsync(Configuration).GetAwaiter().GetResult();
+//            services.AddSingleton<IMessageSession>(endpointInstance);
 
             var service = serviceProvider.GetService<InitializationService>();
             service.InitializeAsync().Wait();
