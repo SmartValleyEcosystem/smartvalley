@@ -6,6 +6,7 @@
   line-height: 1.43;
   text-align: left;
   color: #000000;
+  word-wrap: break-word;
 }
 
 .create-btn {
@@ -96,6 +97,7 @@
   color: #5d49f2;
   cursor: pointer;
   padding-bottom: 10px;
+  word-wrap: break-word;
 }
 
 .partitions-page,
