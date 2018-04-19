@@ -1,8 +1,8 @@
 {
   "Account": {
-    "Title": "Account settings",
-    "FirstName": "First name",
-    "SecondName": "Second name",
+    "Title": "Account setting",
+    "FirstName": "Name",
+    "SecondName": "Surname",
     "MainInformation": "Main information",
     "EmailAttention": "Will not be published. Just for important things.",
     "Email": "Email",
