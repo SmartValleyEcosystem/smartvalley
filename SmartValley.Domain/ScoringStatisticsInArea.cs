@@ -7,14 +7,12 @@ namespace SmartValley.Domain
     {
         public ScoringStatisticsInArea(double? score,
                                        long requiredExpertsCount,
-                                       IReadOnlyCollection<Estimate> estimates,
                                        IReadOnlyCollection<ExpertScoringConclusion> conclusions,
                                        IReadOnlyCollection<ScoringOffer> offers,
                                        AreaType areaType)
         {
             Score = score;
             RequiredExpertsCount = requiredExpertsCount;
-            Estimates = estimates;
             Conclusions = conclusions;
             Offers = offers;
             AreaType = areaType;
@@ -23,8 +21,6 @@ namespace SmartValley.Domain
         public double? Score { get; }
 
         public long RequiredExpertsCount { get; }
-
-        public IReadOnlyCollection<Estimate> Estimates { get; }
 
         public IReadOnlyCollection<ExpertScoringConclusion> Conclusions { get; }
 

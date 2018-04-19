@@ -310,7 +310,7 @@ namespace SmartValley.Data.SQL.Core
                         .IsRequired();
 
             modelBuilder.Entity<ExpertScoringConclusion>()
-                        .HasKey(e => new {e.ScoringId, e.Area, e.ExpertId});
+                        .HasKey(x => x.Id);
 
             modelBuilder.Entity<ExpertScoringConclusion>()
                         .HasOne(e => e.Expert);

@@ -18,10 +18,14 @@ namespace SmartValley.Domain.Entities
         
         public long ScoringCriterionId { get; set; }
 
+        public long ExpertScoringConclusionId { get; set; }
+
         public Scoring Scoring { get; set; }
 
         public ScoringCriterion ScoringCriterion { get; set; }
 
         public Expert Expert { get; set; }
+
+        public ExpertScoringConclusion ExpertScoringConclusion { get; set; }
     }
 }

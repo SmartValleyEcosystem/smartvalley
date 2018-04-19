@@ -8,9 +8,6 @@ using SmartValley.WebApi.Estimates.Requests;
 using SmartValley.WebApi.Estimates.Responses;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Extensions;
-using SmartValley.WebApi.Projects;
-using SmartValley.WebApi.ScoringApplications.Requests;
-using SmartValley.WebApi.ScoringApplications.Responses;
 using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Estimates
@@ -34,11 +31,38 @@ namespace SmartValley.WebApi.Estimates
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] SubmitEstimatesRequest request)
+        [Route("submit")]
+        public async Task<IActionResult> SubmitAsync([FromBody] SubmitEstimateRequest request)
         {
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
             await _estimationService.SubmitEstimatesAsync(User.GetUserId(), request);
             return NoContent();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> PostAsync([FromBody] SaveEstimatesRequest request)
+        {
+            await _estimationService.SaveEstimatesAsync(User.GetUserId(), request);
+            return NoContent();
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("offer")]
+        public async Task<ExpertEstimateResponse> GetOfferEstimatesAsync(long projectId)
+        {
+            var expertConclusion = await _estimationService.GetOfferEstimateAsync(User.GetUserId(), projectId);
+            if (expertConclusion == null)
+            {
+                return ExpertEstimateResponse.Empty;
+            }
+
+            return new ExpertEstimateResponse
+                   {
+                       Conclusion = expertConclusion.Conclusion,
+                       Estimates = expertConclusion.EstimateComments.Select(EstimateResponse.Create).ToArray()
+                   };
         }
 
         [HttpGet]

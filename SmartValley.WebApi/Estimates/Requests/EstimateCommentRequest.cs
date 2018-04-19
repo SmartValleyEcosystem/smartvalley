@@ -9,6 +9,6 @@ namespace SmartValley.WebApi.Estimates.Requests
 
         public string Comment { get; set; }
 
-        public Score Score { get; set; }
+        public Score? Score { get; set; }
     }
 }

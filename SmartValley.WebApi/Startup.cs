@@ -124,7 +124,6 @@ namespace SmartValley.WebApi
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IScoringRepository, ScoringRepository>();
             services.AddTransient<IScoringOffersRepository, ScoringOffersRepository>();
-            services.AddTransient<IEstimateRepository, EstimateRepository>();
             services.AddTransient<IProjectService, ProjectService>();
             services.AddTransient<IEstimationService, EstimationService>();
             services.AddTransient<IScoringService, ScoringService>();

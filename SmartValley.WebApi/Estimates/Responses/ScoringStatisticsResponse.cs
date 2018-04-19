@@ -29,10 +29,11 @@ namespace SmartValley.WebApi.Estimates.Responses
                        Conclusions = scoringStatisticsInArea.Conclusions.Select(ScoringAreaConslusionResponse.FromDomain),
                        Offers = scoringStatisticsInArea.Offers.Select(ScoringOfferAreaResponse.FromDomain).ToArray(),
                        Criteria = scoringStatisticsInArea
-                           .Estimates
-                           .GroupBy(e => e.ScoringCriterionId)
-                           .Select(q => CriterionWithEstimatesResponse.Create(q.Key, q.ToArray()))
-                           .ToArray(),
+                                  .Conclusions
+                                  .SelectMany(x => x.EstimateComments)
+                                  .GroupBy(e => e.ScoringCriterionId)
+                                  .Select(q => CriterionWithEstimatesResponse.Create(q.Key, q.ToArray()))
+                                  .ToArray(),
                        AreaType = scoringStatisticsInArea.AreaType.FromDomain()
                    };
         }

@@ -88,6 +88,8 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<long>("ExpertId");
 
+                    b.Property<long>("ExpertScoringConclusionId");
+
                     b.Property<int?>("Score");
 
                     b.Property<long>("ScoringCriterionId");
@@ -97,6 +99,8 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ExpertId");
+
+                    b.HasIndex("ExpertScoringConclusionId");
 
                     b.HasIndex("ScoringCriterionId");
 
@@ -212,17 +216,22 @@ namespace SmartValley.Data.SQL.Migrations
 
             modelBuilder.Entity("SmartValley.Domain.Entities.ExpertScoringConclusion", b =>
                 {
-                    b.Property<long>("ScoringId");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("Area");
 
-                    b.Property<long>("ExpertId");
-
                     b.Property<string>("Conclusion");
 
-                    b.HasKey("ScoringId", "Area", "ExpertId");
+                    b.Property<long>("ExpertId");
+
+                    b.Property<long>("ScoringId");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ExpertId");
+
+                    b.HasIndex("ScoringId");
 
                     b.ToTable("ExpertScoringConclusions");
                 });
@@ -659,6 +668,11 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasOne("SmartValley.Domain.Entities.Expert", "Expert")
                         .WithMany()
                         .HasForeignKey("ExpertId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SmartValley.Domain.Entities.ExpertScoringConclusion", "ExpertScoringConclusion")
+                        .WithMany("EstimateComments")
+                        .HasForeignKey("ExpertScoringConclusionId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SmartValley.Domain.Entities.ScoringCriterion", "ScoringCriterion")
