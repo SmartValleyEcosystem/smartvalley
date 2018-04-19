@@ -22,8 +22,8 @@ export class AreaService {
     });
   }
 
-  public getTypeByIndex(index: number): AreaType {
-    return this.areas[index].areaType;
+  public getNameByType(areaType: AreaType): string {
+    return this.areas.find(a => a.areaType === areaType).name;
   }
 
   public getMaxScore(areaType: AreaType): number {

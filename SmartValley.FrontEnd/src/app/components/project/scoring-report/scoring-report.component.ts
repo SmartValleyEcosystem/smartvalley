@@ -1,8 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AreaService} from '../../../services/expert/area.service';
-import {Area} from '../../../services/expert/area';
 import {EstimatesApiClient} from '../../../api/estimates/estimates-api-client';
-import {GetEstimatesResponse} from '../../../api/estimates/get-estimates-response';
 import {AreasScoringInfo} from './areas-scoring-Info';
 import {ScoringCriteriaGroup} from '../../../services/criteria/scoring-criteria-group';
 import {ScoringCriterionService} from '../../../services/criteria/scoring-criterion.service';
@@ -19,7 +17,6 @@ import {AreaType} from "../../../api/scoring/area-type.enum";
 })
 export class ScoringReportComponent implements OnInit {
 
-  public areas: Area[];
   public areasScoringInfo: AreasScoringInfo[] = [];
   public scoringCriterionResponse: ScoringCriteriaGroup[] = [];
 
@@ -34,20 +31,17 @@ export class ScoringReportComponent implements OnInit {
   }
 
   public async ngOnInit() {
-    this.areas = this.areaService.areas;
     const estimates = await this.estimatesApiClient.getAsync(this.projectId);
-    if (estimates.items.length !== 0) {
-      for (const area of this.areas) {
-        const estimatesForArea = estimates.items.find(e => e.areaType === area.areaType);
-        this.areasScoringInfo.push({
-          finishedExperts: estimatesForArea.offers.filter(o => o.status === OfferStatus.Finished).length,
-          totalExperts: estimatesForArea.requiredExpertsCount,
-          areaName: area.name,
-          scoringInfo: estimatesForArea,
-          areaType: area.areaType
-        });
-        this.scoringCriterionResponse = this.scoringCriterionResponse.concat(this.scoringCriterionService.getByArea(area.areaType));
-      }
+    for (const item of estimates.items) {
+      const estimatesForArea = estimates.items.find(e => e.areaType === item.areaType);
+      this.areasScoringInfo.push({
+        finishedExperts: estimatesForArea.offers.filter(o => o.status === OfferStatus.Finished).length,
+        totalExperts: estimatesForArea.requiredExpertsCount,
+        areaName: this.areaService.getNameByType(item.areaType),
+        scoringInfo: estimatesForArea,
+        areaType: item.areaType
+      });
+      this.scoringCriterionResponse = this.scoringCriterionResponse.concat(this.scoringCriterionService.getByArea(item.areaType));
     }
   }
 
@@ -56,7 +50,7 @@ export class ScoringReportComponent implements OnInit {
   }
 
   public getQuestionById(id: number): string {
-    return this.scoringCriterionResponse.selectMany(s => s.criteria).find( c => c.id === id ).name;
+    return this.scoringCriterionResponse.selectMany(s => s.criteria).find(c => c.id === id ).name;
   }
 
   public async navigateToApplicationScoringAsync(): Promise<void> {
