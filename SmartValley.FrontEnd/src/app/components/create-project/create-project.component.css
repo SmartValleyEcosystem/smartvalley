@@ -40,6 +40,10 @@ textarea {
   margin: 5px 0 0;
 }
 
+.image-upload {
+  margin-bottom: 20px;
+}
+
 .socials__add-button {
   font-family: Roboto-Regular;
   font-size: 14px;
