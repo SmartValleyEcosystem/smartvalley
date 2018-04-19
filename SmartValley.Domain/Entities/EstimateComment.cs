@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using SmartValley.Domain.Core;
+﻿using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
 {
@@ -7,24 +6,15 @@ namespace SmartValley.Domain.Entities
     {
         public long Id { get; set; }
 
-        [Required]
         public string Comment { get; set; }
 
         public Score? Score { get; set; }
 
-        public long ScoringId { get; set; }
-        
-        public long ExpertId { get; set; }
-        
         public long ScoringCriterionId { get; set; }
 
         public long ExpertScoringConclusionId { get; set; }
 
-        public Scoring Scoring { get; set; }
-
         public ScoringCriterion ScoringCriterion { get; set; }
-
-        public Expert Expert { get; set; }
 
         public ExpertScoringConclusion ExpertScoringConclusion { get; set; }
     }

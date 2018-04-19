@@ -245,9 +245,6 @@ namespace SmartValley.Data.SQL.Core
                         .HasOne(o => o.Scoring)
                         .WithMany(s => s.ScoringOffers);
 
-            modelBuilder.Entity<EstimateComment>()
-                        .HasOne(x => x.Expert);
-
             modelBuilder.Entity<ScoringApplicationAnswer>()
                         .HasOne(x => x.Question);
 
@@ -318,6 +315,10 @@ namespace SmartValley.Data.SQL.Core
             modelBuilder.Entity<ExpertScoringConclusion>()
                         .HasOne(e => e.Scoring)
                         .WithMany(s => s.ExpertScoringConclusions);
+
+            modelBuilder.Entity<EstimateComment>()
+                        .Property(x => x.Comment)
+                        .IsRequired();
         }
     }
 }

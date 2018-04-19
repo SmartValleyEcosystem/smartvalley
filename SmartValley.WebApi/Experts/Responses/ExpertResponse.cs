@@ -30,7 +30,7 @@ namespace SmartValley.WebApi.Experts.Responses
                        IsAvailable = expertDetails.IsAvailable,
                        FirstName = expertDetails.FirstName,
                        SecondName = expertDetails.SecondName,
-                Areas = expertDetails.Areas.Select(j => new AreaResponse { Id = j.Id.FromDomain(), Name = j.Name }).ToArray()
+                       Areas = expertDetails.Areas.Select(j => new AreaResponse {Id = j.Id.FromDomain(), Name = j.Name}).ToArray()
                    };
         }
     }

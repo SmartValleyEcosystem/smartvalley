@@ -60,8 +60,6 @@ namespace SmartValley.WebApi.Estimates
 
             var estimates = request.EstimateComments.Select(x => new EstimateComment
                                                                  {
-                                                                     ScoringId = scoring.Id,
-                                                                     ExpertId = expertId,
                                                                      Score = x.Score,
                                                                      ScoringCriterionId = x.ScoringCriterionId,
                                                                      Comment = x.Comment

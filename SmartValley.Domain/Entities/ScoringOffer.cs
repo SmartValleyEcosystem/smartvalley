@@ -17,7 +17,5 @@ namespace SmartValley.Domain.Entities
         public Scoring Scoring { get; set; }
  
         public Expert Expert{ get; set; }
-
-        public Area Area { get; set; }
     }
 }
