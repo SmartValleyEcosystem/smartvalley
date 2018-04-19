@@ -13,6 +13,10 @@ import {isNullOrUndefined} from 'util';
 import {ProjectService} from '../../services/project/project.service';
 import {DialogService} from '../../services/dialog-service';
 import {User} from '../../services/authentication/user';
+import {ErrorCode} from '../../shared/error-code.enum';
+import {ExpertsRegistryContractClient} from '../../services/contract-clients/experts-registry-contract-client';
+import {SubmitEstimatesRequest} from '../../api/estimates/submit-estimates-request';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -47,6 +51,8 @@ export class HeaderComponent implements OnInit {
               private userContext: UserContext,
               private expertApiClient: ExpertApiClient,
               private router: Router,
+              private translateService: TranslateService,
+              private expertsRegistryContractClient: ExpertsRegistryContractClient,
               private projectService: ProjectService) {
     this.projectService.projectsDeleted.subscribe(async () => {
       this.haveProject = false;
@@ -172,7 +178,24 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  public showChangeActivityModal(isExpertActive: boolean) {
-    this.dialogService.changeStatusDialog(isExpertActive, this.accountAddress);
+  public async showChangeActivityModalAsync(isExpertActive: boolean) {
+    const changeStatus = await this.dialogService.changeStatusDialogAsync(!isExpertActive, this.accountAddress);
+    if (changeStatus) {
+      let transactionHash = '';
+      if (isExpertActive) {
+        transactionHash = await this.expertsRegistryContractClient.disableAsync(this.accountAddress);
+      } else {
+        transactionHash = await this.expertsRegistryContractClient.enableAsync(this.accountAddress);
+      }
+
+      const transactionDialog = this.dialogService.showTransactionDialog(
+        this.translateService.instant('Header.ChangeActivityDetails'),
+        transactionHash
+      );
+
+      await this.expertApiClient.switchAvailabilityAsync(transactionHash, !isExpertActive);
+      transactionDialog.close();
+      this.isExpertActive = !isExpertActive;
+    }
   }
 }

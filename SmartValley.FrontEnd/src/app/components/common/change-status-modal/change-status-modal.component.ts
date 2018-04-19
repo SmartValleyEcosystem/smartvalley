@@ -1,8 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {AlertModalData} from '../alert-modal/alert-modal-data';
 import {ExpertApiClient} from '../../../api/expert/expert-api-client';
 import {ExpertsRegistryContractClient} from '../../../services/contract-clients/experts-registry-contract-client';
+import {DeleteProjectModalComponent} from '../delete-project-modal/delete-project-modal.component';
 
 @Component({
   selector: 'app-change-status-modal',
@@ -13,20 +14,13 @@ export class ChangeStatusModalComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data,
               private expertApiClient: ExpertApiClient,
-              private expertsRegistryContractClient: ExpertsRegistryContractClient) { }
+              private dialogChangeStatus: MatDialogRef<ChangeStatusModalComponent>) { }
 
   ngOnInit() {
   }
 
-  public async switchActivityAsync(activity, address) {
-    let transactionHash = '';
-    if (activity) {
-      transactionHash = await this.expertsRegistryContractClient.enableAsync(address);
-    } else {
-      transactionHash = await this.expertsRegistryContractClient.disableAsync(address);
-    }
-
-    await this.expertApiClient.switchAvailabilityAsync(transactionHash, activity);
+  public submit(changeStatus: boolean) {
+    this.dialogChangeStatus.close(changeStatus);
   }
 
 }

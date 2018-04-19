@@ -24,7 +24,7 @@
     <div class="expert-content">
       <div class="activity-status">
         {{ 'Header.Status' | translate }}:
-        <span [class.active]="isExpertActive" (click)="showChangeActivityModal(!isExpertActive);" [class.not-active]="!isExpertActive">
+        <span [class.active]="isExpertActive" (click)="showChangeActivityModalAsync(isExpertActive);" [class.not-active]="!isExpertActive">
           <span *ngIf="isExpertActive" class="icon active-icon"><i class="status-icon material-icons" (click)="showSelectList()">done</i></span>
           <span *ngIf="isExpertActive" class="status-label">{{ 'Header.Active' | translate }}</span>
           <span *ngIf="!isExpertActive" class="icon inactive-icon"><i class="status-icon material-icons" (click)="showSelectList()">stop</i></span>

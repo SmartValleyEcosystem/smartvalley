@@ -105,6 +105,17 @@ export class DialogService {
     return this.openModalAsync(DeleteProjectModalComponent, {});
   }
 
+  public async changeStatusDialogAsync(activityStatus: boolean, address: string): Promise<boolean> {
+    return this.openModalAsync(ChangeStatusModalComponent, {
+      title: this.translateService.instant('Header.StatusChanging'),
+      message: activityStatus ? this.translateService.instant('Header.DialogDescriptionToActive') : this.translateService.instant('Header.DialogDescriptionToInactive'),
+      button: activityStatus ? this.translateService.instant('Header.ChangeToActive') : this.translateService.instant('Header.ChangeToInactive'),
+      close: this.translateService.instant('Header.NoClose'),
+      activity: activityStatus,
+      expertAddress: address
+    });
+  }
+
   public async showWaitingModal(): Promise<boolean> {
     return this.openModalAsync(WaitingModalComponent, {});
   }
@@ -116,18 +127,6 @@ export class DialogService {
       button: this.translateService.instant('ExpertScoring.ModalOk')
     };
     return this.openModal(AlertModalComponent, data);
-  }
-
-  public changeStatusDialog(activityStatus: boolean, address): MatDialogRef<ChangeStatusModalComponent> {
-    const data = {
-      title: this.translateService.instant('Header.StatusChanging'),
-      message: activityStatus ? this.translateService.instant('Header.DialogDescriptionToActive') : this.translateService.instant('Header.DialogDescriptionToInactive'),
-      button: activityStatus ? this.translateService.instant('Header.ChangeToActive') : this.translateService.instant('Header.ChangeToInactive'),
-      close: this.translateService.instant('Header.NoClose'),
-      activity: activityStatus,
-      expertAddress: address
-    };
-    return this.openModal(ChangeStatusModalComponent, data);
   }
 
   private openModal<TComponent, TData>(componentType: ComponentType<TComponent>,
