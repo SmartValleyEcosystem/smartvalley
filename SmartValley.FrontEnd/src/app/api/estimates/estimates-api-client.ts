@@ -6,6 +6,7 @@ import {CollectionResponse} from '../collection-response';
 import {AreaType} from '../scoring/area-type.enum';
 import {GetEstimatesResponse} from './get-estimates-response';
 import {AreaScoringCriteriaResponse} from './area-scoring-criteria-response';
+import {CriterionPromptResponse} from './criterion-prompt-response';
 import {ScoringAreaConslusionResponse} from '../scoring/scoring-area-conclusion-response';
 import {CriterionWithEstimatesResponse} from './criterion-with-estimates-response';
 import {ScoringOfferResponse} from '../scoring/scoring-offer-response';
@@ -36,6 +37,10 @@ export class EstimatesApiClient extends BaseApiClient {
       .get<CollectionResponse<GetEstimatesResponse>>(this.baseApiUrl + '/estimates', {params: parameters})
       .toPromise();
   }
+  async getCriterionPromptsAsync(projectId: number, areaType: number): Promise<CollectionResponse<CriterionPromptResponse>> {
+    return await this.http.get<CollectionResponse<CriterionPromptResponse>>(this.baseApiUrl + `/estimates/project/${projectId}/prompts/${areaType}`)
+      .toPromise();
+  };
 
   async getScoringCriteriaAsync(): Promise<CollectionResponse<AreaScoringCriteriaResponse>> {
     return await this.http.get<CollectionResponse<AreaScoringCriteriaResponse>>(this.baseApiUrl + '/estimates/criteria').toPromise();

@@ -14,6 +14,8 @@ import {ScoringManagerContractClient} from '../../services/contract-clients/scor
 import {EstimateCommentRequest} from '../../api/estimates/estimate-comment-request';
 import {Estimate} from '../../services/estimate';
 import {DialogService} from '../../services/dialog-service';
+import {CriterionPromptResponse} from '../../api/estimates/criterion-prompt-response';
+import {CriterionPrompt} from '../../api/estimates/criterion-prompt';
 import {Paths} from '../../paths';
 import {TranslateService} from '@ngx-translate/core';
 import {SaveEstimatesRequest} from '../../api/estimates/save-estimates-request';
@@ -33,6 +35,8 @@ export class ExpertScoringComponent implements OnInit {
   public areas: Area[];
   public areasCriterion: ScoringCriteriaGroup[] = [];
   public scoringForm: FormGroup;
+  public questionsActivity: Array<boolean> = [];
+  public criterionPrompts: CriterionPromptResponse[];
   public isSaved = false;
   public saveTime: string;
 
@@ -73,6 +77,13 @@ export class ExpertScoringComponent implements OnInit {
     const projectSummary: ProjectSummaryResponse = await this.projectApiClient.getProjectSummaryAsync(this.projectId);
     this.projectName = projectSummary.name;
     this.projectExternalId = projectSummary.externalId;
+
+    const criterionPromptsResponse = await this.estimatesApiClient.getCriterionPromptsAsync(this.projectId, this.areaType);
+    this.criterionPrompts = criterionPromptsResponse.items;
+  }
+
+  public getCriterionInfo(id): CriterionPrompt[] {
+    return this.criterionPrompts.find((c) => c.scoringCriterionId === id).prompts;
   }
 
   private validateForm(): boolean {
@@ -101,6 +112,7 @@ export class ExpertScoringComponent implements OnInit {
       return;
     }
 
+    this.dialogService.showSendReportDialog();
     const transactionHash = await this.scoringManagerContractClient.submitEstimatesAsync(
       this.projectExternalId,
       this.areaType,
@@ -138,6 +150,11 @@ export class ExpertScoringComponent implements OnInit {
       comment: this.scoringForm.get('comment_' + criteria.id).value,
       score: this.scoringForm.get('answer_' + criteria.id).value,
     });
+  }
+
+  public chageActiveQuestion(id) {
+    this.questionsActivity = this.questionsActivity.map((q, i) => i === id ? this.questionsActivity[id] : false);
+    this.questionsActivity[id] = !this.questionsActivity[id];
   }
 
   public async saveDraft() {
