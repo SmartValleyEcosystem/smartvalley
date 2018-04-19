@@ -10,7 +10,6 @@
                (click)="chageActiveQuestion(index)"
                [class.active-question]="questionsActivity[index]">
             <div class="question-tooltip" *ngIf="criterionPrompts" >
-              <span>{{ getCriterionInfo(criteria.id) }}</span>
               <h3 class="question-tooltip__title">{{ 'ExpertScoring.ProjectOwnerAnswer' | translate }}</h3>
               <div *ngFor="let info of getCriterionInfo(criteria.id)">
                 <p *ngIf="info.title" class="info-title">{{ ('EditScoringApplication.' + info.title) | translate }}</p>

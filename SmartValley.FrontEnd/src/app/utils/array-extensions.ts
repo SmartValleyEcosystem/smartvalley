@@ -44,7 +44,10 @@ if (!Array.prototype.first) {
 }
 
 if (!Array.prototype.selectMany) {
-  Array.prototype.selectMany = function <T, U>(this: T[], selector: (x: T) => U[]): U[] {
+  Array.prototype.selectMany = function <T, U>(this: T[], selector: (x: T) => U[]): CustomArray<U> {
+    if (!this.length) {
+      return new CustomArray<U>();
+    }
     return this.map(selector).reduce((l, r) => l.concat(r));
   };
 }

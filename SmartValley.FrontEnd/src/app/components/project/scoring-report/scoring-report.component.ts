@@ -9,6 +9,8 @@ import {Router} from '@angular/router';
 import {ScoringStatus} from '../../../services/scoring-status.enum';
 import {OfferStatus} from '../../../api/scoring-offer/offer-status.enum';
 import {AreaType} from "../../../api/scoring/area-type.enum";
+import {CriterionPromptResponse} from '../../../api/estimates/criterion-prompt-response';
+import {CriterionPrompt} from '../../../api/estimates/criterion-prompt';
 
 @Component({
   selector: 'app-scoring-report',
@@ -19,6 +21,9 @@ export class ScoringReportComponent implements OnInit {
 
   public areasScoringInfo: AreasScoringInfo[] = [];
   public scoringCriterionResponse: ScoringCriteriaGroup[] = [];
+  public criterionPrompts: CriterionPromptResponse[] = [];
+  public questionsActivity: boolean[] = [];
+  public areaType: number;
 
   @Input() projectId: number;
   @Input() scoringStatus: ScoringStatus;
@@ -42,7 +47,17 @@ export class ScoringReportComponent implements OnInit {
         areaType: item.areaType
       });
       this.scoringCriterionResponse = this.scoringCriterionResponse.concat(this.scoringCriterionService.getByArea(item.areaType));
+      const criterionPromptsResponse = await this.estimatesApiClient.getCriterionPromptsAsync(this.projectId, item.areaType);
+      this.criterionPrompts = this.criterionPrompts.concat(criterionPromptsResponse.items);
     }
+  }
+
+  public getCriterionInfo(id): CriterionPrompt[] {
+    const criterionPrompts = this.criterionPrompts.find((c) => c.scoringCriterionId === id);
+    if (criterionPrompts) {
+     return criterionPrompts.prompts;
+    }
+    return null;
   }
 
   public getMaxScoreByArea(areaType: AreaType): number {
@@ -62,5 +77,17 @@ export class ScoringReportComponent implements OnInit {
       .selectMany(e => e.scoringInfo.offers)
       .filter(o => o.status === OfferStatus.Finished)
       .length;
+  }
+
+  public chageActiveQuestion(id: number) {
+    const indexOfCurrentSelected = this.questionsActivity.indexOf(true);
+    this.questionsActivity = this.questionsActivity.map(() => false);
+    if (indexOfCurrentSelected !== id) {
+      this.questionsActivity[id] = !this.questionsActivity[id];
+    }
+  }
+
+  public onTabChange () {
+    this.questionsActivity = [];
   }
 }
