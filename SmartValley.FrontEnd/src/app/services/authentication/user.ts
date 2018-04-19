@@ -6,7 +6,7 @@ export class User {
   email: string;
   roles: string[];
 
-  constructor(id: number, account: string, signature: string, token: string, email: string, roles: string[]){
+  constructor(id: number, account: string, signature: string, token: string, email: string, roles: string[]) {
     this.id = id;
     this.account = account;
     this.signature = signature;

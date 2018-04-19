@@ -45,7 +45,8 @@
     </div>
     <div class="submit-wrapper">
       <input type="submit" value="{{ 'ExpertScoring.Finish' | translate }}" class="main-btn submit-btn">
-      <!--<button class="ghost-btn">{{ 'ExpertScoring.SaveDraft' | translate }}</button>-->
+      <span class="ghost-btn label-btn" (click)="saveDraft()">{{ 'ExpertScoring.SaveDraft' | translate }}</span>
+      <span class="save-label" [class.label-visible]="isSaved">Saved {{ saveTime }}</span>
     </div>
   </form>
 </div>

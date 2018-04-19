@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
-import {NavigationEnd, Router} from '@angular/router';
+import {NavigationEnd, Router, RouterEvent} from '@angular/router';
 import {Paths} from '../../paths';
 import {BalanceService} from '../../services/balance/balance.service';
 import {Balance} from '../../services/balance/balance';
@@ -53,7 +53,7 @@ export class HeaderComponent implements OnInit {
       this.myProjectLink = '';
     });
 
-    this.router.events.subscribe((event: Event) => this.checkExpertPanelVisibility(event: Event));
+    this.router.events.subscribe((event: RouterEvent) => this.checkExpertPanelVisibility(event));
     this.projectService.projectsCreated.subscribe(async () => await this.updateProjectsAsync());
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
     this.userContext.userContextChanged.subscribe(async (user) => await this.updateAccountAsync(user));
@@ -78,7 +78,7 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  private checkExpertPanelVisibility(event: Event) {
+  private checkExpertPanelVisibility(event: RouterEvent) {
     if (event instanceof NavigationEnd) {
       const currentUser = this.userContext.getCurrentUser();
       if (event['url'] === '/') {

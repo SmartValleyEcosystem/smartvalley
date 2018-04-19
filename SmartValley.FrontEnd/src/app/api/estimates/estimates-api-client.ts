@@ -11,6 +11,7 @@ import {CriterionWithEstimatesResponse} from './criterion-with-estimates-respons
 import {ScoringOfferResponse} from '../scoring/scoring-offer-response';
 import {EstimateResponse} from './estimate-response';
 import {OfferStatus} from '../scoring-offer/offer-status.enum';
+import {SaveEstimatesRequest} from './save-estimates-request';
 
 @Injectable()
 export class EstimatesApiClient extends BaseApiClient {
@@ -19,7 +20,11 @@ export class EstimatesApiClient extends BaseApiClient {
   }
 
   async submitEstimatesAsync(request: SubmitEstimatesRequest): Promise<void> {
-    await this.http.post(this.baseApiUrl + '/estimates', request).toPromise();
+    await this.http.post(this.baseApiUrl + '/estimates/submit', request).toPromise();
+  }
+
+  async saveEstimatesAsync(request: SaveEstimatesRequest): Promise<void> {
+    await this.http.post(this.baseApiUrl + '/estimates/', request).toPromise();
   }
 
   async getAsync(projectId: number): Promise<CollectionResponse<GetEstimatesResponse>> {

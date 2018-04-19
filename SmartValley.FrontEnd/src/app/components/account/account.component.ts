@@ -6,6 +6,7 @@ import {NotificationsService} from 'angular2-notifications';
 import {TranslateService} from '@ngx-translate/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UpdateUserRequest} from '../../api/user/update-user-request';
+import {User} from '../../services/authentication/user';
 import {ExpertApiClient} from '../../api/expert/expert-api-client';
 import {ExpertApplicationStatus} from '../../services/expert/expert-application-status.enum';
 import {ExpertUpdateRequest} from '../../api/expert/expert-update-request';

@@ -16,6 +16,7 @@ import {Estimate} from '../../services/estimate';
 import {DialogService} from '../../services/dialog-service';
 import {Paths} from '../../paths';
 import {TranslateService} from '@ngx-translate/core';
+import {SaveEstimatesRequest} from '../../api/estimates/save-estimates-request';
 
 @Component({
   selector: 'app-expert-scoring',
@@ -32,6 +33,8 @@ export class ExpertScoringComponent implements OnInit {
   public areas: Area[];
   public areasCriterion: ScoringCriteriaGroup[] = [];
   public scoringForm: FormGroup;
+  public isSaved = false;
+  public saveTime: string;
 
   constructor(private route: ActivatedRoute,
               private htmlElement: ElementRef,
@@ -114,8 +117,6 @@ export class ExpertScoringComponent implements OnInit {
       transactionHash: transactionHash,
       projectId: this.projectId,
       areaType: this.areaType,
-      estimateComments: this.getAnswers(),
-      conclusion: this.scoringForm.get('conclusion').value
     };
     await this.estimatesApiClient.submitEstimatesAsync(submitRequest);
     transactionDialog.close();
@@ -137,6 +138,26 @@ export class ExpertScoringComponent implements OnInit {
       comment: this.scoringForm.get('comment_' + criteria.id).value,
       score: this.scoringForm.get('answer_' + criteria.id).value,
     });
+  }
+
+  public async saveDraft() {
+    const draftRequest: SaveEstimatesRequest = {
+      projectId: this.projectId,
+      areaType: this.areaType,
+      estimateComments: this.getAnswers(),
+      conclusion: this.scoringForm.get('conclusion').value
+    };
+
+    const saveRequest = await this.estimatesApiClient.saveEstimatesAsync(draftRequest);
+    if (saveRequest) {
+      this.isSaved = true;
+      const currentDate = new Date();
+      const options = {
+        hour: 'numeric',
+        minute: 'numeric',
+      };
+      this.saveTime = currentDate.toLocaleString(navigator.language, options);
+    }
   }
 
   public getProjectApplictionLink() {

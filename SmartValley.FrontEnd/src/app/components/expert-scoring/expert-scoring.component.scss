@@ -34,13 +34,28 @@
   color: #000;
 }
 
+.save-label {
+  opacity: 0;
+  font-size: 12px;
+  color: #a4a2b0;
+  display: inline-block;
+  margin-left: 20px;
+  transition: opacity 0.2s ease-out 0.5s;
+}
+
+.label-visible {
+  opacity: 1;
+}
+
+.label-btn {
+  padding: 9px 20px;
+}
+
 .ghost-btn {
-  display: block;
+  display: inline-block;
   text-align: center;
   color: black;
-  padding: 6px;
-  text-decoration: none;
-  width: 200px;
+  padding: 6px 20px;
   height: 36px;
   font-size: 14px;
 }
