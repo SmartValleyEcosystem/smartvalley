@@ -6,7 +6,8 @@
     "CreateNew": "Create new",
     "Address": "Address",
     "Email": "Email",
-    "Name": "Name",
+    "FirstName": "First name",
+    "SecondName": "Second name",
     "About": "About",
     "Available": "Available",
     "Categories": "Categories"

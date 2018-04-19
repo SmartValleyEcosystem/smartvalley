@@ -1,47 +1,41 @@
-<div class="container">
-  <div class="row mx-auto">
-    <div class="col-10 sm-title">
-      <h1 class="">{{ 'Account.Title' | translate }}</h1>
-      <img src="{{accountImgUrl}}" style="width: 128px;"/>
-      <span style="margin-left: 2em; font-family: 'AvenirNextCyr-Bold', sans-serif; font-size: 1.4em;">{{accountAddress}}</span>
+<div class="content">
+  <form (ngSubmit)="saveAsync()" [formGroup]="userForm" novalidate>
+    <h1 class="title">{{ 'Account.Title' | translate }}</h1>
+    <h2 class="settings-title">{{ 'Account.MainInformation' | translate }}</h2>
+    <div class="settings-block">
+      <div class="control-row">
+        <label class="control-label">
+          <div class="control-label__title">{{ 'Account.FirstName' | translate }}</div>
+          <input class="input wide-input" formControlName="firstName"
+                 placeholder="{{ 'Account.FirstNamePlaceHolder' | translate }}">
+        </label>
+        <label class="control-label">
+          <div class="control-label__title">{{ 'Account.SecondName' | translate }}</div>
+          <input class="input wide-input" formControlName="secondName"
+                 placeholder="{{ 'Account.SecondNamePlaceHolder' | translate }}">
+        </label>
+      </div>
+      <div class="control-row">
+        <label class="control-label">
+          <div class="control-label__title">{{ 'Account.Email' | translate }}</div>
+          <input class="input wide-input" formControlName="email"
+                 placeholder="{{ 'Account.EmailPlaceHolder' | translate }}">
+          <p class="input-attention">{{ 'Account.EmailAttention' | translate }}</p>
+        </label>
+      </div>
     </div>
-  </div>
-  <mat-tab-group>
-    <mat-tab label="{{ 'Account.BasicInformation' | translate }}">
-      <div style="color: white">
-        <form [formGroup]="userForm" novalidate>
-          <div class="row">
-            <span class="col-2 offset-1">{{ 'Account.Name' | translate }}:</span>
-            <input class="form-control col-4" formControlName="name" #required>
-          </div>
-          <div class="row" style="padding-top: 1em">
-            <span class="col-2 offset-1">{{ 'Account.About' | translate }}:</span>
-            <textarea class="form-control col-4" formControlName="about" #required></textarea>
-          </div>
-          <div class="col-8 offset-5" style="padding-top: 1em">
-            <button (click)="saveChangesAsync()" class="col-3 btn btn-primary">
-              {{ 'Account.SaveChanges' | translate }}
-            </button>
-          </div>
-          <hr>
-          <div class="row">
-            <span class="col-2 offset-1">{{ 'Account.Email' | translate }} {{accountEmail}}</span>
-            <button mat-raised-button (click)="changeEmailAsync()" class="col-1 sv-default-btn btn-space">
-              {{'Account.Change' | translate}}
-            </button>
-          </div>
-        </form>
-      </div>
-    </mat-tab>
-    <mat-tab label="{{ 'Account.Balances' | translate }}">
-      <div style="color: white;">
-        <div class="row">
-          <strong class="col-10" style="margin-bottom: 0.5em; margin-top: 0.5em;">{{'Account.AvailableBalances' | translate }}</strong>
-        </div>
-        <div class="row">
-          <span class="col-2">ETH: {{currentBalance}} </span>
+    <div *ngIf="isExpert">
+      <h2 class="settings-title">{{ 'Account.Bio' | translate }}</h2>
+      <div class="settings-block">
+        <div class="control-row">
+          <label class="control-label">
+            <div class="control-label__title">{{ 'Account.AboutTitle' | translate }}</div>
+            <textarea class="input wide-input" type="text" formControlName="about"></textarea>
+          </label>
         </div>
       </div>
-    </mat-tab>
-  </mat-tab-group>
+    </div>
+    <input type="submit" class="main-btn save-btn" [disabled]="isSubmitDisable"
+           value="{{ 'Account.Save' | translate }}">
+  </form>
 </div>

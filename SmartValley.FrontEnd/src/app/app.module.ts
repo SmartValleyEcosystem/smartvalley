@@ -84,7 +84,6 @@ import {EditExpertModalComponent} from './components/common/edit-expert-modal/ed
 import {ExpertStatusGuard} from './services/guards/expert-status.guard';
 import {AdminScoringProjectsComponent} from './components/admin-panel/admin-scoring-projects/admin-scoring-projects.component';
 import {SetExpertsModalComponent} from './components/common/set-experts-modal/set-experts-modal.component';
-import {ChangeEmailModalComponent} from './components/common/change-email-modal/change-email-modal.component';
 import {OffersApiClient} from './api/scoring-offer/offers-api-client';
 import {RoundNumberPipe} from './utils/round-number.pipe';
 import {SearchWithAutocompleteComponent} from './components/search-with-autocomplete/search-with-autocomplete.component';
@@ -159,7 +158,6 @@ import { ChangeStatusModalComponent } from './components/common/change-status-mo
     AdminExpertApplicationComponent,
     AdminScoringProjectsComponent,
     SetExpertsModalComponent,
-    ChangeEmailModalComponent,
     RoundNumberPipe,
     SearchWithAutocompleteComponent,
     ProjectListComponent,
@@ -195,7 +193,6 @@ import { ChangeStatusModalComponent } from './components/common/change-status-mo
     CreateNewExpertModalComponent,
     EditExpertModalComponent,
     SetExpertsModalComponent,
-    ChangeEmailModalComponent,
     ScoringCostComponent,
     WelcomeModalComponent,
     DeleteProjectModalComponent,

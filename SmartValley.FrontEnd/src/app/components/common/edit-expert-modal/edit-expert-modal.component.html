@@ -21,11 +21,20 @@
       </div>
       <div class="row">
           <span class="col-4">
-              {{ 'EditExpertModalComponent.Name' | translate }}
+              {{ 'EditExpertModalComponent.FirstName' | translate }}
           </span>
         <mat-form-field class="col-8 example-full-width">
-          <input placeholder="{{ 'EditExpertModalComponent.Name' | translate }}" matInput formControlName="name"
-                 name="name" #required [(ngModel)]="expertDetails.name" [(value)]="expertDetails.name">
+          <input placeholder="{{ 'EditExpertModalComponent.FirstName' | translate }}" matInput formControlName="firstName"
+                 name="name" #required [(ngModel)]="expertDetails.firstName" [(value)]="expertDetails.firstName">
+        </mat-form-field>
+      </div>
+      <div class="row">
+          <span class="col-4">
+              {{ 'EditExpertModalComponent.SecondName' | translate }}
+          </span>
+        <mat-form-field class="col-8 example-full-width">
+          <input placeholder="{{ 'EditExpertModalComponent.SecondName' | translate }}" matInput formControlName="secondName"
+                 name="name" #required [(ngModel)]="expertDetails.secondName" [(value)]="expertDetails.secondName">
         </mat-form-field>
       </div>
       <div class="row">
@@ -55,14 +64,6 @@
           <mat-checkbox align="start" name="available" [(ngModel)]="isAvailable"
                         [(value)]="isAvailable">
             {{ 'EditExpertModalComponent.AvailableForWork' | translate }}
-          </mat-checkbox>
-        </span>
-    </div>
-    <div *ngFor="let area of areas" class="row">
-        <span class="col-6">
-          <mat-checkbox align="start" name="{{'area' + area.areaType}}"
-                        [(ngModel)]="selectedCategories[area.areaType]">
-            {{ area.name }}
           </mat-checkbox>
         </span>
     </div>

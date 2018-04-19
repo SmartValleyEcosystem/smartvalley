@@ -22,7 +22,7 @@ namespace SmartValley.WebApi.Experts
 
         Task AddAsync(ExpertRequest request);
 
-        Task UpdateAsync(ExpertUpdateRequest request);
+        Task UpdateAsync(Address address, ExpertUpdateRequest request);
 
         Task DeleteAsync(Address address);
 

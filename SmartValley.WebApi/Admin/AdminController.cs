@@ -6,6 +6,9 @@ using SmartValley.Application;
 using SmartValley.Domain.Entities;
 using SmartValley.WebApi.Admin.Request;
 using SmartValley.WebApi.Admin.Response;
+using SmartValley.WebApi.Authentication;
+using SmartValley.WebApi.Experts;
+using SmartValley.WebApi.Experts.Requests;
 using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Admin
@@ -15,12 +18,20 @@ namespace SmartValley.WebApi.Admin
     public class AdminController : Controller
     {
         private readonly IAdminService _service;
+        private readonly IExpertService _expertService;
         private readonly EthereumClient _ethereumClient;
+        private readonly IAuthenticationService _authenticationService;
 
-        public AdminController(IAdminService service, EthereumClient ethereumClient)
+        public AdminController(
+            IExpertService expertService, 
+            IAdminService service, 
+            EthereumClient ethereumClient, 
+            IAuthenticationService authenticationService)
         {
             _service = service;
             _ethereumClient = ethereumClient;
+            _expertService = expertService;
+            _authenticationService = authenticationService;
         }
 
 
@@ -40,6 +51,14 @@ namespace SmartValley.WebApi.Admin
             {
                 Items = admins.Select(i => new AdminResponse { Address = i.Address, Email = i.Email }).ToArray()
             });
+        }
+
+        [HttpPut("experts")]
+        public async Task<IActionResult> UpdateExpertAsync([FromBody] AdminExpertUpdateRequest request)
+        {
+            await _expertService.UpdateAsync(request.Address, request);
+            await _authenticationService.ChangeEmailAsync(request.Address, request.Email);
+            return NoContent();
         }
 
         [HttpDelete]

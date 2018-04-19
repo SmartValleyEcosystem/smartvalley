@@ -3,24 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SmartValley.WebApi.Experts.Requests
 {
-    public class ExpertUpdateRequest : IRequestWithTransactionHash
+    public class ExpertUpdateRequest
     {
-        public string TransactionHash { get; set; }
+        public string FirstName { get; set; }
 
-        [Required]
-        public string Address { get; set; }
+        public string SecondName { get; set; }
 
-        [Required]
-        public string Email { get; set; }
-
-        [Required]
-        public string Name { get; set; }
-
-        [Required]
         public string About { get; set; }
 
         public bool IsAvailable { get; set; }
-
-        public IReadOnlyCollection<int> Areas { get; set; }
     }
 }

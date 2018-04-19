@@ -38,10 +38,11 @@ export class AdminExpertsListComponent implements OnInit {
     this.experts = [];
     for (const expert of expertResponseItems) {
       const expertItem = <AdminExpertItem>{
-        name: expert.name,
-        about: expert.about,
+        firstName: expert.firstName,
+        secondName: expert.secondName,
         address: expert.address,
         email: expert.email,
+        about: expert.about,
         isAvailable: expert.isAvailable,
         areas: expert.areas.map(a => a.name),
       };

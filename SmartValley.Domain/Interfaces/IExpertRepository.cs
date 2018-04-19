@@ -17,14 +17,16 @@ namespace SmartValley.Domain.Interfaces
 
         Task<IReadOnlyCollection<Area>> GetAreasAsync();
 
-        Task AddAsync(long expertId, IReadOnlyCollection<int> areas);
+        Task AddAsync(Expert expert, IReadOnlyCollection<int> areas);
 
-        Task UpdateAsync(Expert expert, IReadOnlyCollection<int> areas);
+        Task UpdateAreasAsync(long expertId, IReadOnlyCollection<int> areas);
 
         Task<Expert> GetAsync(long expertId);
 
         Task SetAvailabilityAsync(long expertId, bool isAvailable);
 
         Task<int> GetTotalCountExpertsAsync();
+
+        Task SaveChangesAsync();
     }
 }

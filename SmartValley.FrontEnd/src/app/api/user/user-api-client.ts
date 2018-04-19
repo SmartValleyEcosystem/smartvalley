@@ -24,11 +24,11 @@ export class UserApiClient extends BaseApiClient {
     return this.http.get<EmailResponse>(this.baseApiUrl + '/users/' + request.address + '/email', {params: parameters}).toPromise();
   }
 
-  public async changeEmailAsync(address: string, email: string): Promise<void> {
-    await this.http.put(this.baseApiUrl + '/users/' + address + '/email', {email: email}).toPromise();
+  public async changeEmailAsync(email: string): Promise<void> {
+    await this.http.put(this.baseApiUrl + '/users/email', {email: email}).toPromise();
   }
 
   public async updateAsync(request: UpdateUserRequest): Promise<void> {
-    await this.http.put(this.baseApiUrl + '/users/' + request.address, request).toPromise();
+    await this.http.put(this.baseApiUrl + '/users', request).toPromise();
   }
 }

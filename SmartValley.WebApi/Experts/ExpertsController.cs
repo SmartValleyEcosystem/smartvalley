@@ -36,9 +36,9 @@ namespace SmartValley.WebApi.Experts
         {
             var areas = await _expertService.GetAreasAsync();
             return new CollectionResponse<AreaResponse>
-                   {
-                       Items = areas.Select(AreaResponse.Create).ToArray()
-                   };
+            {
+                Items = areas.Select(AreaResponse.Create).ToArray()
+            };
         }
 
         [HttpGet]
@@ -52,7 +52,7 @@ namespace SmartValley.WebApi.Experts
         public async Task<GetExpertStatusResponse> GetExpertStatusAsync(string address)
         {
             var status = await _expertService.GetExpertApplicationStatusAsync(address);
-            return new GetExpertStatusResponse {Status = status};
+            return new GetExpertStatusResponse { Status = status };
         }
 
         [HttpGet("applications")]
@@ -61,9 +61,9 @@ namespace SmartValley.WebApi.Experts
         {
             var applications = await _expertService.GetPendingApplicationsAsync();
             return new CollectionResponse<PendingExpertApplicationsResponse>
-                   {
-                       Items = applications.Select(PendingExpertApplicationsResponse.Create).ToArray()
-                   };
+            {
+                Items = applications.Select(PendingExpertApplicationsResponse.Create).ToArray()
+            };
         }
 
         [HttpGet("applications/{id}")]
@@ -109,13 +109,10 @@ namespace SmartValley.WebApi.Experts
         }
 
         [HttpPut]
-        [Authorize(Roles = nameof(RoleType.Admin))]
+        [Authorize(Roles = nameof(RoleType.Expert))]
         public async Task<IActionResult> UpdateExpertAsync([FromBody] ExpertUpdateRequest request)
         {
-            if (!string.IsNullOrEmpty(request.TransactionHash))
-                await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
-
-            await _expertService.UpdateAsync(request);
+            await _expertService.UpdateAsync(User.Identity.Name, request);
             return NoContent();
         }
 
@@ -146,7 +143,7 @@ namespace SmartValley.WebApi.Experts
             if (expert == null)
                 throw new AppErrorException(ErrorCode.ExpertNotFound);
 
-            return new ExpertAvailabilityResponse {IsAvailable = expert.IsAvailable};
+            return new ExpertAvailabilityResponse { IsAvailable = expert.IsAvailable };
         }
 
         [HttpPut("availability")]

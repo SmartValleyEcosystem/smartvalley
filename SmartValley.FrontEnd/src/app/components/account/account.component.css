@@ -1,34 +1,40 @@
-.account-tooltip {
-  display: inline-block;
+.control-row {
+  margin-bottom: 20px;
 }
 
-.account-tooltip i {
-  vertical-align: middle;
+.control-row:last-child {
+  margin-bottom: 0;
 }
 
-.row-title {
-  margin: 2em 0em;
+.control-label {
+  height: auto;
+  margin-bottom: auto;
+  margin-right: 20px;
 }
 
-.row-title h3, .row-title span {
-  padding-left: 3px;
+.control-label__title {
+  margin-bottom: .5rem;
 }
 
-.row-title span {
-  vertical-align: bottom;
+.input-attention {
+  font-size: 12px;
+  color: #a4a2b0;
+  margin: 5px 0 0;
 }
 
-.row-title div {
-  padding-left: 0px;
+.save-btn {
+  margin: 30px 0;
+  width: 100px;
 }
-img {
-  width: 6em;
-  border-radius: 1em;
+
+.settings-block {
+  background: #fff;
+  padding: 16px 40px;
 }
-.underline {
-  margin-top: 1em;
-  margin-bottom: 1em;
-  border-bottom: 1px solid #b1b1b1;
-  margin-left: calc(8.333333% + 15px);
+
+.settings-block:last-child {
+  margin-bottom: 0;
 }
+
+
 

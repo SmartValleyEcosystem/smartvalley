@@ -20,12 +20,12 @@ namespace SmartValley.WebApi.Users
         public Task<User> GetByIdAsync(long id)
             => _repository.GetByIdAsync(id);
 
-        public async Task UpdateAsync(Address address, string name, string about)
+        public async Task UpdateAsync(Address address, string firstName, string secondName)
         {
             var user = await _repository.GetByAddressAsync(address);
 
-            user.Name = name;
-            user.About = about;
+            user.FirstName = firstName;
+            user.SecondName = secondName;
 
             await _repository.UpdateWholeAsync(user);
         }

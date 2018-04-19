@@ -109,6 +109,8 @@ namespace SmartValley.Data.SQL.Migrations
                 {
                     b.Property<long>("UserId");
 
+                    b.Property<string>("About");
+
                     b.Property<bool>("IsAvailable");
 
                     b.HasKey("UserId");
@@ -483,8 +485,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("About");
-
                     b.Property<Address>("Address")
                         .HasConversion(new ValueConverter<Address, string>(v => default(string), v => default(Address)))
                         .HasMaxLength(42);
@@ -492,9 +492,13 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<string>("Email")
                         .IsRequired();
 
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(50);
+
                     b.Property<bool>("IsEmailConfirmed");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("SecondName")
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 

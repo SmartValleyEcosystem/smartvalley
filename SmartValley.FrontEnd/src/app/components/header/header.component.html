@@ -11,6 +11,7 @@
     <nav class="header-nav__authenticated">
       <a *ngIf="isAuthenticated && expertStatus === ExpertApplicationStatus.Accepted" class="header-nav__link" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + scroginsLink">{{'Header.Scoring' | translate }}</a>
       <a *ngIf="isAuthenticated && haveProject" class="header-nav__link" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + myProjectLink">{{'Header.MyProject' | translate }}</a>
+      <a *ngIf="isAuthenticated" class="header-nav__link" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/account'">{{'Header.Account' | translate }}</a>
       <span *ngIf="isAuthenticated" class="header-nav__login-logout" (click)="logout()">
         {{'Header.Logout' | translate }}
       </span>

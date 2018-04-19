@@ -25,7 +25,6 @@ export function multiTranslateLoaderFactory() {
     'components/common/transaction-awaiting-modal/transaction-awaiting-modal.component',
     'components/common/receive-ether-modal/receive-ether-modal.component',
     'components/account/account.component',
-    'components/common/change-email-modal/change-email-modal.component',
     'components/common/create-new-expert-modal/create-new-expert-modal.component',
     'components/admin-panel/admin-experts-list/admin-expert-list.component',
     'components/common/edit-expert-modal/edit-expert-modal.component',

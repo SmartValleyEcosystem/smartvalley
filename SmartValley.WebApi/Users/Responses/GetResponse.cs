@@ -6,9 +6,9 @@
 
         public string Email { get; set; }
 
-        public string Name { get; set; }
+        public string FirstName { get; set; }
 
-        public string About { get; set; }
+        public string SecondName { get; set; }
 
         public bool IsEmailConfirmed { get; set; }
     }
