@@ -13,6 +13,9 @@
     "FirstNamePlaceHolder": "John",
     "SecondNamePlaceHolder": "Green",
     "EmailPlaceHolder": "joan.green@gmail.com",
-    "AboutTitle": "Description near your name in scored project"
+    "AboutTitle": "Description near your name in scored project",
+    "DataSaved": "Changes saved",
+    "EmailChanged": "Email changed",
+    "ConfirmEmail": "Confirm new email please"
   }
 }

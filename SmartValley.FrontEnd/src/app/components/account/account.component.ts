@@ -84,12 +84,21 @@ export class AccountComponent implements OnInit {
     try {
       if (this.currentUser.email !== this.userForm.value.email) {
         await this.userApiClient.changeEmailAsync(this.userForm.value.email);
+        this.notificationsService.info(
+          this.translateService.instant('Account.EmailChanged'),
+          this.translateService.instant('Account.ConfirmEmail')
+        );
       }
     } catch (e) {
       if (e.error.errorCode === ErrorCode.EmailSendingFailed) {
         this.notificationsService.error(
           this.translateService.instant('Common.EmailSendingErrorTitle'),
           this.translateService.instant('Common.TryAgain')
+        );
+      } else if (e.error.errorCode === ErrorCode.EmailAlreadyExists) {
+        this.notificationsService.error(
+          this.translateService.instant('Common.EmailSendingErrorTitle'),
+          this.translateService.instant('Common.EmailAlreadyExistErrorTitle')
         );
       }
     }

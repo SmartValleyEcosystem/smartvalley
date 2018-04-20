@@ -9,8 +9,8 @@
             _root = root;
         }
 
-        public string GetConfirmEmailUrl(string token) =>
-            $"{_root}/auth/confirm/{token}";
+        public string GetConfirmEmailUrl(string token, bool isEmailChanging) =>
+            $"{_root}/auth/confirm/{token}" + (isEmailChanging ? "?changeEmail=1" : "");
 
         public string GetAccountUrl()
             => $"{_root}/account";

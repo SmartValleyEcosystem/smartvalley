@@ -31,7 +31,7 @@ namespace SmartValley.Application.Email
                        .Replace("{SUBJECT}", "Please confirm email")
                        .Replace("{BODY}", "To complete registration please click the button below.")
                        .Replace("{BUTTON}", "Start work")                       
-                       .Replace("{BUTTONHREF}", _siteUrls.GetConfirmEmailUrl(token));
+                       .Replace("{BUTTONHREF}", _siteUrls.GetConfirmEmailUrl(token, false));
 
             await _mailSender.SendAsync(email, "Email confirmation", template);
         }
@@ -42,10 +42,10 @@ namespace SmartValley.Application.Email
             var template = await _templateProvider.GetEmailTemplateAsync();
 
             template = template
-                       .Replace("{SUBJECT}", "Password change")
-                       .Replace("{BODY}", $"Click on the button below to change your email ")
+                       .Replace("{SUBJECT}", "Please confirm email")
+                       .Replace("{BODY}", $"You get this mail because you initiated email changing. Please click on the link below to confirm new email. Before this we will send all important information to the old.")
                        .Replace("{BUTTON}", "Update email")
-                       .Replace("{BUTTONHREF}", _siteUrls.GetConfirmEmailUrl(token));
+                       .Replace("{BUTTONHREF}", _siteUrls.GetConfirmEmailUrl(token, true));
 
             await _mailSender.SendAsync(email, "Email changing", template);
         }
@@ -69,9 +69,9 @@ namespace SmartValley.Application.Email
 
             template = template
                        .Replace("{SUBJECT}", "Welcome to Smart Valley team")
-                       .Replace("{BODY}", $"{name}, you are part of our expert team now.")
-                       .Replace("{BUTTON}", "Go to Smart Valley")
-                       .Replace("{BUTTONHREF}", _siteUrls.GetScoringsListUrl());
+                       .Replace("{BODY}", $"{name}, you're part of our expert team now. Setting your profile and choose how to get projects for scoring.")
+                       .Replace("{BUTTON}", "Set profile")
+                       .Replace("{BUTTONHREF}", _siteUrls.GetAccountUrl());
 
             await _mailSender.SendAsync(email, "Expert application approval", template);
         }
