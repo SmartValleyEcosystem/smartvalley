@@ -32,8 +32,9 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="summary" let-rowData>
-      <tr class="list-row">
-          <button class="main-btn" type="button" (click)="showDialogToCreateNewExpert()">{{ 'AdminExpertList.CreateNew' | translate }}</button>
+      <div style="float: left;">
+        <button class="main-btn" type="button" (click)="showDialogToCreateNewExpert()">{{ 'AdminExpertList.CreateNew' | translate }}</button>
+      </div>
     </ng-template>
   </p-table>
 </div>

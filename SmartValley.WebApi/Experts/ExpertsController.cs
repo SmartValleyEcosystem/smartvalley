@@ -17,8 +17,6 @@ namespace SmartValley.WebApi.Experts
     [Route("api/experts")]
     public class ExpertsController : Controller
     {
-        private const int FileSizeLimitBytes = 5242880;
-
         private readonly IExpertService _expertService;
         private readonly EthereumClient _ethereumClient;
 
@@ -36,9 +34,9 @@ namespace SmartValley.WebApi.Experts
         {
             var areas = await _expertService.GetAreasAsync();
             return new CollectionResponse<AreaResponse>
-            {
-                Items = areas.Select(AreaResponse.Create).ToArray()
-            };
+                   {
+                       Items = areas.Select(AreaResponse.Create).ToArray()
+                   };
         }
 
         [HttpGet]
@@ -52,7 +50,7 @@ namespace SmartValley.WebApi.Experts
         public async Task<GetExpertStatusResponse> GetExpertStatusAsync(string address)
         {
             var status = await _expertService.GetExpertApplicationStatusAsync(address);
-            return new GetExpertStatusResponse { Status = status };
+            return new GetExpertStatusResponse {Status = status};
         }
 
         [HttpGet("applications")]
@@ -61,9 +59,9 @@ namespace SmartValley.WebApi.Experts
         {
             var applications = await _expertService.GetPendingApplicationsAsync();
             return new CollectionResponse<PendingExpertApplicationsResponse>
-            {
-                Items = applications.Select(PendingExpertApplicationsResponse.Create).ToArray()
-            };
+                   {
+                       Items = applications.Select(PendingExpertApplicationsResponse.Create).ToArray()
+                   };
         }
 
         [HttpGet("applications/{id}")]
@@ -143,7 +141,7 @@ namespace SmartValley.WebApi.Experts
             if (expert == null)
                 throw new AppErrorException(ErrorCode.ExpertNotFound);
 
-            return new ExpertAvailabilityResponse { IsAvailable = expert.IsAvailable };
+            return new ExpertAvailabilityResponse {IsAvailable = expert.IsAvailable};
         }
 
         [HttpPut("availability")]
@@ -162,15 +160,9 @@ namespace SmartValley.WebApi.Experts
                                                                       IFormFile photo,
                                                                       IFormFile cv)
         {
-            if (scan == null ||
-                photo == null ||
-                cv == null ||
-                scan.Length < 0 ||
-                scan.Length > FileSizeLimitBytes ||
-                photo.Length < 0 ||
-                photo.Length > FileSizeLimitBytes ||
-                cv.Length < 0 ||
-                cv.Length > FileSizeLimitBytes)
+            if (!scan.IsImageValid()
+                || !photo.IsImageValid()
+                || !cv.IsValid())
             {
                 throw new AppErrorException(ErrorCode.InvalidFileUploaded);
             }

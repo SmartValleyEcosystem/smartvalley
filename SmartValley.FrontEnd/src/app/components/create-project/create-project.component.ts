@@ -17,11 +17,12 @@ import {Paths} from '../../paths';
 import {ErrorCode} from '../../shared/error-code.enum';
 import {MyProjectResponse} from '../../api/project/my-project-response';
 import {ProjectService} from '../../services/project/project.service';
-import {ScoringApiClient} from "../../api/scoring/scoring-api-client";
+import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {TeamMemberResponse} from '../../api/project/team-member-response';
 import {MemberUploadPhotoComponent} from '../member-upload-photo/member-upload-photo.component';
 import {StringExtensions} from '../../utils/string-extensions';
 import {ImageUploaderComponent} from '../image-uploader/image-uploader.component';
+import {ImageUploaderHelper} from '../../utils/image-uploader-helper';
 
 @Component({
   selector: 'app-create-project',
@@ -401,6 +402,13 @@ export class CreateProjectComponent implements OnInit {
   private async sendProjectImageAsync(projectId: number): Promise<void> {
     if (this.projectImage.imgUrl) {
       if (this.projectImage.value) {
+        if (!ImageUploaderHelper.checkImageExtensions(this.projectImage.value)) {
+          this.notificationsService.warn(
+            this.translateService.instant('Common.Error'),
+            this.translateService.instant('CreateProject.InvalidFileType')
+          );
+          return;
+        }
         await this.projectService.uploadProjectImageAsync(projectId, this.projectImage.value);
       }
     } else {
@@ -414,6 +422,13 @@ export class CreateProjectComponent implements OnInit {
       const photo = this.photos.find(p => p.elementId === 'photo__' + memberNumber);
       if (photo.imgUrl) {
         if (photo.value) {
+          if (!ImageUploaderHelper.checkImageExtensions(photo.value)) {
+            this.notificationsService.warn(
+              this.translateService.instant('Common.Error'),
+              this.translateService.instant('CreateProject.InvalidFileType')
+            );
+            return;
+          }
           await this.projectService.uploadTeamMemberPhotoAsync(teamMembers[i].id.toString(), photo.value);
         }
       } else {
@@ -430,7 +445,7 @@ export class CreateProjectComponent implements OnInit {
       } catch (e) {
         if (e.error.errorCode === ErrorCode.ProjectCouldntBeRemoved) {
           this.notificationsService.warn(
-            this.translateService.instant('Common.Failed'),
+            this.translateService.instant('Common.Error'),
             this.translateService.instant('CreateProject.ProjectCouldntbeRemoved')
           );
         }

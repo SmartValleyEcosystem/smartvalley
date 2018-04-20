@@ -60,6 +60,7 @@
     "LinkedinLink": "Link to Linkedin",
     "RolePlaceholder": "For ex., CTO",
     "FacebookLink": "Link to Facebook",
-    "ProjectCouldntbeRemoved": "Project could not be removed"
+    "ProjectCouldntbeRemoved": "Project could not be removed",
+    "InvalidFileType": "Invalid file type."
   }
 }

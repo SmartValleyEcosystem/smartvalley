@@ -19,6 +19,7 @@ import {AreaService} from '../../services/expert/area.service';
 import {EnumHelper} from '../../utils/enum-helper';
 import {isNullOrUndefined, isUndefined} from 'util';
 import {Md5} from 'ts-md5';
+import {ImageUploaderHelper} from '../../utils/image-uploader-helper';
 
 const countries = <Country[]>require('../../../assets/countryList.json');
 
@@ -143,7 +144,9 @@ export class RegisterExpertComponent implements OnInit {
 
   private validateForm(): boolean {
     if (!this.registryForm.invalid
-      && !isNullOrUndefined(this.cv)) {
+      && !isNullOrUndefined(this.cv)
+      && ImageUploaderHelper.checkImageExtensions(this.registryForm.value.document)
+      && ImageUploaderHelper.checkImageExtensions(this.registryForm.value.photo)) {
       return true;
     }
 
