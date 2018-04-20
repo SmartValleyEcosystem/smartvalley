@@ -27,28 +27,53 @@ export class ScoringCriterionService {
   }
 
   private createCriteriaGroup(response: ScoringCriteriaGroupResponse): ScoringCriteriaGroup {
-    return <ScoringCriteriaGroup> {
-      name: this.translateService.instant(`CriteriaGroups.${response.key}`),
-      order: response.order,
-      criteria: response.criteria.map(c => this.createCriterion(c))
+    const scoringCtiteriaGroup = {
+      name: null,
+      order: null,
+      criteria: null
     };
+    this.translateService.get(`CriteriaGroups.${response.key}`).toPromise().then((result) => {
+      scoringCtiteriaGroup['name'] = result;
+    } );
+    scoringCtiteriaGroup['order'] = response.order;
+    scoringCtiteriaGroup['criteria'] = response.criteria.map(c => this.createCriterion(c));
+
+    return scoringCtiteriaGroup;
   }
 
   private createCriterion(response: ScoringCriterionResponse): ScoringCriterion {
-    return <ScoringCriterion> {
-      id: response.id,
-      name: this.translateService.instant(`CriteriaNames.${response.id}`),
-      order: response.order,
-      weight: response.weight,
-      options: this.getCriterionOptions(response.id, response.hasMiddleScoreOption)
+    const scoringCriterion = {
+      id: null,
+      name: null,
+      weight: null,
+      order: null,
+      options: null
     };
+    scoringCriterion.id =  response.id;
+    this.translateService.get(`CriteriaNames.${response.id}`).toPromise().then((result) => {
+      scoringCriterion.name = result;
+    } );
+    scoringCriterion.order = response.order;
+    scoringCriterion.weight = response.weight;
+    scoringCriterion.options = this.getCriterionOptions(response.id, response.hasMiddleScoreOption);
+
+    return <ScoringCriterion>scoringCriterion;
   }
 
   private getCriterionOptions(scoringCriterionId: number, hasMiddleScoreOption: boolean): Array<ScoringCriterionOption> {
     const scores = hasMiddleScoreOption ? [Score.Low, Score.Medium, Score.High] : [Score.Low, Score.High];
-    return scores.map(s => <ScoringCriterionOption> {
-      score: s,
-      description: this.translateService.instant(`CriteriaOptionDescriptions.${scoringCriterionId}.${<number>s}`)
-    });
+
+    const scoringCriterionOptions = [];
+    for (const score of scores) {
+     this.translateService
+        .get(`CriteriaOptionDescriptions.${scoringCriterionId}.${<number>score}`)
+        .toPromise()
+        .then(result => scoringCriterionOptions.push({
+          score: score,
+          description: result
+        }));
+    }
+
+    return scoringCriterionOptions;
   }
 }
