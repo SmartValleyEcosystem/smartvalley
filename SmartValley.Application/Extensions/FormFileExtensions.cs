@@ -7,7 +7,7 @@ namespace SmartValley.Application.Extensions
 {
     public static class FormFileExtensions
     {
-        private static readonly string[] PhotoExtensions = { "jpeg", "jpg", "png" };
+        private static readonly string[] PhotoExtensions = { ".jpeg", ".jpg", ".png" };
         private const int FileSizeLimitBytes = 5242880;
 
         public static AzureFile ToAzureFile(this IFormFile formFile)

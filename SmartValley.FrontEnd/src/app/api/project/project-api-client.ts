@@ -35,7 +35,7 @@ export class ProjectApiClient extends BaseApiClient {
   }
 
   public async uploadProjectImageAsync(request: AddProjectImageRequest): Promise<void> {
-    await this.http.put(`${this.baseApiUrl}/projects/${request.body.id}/image`, request.body).toPromise();
+    await this.http.put(`${this.baseApiUrl}/projects/${request.body.get('id')}/image`, request.body).toPromise();
   }
 
   public async deleteProjectImageAsync(id: number): Promise<void> {
