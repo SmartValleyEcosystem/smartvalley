@@ -48,7 +48,7 @@ namespace SmartValley.WebApi.Users
         }
 
         [Authorize]
-        [HttpPut("{address}")]
+        [HttpPut]
         public async Task<EmptyResponse> UpdateUserAsync([FromBody] UpdateUserRequest request)
         {
             await _userService.UpdateAsync(User.Identity.Name, request.FirstName, request.SecondName);
@@ -56,7 +56,7 @@ namespace SmartValley.WebApi.Users
         }
 
         [Authorize]
-        [HttpPut("{address}/email")]
+        [HttpPut("email")]
         public async Task<IActionResult> ChangeEmailAsync([FromBody] ChangeEmailRequest request)
         {
             await _authenticationService.ChangeEmailAsync(User.Identity.Name, request.Email);

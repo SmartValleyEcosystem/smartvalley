@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace SmartValley.WebApi.Experts.Requests
+﻿namespace SmartValley.WebApi.Experts.Requests
 {
     public class ExpertUpdateRequest
     {

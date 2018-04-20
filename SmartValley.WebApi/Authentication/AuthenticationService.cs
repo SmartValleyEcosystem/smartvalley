@@ -144,7 +144,7 @@ namespace SmartValley.WebApi.Authentication
         {
             var user = await _userRepository.GetByAddressAsync(address);
 
-            if(user==null)
+            if (user == null)
                 throw new AppErrorException(ErrorCode.UserNotFound);
 
             if (user.Email.Equals(email, StringComparison.OrdinalIgnoreCase))

@@ -3,7 +3,7 @@ using SmartValley.WebApi.Experts.Requests;
 
 namespace SmartValley.WebApi.Admin.Request
 {
-    public class AdminExpertUpdateRequest: ExpertUpdateRequest
+    public class AdminExpertUpdateRequest : ExpertUpdateRequest
     {
         [Required]
         public string Address { get; set; }

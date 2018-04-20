@@ -8,7 +8,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UpdateUserRequest} from '../../api/user/update-user-request';
 import {User} from '../../services/authentication/user';
 import {ExpertApiClient} from '../../api/expert/expert-api-client';
-import {ExpertApplicationStatus} from '../../services/expert/expert-application-status.enum';
 import {ExpertUpdateRequest} from '../../api/expert/expert-update-request';
 
 @Component({
@@ -21,7 +20,6 @@ export class AccountComponent implements OnInit {
   public userForm: FormGroup;
   public currentUser: User;
   public about: string;
-  public isExpert: boolean;
 
   constructor(private userContext: UserContext,
               private userApiClient: UserApiClient,
@@ -35,21 +33,6 @@ export class AccountComponent implements OnInit {
         await this.updateInfoAsync();
       }
     });
-  }
-
-  public async updateEmailAsync(): Promise<void> {
-    try {
-      if (this.currentUser.email !== this.userForm.value.email) {
-        await this.userApiClient.changeEmailAsync(this.userForm.value.email);
-      }
-    } catch (e) {
-      if (e.error.errorCode === ErrorCode.EmailSendingFailed) {
-        this.notificationsService.error(
-          this.translateService.instant('Common.EmailSendingErrorTitle'),
-          this.translateService.instant('Common.TryAgain')
-        );
-      }
-    }
   }
 
   async ngOnInit() {
@@ -83,7 +66,7 @@ export class AccountComponent implements OnInit {
   }
 
   private async updateUserDataAsync(): Promise<void> {
-    if (this.isExpert) {
+    if (this.currentUser.isExpert) {
       await this.expertApiClient.updateAsync(<ExpertUpdateRequest>{
         firstName: this.userForm.value.firstName,
         secondName: this.userForm.value.secondName,
@@ -97,15 +80,27 @@ export class AccountComponent implements OnInit {
     }
   }
 
+  private async updateEmailAsync(): Promise<void> {
+    try {
+      if (this.currentUser.email !== this.userForm.value.email) {
+        await this.userApiClient.changeEmailAsync(this.userForm.value.email);
+      }
+    } catch (e) {
+      if (e.error.errorCode === ErrorCode.EmailSendingFailed) {
+        this.notificationsService.error(
+          this.translateService.instant('Common.EmailSendingErrorTitle'),
+          this.translateService.instant('Common.TryAgain')
+        );
+      }
+    }
+  }
+
   private async updateInfoAsync(): Promise<void> {
     const userResponse = await this.userApiClient.getByAddressAsync(this.currentUser.account);
     this.about = '';
-    this.isExpert = false;
-    const expertStatusResponse = await this.expertApiClient.getExpertStatusAsync(this.currentUser.account);
-    if (expertStatusResponse.status === ExpertApplicationStatus.Accepted) {
+    if (this.currentUser.isExpert) {
       const expertResponse = await this.expertApiClient.getAsync(this.currentUser.account);
       this.about = expertResponse.about;
-      this.isExpert = true;
     }
     this.userForm.setValue({
       firstName: userResponse.firstName,
