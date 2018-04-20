@@ -10,7 +10,7 @@ namespace SmartValley.WebApi.Estimates.Responses
 
         public IReadOnlyCollection<EstimateResponse> Estimates { get; set; }
 
-        public static CriterionWithEstimatesResponse Create(long scoringCriterionId, IReadOnlyCollection<EstimateComment> estimates)
+        public static CriterionWithEstimatesResponse Create(long scoringCriterionId, IReadOnlyCollection<Estimate> estimates)
         {
             return new CriterionWithEstimatesResponse
                    {

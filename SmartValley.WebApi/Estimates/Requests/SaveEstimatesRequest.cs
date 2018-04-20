@@ -9,7 +9,7 @@ namespace SmartValley.WebApi.Estimates.Requests
 
         public AreaType AreaType { get; set; }
 
-        public IReadOnlyCollection<EstimateCommentRequest> EstimateComments { get; set; }
+        public IReadOnlyCollection<EstimateRequest> EstimateComments { get; set; }
 
         public string Conclusion { get; set; }
     }

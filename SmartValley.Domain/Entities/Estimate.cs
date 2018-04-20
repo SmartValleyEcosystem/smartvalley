@@ -2,7 +2,7 @@
 
 namespace SmartValley.Domain.Entities
 {
-    public class EstimateComment : IEntityWithId
+    public class Estimate : IEntityWithId
     {
         public long Id { get; set; }
 
@@ -12,10 +12,10 @@ namespace SmartValley.Domain.Entities
 
         public long ScoringCriterionId { get; set; }
 
-        public long ExpertScoringConclusionId { get; set; }
+        public long ExpertScoringId { get; set; }
 
         public ScoringCriterion ScoringCriterion { get; set; }
 
-        public ExpertScoringConclusion ExpertScoringConclusion { get; set; }
+        public ExpertScoring ExpertScoring { get; set; }
     }
 }

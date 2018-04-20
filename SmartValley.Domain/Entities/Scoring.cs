@@ -37,29 +37,29 @@ namespace SmartValley.Domain.Entities
 
         public ICollection<ScoringOffer> ScoringOffers { get; set; }
 
-        public ICollection<ExpertScoringConclusion> ExpertScoringConclusions { get; set; }
+        public ICollection<ExpertScoring> ExpertScorings { get; set; }
 
-        public IReadOnlyCollection<ExpertScoringConclusion> GetConclusionsForArea(AreaType area)
+        public IReadOnlyCollection<ExpertScoring> GetScoringForArea(AreaType area)
         {
-            return ExpertScoringConclusions.Where(x => x.Area == area).ToArray();
+            return ExpertScorings.Where(x => x.Area == area).ToArray();
         }
 
-        public void SetExpertConclusion(long expertId, ExpertScoringConclusion conclusion)
+        public void SetExpertScoring(long expertId, ExpertScoring scoring)
         {
-            if (!IsOfferAccepted(expertId, conclusion.Area))
+            if (!IsOfferAccepted(expertId, scoring.Area))
             {
                 throw new AppErrorException(ErrorCode.AcceptedOfferNotFound);
             }
 
-            var storedConclusion = ExpertScoringConclusions.SingleOrDefault(x => x.ExpertId == expertId);
-            if (storedConclusion == null)
+            var storedScoring = ExpertScorings.SingleOrDefault(x => x.ExpertId == expertId);
+            if (storedScoring == null)
             {
-                ExpertScoringConclusions.Add(conclusion);
+                ExpertScorings.Add(scoring);
             }
             else
             {
-                ExpertScoringConclusions.Remove(storedConclusion);
-                ExpertScoringConclusions.Add(conclusion);
+                ExpertScorings.Remove(storedScoring);
+                ExpertScorings.Add(scoring);
             }
         }
 

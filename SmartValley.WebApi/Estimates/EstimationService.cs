@@ -58,28 +58,28 @@ namespace SmartValley.WebApi.Estimates
             var scoring = await _scoringRepository.GetByProjectIdAsync(request.ProjectId);
             var area = request.AreaType.ToDomain();
 
-            var estimates = request.EstimateComments.Select(x => new EstimateComment
+            var estimates = request.EstimateComments.Select(x => new Estimate
                                                                  {
                                                                      Score = x.Score,
                                                                      ScoringCriterionId = x.ScoringCriterionId,
                                                                      Comment = x.Comment
                                                                  }).ToArray();
 
-            var conclusion = new ExpertScoringConclusion
+            var expertScoring = new ExpertScoring
                              {
                                  ExpertId = expertId,
                                  Area = area,
                                  Conclusion = request.Conclusion,
-                                 EstimateComments = estimates
+                                 Estimates = estimates
                              };
-            scoring.SetExpertConclusion(expertId, conclusion);
+            scoring.SetExpertScoring(expertId, expertScoring);
             await _scoringRepository.SaveChangesAsync();
         }
 
-        public async Task<ExpertScoringConclusion> GetOfferEstimateAsync(long expertId, long projectId)
+        public async Task<ExpertScoring> GetOfferEstimateAsync(long expertId, long projectId)
         {
             var scoring = await _scoringRepository.GetByProjectIdAsync(projectId);
-            return scoring.ExpertScoringConclusions.FirstOrDefault(x => x.ExpertId == expertId);
+            return scoring.ExpertScorings.FirstOrDefault(x => x.ExpertId == expertId);
         }
 
         public async Task SubmitEstimatesAsync(long expertId, SubmitEstimateRequest request)
@@ -104,11 +104,11 @@ namespace SmartValley.WebApi.Estimates
             var result = new List<ScoringStatisticsInArea>();
             foreach (var areaScoring in scoring.AreaScorings)
             {
-                var conclusions = scoring.ExpertScoringConclusions.Where(x => x.Area == areaScoring.AreaId).ToArray();
+                var expertScorings = scoring.ExpertScorings.Where(x => x.Area == areaScoring.AreaId).ToArray();
                 var offers = scoring.ScoringOffers.Where(s => s.AreaId == areaScoring.AreaId).ToArray();
                 var statistics = new ScoringStatisticsInArea(areaScoring.Score,
                                                              areaScoring.ExpertsCount,
-                                                             conclusions, offers, areaScoring.AreaId);
+                                                             expertScorings, offers, areaScoring.AreaId);
                 result.Add(statistics);
             }
 

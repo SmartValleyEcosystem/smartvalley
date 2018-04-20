@@ -16,6 +16,6 @@ namespace SmartValley.WebApi.Estimates
 
         Task SaveEstimatesAsync(long expertId, SaveEstimatesRequest request);
 
-        Task<ExpertScoringConclusion> GetOfferEstimateAsync(long expertId, long projectId);
+        Task<ExpertScoring> GetOfferEstimateAsync(long expertId, long projectId);
     }
 }

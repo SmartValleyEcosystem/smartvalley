@@ -24,8 +24,6 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<AreaScoring> IReadOnlyDataContext.AreaScorings => AreaScorings.AsNoTracking();
 
-        IQueryable<EstimateComment> IReadOnlyDataContext.EstimateComments => EstimateComments.AsNoTracking();
-
         IQueryable<ProjectTeamMember> IReadOnlyDataContext.ProjectTeamMembers => ProjectTeamMembers.AsNoTracking();
 
         IQueryable<ScoringCriterion> IReadOnlyDataContext.ScoringCriteria => ScoringCriteria.AsNoTracking();
@@ -58,8 +56,6 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<ScoringApplicationAdviser> IReadOnlyDataContext.ScoringApplicationAdvisers => ScoringApplicationAdvisers.AsNoTracking();
 
-        IQueryable<ExpertScoringConclusion> IReadOnlyDataContext.ExpertScoringConclusions => ExpertScoringConclusions.AsNoTracking();
-
         IQueryable<ScoringCriteriaMapping> IReadOnlyDataContext.ScoringCriteriaMappings => ScoringCriteriaMappings.AsNoTracking();
 
         public DbSet<ProjectTeamMember> ProjectTeamMembers { get; set; }
@@ -74,7 +70,7 @@ namespace SmartValley.Data.SQL.Core
 
         public DbSet<AreaScoring> AreaScorings { get; set; }
 
-        public DbSet<EstimateComment> EstimateComments { get; set; }
+        public DbSet<Estimate> Estimates { get; set; }
 
         public DbSet<ScoringCriterion> ScoringCriteria { get; set; }
 
@@ -104,7 +100,7 @@ namespace SmartValley.Data.SQL.Core
 
         public DbSet<ScoringApplicationAdviser> ScoringApplicationAdvisers { get; set; }
 
-        public DbSet<ExpertScoringConclusion> ExpertScoringConclusions { get; set; }
+        public DbSet<ExpertScoring> ExpertScorings { get; set; }
 
         public DbSet<ScoringCriteriaMapping> ScoringCriteriaMappings { get; set; }
 
@@ -306,17 +302,17 @@ namespace SmartValley.Data.SQL.Core
                         .Property(x => x.GroupOrder)
                         .IsRequired();
 
-            modelBuilder.Entity<ExpertScoringConclusion>()
+            modelBuilder.Entity<ExpertScoring>()
                         .HasKey(x => x.Id);
 
-            modelBuilder.Entity<ExpertScoringConclusion>()
+            modelBuilder.Entity<ExpertScoring>()
                         .HasOne(e => e.Expert);
 
-            modelBuilder.Entity<ExpertScoringConclusion>()
+            modelBuilder.Entity<ExpertScoring>()
                         .HasOne(e => e.Scoring)
-                        .WithMany(s => s.ExpertScoringConclusions);
+                        .WithMany(s => s.ExpertScorings);
 
-            modelBuilder.Entity<EstimateComment>()
+            modelBuilder.Entity<Estimate>()
                         .Property(x => x.Comment)
                         .IsRequired();
         }

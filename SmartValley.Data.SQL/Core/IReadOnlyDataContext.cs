@@ -12,7 +12,6 @@ namespace SmartValley.Data.SQL.Core
         IQueryable<Scoring> Scorings { get; }
         IQueryable<ScoringOffer> ScoringOffers { get; }
         IQueryable<AreaScoring> AreaScorings { get; }
-        IQueryable<EstimateComment> EstimateComments { get; }
         IQueryable<ProjectTeamMember> ProjectTeamMembers { get; }
         IQueryable<ScoringCriterion> ScoringCriteria { get; }
         IQueryable<User> Users { get; }
@@ -29,7 +28,6 @@ namespace SmartValley.Data.SQL.Core
         IQueryable<ScoringApplicationAnswer> ScoringApplicationAnswers { get; }
         IQueryable<ScoringApplicationTeamMember> ScoringApplicationTeamMembers { get; }
         IQueryable<ScoringApplicationAdviser> ScoringApplicationAdvisers { get; }
-        IQueryable<ExpertScoringConclusion> ExpertScoringConclusions { get; }
         IQueryable<ScoringCriteriaMapping> ScoringCriteriaMappings { get; }
 
         IQueryable<T> GetAll<T>() where T : class;

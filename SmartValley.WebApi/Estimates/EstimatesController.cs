@@ -61,7 +61,7 @@ namespace SmartValley.WebApi.Estimates
             return new ExpertEstimateResponse
                    {
                        Conclusion = expertConclusion.Conclusion,
-                       Estimates = expertConclusion.EstimateComments.Select(EstimateResponse.Create).ToArray()
+                       Estimates = expertConclusion.Estimates.Select(EstimateResponse.Create).ToArray()
                    };
         }
 

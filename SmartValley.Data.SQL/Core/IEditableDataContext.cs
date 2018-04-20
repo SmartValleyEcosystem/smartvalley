@@ -13,7 +13,6 @@ namespace SmartValley.Data.SQL.Core
         DbSet<Scoring> Scorings { get; }
         DbSet<ScoringOffer> ScoringOffers { get; }
         DbSet<AreaScoring> AreaScorings { get; }
-        DbSet<EstimateComment> EstimateComments { get; }
         DbSet<ProjectTeamMember> ProjectTeamMembers { get; }
         DbSet<ScoringCriterion> ScoringCriteria { get; }
         DbSet<User> Users { get; }
@@ -29,7 +28,6 @@ namespace SmartValley.Data.SQL.Core
         DbSet<ScoringApplicationAnswer> ScoringApplicationAnswers { get; }
         DbSet<ScoringApplicationTeamMember> ScoringApplicationTeamMembers { get; }
         DbSet<ScoringApplicationAdviser> ScoringApplicationAdvisers { get; }
-        DbSet<ExpertScoringConclusion> ExpertScoringConclusions { get; }
 
         Task<int> SaveAsync();
         EntityEntry<T> Entity<T>(T x) where T : class;

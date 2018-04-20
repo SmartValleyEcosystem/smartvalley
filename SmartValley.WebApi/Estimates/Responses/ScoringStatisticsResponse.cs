@@ -26,11 +26,11 @@ namespace SmartValley.WebApi.Estimates.Responses
                    {
                        Score = scoringStatisticsInArea.Score,
                        RequiredExpertsCount = scoringStatisticsInArea.RequiredExpertsCount,
-                       Conclusions = scoringStatisticsInArea.Conclusions.Select(ScoringAreaConslusionResponse.FromDomain),
+                       Conclusions = scoringStatisticsInArea.Scorings.Select(ScoringAreaConslusionResponse.FromDomain),
                        Offers = scoringStatisticsInArea.Offers.Select(ScoringOfferAreaResponse.FromDomain).ToArray(),
                        Criteria = scoringStatisticsInArea
-                                  .Conclusions
-                                  .SelectMany(x => x.EstimateComments)
+                                  .Scorings
+                                  .SelectMany(x => x.Estimates)
                                   .GroupBy(e => e.ScoringCriterionId)
                                   .Select(q => CriterionWithEstimatesResponse.Create(q.Key, q.ToArray()))
                                   .ToArray(),
