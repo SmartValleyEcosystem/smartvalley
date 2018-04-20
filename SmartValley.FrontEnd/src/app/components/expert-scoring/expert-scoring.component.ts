@@ -78,8 +78,22 @@ export class ExpertScoringComponent implements OnInit {
     this.projectName = projectSummary.name;
     this.projectExternalId = projectSummary.externalId;
 
+    const draftData = await this.estimatesApiClient.getEstimatesDraftAsync(this.projectId);
+    this.addDraftData(draftData);
+
     const criterionPromptsResponse = await this.estimatesApiClient.getCriterionPromptsAsync(this.projectId, this.areaType);
     this.criterionPrompts = criterionPromptsResponse.items;
+  }
+
+  public addDraftData(data) {
+    const prepareFormData = {};
+    for (const estimate of data.estimates) {
+      prepareFormData['answer_' + estimate.scoringCriterionId] = estimate.score;
+      prepareFormData['comment_' + estimate.scoringCriterionId] = estimate.comment;
+    }
+
+    prepareFormData['conclusion'] = data.conclusion;
+    this.scoringForm.setValue(prepareFormData);
   }
 
   public getCriterionInfo(id): CriterionPrompt[] {
@@ -139,7 +153,7 @@ export class ExpertScoringComponent implements OnInit {
   public getEstimate(): Estimate[] {
     return this.areasCriterion.selectMany(group => group.criteria).map(criteria => <Estimate> {
       scoringCriterionId: criteria.id,
-      score: this.scoringForm.get('answer_' + criteria.id).value,
+      score: this.scoringForm.get('answer_' + criteria.id).value === '' ? null : +this.scoringForm.get('answer_' + criteria.id).value,
       comments: this.scoringForm.get('comment_' + criteria.id).value
     });
   }
@@ -148,7 +162,7 @@ export class ExpertScoringComponent implements OnInit {
     return this.areasCriterion.selectMany(group => group.criteria).map(criteria => <EstimateCommentRequest>{
       scoringCriterionId: criteria.id,
       comment: this.scoringForm.get('comment_' + criteria.id).value,
-      score: this.scoringForm.get('answer_' + criteria.id).value,
+      score: this.scoringForm.get('answer_' + criteria.id).value === '' ? null : + this.scoringForm.get('answer_' + criteria.id).value,
     });
   }
 
@@ -165,16 +179,14 @@ export class ExpertScoringComponent implements OnInit {
       conclusion: this.scoringForm.get('conclusion').value
     };
 
-    const saveRequest = await this.estimatesApiClient.saveEstimatesAsync(draftRequest);
-    if (saveRequest) {
-      this.isSaved = true;
-      const currentDate = new Date();
-      const options = {
-        hour: 'numeric',
-        minute: 'numeric',
-      };
-      this.saveTime = currentDate.toLocaleString(navigator.language, options);
-    }
+    await this.estimatesApiClient.saveEstimatesAsync(draftRequest);
+    this.isSaved = true;
+    const currentDate = new Date();
+    const options = {
+      hour: 'numeric',
+      minute: 'numeric',
+    };
+    this.saveTime = currentDate.toLocaleString(navigator.language, options);
   }
 
   public getProjectApplictionLink() {

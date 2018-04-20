@@ -31,10 +31,17 @@ export class EstimatesApiClient extends BaseApiClient {
       .get<CollectionResponse<GetEstimatesResponse>>(this.baseApiUrl + '/estimates', {params: parameters})
       .toPromise();
   }
+
   async getCriterionPromptsAsync(projectId: number, areaType: number): Promise<CollectionResponse<CriterionPromptResponse>> {
     return await this.http.get<CollectionResponse<CriterionPromptResponse>>(this.baseApiUrl + `/estimates/project/${projectId}/prompts/${areaType}`)
       .toPromise();
   };
+
+  async getEstimatesDraftAsync(projectId) {
+    const parameters = new HttpParams().append('projectId', projectId.toString());
+    return await this.http.get(this.baseApiUrl + `/estimates/offer`, {params: parameters})
+      .toPromise();
+  }
 
   async getScoringCriteriaAsync(): Promise<CollectionResponse<AreaScoringCriteriaResponse>> {
     return await this.http.get<CollectionResponse<AreaScoringCriteriaResponse>>(this.baseApiUrl + '/estimates/criteria').toPromise();
