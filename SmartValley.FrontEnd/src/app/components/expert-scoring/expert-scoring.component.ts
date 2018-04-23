@@ -83,10 +83,14 @@ export class ExpertScoringComponent implements OnInit {
 
     const criterionPromptsResponse = await this.estimatesApiClient.getCriterionPromptsAsync(this.projectId, this.areaType);
     this.criterionPrompts = criterionPromptsResponse.items;
+    this.questionsActivity = [true];
   }
 
   public addDraftData(data) {
     const prepareFormData = {};
+    if (!data.estimates.length) {
+      return;
+    }
     for (const estimate of data.estimates) {
       prepareFormData['answer_' + estimate.scoringCriterionId] = estimate.score;
       prepareFormData['comment_' + estimate.scoringCriterionId] = estimate.comment;

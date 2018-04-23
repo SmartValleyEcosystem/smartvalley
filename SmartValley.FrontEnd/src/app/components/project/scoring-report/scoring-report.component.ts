@@ -50,6 +50,7 @@ export class ScoringReportComponent implements OnInit {
       const criterionPromptsResponse = await this.estimatesApiClient.getCriterionPromptsAsync(this.projectId, item.areaType);
       this.criterionPrompts = this.criterionPrompts.concat(criterionPromptsResponse.items);
     }
+    this.questionsActivity = [true];
   }
 
   public getCriterionInfo(id): CriterionPrompt[] {
