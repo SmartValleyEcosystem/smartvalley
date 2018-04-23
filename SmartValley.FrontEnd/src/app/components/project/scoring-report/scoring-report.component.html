@@ -47,9 +47,40 @@
           <div *ngFor="let info of getCriterionInfo(criteria.scoringCriterionId)">
             <p *ngIf="info.title" class="info-title">{{ ('EditScoringApplication.' + info.title) | translate }}</p>
             <p class="info-description">{{ info.answer | translateBinaryAnswer }}</p>
+
+            <div *ngIf="info.projectAdvisers" class="advisers-wrapper">
+              <div class="adviser" *ngFor="let adviser of info.projectAdvisers">
+                <p class="info-title">
+                  {{ adviser.fullName }}
+                </p>
+                <p class="info-description">
+                  {{ adviser.about }}
+                </p>
+                <div class="member-socials">
+                  <a *ngIf="adviser.linkedInLink" href="{{adviser.linkedInLink}}" target="_blank" class="social-icon social-icon__linkedin"></a>
+                  <a *ngIf="adviser.facebookLink" href="{{adviser.facebookLink}}" target="_blank" class="social-icon social-icon__facebook"></a>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="info.projectTeamMembers" class="advisers-wrapper">
+              <div class="adviser" *ngFor="let member of info.projectTeamMembers">
+                <p class="info-title">
+                  {{ member.fullName }}
+                </p>
+                <p class="info-description">
+                  {{ member.about }}
+                </p>
+                <div class="member-socials">
+                  <a *ngIf="member.linkedIn" href="{{member.linkedIn}}" target="_blank" class="social-icon social-icon__linkedin"></a>
+                  <a *ngIf="member.facebook" href="{{member.facebook}}" target="_blank" class="social-icon social-icon__facebook"></a>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
-        <p class="question">{{ index + 1 }}. {{ getQuestionById(criteria.scoringCriterionId) }}</p>
+        <p *ngIf="criterionIsReady" class="question">{{ index + 1 }}. {{ getQuestionById(criteria.scoringCriterionId) }}</p>
         <table class="scoring-results">
           <thead>
             <tr>

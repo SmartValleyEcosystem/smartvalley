@@ -24,6 +24,7 @@ export class ScoringReportComponent implements OnInit {
   public criterionPrompts: CriterionPromptResponse[] = [];
   public questionsActivity: boolean[] = [];
   public areaType: number;
+  public criterionIsReady = false;
 
   @Input() projectId: number;
   @Input() scoringStatus: ScoringStatus;
@@ -50,6 +51,7 @@ export class ScoringReportComponent implements OnInit {
       const criterionPromptsResponse = await this.estimatesApiClient.getCriterionPromptsAsync(this.projectId, item.areaType);
       this.criterionPrompts = this.criterionPrompts.concat(criterionPromptsResponse.items);
     }
+    this.criterionIsReady = true;
     this.questionsActivity = [true];
   }
 
