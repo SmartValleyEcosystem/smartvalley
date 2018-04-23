@@ -70,8 +70,8 @@ export class EditExpertModalComponent implements OnInit {
     });
   }
 
-  public submitExpertSettingsAsync(): Promise<void> {
-    return Promise.all([
+  public async submitExpertSettingsAsync(): Promise<void> {
+    await Promise.all([
       this.submitPersonalSettingsAsync(),
       this.updateAreasAsync(),
       this.updateAvailabilityAsync()
@@ -94,7 +94,7 @@ export class EditExpertModalComponent implements OnInit {
         areas: categoriesToRequest
       };
 
-      return this.adminApiClient.updateExpertAreasAsync(adminExpertUpdateAreasRequest);
+      await this.adminApiClient.updateExpertAreasAsync(adminExpertUpdateAreasRequest);
     }
   }
 
@@ -117,7 +117,7 @@ export class EditExpertModalComponent implements OnInit {
         transactionHash: transactionHash,
         value: this.isAvailable
       };
-      return this.adminApiClient.setExpertAvailabilityAsync(adminSetAvailabilityRequest);
+      await this.adminApiClient.setExpertAvailabilityAsync(adminSetAvailabilityRequest);
     }
   }
 

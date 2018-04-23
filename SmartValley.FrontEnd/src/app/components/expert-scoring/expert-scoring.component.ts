@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ScoringCriterionService} from '../../services/criteria/scoring-criterion.service';
@@ -40,7 +40,9 @@ export class ExpertScoringComponent implements OnInit {
   public criterionPrompts: CriterionPromptResponse[];
   public questionTypeComboBox = QuestionControlType.Combobox;
   public isSaved = false;
-  public saveTime: string;
+  public saveTime: string
+
+  @ViewChildren('required') public requiredFields: QueryList<any>;
 
   constructor(private route: ActivatedRoute,
               private htmlElement: ElementRef,
@@ -106,24 +108,58 @@ export class ExpertScoringComponent implements OnInit {
   }
 
   private validateForm(): boolean {
-    if (!this.scoringForm.invalid) {
-      return true;
-    }
+    const invalidElements = this.requiredFields.filter(
+      (i) => {
+        let elem = false;
 
-    let invalidElName = '';
+        if (i.el) {
+          elem = i.el.nativeElement.classList.contains('ng-invalid');
+        }
 
-    for (const control in this.scoringForm.controls) {
-      if (this.scoringForm.controls[control].status === 'INVALID') {
-        invalidElName = control;
-        break;
+        if (i.nativeElement) {
+          if (i.nativeElement.nativeElement) {
+            return i.nativeElement.nativeElement.classList.contains('ng-invalid');
+          }
+          elem = i.nativeElement.classList.contains('ng-invalid');
+        }
+        return elem;
+      });
+
+    if (invalidElements.length > 0) {
+      for (let a = 0; a < invalidElements.length; a++) {
+        const element = invalidElements[a].el !== undefined ? invalidElements[a].el : invalidElements[a];
+        this.setInvalid(element);
       }
+      const firstElement = invalidElements[0].el !== undefined ? invalidElements[0].el : invalidElements[0];
+      this.scrollToElement(firstElement);
+      return false;
     }
 
-    const invalidElement = this.htmlElement.nativeElement.querySelector('[name=' + invalidElName + ']');
-    const containerOffset = invalidElement.offsetTop;
-    const fieldOffset = invalidElement.offsetParent.offsetTop;
+    return true;
+  }
 
-    window.scrollTo({left: 0, top: containerOffset + fieldOffset - 15, behavior: 'smooth'});
+  private scrollToElement(element: ElementRef): void {
+    if (element.nativeElement.nativeElement) {
+      const offsetTop1 = element.nativeElement.nativeElement.offsetTop;
+      window.scrollTo({left: 0, top: offsetTop1 - 40, behavior: 'smooth'});
+      return;
+    }
+    if (element.nativeElement) {
+      const offsetTop1 = element.nativeElement.offsetTop;
+      window.scrollTo({left: 0, top: offsetTop1 - 40, behavior: 'smooth'});
+    }
+  }
+
+  private setInvalid(element: ElementRef): void {
+    if (element.nativeElement.nativeElement) {
+      element.nativeElement.nativeElement.classList.add('ng-invalid');
+      element.nativeElement.nativeElement.classList.add('ng-dirty');
+      return;
+    }
+    if (element.nativeElement) {
+      element.nativeElement.classList.add('ng-invalid');
+      element.nativeElement.classList.add('ng-dirty');
+    }
   }
 
   public async submitFormAsync() {
@@ -158,19 +194,19 @@ export class ExpertScoringComponent implements OnInit {
   public getEstimate(): Estimate[] {
     return this.areasCriterion.selectMany(group => group.criteria)
       .map(criteria => <Estimate> {
-      scoringCriterionId: criteria.id,
-      score: this.scoringForm.get('answer_' + criteria.id).value === '' ? null : +this.scoringForm.get('answer_' + criteria.id).value,
-      comments: this.scoringForm.get('comment_' + criteria.id).value
-    });
+        scoringCriterionId: criteria.id,
+        score: this.scoringForm.get('answer_' + criteria.id).value === '' ? null : +this.scoringForm.get('answer_' + criteria.id).value,
+        comments: this.scoringForm.get('comment_' + criteria.id).value
+      });
   }
 
   public getAnswers(): EstimateCommentRequest[] {
     return this.areasCriterion.selectMany(group => group.criteria)
       .map(criteria => <EstimateCommentRequest>{
-      scoringCriterionId: criteria.id,
-      comment: this.scoringForm.get('comment_' + criteria.id).value,
-      score: this.scoringForm.get('answer_' + criteria.id).value === '' ? null : + this.scoringForm.get('answer_' + criteria.id).value,
-    });
+        scoringCriterionId: criteria.id,
+        comment: this.scoringForm.get('comment_' + criteria.id).value,
+        score: this.scoringForm.get('answer_' + criteria.id).value === '' ? null : +this.scoringForm.get('answer_' + criteria.id).value,
+      });
   }
 
   public chageActiveQuestion(id) {
