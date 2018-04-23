@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartValley.Application", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartValley.Messages", "SmartValley.Messages\SmartValley.Messages.csproj", "{22978A01-B925-4F8D-9B38-3C4535765C9B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartValley.Ethereum", "SmartValley.Ethereum\SmartValley.Ethereum.csproj", "{191A9866-29FE-4F4B-B214-8454F4C7C9E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{22978A01-B925-4F8D-9B38-3C4535765C9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22978A01-B925-4F8D-9B38-3C4535765C9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22978A01-B925-4F8D-9B38-3C4535765C9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{191A9866-29FE-4F4B-B214-8454F4C7C9E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{191A9866-29FE-4F4B-B214-8454F4C7C9E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{191A9866-29FE-4F4B-B214-8454F4C7C9E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{191A9866-29FE-4F4B-B214-8454F4C7C9E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -41,21 +41,6 @@ export class ScoringManagerContractClient implements ContractClient {
       });
   }
 
-  public startForFreeAsync(projectId: string,
-                           sprintAddress: string,
-                           areas: Array<number>,
-                           areaExpertCounts: Array<number>): Promise<string> {
-    const scoringManagerContract = this.web3Service.getContract(this.abi, this.address);
-    const fromAddress = this.userContext.getCurrentUser().account;
-
-    return scoringManagerContract.startForFree(
-      projectId.replace(/-/g, ''),
-      sprintAddress,
-      areas,
-      areaExpertCounts,
-      {from: fromAddress});
-  }
-
   public async getScoringCostInAreaAsync(areaType: AreaType): Promise<BigNumber> {
     const scoringManager = this.web3Service.getContract(this.abi, this.address);
     return await scoringManager.estimateRewardsInAreaMap(+areaType);

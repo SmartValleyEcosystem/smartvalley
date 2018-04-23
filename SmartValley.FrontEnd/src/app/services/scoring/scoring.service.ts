@@ -36,32 +36,14 @@ export class ScoringService {
     return await this.scoringManagerContractClient.startAsync(projectId, areas, areaExpertCounts, scoringCost);
   }
 
-  public startForFreeAsync(projectId: string,
-                           sprintAddress: string,
-                           areas: Array<number>,
-                           areaExpertCounts: Array<number>): Promise<string> {
-
-    return this.scoringManagerContractClient.startForFreeAsync(
-      projectId,
-      sprintAddress,
-      areas,
-      areaExpertCounts
-    );
-  }
-
   public async setScoringCostAsync(areas: Array<number>, costs: Array<number>) {
     const costsWei = costs.map(c => this.web3Service.toWei(c));
     try {
-      const txHash = await this.scoringManagerContractClient.setEstimateRewardsAsync(areas, costsWei);
-      await this.web3Service.waitForConfirmationAsync(txHash);
+      const transactionHash = await this.scoringManagerContractClient.setEstimateRewardsAsync(areas, costsWei);
+      await this.web3Service.waitForConfirmationAsync(transactionHash);
       this.notificationService.success('Success', 'Scoring costs updated');
     } catch (e) {
       this.notificationService.error('Error', 'Try again');
     }
-  }
-
-  public async getScoringCostEthByAddressAsync(scoringContractAddress: string): Promise<number> {
-    const cost = await this.scoringContractClient.getScoringCostAsync(scoringContractAddress);
-    return this.web3Service.fromWei(cost.toString());
   }
 }

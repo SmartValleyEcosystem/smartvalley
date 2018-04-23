@@ -123,12 +123,12 @@ namespace SmartValley.Data.SQL.Repositories
                           join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId
                           where scoringIds.Any(i => i.Equals(scoring.Id))
                           select new ScoringProjectDetails(
-                              project.Id, 
-                              project.ExternalId, 
-                              scoring.Id, 
-                              scoring.ContractAddress, 
-                              project.Name, 
-                              scoring.CreationDate, 
+                              project.Id,
+                              project.ExternalId,
+                              scoring.Id,
+                              scoring.ContractAddress,
+                              project.Name,
+                              scoring.CreationDate,
                               scoring.OffersDueDate))
                        .ToArrayAsync();
         }
@@ -137,5 +137,12 @@ namespace SmartValley.Data.SQL.Repositories
         {
             await EditContext.SaveAsync();
         }
+
+        public Task<Scoring> GetAsync(long scoringId)
+            => EditContext.Scorings
+                          .Include(x => x.ExpertScorings).ThenInclude(x => x.Estimates)
+                          .Include(x => x.ScoringOffers)
+                          .Include(x => x.AreaScorings)
+                          .FirstOrDefaultAsync(scoring => scoring.Id == scoringId);
     }
 }
