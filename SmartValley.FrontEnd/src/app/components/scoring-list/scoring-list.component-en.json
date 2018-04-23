@@ -14,6 +14,7 @@
     "ScoringInProgress": "Scoring in progress",
     "AboutButton": "About project",
     "Request": "Request. Payment: 0.01 ETH",
-    "TookTheOffer": "Took the offer. Payment: 0.01 ETH"
+    "TookTheOffer": "Took the offer. Payment: 0.01 ETH",
+    "OffersSoon": "Scoring requests and scored projects by you will be shown here"
   }
 }

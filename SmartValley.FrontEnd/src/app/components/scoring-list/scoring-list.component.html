@@ -1,6 +1,9 @@
 <div class="content">
   <h1 class="title">{{ 'ScoringList.Title' | translate }}</h1>
-  <div class="status-row  ">
+  <div *ngIf="!totalOffers" class="empty-offers-attention">
+    <p class="attention-label">{{ 'ScoringList.OffersSoon' | translate }}</p>
+  </div>
+  <div class="status-row  " *ngIf="totalOffers">
     <label for="status">{{ 'ScoringList.ShowStatus' | translate }}</label>
     <app-select class="input-component"
                 [elementId]="'status'" [items]="offerStatuses"
@@ -10,7 +13,7 @@
                 [placeholder]="'CreateProject.AllAreas' | translate">
     </app-select>
   </div>
-  <div class="search-controls">
+  <div class="search-controls" *ngIf="totalOffers">
     <div *ngIf="checkOffers">
       <div *ngIf="offers.length >0; else emptyResultBlock;">
         <p-table class="table" [value]="offers">

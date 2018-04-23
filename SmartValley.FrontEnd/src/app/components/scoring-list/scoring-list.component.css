@@ -207,3 +207,6 @@ p {
 .table__name_col {
   width: 346px;
 }
+.attention-label {
+  margin-bottom: 20px;
+}
