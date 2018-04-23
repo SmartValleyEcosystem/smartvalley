@@ -43,7 +43,7 @@ namespace SmartValley.WebApi.Projects
             var projectScoring = await _scoringRepository.GetByProjectIdAsync(projectId);
             var teamMembers = await _teamMemberRepository.GetByProjectIdAsync(projectId);
             var country = await _countryRepository.GetByIdAsync(project.CountryId);
-            var details = new ProjectDetails(project, projectScoring, country) {TeamMembers = teamMembers};
+            var details = new ProjectDetails(project, projectScoring, country) { TeamMembers = teamMembers };
             return details;
         }
 
@@ -86,28 +86,30 @@ namespace SmartValley.WebApi.Projects
         public Task<IReadOnlyCollection<ProjectDetails>> GetProjectsByNameAsync(string projectName)
             => _projectRepository.GetAllByNameAsync(projectName);
 
-        public async Task CreateAsync(long userId, CreateProjectRequest request)
+        public async Task<Project> CreateAsync(long userId, CreateProjectRequest request)
         {
-            var projectId = await AddProjectAsync(userId, request);
+            var project = await AddProjectAsync(userId, request);
 
             if (request.TeamMembers != null && request.TeamMembers.Any())
-                await AddTeamMembersAsync(request.TeamMembers, projectId);
+                await AddTeamMembersAsync(request.TeamMembers, project.Id);
+
+            return project;
         }
 
-        public async Task UpdateAsync(long projectId, UpdateProjectRequest request)
+        public async Task<Project> UpdateAsync(long projectId, UpdateProjectRequest request)
         {
             var project = await _projectRepository.GetByIdAsync(projectId);
             var country = await GetCountryAsync(request.CountryCode);
 
             project.Name = request.Name;
             project.CountryId = country.Id;
-            project.Category = (Category) request.Category;
+            project.Category = (Category)request.Category;
             project.Description = request.Description;
             project.ContactEmail = request.ContactEmail;
             project.IcoDate = request.IcoDate;
             project.Website = request.Website;
             project.WhitePaperLink = request.WhitePaperLink;
-            project.Stage = (Stage) request.Stage;
+            project.Stage = (Stage)request.Stage;
             project.Facebook = request.Facebook;
             project.Reddit = request.Reddit;
             project.BitcoinTalk = request.BitcoinTalk;
@@ -120,6 +122,8 @@ namespace SmartValley.WebApi.Projects
             await UpdateTeamMembersAsync(request.TeamMembers.Where(t => t.Id != 0).ToArray(), project.Id);
             await AddTeamMembersAsync(request.TeamMembers.Where(t => t.Id == 0).ToArray(), project.Id);
             await _projectRepository.UpdateWholeAsync(project);
+
+            return project;
         }
 
         public async Task DeleteAsync(long projectId)
@@ -163,6 +167,16 @@ namespace SmartValley.WebApi.Projects
             await _teamMemberRepository.UpdatePhotoNameAsync(projectTeamMemberId, link);
         }
 
+        public async Task DeleteTeamMemberPhotoAsync(long projectTeamMemberId)
+        {
+            var teamMember = await _teamMemberRepository.GetByIdAsync(projectTeamMemberId);
+            if (teamMember == null) throw new AppErrorException(ErrorCode.TeamMemberNotFound);
+            if (teamMember.PhotoUrl == null) return;
+            var photoName = teamMember.PhotoUrl.Split("project-team-members/")[1];
+            await _projectTeamMembersStorageProvider.DeleteAsync(photoName);
+            await _teamMemberRepository.UpdatePhotoNameAsync(projectTeamMemberId, null);
+        }
+
         public async Task UpdateImageAsync(long projectId, AzureFile image)
         {
             var project = await _projectRepository.GetByIdAsync(projectId);
@@ -170,37 +184,48 @@ namespace SmartValley.WebApi.Projects
             await _projectRepository.UpdateAsync(project, p => p.ImageUrl);
         }
 
+        public async Task DeleteProjectImageAsync(long projectId)
+        {
+            var project = await _projectRepository.GetByIdAsync(projectId);
+            if (project == null) throw new AppErrorException(ErrorCode.ProjectNotFound);
+            if (project.ImageUrl == null) return;
+            var projectImageName = project.ImageUrl.Split("projects/")[1];
+            project.ImageUrl = null;
+            await _projectStorageProvider.DeleteAsync(projectImageName);
+            await _projectRepository.UpdateAsync(project, p => p.ImageUrl);
+        }
+
         public async Task<Project> GetAsync(long projectId)
             => await _projectRepository.GetByIdAsync(projectId) ?? throw new AppErrorException(ErrorCode.ProjectNotFound);
 
-        private async Task<long> AddProjectAsync(long userId, CreateProjectRequest request)
+        private async Task<Project> AddProjectAsync(long userId, CreateProjectRequest request)
         {
             var country = await GetCountryAsync(request.CountryCode);
             var project = new Project
-                          {
-                              Name = request.Name,
-                              CountryId = country.Id,
-                              Category = (Category) request.Category,
-                              Description = request.Description,
-                              AuthorId = userId,
-                              ExternalId = Guid.NewGuid(),
-                              ContactEmail = request.ContactEmail,
-                              IcoDate = request.IcoDate,
-                              Website = request.Website,
-                              WhitePaperLink = request.WhitePaperLink,
-                              Stage = (Stage) request.Stage,
-                              Facebook = request.Facebook,
-                              Reddit = request.Reddit,
-                              BitcoinTalk = request.BitcoinTalk,
-                              Telegram = request.Telegram,
-                              Github = request.Github,
-                              Medium = request.Medium,
-                              Twitter = request.Twitter,
-                              Linkedin = request.Linkedin
-                          };
+            {
+                Name = request.Name,
+                CountryId = country.Id,
+                Category = (Category)request.Category,
+                Description = request.Description,
+                AuthorId = userId,
+                ExternalId = Guid.NewGuid(),
+                ContactEmail = request.ContactEmail,
+                IcoDate = request.IcoDate,
+                Website = request.Website,
+                WhitePaperLink = request.WhitePaperLink,
+                Stage = (Stage)request.Stage,
+                Facebook = request.Facebook,
+                Reddit = request.Reddit,
+                BitcoinTalk = request.BitcoinTalk,
+                Telegram = request.Telegram,
+                Github = request.Github,
+                Medium = request.Medium,
+                Twitter = request.Twitter,
+                Linkedin = request.Linkedin
+            };
 
             await _projectRepository.AddAsync(project);
-            return project.Id;
+            return project;
         }
 
         private async Task<Country> GetCountryAsync(string code)
@@ -218,14 +243,14 @@ namespace SmartValley.WebApi.Projects
         private async Task<ProjectTeamMember[]> AddTeamMembersAsync(IReadOnlyCollection<ProjectTeamMemberRequest> teamMemberRequests, long projectId)
         {
             var teamMembers = teamMemberRequests.Select(m => new ProjectTeamMember
-                                                             {
-                                                                 ProjectId = projectId,
-                                                                 FullName = m.FullName,
-                                                                 About = m.About,
-                                                                 Role = m.Role,
-                                                                 Facebook = m.Facebook,
-                                                                 Linkedin = m.Linkedin
-                                                             })
+            {
+                ProjectId = projectId,
+                FullName = m.FullName,
+                About = m.About,
+                Role = m.Role,
+                Facebook = m.Facebook,
+                Linkedin = m.Linkedin
+            })
                                                 .ToArray();
 
             await _teamMemberRepository.AddRangeAsync(teamMembers);

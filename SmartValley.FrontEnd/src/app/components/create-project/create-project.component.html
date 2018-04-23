@@ -71,6 +71,19 @@
         <input class="input" id="email" type="text" formControlName="contactEmail">
         <p class="input-attention">{{ 'CreateProject.ContactEmailLabel' | translate }}</p>
       </div>
+      <div class="control-row">
+        <p class="control-label">
+          <label>{{ 'CreateProject.ProjectImage' | translate }}</label>
+        </p>
+        <p class="input-attention image-upload">{{ 'ExpertUploadPhoto.FileInfoTip' | translate }}</p>
+        <app-image-uploader
+          class="input-component"
+          name="projectImage"
+          accept="image/*"
+          maxFileSize="5242880"
+          formControlName="projectImage"
+          #projectImage></app-image-uploader>
+      </div>
     </div>
     <h2 class="settings-title">{{ 'CreateProject.SocialMedia' | translate }}</h2>
     <div class="settings-block socials">
@@ -97,6 +110,19 @@
       <div *ngFor="let member of selectedMembers; let index = index;" class="member-wrapper">
         <h3 class="member-name">{{ 'CreateProject.Member' | translate }} {{ index + 1 }} <span
           (click)="removeTeamMember(member)" class="member__remove"></span></h3>
+        <div class="control-row">
+          <p class="control-label">
+            <label [for]="'photo__'+ member">{{ 'CreateProject.Photo' | translate }}</label>
+          </p>
+          <app-member-upload-photo
+            #photo
+            [elementId]="'photo__'+ member"
+            class="input-component"
+            accept="image/*"
+            maxFileSize="5242880"
+            [formControlName]="'photo__'+ member"
+          ></app-member-upload-photo>
+        </div>
         <div class="control-row">
           <p class="control-label">
             <label for="full-name">{{ 'CreateProject.FullName' | translate }}</label>

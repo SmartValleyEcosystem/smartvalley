@@ -11,5 +11,5 @@ export interface ProjectAboutResponse {
   reddit: string;
   telegram: string;
   twitter: string;
-  TeamMembers: TeamMemberResponse[];
+  teamMembers: TeamMemberResponse[];
 }

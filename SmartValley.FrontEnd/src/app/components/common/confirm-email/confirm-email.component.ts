@@ -7,6 +7,7 @@ import {NotificationsService} from 'angular2-notifications';
 import {TranslateService} from '@ngx-translate/core';
 import {AuthenticationService} from '../../../services/authentication/authentication-service';
 import {DialogService} from '../../../services/dialog-service';
+import {isNullOrUndefined} from 'util';
 
 @Component({
   selector: 'app-confirm-email',
@@ -26,6 +27,8 @@ export class ConfirmEmailComponent implements OnInit {
 
   public async ngOnInit() {
     const token = this.activatedRoute.snapshot.params.token;
+    const isChangeEmail = this.activatedRoute.snapshot.queryParams.changeEmail;
+    console.log(isChangeEmail);
     try {
       await this.authenticationApiClient.confirmEmailAsync(<ConfirmEmailRequest>{
         token: token
@@ -34,7 +37,9 @@ export class ConfirmEmailComponent implements OnInit {
         this.translateService.instant('ConfirmEmail.Success'),
         this.translateService.instant('ConfirmEmail.Confirmed'));
       await this.authenticationService.authenticateAsync();
-      this.dialogService.showWelcome();
+      if (isNullOrUndefined(isChangeEmail)) {
+        this.dialogService.showWelcome();
+      }
     } catch (e) {
       this.notificationService.error(
         this.translateService.instant('ConfirmEmail.Error'),

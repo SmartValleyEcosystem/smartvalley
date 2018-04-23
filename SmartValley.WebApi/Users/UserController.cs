@@ -30,8 +30,8 @@ namespace SmartValley.WebApi.Users
                    {
                        Address = user?.Address,
                        Email = user?.Email,
-                       Name = user?.Name,
-                       About = user?.About,
+                       FirstName = user?.FirstName,
+                       SecondName = user?.SecondName,
                        IsEmailConfirmed = user != null && user.IsEmailConfirmed
                    };
         }
@@ -48,21 +48,18 @@ namespace SmartValley.WebApi.Users
         }
 
         [Authorize]
-        [HttpPut("{address}")]
-        public async Task<EmptyResponse> UpdateUserAsync(string address, [FromBody] UpdateUserRequest request)
+        [HttpPut]
+        public async Task<EmptyResponse> UpdateUserAsync([FromBody] UpdateUserRequest request)
         {
-            await _userService.UpdateAsync(address, request.Name, request.About);
+            await _userService.UpdateAsync(User.Identity.Name, request.FirstName, request.SecondName);
             return new EmptyResponse();
         }
 
         [Authorize]
-        [HttpPut("{address}/email")]
-        public async Task<IActionResult> ChangeEmailAsync(string address, [FromBody] ChangeEmailRequest request)
+        [HttpPut("email")]
+        public async Task<IActionResult> ChangeEmailAsync([FromBody] ChangeEmailRequest request)
         {
-            if (!address.Equals(User.Identity.Name, StringComparison.InvariantCultureIgnoreCase))
-                return Unauthorized();
-
-            await _authenticationService.ChangeEmailAsync(address, request.Email);
+            await _authenticationService.ChangeEmailAsync(User.Identity.Name, request.Email);
             return Ok(new EmptyResponse());
         }
     }

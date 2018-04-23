@@ -29,11 +29,15 @@
   height: 96px;
   border: solid 2px #eeedf5;
   border-radius: 50%;
+  cursor: default;
+  user-select: none;
 }
 
 .empty-photo {
   color: #a4a2b0;
   font-size: 100px;
+  cursor: default;
+  user-select: none;
 }
 
 .member-socials {

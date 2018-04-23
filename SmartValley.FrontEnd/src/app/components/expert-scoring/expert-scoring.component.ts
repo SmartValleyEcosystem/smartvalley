@@ -14,8 +14,12 @@ import {ScoringManagerContractClient} from '../../services/contract-clients/scor
 import {EstimateCommentRequest} from '../../api/estimates/estimate-comment-request';
 import {Estimate} from '../../services/estimate';
 import {DialogService} from '../../services/dialog-service';
+import {CriterionPromptResponse} from '../../api/estimates/criterion-prompt-response';
+import {CriterionPrompt} from '../../api/estimates/criterion-prompt';
 import {Paths} from '../../paths';
 import {TranslateService} from '@ngx-translate/core';
+import {SaveEstimatesRequest} from '../../api/estimates/save-estimates-request';
+import {QuestionControlType} from '../../api/scoring-application/question-control-type.enum';
 
 @Component({
   selector: 'app-expert-scoring',
@@ -32,6 +36,11 @@ export class ExpertScoringComponent implements OnInit {
   public areas: Area[];
   public areasCriterion: ScoringCriteriaGroup[] = [];
   public scoringForm: FormGroup;
+  public questionsActivity: Array<boolean> = [];
+  public criterionPrompts: CriterionPromptResponse[];
+  public questionTypeComboBox = QuestionControlType.Combobox;
+  public isSaved = false;
+  public saveTime: string;
 
   constructor(private route: ActivatedRoute,
               private htmlElement: ElementRef,
@@ -56,12 +65,11 @@ export class ExpertScoringComponent implements OnInit {
     this.areasCriterion = scoringCriterionResponse;
 
     const scoringFields = {};
-    for (const group of this.areasCriterion) {
-      for (const criteria of group.criteria) {
-        scoringFields['answer_' + criteria.id] = ['', [Validators.required]];
-        scoringFields['comment_' + criteria.id] = ['', [Validators.required]];
-      }
-    }
+    this.areasCriterion.selectMany(group => group.criteria)
+      .map(criterion => {
+        scoringFields['answer_' + criterion.id] = ['', [Validators.required]];
+        scoringFields['comment_' + criterion.id] = ['', [Validators.required]];
+      });
 
     scoringFields['conclusion'] = ['', [Validators.required]];
 
@@ -70,6 +78,31 @@ export class ExpertScoringComponent implements OnInit {
     const projectSummary: ProjectSummaryResponse = await this.projectApiClient.getProjectSummaryAsync(this.projectId);
     this.projectName = projectSummary.name;
     this.projectExternalId = projectSummary.externalId;
+
+    const draftData = await this.estimatesApiClient.getEstimatesDraftAsync(this.projectId);
+    this.addDraftData(draftData);
+
+    const criterionPromptsResponse = await this.estimatesApiClient.getCriterionPromptsAsync(this.projectId, this.areaType);
+    this.criterionPrompts = criterionPromptsResponse.items;
+    this.questionsActivity = [true];
+  }
+
+  public addDraftData(data) {
+    const prepareFormData = {};
+    if (!data.estimates.length) {
+      return;
+    }
+    for (const estimate of data.estimates) {
+      prepareFormData['answer_' + estimate.scoringCriterionId] = estimate.score;
+      prepareFormData['comment_' + estimate.scoringCriterionId] = estimate.comment;
+    }
+
+    prepareFormData['conclusion'] = data.conclusion;
+    this.scoringForm.setValue(prepareFormData);
+  }
+
+  public getCriterionInfo(id): CriterionPrompt[] {
+    return this.criterionPrompts.find((c) => c.scoringCriterionId === id).prompts;
   }
 
   private validateForm(): boolean {
@@ -98,6 +131,7 @@ export class ExpertScoringComponent implements OnInit {
       return;
     }
 
+    this.dialogService.showSendReportDialog();
     const transactionHash = await this.scoringManagerContractClient.submitEstimatesAsync(
       this.projectExternalId,
       this.areaType,
@@ -114,8 +148,6 @@ export class ExpertScoringComponent implements OnInit {
       transactionHash: transactionHash,
       projectId: this.projectId,
       areaType: this.areaType,
-      estimateComments: this.getAnswers(),
-      conclusion: this.scoringForm.get('conclusion').value
     };
     await this.estimatesApiClient.submitEstimatesAsync(submitRequest);
     transactionDialog.close();
@@ -124,19 +156,44 @@ export class ExpertScoringComponent implements OnInit {
   }
 
   public getEstimate(): Estimate[] {
-    return this.areasCriterion.map(group => group.criteria).reduce((l, r) => l.concat(r)).map(criteria => <Estimate> {
+    return this.areasCriterion.selectMany(group => group.criteria)
+      .map(criteria => <Estimate> {
       scoringCriterionId: criteria.id,
-      score: this.scoringForm.get('answer_' + criteria.id).value,
+      score: this.scoringForm.get('answer_' + criteria.id).value === '' ? null : +this.scoringForm.get('answer_' + criteria.id).value,
       comments: this.scoringForm.get('comment_' + criteria.id).value
     });
   }
 
   public getAnswers(): EstimateCommentRequest[] {
-    return this.areasCriterion.map(group => group.criteria).reduce((l, r) => l.concat(r)).map(criteria => <EstimateCommentRequest>{
+    return this.areasCriterion.selectMany(group => group.criteria)
+      .map(criteria => <EstimateCommentRequest>{
       scoringCriterionId: criteria.id,
       comment: this.scoringForm.get('comment_' + criteria.id).value,
-      score: this.scoringForm.get('answer_' + criteria.id).value,
+      score: this.scoringForm.get('answer_' + criteria.id).value === '' ? null : + this.scoringForm.get('answer_' + criteria.id).value,
     });
+  }
+
+  public chageActiveQuestion(id) {
+    this.questionsActivity = this.questionsActivity.map((q, i) => i === id ? this.questionsActivity[id] : false);
+    this.questionsActivity[id] = !this.questionsActivity[id];
+  }
+
+  public async saveDraft() {
+    const draftRequest: SaveEstimatesRequest = {
+      projectId: this.projectId,
+      areaType: this.areaType,
+      estimateComments: this.getAnswers(),
+      conclusion: this.scoringForm.get('conclusion').value
+    };
+
+    await this.estimatesApiClient.saveEstimatesAsync(draftRequest);
+    this.isSaved = true;
+    const currentDate = new Date();
+    const options = {
+      hour: 'numeric',
+      minute: 'numeric',
+    };
+    this.saveTime = currentDate.toLocaleString(navigator.language, options);
   }
 
   public getProjectApplictionLink() {
@@ -144,6 +201,6 @@ export class ExpertScoringComponent implements OnInit {
   }
 
   async navigateToProjectApplication() {
-    await this.router.navigate([Paths.Project + '/' + this.projectId + '/details/application' ]);
+    await this.router.navigate([Paths.Project + '/' + this.projectId + '/details/application']);
   }
 }

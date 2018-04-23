@@ -84,7 +84,6 @@ import {EditExpertModalComponent} from './components/common/edit-expert-modal/ed
 import {ExpertStatusGuard} from './services/guards/expert-status.guard';
 import {AdminScoringProjectsComponent} from './components/admin-panel/admin-scoring-projects/admin-scoring-projects.component';
 import {SetExpertsModalComponent} from './components/common/set-experts-modal/set-experts-modal.component';
-import {ChangeEmailModalComponent} from './components/common/change-email-modal/change-email-modal.component';
 import {OffersApiClient} from './api/scoring-offer/offers-api-client';
 import {RoundNumberPipe} from './utils/round-number.pipe';
 import {SearchWithAutocompleteComponent} from './components/search-with-autocomplete/search-with-autocomplete.component';
@@ -119,8 +118,13 @@ import {ExpertSelectorComponent} from './components/scoring/scoring-payment/expe
 import {OfferDetailsComponent} from './components/scoring/offer-details/offer-details.component';
 import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scoring-application.guard';
 import {ScoringListComponent} from './components/scoring-list/scoring-list.component';
+import {ImageUploaderComponent} from './components/image-uploader/image-uploader.component';
+import {MemberUploadPhotoComponent} from './components/member-upload-photo/member-upload-photo.component';
 import {ScoringReportComponent} from './components/project/scoring-report/scoring-report.component';
 import {ScoringShouldNotExistGuard} from './services/guards/scoring-should-not-exist.guard';
+import {ChangeStatusModalComponent} from './components/common/change-status-modal/change-status-modal.component';
+import {TranslateBinaryAnswer} from './utils/translate-binary-answer.pipe';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -142,6 +146,7 @@ import {ScoringShouldNotExistGuard} from './services/guards/scoring-should-not-e
     ReceiveEtherModalComponent,
     AccountComponent,
     DashIfEmptyPipe,
+    TranslateBinaryAnswer,
     EditScoringApplicationComponent,
     FormatDatePipe,
     AdminPanelComponent,
@@ -156,7 +161,6 @@ import {ScoringShouldNotExistGuard} from './services/guards/scoring-should-not-e
     AdminExpertApplicationComponent,
     AdminScoringProjectsComponent,
     SetExpertsModalComponent,
-    ChangeEmailModalComponent,
     RoundNumberPipe,
     SearchWithAutocompleteComponent,
     ProjectListComponent,
@@ -177,8 +181,11 @@ import {ScoringShouldNotExistGuard} from './services/guards/scoring-should-not-e
     ScoringPaymentComponent,
     ExpertSelectorComponent,
     OfferDetailsComponent,
+    ImageUploaderComponent,
+    MemberUploadPhotoComponent,
     ExpertScoringComponent,
-    ScoringReportComponent
+    ScoringReportComponent,
+    ChangeStatusModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -189,11 +196,11 @@ import {ScoringShouldNotExistGuard} from './services/guards/scoring-should-not-e
     CreateNewExpertModalComponent,
     EditExpertModalComponent,
     SetExpertsModalComponent,
-    ChangeEmailModalComponent,
     ScoringCostComponent,
     WelcomeModalComponent,
     DeleteProjectModalComponent,
-    WaitingModalComponent
+    WaitingModalComponent,
+    ChangeStatusModalComponent
   ],
   imports: [
     FileUploadModule,
@@ -205,6 +212,7 @@ import {ScoringShouldNotExistGuard} from './services/guards/scoring-should-not-e
     MatSelectModule,
     MatTabsModule,
     BrowserModule,
+    MatTooltipModule,
     CheckboxModule,
     HttpClientModule,
     BrowserAnimationsModule,

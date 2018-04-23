@@ -10,7 +10,9 @@ namespace SmartValley.WebApi.Experts.Responses
 
         public string Email { get; set; }
 
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+
+        public string SecondName { get; set; }
 
         public string About { get; set; }
 
@@ -26,8 +28,9 @@ namespace SmartValley.WebApi.Experts.Responses
                        Email = expertDetails.Email,
                        About = expertDetails.About,
                        IsAvailable = expertDetails.IsAvailable,
-                       Name = expertDetails.Name,
-                       Areas = expertDetails.Areas.Select(j => new AreaResponse { Id = j.Id.FromDomain(), Name = j.Name }).ToArray()
+                       FirstName = expertDetails.FirstName,
+                       SecondName = expertDetails.SecondName,
+                       Areas = expertDetails.Areas.Select(j => new AreaResponse {Id = j.Id.FromDomain(), Name = j.Name}).ToArray()
                    };
         }
     }

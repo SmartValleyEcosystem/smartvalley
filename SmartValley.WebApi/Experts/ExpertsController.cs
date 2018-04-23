@@ -17,8 +17,6 @@ namespace SmartValley.WebApi.Experts
     [Route("api/experts")]
     public class ExpertsController : Controller
     {
-        private const int FileSizeLimitBytes = 5242880;
-
         private readonly IExpertService _expertService;
         private readonly EthereumClient _ethereumClient;
 
@@ -109,13 +107,10 @@ namespace SmartValley.WebApi.Experts
         }
 
         [HttpPut]
-        [Authorize(Roles = nameof(RoleType.Admin))]
+        [Authorize(Roles = nameof(RoleType.Expert))]
         public async Task<IActionResult> UpdateExpertAsync([FromBody] ExpertUpdateRequest request)
         {
-            if (!string.IsNullOrEmpty(request.TransactionHash))
-                await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
-
-            await _expertService.UpdateAsync(request);
+            await _expertService.UpdateAsync(User.Identity.Name, request);
             return NoContent();
         }
 
@@ -155,7 +150,7 @@ namespace SmartValley.WebApi.Experts
         {
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
 
-            await _expertService.SetAvailabilityAsync(User.GetUserId(), request.Value);
+            await _expertService.SetAvailabilityAsync(User.Identity.Name, request.Value);
             return NoContent();
         }
 
@@ -165,15 +160,9 @@ namespace SmartValley.WebApi.Experts
                                                                       IFormFile photo,
                                                                       IFormFile cv)
         {
-            if (scan == null ||
-                photo == null ||
-                cv == null ||
-                scan.Length < 0 ||
-                scan.Length > FileSizeLimitBytes ||
-                photo.Length < 0 ||
-                photo.Length > FileSizeLimitBytes ||
-                cv.Length < 0 ||
-                cv.Length > FileSizeLimitBytes)
+            if (!scan.IsImageValid()
+                || !photo.IsImageValid()
+                || !cv.IsValid())
             {
                 throw new AppErrorException(ErrorCode.InvalidFileUploaded);
             }

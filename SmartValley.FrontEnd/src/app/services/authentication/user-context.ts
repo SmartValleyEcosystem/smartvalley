@@ -1,4 +1,5 @@
 import {EventEmitter, Injectable} from '@angular/core';
+import {User} from './user';
 
 @Injectable()
 export class UserContext {
@@ -11,7 +12,19 @@ export class UserContext {
   public userContextChanged: EventEmitter<any> = new EventEmitter<any>();
 
   public getCurrentUser(): User {
-    return JSON.parse(localStorage.getItem(this.userKey));
+    const userOptions = JSON.parse(localStorage.getItem(this.userKey));
+    let user = null;
+    if (userOptions) {
+      user = new User(
+        userOptions.id,
+        userOptions.account,
+        userOptions.signature,
+        userOptions.token,
+        userOptions.email,
+        userOptions.roles
+      );
+    }
+    return user;
   }
 
   public saveCurrentUser(user: User) {

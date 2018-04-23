@@ -1,6 +1,6 @@
 ﻿namespace SmartValley.WebApi.Experts.Requests
 {
-    public class ExpertDeleteRequest : IRequestWithTransactionHash
+    public class ExpertDeleteRequest
     {
         public string TransactionHash { get; set; }
 

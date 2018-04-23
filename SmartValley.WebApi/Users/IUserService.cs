@@ -10,6 +10,6 @@ namespace SmartValley.WebApi.Users
 
         Task<User> GetByIdAsync(long id);
 
-        Task UpdateAsync(Address address, string name, string about);
+        Task UpdateAsync(Address address, string firstName, string secondName);
     }
 }

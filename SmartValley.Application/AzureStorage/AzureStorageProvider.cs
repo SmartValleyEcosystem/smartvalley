@@ -49,5 +49,11 @@ namespace SmartValley.Application.AzureStorage
             await blockBlob.UploadFromByteArrayAsync(file.Data, 0, file.Data.Length);
             return blockBlob.Uri.AbsoluteUri;
         }
+
+        public Task DeleteAsync(string fileName)
+        {
+            var blockBlob = _client.GetContainerReference(_containerName).GetBlockBlobReference(fileName);
+            return blockBlob.DeleteIfExistsAsync();
+        }
     }
 }

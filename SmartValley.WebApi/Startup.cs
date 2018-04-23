@@ -13,13 +13,13 @@ using Microsoft.IdentityModel.Tokens;
 using Nethereum.JsonRpc.IpcClient;
 using Nethereum.Signer;
 using Nethereum.Web3;
+using NServiceBus;
 using SmartValley.Application;
 using SmartValley.Application.AzureStorage;
 using SmartValley.Application.Contracts;
 using SmartValley.Application.Contracts.Options;
 using SmartValley.Application.Contracts.Scorings;
 using SmartValley.Application.Contracts.SmartValley.Application.Contracts;
-using SmartValley.Application.Contracts.Votings;
 using SmartValley.Application.Email;
 using SmartValley.Application.Templates;
 using SmartValley.Data.SQL.Core;
@@ -36,6 +36,7 @@ using SmartValley.WebApi.Scorings;
 using SmartValley.WebApi.Users;
 using SmartValley.WebApi.WebApi;
 using Swashbuckle.AspNetCore.Swagger;
+using Headers = SmartValley.WebApi.WebApi.Headers;
 
 namespace SmartValley.WebApi
 {
@@ -59,22 +60,22 @@ namespace SmartValley.WebApi
         {
             services.ConfigureOptions(Configuration, typeof(NethereumOptions), typeof(AuthenticationOptions), typeof(SiteOptions), typeof(SmtpOptions), typeof(AzureStorageOptions), typeof(ScoringOptions));
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "SmartValley API", Version = "v1"}); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "SmartValley API", Version = "v1" }); });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                                   {
                                       options.RequireHttpsMetadata = _currentEnvironment.IsProduction();
                                       options.TokenValidationParameters = new TokenValidationParameters
-                                                                          {
-                                                                              ValidateIssuer = true,
-                                                                              ValidIssuer = AuthenticationOptions.Issuer,
-                                                                              ValidateAudience = true,
-                                                                              ValidAudience = AuthenticationOptions.Audience,
-                                                                              ValidateLifetime = false,
-                                                                              IssuerSigningKey = AuthenticationOptions.GetSymmetricSecurityKey(),
-                                                                              ValidateIssuerSigningKey = true
-                                                                          };
+                                      {
+                                          ValidateIssuer = true,
+                                          ValidIssuer = AuthenticationOptions.Issuer,
+                                          ValidateAudience = true,
+                                          ValidAudience = AuthenticationOptions.Audience,
+                                          ValidateLifetime = false,
+                                          IssuerSigningKey = AuthenticationOptions.GetSymmetricSecurityKey(),
+                                          ValidateIssuerSigningKey = true
+                                      };
                                   });
 
             services.AddSingleton<InitializationService>();
@@ -93,10 +94,8 @@ namespace SmartValley.WebApi
             services.AddSingleton<ProjectStorageProvider>();
             services.AddSingleton<ITokenContractClient, TokenContractClient>(
                 provider => new TokenContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().TokenContract));
-            services.AddSingleton<IVotingManagerContractClient, VotingManagerContractClient>(
-                provider => new VotingManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().VotingManagerContract));
             services.AddSingleton<IScoringContractClient, ScoringContractClient>(
-                provider => new ScoringContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringContract));
+                 provider => new ScoringContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringContract));
             services.AddSingleton<IEtherManagerContractClient, EtherManagerContractClient>(
                 provider => new EtherManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().EtherManagerContract));
             services.AddSingleton<IScoringManagerContractClient, ScoringManagerContractClient>(
@@ -122,7 +121,6 @@ namespace SmartValley.WebApi
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IScoringRepository, ScoringRepository>();
             services.AddTransient<IScoringOffersRepository, ScoringOffersRepository>();
-            services.AddTransient<IEstimateRepository, EstimateRepository>();
             services.AddTransient<IProjectService, ProjectService>();
             services.AddTransient<IEstimationService, EstimationService>();
             services.AddTransient<IScoringService, ScoringService>();
@@ -146,6 +144,9 @@ namespace SmartValley.WebApi
             var siteOptions = serviceProvider.GetService<SiteOptions>();
 
             ConfigureCorsPolicy(services, siteOptions);
+
+            //            var endpointInstance = EndpointConfigurator.StartAsync(Configuration).GetAwaiter().GetResult();
+            //            services.AddSingleton<IMessageSession>(endpointInstance);
 
             var service = serviceProvider.GetService<InitializationService>();
             service.InitializeAsync().Wait();
@@ -177,7 +178,7 @@ namespace SmartValley.WebApi
                             await next();
                         }
                     })
-               .UseDefaultFiles(new DefaultFilesOptions {DefaultFileNames = new List<string> {"index.html"}})
+               .UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new List<string> { "index.html" } })
                .UseStaticFiles()
                .UseMvc();
         }

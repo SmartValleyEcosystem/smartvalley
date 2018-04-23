@@ -1,14 +1,21 @@
 {
   "Account": {
-    "Title": "ACCOUNT",
-    "Name": "Name",
-    "About": "About",
-    "SaveChanges": "Save changes",
-    "BasicInformation": "Basic information",
-    "Balances": "Balances",
-    "Email": "E-mail",
+    "Title": "Account setting",
+    "FirstName": "Name",
+    "SecondName": "Surname",
+    "MainInformation": "Main information",
+    "EmailAttention": "Will not be published. Just for important things.",
+    "Email": "Email",
     "Change": "Change",
     "InvalidData": "Entered data is invalid",
-    "DataSaved": "Account information updated"
+    "Save": "Save",
+    "Bio": "Bio",
+    "FirstNamePlaceHolder": "John",
+    "SecondNamePlaceHolder": "Green",
+    "EmailPlaceHolder": "joan.green@gmail.com",
+    "AboutTitle": "Description near your name in scored project",
+    "DataSaved": "Changes saved",
+    "EmailChanged": "Email changed",
+    "ConfirmEmail": "Confirm new email please"
   }
 }

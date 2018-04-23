@@ -6,6 +6,8 @@ import { environment } from './environments/environment';
 
 import 'hammerjs';
 
+import 'app/utils/array-extensions';
+
 if (environment.production) {
   enableProdMode();
 }

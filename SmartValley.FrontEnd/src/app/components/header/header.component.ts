@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
-import {Router} from '@angular/router';
+import {NavigationEnd, Router, RouterEvent} from '@angular/router';
 import {Paths} from '../../paths';
 import {BalanceService} from '../../services/balance/balance.service';
 import {Balance} from '../../services/balance/balance';
@@ -11,11 +11,17 @@ import {ExpertApplicationStatus} from '../../services/expert/expert-application-
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {isNullOrUndefined} from 'util';
 import {ProjectService} from '../../services/project/project.service';
+import {DialogService} from '../../services/dialog-service';
+import {User} from '../../services/authentication/user';
+import {ErrorCode} from '../../shared/error-code.enum';
+import {ExpertsRegistryContractClient} from '../../services/contract-clients/experts-registry-contract-client';
+import {SubmitEstimatesRequest} from '../../api/estimates/submit-estimates-request';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
 
@@ -33,32 +39,64 @@ export class HeaderComponent implements OnInit {
   public myProjectLink: string;
   public expertStatus?: ExpertApplicationStatus;
   public ExpertApplicationStatus = ExpertApplicationStatus;
+  public showExpertPanel = false;
+  public isUserExpert = false;
+  public isExpertActive: boolean;
 
-  constructor(private router: Router,
-              private balanceService: BalanceService,
+  constructor(private balanceService: BalanceService,
               private blockiesService: BlockiesService,
               private authenticationService: AuthenticationService,
+              private dialogService: DialogService,
               private projectApiClient: ProjectApiClient,
               private userContext: UserContext,
               private expertApiClient: ExpertApiClient,
+              private router: Router,
+              private translateService: TranslateService,
+              private expertsRegistryContractClient: ExpertsRegistryContractClient,
               private projectService: ProjectService) {
     this.projectService.projectsDeleted.subscribe(async () => {
       this.haveProject = false;
       this.myProjectLink = '';
     });
+
+    this.router.events.subscribe(async (event: RouterEvent) => await this.checkExpertPanelVisibilityAsync(event));
     this.projectService.projectsCreated.subscribe(async () => await this.updateProjectsAsync());
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
     this.userContext.userContextChanged.subscribe(async (user) => await this.updateAccountAsync(user));
   }
 
-  async ngOnInit() {
-    const currentUser = this.userContext.getCurrentUser();
-    await this.updateAccountAsync(currentUser);
+  ngOnInit() {
     this.projectsLink = Paths.ProjectList;
     this.accountLink = Paths.Account;
     this.adminPanelLink = Paths.Admin;
-    await this.balanceService.updateBalanceAsync();
   }
+
+  private async updateExpertBarAsync() {
+    const currentUser = this.userContext.getCurrentUser();
+    await this.balanceService.updateBalanceAsync();
+    if (currentUser) {
+      this.isUserExpert = currentUser.isExpert;
+    }
+    if (this.isUserExpert) {
+      const availabilityExpert = await this.expertApiClient.getAvailabilityStatusAsync();
+      this.isExpertActive = availabilityExpert.isAvailable;
+    }
+    await this.updateAccountAsync(currentUser);
+  }
+
+  private async checkExpertPanelVisibilityAsync(event: RouterEvent): Promise<void> {
+    if (event instanceof NavigationEnd) {
+      const currentUser = this.userContext.getCurrentUser();
+      if (event['url'] === '/') {
+        this.showExpertPanel = false;
+      }
+      if (currentUser) {
+        if (event['url'] !== '/' && currentUser.isExpert) {
+          await this.updateExpertBarAsync();
+        }
+      }
+    }
+  };
 
   private async updateProjectsAsync(): Promise<void> {
     const myProjectResponse = await this.projectApiClient.getMyProjectAsync();
@@ -78,7 +116,13 @@ export class HeaderComponent implements OnInit {
       this.scroginsLink = Paths.ScoringList;
       this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
       this.isAdmin = user.roles.includes('Admin');
+      if (user.isExpert && this.router.url !== '/') {
+        this.showExpertPanel = true;
+      } else {
+        this.showExpertPanel = false;
+      }
     } else {
+      this.showExpertPanel = false;
       this.isAuthenticated = false;
       this.isAdmin = false;
       this.haveProject = false;
@@ -131,6 +175,27 @@ export class HeaderComponent implements OnInit {
       } else {
         await this.router.navigate([Paths.Project]);
       }
+    }
+  }
+
+  public async showChangeActivityModalAsync(isExpertActive: boolean) {
+    const changeStatus = await this.dialogService.changeStatusDialogAsync(!isExpertActive, this.accountAddress);
+    if (changeStatus) {
+      let transactionHash = '';
+      if (isExpertActive) {
+        transactionHash = await this.expertsRegistryContractClient.disableAsync(this.accountAddress);
+      } else {
+        transactionHash = await this.expertsRegistryContractClient.enableAsync(this.accountAddress);
+      }
+
+      const transactionDialog = this.dialogService.showTransactionDialog(
+        this.translateService.instant('Header.ChangeActivityDetails'),
+        transactionHash
+      );
+
+      await this.expertApiClient.switchAvailabilityAsync(transactionHash, !isExpertActive);
+      transactionDialog.close();
+      this.isExpertActive = !isExpertActive;
     }
   }
 }

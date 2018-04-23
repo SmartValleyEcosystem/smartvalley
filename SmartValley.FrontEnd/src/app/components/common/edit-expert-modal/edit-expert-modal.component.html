@@ -21,11 +21,20 @@
       </div>
       <div class="row">
           <span class="col-4">
-              {{ 'EditExpertModalComponent.Name' | translate }}
+              {{ 'EditExpertModalComponent.FirstName' | translate }}
           </span>
         <mat-form-field class="col-8 example-full-width">
-          <input placeholder="{{ 'EditExpertModalComponent.Name' | translate }}" matInput formControlName="name"
-                 name="name" #required [(ngModel)]="expertDetails.name" [(value)]="expertDetails.name">
+          <input placeholder="{{ 'EditExpertModalComponent.FirstName' | translate }}" matInput formControlName="firstName"
+                 name="name" #required [(ngModel)]="expertDetails.firstName" [(value)]="expertDetails.firstName">
+        </mat-form-field>
+      </div>
+      <div class="row">
+          <span class="col-4">
+              {{ 'EditExpertModalComponent.SecondName' | translate }}
+          </span>
+        <mat-form-field class="col-8 example-full-width">
+          <input placeholder="{{ 'EditExpertModalComponent.SecondName' | translate }}" matInput formControlName="secondName"
+                 name="name" #required [(ngModel)]="expertDetails.secondName" [(value)]="expertDetails.secondName">
         </mat-form-field>
       </div>
       <div class="row">
@@ -40,16 +49,15 @@
       <div class="row submit-row">
         <span class="offset-6 col-6">
           <mat-dialog-actions class="d-flex justify-content-center">
-            <button mat-raised-button (click)="submitAsync(false)" [disabled]="backendForm.invalid"
+            <button mat-raised-button (click)="submitPersonalSettingsAsync()" [disabled]="backendForm.invalid"
                     class="sv-default-btn btn-space">
-              {{'EditExpertModalComponent.SaveBackend' | translate}}
+              {{'EditExpertModalComponent.SavePersonal' | translate}}
             </button>
           </mat-dialog-actions>
         </span>
       </div>
     </form>
     <h3 class="sub-header">{{'EditExpertModalComponent.Blockchain' | translate}}</h3>
-
     <div class="row">
         <span class="col-6">
           <mat-checkbox align="start" name="available" [(ngModel)]="isAvailable"
@@ -59,18 +67,19 @@
         </span>
     </div>
     <div *ngFor="let area of areas" class="row">
-        <span class="col-6">
-          <mat-checkbox align="start" name="{{'area' + area.areaType}}"
-                        [(ngModel)]="selectedCategories[area.areaType]">
-            {{ area.name }}
-          </mat-checkbox>
-        </span>
+      <span class="col-6">
+        <mat-checkbox align="start" name="{{'area' + area.areaType}}"
+                      [disabled]="startedCategories[area.areaType]"
+                      [(ngModel)]="selectedCategories[area.areaType]">
+          {{ area.name }}
+        </mat-checkbox>
+      </span>
     </div>
     <div class="row submit-row">
         <span class="offset-6 col-6">
-          <button mat-raised-button (click)="submitAsync(true)" [disabled]="backendForm.invalid"
+          <button mat-raised-button (click)="submitExpertSettingsAsync()" [disabled]="backendForm.invalid"
                   class="sv-default-btn btn-space">
-              {{'EditExpertModalComponent.SaveBlockchain' | translate}}
+              {{'EditExpertModalComponent.SaveExpert' | translate}}
             </button>
         </span>
     </div>

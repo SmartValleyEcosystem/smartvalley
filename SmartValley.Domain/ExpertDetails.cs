@@ -10,7 +10,9 @@ namespace SmartValley.Domain
 
         public string Email { get; }
 
-        public string Name { get; }
+        public string FirstName { get; }
+
+        public string SecondName { get; }
 
         public string About { get; }
 
@@ -18,14 +20,15 @@ namespace SmartValley.Domain
 
         public IReadOnlyCollection<Area> Areas { get; }
 
-        public ExpertDetails(Address address, string email, string name, string about, bool isAvailable, IReadOnlyCollection<Area> areas)
+        public ExpertDetails(Address address, string email, string firstName, string secondName, string about, bool isAvailable, IReadOnlyCollection<Area> areas)
         {
             Address = address;
             Email = email;
-            About = about;
             IsAvailable = isAvailable;
             Areas = areas;
-            Name = name;
+            About = about;
+            FirstName = firstName;
+            SecondName = secondName;
         }
     }
 }

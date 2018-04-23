@@ -8,6 +8,8 @@ namespace SmartValley.Domain.Entities
 
         public bool IsAvailable { get; set; }
 
+        public string About { get; set; }
+
         public User User { get; set; }
 
         public IEnumerable<ExpertArea> ExpertAreas { get; set; }

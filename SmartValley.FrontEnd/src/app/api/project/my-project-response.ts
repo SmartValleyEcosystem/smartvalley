@@ -10,6 +10,7 @@ export interface MyProjectResponse {
   contactEmail: string;
   whitePaperLink: string;
   countryCode: string;
+  imageUrl: string;
   website: string;
   icoDate: Date;
   facebook: string;

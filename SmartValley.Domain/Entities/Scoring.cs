@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using SmartValley.Domain.Core;
+using SmartValley.Domain.Exceptions;
 
 namespace SmartValley.Domain.Entities
 {
@@ -36,16 +37,30 @@ namespace SmartValley.Domain.Entities
 
         public ICollection<ScoringOffer> ScoringOffers { get; set; }
 
-        public ICollection<ExpertScoringConclusion> ExpertScoringConclusions { get; set; }
+        public ICollection<ExpertScoring> ExpertScorings { get; set; }
 
-        public IReadOnlyCollection<ExpertScoringConclusion> GetConclusionsForArea(AreaType area)
+        public IReadOnlyCollection<ExpertScoring> GetScoringForArea(AreaType area)
         {
-            return ExpertScoringConclusions.Where(x => x.Area == area).ToArray();
+            return ExpertScorings.Where(x => x.Area == area).ToArray();
         }
 
-        public void AddConclusionForArea(ExpertScoringConclusion conclusion)
+        public void SetExpertScoring(long expertId, ExpertScoring scoring)
         {
-            ExpertScoringConclusions.Add(conclusion);
+            if (!IsOfferAccepted(expertId, scoring.Area))
+            {
+                throw new AppErrorException(ErrorCode.AcceptedOfferNotFound);
+            }
+
+            var storedScoring = ExpertScorings.SingleOrDefault(x => x.ExpertId == expertId);
+            if (storedScoring == null)
+            {
+                ExpertScorings.Add(scoring);
+            }
+            else
+            {
+                ExpertScorings.Remove(storedScoring);
+                ExpertScorings.Add(scoring);
+            }
         }
 
         public void SetScoreForArea(AreaType areaType, double score)

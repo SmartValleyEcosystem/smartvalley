@@ -142,6 +142,14 @@ namespace SmartValley.WebApi.Authentication
 
         public async Task ChangeEmailAsync(Address address, string email)
         {
+            var user = await _userRepository.GetByAddressAsync(address);
+
+            if (user == null)
+                throw new AppErrorException(ErrorCode.UserNotFound);
+
+            if (user.Email.Equals(email, StringComparison.OrdinalIgnoreCase))
+                return;
+
             if (_memoryCache.TryGetValue(MemoryCacheEmailKey + address, out bool isEmailSent))
                 throw new AppErrorException(ErrorCode.EmailAlreadySent);
 

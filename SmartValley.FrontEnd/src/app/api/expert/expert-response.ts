@@ -1,10 +1,9 @@
-import {Area} from '../../services/expert/area';
-
 export interface ExpertResponse {
-  about: string;
   address: string;
   email: string;
+  about: string;
   isAvailable: boolean;
-  name: string;
+  firstName: string;
+  secondName: string;
   areas: any;
 }

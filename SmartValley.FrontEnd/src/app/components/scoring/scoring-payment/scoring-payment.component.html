@@ -20,7 +20,8 @@
             <span class="cost-value">{{currentBalance}} {{ 'ScoringPayment.ETH' | translate }}</span>
           </li>
         </ul>
-        <button (click)="payAsync()" class="main-btn">{{ 'ScoringPayment.Pay' | translate }} {{ totalSum| roundNumberPipe: 2 }} {{ 'ScoringPayment.ETH' | translate }}</button>
+        <button (click)="payAsync()" class="main-btn">{{ 'ScoringPayment.Pay' | translate }} {{ totalSum | roundNumberPipe: 2 }} {{ 'ScoringPayment.ETH' | translate }}
+        </button>
       </div>
     </div>
     <div class="expert-panel__controls">
@@ -28,7 +29,9 @@
         <li *ngFor="let area of areas">
           <h3>{{ area.name }}</h3>
           <app-expert-selector (selectedExpertsCountEmit)="getExperts($event)" [expertPanelId]="area.areaType"
-                               [cost]="areaCosts[area.areaType]" [initialExpertsAmount] = "initialExpertsAmount"></app-expert-selector>
+                               [cost]="areaCosts[area.areaType]"
+                               [minimumExperts]="minimumExperts"
+                               [maximumExperts]="maximumExperts"></app-expert-selector>
         </li>
       </ul>
     </div>

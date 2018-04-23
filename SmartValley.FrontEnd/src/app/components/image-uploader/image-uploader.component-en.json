@@ -1,0 +1,7 @@
+{
+  "ExpertUploadPhoto": {
+    "Delete": "Delete",
+    "Upload": "Upload",
+    "FileInfoTip": "100x100 px is a minimum recommended size. Format: PNG, JPEG. Maximum file size: 5 Mb"
+  }
+}

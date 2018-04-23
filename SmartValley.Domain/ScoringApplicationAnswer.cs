@@ -8,6 +8,10 @@
 
         public string Value { get; set; }
 
+        public long ScoringApplicationId { get; set; }
+
+        public ScoringApplication ScoringApplication { get; set; }
+
         public Entities.ScoringApplicationQuestion Question { get; set; }
     }
 }

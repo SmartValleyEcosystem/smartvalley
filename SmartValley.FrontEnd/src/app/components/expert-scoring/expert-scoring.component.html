@@ -1,37 +1,101 @@
 <div class="content">
   <form name="scoringForm" [formGroup]="scoringForm" autocomplete="off" (ngSubmit)="submitFormAsync()">
     <h1 class="title">{{ 'ExpertScoring.Title' | translate }} {{ projectName }}</h1>
-    <div class="area-title-row">
-      <span class="area-title">{{ 'ExpertScoring.YourScore' | translate }} {{areaTypeName}}</span>
-      <a href="{{ getProjectApplictionLink() }}" class="ghost-btn answers-btn" target="_blank">
-        {{ 'ExpertScoring.SeeAnswers' | translate }}
-      </a>
-    </div>
-    <div *ngFor="let group of areasCriterion" class="group-wrapper">
-      <h2 class="settings-title">{{ group.name }}</h2>
-      <div class="settings-block">
-        <div *ngFor="let criteria of group.criteria; let index = index;" class="criteria">
-          <div class="question">{{index + 1}}. {{criteria.name}}</div>
-          <ul class="options-list">
-            <li *ngFor="let option of criteria.options">
-              <p-radioButton name="answer_{{criteria.id}}" formControlName="answer_{{criteria.id}}"
-                             value="{{option.score}}"
-                             label="{{option.score}} &mdash; {{option.description}}">
-              </p-radioButton>
-            </li>
-          </ul>
-          <div class="control-row">
-            <p class="control-label">
-              <label for="comment{{criteria.id}}">{{ 'ExpertScoring.Comment' | translate }}</label>
-            </p>
-            <textarea formControlName="comment_{{criteria.id}}"
-                      id="comment_{{criteria.id}}"
-                      placeholder="{{ 'ExpertScoring.CommentPlaceholder' | translate }}" id="comment{{criteria.id}}"
-                      class="input" #required></textarea>
+      <div class="area-title">{{ 'ExpertScoring.YourScore' | translate }} {{areaTypeName}}</div>
+      <div *ngFor="let group of areasCriterion" class="group-wrapper">
+        <h2 class="settings-title">{{ group.name }}</h2>
+          <div *ngFor="let criteria of group.criteria; let index = index;"
+               class="criteria settings-block"
+               [attr.data-selected]="false"
+               (click)="chageActiveQuestion(index)"
+               [class.active-question]="questionsActivity[index]">
+            <div class="question-tooltip" *ngIf="criterionPrompts" >
+              <h3 class="question-tooltip__title">{{ 'ExpertScoring.ProjectOwnerAnswer' | translate }}</h3>
+              <div *ngFor="let info of getCriterionInfo(criteria.id)">
+                <p *ngIf="info.title" class="info-title">{{ ('EditScoringApplication.' + info.title) | translate }}</p>
+                <p *ngIf="info.questionControlType !== questionTypeComboBox" class="info-description">{{ info.answer | translateBinaryAnswer }}</p>
+                <p *ngIf="info.questionControlType == questionTypeComboBox" class="info-description">{{ ('EditScoringApplication.' + info.answer) | translate }}</p>
+
+                <div *ngIf="info.projectAdvisers" class="advisers-wrapper">
+                  <div class="adviser" *ngFor="let adviser of info.projectAdvisers">
+                    <p class="info-title">
+                      {{ adviser.fullName }}
+                    </p>
+                    <p class="info-description">
+                      {{ adviser.about }}
+                    </p>
+                    <div class="member-socials">
+                      <a *ngIf="adviser.linkedInLink" href="{{adviser.linkedInLink}}" target="_blank" class="social-icon social-icon__linkedin"></a>
+                      <a *ngIf="adviser.facebookLink" href="{{adviser.facebookLink}}" target="_blank" class="social-icon social-icon__facebook"></a>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="info.socialNetworks" class="social-wrapper">
+                  <p class="info-title">
+                    {{ 'ScoringReport.SocialNetworks' | translate }}
+                  </p>
+                  <a *ngIf="info.socialNetworks.facebook" href="{{info.socialNetworks.facebook}}" target="_blank">
+                    <div class="social-icon social-icon__facebook"></div>
+                  </a>
+                  <a *ngIf="info.socialNetworks.bitcoinTalk" href="{{info.socialNetworks.bitcoinTalk}}" target="_blank">
+                    <div class="social-icon social-icon__bitcointalk"></div>
+                  </a>
+                  <a *ngIf="info.socialNetworks.github" href="{{info.socialNetworks.github}}" target="_blank">
+                    <div class="social-icon social-icon__github"></div>
+                  </a>
+                  <a *ngIf="info.socialNetworks.linkedin" href="{{info.socialNetworks.linkedin}}" target="_blank">
+                    <div class="social-icon social-icon__linkedin"></div>
+                  </a>
+                  <a *ngIf="info.socialNetworks.medium" href="{{info.socialNetworks.medium}}" target="_blank">
+                    <div class="social-icon social-icon__medium"></div>
+                  </a>
+                  <a *ngIf="info.socialNetworks.reddit" href="{{info.socialNetworks.reddit}}" target="_blank">
+                    <div class="social-icon social-icon__reddit"></div>
+                  </a>
+                  <a *ngIf="info.socialNetworks.telegram" href="{{info.socialNetworks.telegram}}" target="_blank">
+                    <div class="social-icon social-icon__telegram"></div>
+                  </a>
+                  <a *ngIf="info.socialNetworks.twitter" href="{{info.socialNetworks.twitter}}" target="_blank">
+                    <div class="social-icon social-icon__twitter"></div>
+                  </a>
+                </div>
+
+                <div *ngIf="info.projectTeamMembers" class="advisers-wrapper">
+                  <div class="adviser" *ngFor="let member of info.projectTeamMembers">
+                    <p class="info-title">
+                      {{ member.fullName }}
+                    </p>
+                    <p class="info-description">
+                      {{ member.about }}
+                    </p>
+                    <div class="member-socials">
+                      <a *ngIf="member.linkedIn" href="{{member.linkedIn}}" target="_blank" class="social-icon social-icon__linkedin"></a>
+                      <a *ngIf="member.facebook" href="{{member.facebook}}" target="_blank" class="social-icon social-icon__facebook"></a>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="question">{{index + 1}}. {{criteria.name}}</div>
+            <ul class="options-list">
+              <li *ngFor="let option of criteria.options">
+                <p-radioButton name="answer_{{criteria.id}}" formControlName="answer_{{criteria.id}}" value="{{option.score}}"
+                               label="{{option.score}} &mdash; {{option.description}}">
+                </p-radioButton>
+              </li>
+            </ul>
+            <div class="control-row">
+              <p class="control-label">
+                <label for="comment{{criteria.id}}">{{ 'ExpertScoring.Comment' | translate }}</label>
+              </p>
+              <textarea formControlName="comment_{{criteria.id}}"
+                        id="comment_{{criteria.id}}"
+                placeholder="{{ 'ExpertScoring.CommentPlaceholder' | translate }}" id="comment{{criteria.id}}" class="input" #required></textarea>
+            </div>
           </div>
-        </div>
       </div>
-    </div>
     <div class="group-wrapper">
       <h2 class="settings-title">{{ 'ExpertScoring.Conclusion' | translate }}</h2>
       <div class="settings-block settings-block_last">
@@ -45,7 +109,8 @@
     </div>
     <div class="submit-wrapper">
       <input type="submit" value="{{ 'ExpertScoring.Finish' | translate }}" class="main-btn submit-btn">
-      <!--<button class="ghost-btn">{{ 'ExpertScoring.SaveDraft' | translate }}</button>-->
+      <span class="ghost-btn label-btn" (click)="saveDraft()">{{ 'ExpertScoring.SaveDraft' | translate }}</span>
+      <span class="save-label" [class.label-visible]="isSaved">Saved {{ saveTime }}</span>
     </div>
   </form>
 </div>

@@ -32,18 +32,23 @@ namespace SmartValley.Data.SQL.Repositories
 
         public Task<Expert> GetByAddressAsync(Address address)
         {
-            return (from expert in _readContext.Experts
-                    join user in _readContext.Users on expert.UserId equals user.Id
-                    where user.Address == address
-                    select expert).FirstOrDefaultAsync();
+            return _editContext.Experts
+                               .Include(x => x.User)
+                               .FirstOrDefaultAsync(x => x.User.Address == address);
+        }
+
+        public Task<Expert> GetAsync(long expertId)
+        {
+            return _editContext.Experts
+                               .Include(x => x.User)
+                               .FirstOrDefaultAsync(e => e.UserId == expertId);
         }
 
         public async Task<IReadOnlyCollection<Area>> GetAreasAsync()
             => await _readContext.Areas.ToArrayAsync();
 
-        public Task AddAsync(long expertId, IReadOnlyCollection<int> areas)
+        public Task AddAsync(Expert expert, IReadOnlyCollection<int> areas)
         {
-            var expert = new Expert {UserId = expertId, IsAvailable = true};
             _editContext.Experts.Add(expert);
 
             var expertAreas = areas.Select(s => new ExpertArea
@@ -57,26 +62,21 @@ namespace SmartValley.Data.SQL.Repositories
             return _editContext.SaveAsync();
         }
 
-        public async Task UpdateAsync(Expert expert, IReadOnlyCollection<int> areas)
+        public async Task UpdateAreasAsync(long expertId, IReadOnlyCollection<int> areas)
         {
-            _editContext.Experts.Attach(expert).State = EntityState.Modified;
-
-            var expertAreas = await _editContext.ExpertAreas.Where(e => e.ExpertId == expert.UserId).ToArrayAsync();
+            var expertAreas = await _editContext.ExpertAreas.Where(e => e.ExpertId == expertId).ToArrayAsync();
             _editContext.ExpertAreas.RemoveRange(expertAreas);
             _editContext.ExpertAreas.AddRange(areas.Select(s => new ExpertArea
                                                                 {
-                                                                    Expert = expert,
+                                                                    ExpertId = expertId,
                                                                     AreaId = (AreaType) s
                                                                 }).ToArray());
             await _editContext.SaveAsync();
         }
 
-        public Task<Expert> GetAsync(long expertId)
-            => _readContext.Experts.FirstOrDefaultAsync(e => e.UserId == expertId);
-
-        public async Task SetAvailabilityAsync(long expertId, bool isAvailable)
+        public async Task SetAvailabilityAsync(Address address, bool isAvailable)
         {
-            var expert = await _editContext.Experts.FirstOrDefaultAsync(e => e.UserId == expertId);
+            var expert = await _editContext.Experts.Include(i => i.User).FirstOrDefaultAsync(e => e.User.Address == address);
             if (expert == null)
                 throw new AppErrorException(ErrorCode.ExpertNotFound);
 
@@ -87,27 +87,29 @@ namespace SmartValley.Data.SQL.Repositories
         public Task<int> GetTotalCountExpertsAsync()
             => _readContext.Experts.CountAsync();
 
+        public async Task SaveChangesAsync()
+        {
+            await _editContext.SaveAsync();
+        }
+
         public async Task<ExpertDetails> GetDetailsAsync(Address address)
         {
-            var expertUser = await (from expert in _readContext.Experts
-                                    join user in _readContext.Users on expert.UserId equals user.Id
-                                    where user.Address == address
-                                    select new {expert, user})
-                                 .FirstOrDefaultAsync();
+            var expertUser = await GetByAddressAsync(address);
 
             var expertAreas = await (from expertArea in _readContext.ExpertAreas
                                      join area in _readContext.Areas on expertArea.AreaId equals area.Id
-                                     where expertArea.ExpertId == expertUser.user.Id
+                                     where expertArea.ExpertId == expertUser.User.Id
                                      select area)
                                   .ToArrayAsync();
 
             return new ExpertDetails
             (
-                expertUser.user.Address,
-                expertUser.user.Email,
-                expertUser.user.Name,
-                expertUser.user.About,
-                expertUser.expert.IsAvailable,
+                expertUser.User.Address,
+                expertUser.User.Email,
+                expertUser.User.FirstName,
+                expertUser.User.SecondName,
+                expertUser.About,
+                expertUser.IsAvailable,
                 expertAreas
             );
         }
@@ -117,8 +119,8 @@ namespace SmartValley.Data.SQL.Repositories
             var expertUsersQuery = (from expert in _readContext.Experts
                                     join user in _readContext.Users on expert.UserId equals user.Id
                                     select new {expert, user})
-                                   .Skip(offset)
-                                   .Take(count);
+                .Skip(offset)
+                .Take(count);
 
             var expertAreas = await (from expertUser in expertUsersQuery
                                      join expertArea in _readContext.ExpertAreas on expertUser.user.Id equals expertArea.ExpertId
@@ -130,8 +132,9 @@ namespace SmartValley.Data.SQL.Repositories
             return await expertUsersQuery.Select(expertUser =>
                                                      new ExpertDetails(expertUser.user.Address,
                                                                        expertUser.user.Email,
-                                                                       expertUser.user.Name,
-                                                                       expertUser.user.About,
+                                                                       expertUser.user.FirstName,
+                                                                       expertUser.user.SecondName,
+                                                                       expertUser.expert.About,
                                                                        expertUser.expert.IsAvailable,
                                                                        lookUpAreas[expertUser.expert.UserId].ToArray())).ToArrayAsync();
         }

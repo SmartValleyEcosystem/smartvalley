@@ -54,8 +54,6 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.HasKey("ScoringId", "AreaId");
 
-                    b.HasIndex("AreaId");
-
                     b.HasIndex("ScoringId", "AreaId");
 
                     b.ToTable("AreaScorings");
@@ -78,7 +76,7 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("Countries");
                 });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.EstimateComment", b =>
+            modelBuilder.Entity("SmartValley.Domain.Entities.Estimate", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
@@ -86,28 +84,26 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<string>("Comment")
                         .IsRequired();
 
-                    b.Property<long>("ExpertId");
+                    b.Property<long>("ExpertScoringId");
 
                     b.Property<int?>("Score");
 
                     b.Property<long>("ScoringCriterionId");
 
-                    b.Property<long>("ScoringId");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ExpertId");
+                    b.HasIndex("ExpertScoringId");
 
                     b.HasIndex("ScoringCriterionId");
 
-                    b.HasIndex("ScoringId");
-
-                    b.ToTable("EstimateComments");
+                    b.ToTable("Estimates");
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.Expert", b =>
                 {
                     b.Property<long>("UserId");
+
+                    b.Property<string>("About");
 
                     b.Property<bool>("IsAvailable");
 
@@ -208,21 +204,26 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("ExpertAreas");
                 });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.ExpertScoringConclusion", b =>
+            modelBuilder.Entity("SmartValley.Domain.Entities.ExpertScoring", b =>
                 {
-                    b.Property<long>("ScoringId");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("Area");
 
-                    b.Property<long>("ExpertId");
-
                     b.Property<string>("Conclusion");
 
-                    b.HasKey("ScoringId", "Area", "ExpertId");
+                    b.Property<long>("ExpertId");
+
+                    b.Property<long>("ScoringId");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ExpertId");
 
-                    b.ToTable("ExpertScoringConclusions");
+                    b.HasIndex("ScoringId");
+
+                    b.ToTable("ExpertScorings");
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.Project", b =>
@@ -415,6 +416,24 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("ScoringApplicationQuestions");
                 });
 
+            modelBuilder.Entity("SmartValley.Domain.Entities.ScoringCriteriaMapping", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<long>("ScoringApplicationQuestionId");
+
+                    b.Property<long>("ScoringCriterionId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ScoringApplicationQuestionId");
+
+                    b.HasIndex("ScoringCriterionId");
+
+                    b.ToTable("ScoringCriteriaMappings");
+                });
+
             modelBuilder.Entity("SmartValley.Domain.Entities.ScoringCriterion", b =>
                 {
                     b.Property<long>("Id")
@@ -451,8 +470,6 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.HasKey("ScoringId", "AreaId", "ExpertId");
 
-                    b.HasIndex("AreaId");
-
                     b.HasIndex("ExpertId");
 
                     b.HasIndex("ScoringId", "AreaId", "ExpertId");
@@ -465,8 +482,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("About");
-
                     b.Property<Address>("Address")
                         .HasConversion(new ValueConverter<Address, string>(v => default(string), v => default(Address)))
                         .HasMaxLength(42);
@@ -474,9 +489,13 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<string>("Email")
                         .IsRequired();
 
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(50);
+
                     b.Property<bool>("IsEmailConfirmed");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("SecondName")
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 
@@ -621,32 +640,22 @@ namespace SmartValley.Data.SQL.Migrations
 
             modelBuilder.Entity("SmartValley.Domain.Entities.AreaScoring", b =>
                 {
-                    b.HasOne("SmartValley.Domain.Entities.Area", "Area")
-                        .WithMany()
-                        .HasForeignKey("AreaId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("SmartValley.Domain.Entities.Scoring", "Scoring")
                         .WithMany("AreaScorings")
                         .HasForeignKey("ScoringId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.EstimateComment", b =>
+            modelBuilder.Entity("SmartValley.Domain.Entities.Estimate", b =>
                 {
-                    b.HasOne("SmartValley.Domain.Entities.Expert", "Expert")
-                        .WithMany()
-                        .HasForeignKey("ExpertId")
+                    b.HasOne("SmartValley.Domain.Entities.ExpertScoring", "ExpertScoring")
+                        .WithMany("Estimates")
+                        .HasForeignKey("ExpertScoringId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SmartValley.Domain.Entities.ScoringCriterion", "ScoringCriterion")
                         .WithMany()
                         .HasForeignKey("ScoringCriterionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SmartValley.Domain.Entities.Scoring", "Scoring")
-                        .WithMany()
-                        .HasForeignKey("ScoringId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -687,7 +696,7 @@ namespace SmartValley.Data.SQL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.ExpertScoringConclusion", b =>
+            modelBuilder.Entity("SmartValley.Domain.Entities.ExpertScoring", b =>
                 {
                     b.HasOne("SmartValley.Domain.Entities.Expert", "Expert")
                         .WithMany()
@@ -695,7 +704,7 @@ namespace SmartValley.Data.SQL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SmartValley.Domain.Entities.Scoring", "Scoring")
-                        .WithMany("ExpertScoringConclusions")
+                        .WithMany("ExpertScorings")
                         .HasForeignKey("ScoringId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -729,13 +738,21 @@ namespace SmartValley.Data.SQL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SmartValley.Domain.Entities.ScoringOffer", b =>
+            modelBuilder.Entity("SmartValley.Domain.Entities.ScoringCriteriaMapping", b =>
                 {
-                    b.HasOne("SmartValley.Domain.Entities.Area", "Area")
+                    b.HasOne("SmartValley.Domain.Entities.ScoringApplicationQuestion", "ScoringApplicationQuestion")
                         .WithMany()
-                        .HasForeignKey("AreaId")
+                        .HasForeignKey("ScoringApplicationQuestionId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("SmartValley.Domain.Entities.ScoringCriterion", "ScoringCriterion")
+                        .WithMany()
+                        .HasForeignKey("ScoringCriterionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.Entities.ScoringOffer", b =>
+                {
                     b.HasOne("SmartValley.Domain.Entities.Expert", "Expert")
                         .WithMany()
                         .HasForeignKey("ExpertId")

@@ -10,12 +10,19 @@
     "No": "No",
     "Cancel": "Cancel",
     "ServerError": "Server error",
+    "ToFewExpertsErroTitle": "To few experts.",
+    "ToFewExpertsErrorMessage": "Please choose 3 or more experts.",
     "Error": "Error",
     "TryAgain": "Please try again later",
     "Success": "Success",
     "UserNotFound": "User not found.",
     "EmailSendingErrorTitle": "Failed to send email",
     "EmailAlreadyExistErrorTitle": "Email already exist",
-    "EnterAnotherEmail": "Enter another email."
+    "EnterAnotherEmail": "Enter another email.",
+    "RequiredSocialsErrorTitle": "Social medias required.",
+    "RequiredSocialsErrorMessage": "Please enter one or more social media.",
+    "RequiredMembersErrorTitle": "Team members required.",
+    "RequiredMembersErrorMessage": "Please enter one or more team member.",
+    "UploadPhotoErrorTitle": "Failed to upload photo"
   }
 }

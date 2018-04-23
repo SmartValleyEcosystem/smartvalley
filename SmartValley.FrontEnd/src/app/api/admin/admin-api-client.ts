@@ -4,6 +4,9 @@ import {BaseApiClient} from '../base-api-client';
 import {AdminRequest} from './admin-request';
 import {AdminResponse} from './admin-response';
 import {CollectionResponse} from '../collection-response';
+import {AdminExpertUpdateRequest} from './admin-expert-update-request';
+import {AdminSetAvailabilityRequest} from './admin-set-availability-request';
+import {AdminExpertUpdateAreasRequest} from './admin-expert-update-areas-request';
 
 @Injectable()
 export class AdminApiClient extends BaseApiClient {
@@ -16,6 +19,18 @@ export class AdminApiClient extends BaseApiClient {
       address: address,
       transactionHash: transactionHash
     }).toPromise();
+  }
+
+  public updateExpertAsync(updateRequest: AdminExpertUpdateRequest) {
+    return this.http.put(this.baseApiUrl + '/admin/experts', updateRequest).toPromise();
+  }
+
+  public updateExpertAreasAsync(request: AdminExpertUpdateAreasRequest) {
+    return this.http.put(this.baseApiUrl + '/admin/experts/areas', request).toPromise();
+  }
+
+  public setExpertAvailabilityAsync(request: AdminSetAvailabilityRequest) {
+    return this.http.put(this.baseApiUrl + '/admin/experts/availability', request).toPromise();
   }
 
   public async deleteAsync(address: string, transactionHash: string): Promise<void> {

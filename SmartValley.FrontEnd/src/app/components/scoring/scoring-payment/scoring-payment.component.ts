@@ -11,6 +11,7 @@ import {Paths} from '../../../paths';
 import {ProjectSummaryResponse} from '../../../api/project/project-summary-response';
 import {DialogService} from '../../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
+import {NotificationsService} from 'angular2-notifications';
 
 @Component({
   selector: 'app-scoring-payment',
@@ -28,7 +29,8 @@ export class ScoringPaymentComponent implements OnInit {
   public totalSum = 0;
   public projectId: number;
 
-  public initialExpertsAmount = 3;
+  public minimumExperts = 3;
+  public maximumExperts = 6;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -38,14 +40,19 @@ export class ScoringPaymentComponent implements OnInit {
               private scoringApiClient: ScoringApiClient,
               private scoringService: ScoringService,
               private dialogService: DialogService,
+              private notificationsService: NotificationsService,
               private translateService: TranslateService) {
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
   }
 
   public async ngOnInit() {
+
+    //MVP
+    this.minimumExperts = 2;
+
     this.areas = this.areaService.areas;
     for (let i = 0; this.areas.length > i; i++) {
-      this.expertsInArea[this.areas[i].areaType] = this.initialExpertsAmount;
+      this.expertsInArea[this.areas[i].areaType] = this.minimumExperts;
       this.areaCosts[this.areas[i].areaType] = await this.scoringService.getScoringCostInAreaAsync(this.areas[i].areaType);
     }
     this.projectId = +this.route.snapshot.paramMap.get('id');
@@ -85,6 +92,13 @@ export class ScoringPaymentComponent implements OnInit {
     for (const currentArea in this.expertsInArea) {
       areas.push(+currentArea);
       areaExpertCounts.push(this.expertsInArea[currentArea]);
+    }
+
+    if (areaExpertCounts.some(i => i < this.minimumExperts)) {
+      this.notificationsService.error(
+        this.translateService.instant('Common.ToFewExpertsErroTitle'),
+        this.translateService.instant('Common.ToFewExpertsErrorMessage')
+      );
     }
 
     const transactionHash = await this.scoringService.startAsync(this.externalId, areas, areaExpertCounts);

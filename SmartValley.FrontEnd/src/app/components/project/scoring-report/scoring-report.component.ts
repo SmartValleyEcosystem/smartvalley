@@ -1,8 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AreaService} from '../../../services/expert/area.service';
-import {Area} from '../../../services/expert/area';
 import {EstimatesApiClient} from '../../../api/estimates/estimates-api-client';
-import {GetEstimatesResponse} from '../../../api/estimates/get-estimates-response';
 import {AreasScoringInfo} from './areas-scoring-Info';
 import {ScoringCriteriaGroup} from '../../../services/criteria/scoring-criteria-group';
 import {ScoringCriterionService} from '../../../services/criteria/scoring-criterion.service';
@@ -11,6 +9,9 @@ import {Router} from '@angular/router';
 import {ScoringStatus} from '../../../services/scoring-status.enum';
 import {OfferStatus} from '../../../api/scoring-offer/offer-status.enum';
 import {AreaType} from "../../../api/scoring/area-type.enum";
+import {CriterionPromptResponse} from '../../../api/estimates/criterion-prompt-response';
+import {CriterionPrompt} from '../../../api/estimates/criterion-prompt';
+import {QuestionControlType} from '../../../api/scoring-application/question-control-type.enum';
 
 @Component({
   selector: 'app-scoring-report',
@@ -19,9 +20,13 @@ import {AreaType} from "../../../api/scoring/area-type.enum";
 })
 export class ScoringReportComponent implements OnInit {
 
-  public areas: Area[];
   public areasScoringInfo: AreasScoringInfo[] = [];
+  public questionTypeComboBox = QuestionControlType.Combobox;
   public scoringCriterionResponse: ScoringCriteriaGroup[] = [];
+  public criterionPrompts: CriterionPromptResponse[] = [];
+  public questionsActivity: boolean[] = [];
+  public areaType: number;
+  public criterionIsReady = false;
 
   @Input() projectId: number;
   @Input() scoringStatus: ScoringStatus;
@@ -34,21 +39,30 @@ export class ScoringReportComponent implements OnInit {
   }
 
   public async ngOnInit() {
-    this.areas = this.areaService.areas;
     const estimates = await this.estimatesApiClient.getAsync(this.projectId);
-    if (estimates.items.length !== 0) {
-      for (const area of this.areas) {
-        const estimatesForArea = estimates.items.find(e => e.areaType === area.areaType);
-        this.areasScoringInfo.push({
-          finishedExperts: estimatesForArea.offers.filter(o => o.status === OfferStatus.Finished).length,
-          totalExperts: estimatesForArea.requiredExpertsCount,
-          areaName: area.name,
-          scoringInfo: estimatesForArea,
-          areaType: area.areaType
-        });
-        this.scoringCriterionResponse = this.scoringCriterionResponse.concat(this.scoringCriterionService.getByArea(area.areaType));
-      }
+    for (const item of estimates.items) {
+      const estimatesForArea = estimates.items.find(e => e.areaType === item.areaType);
+      this.areasScoringInfo.push({
+        finishedExperts: estimatesForArea.offers.filter(o => o.status === OfferStatus.Finished).length,
+        totalExperts: estimatesForArea.requiredExpertsCount,
+        areaName: this.areaService.getNameByType(item.areaType),
+        scoringInfo: estimatesForArea,
+        areaType: item.areaType
+      });
+      this.scoringCriterionResponse = this.scoringCriterionResponse.concat(this.scoringCriterionService.getByArea(item.areaType));
+      const criterionPromptsResponse = await this.estimatesApiClient.getCriterionPromptsAsync(this.projectId, item.areaType);
+      this.criterionPrompts = this.criterionPrompts.concat(criterionPromptsResponse.items);
     }
+    this.criterionIsReady = true;
+    this.questionsActivity = [true];
+  }
+
+  public getCriterionInfo(id): CriterionPrompt[] {
+    const criterionPrompts = this.criterionPrompts.find((c) => c.scoringCriterionId === id);
+    if (criterionPrompts) {
+     return criterionPrompts.prompts;
+    }
+    return null;
   }
 
   public getMaxScoreByArea(areaType: AreaType): number {
@@ -56,7 +70,7 @@ export class ScoringReportComponent implements OnInit {
   }
 
   public getQuestionById(id: number): string {
-    return this.scoringCriterionResponse.map(s => s.criteria).reduce((l, r) => l.concat(r)).find(c => c.id === id).name;
+    return this.scoringCriterionResponse.selectMany(s => s.criteria).find(c => c.id === id ).name;
   }
 
   public async navigateToApplicationScoringAsync(): Promise<void> {
@@ -65,9 +79,20 @@ export class ScoringReportComponent implements OnInit {
 
   public getFinishedExperts(areaType: number): number {
     return this.areasScoringInfo.filter(a => a.areaType === areaType)
-      .map(e => e.scoringInfo.offers)
-      .reduce((l, r) => l.concat(r))
+      .selectMany(e => e.scoringInfo.offers)
       .filter(o => o.status === OfferStatus.Finished)
       .length;
+  }
+
+  public chageActiveQuestion(id: number) {
+    const indexOfCurrentSelected = this.questionsActivity.indexOf(true);
+    this.questionsActivity = this.questionsActivity.map(() => false);
+    if (indexOfCurrentSelected !== id) {
+      this.questionsActivity[id] = !this.questionsActivity[id];
+    }
+  }
+
+  public onTabChange () {
+    this.questionsActivity = [];
   }
 }

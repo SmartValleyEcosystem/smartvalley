@@ -5,7 +5,8 @@
       <tr class="list-row list-row__header">
         <th class="list-item">{{ 'AdminExpertList.Address' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.Email' | translate }}</th>
-        <th class="list-item">{{ 'AdminExpertList.Name' | translate }}</th>
+        <th class="list-item">{{ 'AdminExpertList.FirstName' | translate }}</th>
+        <th class="list-item">{{ 'AdminExpertList.SecondName' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.About' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.Available' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.Categories' | translate }}</th>
@@ -14,7 +15,7 @@
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr class="list-row">
-        <td class="list-item" *ngFor="let col of ['address', 'email', 'name', 'about', 'isAvailable', 'areas']">
+        <td class="list-item" *ngFor="let col of ['address', 'email', 'firstName', 'secondName', 'about', 'isAvailable', 'areas']">
           {{rowData[col]}}
         </td>
         <td>
@@ -31,11 +32,9 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="summary" let-rowData>
-      <tr class="list-row">
-        <div style="text-align:left">
-          <button type="button" pButton icon="fa-plus" (click)="showDialogToCreateNewExpert()" label="{{ 'AdminExpertList.CreateNew' | translate }}"></button>
-        </div>
-      </tr>
+      <div style="float: left;">
+        <button class="main-btn" type="button" (click)="showDialogToCreateNewExpert()">{{ 'AdminExpertList.CreateNew' | translate }}</button>
+      </div>
     </ng-template>
   </p-table>
 </div>

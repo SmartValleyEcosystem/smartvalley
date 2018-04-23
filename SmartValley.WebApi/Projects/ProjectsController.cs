@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -21,8 +22,6 @@ namespace SmartValley.WebApi.Projects
     [Route("api/projects")]
     public class ProjectsController : Controller
     {
-        private const int FileSizeLimitBytes = 5242880;
-
         private readonly IProjectService _projectService;
         private readonly IScoringService _scoringService;
         private readonly ICountryRepository _countryRepository;
@@ -45,36 +44,49 @@ namespace SmartValley.WebApi.Projects
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> PostAsync([FromBody] CreateProjectRequest request)
+        public async Task<ProjectAboutResponse> PostAsync([FromBody] CreateProjectRequest request)
         {
-            await _projectService.CreateAsync(User.GetUserId(), request);
-            return NoContent();
+            var project = await _projectService.CreateAsync(User.GetUserId(), request);
+            var teamMembers = await _projectService.GetTeamAsync(project.Id);
+
+            return ProjectAboutResponse.Create(project, teamMembers);
         }
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> PutAsync(long id, [FromBody] UpdateProjectRequest request)
+        public async Task<ProjectAboutResponse> PutAsync(long id, [FromBody] UpdateProjectRequest request)
         {
-            var isAuthorized = await _projectService.IsAuthorizedToEditProjectAsync(id, User.GetUserId());
-            if (!isAuthorized)
-                return Unauthorized();
+            if (!await _projectService.IsAuthorizedToEditProjectAsync(id, User.GetUserId()))
+                throw new AppErrorException(ErrorCode.UserNotAuthor);
 
-            await _projectService.UpdateAsync(id, request);
-            return NoContent();
+            var project = await _projectService.UpdateAsync(id, request);
+            var teamMembers = await _projectService.GetTeamAsync(project.Id);
+
+            return ProjectAboutResponse.Create(project, teamMembers);
         }
 
         [HttpPut("{id}/image")]
         [Authorize]
         public async Task<IActionResult> UpdateImageAsync(long id, IFormFile image)
         {
-            if (image != null && image.Length > FileSizeLimitBytes)
+            if (!image.IsImageValid())
                 throw new AppErrorException(ErrorCode.InvalidFileUploaded);
 
-            var isAuthorized = await _projectService.IsAuthorizedToEditProjectAsync(id, User.GetUserId());
-            if (!isAuthorized)
+            if (!await _projectService.IsAuthorizedToEditProjectAsync(id, User.GetUserId()))
                 return Unauthorized();
 
             await _projectService.UpdateImageAsync(id, image?.ToAzureFile());
+            return NoContent();
+        }
+
+        [HttpDelete("{id}/image")]
+        [Authorize]
+        public async Task<IActionResult> DeleteImageAsync(long id)
+        {
+            if (!await _projectService.IsAuthorizedToEditProjectAsync(id, User.GetUserId()))
+                return Unauthorized();
+
+            await _projectService.DeleteProjectImageAsync(id);
             return NoContent();
         }
 
@@ -82,8 +94,7 @@ namespace SmartValley.WebApi.Projects
         [Authorize]
         public async Task<IActionResult> DeleteAsync(long id)
         {
-            var isAuthorized = await _projectService.IsAuthorizedToEditProjectAsync(id, User.GetUserId());
-            if (!isAuthorized)
+            if (!await _projectService.IsAuthorizedToEditProjectAsync(id, User.GetUserId()))
                 return Unauthorized();
 
             await _projectService.DeleteAsync(id);
@@ -94,17 +105,24 @@ namespace SmartValley.WebApi.Projects
         [Authorize]
         public async Task<IActionResult> UploadTeamMemberPhotoAsync([FromForm] AddProjectTeamMemberPhotoRequest request, IFormFile photo)
         {
-            if (photo == null ||
-                photo.Length < 0 ||
-                photo.Length > FileSizeLimitBytes)
-            {
+            if (!photo.IsImageValid())
                 throw new AppErrorException(ErrorCode.InvalidFileUploaded);
-            }
 
             if (!await _projectService.IsAuthorizedToEditProjectTeamMemberAsync(User.GetUserId(), request.ProjectTeamMemberId))
                 return Unauthorized();
 
             await _projectService.UpdateTeamMemberPhotoAsync(request.ProjectTeamMemberId, photo.ToAzureFile());
+            return NoContent();
+        }
+
+        [HttpDelete("teammember/{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteTeamMemberPhotoAsync(long id)
+        {
+            if (!await _projectService.IsAuthorizedToEditProjectTeamMemberAsync(User.GetUserId(), id))
+                return Unauthorized();
+
+            await _projectService.DeleteTeamMemberPhotoAsync(id);
             return NoContent();
         }
 
@@ -204,7 +222,8 @@ namespace SmartValley.WebApi.Projects
                        Github = project.Project.Github,
                        Medium = project.Project.Medium,
                        Twitter = project.Project.Twitter,
-                       Linkedin = project.Project.Linkedin
+                       Linkedin = project.Project.Linkedin,
+                       ImageUrl = project.Project.ImageUrl
                    };
         }
     }

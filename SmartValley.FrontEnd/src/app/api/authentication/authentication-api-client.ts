@@ -13,8 +13,8 @@ export class AuthenticationApiClient extends BaseApiClient {
     super();
   }
 
-  public async authenticateAsync(request: AuthenticationRequest): Promise<AuthenticationResponse> {
-    return await this.http.post<AuthenticationResponse>(this.baseApiUrl + '/auth', request).toPromise();
+  public authenticateAsync(request: AuthenticationRequest): Promise<AuthenticationResponse> {
+    return this.http.post<AuthenticationResponse>(this.baseApiUrl + '/auth', request).toPromise();
   }
 
   public async registerAsync(request: RegistrationRequest): Promise<void> {

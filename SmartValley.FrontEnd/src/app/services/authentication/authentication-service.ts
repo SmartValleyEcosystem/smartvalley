@@ -19,6 +19,7 @@ import {RegistrationRequest} from '../../api/authentication/registration-request
 import {NotificationsService} from 'angular2-notifications';
 import {TranslateService} from '@ngx-translate/core';
 import {UserApiClient} from '../../api/user/user-api-client';
+import {User} from './user';
 
 @Injectable()
 export class AuthenticationService {

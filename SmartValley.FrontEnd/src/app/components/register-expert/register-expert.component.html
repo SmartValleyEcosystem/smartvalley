@@ -120,19 +120,27 @@
           <label>{{ 'RegisterExpert.UploadDocumentLabel' | translate }}</label>
         </p>
         <p class="notify">{{ 'RegisterExpert.UploadNotify' | translate }}</p>
-        <p-fileUpload mode="advanced" auto="true" customUpload="true" [showUploadButton]="false"
-                      [showCancelButton]="false" name="document" customUpload="true" accept="image/*"
-                      maxFileSize="5242880" (uploadHandler)="onDocumentUpload($event)" (onRemove)="onDocumentUpload(null)" #required>
-        </p-fileUpload>
+        <app-image-uploader
+          class="input-component"
+          name="document"
+          accept="image/*"
+          maxFileSize="5242880"
+          formControlName="document"
+          #required>
+        </app-image-uploader>
       </div>
       <div class="control-row">
         <p class="control-label">
           <label>{{ 'RegisterExpert.UploadPhotoLabel' | translate }}</label>
         </p>
-        <p-fileUpload mode="advanced" auto="true" name="photo" customUpload="true" [showUploadButton]="false"
-                      [showCancelButton]="false" customUpload="true" accept="image/*"
-                      maxFileSize="5242880" (uploadHandler)="onPhotoUpload($event)" (onRemove)="onPhotoUpload(null)" #required>
-        </p-fileUpload>
+        <app-image-uploader
+          class="input-component"
+          name="photo"
+          accept="image/*"
+          maxFileSize="5242880"
+          formControlName="photo"
+          #required>
+        </app-image-uploader>
       </div>
     </div>
     <input (click)="applyAsync()" [disabled]="isSubmitting" class="main-btn submit-btn" type="submit" value="{{ 'RegisterExpert.Submit' | translate }}">

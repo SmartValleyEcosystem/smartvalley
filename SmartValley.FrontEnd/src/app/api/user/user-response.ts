@@ -1,7 +1,7 @@
 export interface UserResponse {
   address: string;
   email: string;
-  name: string;
-  about: string;
+  firstName: string;
+  secondName: string;
   isEmailConfirmed: boolean;
 }

@@ -98,8 +98,8 @@ namespace SmartValley.WebApi.Experts
         public Task<ExpertDetails> GetDetailsAsync(Address address)
             => _expertRepository.GetDetailsAsync(address);
 
-        public Task SetAvailabilityAsync(long expertId, bool isAvailable)
-            => _expertRepository.SetAvailabilityAsync(expertId, isAvailable);
+        public Task SetAvailabilityAsync(Address address, bool isAvailable)
+            => _expertRepository.SetAvailabilityAsync(address, isAvailable);
 
         public Task<int> GetTotalCountExpertsAsync() => _expertRepository.GetTotalCountExpertsAsync();
 
@@ -109,31 +109,40 @@ namespace SmartValley.WebApi.Experts
             if (user == null)
                 throw new AppErrorException(ErrorCode.UserNotFound);
 
-            user.About = request.About;
-            user.Name = request.Name;
+            user.SecondName = request.SecondName;
+            user.FirstName = request.FirstName;
             user.Email = request.Email;
 
             await _userRepository.UpdateWholeAsync(user);
             await _userRepository.AddRoleAsync(request.Address, RoleType.Expert);
-            await _expertRepository.AddAsync(user.Id, request.Areas);
+            await _expertRepository.AddAsync(new Expert {About = request.About, UserId = user.Id, IsAvailable = true}, request.Areas);
         }
 
-        public async Task UpdateAsync(ExpertUpdateRequest request)
+        public async Task UpdateAreasAsync(Address address, IReadOnlyCollection<int> areas)
         {
-            var user = await _userRepository.GetByAddressAsync(request.Address);
-            if (user == null)
-                throw new AppErrorException(ErrorCode.UserNotFound);
+            var expert = await _expertRepository.GetByAddressAsync(address);
+            if (expert == null)
+                throw new AppErrorException(ErrorCode.ExpertNotFound);
 
-            user.About = request.About;
-            user.Name = request.Name;
-            user.Email = request.Email;
+            await _expertRepository.UpdateAreasAsync(expert.UserId, areas);
+        }
 
-            await _userRepository.UpdateWholeAsync(user);
+        public async Task UpdateAsync(Address address, ExpertUpdateRequest request)
+        {
+            var expert = await _expertRepository.GetByAddressAsync(address);
+            if (expert == null)
+                throw new AppErrorException(ErrorCode.ExpertNotFound);
+
+            expert.User.SecondName = request.SecondName;
+            expert.User.FirstName = request.FirstName;
+            expert.About = request.About;
+
+            await _expertRepository.SaveChangesAsync();
 
             //  https://rassvet-capital.atlassian.net/browse/ILT-730
             //if (!string.IsNullOrEmpty(request.TransactionHash))
             //{
-            //    await _expertRepository.UpdateAsync(new Expert
+            //    await _expertRepository.UpdateAreasAsync(new Expert
             //                                        {
             //                                            IsAvailable = request.IsAvailable,
             //                                            UserId = user.Id
@@ -158,14 +167,16 @@ namespace SmartValley.WebApi.Experts
             if (user == null)
                 throw new AppErrorException(ErrorCode.UserNotFound);
 
-            user.Name = $"{application.ExpertApplication.LastName} {application.ExpertApplication.FirstName}";
+            user.FirstName = application.ExpertApplication.FirstName;
+            user.SecondName = application.ExpertApplication.LastName;
+
             await _userRepository.UpdateWholeAsync(user);
 
             var expert = await _expertRepository.GetByAddressAsync(user.Address);
             if (expert != null)
-                await _expertRepository.UpdateAsync(expert, areas);
+                await _expertRepository.UpdateAreasAsync(user.Id, areas);
             else
-                await _expertRepository.AddAsync(user.Id, areas);
+                await _expertRepository.AddAsync(new Expert {UserId = user.Id, IsAvailable = true}, areas);
 
             await _expertApplicationRepository.SetAcceptedAsync(application, areas.ToList());
 

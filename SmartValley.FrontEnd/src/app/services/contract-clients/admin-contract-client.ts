@@ -3,10 +3,6 @@ import {Web3Service} from '../web3-service';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {ConverterHelper} from '../converter-helper';
 import {ContractClient} from './contract-client';
-import {isNullOrUndefined} from 'util';
-import {AdminRequest} from '../../api/admin/admin-request';
-import {Md5} from 'ts-md5';
-import {AuthenticationService} from '../authentication/authentication-service';
 import {UserContext} from '../authentication/user-context';
 
 @Injectable()

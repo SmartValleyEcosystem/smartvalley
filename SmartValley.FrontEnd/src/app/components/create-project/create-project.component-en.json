@@ -1,6 +1,8 @@
 {
   "CreateProject": {
     "Title": "Create project",
+    "Photo": "Photo",
+    "ProjectImage": "Project image",
     "EditTitle": "Edit project",
     "CreateNewProject": "Create new project for scoring",
     "CommonInformation": "Common information",
@@ -57,6 +59,7 @@
     "LinkedinLink": "Link to Linkedin",
     "RolePlaceholder": "For ex., CTO",
     "FacebookLink": "Link to Facebook",
-    "ProjectCouldntbeRemoved": "Project could not be removed"
+    "ProjectCouldntbeRemoved": "Project could not be removed",
+    "InvalidFileType": "Invalid file type."
   }
 }

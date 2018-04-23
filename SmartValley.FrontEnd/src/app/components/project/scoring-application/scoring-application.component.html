@@ -166,8 +166,7 @@
                  tooltipPosition="right">
               <div class="member-photo-container">
                 <div class="avatar-wrapper">
-                  <img *ngIf="adviser.photoUrl !== '' && adviser.photoUrl !== null; else withoutPhoto;" class="member-photo"
-                       [src]="adviser.photoUrl"/>
+                  <img *ngIf="adviser.photoUrl; else withoutPhoto;" class="member-photo">
                 </div>
                 <ng-template #withoutPhoto>
                   <i class="empty-photo material-icons">account_circle</i>

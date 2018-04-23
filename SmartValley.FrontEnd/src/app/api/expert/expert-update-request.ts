@@ -1,9 +1,6 @@
-export interface ExpertUpdateRequest {
-    transactionHash?: string;
-    address: string;
-    email: string;
-    name: string;
-    about: string;
-    isAvailable: boolean;
-    areas: number[];
+import {UpdateUserRequest} from '../user/update-user-request';
+
+export interface ExpertUpdateRequest extends UpdateUserRequest {
+  about: string;
+  isAvailable: boolean;
 }

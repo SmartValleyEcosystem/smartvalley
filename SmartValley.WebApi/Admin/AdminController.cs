@@ -6,6 +6,9 @@ using SmartValley.Application;
 using SmartValley.Domain.Entities;
 using SmartValley.WebApi.Admin.Request;
 using SmartValley.WebApi.Admin.Response;
+using SmartValley.WebApi.Authentication;
+using SmartValley.WebApi.Experts;
+using SmartValley.WebApi.Experts.Requests;
 using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Admin
@@ -15,14 +18,21 @@ namespace SmartValley.WebApi.Admin
     public class AdminController : Controller
     {
         private readonly IAdminService _service;
+        private readonly IExpertService _expertService;
         private readonly EthereumClient _ethereumClient;
+        private readonly IAuthenticationService _authenticationService;
 
-        public AdminController(IAdminService service, EthereumClient ethereumClient)
+        public AdminController(
+            IExpertService expertService,
+            IAdminService service,
+            EthereumClient ethereumClient,
+            IAuthenticationService authenticationService)
         {
             _service = service;
             _ethereumClient = ethereumClient;
+            _expertService = expertService;
+            _authenticationService = authenticationService;
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] AdminRequest request)
@@ -37,9 +47,33 @@ namespace SmartValley.WebApi.Admin
         {
             var admins = await _service.GetAllAsync();
             return Ok(new CollectionResponse<AdminResponse>
-            {
-                Items = admins.Select(i => new AdminResponse { Address = i.Address, Email = i.Email }).ToArray()
-            });
+                      {
+                          Items = admins.Select(i => new AdminResponse {Address = i.Address, Email = i.Email}).ToArray()
+                      });
+        }
+
+        [HttpPut("experts/availability")]
+        public async Task<IActionResult> SetExpertAvailabilityAsync([FromBody] AdminSetAvailabilityRequest request)
+        {
+            await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
+            await _expertService.SetAvailabilityAsync(request.Address, request.Value);
+            return NoContent();
+        }
+
+        [HttpPut("experts/areas")]
+        public async Task<IActionResult> UpdateExpertAreasAsync([FromBody] AdminExpertUpdateAreasRequest request)
+        {
+            await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
+            await _expertService.UpdateAreasAsync(request.Address, request.Areas);
+            return NoContent();
+        }
+
+        [HttpPut("experts")]
+        public async Task<IActionResult> UpdateExpertAsync([FromBody] AdminExpertUpdateRequest request)
+        {
+            await _expertService.UpdateAsync(request.Address, request);
+            await _authenticationService.ChangeEmailAsync(request.Address, request.Email);
+            return NoContent();
         }
 
         [HttpDelete]

@@ -16,9 +16,13 @@ import {DialogService} from '../../services/dialog-service';
 import {Paths} from '../../paths';
 import {ErrorCode} from '../../shared/error-code.enum';
 import {MyProjectResponse} from '../../api/project/my-project-response';
-import {StringExtensions} from '../../utils/string-extensions';
 import {ProjectService} from '../../services/project/project.service';
-import {ScoringApiClient} from "../../api/scoring/scoring-api-client";
+import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
+import {TeamMemberResponse} from '../../api/project/team-member-response';
+import {MemberUploadPhotoComponent} from '../member-upload-photo/member-upload-photo.component';
+import {StringExtensions} from '../../utils/string-extensions';
+import {ImageUploaderComponent} from '../image-uploader/image-uploader.component';
+import {ImageUploaderHelper} from '../../utils/image-uploader-helper';
 
 @Component({
   selector: 'app-create-project',
@@ -50,6 +54,8 @@ export class CreateProjectComponent implements OnInit {
   @ViewChild('country') public countryRow: ElementRef;
   @ViewChild('description') public descriptionRow: ElementRef;
   @ViewChildren('required') public requiredFields: QueryList<any>;
+  @ViewChildren('photo') photos: QueryList<MemberUploadPhotoComponent>;
+  @ViewChild('projectImage') projectImage: ImageUploaderComponent;
 
   constructor(private formBuilder: FormBuilder,
               private notificationsService: NotificationsService,
@@ -136,6 +142,7 @@ export class CreateProjectComponent implements OnInit {
     this.selectedMembers.push(newTeamMemberNumber);
 
     this.membersGroup.addControl('id__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl(''));
+    this.membersGroup.addControl('photo__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl(''));
     this.membersGroup.addControl('full-name__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl('',
       [Validators.maxLength(200)]));
     this.membersGroup.addControl('role__' + this.selectedMembers[this.selectedMembers.length - 1], new FormControl('',
@@ -171,13 +178,14 @@ export class CreateProjectComponent implements OnInit {
     });
   }
 
-  public setTeamMember(id?: number, name?: string, role?: string, linkedin?: string, facebook?: string, description?: string) {
+  public setTeamMember(id ?: number, name ?: string, role ?: string, linkedin ?: string, facebook ?: string, description ?: string, photoUrl?: string) {
     this.membersGroup.controls['id__' + this.selectedMembers[this.selectedMembers.length - 1]].setValue(id);
     this.membersGroup.controls['full-name__' + this.selectedMembers[this.selectedMembers.length - 1]].setValue(name);
     this.membersGroup.controls['role__' + this.selectedMembers[this.selectedMembers.length - 1]].setValue(role);
     this.membersGroup.controls['linkedin__' + this.selectedMembers[this.selectedMembers.length - 1]].setValue(linkedin);
     this.membersGroup.controls['facebook__' + this.selectedMembers[this.selectedMembers.length - 1]].setValue(facebook);
     this.membersGroup.controls['description__' + this.selectedMembers[this.selectedMembers.length - 1]].setValue(description);
+    this.membersGroup.controls['photo__' + this.selectedMembers[this.selectedMembers.length - 1]].setValue(photoUrl);
   }
 
   private getSocialNetworkLink(socialsArray: any, socialNetwork: string): string {
@@ -196,21 +204,24 @@ export class CreateProjectComponent implements OnInit {
       website: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
       whitePaperLink: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
       contactEmail: ['', Validators.maxLength(200)],
+      projectImage: [''],
       icoDate: [''],
       category: ['', [Validators.required]],
       stage: ['', [Validators.required]],
       country: ['', [Validators.required]],
-      social: [this.socials[0].value]
+      social: [this.socials.first().value]
     });
   }
 
   private getCreateProjectRequest(): CreateProjectRequest {
+
     const socialsArray = this.selectedSocials.map(i => <any>{
       network: SocialMediaTypeEnum[this.socialFormGroup.value['social__' + i]],
       link: this.socialFormGroup.value['social-link__' + i]
     });
 
     const form = this.applicationForm.value;
+
     return <CreateProjectRequest>{
       contactEmail: StringExtensions.nullIfEmpty(form.contactEmail),
       countryCode: form.country,
@@ -229,7 +240,7 @@ export class CreateProjectComponent implements OnInit {
       medium: this.getSocialNetworkLink(socialsArray, 'medium'),
       reddit: this.getSocialNetworkLink(socialsArray, 'reddit'),
       telegram: this.getSocialNetworkLink(socialsArray, 'telegram'),
-      twitter: this.getSocialNetworkLink(socialsArray, 'twitter'),
+      twitter: this.getSocialNetworkLink(socialsArray, 'twitter')
     };
   }
 
@@ -292,12 +303,11 @@ export class CreateProjectComponent implements OnInit {
     element.nativeElement.children[1].classList.add('ng-dirty');
     element.nativeElement.children[1].classList.remove('ng-valid');
     const invalidElements = this.requiredFields.filter(i => i.nativeElement.classList.contains('ng-invalid'));
-    if (invalidElements.length > 0) {
-      for (let a = 0; a < invalidElements.length; a++) {
-        invalidElements[a].nativeElement.classList.add('ng-invalid');
-        invalidElements[a].nativeElement.classList.add('ng-dirty');
-      }
-    }
+
+    invalidElements.map(invalid => {
+      invalid.nativeElement.classList.add('ng-invalid');
+      invalid.nativeElement.classList.add('ng-dirty');
+    });
   }
 
   private async loadMyProjectDataAsync() {
@@ -314,7 +324,7 @@ export class CreateProjectComponent implements OnInit {
       .filter(value => isNaN(+value));
 
     for (let i = 0; i < enumItems.length; i++) {
-      const property = Object.entries(data).find(c => c[0].toLowerCase() === enumItems[i].toLowerCase());
+      const property = Object.entries(data).find(c => c.first().toLowerCase() === enumItems[i].toLowerCase());
       if (isNullOrUndefined(property)) {
         continue;
       }
@@ -333,7 +343,8 @@ export class CreateProjectComponent implements OnInit {
         t.role,
         t.linkedIn,
         t.facebook,
-        t.about);
+        t.about,
+        t.photoUrl);
       if (data.teamMembers.indexOf(t) === data.teamMembers.length - 1) {
         break;
       }
@@ -348,16 +359,19 @@ export class CreateProjectComponent implements OnInit {
       description: data.description,
       website: data.website,
       whitePaperLink: data.whitePaperLink,
+      projectImage: data.imageUrl,
       icoDate: isNullOrUndefined(data.icoDate) ? null : moment(data.icoDate).toDate(),
       contactEmail: data.contactEmail,
-      social: [this.socials[0].value]
+      social: [this.socials.first().value]
     });
   }
 
   private async updateProjectAsync(): Promise<void> {
     const request = this.getUpdateProjectRequest();
 
-    await this.projectService.updateAsync(request);
+    const response = await this.projectService.updateAsync(request);
+
+    await Promise.all([this.sendProjectImageAsync(response.projectId), this.sendPhotosAsync(response.teamMembers)]);
 
     this.notificationsService.success(
       this.translateService.instant('Common.Success'),
@@ -371,7 +385,9 @@ export class CreateProjectComponent implements OnInit {
   private async createProjectAsync(): Promise<void> {
     const request = this.getCreateProjectRequest();
 
-    await this.projectService.createAsync(request);
+    const response = await this.projectService.createAsync(request);
+
+    await Promise.all([this.sendProjectImageAsync(response.projectId), this.sendPhotosAsync(response.teamMembers)]);
 
     this.notificationsService.success(
       this.translateService.instant('Common.Success'),
@@ -382,6 +398,43 @@ export class CreateProjectComponent implements OnInit {
     await this.router.navigate([Paths.Project + '/' + myProjectIdResponse.id]);
   }
 
+  private async sendProjectImageAsync(projectId: number): Promise<void> {
+    if (this.projectImage.imgUrl) {
+      if (this.projectImage.value) {
+        if (!ImageUploaderHelper.checkImageExtensions(this.projectImage.value)) {
+          this.notificationsService.warn(
+            this.translateService.instant('Common.Error'),
+            this.translateService.instant('CreateProject.InvalidFileType')
+          );
+          return;
+        }
+        await this.projectService.uploadProjectImageAsync(projectId, this.projectImage.value);
+      }
+    } else {
+      await this.projectApiClient.deleteProjectImageAsync(projectId);
+    }
+  }
+
+  private async sendPhotosAsync(teamMembers: TeamMemberResponse[]): Promise<void> {
+    for (let i = 0; i < teamMembers.length; i++) {
+      const memberNumber = i + 1;
+      const photo = this.photos.find(p => p.elementId === 'photo__' + memberNumber);
+      if (photo.imgUrl) {
+        if (photo.value) {
+          if (!ImageUploaderHelper.checkImageExtensions(photo.value)) {
+            this.notificationsService.warn(
+              this.translateService.instant('Common.Error'),
+              this.translateService.instant('CreateProject.InvalidFileType')
+            );
+            return;
+          }
+          await this.projectService.uploadTeamMemberPhotoAsync(teamMembers[i].id.toString(), photo.value);
+        }
+      } else {
+        await this.projectApiClient.deleteTeamMemberPhotoAsync(teamMembers[i].id);
+      }
+    }
+  }
 
   public async deleteProjectAsync(): Promise<void> {
     const shouldDelete = await this.dialogService.showDeleteProjectModalAsync();
@@ -391,7 +444,7 @@ export class CreateProjectComponent implements OnInit {
       } catch (e) {
         if (e.error.errorCode === ErrorCode.ProjectCouldntBeRemoved) {
           this.notificationsService.warn(
-            this.translateService.instant('Common.Failed'),
+            this.translateService.instant('Common.Error'),
             this.translateService.instant('CreateProject.ProjectCouldntbeRemoved')
           );
         }

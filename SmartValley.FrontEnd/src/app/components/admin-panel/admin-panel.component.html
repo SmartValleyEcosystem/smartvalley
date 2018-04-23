@@ -1,18 +1,9 @@
 <div class="container">
   <div class="row mx-auto">
-    <div class="col-6 sm-title">
-      <h1 class="">{{ 'AdminPanel.Title' | translate }}</h1>
-    </div>
+      <h1 class="title">{{ 'AdminPanel.Title' | translate }}</h1>
   </div>
-  <mat-tab-group>
+  <mat-tab-group class="tab">
     <mat-tab label="{{ 'AdminPanel.AdminsTab' | translate }}">
-      <div class="row mx-auto">
-        <div class="col-2" style="padding-left: 0">
-          <a class="col-12 sv-default-btn btn btn-primary"
-             (click)="createAsync()">{{ 'AdminPanel.Create' | translate }}
-          </a>
-        </div>
-      </div>
       <p-dataTable [value]="admins">
         <p-column [style]="{'width': '24.4em'}" field="address" header="Address"></p-column>
         <p-column field="email" header="Email"></p-column>
@@ -24,6 +15,11 @@
           </ng-template>
         </p-column>
       </p-dataTable>
+      <div class="row mx-auto">
+        <a class="main-btn button-link"
+           (click)="createAsync()">{{ 'AdminPanel.Create' | translate }}
+        </a>
+      </div>
     </mat-tab>
     <mat-tab label="{{ 'AdminPanel.ExpertsTab' | translate }}">
       <ngb-tabset type="pills">

@@ -1,12 +1,11 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from '@angular/router';
 import {ExpertApiClient} from '../../api/expert/expert-api-client';
 import {UserContext} from '../authentication/user-context';
 
 @Injectable()
 export class ExpertStatusGuard implements CanActivate {
-  constructor(private router: Router,
-              private expertApiClient: ExpertApiClient,
+  constructor(private expertApiClient: ExpertApiClient,
               private userContext: UserContext) {
   }
 

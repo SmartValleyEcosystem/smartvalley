@@ -1,22 +1,22 @@
 <div class="container" *ngIf="application">
   <div class="row mx-auto">
-    <div class="col-6 sm-title">
+    <div class="title">
       <h1>{{ 'AdminPanel.Title' | translate }}</h1>
     </div>
   </div>
   <div class="row mx-auto">
-    <div class="col-8" style="color: white; padding-left: 0">
+    <div class="col-8" style="padding-left: 0">
       <h2>{{application.firstName}} {{application.lastName}} {{ 'AdminExpertApplication.Subtitle' | translate }}</h2>
     </div>
   </div>
-  <div style="display: inline-block; margin-right: 2em; color:white;margin-bottom: 1em;" *ngFor="let area of areas">
+  <div style="display: inline-block; margin-right: 2em; margin-bottom: 1em;" *ngFor="let area of areas">
     <p-checkbox [(ngModel)]="application.areaTypes" [(value)]="area.value" inputId="{{area.label}}"
                 disabled="true"></p-checkbox>
     <span style="vertical-align: middle; margin-left: 1em;">{{area.label}}</span>
   </div>
   <div class="sw-card sw-content" style="padding: 2em;">
     <div class="row">
-      <h3 class="col-10">{{ 'Application.BasicInformation' | translate }}</h3>
+      <h3 class="col-10">{{ 'Account.BasicInformation' | translate }}</h3>
     </div>
     <div class="row">
       <span class="col-2">{{ 'RegisterExpert.FirstName' | translate }}:</span>

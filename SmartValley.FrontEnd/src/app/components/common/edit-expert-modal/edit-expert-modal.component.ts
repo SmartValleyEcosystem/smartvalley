@@ -1,14 +1,16 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ExpertApiClient} from '../../../api/expert/expert-api-client';
-import {UserApiClient} from '../../../api/user/user-api-client';
-import {AreaService} from '../../../services/expert/area.service';
 import {FormGroup, Validators, FormBuilder} from '@angular/forms';
-import {ExpertUpdateRequest} from '../../../api/expert/expert-update-request';
-import {Area} from '../../../services/expert/area';
-import {ExpertsRegistryContractClient} from '../../../services/contract-clients/experts-registry-contract-client';
 import {ExpertResponse} from '../../../api/expert/expert-response';
 import {EditExpertModalData} from './edit-expert-modal-data';
+import {AdminApiClient} from '../../../api/admin/admin-api-client';
+import {AdminExpertUpdateRequest} from '../../../api/admin/admin-expert-update-request';
+import {Area} from '../../../services/expert/area';
+import {AreaService} from '../../../services/expert/area.service';
+import {ExpertsRegistryContractClient} from '../../../services/contract-clients/experts-registry-contract-client';
+import {AdminSetAvailabilityRequest} from '../../../api/admin/admin-set-availability-request';
+import {AdminExpertUpdateAreasRequest} from '../../../api/admin/admin-expert-update-areas-request';
 
 @Component({
   selector: 'app-edit-expert-modal',
@@ -18,31 +20,35 @@ import {EditExpertModalData} from './edit-expert-modal-data';
 export class EditExpertModalComponent implements OnInit {
 
   public selectedCategories = [];
+  public startedCategories = [];
   public backendForm: FormGroup;
   public areas: Area[] = this.areaService.areas;
   public expertDetails: ExpertResponse = <ExpertResponse> {
     about: '',
     address: '',
-    areas: [],
     email: '',
     isAvailable: true,
-    name: ''
+    firstName: '',
+    secondName: '',
+    areas: []
   };
   public isAvailable: boolean;
 
-  constructor(private expertApiClient: ExpertApiClient,
-              @Inject(MAT_DIALOG_DATA) public data: EditExpertModalData,
+  constructor(private adminApiClient: AdminApiClient,
+              private expertApiClient: ExpertApiClient,
+              private expertsRegistryContractClient: ExpertsRegistryContractClient,
               private areaService: AreaService,
+              @Inject(MAT_DIALOG_DATA) public data: EditExpertModalData,
               private formBuilder: FormBuilder,
-              private dialogCreateExpert: MatDialogRef<EditExpertModalComponent>,
-              private expertsRegistryContractClient: ExpertsRegistryContractClient) {
+              private dialogCreateExpert: MatDialogRef<EditExpertModalComponent>) {
   }
 
   async ngOnInit() {
     this.backendForm = this.formBuilder.group({
       address: ['', [Validators.required, Validators.minLength(8)]],
       email: ['', Validators.required],
-      name: ['', Validators.required],
+      firstName: ['', Validators.required],
+      secondName: ['', Validators.required],
       about: ['']
     });
 
@@ -50,54 +56,83 @@ export class EditExpertModalComponent implements OnInit {
 
     this.backendForm.setValue({
       address: this.expertDetails.address,
-      name: this.expertDetails.name,
+      firstName: this.expertDetails.firstName,
+      secondName: this.expertDetails.secondName,
       about: this.expertDetails.about,
       email: this.expertDetails.email
     });
 
     this.isAvailable = this.expertDetails.isAvailable;
-    const areasId = this.expertDetails.areas.map(a => a.id);
 
-    for (const areaId of areasId) {
-      this.selectedCategories[areaId] = true;
+    this.expertDetails.areas.map(a => {
+      this.selectedCategories[a.id] = true;
+      this.startedCategories[a.id] = true;
+    });
+  }
+
+  public submitExpertSettingsAsync(): Promise<void> {
+    return Promise.all([
+      this.submitPersonalSettingsAsync(),
+      this.updateAreasAsync(),
+      this.updateAvailabilityAsync()
+    ]);
+  }
+
+  private async updateAreasAsync(): Promise<void> {
+
+    const categoriesToRequest = this.selectedCategories.filter((value, index) => value === true).map((value, index) => index);
+
+    if (categoriesToRequest.length > this.expertDetails.areas.length) {
+
+      const address = this.backendForm.value.address;
+
+      const transactionHash = await this.expertsRegistryContractClient.addAsync(address, categoriesToRequest);
+
+      const adminExpertUpdateAreasRequest = <AdminExpertUpdateAreasRequest>{
+        address: address,
+        transactionHash: transactionHash,
+        areas: categoriesToRequest
+      };
+
+      return this.adminApiClient.updateExpertAreasAsync(adminExpertUpdateAreasRequest);
     }
   }
 
-  async submitAsync(needToUpdateInBlockchain: boolean) {
+  private async updateAvailabilityAsync(): Promise<void> {
+
     const address = this.backendForm.value.address;
-    const email = this.backendForm.value.email;
-    const name = this.backendForm.value.name;
-    const about = this.backendForm.value.about;
     const isAvailable = this.isAvailable || false;
+    if (isAvailable !== this.expertDetails.isAvailable) {
 
-    const categoriesToRequest: number[] = [];
-    this.selectedCategories.map((value, index) => {
-      if (value === true) {
-        categoriesToRequest.push(index);
+      let transactionHash: string;
+
+      if (isAvailable) {
+        transactionHash = await this.expertsRegistryContractClient.enableAsync(address);
+      } else {
+        transactionHash = await this.expertsRegistryContractClient.disableAsync(address);
       }
-    });
 
-    const editExpertRequest = <ExpertUpdateRequest> {
-      address: address,
-      email: email,
-      name: name,
-      about: about,
-      isAvailable: isAvailable,
-      areas: categoriesToRequest
+      const adminSetAvailabilityRequest = <AdminSetAvailabilityRequest>{
+        address: address,
+        transactionHash: transactionHash,
+        value: this.isAvailable
+      };
+      return this.adminApiClient.setExpertAvailabilityAsync(adminSetAvailabilityRequest);
+    }
+  }
+
+
+  public async submitPersonalSettingsAsync() {
+    const editExpertRequest = <AdminExpertUpdateRequest> {
+      address: this.backendForm.value.address,
+      email: this.backendForm.value.email,
+      firstName: this.backendForm.value.firstName,
+      secondName: this.backendForm.value.secondName,
+      about: this.backendForm.value.about,
+      isAvailable: this.isAvailable || false
     };
 
-    // https://rassvet-capital.atlassian.net/browse/ILT-730
-    // if (needToUpdateInBlockchain) {
-    //   let transactionHash: string;
-    //   if (isAvailable) {
-    //     transactionHash = (await this.expertsRegistryContractClient.enableAsync(address));
-    //   } else {
-    //     transactionHash = (await this.expertsRegistryContractClient.disableAsync(address));
-    //   }
-    //   editExpertRequest.transactionHash = transactionHash;
-    // }
-
-    await this.expertApiClient.updateAsync(editExpertRequest);
+    await this.adminApiClient.updateExpertAsync(editExpertRequest);
     this.dialogCreateExpert.close();
   }
 }

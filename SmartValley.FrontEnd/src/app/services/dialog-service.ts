@@ -14,13 +14,13 @@ import {AddAdminModalComponent} from '../components/common/add-admin-modal/add-a
 import {CreateNewExpertModalComponent} from '../components/common/create-new-expert-modal/create-new-expert-modal.component';
 import {EditExpertModalComponent} from '../components/common/edit-expert-modal/edit-expert-modal.component';
 import {SetExpertsModalComponent} from '../components/common/set-experts-modal/set-experts-modal.component';
-import {ChangeEmailModalComponent} from '../components/common/change-email-modal/change-email-modal.component';
 import {EditExpertModalData} from '../components/common/edit-expert-modal/edit-expert-modal-data';
 import {ScoringCostComponent} from '../components/common/scoring-cost-modal/scoring-cost.component';
 import {WelcomeModalComponent} from '../components/common/welcome-modal/welcome-modal.component';
 import {WelcomeModalData} from '../components/common/welcome-modal/welcome-modal-data';
 import {DeleteProjectModalComponent} from '../components/common/delete-project-modal/delete-project-modal.component';
 import {WaitingModalComponent} from '../components/common/waiting-modal/waiting-modal.component';
+import {ChangeStatusModalComponent} from '../components/common/change-status-modal/change-status-modal.component';
 
 @Injectable()
 export class DialogService {
@@ -52,12 +52,6 @@ export class DialogService {
     return this.openModal(ScoringCostComponent, {})
       .afterClosed()
       .toPromise<void>();
-  }
-
-  public async showChangeEmailDialogAsync(): Promise<string> {
-    return this.openModal(ChangeEmailModalComponent, {})
-      .afterClosed()
-      .toPromise<string>();
   }
 
   public showMetamaskManualAlert(): MatDialogRef<MetamaskManualModalComponent> {
@@ -109,6 +103,17 @@ export class DialogService {
 
   public async showDeleteProjectModalAsync(): Promise<boolean> {
     return this.openModalAsync(DeleteProjectModalComponent, {});
+  }
+
+  public async changeStatusDialogAsync(activityStatus: boolean, address: string): Promise<boolean> {
+    return this.openModalAsync(ChangeStatusModalComponent, {
+      title: this.translateService.instant('Header.StatusChanging'),
+      message: activityStatus ? this.translateService.instant('Header.DialogDescriptionToActive') : this.translateService.instant('Header.DialogDescriptionToInactive'),
+      button: activityStatus ? this.translateService.instant('Header.ChangeToActive') : this.translateService.instant('Header.ChangeToInactive'),
+      close: this.translateService.instant('Header.NoClose'),
+      activity: activityStatus,
+      expertAddress: address
+    });
   }
 
   public async showWaitingModal(): Promise<boolean> {

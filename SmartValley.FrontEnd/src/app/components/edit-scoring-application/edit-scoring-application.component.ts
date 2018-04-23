@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ScoringApplicationResponse} from '../../api/scoring-application/scoring-application-response';
 import {ScoringApplicationPartition} from '../../api/scoring-application/scoring-application-partition';
@@ -13,11 +13,11 @@ import {DictionariesService} from '../../services/common/dictionaries.service';
 import {ScoringApplicationApiClient} from '../../api/scoring-application/scoring-application-api-client';
 import {Answer} from '../../api/scoring-application/answer';
 import {Adviser} from '../../api/scoring-application/adviser';
-import {DialogService} from '../../services/dialog-service';
 import {isNullOrUndefined} from 'util';
 import {Paths} from '../../paths';
 import * as moment from 'moment';
 import {ProjectApplicationInfoResponse} from '../../api/scoring-application/project-application-info-response';
+import {NotificationsService} from 'angular2-notifications';
 
 @Component({
   selector: 'app-edit-scoring-application',
@@ -50,15 +50,17 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
   public comboboxValues: { [id: number]: SelectItem[] };
   public savedTime: Date;
 
+  @ViewChild('socialsContainer') private socialsContainer: ElementRef;
+  @ViewChild('membersContainer') private membersContainer: ElementRef;
   @ViewChildren('required') public requiredFields: QueryList<any>;
 
   private timer: NodeJS.Timer;
 
   constructor(private scoringApplicationApiClient: ScoringApplicationApiClient,
               private translateService: TranslateService,
+              private notificationsService: NotificationsService,
               private dictionariesService: DictionariesService,
               private formBuilder: FormBuilder,
-              private dialogService: DialogService,
               private htmlElement: ElementRef,
               private route: ActivatedRoute,
               private router: Router) {
@@ -92,7 +94,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
     this.addQuestionsFormControls(this.partitions);
     await this.loadScoringApplicationDataAsync();
 
-    this.timer = setInterval(async () => await this.saveDraftAsync(), 60000);
+    this.timer = <NodeJS.Timer>setInterval(async () => await this.saveDraftAsync(), 60000);
   }
 
   ngOnDestroy(): void {
@@ -224,8 +226,8 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
   }
 
   public addQuestionsFormControls(partitions: ScoringApplicationPartition[]): void {
-    for (const partition of partitions) {
-      for (const question of partition.questions) {
+    partitions.selectMany(partition => partition.questions)
+      .map(question => {
         const control = new FormControl('');
         if (question.type === +QuestionControlType.Url) {
           control.setValidators([Validators.required, Validators.pattern('https?://.+')]);
@@ -233,8 +235,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
           control.setValidators(Validators.required);
         }
         this.questionsGroup.addControl('control_' + question.id, control);
-      }
-    }
+      });
   }
 
   public getQuestionTypeById(id: number): string {
@@ -285,8 +286,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
 
   public getQuestionsWithAnswers(): Answer[] {
     return this.questions.partitions
-      .map(p => p.questions)
-      .reduce((a, b) => a.concat(b))
+      .selectMany(p => p.questions)
       .map(q => {
         const questionValue = typeof(this.questionsGroup.value['control_' + q.id]) === 'boolean' ?
           +this.questionsGroup.value['control_' + q.id] : this.questionsGroup.value['control_' + q.id];
@@ -439,6 +439,25 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
       this.scrollToElement(firstElement);
       return false;
     }
+
+    if (this.activeSocials.length === 0 && this.activeArticleLink.length === 0) {
+      this.scrollToElement(this.socialsContainer);
+      this.notificationsService.error(
+        this.translateService.instant('Common.RequiredSocialsErrorTitle'),
+        this.translateService.instant('Common.RequiredSocialsErrorMessage')
+      );
+      return false;
+    }
+
+    if (this.activeTeamMembers.length === 0) {
+      this.scrollToElement(this.membersContainer);
+      this.notificationsService.error(
+        this.translateService.instant('Common.RequiredMembersErrorTitle'),
+        this.translateService.instant('Common.RequiredMembersErrorMessage')
+      );
+      return false;
+    }
+
     return true;
   }
 
@@ -504,10 +523,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
   }
 
   private loadEditedQuestion(partitions): void {
-    for (const partition of partitions) {
-      for (const question of partition.questions) {
-        this.questionsGroup.controls['control_' + question.id].setValue(question.answer);
-      }
-    }
+    partitions.selectMany(partition => partition.questions)
+      .map(question => this.questionsGroup.controls['control_' + question.id].setValue(question.answer));
   }
 }

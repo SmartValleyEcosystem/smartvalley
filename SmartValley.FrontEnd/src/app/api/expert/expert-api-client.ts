@@ -21,25 +21,24 @@ export class ExpertApiClient extends BaseApiClient {
     super();
   }
 
-  public async getAreasAsync(): Promise<CollectionResponse<AreaResponse>> {
-    return await this.http.get<CollectionResponse<AreaResponse>>(`${this.baseApiUrl}/experts/areas`).toPromise();
+  public getAreasAsync(): Promise<CollectionResponse<AreaResponse>> {
+    return this.http.get<CollectionResponse<AreaResponse>>(`${this.baseApiUrl}/experts/areas`).toPromise();
   }
 
-  public async getExpertStatusAsync(address: string): Promise<GetExpertStatusResponse> {
-    return await this.http.get<GetExpertStatusResponse>(`${this.baseApiUrl}/experts/${address}/status`).toPromise();
+  public getExpertStatusAsync(address: string): Promise<GetExpertStatusResponse> {
+    return this.http.get<GetExpertStatusResponse>(`${this.baseApiUrl}/experts/${address}/status`).toPromise();
   }
 
   public async createApplicationAsync(request: CreateExpertApplicationRequest): Promise<void> {
     await this.http.post(this.baseApiUrl + '/experts/applications', request.body).toPromise();
   }
 
-  public async getPendingApplicationsAsync(): Promise<CollectionResponse<PendingExpertApplicationsResponse>> {
-    return await this.http.get<CollectionResponse<PendingExpertApplicationsResponse>>(`${this.baseApiUrl}/experts/applications`)
-      .toPromise();
+  public getPendingApplicationsAsync(): Promise<CollectionResponse<PendingExpertApplicationsResponse>> {
+    return this.http.get<CollectionResponse<PendingExpertApplicationsResponse>>(`${this.baseApiUrl}/experts/applications`).toPromise();
   }
 
-  public async getApplicationByIdAsync(id: number): Promise<ExpertApplicationResponse> {
-    return await this.http.get<ExpertApplicationResponse>(`${this.baseApiUrl}/experts/applications/${id}`).toPromise();
+  public getApplicationByIdAsync(id: number): Promise<ExpertApplicationResponse> {
+    return this.http.get<ExpertApplicationResponse>(`${this.baseApiUrl}/experts/applications/${id}`).toPromise();
   }
 
   public async acceptExpertApplicationAsync(id: number, areasToAccept: number[], transactionHash: string) {
@@ -56,21 +55,21 @@ export class ExpertApiClient extends BaseApiClient {
     }).toPromise();
   }
 
-  public async getExpertsListAsync(offset: number, count: number): Promise<CollectionResponse<ExpertResponse>> {
+  public getExpertsListAsync(offset: number, count: number): Promise<CollectionResponse<ExpertResponse>> {
     const parameters = new HttpParams()
       .append('offset', offset.toString())
       .append('count', count.toString());
 
-    return await this.http.get<CollectionResponse<ExpertResponse>>(`${this.baseApiUrl}/experts/all/`, {
+    return this.http.get<CollectionResponse<ExpertResponse>>(`${this.baseApiUrl}/experts/all/`, {
       params: parameters
     }).toPromise();
   }
 
-  public async getAsync(address: string): Promise<ExpertResponse> {
+  public getAsync(address: string): Promise<ExpertResponse> {
     const parameters = new HttpParams()
       .append('address', address);
 
-    return await this.http.get<ExpertResponse>(`${this.baseApiUrl}/experts/`, {
+    return this.http.get<ExpertResponse>(`${this.baseApiUrl}/experts/`, {
       params: parameters
     }).toPromise();
   }
