@@ -13,7 +13,7 @@
               <h3 class="question-tooltip__title">{{ 'ExpertScoring.ProjectOwnerAnswer' | translate }}</h3>
               <div *ngFor="let info of getCriterionInfo(criteria.id)">
                 <p *ngIf="info.title" class="info-title">{{ ('EditScoringApplication.' + info.title) | translate }}</p>
-                <p class="info-description">{{ info.answer }}</p>
+                <p class="info-description">{{ info.answer | translateBinaryAnswer }}</p>
               </div>
             </div>
             <div class="question">{{index + 1}}. {{criteria.name}}</div>
