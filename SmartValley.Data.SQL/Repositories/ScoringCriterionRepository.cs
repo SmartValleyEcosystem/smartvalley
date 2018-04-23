@@ -29,8 +29,9 @@ namespace SmartValley.Data.SQL.Repositories
                                      CriterionId = criterion.Id,
                                      Title = question.Key,
                                      Answer = answer.Value,
-                                     Type = ScoringCriterionPromptType.Plain
-                                 }).ToListAsync();
+                                     PromptType = ScoringCriterionPromptType.Plain,
+                                     QuestionControlType = question.Type
+                          }).ToListAsync();
         }
     }
 }

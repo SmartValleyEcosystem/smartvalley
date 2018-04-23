@@ -134,7 +134,7 @@ namespace SmartValley.WebApi.Estimates
                                            {
                                                CriterionId = id,
                                                SocialNetworks = socialNetworks,
-                                               Type = ScoringCriterionPromptType.SocialNetwork
+                                               PromptType = ScoringCriterionPromptType.SocialNetwork
                                            });
                     }
 
@@ -154,7 +154,7 @@ namespace SmartValley.WebApi.Estimates
                                    {
                                        CriterionId = id,
                                        TeamMembers = scoringApplication.TeamMembers.ToArray(),
-                                       Type = ScoringCriterionPromptType.TeamMembers
+                                       PromptType = ScoringCriterionPromptType.TeamMembers
                                    });
             }
 
@@ -164,7 +164,7 @@ namespace SmartValley.WebApi.Estimates
                                    {
                                        CriterionId = id,
                                        Advisers = scoringApplication.Advisers.ToArray(),
-                                       Type = ScoringCriterionPromptType.Advisers
+                                       PromptType = ScoringCriterionPromptType.Advisers
                                    });
             }
         }

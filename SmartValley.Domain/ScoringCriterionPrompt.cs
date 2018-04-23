@@ -17,6 +17,8 @@ namespace SmartValley.Domain
 
         public SocialNetworks SocialNetworks { get; set; }
 
-        public ScoringCriterionPromptType Type { get; set; }
+        public ScoringCriterionPromptType PromptType { get; set; }
+
+        public QuestionControlType QuestionControlType { get; set; }
     }
 }
