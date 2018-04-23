@@ -14,7 +14,7 @@
   </label>
 </ng-template>
 <div class="input-container">
-  <span class="button-label">100*100 px is a minimum recommended size. Format: PNG, JPEG.</span>
+  <span class="button-label">{{ 'ExpertUploadPhoto.FileInfoTip' | translate }}</span>
   <label class="input input-button">
     <span class="input-button__text">{{'ExpertUploadPhoto.Upload' | translate }}</span>
     <input #input type="file" [name]="name" [accept]="accept" (change)="onChange($event)" id="{{elementId}}"/>

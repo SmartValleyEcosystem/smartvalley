@@ -3,7 +3,6 @@
     "Title": "Create project",
     "Photo": "Photo",
     "ProjectImage": "Project image",
-    "ImageUploadLabel": "100x100 px is a minimum recommended size. Format: PNG, JPEG. Maximum file size: 5 Mb",
     "EditTitle": "Edit project",
     "CreateNewProject": "Create new project for scoring",
     "CommonInformation": "Common information",
