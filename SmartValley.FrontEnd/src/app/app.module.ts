@@ -124,6 +124,7 @@ import {ScoringReportComponent} from './components/project/scoring-report/scorin
 import {ScoringShouldNotExistGuard} from './services/guards/scoring-should-not-exist.guard';
 import {ChangeStatusModalComponent} from './components/common/change-status-modal/change-status-modal.component';
 import {TranslateBinaryAnswer} from './utils/translate-binary-answer.pipe';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -211,6 +212,7 @@ import {TranslateBinaryAnswer} from './utils/translate-binary-answer.pipe';
     MatSelectModule,
     MatTabsModule,
     BrowserModule,
+    MatTooltipModule,
     CheckboxModule,
     HttpClientModule,
     BrowserAnimationsModule,

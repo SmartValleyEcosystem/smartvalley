@@ -1,9 +1,21 @@
+<!--<div class="expert-panel">-->
+  <!--<button class="expert-control expert-control__remove" (click)="removeExpert()">-</button>-->
+  <!--<div class="experts-wrapper">-->
+    <!--<div *ngFor="let expert of experts" class="expert {{expert}}"></div>-->
+  <!--</div>-->
+  <!--<button class="expert-control expert-control__add" (click)="addExpert()">+</button>-->
+  <!--<div class="expert-control__description">{{ selectedExpertsCount }} {{ 'ScoringPayment.Experts' | translate }} =-->
+    <!--<span class="expert-control__attention">{{ (selectedExpertsCount * cost) | roundNumberPipe: 2 }} {{ 'ScoringPayment.ETH' | translate }}</span>-->
+  <!--</div>-->
+<!--</div>-->
+
+<!--MVP-->
 <div class="expert-panel">
-  <button class="expert-control expert-control__remove" (click)="removeExpert()">-</button>
+  <button matTooltip="Coming soon..." class="expert-control expert-control__remove">-</button>
   <div class="experts-wrapper">
     <div *ngFor="let expert of experts" class="expert {{expert}}"></div>
   </div>
-  <button class="expert-control expert-control__add" (click)="addExpert()">+</button>
+  <button matTooltip="Coming soon..." class="expert-control expert-control__add">+</button>
   <div class="expert-control__description">{{ selectedExpertsCount }} {{ 'ScoringPayment.Experts' | translate }} =
     <span class="expert-control__attention">{{ (selectedExpertsCount * cost) | roundNumberPipe: 2 }} {{ 'ScoringPayment.ETH' | translate }}</span>
   </div>

@@ -7,8 +7,6 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class ExpertSelectorComponent implements OnInit {
 
-  public maximumExperts = 6;
-  public minimumExperts = 3;
   public experts: string[] = [];
   public selectedClass = 'expert__selected';
   public selectedExpertsCount: number;
@@ -16,18 +14,19 @@ export class ExpertSelectorComponent implements OnInit {
   @Output() selectedExpertsCountEmit: EventEmitter<{ [id: string]: number }> = new EventEmitter<{ [id: string]: number }>();
   @Input() expertPanelId: number;
   @Input() cost = 0;
-  @Input() initialExpertsAmount: number;
+  @Input() maximumExperts = 6;
+  @Input() minimumExperts = 3;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.selectedExpertsCount = this.initialExpertsAmount;
+    this.selectedExpertsCount = this.minimumExperts;
     for (let i = 0; i < this.maximumExperts; i++) {
       this.experts.push('');
     }
 
-    for (let i = 0; i < this.initialExpertsAmount; i++) {
+    for (let i = 0; i < this.minimumExperts; i++) {
       this.experts[i] = this.selectedClass;
     }
   }
