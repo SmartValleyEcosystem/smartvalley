@@ -83,7 +83,6 @@
 
               </div>
             </div>
-            {{groupIndex === 0 ? questionIndex : questionIndex + (groupIndex * areasCriterion[groupIndex -1].criteria.length)}}
             <div class="question">{{questionIndex + 1}}. {{criteria.name}}</div>
             <ul class="options-list">
               <li *ngFor="let option of criteria.options">
