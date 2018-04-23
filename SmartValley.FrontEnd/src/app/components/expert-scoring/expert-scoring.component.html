@@ -1,7 +1,12 @@
 <div class="content">
   <form name="scoringForm" [formGroup]="scoringForm" autocomplete="off" (ngSubmit)="submitFormAsync()">
     <h1 class="title">{{ 'ExpertScoring.Title' | translate }} {{ projectName }}</h1>
-      <div class="area-title">{{ 'ExpertScoring.YourScore' | translate }} {{areaTypeName}}</div>
+    <div class="area-title-row">
+      <span class="area-title">{{ 'ExpertScoring.YourScore' | translate }} {{areaTypeName}}</span>
+      <a href="{{ getProjectApplictionLink() }}" class="ghost-btn answers-btn" target="_blank">
+        {{ 'ExpertScoring.SeeAnswers' | translate }}
+      </a>
+    </div>
       <div *ngFor="let group of areasCriterion" class="group-wrapper">
         <h2 class="settings-title">{{ group.name }}</h2>
           <div *ngFor="let criteria of group.criteria; let index = index;"
