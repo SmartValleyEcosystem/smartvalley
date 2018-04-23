@@ -19,6 +19,7 @@ import {CriterionPrompt} from '../../api/estimates/criterion-prompt';
 import {Paths} from '../../paths';
 import {TranslateService} from '@ngx-translate/core';
 import {SaveEstimatesRequest} from '../../api/estimates/save-estimates-request';
+import {QuestionControlType} from '../../api/scoring-application/question-control-type.enum';
 
 @Component({
   selector: 'app-expert-scoring',
@@ -37,6 +38,7 @@ export class ExpertScoringComponent implements OnInit {
   public scoringForm: FormGroup;
   public questionsActivity: Array<boolean> = [];
   public criterionPrompts: CriterionPromptResponse[];
+  public questionTypeComboBox = QuestionControlType.Combobox;
   public isSaved = false;
   public saveTime: string;
 

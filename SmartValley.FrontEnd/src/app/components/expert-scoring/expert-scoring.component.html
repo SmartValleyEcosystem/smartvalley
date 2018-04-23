@@ -13,7 +13,8 @@
               <h3 class="question-tooltip__title">{{ 'ExpertScoring.ProjectOwnerAnswer' | translate }}</h3>
               <div *ngFor="let info of getCriterionInfo(criteria.id)">
                 <p *ngIf="info.title" class="info-title">{{ ('EditScoringApplication.' + info.title) | translate }}</p>
-                <p class="info-description">{{ info.answer | translateBinaryAnswer }}</p>
+                <p *ngIf="info.questionControlType !== questionTypeComboBox" class="info-description">{{ info.answer | translateBinaryAnswer }}</p>
+                <p *ngIf="info.questionControlType == questionTypeComboBox" class="info-description">{{ ('EditScoringApplication.' + info.answer) | translate }}</p>
 
                 <div *ngIf="info.projectAdvisers" class="advisers-wrapper">
                   <div class="adviser" *ngFor="let adviser of info.projectAdvisers">
@@ -28,6 +29,36 @@
                       <a *ngIf="adviser.facebookLink" href="{{adviser.facebookLink}}" target="_blank" class="social-icon social-icon__facebook"></a>
                     </div>
                   </div>
+                </div>
+
+                <div *ngIf="info.socialNetworks" class="social-wrapper">
+                  <p class="info-title">
+                    {{ 'ScoringReport.SocialNetworks' | translate }}
+                  </p>
+                  <a *ngIf="info.socialNetworks.facebook" href="{{info.socialNetworks.facebook}}" target="_blank">
+                    <div class="social-icon social-icon__facebook"></div>
+                  </a>
+                  <a *ngIf="info.socialNetworks.bitcoinTalk" href="{{info.socialNetworks.bitcoinTalk}}" target="_blank">
+                    <div class="social-icon social-icon__bitcointalk"></div>
+                  </a>
+                  <a *ngIf="info.socialNetworks.github" href="{{info.socialNetworks.github}}" target="_blank">
+                    <div class="social-icon social-icon__github"></div>
+                  </a>
+                  <a *ngIf="info.socialNetworks.linkedin" href="{{info.socialNetworks.linkedin}}" target="_blank">
+                    <div class="social-icon social-icon__linkedin"></div>
+                  </a>
+                  <a *ngIf="info.socialNetworks.medium" href="{{info.socialNetworks.medium}}" target="_blank">
+                    <div class="social-icon social-icon__medium"></div>
+                  </a>
+                  <a *ngIf="info.socialNetworks.reddit" href="{{info.socialNetworks.reddit}}" target="_blank">
+                    <div class="social-icon social-icon__reddit"></div>
+                  </a>
+                  <a *ngIf="info.socialNetworks.telegram" href="{{info.socialNetworks.telegram}}" target="_blank">
+                    <div class="social-icon social-icon__telegram"></div>
+                  </a>
+                  <a *ngIf="info.socialNetworks.twitter" href="{{info.socialNetworks.twitter}}" target="_blank">
+                    <div class="social-icon social-icon__twitter"></div>
+                  </a>
                 </div>
 
                 <div *ngIf="info.projectTeamMembers" class="advisers-wrapper">

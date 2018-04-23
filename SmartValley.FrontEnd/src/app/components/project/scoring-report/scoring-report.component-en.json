@@ -8,6 +8,7 @@
     "ReportAppearAfterAllFinished": "Scoring report appear here after all experts score. You can't edit information or project form before completion score.",
     "Finished": "Finished",
     "TotalExperts": "Total Experts",
-    "ProjectOwnerAnswer": "Project owner answer"
+    "ProjectOwnerAnswer": "Project owner answer",
+    "SocialNetworks": "Social networks"
   }
 }

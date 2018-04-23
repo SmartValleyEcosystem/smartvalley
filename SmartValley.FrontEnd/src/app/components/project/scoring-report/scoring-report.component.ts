@@ -11,6 +11,7 @@ import {OfferStatus} from '../../../api/scoring-offer/offer-status.enum';
 import {AreaType} from "../../../api/scoring/area-type.enum";
 import {CriterionPromptResponse} from '../../../api/estimates/criterion-prompt-response';
 import {CriterionPrompt} from '../../../api/estimates/criterion-prompt';
+import {QuestionControlType} from '../../../api/scoring-application/question-control-type.enum';
 
 @Component({
   selector: 'app-scoring-report',
@@ -20,6 +21,7 @@ import {CriterionPrompt} from '../../../api/estimates/criterion-prompt';
 export class ScoringReportComponent implements OnInit {
 
   public areasScoringInfo: AreasScoringInfo[] = [];
+  public questionTypeComboBox = QuestionControlType.Combobox;
   public scoringCriterionResponse: ScoringCriteriaGroup[] = [];
   public criterionPrompts: CriterionPromptResponse[] = [];
   public questionsActivity: boolean[] = [];
