@@ -28,13 +28,11 @@ namespace SmartValley.WebApi.ScoringApplications
             var questions = await _scoringApplicationService.GetQuestionsAsync();
             var scoringApplication = await _scoringApplicationService.GetApplicationAsync(projectId);
 
-            if (scoringApplication == null)
-            {
-                var project = await _projectService.GetDetailsAsync(projectId);
-                return ScoringApplicationResponse.CreateEmpty(questions, project.Project, project.Country, project.TeamMembers);
-            }
+            if (scoringApplication != null)
+                return ScoringApplicationResponse.InitializeFromApplication(questions, scoringApplication);
 
-            return ScoringApplicationResponse.InitializeFromApplication(questions, scoringApplication);
+            var project = await _projectService.GetDetailsAsync(projectId);
+            return ScoringApplicationResponse.CreateEmpty(questions, project.Project, project.Country, project.TeamMembers);
         }
 
         [HttpPost, Authorize]
@@ -49,14 +47,14 @@ namespace SmartValley.WebApi.ScoringApplications
         }
 
         [HttpPut("submit"), Authorize]
-        public async Task<IActionResult> SubmitAsync(long projectId)
-        {
-            var isAuthorizedToEditProjectAsync = await _projectService.IsAuthorizedToEditProjectAsync(projectId, User.GetUserId());
-            if (!isAuthorizedToEditProjectAsync)
-                return Unauthorized();
-
-            await _scoringApplicationService.SubmitApplicationAsync(projectId);
-            return NoContent();
-        }
-    }
-}
+         public async Task<IActionResult> SubmitAsync(long projectId)
+         {
+             var isAuthorizedToEditProjectAsync = await _projectService.IsAuthorizedToEditProjectAsync(projectId, User.GetUserId());
+             if (!isAuthorizedToEditProjectAsync)
+                 return Unauthorized();
+ 
+             await _scoringApplicationService.SubmitApplicationAsync(projectId);
+             return NoContent();
+         }
+     }
+ }

@@ -1,4 +1,5 @@
 ﻿using System;
+using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.WebApi
 {

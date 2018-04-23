@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using SmartValley.Application.Contracts.Options;
-using SmartValley.Domain.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
+using SmartValley.Ethereum;
 using SmartValley.WebApi.Contracts.Responses;
 
 namespace SmartValley.WebApi.Contracts
