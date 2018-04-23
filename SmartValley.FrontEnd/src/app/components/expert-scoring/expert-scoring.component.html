@@ -2,13 +2,13 @@
   <form name="scoringForm" [formGroup]="scoringForm" autocomplete="off" (ngSubmit)="submitFormAsync()">
     <h1 class="title">{{ 'ExpertScoring.Title' | translate }} {{ projectName }}</h1>
       <div class="area-title">{{ 'ExpertScoring.YourScore' | translate }} {{areaTypeName}}</div>
-      <div *ngFor="let group of areasCriterion" class="group-wrapper">
+      <div *ngFor="let group of areasCriterion; let groupIndex = index;" class="group-wrapper">
         <h2 class="settings-title">{{ group.name }}</h2>
-          <div *ngFor="let criteria of group.criteria; let index = index;"
+          <div *ngFor="let criteria of group.criteria; let questionIndex = index;"
                class="criteria settings-block"
                [attr.data-selected]="false"
-               (click)="chageActiveQuestion(index)"
-               [class.active-question]="questionsActivity[index]">
+               (click)="chageActiveQuestion(groupIndex === 0 ? questionIndex : questionIndex + (groupIndex * areasCriterion[groupIndex -1].criteria.length))"
+               [class.active-question]="questionsActivity[groupIndex === 0 ? questionIndex : questionIndex + (groupIndex * areasCriterion[groupIndex -1].criteria.length)]">
             <div class="question-tooltip" *ngIf="criterionPrompts" >
               <h3 class="question-tooltip__title">{{ 'ExpertScoring.ProjectOwnerAnswer' | translate }}</h3>
               <div *ngFor="let info of getCriterionInfo(criteria.id)">
@@ -78,7 +78,8 @@
 
               </div>
             </div>
-            <div class="question">{{index + 1}}. {{criteria.name}}</div>
+            {{groupIndex === 0 ? questionIndex : questionIndex + (groupIndex * areasCriterion[groupIndex -1].criteria.length)}}
+            <div class="question">{{questionIndex + 1}}. {{criteria.name}}</div>
             <ul class="options-list">
               <li *ngFor="let option of criteria.options">
                 <p-radioButton name="answer_{{criteria.id}}" formControlName="answer_{{criteria.id}}" value="{{option.score}}"
