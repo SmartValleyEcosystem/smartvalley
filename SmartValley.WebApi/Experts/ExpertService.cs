@@ -98,8 +98,8 @@ namespace SmartValley.WebApi.Experts
         public Task<ExpertDetails> GetDetailsAsync(Address address)
             => _expertRepository.GetDetailsAsync(address);
 
-        public Task SetAvailabilityAsync(long expertId, bool isAvailable)
-            => _expertRepository.SetAvailabilityAsync(expertId, isAvailable);
+        public Task SetAvailabilityAsync(Address address, bool isAvailable)
+            => _expertRepository.SetAvailabilityAsync(address, isAvailable);
 
         public Task<int> GetTotalCountExpertsAsync() => _expertRepository.GetTotalCountExpertsAsync();
 
@@ -115,7 +115,16 @@ namespace SmartValley.WebApi.Experts
 
             await _userRepository.UpdateWholeAsync(user);
             await _userRepository.AddRoleAsync(request.Address, RoleType.Expert);
-            await _expertRepository.AddAsync(new Expert {About = request.About, UserId = user.Id, IsAvailable = true }, request.Areas);
+            await _expertRepository.AddAsync(new Expert {About = request.About, UserId = user.Id, IsAvailable = true}, request.Areas);
+        }
+
+        public async Task UpdateAreasAsync(Address address, IReadOnlyCollection<int> areas)
+        {
+            var expert = await _expertRepository.GetByAddressAsync(address);
+            if (expert == null)
+                throw new AppErrorException(ErrorCode.ExpertNotFound);
+
+            await _expertRepository.UpdateAreasAsync(expert.UserId, areas);
         }
 
         public async Task UpdateAsync(Address address, ExpertUpdateRequest request)
@@ -167,7 +176,7 @@ namespace SmartValley.WebApi.Experts
             if (expert != null)
                 await _expertRepository.UpdateAreasAsync(user.Id, areas);
             else
-                await _expertRepository.AddAsync(new Expert { UserId = user.Id, IsAvailable = true }, areas);
+                await _expertRepository.AddAsync(new Expert {UserId = user.Id, IsAvailable = true}, areas);
 
             await _expertApplicationRepository.SetAcceptedAsync(application, areas.ToList());
 

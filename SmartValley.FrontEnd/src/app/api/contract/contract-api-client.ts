@@ -9,28 +9,23 @@ export class ContractApiClient extends BaseApiClient {
     super();
   }
 
-  async getScoringManagerContractAsync(): Promise<ContractResponse> {
-    return await this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/scoringManager')
-      .toPromise();
+  public getScoringManagerContractAsync(): Promise<ContractResponse> {
+    return this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/scoringManager').toPromise();
   }
 
-  public async getScoringContractAsync(): Promise<ContractResponse> {
-    return await this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/scoring')
-      .toPromise();
+  public getScoringContractAsync(): Promise<ContractResponse> {
+    return this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/scoring').toPromise();
   }
 
-  async getScoringExpertsManagerContractAsync(): Promise<ContractResponse> {
-    return await this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/scoringExpertsManager')
-      .toPromise();
+  public getScoringExpertsManagerContractAsync(): Promise<ContractResponse> {
+    return this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/scoringExpertsManager').toPromise();
   }
 
-  async getAdminRegistryContractAsync(): Promise<ContractResponse> {
-    return await this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/adminRegistry')
-      .toPromise();
+  public getAdminRegistryContractAsync(): Promise<ContractResponse> {
+    return this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/adminRegistry').toPromise();
   }
 
-  async getExpertRegistryContractAsync(): Promise<ContractResponse> {
-    return await this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/expertsRegistry')
-      .toPromise();
+  public getExpertRegistryContractAsync(): Promise<ContractResponse> {
+    return this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/expertsRegistry').toPromise();
   }
 }

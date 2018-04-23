@@ -13,7 +13,6 @@ import {DictionariesService} from '../../services/common/dictionaries.service';
 import {ScoringApplicationApiClient} from '../../api/scoring-application/scoring-application-api-client';
 import {Answer} from '../../api/scoring-application/answer';
 import {Adviser} from '../../api/scoring-application/adviser';
-import {DialogService} from '../../services/dialog-service';
 import {isNullOrUndefined} from 'util';
 import {Paths} from '../../paths';
 import * as moment from 'moment';
@@ -95,7 +94,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
     this.addQuestionsFormControls(this.partitions);
     await this.loadScoringApplicationDataAsync();
 
-    this.timer = setInterval(async () => await this.saveDraftAsync(), 60000);
+    this.timer = <NodeJS.Timer>setInterval(async () => await this.saveDraftAsync(), 60000);
   }
 
   ngOnDestroy(): void {
@@ -227,8 +226,8 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
   }
 
   public addQuestionsFormControls(partitions: ScoringApplicationPartition[]): void {
-    for (const partition of partitions) {
-      for (const question of partition.questions) {
+    partitions.selectMany(partition => partition.questions)
+      .map(question => {
         const control = new FormControl('');
         if (question.type === +QuestionControlType.Url) {
           control.setValidators([Validators.required, Validators.pattern('https?://.+')]);
@@ -236,8 +235,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
           control.setValidators(Validators.required);
         }
         this.questionsGroup.addControl('control_' + question.id, control);
-      }
-    }
+      });
   }
 
   public getQuestionTypeById(id: number): string {
@@ -525,10 +523,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
   }
 
   private loadEditedQuestion(partitions): void {
-    for (const partition of partitions) {
-      for (const question of partition.questions) {
-        this.questionsGroup.controls['control_' + question.id].setValue(question.answer);
-      }
-    }
+    partitions.selectMany(partition => partition.questions)
+      .map(question => this.questionsGroup.controls['control_' + question.id].setValue(question.answer));
   }
 }

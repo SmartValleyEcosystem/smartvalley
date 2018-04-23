@@ -303,12 +303,11 @@ export class CreateProjectComponent implements OnInit {
     element.nativeElement.children[1].classList.add('ng-dirty');
     element.nativeElement.children[1].classList.remove('ng-valid');
     const invalidElements = this.requiredFields.filter(i => i.nativeElement.classList.contains('ng-invalid'));
-    if (invalidElements.length > 0) {
-      for (let a = 0; a < invalidElements.length; a++) {
-        invalidElements[a].nativeElement.classList.add('ng-invalid');
-        invalidElements[a].nativeElement.classList.add('ng-dirty');
-      }
-    }
+
+    invalidElements.map(invalid => {
+      invalid.nativeElement.classList.add('ng-invalid');
+      invalid.nativeElement.classList.add('ng-dirty');
+    });
   }
 
   private async loadMyProjectDataAsync() {

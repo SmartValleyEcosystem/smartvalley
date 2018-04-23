@@ -41,12 +41,11 @@ export class AdminExpertApplicationComponent implements OnInit {
   public rejectReason: string;
 
   async ngOnInit() {
-    for (const area of this.areaService.areas) {
-      this.areas.push({
-        label: area.name,
-        value: +area.areaType
-      });
-    }
+    this.areas = this.areaService.areas.map(area => <SelectItem> {
+      label: area.name,
+      value: +area.areaType
+    });
+
     const id = this.route.snapshot.paramMap.get('id');
     const response = await this.expertApiClient.getApplicationByIdAsync(+id);
     this.application = <AdminExpertApplicationData>{

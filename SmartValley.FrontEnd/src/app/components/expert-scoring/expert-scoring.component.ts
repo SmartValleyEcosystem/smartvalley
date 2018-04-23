@@ -65,12 +65,11 @@ export class ExpertScoringComponent implements OnInit {
     this.areasCriterion = scoringCriterionResponse;
 
     const scoringFields = {};
-    for (const group of this.areasCriterion) {
-      for (const criteria of group.criteria) {
-        scoringFields['answer_' + criteria.id] = ['', [Validators.required]];
-        scoringFields['comment_' + criteria.id] = ['', [Validators.required]];
-      }
-    }
+    this.areasCriterion.selectMany(group => group.criteria)
+      .map(criterion => {
+        scoringFields['answer_' + criterion.id] = ['', [Validators.required]];
+        scoringFields['comment_' + criterion.id] = ['', [Validators.required]];
+      });
 
     scoringFields['conclusion'] = ['', [Validators.required]];
 
@@ -157,7 +156,8 @@ export class ExpertScoringComponent implements OnInit {
   }
 
   public getEstimate(): Estimate[] {
-    return this.areasCriterion.selectMany(group => group.criteria).map(criteria => <Estimate> {
+    return this.areasCriterion.selectMany(group => group.criteria)
+      .map(criteria => <Estimate> {
       scoringCriterionId: criteria.id,
       score: this.scoringForm.get('answer_' + criteria.id).value === '' ? null : +this.scoringForm.get('answer_' + criteria.id).value,
       comments: this.scoringForm.get('comment_' + criteria.id).value
@@ -165,7 +165,8 @@ export class ExpertScoringComponent implements OnInit {
   }
 
   public getAnswers(): EstimateCommentRequest[] {
-    return this.areasCriterion.selectMany(group => group.criteria).map(criteria => <EstimateCommentRequest>{
+    return this.areasCriterion.selectMany(group => group.criteria)
+      .map(criteria => <EstimateCommentRequest>{
       scoringCriterionId: criteria.id,
       comment: this.scoringForm.get('comment_' + criteria.id).value,
       score: this.scoringForm.get('answer_' + criteria.id).value === '' ? null : + this.scoringForm.get('answer_' + criteria.id).value,
@@ -200,6 +201,6 @@ export class ExpertScoringComponent implements OnInit {
   }
 
   async navigateToProjectApplication() {
-    await this.router.navigate([Paths.Project + '/' + this.projectId + '/details/application' ]);
+    await this.router.navigate([Paths.Project + '/' + this.projectId + '/details/application']);
   }
 }

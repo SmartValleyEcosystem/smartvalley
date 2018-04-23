@@ -35,19 +35,15 @@ export class AdminExpertsListComponent implements OnInit {
   }
 
   public renderTableRows(expertResponseItems: ExpertResponse[]) {
-    this.experts = [];
-    for (const expert of expertResponseItems) {
-      const expertItem = <AdminExpertItem>{
-        firstName: expert.firstName,
-        secondName: expert.secondName,
-        address: expert.address,
-        email: expert.email,
-        about: expert.about,
-        isAvailable: expert.isAvailable,
-        areas: expert.areas.map(a => a.name),
-      };
-      this.experts.push(expertItem);
-    }
+    this.experts = expertResponseItems.map(expert => <AdminExpertItem>{
+      firstName: expert.firstName,
+      secondName: expert.secondName,
+      address: expert.address,
+      email: expert.email,
+      about: expert.about,
+      isAvailable: expert.isAvailable,
+      areas: expert.areas.map(a => a.name),
+    });
   }
 
   public async showDialogToCreateNewExpert() {

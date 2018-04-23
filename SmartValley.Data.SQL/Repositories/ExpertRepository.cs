@@ -40,8 +40,8 @@ namespace SmartValley.Data.SQL.Repositories
         public Task<Expert> GetAsync(long expertId)
         {
             return _editContext.Experts
-                        .Include(x => x.User)
-                        .FirstOrDefaultAsync(e => e.UserId == expertId);
+                               .Include(x => x.User)
+                               .FirstOrDefaultAsync(e => e.UserId == expertId);
         }
 
         public async Task<IReadOnlyCollection<Area>> GetAreasAsync()
@@ -74,9 +74,9 @@ namespace SmartValley.Data.SQL.Repositories
             await _editContext.SaveAsync();
         }
 
-        public async Task SetAvailabilityAsync(long expertId, bool isAvailable)
+        public async Task SetAvailabilityAsync(Address address, bool isAvailable)
         {
-            var expert = await _editContext.Experts.FirstOrDefaultAsync(e => e.UserId == expertId);
+            var expert = await _editContext.Experts.Include(i => i.User).FirstOrDefaultAsync(e => e.User.Address == address);
             if (expert == null)
                 throw new AppErrorException(ErrorCode.ExpertNotFound);
 
@@ -119,8 +119,8 @@ namespace SmartValley.Data.SQL.Repositories
             var expertUsersQuery = (from expert in _readContext.Experts
                                     join user in _readContext.Users on expert.UserId equals user.Id
                                     select new {expert, user})
-                                   .Skip(offset)
-                                   .Take(count);
+                .Skip(offset)
+                .Take(count);
 
             var expertAreas = await (from expertUser in expertUsersQuery
                                      join expertArea in _readContext.ExpertAreas on expertUser.user.Id equals expertArea.ExpertId

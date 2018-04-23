@@ -16,11 +16,7 @@
 
         public ContractOptions ScoringManagerContract { get; set; }
 
-        public ContractOptions VotingSprintContract { get; set; }
-
         public ContractOptions ScoringContract { get; set; }
-
-        public VotingManagerContractOptions VotingManagerContract { get; set; }
 
         public ContractOptions ExpertsRegistryContract { get; set; }
         

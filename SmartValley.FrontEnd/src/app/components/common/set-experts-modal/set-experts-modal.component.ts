@@ -19,15 +19,11 @@ export class SetExpertsModalComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const experts = [];
-    for (const item of this.data.areas) {
-      const group = this.formBuilder.group({
-        areaType: item.areaType,
-        title: item.name,
-        address: null
-      });
-      experts.push(group);
-    }
+    const experts = this.data.areas.map(item => this.formBuilder.group({
+      areaType: item.areaType,
+      title: item.name,
+      address: null
+    }));
 
     this.form = this.formBuilder.group({
       categories: this.formBuilder.array(experts)

@@ -23,7 +23,7 @@ namespace SmartValley.Domain.Interfaces
 
         Task<Expert> GetAsync(long expertId);
 
-        Task SetAvailabilityAsync(long expertId, bool isAvailable);
+        Task SetAvailabilityAsync(Address address, bool isAvailable);
 
         Task<int> GetTotalCountExpertsAsync();
 

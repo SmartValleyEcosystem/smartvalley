@@ -24,6 +24,8 @@ namespace SmartValley.WebApi.Experts
 
         Task UpdateAsync(Address address, ExpertUpdateRequest request);
 
+        Task UpdateAreasAsync(Address address, IReadOnlyCollection<int> areas);
+
         Task DeleteAsync(Address address);
 
         Task<IReadOnlyCollection<ExpertDetails>> GetAllExpertsDetailsAsync(int offset, int count);
@@ -36,7 +38,7 @@ namespace SmartValley.WebApi.Experts
 
         Task<ExpertDetails> GetDetailsAsync(Address address);
 
-        Task SetAvailabilityAsync(long expertId, bool isAvailable);
+        Task SetAvailabilityAsync(Address address, bool isAvailable);
 
         Task<int> GetTotalCountExpertsAsync();
     }

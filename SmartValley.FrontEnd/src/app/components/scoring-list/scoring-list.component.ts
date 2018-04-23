@@ -33,7 +33,6 @@ export class ScoringListComponent implements OnInit {
     value: null
   };
 
-
   @ViewChild(Paginator) paginator: Paginator;
   public OfferStatus = OfferStatus;
 

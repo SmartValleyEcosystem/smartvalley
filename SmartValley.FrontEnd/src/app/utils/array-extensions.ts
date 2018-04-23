@@ -10,7 +10,7 @@ class CustomArray<T> extends Array<T> {
 
 declare global {
   interface Array<T> {
-    selectMany<U>(this: T[], selector: (x: T) => U[]): CustomArray<U>;
+    selectMany<U> (this: T[], selector: (x: T) => U[]): CustomArray<U>;
 
     first (this: T[], selector?: (x: T) => boolean): T;
 

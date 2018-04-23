@@ -23,9 +23,9 @@ namespace SmartValley.WebApi.Admin
         private readonly IAuthenticationService _authenticationService;
 
         public AdminController(
-            IExpertService expertService, 
-            IAdminService service, 
-            EthereumClient ethereumClient, 
+            IExpertService expertService,
+            IAdminService service,
+            EthereumClient ethereumClient,
             IAuthenticationService authenticationService)
         {
             _service = service;
@@ -33,7 +33,6 @@ namespace SmartValley.WebApi.Admin
             _expertService = expertService;
             _authenticationService = authenticationService;
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] AdminRequest request)
@@ -48,9 +47,25 @@ namespace SmartValley.WebApi.Admin
         {
             var admins = await _service.GetAllAsync();
             return Ok(new CollectionResponse<AdminResponse>
-            {
-                Items = admins.Select(i => new AdminResponse { Address = i.Address, Email = i.Email }).ToArray()
-            });
+                      {
+                          Items = admins.Select(i => new AdminResponse {Address = i.Address, Email = i.Email}).ToArray()
+                      });
+        }
+
+        [HttpPut("experts/availability")]
+        public async Task<IActionResult> SetExpertAvailabilityAsync([FromBody] AdminSetAvailabilityRequest request)
+        {
+            await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
+            await _expertService.SetAvailabilityAsync(request.Address, request.Value);
+            return NoContent();
+        }
+
+        [HttpPut("experts/areas")]
+        public async Task<IActionResult> UpdateExpertAreasAsync([FromBody] AdminExpertUpdateAreasRequest request)
+        {
+            await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
+            await _expertService.UpdateAreasAsync(request.Address, request.Areas);
+            return NoContent();
         }
 
         [HttpPut("experts")]

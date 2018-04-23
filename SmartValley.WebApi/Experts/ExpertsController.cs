@@ -150,7 +150,7 @@ namespace SmartValley.WebApi.Experts
         {
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
 
-            await _expertService.SetAvailabilityAsync(User.GetUserId(), request.Value);
+            await _expertService.SetAvailabilityAsync(User.Identity.Name, request.Value);
             return NoContent();
         }
 

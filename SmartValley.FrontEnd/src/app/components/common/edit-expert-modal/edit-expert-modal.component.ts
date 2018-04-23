@@ -6,6 +6,11 @@ import {ExpertResponse} from '../../../api/expert/expert-response';
 import {EditExpertModalData} from './edit-expert-modal-data';
 import {AdminApiClient} from '../../../api/admin/admin-api-client';
 import {AdminExpertUpdateRequest} from '../../../api/admin/admin-expert-update-request';
+import {Area} from '../../../services/expert/area';
+import {AreaService} from '../../../services/expert/area.service';
+import {ExpertsRegistryContractClient} from '../../../services/contract-clients/experts-registry-contract-client';
+import {AdminSetAvailabilityRequest} from '../../../api/admin/admin-set-availability-request';
+import {AdminExpertUpdateAreasRequest} from '../../../api/admin/admin-expert-update-areas-request';
 
 @Component({
   selector: 'app-edit-expert-modal',
@@ -14,19 +19,25 @@ import {AdminExpertUpdateRequest} from '../../../api/admin/admin-expert-update-r
 })
 export class EditExpertModalComponent implements OnInit {
 
+  public selectedCategories = [];
+  public startedCategories = [];
   public backendForm: FormGroup;
+  public areas: Area[] = this.areaService.areas;
   public expertDetails: ExpertResponse = <ExpertResponse> {
     about: '',
     address: '',
     email: '',
     isAvailable: true,
     firstName: '',
-    secondName: ''
+    secondName: '',
+    areas: []
   };
   public isAvailable: boolean;
 
   constructor(private adminApiClient: AdminApiClient,
               private expertApiClient: ExpertApiClient,
+              private expertsRegistryContractClient: ExpertsRegistryContractClient,
+              private areaService: AreaService,
               @Inject(MAT_DIALOG_DATA) public data: EditExpertModalData,
               private formBuilder: FormBuilder,
               private dialogCreateExpert: MatDialogRef<EditExpertModalComponent>) {
@@ -52,35 +63,74 @@ export class EditExpertModalComponent implements OnInit {
     });
 
     this.isAvailable = this.expertDetails.isAvailable;
+
+    this.expertDetails.areas.map(a => {
+      this.selectedCategories[a.id] = true;
+      this.startedCategories[a.id] = true;
+    });
   }
 
-  async submitAsync(needToUpdateInBlockchain: boolean) {
+  public submitExpertSettingsAsync(): Promise<void> {
+    return Promise.all([
+      this.submitPersonalSettingsAsync(),
+      this.updateAreasAsync(),
+      this.updateAvailabilityAsync()
+    ]);
+  }
+
+  private async updateAreasAsync(): Promise<void> {
+
+    const categoriesToRequest = this.selectedCategories.filter((value, index) => value === true).map((value, index) => index);
+
+    if (categoriesToRequest.length > this.expertDetails.areas.length) {
+
+      const address = this.backendForm.value.address;
+
+      const transactionHash = await this.expertsRegistryContractClient.addAsync(address, categoriesToRequest);
+
+      const adminExpertUpdateAreasRequest = <AdminExpertUpdateAreasRequest>{
+        address: address,
+        transactionHash: transactionHash,
+        areas: categoriesToRequest
+      };
+
+      return this.adminApiClient.updateExpertAreasAsync(adminExpertUpdateAreasRequest);
+    }
+  }
+
+  private async updateAvailabilityAsync(): Promise<void> {
+
     const address = this.backendForm.value.address;
-    const email = this.backendForm.value.email;
-    const firstName = this.backendForm.value.firstName;
-    const secondName = this.backendForm.value.secondName;
-    const about = this.backendForm.value.about;
     const isAvailable = this.isAvailable || false;
+    if (isAvailable !== this.expertDetails.isAvailable) {
 
+      let transactionHash: string;
+
+      if (isAvailable) {
+        transactionHash = await this.expertsRegistryContractClient.enableAsync(address);
+      } else {
+        transactionHash = await this.expertsRegistryContractClient.disableAsync(address);
+      }
+
+      const adminSetAvailabilityRequest = <AdminSetAvailabilityRequest>{
+        address: address,
+        transactionHash: transactionHash,
+        value: this.isAvailable
+      };
+      return this.adminApiClient.setExpertAvailabilityAsync(adminSetAvailabilityRequest);
+    }
+  }
+
+
+  public async submitPersonalSettingsAsync() {
     const editExpertRequest = <AdminExpertUpdateRequest> {
-      address: address,
-      email: email,
-      firstName: firstName,
-      secondName: secondName,
-      about: about,
-      isAvailable: isAvailable
+      address: this.backendForm.value.address,
+      email: this.backendForm.value.email,
+      firstName: this.backendForm.value.firstName,
+      secondName: this.backendForm.value.secondName,
+      about: this.backendForm.value.about,
+      isAvailable: this.isAvailable || false
     };
-
-    // https://rassvet-capital.atlassian.net/browse/ILT-730
-    // if (needToUpdateInBlockchain) {
-    //   let transactionHash: string;
-    //   if (isAvailable) {
-    //     transactionHash = (await this.expertsRegistryContractClient.enableAsync(address));
-    //   } else {
-    //     transactionHash = (await this.expertsRegistryContractClient.disableAsync(address));
-    //   }
-    //   editExpertRequest.transactionHash = transactionHash;
-    // }
 
     await this.adminApiClient.updateExpertAsync(editExpertRequest);
     this.dialogCreateExpert.close();

@@ -59,18 +59,20 @@ export class HeaderComponent implements OnInit {
       this.myProjectLink = '';
     });
 
-    this.router.events.subscribe((event: RouterEvent) => this.checkExpertPanelVisibility(event));
+    this.router.events.subscribe(async (event: RouterEvent) => await this.checkExpertPanelVisibilityAsync(event));
     this.projectService.projectsCreated.subscribe(async () => await this.updateProjectsAsync());
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
     this.userContext.userContextChanged.subscribe(async (user) => await this.updateAccountAsync(user));
   }
 
-  async ngOnInit() {
-    const currentUser = this.userContext.getCurrentUser();
-    await this.updateAccountAsync(currentUser);
+  ngOnInit() {
     this.projectsLink = Paths.ProjectList;
     this.accountLink = Paths.Account;
     this.adminPanelLink = Paths.Admin;
+  }
+
+  private async updateExpertBarAsync() {
+    const currentUser = this.userContext.getCurrentUser();
     await this.balanceService.updateBalanceAsync();
     if (currentUser) {
       this.isUserExpert = currentUser.isExpert;
@@ -79,20 +81,18 @@ export class HeaderComponent implements OnInit {
       const availabilityExpert = await this.expertApiClient.getAvailabilityStatusAsync();
       this.isExpertActive = availabilityExpert.isAvailable;
     }
-    if (this.router.url !== '/' && this.isUserExpert) {
-      this.showExpertPanel = true;
-    }
+    await this.updateAccountAsync(currentUser);
   }
 
-  private checkExpertPanelVisibility(event: RouterEvent) {
+  private async checkExpertPanelVisibilityAsync(event: RouterEvent): Promise<void> {
     if (event instanceof NavigationEnd) {
       const currentUser = this.userContext.getCurrentUser();
       if (event['url'] === '/') {
         this.showExpertPanel = false;
       }
-      if ( currentUser ) {
+      if (currentUser) {
         if (event['url'] !== '/' && currentUser.isExpert) {
-          this.showExpertPanel = true;
+          await this.updateExpertBarAsync();
         }
       }
     }
@@ -108,11 +108,6 @@ export class HeaderComponent implements OnInit {
 
   private async updateAccountAsync(user: User): Promise<void> {
     if (user) {
-      if (user.isExpert && this.router.url !== '/') {
-        this.showExpertPanel = true;
-      }else {
-        this.showExpertPanel = false;
-      }
       await this.updateProjectsAsync();
       this.isAuthenticated = true;
       this.accountAddress = user.account;
@@ -121,6 +116,11 @@ export class HeaderComponent implements OnInit {
       this.scroginsLink = Paths.ScoringList;
       this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
       this.isAdmin = user.roles.includes('Admin');
+      if (user.isExpert && this.router.url !== '/') {
+        this.showExpertPanel = true;
+      } else {
+        this.showExpertPanel = false;
+      }
     } else {
       this.showExpertPanel = false;
       this.isAuthenticated = false;
