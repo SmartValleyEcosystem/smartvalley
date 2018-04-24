@@ -25,6 +25,13 @@ namespace SmartValley.Data.SQL.Repositories
                           .Include(x => x.AreaScorings)
                           .FirstOrDefaultAsync(scoring => scoring.ProjectId == projectId);
 
+        public Task<Scoring> GetAsync(long scoringId)
+            => EditContext.Scorings
+                          .Include(x => x.ExpertScorings).ThenInclude(x => x.Estimates)
+                          .Include(x => x.ScoringOffers)
+                          .Include(x => x.AreaScorings)
+                          .FirstOrDefaultAsync(scoring => scoring.Id == scoringId);
+
         public async Task<IReadOnlyCollection<ScoringAreaStatistics>> GetIncompletedScoringAreaStatisticsAsync(DateTimeOffset tillDate)
         {
             var requiredCounts = await (from areaScoring in ReadContext.AreaScorings
@@ -137,12 +144,5 @@ namespace SmartValley.Data.SQL.Repositories
         {
             await EditContext.SaveAsync();
         }
-
-        public Task<Scoring> GetAsync(long scoringId)
-            => EditContext.Scorings
-                          .Include(x => x.ExpertScorings).ThenInclude(x => x.Estimates)
-                          .Include(x => x.ScoringOffers)
-                          .Include(x => x.AreaScorings)
-                          .FirstOrDefaultAsync(scoring => scoring.Id == scoringId);
     }
 }

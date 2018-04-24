@@ -28,6 +28,7 @@
         ProjectScoringApplicationNotFound,
         ScoringApplicationAlreadySubmitted,
         UserNotAuthor,
-        TeamMemberNotFound
+        TeamMemberNotFound,
+        ScoringNotFound
     }
 }

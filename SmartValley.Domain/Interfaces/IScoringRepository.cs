@@ -9,10 +9,6 @@ namespace SmartValley.Domain.Interfaces
     {
         Task<int> AddAsync(Scoring scoring);
 
-        Task<Scoring> GetByIdAsync(long id);
-
-        Task<int> UpdateWholeAsync(Scoring scoring);
-
         Task<Scoring> GetByProjectIdAsync(long projectId);
 
         Task<IReadOnlyCollection<ScoringProjectDetails>> GetScoringProjectsDetailsByScoringIdsAsync(IReadOnlyCollection<long> scoringIds);

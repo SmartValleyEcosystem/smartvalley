@@ -65,7 +65,7 @@ namespace SmartValley.Domain.Entities
         {
             var areaScoring = AreaScorings.FirstOrDefault(x => x.AreaId == areaType);
             if (areaScoring == null)
-                throw new InvalidOperationException($"Can't find score for area: '{areaType}'");
+                throw new InvalidOperationException($"Can't find score for area: '{areaType}', scoringId: '{Id}'");
 
             areaScoring.Score = score;
         }
@@ -74,7 +74,7 @@ namespace SmartValley.Domain.Entities
         {
             var areaScoring = AreaScorings.FirstOrDefault(x => x.AreaId == areaType);
             if (areaScoring == null)
-                throw new InvalidOperationException($"Can't find score for area: '{areaType}'");
+                throw new InvalidOperationException($"Can't find score for area: '{areaType}', scoringId: '{Id}'");
 
             return areaScoring;
         }
@@ -87,11 +87,17 @@ namespace SmartValley.Domain.Entities
 
         public void FinishOffer(long expertId, AreaType area)
         {
-            var offer = ScoringOffers.FirstOrDefault(o => o.AreaId == area && o.ExpertId == expertId);
-            if (offer == null)
-                throw new InvalidOperationException($"Can't find offer for area: '{area}', expertId: '{expertId}'");
+            SetOfferStatus(area, expertId, ScoringOfferStatus.Finished);
+        }
 
-            offer.Status = ScoringOfferStatus.Finished;
+        public void RejectOffer(AreaType area, long expertId)
+        {
+            SetOfferStatus(area, expertId, ScoringOfferStatus.Rejected);
+        }
+
+        public void AcceptOffer(AreaType area, long expertId)
+        {
+            SetOfferStatus(area, expertId, ScoringOfferStatus.Accepted);
         }
 
         public ScoringOffer GetOfferForExpertinArea(long expertId, AreaType area)
@@ -103,6 +109,15 @@ namespace SmartValley.Domain.Entities
         {
             foreach (var offer in offers)
                 ScoringOffers.Add(offer);
+        }
+
+        private void SetOfferStatus(AreaType area, long expertId, ScoringOfferStatus status)
+        {
+            var offer = ScoringOffers.FirstOrDefault(o => o.AreaId == area && o.ExpertId == expertId);
+            if (offer == null)
+                throw new InvalidOperationException($"Can't find offer for area: '{area}', expertId: '{expertId}', scoringId: '{Id}'");
+
+            offer.Status = status;
         }
     }
 }
