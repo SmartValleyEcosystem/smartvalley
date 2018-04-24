@@ -20,7 +20,7 @@
         ExpertApplicationAlreadyProcessed,
         ShouldCheckAreasToAccept,
         AcceptedOfferNotFound,
-        PendingOffersNotFound,
+        OffersNotFound,
         AuthenticationError,
         ExpertNotFound,
         CountryNotFound,

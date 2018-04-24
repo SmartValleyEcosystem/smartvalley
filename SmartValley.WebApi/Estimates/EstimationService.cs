@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SmartValley.Application.Contracts.Scorings;
 using SmartValley.Domain;
-using SmartValley.Domain.Contracts;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
@@ -22,22 +22,22 @@ namespace SmartValley.WebApi.Estimates
         private readonly IScoringApplicationRepository _scoringApplicationRepository;
 
         private readonly IReadOnlyCollection<long> _criterionsWithTeamMemberPrompts = new List<long>
-                                                                                      {
-                                                                                          14,
-                                                                                          18
-                                                                                      };
+                                                                             {
+                                                                                 14,
+                                                                                 18
+                                                                             };
 
         private readonly IReadOnlyCollection<long> _criterionsWithAdviserPrompts = new List<long>
-                                                                                   {
-                                                                                       15,
-                                                                                       16,
-                                                                                       17
-                                                                                   };
+                                                                          {
+                                                                              15,
+                                                                              16,
+                                                                              17
+                                                                          };
 
         private readonly IReadOnlyCollection<long> _criterionsWithSocialNetworksPrompts = new List<long>
-                                                                                          {
-                                                                                              49
-                                                                                          };
+                                                                                 {
+                                                                                     49
+                                                                                 };
 
         public EstimationService(
             IScoringContractClient scoringContractClient,

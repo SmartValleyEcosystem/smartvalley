@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application;
 using SmartValley.Domain.Entities;
-using SmartValley.Ethereum;
 using SmartValley.WebApi.Admin.Request;
 using SmartValley.WebApi.Admin.Response;
 using SmartValley.WebApi.Authentication;

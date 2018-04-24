@@ -7,12 +7,11 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Nethereum.Hex" Version="2.4.0" />
-    <PackageReference Include="Nethereum.JsonRpc.Client" Version="2.4.0" />
-    <PackageReference Include="Nethereum.JsonRpc.IpcClient" Version="2.4.0" />
-    <PackageReference Include="Nethereum.JsonRpc.RpcClient" Version="2.4.0" />
-    <PackageReference Include="Nethereum.Signer" Version="2.4.0" />
-    <PackageReference Include="Nethereum.Web3" Version="2.4.0" />
+    <PackageReference Include="Nethereum.Hex" Version="2.1.0" />
+    <PackageReference Include="Nethereum.JsonRpc.Client" Version="2.1.0" />
+    <PackageReference Include="Nethereum.JsonRpc.IpcClient" Version="2.1.0" />
+    <PackageReference Include="Nethereum.Signer" Version="2.1.0" />
+    <PackageReference Include="Nethereum.Web3" Version="2.1.0" />
     <PackageReference Include="NServiceBus" Version="7.0.0-rc0002" />
     <PackageReference Include="NServiceBus.Autofac" Version="7.0.0-rc0001" />
     <PackageReference Include="NServiceBus.Newtonsoft.Json" Version="2.0.0-rc0001" />
@@ -38,7 +37,6 @@
     <ProjectReference Include="..\SmartValley.Application\SmartValley.Application.csproj" />
     <ProjectReference Include="..\SmartValley.Data.SQL\SmartValley.Data.SQL.csproj" />
     <ProjectReference Include="..\SmartValley.Domain\SmartValley.Domain.csproj" />
-    <ProjectReference Include="..\SmartValley.Ethereum\SmartValley.Ethereum.csproj" />
     <ProjectReference Include="..\SmartValley.Messages\SmartValley.Messages.csproj" />
   </ItemGroup>
   <ItemGroup>

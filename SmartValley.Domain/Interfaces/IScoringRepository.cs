@@ -22,7 +22,5 @@ namespace SmartValley.Domain.Interfaces
         Task<bool> HasEnoughExpertsAsync(long scoringId);
 
         Task SaveChangesAsync();
-
-        Task<Scoring> GetAsync(long scoringId);
     }
 }

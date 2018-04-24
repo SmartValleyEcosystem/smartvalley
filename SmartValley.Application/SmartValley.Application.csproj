@@ -6,6 +6,8 @@
     <PackageReference Include="MailKit" Version="1.10.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="2.0.1" />
+    <PackageReference Include="Nethereum.JsonRpc.IpcClient" Version="2.1.0" />
+    <PackageReference Include="Nethereum.Web3" Version="2.1.0" />
     <PackageReference Include="NServiceBus" Version="7.0.0-rc0002" />
     <PackageReference Include="NServiceBus.Persistence.Sql" Version="4.0.0-rc0004" />
     <PackageReference Include="NServiceBus.Persistence.Sql.MsBuild" Version="4.0.0-rc0004" />
@@ -14,10 +16,6 @@
   <ItemGroup>
     <ProjectReference Include="..\IcoLab.Common\IcoLab.Common\IcoLab.Common.csproj" />
     <ProjectReference Include="..\SmartValley.Domain\SmartValley.Domain.csproj" />
-    <ProjectReference Include="..\SmartValley.Ethereum\SmartValley.Ethereum.csproj">
-      <Project>{191A9866-29FE-4F4B-B214-8454F4C7C9E0}</Project>
-      <Name>SmartValley.Ethereum</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SmartValley.Messages\SmartValley.Messages.csproj" />
   </ItemGroup>
 </Project>

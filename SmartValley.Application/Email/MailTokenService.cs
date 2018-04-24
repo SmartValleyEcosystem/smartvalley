@@ -6,7 +6,6 @@ namespace SmartValley.Application.Email
     public class MailTokenService
     {
         public const string MailTokenProtectorPurpose = "MailToken";
-
         private readonly IDataProtector _dataProtector;
 
         public MailTokenService(IDataProtectionProvider dataProtectionProvider)

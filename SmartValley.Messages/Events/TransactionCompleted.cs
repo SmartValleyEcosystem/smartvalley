@@ -2,6 +2,5 @@
 {
     public class TransactionCompleted
     {
-        public string TransactionHash { get; set; }
     }
 }

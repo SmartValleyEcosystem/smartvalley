@@ -47,7 +47,9 @@ namespace SmartValley.Domain.Entities
         public void SetExpertScoring(long expertId, ExpertScoring scoring)
         {
             if (!IsOfferAccepted(expertId, scoring.Area))
+            {
                 throw new AppErrorException(ErrorCode.AcceptedOfferNotFound);
+            }
 
             var storedScoring = ExpertScorings.SingleOrDefault(x => x.ExpertId == expertId);
             if (storedScoring == null)
@@ -65,7 +67,9 @@ namespace SmartValley.Domain.Entities
         {
             var areaScoring = AreaScorings.FirstOrDefault(x => x.AreaId == areaType);
             if (areaScoring == null)
+            {
                 throw new InvalidOperationException($"Can't find score for area: '{areaType}'");
+            }
 
             areaScoring.Score = score;
         }
@@ -74,7 +78,9 @@ namespace SmartValley.Domain.Entities
         {
             var areaScoring = AreaScorings.FirstOrDefault(x => x.AreaId == areaType);
             if (areaScoring == null)
+            {
                 throw new InvalidOperationException($"Can't find score for area: '{areaType}'");
+            }
 
             return areaScoring;
         }
@@ -89,7 +95,9 @@ namespace SmartValley.Domain.Entities
         {
             var offer = ScoringOffers.FirstOrDefault(o => o.AreaId == area && o.ExpertId == expertId);
             if (offer == null)
+            {
                 throw new InvalidOperationException($"Can't find offer for area: '{area}', expertId: '{expertId}'");
+            }
 
             offer.Status = ScoringOfferStatus.Finished;
         }
@@ -97,12 +105,6 @@ namespace SmartValley.Domain.Entities
         public ScoringOffer GetOfferForExpertinArea(long expertId, AreaType area)
         {
             return ScoringOffers.FirstOrDefault(x => x.ExpertId == expertId && x.AreaId == area);
-        }
-
-        public void AddOffers(IReadOnlyCollection<ScoringOffer> offers)
-        {
-            foreach (var offer in offers)
-                ScoringOffers.Add(offer);
         }
     }
 }

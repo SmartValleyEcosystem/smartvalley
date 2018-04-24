@@ -30,7 +30,7 @@ namespace SmartValley.Application.Email
             template = template
                        .Replace("{SUBJECT}", "Please confirm email")
                        .Replace("{BODY}", "To complete registration please click the button below.")
-                       .Replace("{BUTTON}", "Start work")
+                       .Replace("{BUTTON}", "Start work")                       
                        .Replace("{BUTTONHREF}", _siteUrls.GetConfirmEmailUrl(token, false));
 
             await _mailSender.SendAsync(email, "Email confirmation", template);

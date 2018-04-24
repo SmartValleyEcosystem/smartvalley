@@ -9,8 +9,6 @@ namespace SmartValley.Domain.Interfaces
     {
         Task<ScoringOffer> GetAsync(long projectId, AreaType areaType, long expertId);
 
-        Task<IReadOnlyCollection<ScoringOffer>> GetByScoringAsync(long scoringId);
-
         Task AddAsync(IReadOnlyCollection<ScoringOffer> offers);
 
         Task AcceptAsync(long scoringId, long expertId, AreaType area);

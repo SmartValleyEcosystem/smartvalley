@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Domain;
@@ -33,9 +32,6 @@ namespace SmartValley.Data.SQL.Repositories
                     select offer)
                 .FirstOrDefaultAsync();
         }
-
-        public async Task<IReadOnlyCollection<ScoringOffer>> GetByScoringAsync(long scoringId)
-            => await _readContext.ScoringOffers.Where(o => o.ScoringId == scoringId).ToArrayAsync();
 
         public Task AddAsync(IReadOnlyCollection<ScoringOffer> offers)
         {

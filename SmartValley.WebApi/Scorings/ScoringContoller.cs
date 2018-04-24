@@ -1,9 +1,8 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NServiceBus;
-using SmartValley.Messages.Commands;
+using SmartValley.Application;
+using SmartValley.WebApi.ScoringApplications;
 using SmartValley.WebApi.Scorings.Requests;
 using SmartValley.WebApi.Scorings.Responses;
 
@@ -14,12 +13,12 @@ namespace SmartValley.WebApi.Scorings
     public class ScoringContoller : Controller
     {
         private readonly IScoringService _scoringService;
-        private readonly IMessageSession _messageSession;
+        private readonly EthereumClient _ethereumClient;
 
-        public ScoringContoller(IScoringService scoringService, IMessageSession messageSession)
+        public ScoringContoller(IScoringService scoringService, EthereumClient ethereumClient)
         {
             _scoringService = scoringService;
-            _messageSession = messageSession;
+            _ethereumClient = ethereumClient;
         }
 
         [HttpGet]
@@ -33,20 +32,9 @@ namespace SmartValley.WebApi.Scorings
         [Route("start")]
         public async Task<IActionResult> StartAsync([FromBody] StartProjectScoringRequest request)
         {
-            var command = new StartScoring
-                          {
-                              ProjectId = request.ProjectId,
-                              TransactionHash = request.TransactionHash,
-                              ExpertCounts = request.Areas
-                                             .Select(a => new AreaExpertsCount
-                                                          {
-                                                              AreaType = (int) a.Area,
-                                                              ExpertsCount = a.ExpertsCount
-                                                          })
-                                             .ToArray()
-                          };
+            await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
 
-            await _messageSession.SendLocal(command);
+            await _scoringService.StartAsync(request.ProjectId, request.Areas);
 
             return NoContent();
         }

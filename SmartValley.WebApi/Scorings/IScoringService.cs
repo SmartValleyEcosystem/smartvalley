@@ -12,6 +12,8 @@ namespace SmartValley.WebApi.Scorings
     {
         Task<ScoringOffer> GetOfferAsync(long projectId, AreaType areaType, long expertId);
 
+        Task StartAsync(long projectId, IReadOnlyCollection<AreaRequest> areas);
+
         Task<IReadOnlyCollection<ScoringProjectDetailsWithCounts>> GetScoringProjectsAsync(IReadOnlyCollection<ScoringProjectStatus> statuses);
 
         Task AcceptOfferAsync(long scoringId, long areaId, long expertId);

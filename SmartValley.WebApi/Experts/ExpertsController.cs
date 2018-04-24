@@ -7,7 +7,6 @@ using SmartValley.Application;
 using SmartValley.Application.Extensions;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
-using SmartValley.Ethereum;
 using SmartValley.WebApi.Experts.Requests;
 using SmartValley.WebApi.Experts.Responses;
 using SmartValley.WebApi.Extensions;
