@@ -288,8 +288,14 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
     return this.questions.partitions
       .selectMany(p => p.questions)
       .map(q => {
-        const questionValue = typeof(this.questionsGroup.value['control_' + q.id]) === 'boolean' ?
+        let questionValue = typeof(this.questionsGroup.value['control_' + q.id]) === 'boolean' ?
           +this.questionsGroup.value['control_' + q.id] : this.questionsGroup.value['control_' + q.id];
+
+        if (q.parentId) {
+          if (this.questionsGroup.value['control_' + q.parentId] !== q.parentTriggerValue) {
+            questionValue = null;
+          }
+        }
 
         return <Answer>{
           questionId: q.id,
