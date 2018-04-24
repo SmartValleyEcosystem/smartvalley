@@ -47,8 +47,8 @@ export class EditExpertModalComponent implements OnInit {
     this.backendForm = this.formBuilder.group({
       address: ['', [Validators.required, Validators.minLength(8)]],
       email: ['', Validators.required],
-      firstName: ['', Validators.required],
-      secondName: ['', Validators.required],
+      firstName: [''],
+      secondName: [''],
       about: ['']
     });
 
