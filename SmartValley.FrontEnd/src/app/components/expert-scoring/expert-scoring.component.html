@@ -17,9 +17,17 @@
         <div class="question-tooltip" *ngIf="criterionPrompts">
           <h3 class="question-tooltip__title">{{ 'ExpertScoring.ProjectOwnerAnswer' | translate }}</h3>
           <div *ngFor="let info of getCriterionInfo(criteria.id)">
-            <p *ngIf="info.title" class="info-title">{{ ('EditScoringApplication.' + info.title) | translate }}</p>
-            <p *ngIf="info.questionControlType !== questionTypeComboBox" class="info-description">{{ info.answer | translateBinaryAnswer }}</p>
-            <p *ngIf="info.questionControlType == questionTypeComboBox" class="info-description">{{ ('EditScoringApplication.' + info.answer) | translate }}</p>
+            <div class="empty-popup" *ngIf="getCriterionInfo(criteria.id).length === 1 && !info.answer && !info.projectAdvisers.length && !info.socialNetworks && !info.projectTeamMembers.length">
+              <p class="info-description empty-info">
+                {{ 'ExpertScoring.NoInformation' | translate }}
+              </p>
+            </div>
+
+            <div class="info-wrapper" *ngIf="info.answer">
+              <p *ngIf="info.title" class="info-title">{{ ('EditScoringApplication.' + info.title) | translate }}</p>
+              <p *ngIf="info.questionControlType !== questionTypeComboBox" class="info-description">{{ info.answer | translateBinaryAnswer }}</p>
+              <p *ngIf="info.questionControlType == questionTypeComboBox" class="info-description">{{ ('EditScoringApplication.' + info.answer) | translate }}</p>
+            </div>
 
             <div *ngIf="info.projectAdvisers" class="advisers-wrapper">
               <div class="adviser" *ngFor="let adviser of info.projectAdvisers">
