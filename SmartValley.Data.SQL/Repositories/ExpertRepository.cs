@@ -6,7 +6,6 @@ using SmartValley.Data.SQL.Core;
 using SmartValley.Domain;
 using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
-using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
@@ -23,17 +22,11 @@ namespace SmartValley.Data.SQL.Repositories
             _editContext = editContext;
         }
 
-        public Task<int> RemoveAsync(Expert expert)
-        {
-            _editContext.Experts.Attach(expert);
-            _editContext.Experts.Remove(expert);
-            return _editContext.SaveAsync();
-        }
-
         public Task<Expert> GetByAddressAsync(Address address)
         {
             return _editContext.Experts
                                .Include(x => x.User)
+                               .Include(x => x.ExpertAreas)
                                .FirstOrDefaultAsync(x => x.User.Address == address);
         }
 
@@ -41,47 +34,21 @@ namespace SmartValley.Data.SQL.Repositories
         {
             return _editContext.Experts
                                .Include(x => x.User)
+                               .Include(x => x.ExpertAreas)
                                .FirstOrDefaultAsync(e => e.UserId == expertId);
         }
 
         public async Task<IReadOnlyCollection<Area>> GetAreasAsync()
             => await _readContext.Areas.ToArrayAsync();
 
-        public Task AddAsync(Expert expert, IReadOnlyCollection<int> areas)
+        public void Add(Expert expert)
         {
             _editContext.Experts.Add(expert);
-
-            var expertAreas = areas.Select(s => new ExpertArea
-                                                {
-                                                    Expert = expert,
-                                                    AreaId = (AreaType) s
-                                                })
-                                   .ToArray();
-
-            _editContext.ExpertAreas.AddRange(expertAreas);
-            return _editContext.SaveAsync();
         }
 
-        public async Task UpdateAreasAsync(long expertId, IReadOnlyCollection<int> areas)
+        public void Remove(Expert expert)
         {
-            var expertAreas = await _editContext.ExpertAreas.Where(e => e.ExpertId == expertId).ToArrayAsync();
-            _editContext.ExpertAreas.RemoveRange(expertAreas);
-            _editContext.ExpertAreas.AddRange(areas.Select(s => new ExpertArea
-                                                                {
-                                                                    ExpertId = expertId,
-                                                                    AreaId = (AreaType) s
-                                                                }).ToArray());
-            await _editContext.SaveAsync();
-        }
-
-        public async Task SetAvailabilityAsync(Address address, bool isAvailable)
-        {
-            var expert = await _editContext.Experts.Include(i => i.User).FirstOrDefaultAsync(e => e.User.Address == address);
-            if (expert == null)
-                throw new AppErrorException(ErrorCode.ExpertNotFound);
-
-            expert.IsAvailable = isAvailable;
-            await _editContext.SaveAsync();
+            _editContext.Experts.Remove(expert);
         }
 
         public Task<int> GetTotalCountExpertsAsync()

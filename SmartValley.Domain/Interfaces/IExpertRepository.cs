@@ -11,19 +11,15 @@ namespace SmartValley.Domain.Interfaces
 
         Task<ExpertDetails> GetDetailsAsync(Address address);
 
-        Task<int> RemoveAsync(Expert expert);
+        void Remove(Expert expert);
 
         Task<Expert> GetByAddressAsync(Address address);
 
         Task<IReadOnlyCollection<Area>> GetAreasAsync();
 
-        Task AddAsync(Expert expert, IReadOnlyCollection<int> areas);
-
-        Task UpdateAreasAsync(long expertId, IReadOnlyCollection<int> areas);
+        void Add(Expert expert);
 
         Task<Expert> GetAsync(long expertId);
-
-        Task SetAvailabilityAsync(Address address, bool isAvailable);
 
         Task<int> GetTotalCountExpertsAsync();
 
