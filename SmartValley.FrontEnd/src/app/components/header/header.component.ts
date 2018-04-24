@@ -65,10 +65,13 @@ export class HeaderComponent implements OnInit {
     this.userContext.userContextChanged.subscribe(async (user) => await this.updateAccountAsync(user));
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.projectsLink = Paths.ProjectList;
     this.accountLink = Paths.Account;
     this.adminPanelLink = Paths.Admin;
+
+    const user = this.userContext.getCurrentUser();
+    await this.updateAccountAsync(user);
   }
 
   private async updateExpertBarAsync() {
