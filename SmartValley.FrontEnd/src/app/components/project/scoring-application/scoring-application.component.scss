@@ -81,6 +81,9 @@
 
 .partition {
   width: 780px;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .partitions-list {
@@ -121,6 +124,11 @@ label {
 
 .control-row {
   margin-bottom: 20px;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .partition-menu__inputs {

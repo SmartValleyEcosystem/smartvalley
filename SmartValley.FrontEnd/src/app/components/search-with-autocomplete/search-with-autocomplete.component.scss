@@ -7,6 +7,9 @@
   background-color: #222034;
   margin-top: -20px;
   color: #fff;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .search-icon {
@@ -17,6 +20,11 @@
   top: 16px;
   left: 20px;
   font-size: 30px;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    top: 10px;
+    left: 16px;
+    font-size: 23px;
+  }
 }
 
 .search__title {
@@ -54,6 +62,9 @@
   margin-left: -5px;
   position: absolute;
   right: 0;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    display: none;
+  }
 }
 
 .search-form {
@@ -62,6 +73,9 @@
 
 .search-controls__input_square {
   border-radius: 30px 0 0 !important;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    border-radius: 30px 30px 0 0 !important;
+  }
 }
 
 .search-controls__input {
@@ -75,6 +89,12 @@
   transition: border-radius 0.5s;
   position: absolute;
   left: 0;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    width: 100%;
+    height: 40px;
+    border-radius: 30px;
+    padding-left: 43px;
+  }
 }
 
 .search-controls__project-list {
@@ -86,6 +106,10 @@
   color: #000;
   padding: 0;
   z-index: 2;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    top: 40px;
+    width: 100%;
+  }
 }
 
 .search-controls__project-list li {
@@ -114,9 +138,4 @@
 
 .project-info, .project-name {
   margin: 0;
-}
-@media (max-width: 1200px) {
-  .search {
-    width: 1200px;
-  }
 }

@@ -22,7 +22,7 @@ import {NotificationsService} from 'angular2-notifications';
 @Component({
   selector: 'app-edit-scoring-application',
   templateUrl: './edit-scoring-application.component.html',
-  styleUrls: ['./edit-scoring-application.component.css']
+  styleUrls: ['./edit-scoring-application.component.scss']
 })
 export class EditScoringApplicationComponent implements OnInit, OnDestroy {
 

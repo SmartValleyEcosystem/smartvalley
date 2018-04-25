@@ -4,7 +4,7 @@
 <div *ngIf="isProjectExists" class="content">
   <h1 class="title">{{ project.name }}</h1>
   <app-project-info *ngIf="project" [project]="project">
-    <div [ngSwitch]="project.scoring.scoringStatus">
+    <div [ngSwitch]="project.scoring.scoringStatus" class="control-info-wrapper">
       <div *ngSwitchCase="ScoringStatusFinished">
         <div class="small-title">{{ 'MyProject.ProjectScore' | translate }}</div>
         <div class="score">

@@ -11,7 +11,7 @@ import 'rxjs/add/observable/fromEvent';
 @Component({
   selector: 'app-search-with-autocomplete',
   templateUrl: './search-with-autocomplete.component.html',
-  styleUrls: ['./search-with-autocomplete.component.css']
+  styleUrls: ['./search-with-autocomplete.component.scss']
 })
 export class SearchWithAutocompleteComponent implements OnInit {
 
