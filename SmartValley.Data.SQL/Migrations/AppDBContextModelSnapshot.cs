@@ -135,7 +135,6 @@ namespace SmartValley.Data.SQL.Migrations
                         .HasMaxLength(200);
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(1500);
 
                     b.Property<string>("DocumentNumber")

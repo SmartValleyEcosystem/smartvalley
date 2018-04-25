@@ -22,7 +22,8 @@ export class EnumHelper {
   public getSexes(): SelectItem[] {
     return [
       {label: this.translateService.instant('Male'), value: SexEnum.Male},
-      {label: this.translateService.instant('Female'), value: SexEnum.Female}
+      {label: this.translateService.instant('Female'), value: SexEnum.Female},
+      {label: this.translateService.instant('Not specified'), value: SexEnum.NotSpecified}
     ];
   }
 }
