@@ -40,6 +40,7 @@ export class HeaderComponent implements OnInit {
   public showExpertPanel = false;
   public isUserExpert = false;
   public isExpertActive: boolean;
+  public isMobileMenuVisible = false;
 
   constructor(private balanceService: BalanceService,
               private blockiesService: BlockiesService,
@@ -198,5 +199,9 @@ export class HeaderComponent implements OnInit {
       transactionDialog.close();
       this.isExpertActive = !isExpertActive;
     }
+  }
+
+  public switchMobileMenuVisibility() {
+    this.isMobileMenuVisible = !this.isMobileMenuVisible;
   }
 }

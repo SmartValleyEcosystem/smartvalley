@@ -4,6 +4,17 @@
 
 .header-wrapper {
   width: 100%;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+      width: 100%;
+  }
+  @media screen and (min-width: 769px) and (max-width: 1200px) {
+      width: 1200px;
+  }
+  .main-btn {
+    @media screen and (min-width: 320px) and (max-width: 768px) {
+      display: none;
+    }
+  }
 }
 
 .sm-header {
@@ -13,6 +24,9 @@
   margin-bottom: 40px;
   padding: 20px 0;
   width: 1180px;
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .sm-header a {
@@ -76,6 +90,9 @@ button:focus {
 .header-nav__authenticated {
   text-align: right;
   margin: 0 !important;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    display: none;
+  }
 }
 
 .header-content {
@@ -88,12 +105,21 @@ button:focus {
   font-family: Roboto-Bold;
   font-size: 14px;
   font-weight: bold;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    height: 60px;
+    width: 100%;
+    justify-content: space-between;
+    padding: 10px;
+  }
 }
 
 .header-nav {
   width: 250px;
   margin: 0 40px;
   flex: 1 1 auto;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    display: none;
+  }
 }
 
 .header-nav__link {
@@ -128,12 +154,6 @@ button:focus {
 
 .header-nav__login-logout:hover {
   color: white;
-}
-
-@media (max-width: 1200px) {
-  .header-wrapper {
-    width: 1200px;
-  }
 }
 
 .expert-panel {
@@ -202,3 +222,54 @@ button:focus {
   position: relative;
   font-size: 16px;
 }
+
+.logo {
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    width: 125px;
+  }
+}
+
+.mobile-menu {
+  color: #fff;
+  position: fixed;
+  right: 0;
+  background: #211f33;
+  width: 100%;
+  height: 100%;
+  z-index: 11;
+  padding: 20px;
+  transition: all 0.2s ease;
+  .mobile-menu-list {
+    list-style: none;
+    margin-top: 30px;
+    padding: 0;
+    li {
+      padding-bottom: 10px;
+      border-bottom: 1px solid #c5c5c5;
+      margin-bottom: 10px;
+    }
+  }
+  .header-nav__link-mobile {
+    color: #fff;
+    font-size: 18px;
+  }
+}
+.invisible {
+  width: 0;
+  height: 0;
+}
+
+.mobile-menu-icon {
+  display: none;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    position: relative;
+    z-index: 12;
+    display: inline-block;
+    float: right;
+    color: #fff;
+    .material-icons {
+      font-size: 40px;
+    }
+  }
+}
+

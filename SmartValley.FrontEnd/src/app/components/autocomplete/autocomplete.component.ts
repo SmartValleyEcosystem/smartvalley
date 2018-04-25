@@ -7,7 +7,7 @@ import {TranslateService} from '@ngx-translate/core';
 @Component({
   selector: 'app-autocomplete',
   templateUrl: './autocomplete.component.html',
-  styleUrls: ['./autocomplete.component.css'],
+  styleUrls: ['./autocomplete.component.scss'],
   providers: [
     {provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => AutocompleteComponent), multi: true},
     {provide: NG_VALIDATORS, useExisting: forwardRef(() => AutocompleteComponent), multi: true}

@@ -1,6 +1,6 @@
 <app-search-with-autocomplete></app-search-with-autocomplete>
 <div class="content">
-  <p-table class="table" [value]="projects">
+  <p-table class="table projects-table" [value]="projects">
     <ng-template pTemplate="header">
       <tr>
         <th class="table__main-col">{{ 'Landing.RecentlyScored' | translate }}</th>
@@ -26,6 +26,51 @@
         <ng-template #elseScore>
           <td class="scoring-col">&mdash;</td>
         </ng-template>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="footer" let-columns>
+      <tr (click)="navigateToProjectsList()">
+        <td class="bottom-link" colspan="5"><a [routerLink]="'/' + projectsLink">{{ 'Landing.SeeAll' | translate }}</a>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-table class="table projects-table-mobile" [value]="projects">
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="table__main-col">{{ 'Landing.RecentlyScored' | translate }}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-project>
+      <tr (click)="navigateToProject(project.id)">
+        <td class="mobile-row">
+          <div class="col-info">
+            <div class="project-name"><a [routerLink]="getProjectLink(project.id)">{{project.name}}</a></div>
+            <div>
+              <span class="desc-label">
+                {{ 'ProjectList.Country'| translate }}:
+              </span>
+              {{ 'Countries.' + project.country | translate }}
+            </div>
+            <div>
+              <span class="desc-label">
+                {{ 'ProjectList.ProjectCategory'| translate }}:
+              </span>
+              {{ 'Categories.' + project.category | translate }}
+            </div>
+          </div>
+          <div class="col-details">
+            <div *ngIf="project.score; else elseScore" class="scoring-col">
+              <span class="primary-color-text">{{project.score | roundNumberPipe}}</span>
+              <span [ngClass]="project.score === 100 ? 'primary-color-text' : 'gray-color-text'">/100</span>
+            </div>
+            <ng-template #elseScore>
+              <div class="gray-color-text scoring-col">&mdash;</div>
+            </ng-template>
+            <button class="ghost-btn details-btn">{{ 'ProjectList.SeeDetails' | translate }}</button>
+          </div>
+        </td>
       </tr>
     </ng-template>
     <ng-template pTemplate="footer" let-columns>

@@ -14,18 +14,24 @@
 }
 
 .control-label {
-  width: 113.6px;
+  min-width: 113.6px;
   height: 20px;
   font-size: 14px;
   font-weight: bold;
   text-align: left;
   color: #000000;
   cursor: pointer;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    font-size: 16px;
+  }
 }
 
 .filters-wrapper {
   display: flex;
   margin-top: 20px;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    display: block;
+  }
 }
 
 p {
@@ -38,6 +44,9 @@ p {
 
 .filter-item {
   margin-right: 20px;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    margin: 0 0 20px 0;
+  }
 }
 
 .filter-item:last-child {
@@ -46,6 +55,38 @@ p {
 
 .search-input {
   width: 533px;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    width: 100%;
+  }
+}
+
+.projects-table {
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    display: none;
+  }
+}
+
+.apply-filters-mobile {
+  display: none;
+}
+
+@media screen and (min-width: 320px) and (max-width: 768px) {
+  .apply-filters {
+    display: none;
+  }
+  .apply-filters-mobile {
+    display: block;
+    width: 100%;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+}
+
+.projects-table-mobile {
+  display: none;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    display: block;
+  }
 }
 
 .search-submit {
@@ -53,6 +94,9 @@ p {
   min-width: 95px;
   position: absolute;
   right: 0;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    display: none;
+  }
 }
 
 .search-controls-wrapper {
@@ -60,6 +104,9 @@ p {
   padding-bottom: 16px;
   width: 580px;
   height: 36px;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .clear-form {
@@ -68,10 +115,26 @@ p {
   color: #a4a2b0;
   display: inline-block;
   margin-left: 20px;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    font-size: 16px;
+    text-align: center;
+    display: block;
+    margin: 0;
+  }
 }
 
 .scoring-input {
   width: 76px;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    width: 43%;
+  }
+}
+.dash {
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    text-align: center;
+    display: inline-block;
+    width: 10%;
+  }
 }
 
 .empty-result {
@@ -80,8 +143,6 @@ p {
 }
 
 .empty-result__title {
-  width: 552px;
-  height: 32px;
   font-family: Roboto-Regular;
   font-size: 24px;
   font-weight: bold;
@@ -140,6 +201,17 @@ p {
   font-weight: bold;
   line-height: 1.43;
   text-align: left;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    text-align: right;
+    width: auto;
+    span {
+      font-size: 20px;
+    }
+  }
+}
+
+.mobile-row {
+  display: flex;
 }
 
 .project-name {
@@ -148,8 +220,37 @@ p {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    margin-bottom: 15px;
+    a {
+      font-size: 20px;
+    }
+  }
+}
+
+.desc-label {
+  color: #a4a2b0;
 }
 
 .table__name_col {
   width: 346px;
+}
+
+.col-details {
+  width: 40%;
+}
+.col-info {
+  width: 60%;
+}
+
+.col-details {
+  text-align: right;
+}
+
+.details-btn {
+  height: 24px;
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-top: 15px;
+  padding: 0 15px;
 }

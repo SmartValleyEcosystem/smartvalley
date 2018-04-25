@@ -7,7 +7,7 @@ import {isUndefined} from 'util';
 @Component({
   selector: 'app-select',
   templateUrl: './select.component.html',
-  styleUrls: ['./select.component.css'],
+  styleUrls: ['./select.component.scss'],
   providers: [
     {provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => SelectComponent), multi: true},
     {provide: NG_VALIDATORS, useExisting: forwardRef(() => SelectComponent), multi: true}

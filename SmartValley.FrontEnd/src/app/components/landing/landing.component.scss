@@ -47,6 +47,9 @@
 
 .table__main-col {
   width: 346px;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .sw-project-footer{
@@ -122,10 +125,23 @@
   font-size: 14px;
   font-weight: bold;
   padding-left: 0 !important;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    a {
+      font-size: 16px;
+    }
+    border-top: solid 4px #eeedf5;
+  }
 }
 .scoring-col {
   font-size: 14px;
   font-weight: bold;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    text-align: right;
+    width: auto;
+    span {
+      font-size: 20px;
+    }
+  }
 }
 .project-name {
   font-size: 14px;
@@ -133,4 +149,52 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    margin-bottom: 15px;
+    a {
+      font-size: 20px;
+    }
+  }
+}
+.projects-table-mobile{
+  display: none;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    display: block;
+  }
+}
+.projects-table {
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    display: none;
+  }
+}
+
+.mobile-row {
+  display: flex;
+}
+
+.desc-label {
+  color: #a4a2b0;
+}
+
+.table__name_col {
+  width: 346px;
+}
+
+.col-details {
+  width: 40%;
+}
+.col-info {
+  width: 60%;
+}
+
+.col-details {
+  text-align: right;
+}
+
+.details-btn {
+  height: 24px;
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-top: 15px;
+  padding: 0 15px;
 }

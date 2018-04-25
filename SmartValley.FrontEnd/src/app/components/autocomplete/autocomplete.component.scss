@@ -1,3 +1,10 @@
+.autocomplete-wrapper {
+  position: relative;
+  width: 255px;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    width: 100%;
+  }
+}
 .filter-autocomplete {
   padding-right: 45px;
   background-repeat: no-repeat;
@@ -8,6 +15,9 @@
 .input,
 .autocomplete-list {
   width: 255px;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    width: 100%;
+  }
 }
 .autocomplete-list {
   position: absolute;
@@ -21,6 +31,10 @@
   border-left: solid 1px #a4a2b0;
   border-right: solid 1px #a4a2b0;
   border-bottom: solid 1px #a4a2b0;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    width: 100%;
+    position: absolute;
+  }
 }
 
 .search-icon{

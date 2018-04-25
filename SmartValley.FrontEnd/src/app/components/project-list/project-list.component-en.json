@@ -14,6 +14,7 @@
     "EmptyResultTitle": "We couldn’t find any results applying to your search",
     "Subscribe": "Subscribe",
     "EmptyResultText": "Try another filter or subscribe for news and we’ll tell you when any project appears in this category.",
-    "EmailPlaceHolder": "For ex., asd152@gmail.com"
+    "EmailPlaceHolder": "For ex., asd152@gmail.com",
+    "SeeDetails": "See details"
   }
 }

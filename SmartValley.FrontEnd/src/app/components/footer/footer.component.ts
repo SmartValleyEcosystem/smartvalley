@@ -4,7 +4,7 @@ import {Paths} from '../../paths';
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css']
+  styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent implements OnInit {
 

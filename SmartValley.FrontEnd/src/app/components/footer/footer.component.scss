@@ -10,6 +10,11 @@
   display: flex;
   font-size: 14px;
   font-weight: 400;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    display: block;
+    padding: 20px;
+    width: 100%;
+  }
 }
 .footer-menu-list, .footer-menu-list a {
   list-style: none;
@@ -34,6 +39,28 @@
 .footer-col__menu {
   width: 420px;
   margin: 0;
+}
+@media screen and (min-width: 320px) and (max-width: 768px) {
+  .footer-col {
+    margin: 0 auto;
+  }
+
+  .footer-col p, .footer-col__copyright {
+    margin-bottom: 20px;
+  }
+
+  .footer-col__menu {
+    width: auto;
+  }
+  .footer-menu-list {
+    padding: 0;
+  }
+  .footer-col .phone-label {
+    margin-bottom: 0;
+  }
+  .social-icons {
+    margin-bottom: 30px;
+  }
 }
 .social-icon:last-child {
   margin-right: 0;

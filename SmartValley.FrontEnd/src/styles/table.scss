@@ -12,10 +12,16 @@
   color: #a4a2b0;
   vertical-align: baseline;
   height: 64px;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    padding: 20px 15px !important;
+  }
 }
 .ui-table-wrapper table td {
   cursor: pointer;
   padding: 18px 0 18px 40px !important;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    padding: 20px 15px !important;
+  }
 }
 .table__main-col {
   font-size: 24px;
@@ -24,6 +30,9 @@
 }
 .ui-table-wrapper table tr {
   border-bottom: solid 2px #eeedf5;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    border-bottom: solid 4px #eeedf5;
+  }
 }
 .ui-table-wrapper table tr:last-child {
   border-bottom: none;
