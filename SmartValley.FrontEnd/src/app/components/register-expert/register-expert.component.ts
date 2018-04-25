@@ -12,14 +12,12 @@ import {DocumentEnum} from './document.enum';
 import {Country} from '../../services/common/country';
 import {TranslateService} from '@ngx-translate/core';
 import {SelectItem} from 'primeng/api';
-import {UserContext} from '../../services/authentication/user-context';
 import * as moment from 'moment';
 import {NotificationsService} from 'angular2-notifications';
 import {AreaService} from '../../services/expert/area.service';
 import {EnumHelper} from '../../utils/enum-helper';
-import {isNullOrUndefined, isUndefined} from 'util';
 import {Md5} from 'ts-md5';
-import {ImageUploaderHelper} from '../../utils/image-uploader-helper';
+import {FileUploaderHelper} from '../../utils/file-uploader-helper';
 
 const countries = <Country[]>require('../../../assets/countryList.json');
 
@@ -144,9 +142,9 @@ export class RegisterExpertComponent implements OnInit {
 
   private validateForm(): boolean {
     if (!this.registryForm.invalid
-      && !isNullOrUndefined(this.cv)
-      && ImageUploaderHelper.checkImageExtensions(this.registryForm.value.document)
-      && ImageUploaderHelper.checkImageExtensions(this.registryForm.value.photo)) {
+      && FileUploaderHelper.checkCVExtensions(this.cv)
+      && FileUploaderHelper.checkImageExtensions(this.registryForm.value.document)
+      && FileUploaderHelper.checkImageExtensions(this.registryForm.value.photo)) {
       return true;
     }
 

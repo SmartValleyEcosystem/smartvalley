@@ -22,7 +22,7 @@ import {TeamMemberResponse} from '../../api/project/team-member-response';
 import {MemberUploadPhotoComponent} from '../member-upload-photo/member-upload-photo.component';
 import {StringExtensions} from '../../utils/string-extensions';
 import {ImageUploaderComponent} from '../image-uploader/image-uploader.component';
-import {ImageUploaderHelper} from '../../utils/image-uploader-helper';
+import {FileUploaderHelper} from '../../utils/file-uploader-helper';
 
 @Component({
   selector: 'app-create-project',
@@ -401,7 +401,7 @@ export class CreateProjectComponent implements OnInit {
   private async sendProjectImageAsync(projectId: number): Promise<void> {
     if (this.projectImage.imgUrl) {
       if (this.projectImage.value) {
-        if (!ImageUploaderHelper.checkImageExtensions(this.projectImage.value)) {
+        if (!FileUploaderHelper.checkImageExtensions(this.projectImage.value)) {
           this.notificationsService.warn(
             this.translateService.instant('Common.Error'),
             this.translateService.instant('CreateProject.InvalidFileType')
@@ -421,7 +421,7 @@ export class CreateProjectComponent implements OnInit {
       const photo = this.photos.find(p => p.elementId === 'photo__' + memberNumber);
       if (photo.imgUrl) {
         if (photo.value) {
-          if (!ImageUploaderHelper.checkImageExtensions(photo.value)) {
+          if (!FileUploaderHelper.checkImageExtensions(photo.value)) {
             this.notificationsService.warn(
               this.translateService.instant('Common.Error'),
               this.translateService.instant('CreateProject.InvalidFileType')
