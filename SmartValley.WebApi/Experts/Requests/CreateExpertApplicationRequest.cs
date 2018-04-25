@@ -18,6 +18,7 @@ namespace SmartValley.WebApi.Experts.Requests
         [MaxLength(50)]
         public string LastName { get; set; }
 
+        [Required]
         public DateTime BirthDate { get; set; }
 
         public Sex Sex { get; set; }
@@ -36,7 +37,6 @@ namespace SmartValley.WebApi.Experts.Requests
         [MaxLength(400)]
         public string FacebookLink { get; set; }
 
-        [Required]
         [MaxLength(1500)]
         public string Description { get; set; }
 

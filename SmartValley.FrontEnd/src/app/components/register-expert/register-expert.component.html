@@ -39,6 +39,7 @@
         <p class="control-label">
           <label for="sex">{{ 'RegisterExpert.Sex' | translate }}</label>
         </p>
+        <p class="notify">{{ 'RegisterExpert.SexNotify' | translate }}</p>
         <app-input-switch [styleClass]="'sex-switch'" [labelOff]="'RegisterExpert.Female' | translate" [labelOn]="'RegisterExpert.Male' | translate" class="input-component" formControlName="selectedSex"></app-input-switch>
       </div>
       <div #place class="control-row control-row__flexed">
@@ -60,13 +61,13 @@
           <label for="facebook">{{ 'RegisterExpert.FacebookLink' | translate }}</label>
         </p>
         <p class="notify">{{ 'RegisterExpert.SocialNotify' | translate }}</p>
-        <input class="input input-wide" id="facebook" formControlName="facebook" placeholder="http://" #required>
+        <input class="input input-wide" id="facebook" formControlName="facebook" placeholder="https://">
       </div>
       <div class="control-row">
         <p class="control-label">
           <label for="linkedin">{{ 'RegisterExpert.LinkedinLink' | translate }}</label>
         </p>
-        <input class="input input-wide" placeholder="http://" formControlName="linkedin" id="linkedin" #required>
+        <input class="input input-wide" placeholder="https://" formControlName="linkedin" id="linkedin">
       </div>
       <div class="control-row">
         <p class="control-label">
@@ -94,7 +95,7 @@
         <p class="control-label">
           <label for="description">{{ 'RegisterExpert.Describe' | translate }}</label>
         </p>
-        <textarea class="input" id="description" placeholder="{{ 'RegisterExpert.DescribePlaceholder' | translate }}" formControlName="description" #required></textarea>
+        <textarea class="input" id="description" placeholder="{{ 'RegisterExpert.DescribePlaceholder' | translate }}" formControlName="description"></textarea>
       </div>
     </div>
 

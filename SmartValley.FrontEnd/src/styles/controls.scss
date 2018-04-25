@@ -162,17 +162,19 @@ input.ng-valid {
 .input-component.ng-dirty.ng-invalid .input {
   border-color: red !important;
 }
-.ng-dirty .ng-invalid .input-switch .input-switch__on,
-.ng-dirty .ng-invalid .input-switch .input-switch__off {
+.input-component.ng-pristine.ng-invalid.ng-untouched.ng-dirty .input-switch__on,
+.input-component.ng-pristine.ng-invalid.ng-untouched.ng-dirty .input-switch__off {
   border-color: red !important;
 }
 
+.input-component.ng-pristine.ng-invalid.ng-untouched .input-switch__on,
+.input-component.ng-pristine.ng-invalid.ng-untouched .input-switch__off,
 .ng-dirty .ng-valid .input-switch .input-switch__on,
 .ng-dirty .ng-valid .input-switch .input-switch__off {
   border-color: #a4a2b0 !important;
 }
 
-.ng-invalid.ng-touched.ng-dirty textarea.ng-invalid,
+textarea.ng-pristine.ng-invalid.ng-untouched.ng-dirty,
 .ng-invalid.ng-touched.ng-dirty .ng-invalid .ui-radiobutton-box.ui-widget {
   border: 1px solid red !important;
 }

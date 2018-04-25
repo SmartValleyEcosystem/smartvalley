@@ -48,7 +48,7 @@ export class ScoringListComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.sortDirection = this.DESC;
+    this.sortDirection = this.ASC;
     this.sortedBy = OffersOrderBy.Status;
 
     await this.updateOffersAsync(0);

@@ -78,15 +78,15 @@ export class RegisterExpertComponent implements OnInit {
     this.registryForm = this.formBuilder.group({
       firstName: ['', [Validators.required, Validators.maxLength(50)]],
       secondName: ['', [Validators.required, Validators.maxLength(50)]],
-      linkedin: ['', [Validators.required, Validators.maxLength(400), Validators.pattern('https?://.+')]],
-      facebook: ['', [Validators.required, Validators.maxLength(400), Validators.pattern('https?://.+')]],
+      linkedin: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
+      facebook: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
       why: ['', [Validators.required, Validators.maxLength(1500)]],
-      description: ['', [Validators.required, Validators.maxLength(1500)]],
+      description: ['', [Validators.maxLength(1500)]],
       country: ['', [Validators.required]],
       document: ['', [Validators.required]],
       photo: ['', [Validators.required]],
       city: ['', [Validators.required, Validators.maxLength(50)]],
-      selectedSex: ['', [Validators.required]],
+      selectedSex: [''],
       selectedDocumentType: [DocumentEnum.Passport],
       birthDate: ['', [Validators.required, Validators.maxLength(100)]],
       number: ['', [Validators.required, Validators.maxLength(30)]],
@@ -202,7 +202,8 @@ export class RegisterExpertComponent implements OnInit {
     input.append('photo', form.photo);
     input.append('cv', this.cv);
     input.append('transactionHash', transactionHash);
-    input.append('sex', form.selectedSex ? SexEnum.Male.toString() : SexEnum.Female.toString());
+    input.append('sex', form.selectedSex === '' ? SexEnum.NotSpecified.toString() :
+      (form.selectedSex ? SexEnum.Male.toString() : SexEnum.Female.toString()));
     input.append('birthDate', moment(form.birthDate).toISOString());
     input.append('city', form.city);
     input.append('countryIsoCode', form.country.code);
