@@ -155,3 +155,10 @@ label {
 .member__remove {
   top: 1px;
 }
+
+.notify {
+  margin-top: 4px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: #a4a2b0;
+}

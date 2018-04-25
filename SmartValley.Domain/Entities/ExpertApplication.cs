@@ -37,8 +37,7 @@ namespace SmartValley.Domain.Entities
 
         [MaxLength(400)]
         public string FacebookLink { get; set; }
-
-        [Required]
+        
         [MaxLength(1500)]
         public string Description { get; set; }
 

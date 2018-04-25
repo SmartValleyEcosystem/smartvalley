@@ -10,6 +10,7 @@ import {OffersApiClient} from '../../api/scoring-offer/offers-api-client';
 import {OfferStatus} from '../../api/scoring-offer/offer-status.enum';
 import {OffersQuery} from '../../api/scoring-offer/offers-query';
 import {Paginator} from 'primeng/primeng';
+import {isNullOrUndefined} from 'util';
 
 @Component({
   selector: 'app-scoring-list',
@@ -47,7 +48,7 @@ export class ScoringListComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.sortDirection = this.DESC;
+    this.sortDirection = this.ASC;
     this.sortedBy = OffersOrderBy.Status;
 
     await this.updateOffersAsync(0);
@@ -56,7 +57,9 @@ export class ScoringListComponent implements OnInit {
   public async selectedStatusAsync(statusId: OfferStatus): Promise<void> {
     this.selectedOfferStatus = statusId;
     await this.updateOffersAsync(0);
-    this.paginator.changePage(0);
+    if (!isNullOrUndefined(this.paginator)) {
+      this.paginator.changePage(0);
+    }
   }
 
   public getProjectLink(id) {

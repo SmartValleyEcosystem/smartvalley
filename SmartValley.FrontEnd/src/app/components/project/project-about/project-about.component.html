@@ -21,8 +21,8 @@
         <div class="partition-item non-pointed">{{member.fullName}}</div>
         <div class="role-text">{{member.role}}</div>
         <div class="member-socials">
-          <a *ngIf="member.linkedIn" href="{{member.linkedIn}}" class="social-icon social-icon__linkedin"></a>
-          <a *ngIf="member.facebook" href="{{member.facebook}}" class="social-icon social-icon__facebook"></a>
+          <a *ngIf="member.linkedIn" href="{{member.linkedIn}}" target="_blank" class="social-icon social-icon__linkedin"></a>
+          <a *ngIf="member.facebook" href="{{member.facebook}}" target="_blank" class="social-icon social-icon__facebook"></a>
         </div>
       </div>
     </div>
@@ -33,35 +33,35 @@
   <h2 class="partition-title">{{ 'MyProjectAbout.SocialMedia' | translate }}</h2>
   <div class="partition-block social-column">
     <div *ngIf="haveSocials; else haveNoSocialsBlock;">
-      <a *ngIf="projectInfo.facebook" href="{{projectInfo.facebook}}">
+      <a *ngIf="projectInfo.facebook" href="{{projectInfo.facebook}}" target="_blank">
         <div class="social-icon social-icon__facebook"></div>
         <div class="partition-item">Facebook</div>
       </a>
-      <a *ngIf="projectInfo.bitcoinTalk" href="{{projectInfo.bitcoinTalk}}">
+      <a *ngIf="projectInfo.bitcoinTalk" href="{{projectInfo.bitcoinTalk}}" target="_blank">
         <div class="social-icon social-icon__bitcointalk"></div>
         <div class="partition-item">BitcoinTalk</div>
       </a>
-      <a *ngIf="projectInfo.github" href="{{projectInfo.github}}">
+      <a *ngIf="projectInfo.github" href="{{projectInfo.github}}" target="_blank">
         <div class="social-icon social-icon__github"></div>
         <div class="partition-item">GitHub</div>
       </a>
-      <a *ngIf="projectInfo.linkedin" href="{{projectInfo.linkedin}}">
+      <a *ngIf="projectInfo.linkedin" href="{{projectInfo.linkedin}}" target="_blank">
         <div class="social-icon social-icon__linkedin"></div>
         <div class="partition-item">LinkedIn</div>
       </a>
-      <a *ngIf="projectInfo.medium" href="{{projectInfo.medium}}">
+      <a *ngIf="projectInfo.medium" href="{{projectInfo.medium}}" target="_blank">
         <div class="social-icon social-icon__medium"></div>
         <div class="partition-item">Medium</div>
       </a>
-      <a *ngIf="projectInfo.reddit" href="{{projectInfo.reddit}}">
+      <a *ngIf="projectInfo.reddit" href="{{projectInfo.reddit}}" target="_blank">
         <div class="social-icon social-icon__reddit"></div>
         <div class="partition-item">Reddit</div>
       </a>
-      <a *ngIf="projectInfo.telegram" href="{{projectInfo.telegram}}">
+      <a *ngIf="projectInfo.telegram" href="{{projectInfo.telegram}}" target="_blank">
         <div class="social-icon social-icon__telegram"></div>
         <div class="partition-item">Telegram</div>
       </a>
-      <a *ngIf="projectInfo.twitter" href="{{projectInfo.twitter}}">
+      <a *ngIf="projectInfo.twitter" href="{{projectInfo.twitter}}" target="_blank">
         <div class="social-icon social-icon__twitter"></div>
         <div class="partition-item">Twitter</div>
       </a>

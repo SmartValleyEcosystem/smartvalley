@@ -7,7 +7,7 @@ export interface GetEstimatesResponse {
   score: number;
   criteria: Array<CriterionWithEstimatesResponse>;
   offers: Array<ScoringOfferResponse>;
-  requiredExpertsCount: number;
+  requiredExpertsCount: number;утм
   conclusions: Array<ScoringAreaConslusionResponse>;
   areaType: AreaType;
 }

@@ -24,6 +24,7 @@ namespace SmartValley.Data.SQL.Repositories
                           join criterion in ReadContext.ScoringCriteria on mapping.ScoringCriterionId equals criterion.Id
                           where answer.ScoringApplicationId == scoringApplicationId
                                 && criterion.AreaType == areaType
+                          orderby question.Order
                           select new ScoringCriterionPrompt
                                  {
                                      CriterionId = criterion.Id,
@@ -31,7 +32,7 @@ namespace SmartValley.Data.SQL.Repositories
                                      Answer = answer.Value,
                                      PromptType = ScoringCriterionPromptType.Plain,
                                      QuestionControlType = question.Type
-                          }).ToListAsync();
+                                 }).ToListAsync();
         }
     }
 }

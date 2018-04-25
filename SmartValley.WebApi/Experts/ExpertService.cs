@@ -193,6 +193,7 @@ namespace SmartValley.WebApi.Experts
                 expert = new Expert(user.Id, true);
                 _expertRepository.Add(expert);
             }
+
             expert.SetAreas(areas);
             await _expertRepository.SaveChangesAsync();
 

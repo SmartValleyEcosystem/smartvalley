@@ -25,7 +25,7 @@
           </span>
         <mat-form-field class="col-8 example-full-width">
           <input placeholder="{{ 'EditExpertModalComponent.FirstName' | translate }}" matInput formControlName="firstName"
-                 name="name" #required [(ngModel)]="expertDetails.firstName" [(value)]="expertDetails.firstName">
+                 name="name" [(ngModel)]="expertDetails.firstName" [(value)]="expertDetails.firstName">
         </mat-form-field>
       </div>
       <div class="row">
@@ -34,7 +34,7 @@
           </span>
         <mat-form-field class="col-8 example-full-width">
           <input placeholder="{{ 'EditExpertModalComponent.SecondName' | translate }}" matInput formControlName="secondName"
-                 name="name" #required [(ngModel)]="expertDetails.secondName" [(value)]="expertDetails.secondName">
+                 name="name" [(ngModel)]="expertDetails.secondName" [(value)]="expertDetails.secondName">
         </mat-form-field>
       </div>
       <div class="row">
@@ -77,7 +77,7 @@
     </div>
     <div class="row submit-row">
         <span class="offset-6 col-6">
-          <button mat-raised-button (click)="submitExpertSettingsAsync()" [disabled]="backendForm.invalid"
+          <button mat-raised-button (click)="submitExpertSettingsAsync()"
                   class="sv-default-btn btn-space">
               {{'EditExpertModalComponent.SaveExpert' | translate}}
             </button>

@@ -167,7 +167,6 @@ export class ExpertScoringComponent implements OnInit {
       return;
     }
 
-    this.dialogService.showSendReportDialog();
     const transactionHash = await this.scoringManagerContractClient.submitEstimatesAsync(
       this.projectExternalId,
       this.areaType,

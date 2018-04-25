@@ -47,8 +47,8 @@ export class EditExpertModalComponent implements OnInit {
     this.backendForm = this.formBuilder.group({
       address: ['', [Validators.required, Validators.minLength(8)]],
       email: ['', Validators.required],
-      firstName: ['', Validators.required],
-      secondName: ['', Validators.required],
+      firstName: [''],
+      secondName: [''],
       about: ['']
     });
 
@@ -80,13 +80,16 @@ export class EditExpertModalComponent implements OnInit {
 
   private async updateAreasAsync(): Promise<void> {
 
-    const categoriesToRequest = this.selectedCategories.filter((value, index) => value === true).map((value, index) => index);
+    const allCategories = this.selectedCategories.map((value, index) => index);
+    const oldCategories = this.startedCategories.map((value, index) => index);
+    const newCategories = allCategories.filter(i => oldCategories.indexOf(i) < 0);
+    const categoriesToRequest = Object.keys(allCategories).map(i => +i);
 
-    if (categoriesToRequest.length > this.expertDetails.areas.length) {
+    if (newCategories.length > 0) {
 
       const address = this.backendForm.value.address;
 
-      const transactionHash = await this.expertsRegistryContractClient.addAsync(address, categoriesToRequest);
+      const transactionHash = await this.expertsRegistryContractClient.addAsync(address, newCategories);
 
       const adminExpertUpdateAreasRequest = <AdminExpertUpdateAreasRequest>{
         address: address,

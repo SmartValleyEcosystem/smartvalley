@@ -27,7 +27,7 @@
               <label>{{ 'EditScoringApplication.ProjectCategory' | translate }}</label>
             </p>
             <div class="main-text">
-              <span>{{projectInfo.category ? ('Categories.' + projectInfo.category | translate) : '\u2014' }}</span>
+              <span>{{projectInfo.category != undefined ? ('Categories.' + projectInfo.category | translate) : '\u2014' }}</span>
             </div>
           </div>
           <div class="control-row">
@@ -35,7 +35,7 @@
               <label>{{ 'EditScoringApplication.ProjectStage' | translate }}</label>
             </p>
             <div class="main-text">
-              <span>{{projectInfo.stage ? ('Stages.' + projectInfo.stage | translate) : '\u2014' }}</span>
+              <span>{{projectInfo.stage != undefined ? ('Stages.' + projectInfo.stage | translate) : '\u2014' }}</span>
             </div>
           </div>
           <div class="control-row">
@@ -57,14 +57,14 @@
               <label>{{ 'EditScoringApplication.Website' | translate }}</label>
             </p>
             <a *ngIf="projectInfo.webSite" class="partition-item"
-               href="{{projectInfo.webSite}}">{{projectInfo.webSite}}</a>
+               href="{{projectInfo.webSite}}" target="_blank">{{projectInfo.webSite}}</a>
             <span *ngIf="!projectInfo.webSite" class="main-text">&mdash;</span>
           </div>
           <div class="control-row">
             <p class="control-label">
               <label>{{ 'EditScoringApplication.LinkToWP' | translate }}</label>
             </p>
-            <a *ngIf="projectInfo.whitePaperLink" class="partition-item" href="{{projectInfo.whitePaperLink}}">{{projectInfo.whitePaperLink}}</a>
+            <a *ngIf="projectInfo.whitePaperLink" class="partition-item" href="{{projectInfo.whitePaperLink}}" target="_blank">{{projectInfo.whitePaperLink}}</a>
             <span *ngIf="!projectInfo.whitePaperLink" class="main-text">&mdash;</span>
           </div>
           <div class="control-row">
@@ -73,47 +73,40 @@
             </p>
             <div class="main-text">{{projectInfo.icoDate | formatDate | dashIfEmpty}}</div>
           </div>
-          <div class="control-row">
-            <p class="control-label">
-              <label>{{ 'EditScoringApplication.ContactEmail' | translate }}</label>
-            </p>
-            <a *ngIf="projectInfo.contactEmail" class="partition-item" href="mailto:{{projectInfo.contactEmail}}">{{projectInfo.contactEmail}}</a>
-            <span *ngIf="!projectInfo.contactEmail" class="main-text">&mdash;</span>
-          </div>
         </div>
         <h2 class="partition-title" id="partition_social">{{ 'EditScoringApplication.SocialMedia' | translate }}</h2>
         <div class="partition-block">
           <div class="social-column">
             <div *ngIf="haveSocials; else haveNoSocialsBlock;">
-              <a *ngIf="projectInfo.socialNetworks.facebook" href="{{projectInfo.socialNetworks.facebook}}">
+              <a *ngIf="projectInfo.socialNetworks.facebook" href="{{projectInfo.socialNetworks.facebook}}" target="_blank">
                 <div class="social-icon social-icon__facebook"></div>
                 <div class="partition-item">Facebook</div>
               </a>
-              <a *ngIf="projectInfo.socialNetworks.bitcoinTalk" href="{{projectInfo.socialNetworks.bitcoinTalk}}">
+              <a *ngIf="projectInfo.socialNetworks.bitcoinTalk" href="{{projectInfo.socialNetworks.bitcoinTalk}}" target="_blank">
                 <div class="social-icon social-icon__bitcointalk"></div>
                 <div class="partition-item">BitcoinTalk</div>
               </a>
-              <a *ngIf="projectInfo.socialNetworks.github" href="{{projectInfo.socialNetworks.github}}">
+              <a *ngIf="projectInfo.socialNetworks.github" href="{{projectInfo.socialNetworks.github}}" target="_blank">
                 <div class="social-icon social-icon__github"></div>
                 <div class="partition-item">GitHub</div>
               </a>
-              <a *ngIf="projectInfo.socialNetworks.linkedin" href="{{projectInfo.socialNetworks.linkedin}}">
+              <a *ngIf="projectInfo.socialNetworks.linkedin" href="{{projectInfo.socialNetworks.linkedin}}" target="_blank">
                 <div class="social-icon social-icon__linkedin"></div>
                 <div class="partition-item">LinkedIn</div>
               </a>
-              <a *ngIf="projectInfo.socialNetworks.medium" href="{{projectInfo.socialNetworks.medium}}">
+              <a *ngIf="projectInfo.socialNetworks.medium" href="{{projectInfo.socialNetworks.medium}}" target="_blank">
                 <div class="social-icon social-icon__medium"></div>
                 <div class="partition-item">Medium</div>
               </a>
-              <a *ngIf="projectInfo.socialNetworks.reddit" href="{{projectInfo.socialNetworks.reddit}}">
+              <a *ngIf="projectInfo.socialNetworks.reddit" href="{{projectInfo.socialNetworks.reddit}}" target="_blank">
                 <div class="social-icon social-icon__reddit"></div>
                 <div class="partition-item">Reddit</div>
               </a>
-              <a *ngIf="projectInfo.socialNetworks.telegram" href="{{projectInfo.socialNetworks.telegram}}">
+              <a *ngIf="projectInfo.socialNetworks.telegram" href="{{projectInfo.socialNetworks.telegram}}" target="_blank">
                 <div class="social-icon social-icon__telegram"></div>
                 <div class="partition-item">Telegram</div>
               </a>
-              <a *ngIf="projectInfo.socialNetworks.twitter" href="{{projectInfo.socialNetworks.twitter}}">
+              <a *ngIf="projectInfo.socialNetworks.twitter" href="{{projectInfo.socialNetworks.twitter}}" target="_blank">
                 <div class="social-icon social-icon__twitter"></div>
                 <div class="partition-item">Twitter</div>
               </a>
@@ -126,7 +119,7 @@
             <label>{{ 'EditScoringApplication.LinkToArticle' | translate }}</label>
           </p>
           <div *ngIf="projectInfo.articles !== null">
-            <a style="display: block;" class="partition-item" href="{{article}}" *ngFor="let article of articles">{{article}}</a>
+            <a style="display: block;" class="partition-item" href="{{article}}" target="_blank" *ngFor="let article of articles">{{article}}</a>
           </div>
         </div>
         <h2 class="partition-title" id="partition_team">{{ 'EditScoringApplication.TeamTitle' | translate }}</h2>
@@ -145,8 +138,8 @@
               <div class="partition-item" style="cursor: default;">{{member.fullName}}</div>
               <div class="role-text">{{member.role}}</div>
               <div class="member-socials">
-                <a *ngIf="member.linkedIn" href="{{member.linkedIn}}" class="social-icon social-icon__linkedin"></a>
-                <a *ngIf="member.facebook" href="{{member.facebook}}" class="social-icon social-icon__facebook"></a>
+                <a *ngIf="member.linkedIn" href="{{member.linkedIn}}" target="_blank" class="social-icon social-icon__linkedin"></a>
+                <a *ngIf="member.facebook" href="{{member.facebook}}" target="_blank" class="social-icon social-icon__facebook"></a>
               </div>
             </div>
           </div>
@@ -174,9 +167,9 @@
               </div>
               <div class="partition-item" style="cursor: default;">{{adviser.fullName}}</div>
               <div class="member-socials">
-                <a *ngIf="adviser.linkedInLink" href="{{adviser.linkedInLink}}"
+                <a *ngIf="adviser.linkedInLink" href="{{adviser.linkedInLink}}" target="_blank"
                    class="social-icon social-icon__linkedin"></a>
-                <a *ngIf="adviser.facebookLink" href="{{adviser.facebookLink}}"
+                <a *ngIf="adviser.facebookLink" href="{{adviser.facebookLink}}" target="_blank"
                    class="social-icon social-icon__facebook"></a>
               </div>
             </div>
@@ -229,7 +222,7 @@
                   <p class="control-label">
                     <label>{{'EditScoringApplication.' + question.key | translate }}</label>
                   </p>
-                  <a *ngIf="question.answer" class="partition-item" href="{{question.answer}}">{{question.answer}}</a>
+                  <a *ngIf="question.answer" class="partition-item" href="{{question.answer}}" target="_blank">{{question.answer}}</a>
                   <span *ngIf="!question.answer" class="main-text">&mdash;</span>
                 </div>
               </div>
