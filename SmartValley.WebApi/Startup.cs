@@ -4,6 +4,7 @@ using IcoLab.Web.Common.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,15 +17,18 @@ using Nethereum.Web3;
 using NServiceBus;
 using SmartValley.Application;
 using SmartValley.Application.AzureStorage;
-using SmartValley.Application.Contracts;
-using SmartValley.Application.Contracts.Options;
-using SmartValley.Application.Contracts.Scorings;
-using SmartValley.Application.Contracts.SmartValley.Application.Contracts;
 using SmartValley.Application.Email;
 using SmartValley.Application.Templates;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Data.SQL.Repositories;
+using SmartValley.Domain.Contracts;
 using SmartValley.Domain.Interfaces;
+using SmartValley.Ethereum;
+using SmartValley.Ethereum.Contracts.EtherManager;
+using SmartValley.Ethereum.Contracts.Scoring;
+using SmartValley.Ethereum.Contracts.ScoringExpertsManager;
+using SmartValley.Ethereum.Contracts.ScoringManager;
+using SmartValley.Ethereum.Contracts.SmartValley.Application.Contracts;
 using SmartValley.WebApi.Admin;
 using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.Estimates;
@@ -60,22 +64,22 @@ namespace SmartValley.WebApi
         {
             services.ConfigureOptions(Configuration, typeof(NethereumOptions), typeof(AuthenticationOptions), typeof(SiteOptions), typeof(SmtpOptions), typeof(AzureStorageOptions), typeof(ScoringOptions));
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info { Title = "SmartValley API", Version = "v1" }); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "SmartValley API", Version = "v1"}); });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                                   {
                                       options.RequireHttpsMetadata = _currentEnvironment.IsProduction();
                                       options.TokenValidationParameters = new TokenValidationParameters
-                                      {
-                                          ValidateIssuer = true,
-                                          ValidIssuer = AuthenticationOptions.Issuer,
-                                          ValidateAudience = true,
-                                          ValidAudience = AuthenticationOptions.Audience,
-                                          ValidateLifetime = false,
-                                          IssuerSigningKey = AuthenticationOptions.GetSymmetricSecurityKey(),
-                                          ValidateIssuerSigningKey = true
-                                      };
+                                                                          {
+                                                                              ValidateIssuer = true,
+                                                                              ValidIssuer = AuthenticationOptions.Issuer,
+                                                                              ValidateAudience = true,
+                                                                              ValidAudience = AuthenticationOptions.Audience,
+                                                                              ValidateLifetime = false,
+                                                                              IssuerSigningKey = AuthenticationOptions.GetSymmetricSecurityKey(),
+                                                                              ValidateIssuerSigningKey = true
+                                                                          };
                                   });
 
             services.AddSingleton<InitializationService>();
@@ -87,15 +91,13 @@ namespace SmartValley.WebApi
             services.AddSingleton<MailService>();
             services.AddSingleton<MailTokenService>();
             services.AddSingleton<MailSender>();
-            services.AddSingleton<ITemplateProvider, TemplateProvider>();
+            services.AddSingleton<ITemplateProvider, TemplateProvider>(provider => new TemplateProvider(_currentEnvironment.ContentRootPath));
             services.AddSingleton<ProjectTeamMembersStorageProvider>();
             services.AddSingleton<ApplicationTeamMembersStorageProvider>();
             services.AddSingleton<ExpertApplicationsStorageProvider>();
             services.AddSingleton<ProjectStorageProvider>();
-            services.AddSingleton<ITokenContractClient, TokenContractClient>(
-                provider => new TokenContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().TokenContract));
             services.AddSingleton<IScoringContractClient, ScoringContractClient>(
-                 provider => new ScoringContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringContract));
+                provider => new ScoringContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringContract));
             services.AddSingleton<IEtherManagerContractClient, EtherManagerContractClient>(
                 provider => new EtherManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().EtherManagerContract));
             services.AddSingleton<IScoringManagerContractClient, ScoringManagerContractClient>(
@@ -145,8 +147,9 @@ namespace SmartValley.WebApi
 
             ConfigureCorsPolicy(services, siteOptions);
 
-            //            var endpointInstance = EndpointConfigurator.StartAsync(Configuration).GetAwaiter().GetResult();
-            //            services.AddSingleton<IMessageSession>(endpointInstance);
+            var dataProtectionProvider = serviceProvider.GetService<IDataProtectionProvider>();
+            var endpointInstance = EndpointConfigurator.StartAsync(Configuration, _currentEnvironment.ContentRootPath, dataProtectionProvider).GetAwaiter().GetResult();
+            services.AddSingleton<IMessageSession>(endpointInstance);
 
             var service = serviceProvider.GetService<InitializationService>();
             service.InitializeAsync().Wait();
@@ -178,31 +181,26 @@ namespace SmartValley.WebApi
                             await next();
                         }
                     })
-               .UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new List<string> { "index.html" } })
+               .UseDefaultFiles(new DefaultFilesOptions {DefaultFileNames = new List<string> {"index.html"}})
                .UseStaticFiles()
                .UseMvc();
         }
 
         private void ConfigureCorsPolicy(IServiceCollection services, SiteOptions siteOptions)
         {
-            var url = siteOptions.Root;
-            if (!_currentEnvironment.IsProduction())
-            {
-                url = "*";
-            }
-
-            var corsPolicyBuilder = new CorsPolicyBuilder();
-            corsPolicyBuilder.WithOrigins(url);
-            corsPolicyBuilder.AllowAnyHeader();
-            corsPolicyBuilder.AllowAnyMethod();
-            corsPolicyBuilder.WithExposedHeaders(Headers.XNewAuthToken,
+            var corsPolicy = new CorsPolicyBuilder()
+                             .WithOrigins(_currentEnvironment.IsProduction() ? siteOptions.Root : "*")
+                             .AllowAnyHeader()
+                             .AllowAnyMethod()
+                             .WithExposedHeaders(Headers.XNewAuthToken,
                                                  Headers.XNewRoles,
                                                  Headers.XEthereumAddress,
                                                  Headers.XSignature,
-                                                 Headers.XSignedText);
-            corsPolicyBuilder.AllowCredentials();
+                                                 Headers.XSignedText)
+                             .AllowCredentials()
+                             .Build();
 
-            services.AddCors(options => { options.AddPolicy(CorsPolicyName, corsPolicyBuilder.Build()); });
+            services.AddCors(options => { options.AddPolicy(CorsPolicyName, corsPolicy); });
         }
 
         private static Web3 InitializeWeb3(string rpcAddress)

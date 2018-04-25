@@ -17,7 +17,8 @@
         <div class="question-tooltip" *ngIf="criterionPrompts">
           <h3 class="question-tooltip__title">{{ 'ExpertScoring.ProjectOwnerAnswer' | translate }}</h3>
           <div *ngFor="let info of getCriterionInfo(criteria.id)">
-            <div class="empty-popup" *ngIf="getCriterionInfo(criteria.id).length === 1 && !info.answer && !info.projectAdvisers.length && !info.socialNetworks && !info.projectTeamMembers.length">
+            <div class="empty-popup"
+                 *ngIf="getCriterionInfo(criteria.id).length === 1 && !info.answer && !info.projectAdvisers.length && !info.socialNetworks && !info.projectTeamMembers.length">
               <p class="info-description empty-info">
                 {{ 'ExpertScoring.NoInformation' | translate }}
               </p>
