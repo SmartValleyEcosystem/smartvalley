@@ -16,6 +16,8 @@
     "Status": "Status",
     "Inactive": "Inactive",
     "Active": "Active",
+    "InactiveTip": "(can't take more projects)",
+    "ActiveTip": "(can take more projects)",
     "InactiveDescription": "(can take more projects)",
     "ActiveDescription": "(can't take more projects)",
     "ETH": "ETH",

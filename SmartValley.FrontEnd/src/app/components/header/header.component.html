@@ -27,8 +27,10 @@
         <span [class.active]="isExpertActive" (click)="showChangeActivityModalAsync(isExpertActive);" [class.not-active]="!isExpertActive">
           <span *ngIf="isExpertActive" class="icon active-icon"><i class="status-icon material-icons">done</i></span>
           <span *ngIf="isExpertActive" class="status-label">{{ 'Header.Active' | translate }}</span>
+          <span *ngIf="isExpertActive" class="status-tip">{{ 'Header.ActiveTip' | translate }}</span>
           <span *ngIf="!isExpertActive" class="icon inactive-icon"><i class="status-icon material-icons">stop</i></span>
           <span *ngIf="!isExpertActive" class="status-label">{{ 'Header.Inactive' | translate }}</span>
+          <span *ngIf="!isExpertActive" class="status-tip">{{ 'Header.InactiveTip' | translate }}</span>
         </span>
       </div>
       <div class="balance">
