@@ -176,7 +176,11 @@ namespace SmartValley.WebApi.Experts
             if (expert != null)
                 await _expertRepository.UpdateAreasAsync(user.Id, areas);
             else
-                await _expertRepository.AddAsync(new Expert {UserId = user.Id, IsAvailable = true}, areas);
+            {
+                await _expertRepository.AddAsync(new Expert { UserId = user.Id, IsAvailable = true }, areas);
+                await _userRepository.AddRoleAsync(user.Address, RoleType.Expert);
+            }
+                
 
             await _expertApplicationRepository.SetAcceptedAsync(application, areas.ToList());
 
