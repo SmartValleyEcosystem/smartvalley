@@ -23,6 +23,9 @@
   color: #a4a2b0;
   float: right;
   clear: both;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    float: left;
+  }
 }
 
 .score {
@@ -46,4 +49,15 @@
 
 .progress-scoring {
   color: #5d49f2;
+}
+
+.control-info-wrapper {
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    margin: 0 auto;
+    .score {
+      text-align: center;
+      margin: 0 auto;
+      margin-bottom: 10px;
+    }
+  }
 }

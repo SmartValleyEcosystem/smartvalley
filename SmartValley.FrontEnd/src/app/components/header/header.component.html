@@ -1,3 +1,23 @@
+<nav class="mobile-menu" [class.invisible]="!isMobileMenuVisible">
+  <ul class="mobile-menu-list">
+    <li (click)="switchMobileMenuVisibility();">
+      <a class="header-nav__link-mobile" [routerLink]="['/']">{{ 'Header.SmartValley' | translate }}</a>
+    </li>
+    <li (click)="switchMobileMenuVisibility();">
+      <a class="header-nav__link-mobile" [routerLinkActiveOptions]="{ exact: true }" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + projectsLink">{{'Header.Projects' | translate }}</a>
+    </li>
+    <li (click)="switchMobileMenuVisibility();">
+      <a class="header-nav__link-mobile" *ngIf="!haveProject" (click)="navigateToProjectApplication()">{{ 'Header.GetScoreForMyProject' | translate }}</a>
+    </li>
+    <li (click)="switchMobileMenuVisibility();">
+      <a *ngIf="expertStatus !== ExpertApplicationStatus.Accepted" class="header-nav__link-mobile" (click)="navigateToExpertApplication()">{{ 'Header.BecomeAnExpert' | translate }}</a>
+    </li>
+    <li (click)="switchMobileMenuVisibility();">
+      <a class="header-nav__link-mobile" target="_blank" href="https://smartvalley.io/en/assets/files/WP_en_new.pdf">{{ 'Header.WhitePaper' | translate }}</a>
+    </li>
+  </ul>
+</nav>
+
 <div class="header-wrapper">
   <div class="header-content">
     <a [routerLink]="['/']"><img class="logo" src="/assets/img/logo.png" alt="Smart valley"></a>
@@ -19,6 +39,9 @@
         {{'Header.Login' | translate }}
       </span>
     </nav>
+    <div class="mobile-menu-icon">
+      <i (click)="switchMobileMenuVisibility();" class="status-icon material-icons">menu</i>
+    </div>
   </div>
   <div *ngIf="showExpertPanel" class="expert-panel">
     <div class="expert-content">

@@ -13,7 +13,7 @@ import {ErrorCode} from '../../shared/error-code.enum';
 @Component({
   selector: 'app-project',
   templateUrl: './project.component.html',
-  styleUrls: ['./project.component.css']
+  styleUrls: ['./project.component.scss']
 })
 export class ProjectComponent implements OnInit {
 

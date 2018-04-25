@@ -13,7 +13,7 @@ import {ProjectSummaryResponse} from '../../../api/project/project-summary-respo
 @Component({
   selector: 'app-scoring-application',
   templateUrl: './scoring-application.component.html',
-  styleUrls: ['./scoring-application.component.css']
+  styleUrls: ['./scoring-application.component.scss']
 })
 export class ScoringApplicationComponent implements OnInit {
 

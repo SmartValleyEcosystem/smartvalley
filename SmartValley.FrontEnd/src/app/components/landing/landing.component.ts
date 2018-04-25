@@ -11,7 +11,7 @@ import {SortDirection} from '../../api/sort-direction.enum';
 @Component({
   selector: 'app-root',
   templateUrl: './landing.component.html',
-  styleUrls: ['./landing.component.css']
+  styleUrls: ['./landing.component.scss']
 })
 export class LandingComponent implements OnInit {
 

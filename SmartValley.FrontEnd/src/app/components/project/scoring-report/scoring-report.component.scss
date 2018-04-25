@@ -1,6 +1,9 @@
 .label-wrapper {
   width: 125px;
   margin: 0 auto;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    width: auto;
+  }
 }
 
 .label-name {
@@ -10,10 +13,20 @@
   margin: 30px 0 15px 0;
   padding-bottom: 15px;
   text-align: center;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    width: auto;
+    border: none;
+    height: 50px;
+    padding: 13px 0 0;
+    margin: 0;
+  }
 }
 
 .label-score {
   font-size: 24px;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    display: none;
+  }
 }
 
 .max-score {
@@ -95,6 +108,9 @@
 .settings-title,
 .settings-block {
   width: 780px;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .progress-scoring-item {
@@ -133,8 +149,14 @@
 
 .active-question {
   border: solid 2px #231a5d;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    border: none;
+  }
   .question-tooltip {
     display: block;
+    @media screen and (min-width: 320px) and (max-width: 768px) {
+      display: none;
+    }
   }
 }
 .question-tooltip {
@@ -172,6 +194,9 @@
     font-size: 12px;
     text-align: left;
     color: #fff;
+    @media screen and (min-width: 320px) and (max-width: 768px) {
+      display: none;
+    }
   }
 }
 
@@ -187,6 +212,9 @@
 }
 .member-socials {
   margin-bottom: 10px;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    display: none;
+  }
 }
 .social-wrapper {
   a {

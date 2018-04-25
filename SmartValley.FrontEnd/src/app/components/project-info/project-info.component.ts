@@ -6,7 +6,7 @@ import {BlockiesService} from '../../services/blockies-service';
 @Component({
   selector: 'app-project-info',
   templateUrl: './project-info.component.html',
-  styleUrls: ['./project-info.component.css']
+  styleUrls: ['./project-info.component.scss']
 })
 export class ProjectInfoComponent implements OnInit {
 
