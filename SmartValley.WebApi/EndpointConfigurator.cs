@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Net;
 using System.Threading.Tasks;
 using System.Transactions;
 using Autofac;
@@ -35,9 +36,9 @@ namespace SmartValley.WebApi
         public static Task<IEndpointInstance> StartAsync(IConfiguration configuration, string contentRootPath, IDataProtectionProvider dataProtectionProvider)
         {
             var endpointConfiguration = new EndpointConfiguration(EndpointName);
+            SetLicense(configuration, endpointConfiguration);
 
             var connectionString = configuration.GetConnectionString("DefaultConnection");
-
             ConfigureTransport(endpointConfiguration, connectionString);
 
             endpointConfiguration
@@ -64,6 +65,19 @@ namespace SmartValley.WebApi
                                  .WrapHandlersInATransactionScope(isolationLevel: IsolationLevel.ReadCommitted);
 
             return Endpoint.Start(endpointConfiguration);
+        }
+
+        private static void SetLicense(IConfiguration configuration, EndpointConfiguration endpointConfiguration)
+        {
+            var escapedLicense = configuration.GetValue<string>("NServiceBusLicense");
+            if (string.IsNullOrWhiteSpace(escapedLicense))
+                return;
+
+            var licenseText = WebUtility.HtmlDecode(escapedLicense);
+            if (licenseText == null)
+                return;
+
+            endpointConfiguration.License(licenseText);
         }
 
         private static void ConfigureTransport(EndpointConfiguration endpointConfiguration, string connectionString)
