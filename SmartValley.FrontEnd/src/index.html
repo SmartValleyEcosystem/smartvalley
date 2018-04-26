@@ -8,6 +8,14 @@
   <meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="icon" type="image/x-icon" href="./assets/img/favicon.ico">
   <style>
+    .load-screen {
+      position: absolute;
+      left:0;
+      right:0;
+      top:0;
+      bottom: 0;
+      background-color: #222034
+    }
     .loader-wrapper {
       text-align: center;
       position: relative;
@@ -20,7 +28,7 @@
       justify-content: center;
       padding: 20px;
     }
-    .logo {
+    .load-screen__logo {
       display: inline-block;
       height: 5em;
       vertical-align: top;
@@ -76,9 +84,9 @@
 </head>
 <body>
 <app-root>
-  <div style="position: absolute; left:0; right:0; top:0; bottom: 0; background-color: #222034">
+  <div class="load-screen">
     <div class="loader-wrapper">
-      <img class="logo" src="/assets/img/big-logo.svg"
+      <img class="load-screen__logo" src="/assets/img/big-logo.svg"
            alt="Smart valley">
       <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
     </div>
