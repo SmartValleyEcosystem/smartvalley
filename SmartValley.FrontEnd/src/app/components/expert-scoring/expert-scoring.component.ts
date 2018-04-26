@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Component, ElementRef, OnInit, QueryList, ViewChildren, OnDestroy} from '@angular/core';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ScoringCriterionService} from '../../services/criteria/scoring-criterion.service';
@@ -26,7 +26,7 @@ import {QuestionControlType} from '../../api/scoring-application/question-contro
   templateUrl: './expert-scoring.component.html',
   styleUrls: ['./expert-scoring.component.scss']
 })
-export class ExpertScoringComponent implements OnInit {
+export class ExpertScoringComponent implements OnInit, OnDestroy {
 
   public projectName = '';
   public projectId: number;
@@ -40,7 +40,8 @@ export class ExpertScoringComponent implements OnInit {
   public criterionPrompts: CriterionPromptResponse[];
   public questionTypeComboBox = QuestionControlType.Combobox;
   public isSaved = false;
-  public saveTime: string
+  public saveTime: string;
+  private timer: NodeJS.Timer;
 
   @ViewChildren('required') public requiredFields: QueryList<any>;
 
@@ -87,6 +88,12 @@ export class ExpertScoringComponent implements OnInit {
     const criterionPromptsResponse = await this.estimatesApiClient.getCriterionPromptsAsync(this.projectId, this.areaType);
     this.criterionPrompts = criterionPromptsResponse.items;
     this.questionsActivity = [true];
+
+    this.timer = <NodeJS.Timer>setInterval(async () => await this.saveDraft(), 60000);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.timer);
   }
 
   public addDraftData(data) {
