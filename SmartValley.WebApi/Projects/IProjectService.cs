@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SmartValley.Application.AzureStorage;
 using SmartValley.Domain;
@@ -16,15 +15,11 @@ namespace SmartValley.WebApi.Projects
 
         Task<int> GetQueryTotalCountAsync(ProjectsQuery projectsQuery);
 
-        Task<bool> IsAuthorizedToSeeEstimatesAsync(long userId, long projectId);
-
         Task<bool> IsAuthorizedToEditProjectTeamMemberAsync(long userId, long projectTeamMemberId);
 
         Task<bool> IsAuthorizedToEditProjectAsync(long projectId, long userId);
 
         Task UpdateTeamMemberPhotoAsync(long projectTeamMemberId, AzureFile photo);
-
-        Task<IReadOnlyCollection<ProjectDetails>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds);
 
         Task<IReadOnlyCollection<ProjectDetails>> GetProjectsByNameAsync(string projectName);
 

@@ -111,6 +111,7 @@ namespace SmartValley.WebApi.ScoringApplications
         {
             var scoringApplication = await _scoringApplicationRepository.GetByProjectIdAsync(projectId);
             scoringApplication.IsSubmitted = true;
+            scoringApplication.Submitted = _clock.UtcNow;
 
             await _scoringApplicationRepository.SaveChangesAsync();
         }

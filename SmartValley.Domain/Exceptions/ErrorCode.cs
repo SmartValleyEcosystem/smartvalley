@@ -27,6 +27,7 @@
         ProjectCouldntBeRemoved,
         ProjectScoringApplicationNotFound,
         ScoringApplicationAlreadySubmitted,
+        ScoringApplicationNotFound,
         UserNotAuthor,
         TeamMemberNotFound,
         ScoringNotFound

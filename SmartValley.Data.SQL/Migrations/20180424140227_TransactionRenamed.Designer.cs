@@ -16,9 +16,10 @@ using SmartValley.Domain.Entities;
 namespace SmartValley.Data.SQL.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20180424140227_TransactionRenamed")]
+    partial class TransactionRenamed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,6 +162,7 @@ namespace SmartValley.Data.SQL.Migrations
                         .HasMaxLength(200);
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasMaxLength(1500);
 
                     b.Property<string>("DocumentNumber")
@@ -573,8 +575,6 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<DateTimeOffset?>("Saved");
 
-                    b.Property<long?>("ScoringStartTransactionId");
-
                     b.Property<string>("Site");
 
                     b.Property<int?>("Stage");
@@ -589,8 +589,6 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.HasIndex("ProjectId")
                         .IsUnique();
-
-                    b.HasIndex("ScoringStartTransactionId");
 
                     b.ToTable("ScoringApplications");
                 });
@@ -825,10 +823,6 @@ namespace SmartValley.Data.SQL.Migrations
                         .WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SmartValley.Domain.Entities.EthereumTransaction", "ScoringStartTransaction")
-                        .WithMany()
-                        .HasForeignKey("ScoringStartTransactionId");
 
                     b.OwnsOne("SmartValley.Domain.Entities.SocialNetworks", "SocialNetworks", b1 =>
                         {

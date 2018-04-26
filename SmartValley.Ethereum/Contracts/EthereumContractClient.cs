@@ -49,15 +49,15 @@ namespace SmartValley.Ethereum.Contracts
                     functionInput);
             }
 
-            public async Task<string> SignAndSendTransactionAsync(
+            public Task<string> SignAndSendTransactionAsync(
                 string contractAddress,
                 string contractAbi,
                 string functionName,
                 params object[] functionInput)
             {
                 var function = GetFunction(contractAddress, contractAbi, functionName);
-                var transactionInput = await CreateTransactionInputAsync(function, functionInput);
-                return await _web3.Personal.SignAndSendTransaction.SendRequestAsync(transactionInput, _password);
+                var transactionInput = CreateTransactionInput(function, functionInput);
+                return _web3.Personal.SignAndSendTransaction.SendRequestAsync(transactionInput, _password);
             }
 
             private Function GetFunction(string address, string abi, string functionName)
@@ -66,11 +66,8 @@ namespace SmartValley.Ethereum.Contracts
                 return contract.GetFunction(functionName);
             }
 
-            private async Task<TransactionInput> CreateTransactionInputAsync(Function function, params object[] functionInput)
+            private TransactionInput CreateTransactionInput(Function function, params object[] functionInput)
             {
-                //TODO ILT-925
-                //var estimatedGasHex = await function.EstimateGasAsync(functionInput);
-                //var gas = new HexBigInteger(estimatedGasHex.Value * (100 + AdditionalGasPercent) / 100);
                 var gas = new HexBigInteger(200000);
                 var gasPrice = new HexBigInteger(Web3.Convert.GetEthUnitValue(UnitConversion.EthUnit.Gwei) * GasPriceMultiplier);
 

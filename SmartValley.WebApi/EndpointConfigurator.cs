@@ -56,7 +56,6 @@ namespace SmartValley.WebApi
                 .Immediate(settings => settings.NumberOfRetries(3))
                 .Delayed(settings => settings.NumberOfRetries(5));
 
-            endpointConfiguration.EnableOutbox();
             endpointConfiguration.EnableInstallers();
 
             endpointConfiguration.LimitMessageProcessingConcurrencyTo(1);
@@ -108,15 +107,20 @@ namespace SmartValley.WebApi
             // DB context
             var contextOptionsBuilder = new DbContextOptionsBuilder<AppDBContext>().UseSqlServer(connectionString);
             containerBuilder.Register(context => AppDBContext.CreateEditable(contextOptionsBuilder.Options))
-                            .As<IEditableDataContext>();
+                            .As<IEditableDataContext>()
+                            .InstancePerLifetimeScope();
+
             containerBuilder.Register(context => AppDBContext.CreateReadOnly(contextOptionsBuilder.Options))
-                            .As<IReadOnlyDataContext>();
+                            .As<IReadOnlyDataContext>()
+                            .InstancePerLifetimeScope();
 
             // Repositories
             containerBuilder.RegisterType<UserRepository>().As<IUserRepository>();
             containerBuilder.RegisterType<ProjectRepository>().As<IProjectRepository>();
+            containerBuilder.RegisterType<ScoringApplicationRepository>().As<IScoringApplicationRepository>();
             containerBuilder.RegisterType<ScoringRepository>().As<IScoringRepository>();
             containerBuilder.RegisterType<ScoringOffersRepository>().As<IScoringOffersRepository>();
+            containerBuilder.RegisterType<EthereumTransactionRepository>().As<IEthereumTransactionRepository>();
 
             // Ethereum
             containerBuilder.Register(context => InitializeWeb3(context.Resolve<NethereumOptions>().RpcAddress)).AsSelf();
@@ -142,6 +146,8 @@ namespace SmartValley.WebApi
             containerBuilder.Register(context => new TemplateProvider(contentRootPath)).As<ITemplateProvider>();
             containerBuilder.RegisterInstance(dataProtectionProvider).As<IDataProtectionProvider>();
             containerBuilder.RegisterType<ScoringService>().As<IScoringService>();
+            containerBuilder.RegisterType<ScoringApplicationService>().As<IScoringApplicationService>();
+            containerBuilder.RegisterType<EthereumTransactionService>().As<IEthereumTransactionService>();
 
             var container = containerBuilder.Build();
 

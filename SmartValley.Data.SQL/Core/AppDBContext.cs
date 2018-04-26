@@ -58,6 +58,8 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<ScoringCriteriaMapping> IReadOnlyDataContext.ScoringCriteriaMappings => ScoringCriteriaMappings.AsNoTracking();
 
+        IQueryable<EthereumTransaction> IReadOnlyDataContext.EthereumTransactions => EthereumTransactions.AsNoTracking();
+
         public DbSet<ProjectTeamMember> ProjectTeamMembers { get; set; }
 
         public DbSet<Country> Countries { get; set; }
@@ -103,6 +105,8 @@ namespace SmartValley.Data.SQL.Core
         public DbSet<ExpertScoring> ExpertScorings { get; set; }
 
         public DbSet<ScoringCriteriaMapping> ScoringCriteriaMappings { get; set; }
+
+        public DbSet<EthereumTransaction> EthereumTransactions { get; set; }
 
         public IQueryable<T> GetAll<T>() where T : class
         {
@@ -249,8 +253,8 @@ namespace SmartValley.Data.SQL.Core
 
             modelBuilder.Entity<ScoringApplication>()
                         .HasMany(x => x.Answers)
-                        .WithOne(x=>x.ScoringApplication)
-                        .HasForeignKey(x=>x.ScoringApplicationId)
+                        .WithOne(x => x.ScoringApplication)
+                        .HasForeignKey(x => x.ScoringApplicationId)
                         .IsRequired();
 
             modelBuilder.Entity<ScoringApplication>()
@@ -286,6 +290,9 @@ namespace SmartValley.Data.SQL.Core
                                      sn.Property(x => x.Twitter).HasColumnName("TwitterLink");
                                  });
 
+            modelBuilder.Entity<ScoringApplication>()
+                        .HasOne(x => x.ScoringStartTransaction);
+
             modelBuilder.Entity<ScoringApplicationQuestion>()
                         .HasIndex(x => x.Key)
                         .IsUnique();
@@ -315,6 +322,20 @@ namespace SmartValley.Data.SQL.Core
             modelBuilder.Entity<Estimate>()
                         .Property(x => x.Comment)
                         .IsRequired();
+
+            modelBuilder.Entity<EthereumTransaction>()
+                        .HasKey(r => r.Id);
+
+            modelBuilder.Entity<EthereumTransaction>()
+                        .HasIndex(r => r.Hash)
+                        .IsUnique();
+
+            modelBuilder.Entity<EthereumTransaction>()
+                        .Property(x => x.Hash)
+                        .IsRequired();
+
+            modelBuilder.Entity<EthereumTransaction>()
+                        .HasOne(t => t.User);
         }
     }
 }

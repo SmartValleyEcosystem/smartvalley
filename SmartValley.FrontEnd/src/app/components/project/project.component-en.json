@@ -9,6 +9,11 @@
     "ScoringApplication": "Scoring Application",
     "ProjectScore": "Project score",
     "InProgress": "Scoring in progress",
-    "CompletenessInPercents": "% completed"
+    "CompletenessInPercents": "% completed",
+    "PaymentInProgress": "Payment in progress",
+    "SeeTransaction": "See transaction information",
+    "PaymentFailed": "Payment failed",
+    "TryAgain": "Try again",
+    "SeeDetails": "See details"
   }
 }

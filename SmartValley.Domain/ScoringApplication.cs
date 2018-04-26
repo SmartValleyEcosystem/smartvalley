@@ -37,11 +37,15 @@ namespace SmartValley.Domain
 
         public long? CountryId { get; set; }
 
-        public Country Country { get; set; }
-
         public long ProjectId { get; set; }
 
+        public long? ScoringStartTransactionId { get; set; }
+
+        public Country Country { get; set; }
+
         public Project Project { get; set; }
+
+        public EthereumTransaction ScoringStartTransaction { get; set; }
 
         public ICollection<ScoringApplicationAnswer> Answers { get; set; }
 
@@ -107,6 +111,34 @@ namespace SmartValley.Domain
             }
 
             answer.Value = value;
+        }
+
+        public void SetScoringStartTransaction(string hash, DateTimeOffset created)
+        {
+            ScoringStartTransaction = new EthereumTransaction(
+                Project.AuthorId,
+                hash,
+                EthereumTransactionType.StartScoring,
+                EthereumTransactionStatus.InProgress,
+                created);
+        }
+
+        public ScoringStartTransactionStatus GetTransactionStatus()
+        {
+            if (!ScoringStartTransactionId.HasValue)
+                return ScoringStartTransactionStatus.NotSubmitted;
+
+            switch (ScoringStartTransaction.Status)
+            {
+                case EthereumTransactionStatus.InProgress:
+                    return ScoringStartTransactionStatus.InProgress;
+                case EthereumTransactionStatus.Failed:
+                    return ScoringStartTransactionStatus.Failed;
+                case EthereumTransactionStatus.Completed:
+                    return ScoringStartTransactionStatus.Completed;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }

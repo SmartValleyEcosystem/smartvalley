@@ -18,8 +18,6 @@ namespace SmartValley.Domain.Interfaces
 
         Task<Project> GetByExternalIdAsync(Guid externalId);
 
-        Task<IReadOnlyCollection<ProjectDetails>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds);
-
         Task<IReadOnlyCollection<ProjectDetails>> GetAllByNameAsync(string projectName);
 
         Task<ProjectDetails> GetByAuthorIdAsync(long authorId);
@@ -29,5 +27,9 @@ namespace SmartValley.Domain.Interfaces
         Task<int> UpdateAsync(Project project, params Expression<Func<Project, object>>[] properties);
 
         Task<int> UpdateWholeAsync(Project project);
+
+        Task<Project> GetAsync(long projectId);
+
+        Task SaveChangesAsync();
     }
 }

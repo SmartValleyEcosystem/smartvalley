@@ -9,6 +9,8 @@ import {ScoringStatus} from '../../services/scoring-status.enum';
 import {OfferStatus} from '../../api/scoring-offer/offer-status.enum';
 import {ScoringResponse} from '../../api/scoring/scoring-response';
 import {ErrorCode} from '../../shared/error-code.enum';
+import {ScoringStartTransactionStatus} from '../../api/project/scoring-start-transaction.status';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-project',
@@ -18,7 +20,6 @@ import {ErrorCode} from '../../shared/error-code.enum';
 export class ProjectComponent implements OnInit {
 
   public tabItems: string[] = ['about', 'application', 'report'];
-  public isProjectExists = false;
   public projectId: number;
   public project: ProjectSummaryResponse;
   public editProjectsLink = Paths.ProjectEdit;
@@ -28,9 +29,12 @@ export class ProjectComponent implements OnInit {
   public ScoringStatusFinished = ScoringStatus.Finished;
   public ScoringStatusPending = ScoringStatus.Pending;
 
+  public ScoringStartTransactionStatus = ScoringStartTransactionStatus;
+
   public isAuthor = false;
   public isScoringApplicationTabAvailable = true;
   public scoringCompletenessInPercents;
+  public scoringStartTransactionUrl = '';
 
   constructor(private projectApiClient: ProjectApiClient,
               private router: Router,
@@ -52,6 +56,7 @@ export class ProjectComponent implements OnInit {
     if (!isNullOrUndefined(this.projectId) && this.projectId === newProjectId) {
       return;
     }
+
     this.projectId = newProjectId;
     const selectedTabName = this.route.snapshot.paramMap.get('tab');
     if (!isNullOrUndefined(selectedTabName) && this.tabItems.includes(selectedTabName)) {
@@ -60,17 +65,17 @@ export class ProjectComponent implements OnInit {
 
     try {
       this.project = await this.projectApiClient.getProjectSummaryAsync(this.projectId);
-      if (this.project) {
-        this.isProjectExists = true;
+      if (this.project.scoring.scoringStatus === ScoringStatus.InProgress) {
+        this.scoringCompletenessInPercents = this.getScoringCompleteness(this.project.scoring);
+      }
 
-        if (this.project.scoring.scoringStatus === ScoringStatus.InProgress) {
-          this.scoringCompletenessInPercents = this.getScoringCompleteness(this.project.scoring);
-        }
+      if (!isNullOrUndefined(this.project.scoringStartTransactionHash)) {
+        this.scoringStartTransactionUrl = `${environment.etherscan_host}/tx/${this.project.scoringStartTransactionHash}`;
+      }
 
-        const currentUser = await this.userContext.getCurrentUser();
-        if (!isNullOrUndefined(currentUser) && this.project.authorId === currentUser.id) {
-          this.isAuthor = true;
-        }
+      const currentUser = await this.userContext.getCurrentUser();
+      if (!isNullOrUndefined(currentUser) && this.project.authorId === currentUser.id) {
+        this.isAuthor = true;
       }
     } catch (e) {
       switch (e.error.errorCode) {

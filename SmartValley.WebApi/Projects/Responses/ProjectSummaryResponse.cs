@@ -41,6 +41,10 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public string AuthorAddress { get; set; }
 
+        public ScoringStartTransactionStatus ScoringStartTransactionStatus { get; set; }
+
+        public string ScoringStartTransactionHash { get; set; }
+
         public static ProjectSummaryResponse Create(
             Project project,
             Country country,
@@ -66,7 +70,9 @@ namespace SmartValley.WebApi.Projects.Responses
                        IsApplicationSubmitted = scoringApplication?.IsSubmitted ?? false,
                        Scoring = ScoringResponse.FromScoring(scoring),
                        AuthorId = project.AuthorId,
-                       AuthorAddress = author.Address
+                       AuthorAddress = author.Address,
+                       ScoringStartTransactionStatus = scoringApplication?.GetTransactionStatus() ?? ScoringStartTransactionStatus.NotSubmitted,
+                       ScoringStartTransactionHash = scoringApplication?.ScoringStartTransaction?.Hash
                    };
         }
     }

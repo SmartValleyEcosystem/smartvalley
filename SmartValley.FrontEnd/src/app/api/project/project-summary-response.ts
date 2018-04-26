@@ -1,4 +1,5 @@
-import {ScoringResponse} from "../scoring/scoring-response";
+import {ScoringResponse} from '../scoring/scoring-response';
+import {ScoringStartTransactionStatus} from './scoring-start-transaction.status';
 
 export interface ProjectSummaryResponse {
   id: number;
@@ -18,4 +19,6 @@ export interface ProjectSummaryResponse {
   authorAddress: string;
   isApplicationSubmitted: boolean;
   scoring: ScoringResponse;
+  scoringStartTransactionStatus: ScoringStartTransactionStatus;
+  scoringStartTransactionHash: string;
 }

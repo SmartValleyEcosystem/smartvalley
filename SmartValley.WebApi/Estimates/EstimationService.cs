@@ -66,12 +66,12 @@ namespace SmartValley.WebApi.Estimates
                                                                  }).ToArray();
 
             var expertScoring = new ExpertScoring
-                             {
-                                 ExpertId = expertId,
-                                 Area = area,
-                                 Conclusion = request.Conclusion,
-                                 Estimates = estimates
-                             };
+                                {
+                                    ExpertId = expertId,
+                                    Area = area,
+                                    Conclusion = request.Conclusion,
+                                    Estimates = estimates
+                                };
             scoring.SetExpertScoring(expertId, expertScoring);
             await _scoringRepository.SaveChangesAsync();
         }
@@ -143,7 +143,7 @@ namespace SmartValley.WebApi.Estimates
 
             return criteriaPromps.ToArray();
         }
-        
+
         private async Task AddHrCriterionPromptExceptions(long scoringApplicationId, IList<ScoringCriterionPrompt> criteriaPromps)
         {
             var scoringApplication = await _scoringApplicationRepository.GetByIdAsync(scoringApplicationId);
@@ -168,7 +168,7 @@ namespace SmartValley.WebApi.Estimates
                                    });
             }
         }
-        
+
         private async Task UpdateProjectScoringAsync(Scoring scoring, AreaType area)
         {
             var scoringStatistics = await _scoringContractClient.GetScoringStatisticsAsync(scoring.ContractAddress);

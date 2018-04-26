@@ -29,6 +29,7 @@ namespace SmartValley.Data.SQL.Core
         IQueryable<ScoringApplicationTeamMember> ScoringApplicationTeamMembers { get; }
         IQueryable<ScoringApplicationAdviser> ScoringApplicationAdvisers { get; }
         IQueryable<ScoringCriteriaMapping> ScoringCriteriaMappings { get; }
+        IQueryable<EthereumTransaction> EthereumTransactions { get; }
 
         IQueryable<T> GetAll<T>() where T : class;
     }
