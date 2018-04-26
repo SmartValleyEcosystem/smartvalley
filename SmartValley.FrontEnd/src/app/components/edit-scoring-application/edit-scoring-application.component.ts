@@ -292,7 +292,8 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
           +this.questionsGroup.value['control_' + q.id] : this.questionsGroup.value['control_' + q.id];
 
         if (q.parentId) {
-          if (this.questionsGroup.value['control_' + q.parentId] !== q.parentTriggerValue) {
+          const parentValue = this.questionsGroup.value['control_' + q.parentId] + '';
+          if (parentValue !== q.parentTriggerValue) {
             questionValue = null;
           }
         }
