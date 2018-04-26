@@ -34,6 +34,7 @@ export class ProjectListComponent implements OnInit {
   public projectOnPageCount = 10;
   public totalProjects: number;
   public selectedCountryCode: string;
+  public isFormValid = true;
 
   @ViewChild(SelectComponent) category: SelectComponent;
   @ViewChild(AutocompleteComponent) country: AutocompleteComponent;
@@ -89,7 +90,10 @@ export class ProjectListComponent implements OnInit {
   }
 
   public async submitFilters() {
-    await this.updateProjectsAsync(0);
+    const validate = this.checkScoring();
+    if (validate) {
+      await this.updateProjectsAsync(0);
+    }
   }
 
   public async updateProjectsAsync(page: number) {
@@ -155,5 +159,19 @@ export class ProjectListComponent implements OnInit {
 
   public isSortableDirection(direction: SortDirection): boolean {
     return this.sortDirection === direction;
+  }
+
+  public checkScoring() {
+    this.isFormValid = true;
+    if (this.scoringRatingFrom > 100 || this.scoringRatingFrom < 0) {
+      this.isFormValid = false;
+    }
+    if (this.scoringRatingTo > 100 || this.scoringRatingTo < 0) {
+      this.isFormValid = false;
+    }
+    if (this.scoringRatingFrom > this.scoringRatingTo) {
+      this.isFormValid = false;
+    }
+    return this.isFormValid;
   }
 }

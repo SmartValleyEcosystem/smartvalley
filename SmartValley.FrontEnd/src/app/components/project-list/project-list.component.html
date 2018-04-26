@@ -34,14 +34,18 @@
             <label class="control-label" for="scoring-filter-from">{{ 'ProjectList.ScoringRating' | translate }}</label>
           </p>
           <input class="input scoring-input" type="number" min="0" max="100" name="scoringRatingFrom"
+                 [class.ng-invalid]="scoringRatingFrom < 0 || scoringRatingFrom > 100 || scoringRatingFrom > scoringRatingTo"
+                 (change)="checkScoring()"
                  [(ngModel)]="scoringRatingFrom" placeholder="0" id="scoring-filter-from">
           <span class="dash">–</span>
           <input class="input scoring-input" type="number" min="0" max="100" name="scoringRatingTo"
+                 [class.ng-invalid]="scoringRatingTo < 0 || scoringRatingTo > 100 || scoringRatingFrom > scoringRatingTo"
+                 (change)="checkScoring()"
                  [(ngModel)]="scoringRatingTo" placeholder="100" id="scoring-filter-to">
         </div>
       </div>
-      <input type="submit" class="ghost-btn apply-filters" value="{{ 'ProjectList.ApplyFilters' | translate }}">
-      <input type="submit" class="main-btn apply-filters-mobile" value="{{ 'ProjectList.ApplyFilters' | translate }}">
+      <input [disabled]="!isFormValid" type="submit" class="ghost-btn apply-filters" value="{{ 'ProjectList.ApplyFilters' | translate }}">
+      <input [disabled]="!isFormValid" type="submit" class="main-btn apply-filters-mobile" value="{{ 'ProjectList.ApplyFilters' | translate }}">
       <span (click)="clearFilters()" class="clear-form">{{ 'ProjectList.ClearFilters' | translate }}</span>
     </form>
     <div *ngIf="checkProjects">

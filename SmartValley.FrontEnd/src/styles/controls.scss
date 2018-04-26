@@ -26,6 +26,10 @@
   cursor: pointer;
   outline: none;
 }
+ghost-btn[disabled] {
+  border: solid 1px #969696;
+  color: #969696;
+}
 .main-btn[disabled] {
   background-color: #a4a2b0;
   border-color: #969696;
