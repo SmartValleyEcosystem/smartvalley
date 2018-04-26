@@ -327,3 +327,6 @@ body .ui-radiobutton .ui-radiobutton-box {
   position: relative;
   top: -3px;
 }
+body .ng-invalid .ui-chkbox .ui-chkbox-box {
+  border: solid 1px red !important;
+}

@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {Paths} from '../../paths';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -36,8 +36,10 @@ export class RegisterExpertComponent implements OnInit {
   public countries: SelectItem[];
   public areas: SelectItem[];
   public selectedAreas: AreaType[] = [];
+  public isAreasSelected = true;
 
   @ViewChildren('required') public requiredFields: QueryList<any>;
+  @ViewChild('areasBlock') private areasBlock: ElementRef;
 
   private cv: File;
   private document: File;
@@ -94,6 +96,10 @@ export class RegisterExpertComponent implements OnInit {
 
 
   public async applyAsync(): Promise<void> {
+    if (this.isAreasCheckboxesValid()) {
+      return;
+    }
+
     if (!this.validateForm()) {
       return;
     }
@@ -271,5 +277,16 @@ export class RegisterExpertComponent implements OnInit {
 
     areas.forEach(a => applicationStr.concat(a.toString()));
     return '0x' + Md5.hashStr(applicationStr, false).toString();
+  }
+
+  public isAreasCheckboxesValid() {
+    this.isAreasSelected = true;
+    const areas = this.selectedAreas.map(a => +a);
+    if (!areas.length) {
+      this.isAreasSelected = false;
+      this.scrollToElement(this.areasBlock);
+      return true;
+    }
+    return false;
   }
 }

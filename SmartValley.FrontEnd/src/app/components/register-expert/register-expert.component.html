@@ -7,9 +7,9 @@
       <p class="control-label">
         {{ 'RegisterExpert.ExpertTypeLabel' | translate }}
       </p>
-      <div class="areas-wrapper">
+      <div class="areas-wrapper" [class.ng-invalid]="!isAreasSelected" #areasBlock>
         <div *ngFor="let area of areas" class="area">
-          <p-checkbox id="{{ area.value }}" [(ngModel)]="selectedAreas" value="{{area.value}}" inputId="{{ 'ny_' + area.value }}"></p-checkbox>
+          <p-checkbox (onChange)="isAreasCheckboxesValid()" id="{{ area.value }}" [(ngModel)]="selectedAreas" value="{{area.value}}" inputId="{{ 'ny_' + area.value }}"></p-checkbox>
           <label for="{{ 'ny_' + area.value }}">{{area.label}}</label>
         </div>
       </div>
