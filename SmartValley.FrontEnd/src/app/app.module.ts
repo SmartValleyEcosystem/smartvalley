@@ -125,6 +125,7 @@ import {ScoringShouldNotExistGuard} from './services/guards/scoring-should-not-e
 import {ChangeStatusModalComponent} from './components/common/change-status-modal/change-status-modal.component';
 import {TranslateBinaryAnswer} from './utils/translate-binary-answer.pipe';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {NgInviewModule} from 'angular-inport';
 
 @NgModule({
   declarations: [
@@ -185,7 +186,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MemberUploadPhotoComponent,
     ExpertScoringComponent,
     ScoringReportComponent,
-    ChangeStatusModalComponent
+    ChangeStatusModalComponent,
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -229,6 +230,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     TooltipModule,
     RadioButtonModule,
     MatIconModule,
+    NgInviewModule,
     Ng2DeviceDetectorModule.forRoot(),
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
     TranslateModule.forRoot({

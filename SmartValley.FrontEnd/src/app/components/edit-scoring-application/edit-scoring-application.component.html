@@ -4,7 +4,7 @@
   <form *ngIf="questionFormGroup" [formGroup]="questionFormGroup" autocomplete="off" class="partitions-page"
         (ngSubmit)="onSubmitAsync()">
     <div class="partition">
-      <h2 class="partition-title" id="partition_common">{{ 'EditScoringApplication.CommonTitle' | translate }}</h2>
+      <h2 class="partition-title" id="partition_common" in-view [throttle]="200"  (inview)="onAppear($event, 'partition_common')">{{ 'EditScoringApplication.CommonTitle' | translate }}</h2>
       <div class="partition-block" formGroupName="commonGroup">
         <div class="form-control-row">
           <p class="control-label">
@@ -81,7 +81,7 @@
           <p class="notify">{{'CreateProject.ContactEmailLabel' | translate}}</p>
         </div>
       </div>
-      <h2 class="partition-title" id="partition_social" #socialsContainer>{{ 'EditScoringApplication.SocialMedia' | translate }}</h2>
+      <h2 class="partition-title" id="partition_social" #socialsContainer in-view [throttle]="200"  (inview)="onAppear($event, 'partition_social')">{{ 'EditScoringApplication.SocialMedia' | translate }}</h2>
       <div class="partition-block" formGroupName="socialsGroup">
         <div class="socials__labels-wrapper">
           <p class="control-label">
@@ -112,7 +112,7 @@
               (click)="addArticleLink()">{{ 'EditScoringApplication.AddLink' | translate }}</span>
       </div>
       <div formGroupName="teamGroup">
-        <h2 class="partition-title" id="partition_team" #membersContainer>{{ 'EditScoringApplication.TeamTitle' | translate }}</h2>
+        <h2 class="partition-title" id="partition_team" in-view [throttle]="200"  (inview)="onAppear($event, 'partition_team')" #membersContainer>{{ 'EditScoringApplication.TeamTitle' | translate }}</h2>
         <div class="partition-block">
           <div *ngFor="let member of activeTeamMembers; first as isFirst; let index = index">
             <h3 class="member-name">{{ 'EditScoringApplication.Member' | translate }} {{ index + 1 }} <span
@@ -162,7 +162,7 @@
         </div>
       </div>
       <div formGroupName="advisersGroup">
-        <h2 class="partition-title" id="partition_advisers">{{ 'EditScoringApplication.AdvisersTitle' | translate}}
+        <h2 class="partition-title" id="partition_advisers" in-view [throttle]="200"  (inview)="onAppear($event, 'partition_advisers')">{{ 'EditScoringApplication.AdvisersTitle' | translate}}
         </h2>
         <div class="partition-block">
           <div *ngFor="let adviser of activeAdvisers; first as isFirst; let index = index;">
@@ -210,7 +210,7 @@
         </div>
       </div>
       <div formGroupName="questionsGroup" *ngFor="let partition of partitions; let index = index;">
-        <h2 class="partition-title" id="partition_{{partition.order}}">{{index + 4}}. {{ 'EditScoringApplication.' +  partition.name | translate}}</h2>
+        <h2 in-view [throttle]="200"  (inview)="onAppear($event, 'partition_' + partition.order)" class="partition-title" id="partition_{{partition.order}}">{{index + 4}}. {{ 'EditScoringApplication.' +  partition.name | translate}}</h2>
         <div class="partition-block">
           <div class="control-row" *ngFor="let question of partition.questions; let questionIndex = index"
                [ngSwitch]="getQuestionTypeById(question.type)">
@@ -268,19 +268,24 @@
     <div class="partitions-menu">
       <sticky [sticky-offset-top]="20">
         <ul class="partitions-list">
-          <li class="partition-item" (click)="scrollToPartition('common')">
+          <li class="partition-item" (click)="scrollToPartition('common')"
+              [class.active]="activePartition === 'partition_common'">
             {{ 'EditScoringApplication.CommonTitle' | translate }}
           </li>
-          <li class="partition-item" (click)="scrollToPartition('social')">
+          <li class="partition-item" (click)="scrollToPartition('social')"
+              [class.active]="activePartition === 'partition_social'">
             {{ 'EditScoringApplication.SocialMedia' | translate }}
           </li>
-          <li class="partition-item" (click)="scrollToPartition('team')">
+          <li class="partition-item" (click)="scrollToPartition('team')"
+              [class.active]="activePartition === 'partition_team'">
             {{ 'EditScoringApplication.TeamTitle' | translate }}
           </li>
-          <li class="partition-item" (click)="scrollToPartition('advisers')">
+          <li class="partition-item" (click)="scrollToPartition('advisers')"
+              [class.active]="activePartition === 'partition_advisers'">
             {{ 'EditScoringApplication.AdvisersTitle' | translate }}
           </li>
           <li class="partition-item" (click)="scrollToPartition(partition.order)"
+              [class.active]="activePartition === 'partition_' + partition.order"
               *ngFor="let partition of partitions; let index = index;">
             {{index + 4}}. {{ 'EditScoringApplication.' + partition.name | translate}}
           </li>
