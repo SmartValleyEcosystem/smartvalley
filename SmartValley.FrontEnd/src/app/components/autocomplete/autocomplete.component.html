@@ -6,6 +6,7 @@
          (input)="onAutocompleteInputChange($event)"
          [value]="selectedItemLabel"
          [placeholder]="placeholder" type="text" class="input filter-autocomplete" id="{{elementId}}"
+         autocomplete="nope"
          name="{{elementName}}">
   <ul (mouseenter)="selectListHoverStatusSwitch(true)"
       (mouseleave)="selectListHoverStatusSwitch(false); hideItemsList();"

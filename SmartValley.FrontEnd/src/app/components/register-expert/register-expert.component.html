@@ -20,7 +20,7 @@
           <p class="control-label">
             <label for="firstName">{{ 'RegisterExpert.FirstName' | translate }}</label>
           </p>
-          <input class="input" formControlName="firstName" id="firstName" placeholder="{{ 'RegisterExpert.NamePlaceholder' | translate }}" #required>
+          <input class="input" autocomplete="nope" formControlName="firstName" id="firstName" placeholder="{{ 'RegisterExpert.NamePlaceholder' | translate }}" #required>
         </div>
         <div class="control-wrapper">
           <p class="control-label">
@@ -53,7 +53,7 @@
           <p class="control-label">
             <label for="city">{{ 'RegisterExpert.City' | translate }}</label>
           </p>
-          <input class="input" placeholder="{{ 'RegisterExpert.City' | translate }}" formControlName="city" id="city" #required>
+          <input autocomplete="nope" class="input" placeholder="{{ 'RegisterExpert.City' | translate }}" formControlName="city" id="city" #required>
         </div>
       </div>
       <div class="control-row">
