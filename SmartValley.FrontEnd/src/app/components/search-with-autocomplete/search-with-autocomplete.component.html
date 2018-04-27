@@ -16,7 +16,7 @@
         </ul>
         <input (focus)="searchInputFocusStatusSwitch(true); showProjectList();"
                (focusout)="searchInputFocusStatusSwitch(false); hideProjectList();"
-               [class.search-controls__input_square]="squareInput"
+               [class.search-controls__input_square]="squareInput && projects.length"
                [formControl]="inputSearch"
                placeholder="{{ 'SearchWithAutoComplete.Placeholder' | translate}}" type="text"
                class="search-controls__input">
