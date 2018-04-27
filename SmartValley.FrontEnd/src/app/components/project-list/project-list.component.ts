@@ -184,6 +184,14 @@ export class ProjectListComponent implements OnInit {
       const replacedWord = '<span style=\"background-color: #ffd038; color: black;\">' + word + '</span>';
       coloredString = text.replace(word, replacedWord);
     }
+
+    if (words.every(i => i === '')) {
+      const word = text.substring(0, lowerSearch.length);
+
+      const replacedWord = '<span style=\"background-color: #ffd038; color: black;\">' + word + '</span>';
+      coloredString = text.replace(word, replacedWord);
+    }
+
     return coloredString === '' ? text : coloredString;
   }
 
