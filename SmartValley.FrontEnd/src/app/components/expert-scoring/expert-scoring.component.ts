@@ -20,6 +20,7 @@ import {Paths} from '../../paths';
 import {TranslateService} from '@ngx-translate/core';
 import {SaveEstimatesRequest} from '../../api/estimates/save-estimates-request';
 import {QuestionControlType} from '../../api/scoring-application/question-control-type.enum';
+import {BalanceService} from '../../services/balance/balance.service';
 
 @Component({
   selector: 'app-expert-scoring',
@@ -48,6 +49,7 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
               private htmlElement: ElementRef,
               private formBuilder: FormBuilder,
+              private balanceService: BalanceService,
               private areaService: AreaService,
               private dialogService: DialogService,
               private projectApiClient: ProjectApiClient,
@@ -194,6 +196,9 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
     await this.estimatesApiClient.submitEstimatesAsync(submitRequest);
     transactionDialog.close();
     this.dialogService.showSendReportDialog();
+
+    await this.balanceService.updateBalanceAsync();
+    
     await this.router.navigate([Paths.ScoringList]);
   }
 
