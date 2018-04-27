@@ -84,10 +84,14 @@ export class SearchWithAutocompleteComponent implements OnInit {
     let coloredString = '';
     const words = lowerText.split(lowerSearch);
     for (let i = 0; i < words.length; i++) {
-      if (words[i] === '') {
-        continue;
+      let startIndex = 0;
+      if (words[i] !== '') {
+        startIndex = lowerText.indexOf(words[i]) + words[i].length;
+      } else {
+        if (words.length > 1 && i > 0) {
+          startIndex = lowerText.indexOf(words[i - 1]) + words[i - 1].length;
+        }
       }
-      const startIndex: number = lowerText.indexOf(words[i]) - lowerSearch.length;
       const lastIndex: number = startIndex + lowerSearch.length;
       const word = text.substring(startIndex, lastIndex);
 
@@ -98,6 +102,14 @@ export class SearchWithAutocompleteComponent implements OnInit {
       const replacedWord = '<span style=\"background-color: #ffd038; color: black;\">' + word + '</span>';
       coloredString = text.replace(word, replacedWord);
     }
+
+    if (words.every(i => i === '')) {
+      const word = text.substring(0, lowerSearch.length);
+
+      const replacedWord = '<span style=\"background-color: #ffd038; color: black;\">' + word + '</span>';
+      coloredString = text.replace(word, replacedWord);
+    }
+
     return coloredString === '' ? text : coloredString;
   }
 
