@@ -2,7 +2,7 @@
   <div class="row mx-auto">
       <h1 class="title">{{ 'AdminPanel.Title' | translate }}</h1>
   </div>
-  <mat-tab-group class="tab">
+  <mat-tab-group [selectedIndex]="selectedMainTab" class="tab" (selectedTabChange)="onMainTabChange($event)">
     <mat-tab label="{{ 'AdminPanel.AdminsTab' | translate }}">
       <p-dataTable [value]="admins">
         <p-column [style]="{'width': '24.4em'}" field="address" header="Address"></p-column>
@@ -22,13 +22,13 @@
       </div>
     </mat-tab>
     <mat-tab label="{{ 'AdminPanel.ExpertsTab' | translate }}">
-      <ngb-tabset type="pills">
-        <ngb-tab title="Experts list">
+      <ngb-tabset [activeId]="selectedSubTab" type="pills"(tabChange)="onSubTabChange($event)">
+        <ngb-tab id="expertList" title="Experts list">
           <ng-template ngbTabContent>
             <app-admin-experts-list></app-admin-experts-list>
           </ng-template>
         </ngb-tab>
-        <ngb-tab title="Applications">
+        <ngb-tab id="applications" title="Applications">
           <ng-template ngbTabContent>
             <app-admin-expert-applications-list></app-admin-expert-applications-list>
           </ng-template>

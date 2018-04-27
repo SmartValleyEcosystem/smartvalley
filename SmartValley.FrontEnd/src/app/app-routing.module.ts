@@ -36,95 +36,97 @@ const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
   {
     path: Paths.Root, component: RootComponent, canActivate: [InitializationGuard], children: [
-      {path: Paths.Root, pathMatch: 'full', component: LandingComponent},
-      {
-        path: Paths.Admin,
-        pathMatch: 'full',
-        component: AdminPanelComponent,
-        canActivate: [ShouldBeAdminGuard]
-      },
-      {path: Paths.AdminExpertApplication + '/:id', pathMatch: 'full', component: AdminExpertApplicationComponent},
-      {
-        path: Paths.Register,
-        pathMatch: 'full',
-        component: RegisterComponent
-      },
-      {path: Paths.ConfirmEmail, component: ConfirmEmailComponent},
-      {
-        path: Paths.ConfirmRegister,
-        pathMatch: 'full',
-        component: RegisterConfirmComponent
-      },
-      {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent},
-      {
-        path: Paths.ScoringOffer + '/:id/:areaType',
-        component: OfferDetailsComponent,
-        canActivate: [OfferStatusGuard],
-        data: {
-          offerStatuses: [
-            OfferStatus.Pending
-          ]
-        }
-      },
-      {path: Paths.Account, pathMatch: 'full', component: AccountComponent, canActivate: [ShouldBeAuthenticatedGuard]},
-      {
-        path: Paths.Project,
-        pathMatch: 'full',
-        component: CreateProjectComponent
-      },
-      {path: Paths.ProjectEdit, component: CreateProjectComponent},
-      {
-        path: Paths.ExpertStatus,
-        canActivate: [ExpertStatusGuard],
-        component: ExpertStatusComponent,
-        data: {
-          expertStatuses: [
-            ExpertApplicationStatus.None,
-            ExpertApplicationStatus.Rejected,
-            ExpertApplicationStatus.Pending
-          ]
-        }
-      },
-      {
-        path: Paths.RegisterExpert,
-        canActivate: [ExpertStatusGuard, ShouldHaveEthGuard],
-        component: RegisterExpertComponent,
-        data: {
-          expertStatuses: [
-            ExpertApplicationStatus.None,
-            ExpertApplicationStatus.Rejected
-          ]
-        }
-      },
-      {path: Paths.ProjectList, component: ProjectListComponent},
-      {path: Paths.ScoringList, component: ScoringListComponent},
-      {path: Paths.ProjectList + '/:search', component: ProjectListComponent},
-      {path: Paths.Project + '/:id', component: ProjectComponent},
-      {path: Paths.Project + '/:id/details/:tab', component: ProjectComponent},
-      {
-        path: Paths.ScoringApplication + '/:id',
-        component: EditScoringApplicationComponent,
-        canActivate: [ScoringShouldNotExistGuard]
-      },
-      {
-        path: Paths.Project + '/:id/payment',
-        component: ScoringPaymentComponent,
-        canActivate: [SubmittedScoringApplicationGuard, ScoringShouldNotExistGuard, ShouldHaveEthGuard],
-        data: {
-          shouldBeSubmitted: true
-        }
-      },
-      {
-        path: Paths.Project + '/:id/scoring/:areaType',
-        component: ExpertScoringComponent,
-        canActivate: [OfferStatusGuard],
-        data: {
-          offerStatuses: [
-            OfferStatus.Accepted,
-          ]
-        }
+    {path: Paths.Root, pathMatch: 'full', component: LandingComponent},
+    {
+      path: Paths.Admin,
+      pathMatch: 'full',
+      component: AdminPanelComponent,
+      canActivate: [ShouldBeAdminGuard]
+    },
+    {path: Paths.Admin + '/:mainTab', component: AdminPanelComponent, canActivate: [ShouldBeAdminGuard]},
+    {path: Paths.Admin + '/:mainTab/:subTab', component: AdminPanelComponent, canActivate: [ShouldBeAdminGuard]},
+    {path: Paths.AdminExpertApplication + '/:id', pathMatch: 'full', component: AdminExpertApplicationComponent},
+    {
+      path: Paths.Register,
+      pathMatch: 'full',
+      component: RegisterComponent
+    },
+    {path: Paths.ConfirmEmail, component: ConfirmEmailComponent},
+    {
+      path: Paths.ConfirmRegister,
+      pathMatch: 'full',
+      component: RegisterConfirmComponent
+    },
+    {path: Paths.MetaMaskHowTo, pathMatch: 'full', component: MetamaskHowtoComponent},
+    {
+      path: Paths.ScoringOffer + '/:id/:areaType',
+      component: OfferDetailsComponent,
+      canActivate: [OfferStatusGuard],
+      data: {
+        offerStatuses: [
+          OfferStatus.Pending
+        ]
       }
-    ]
+    },
+    {path: Paths.Account, pathMatch: 'full', component: AccountComponent, canActivate: [ShouldBeAuthenticatedGuard]},
+    {
+      path: Paths.Project,
+      pathMatch: 'full',
+      component: CreateProjectComponent
+    },
+    {path: Paths.ProjectEdit, component: CreateProjectComponent},
+    {
+      path: Paths.ExpertStatus,
+      canActivate: [ExpertStatusGuard],
+      component: ExpertStatusComponent,
+      data: {
+        expertStatuses: [
+          ExpertApplicationStatus.None,
+          ExpertApplicationStatus.Rejected,
+          ExpertApplicationStatus.Pending
+        ]
+      }
+    },
+    {
+      path: Paths.RegisterExpert,
+      canActivate: [ExpertStatusGuard, ShouldHaveEthGuard],
+      component: RegisterExpertComponent,
+      data: {
+        expertStatuses: [
+          ExpertApplicationStatus.None,
+          ExpertApplicationStatus.Rejected
+        ]
+      }
+    },
+    {path: Paths.ProjectList, component: ProjectListComponent},
+    {path: Paths.ScoringList, component: ScoringListComponent},
+    {path: Paths.ProjectList + '/:search', component: ProjectListComponent},
+    {path: Paths.Project + '/:id', component: ProjectComponent},
+    {path: Paths.Project + '/:id/details/:tab', component: ProjectComponent},
+    {
+      path: Paths.ScoringApplication + '/:id',
+      component: EditScoringApplicationComponent,
+      canActivate: [ScoringShouldNotExistGuard]
+    },
+    {
+      path: Paths.Project + '/:id/payment',
+      component: ScoringPaymentComponent,
+      canActivate: [SubmittedScoringApplicationGuard, ScoringShouldNotExistGuard, ShouldHaveEthGuard],
+      data: {
+        shouldBeSubmitted: true
+      }
+    },
+    {
+      path: Paths.Project + '/:id/scoring/:areaType',
+      component: ExpertScoringComponent,
+      canActivate: [OfferStatusGuard],
+      data: {
+        offerStatuses: [
+          OfferStatus.Accepted,
+        ]
+      }
+    }
+  ]
   },
   {path: '**', redirectTo: Paths.Root}
 ];
