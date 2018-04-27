@@ -133,6 +133,20 @@
   }
 }
 
+.settings-block {
+  position: relative;
+}
+
+.settings-block:last-child {
+  .question-tooltip {
+    bottom: 0;
+    &:before {
+      top: inherit;
+      bottom: 50px;
+    }
+  }
+}
+
 .progress-scoring-item {
   position: relative;
   width: 235px;
@@ -186,7 +200,7 @@
   position: absolute;
   background-color: #222034;
   padding: 20px;
-  right: 0;
+  right: -400px;
   min-height: 180px;
   &:before {
     content: '';
