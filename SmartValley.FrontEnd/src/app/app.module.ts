@@ -126,6 +126,7 @@ import {ChangeStatusModalComponent} from './components/common/change-status-moda
 import {TranslateBinaryAnswer} from './utils/translate-binary-answer.pipe';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {NgInviewModule} from 'angular-inport';
+import {SafeHtmlPipe} from './utils/safe-html-pipe';
 
 @NgModule({
   declarations: [
@@ -147,6 +148,7 @@ import {NgInviewModule} from 'angular-inport';
     ReceiveEtherModalComponent,
     AccountComponent,
     DashIfEmptyPipe,
+    SafeHtmlPipe,
     TranslateBinaryAnswer,
     EditScoringApplicationComponent,
     FormatDatePipe,

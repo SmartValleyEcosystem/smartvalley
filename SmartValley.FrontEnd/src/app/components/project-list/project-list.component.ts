@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ExpertApiClient} from '../../api/expert/expert-api-client';
 import {ScoredProject} from '../../api/expert/scored-project';
 import {Paths} from '../../paths';
 import {ProjectApiClient} from '../../api/project/project-api-client';
@@ -40,7 +39,6 @@ export class ProjectListComponent implements OnInit {
   @ViewChild(AutocompleteComponent) country: AutocompleteComponent;
 
   constructor(private router: Router,
-              private expertApiClient: ExpertApiClient,
               private dictionariesService: DictionariesService,
               private projectApiClient: ProjectApiClient) {
     this.countries = this.dictionariesService.countries.map(i => <SelectItem>{
@@ -159,6 +157,34 @@ export class ProjectListComponent implements OnInit {
 
   public isSortableDirection(direction: SortDirection): boolean {
     return this.sortDirection === direction;
+  }
+
+  private coloredText(text: string) {
+    if (this.projectSearch === '') {
+      return text;
+    }
+
+    const lowerText: string = text.toLowerCase();
+    const lowerSearch = this.projectSearch.toLowerCase();
+
+    let coloredString = '';
+    const words = lowerText.split(lowerSearch);
+    for (let i = 0; i < words.length; i++) {
+      if (words[i] === '') {
+        continue;
+      }
+      const startIndex: number = lowerText.indexOf(words[i]) - lowerSearch.length;
+      const lastIndex: number = startIndex + lowerSearch.length;
+      const word = text.substring(startIndex, lastIndex);
+
+      if (word === '') {
+        continue;
+      }
+
+      const replacedWord = '<span style=\"background-color: #ffd038; color: black;\">' + word + '</span>';
+      coloredString = text.replace(word, replacedWord);
+    }
+    return coloredString === '' ? text : coloredString;
   }
 
   public checkScoring() {
