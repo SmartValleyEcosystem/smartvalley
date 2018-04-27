@@ -5,7 +5,7 @@ import {Ng2DeviceService} from 'ng2-device-detector';
 @Component({
   selector: 'app-metamask-howto',
   templateUrl: './metamask-howto.component.html',
-  styleUrls: ['./metamask-howto.component.css']
+  styleUrls: ['./metamask-howto.component.scss']
 })
 export class MetamaskHowtoComponent {
 

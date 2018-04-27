@@ -54,4 +54,13 @@ p {
 
 .width {
   width: 800px;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    width:100%;
+  }
+}
+
+img {
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    width:100%;
+  }
 }
