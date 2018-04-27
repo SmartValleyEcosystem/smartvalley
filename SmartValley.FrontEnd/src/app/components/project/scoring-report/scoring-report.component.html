@@ -130,7 +130,7 @@
           </thead>
           <tr *ngFor="let estimate of criteria.estimates; let estimateIndex = index;">
             <td>{{ 'ScoringReport.Expert' | translate }} {{ estimateIndex + 1 }}</td>
-            <td class="score_{{ estimate.score }}">{{ estimate.score }}</td>
+            <td class="score score_{{ estimate.score }}">{{ estimate.score }}</td>
             <td>{{ estimate.comment }}</td>
           </tr>
         </table>

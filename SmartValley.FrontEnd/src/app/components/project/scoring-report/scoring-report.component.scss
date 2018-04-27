@@ -16,8 +16,8 @@
   @media screen and (min-width: 320px) and (max-width: 768px) {
     width: auto;
     border: none;
-    height: 50px;
-    padding: 13px 0 0;
+    height: 30px;
+    padding: 10px 0 0;
     margin: 0;
   }
 }
@@ -25,13 +25,17 @@
 .label-score {
   font-size: 24px;
   @media screen and (min-width: 320px) and (max-width: 768px) {
-    display: none;
+    font-size: 12px;
+    text-align: center;
   }
 }
 
 .max-score {
   color: #a4a2b0;
   font-size: 24px;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    font-size: 12px;
+  }
 }
 
 .question {
@@ -80,6 +84,21 @@
     font-family: Roboto-Bold;
     color: #a4a2b0;
   }
+
+  tbody {
+    .score {
+      @media screen and (min-width: 320px) and (max-width: 768px) {
+        text-align: center;
+      }
+    }
+    td {
+      @media screen and (min-width: 320px) and (max-width: 768px) {
+        vertical-align: top;
+        font-size: 12px;
+        padding-top: 15px;
+      }
+    }
+  }
 }
 
 .score_0 {
@@ -110,6 +129,7 @@
   width: 780px;
   @media screen and (min-width: 320px) and (max-width: 768px) {
     width: 100%;
+    padding: 20px;
   }
 }
 
