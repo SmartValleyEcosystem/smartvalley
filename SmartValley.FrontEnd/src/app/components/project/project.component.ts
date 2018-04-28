@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {Paths} from '../../paths';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -35,6 +35,17 @@ export class ProjectComponent implements OnInit {
   public isScoringApplicationTabAvailable = true;
   public scoringCompletenessInPercents;
   public scoringStartTransactionUrl = '';
+
+  private currentGlobalOffset = 0;
+
+  @HostListener('window:scroll', ['$event'])
+  doSomething(event) {
+    if (event.target.scrollingElement.scrollTop === 0) {
+      event.target.scrollingElement.scrollTop = this.currentGlobalOffset;
+      return;
+    }
+    this.currentGlobalOffset = window.pageYOffset;
+  }
 
   constructor(private projectApiClient: ProjectApiClient,
               private router: Router,
