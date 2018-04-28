@@ -1,0 +1,14 @@
+{
+  "InvestModalComponent": {
+    "Title": "Invest request",
+    "Phone": "Phone",
+    "PhonePlaceholder": "For ex, +1 480 77777777",
+    "EmailPlaceholder": "For ex, example@gmail.com",
+    "NamePlaceholder": "Your name",
+    "SumPlaceholder": "$100 000",
+    "HowMuch": "How much would you like to invest?",
+    "Name": "Name",
+    "Email": "Email",
+    "Send": "Send"
+  }
+}

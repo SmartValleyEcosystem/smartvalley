@@ -5,6 +5,7 @@ import {UserResponse} from './user-response';
 import {EmailRequest} from './email-request';
 import {EmailResponse} from './email-response';
 import {UpdateUserRequest} from './update-user-request';
+import {InvestRequest} from '../../components/common/invest-modal/invest-data';
 import {FeedbackData} from '../../components/common/feedback-modal/feedback';
 
 @Injectable()
@@ -31,6 +32,10 @@ export class UserApiClient extends BaseApiClient {
 
   public async updateAsync(request: UpdateUserRequest): Promise<void> {
     await this.http.put(this.baseApiUrl + '/users', request).toPromise();
+  }
+
+  public async investAsync(request: InvestRequest, projectId: number): Promise<void> {
+      await this.http.post(this.baseApiUrl + `/invest/${projectId}`, request).toPromise();
   }
 
   public async addFeedbackAsync(request: FeedbackData): Promise<void> {

@@ -11,6 +11,9 @@ import {ScoringResponse} from '../../api/scoring/scoring-response';
 import {ErrorCode} from '../../shared/error-code.enum';
 import {ScoringStartTransactionStatus} from '../../api/project/scoring-start-transaction.status';
 import {environment} from '../../../environments/environment';
+import {DialogService} from '../../services/dialog-service';
+import {NotificationsService} from 'angular2-notifications';
+import {UserApiClient} from '../../api/user/user-api-client';
 
 @Component({
   selector: 'app-project',
@@ -50,7 +53,10 @@ export class ProjectComponent implements OnInit {
   constructor(private projectApiClient: ProjectApiClient,
               private router: Router,
               private route: ActivatedRoute,
-              private userContext: UserContext) {
+              private userApiClient: UserApiClient,
+              private userContext: UserContext,
+              private dialogService: DialogService,
+              private notificationService: NotificationsService) {
 
     route.params.subscribe(async () => {
       await this.reloadProjectAsync();
@@ -108,5 +114,13 @@ export class ProjectComponent implements OnInit {
     const finishedOffers = scoring.offers.filter(o => o.status === OfferStatus.Finished).length;
     const totalOffers = scoring.requiredExpertsCount;
     return Math.round(finishedOffers * 100 / totalOffers);
+  }
+
+  public async showInvestDialog() {
+    const invest = await this.dialogService.showInvestDialog();
+    if (invest) {
+      await this.userApiClient.investAsync(invest, this.projectId);
+      this.notificationService.success('Success', 'Invest request is sent');
+    }
   }
 }

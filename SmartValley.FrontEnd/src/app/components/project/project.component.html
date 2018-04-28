@@ -10,6 +10,9 @@
         <div class="score">
           <div class="main-number">{{project.scoring.score | roundNumberPipe}}</div>/100
         </div>
+        <div>
+          <button (click)="showInvestDialog()" class="main-btn">{{ 'MyProject.Invest' | translate }}</button>
+        </div>
         <a *ngIf="isAuthor" [routerLink]="'/' + editProjectsLink" class="ghost-btn">
           {{ 'MyProject.EditInformation' | translate }}
         </a>

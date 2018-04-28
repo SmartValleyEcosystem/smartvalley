@@ -21,6 +21,8 @@ import {WelcomeModalData} from '../components/common/welcome-modal/welcome-modal
 import {DeleteProjectModalComponent} from '../components/common/delete-project-modal/delete-project-modal.component';
 import {WaitingModalComponent} from '../components/common/waiting-modal/waiting-modal.component';
 import {ChangeStatusModalComponent} from '../components/common/change-status-modal/change-status-modal.component';
+import {InvestModalComponent} from '../components/common/invest-modal/invest-modal.component';
+import {InvestRequest} from '../components/common/invest-modal/invest-data';
 import {FeedbackModalComponent} from '../components/common/feedback-modal/feedback-modal.component';
 import {FeedbackData} from '../components/common/feedback-modal/feedback';
 
@@ -131,9 +133,13 @@ export class DialogService {
     return this.openModal(AlertModalComponent, data);
   }
 
-    public async showFeedbackDialog(): Promise<FeedbackData> {
-        return <FeedbackData>this.openModalAsync(FeedbackModalComponent, {});
-    }
+  public async showInvestDialog(): Promise<InvestRequest> {
+    return <InvestRequest>this.openModalAsync(InvestModalComponent, {});
+  }
+
+  public async showFeedbackDialog(): Promise<FeedbackData> {
+      return <FeedbackData>this.openModalAsync(FeedbackModalComponent, {});
+  }
 
   private openModal<TComponent, TData>(componentType: ComponentType<TComponent>,
                                        data: TData,
@@ -144,9 +150,9 @@ export class DialogService {
 
   private openModalAsync<TComponent, TData>(componentType: ComponentType<TComponent>,
                                             data: TData,
-                                            disableClose: boolean = false): Promise<boolean> {
+                                            disableClose: boolean = false): Promise<any> {
     return this.openModal(componentType, data, disableClose)
       .afterClosed()
-      .toPromise<boolean>();
+      .toPromise<any>();
   }
 }
