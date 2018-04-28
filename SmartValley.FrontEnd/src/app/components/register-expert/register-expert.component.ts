@@ -96,11 +96,11 @@ export class RegisterExpertComponent implements OnInit {
 
 
   public async applyAsync(): Promise<void> {
-    if (this.isAreasCheckboxesValid()) {
-      return;
-    }
 
     if (!this.validateForm()) {
+      if (this.isAreasCheckboxesValid()) {
+        return;
+      }
       return;
     }
 
