@@ -290,6 +290,9 @@ namespace SmartValley.Data.SQL.Core
             modelBuilder.Entity<ScoringApplication>()
                         .HasOne(x => x.ScoringStartTransaction);
 
+            modelBuilder.Entity<ScoringApplication>()
+                        .HasOne<Project>();
+
             modelBuilder.Entity<ScoringApplicationQuestion>()
                         .HasIndex(x => x.Key)
                         .IsUnique();
