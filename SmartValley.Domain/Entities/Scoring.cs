@@ -9,6 +9,25 @@ namespace SmartValley.Domain.Entities
 {
     public class Scoring : IEntityWithId
     {
+        public Scoring()
+        {
+            
+        }
+
+        public Scoring(long projectId, Address contractAddress, DateTimeOffset offersDueDate, DateTimeOffset clockUtcNow, IEnumerable<AreaScoring> areaScorings, IEnumerable<ScoringOffer> scoringOffers)
+        {
+            ProjectId = projectId;
+            ContractAddress = contractAddress;
+            CreationDate = clockUtcNow;
+            OffersDueDate = offersDueDate;
+
+            AreaScorings = new List<AreaScoring>(areaScorings);
+            ScoringOffers = new List<ScoringOffer>(scoringOffers);
+            ExpertScorings = new List<ExpertScoring>();
+
+            Status = ScoringStatus.InProgress;
+        }
+
         public long Id { get; set; }
 
         public long ProjectId { get; set; }
@@ -105,7 +124,7 @@ namespace SmartValley.Domain.Entities
             return ScoringOffers.FirstOrDefault(x => x.ExpertId == expertId && x.AreaId == area);
         }
 
-        public void AddOffers(IReadOnlyCollection<ScoringOffer> offers)
+        public void AddNewOffers(IReadOnlyCollection<ScoringOffer> offers)
         {
             foreach (var offer in offers)
                 ScoringOffers.Add(offer);

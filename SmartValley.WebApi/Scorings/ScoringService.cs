@@ -135,7 +135,7 @@ namespace SmartValley.WebApi.Scorings
                           .Select(o => CreateOffer(scoring.Id, ((IDictionary<Address, long>) expertsDictionary)[o.ExpertAddress], o))
                           .ToArray();
 
-            scoring.AddOffers(newOffers);
+            scoring.AddNewOffers(newOffers);
             scoring.OffersDueDate = offersDueDate.Value;
             await _scoringRepository.SaveChangesAsync();
 

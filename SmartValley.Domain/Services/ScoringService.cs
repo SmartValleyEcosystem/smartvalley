@@ -59,20 +59,12 @@ namespace SmartValley.Domain.Services
             IReadOnlyCollection<ScoringOfferInfo> contractOffers)
         {
             var contractAddress = await _scoringManagerContractClient.GetScoringAddressAsync(project.ExternalId);
-            var scoring = new Scoring
-                          {
-                              ProjectId = project.Id,
-                              ContractAddress = contractAddress,
-                              CreationDate = _clock.UtcNow,
-                              OffersDueDate = offersEndDate,
-                              Status = ScoringStatus.InProgress,
-                              AreaScorings = areas.Select(x => new AreaScoring {AreaId = x.Key, ExpertsCount = x.Value}).ToList()
-                          };
+
+            var areaScorings = areas.Select(x => new AreaScoring {AreaId = x.Key, ExpertsCount = x.Value}).ToList();
             var offers = await CreateOffersAsync(contractOffers);
-            scoring.AddOffers(offers);
+            var scoring = new Scoring(project.Id, contractAddress, _clock.UtcNow, offersEndDate, areaScorings, offers);
 
             await _scoringRepository.AddAsync(scoring);
-
             return scoring;
         }
 
