@@ -43,8 +43,6 @@ namespace SmartValley.Domain
 
         public Country Country { get; set; }
 
-        public Project Project { get; set; }
-
         public EthereumTransaction ScoringStartTransaction { get; set; }
 
         public ICollection<ScoringApplicationAnswer> Answers { get; set; }
@@ -113,14 +111,9 @@ namespace SmartValley.Domain
             answer.Value = value;
         }
 
-        public void SetScoringStartTransaction(string hash, DateTimeOffset created)
+        public void SetScoringStartTransaction(EthereumTransaction transaction)
         {
-            ScoringStartTransaction = new EthereumTransaction(
-                Project.AuthorId,
-                hash,
-                EthereumTransactionType.StartScoring,
-                EthereumTransactionStatus.InProgress,
-                created);
+            ScoringStartTransaction = transaction;
         }
 
         public ScoringStartTransactionStatus GetTransactionStatus()

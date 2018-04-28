@@ -249,9 +249,6 @@ namespace SmartValley.Data.SQL.Core
                         .HasOne(x => x.Question);
 
             modelBuilder.Entity<ScoringApplication>()
-                        .HasOne(x => x.Project);
-
-            modelBuilder.Entity<ScoringApplication>()
                         .HasMany(x => x.Answers)
                         .WithOne(x => x.ScoringApplication)
                         .HasForeignKey(x => x.ScoringApplicationId)
