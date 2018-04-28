@@ -135,6 +135,19 @@
           </tr>
         </table>
       </div>
+
+      <div class="settings-block" *ngIf="scoringInfo.scoringInfo.conclusions.length">
+        <p class="question">
+          {{ 'ScoringReport.Conclusion' | translate }}
+        </p>
+        <table class="scoring-results">
+          <tr *ngFor="let conclusion of scoringInfo.scoringInfo.conclusions; let coclusionIndex = index;">
+            <td class="conclusion-expert">{{ 'ScoringReport.Expert' | translate }} {{ coclusionIndex + 1 }}</td>
+            <td class="conclusion-description" colspan="2">{{ conclusion.conslusion }}</td>
+          </tr>
+        </table>
+      </div>
+
     </div>
   </mat-tab>
 </mat-tab-group>
