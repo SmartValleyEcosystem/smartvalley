@@ -21,6 +21,8 @@ import {WelcomeModalData} from '../components/common/welcome-modal/welcome-modal
 import {DeleteProjectModalComponent} from '../components/common/delete-project-modal/delete-project-modal.component';
 import {WaitingModalComponent} from '../components/common/waiting-modal/waiting-modal.component';
 import {ChangeStatusModalComponent} from '../components/common/change-status-modal/change-status-modal.component';
+import {FeedbackModalComponent} from '../components/common/feedback-modal/feedback-modal.component';
+import {FeedbackData} from '../components/common/feedback-modal/feedback';
 
 @Injectable()
 export class DialogService {
@@ -128,6 +130,10 @@ export class DialogService {
     };
     return this.openModal(AlertModalComponent, data);
   }
+
+    public async showFeedbackDialog(): Promise<FeedbackData> {
+        return <FeedbackData>this.openModalAsync(FeedbackModalComponent, {});
+    }
 
   private openModal<TComponent, TData>(componentType: ComponentType<TComponent>,
                                        data: TData,

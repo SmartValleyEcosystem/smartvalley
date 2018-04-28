@@ -127,6 +127,8 @@ import {TranslateBinaryAnswer} from './utils/translate-binary-answer.pipe';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {NgInviewModule} from 'angular-inport';
 import {SafeHtmlPipe} from './utils/safe-html-pipe';
+import {FeedbackComponent} from './components/feedback/feedback.component';
+import {FeedbackModalComponent} from './components/common/feedback-modal/feedback-modal.component';
 
 @NgModule({
   declarations: [
@@ -189,6 +191,8 @@ import {SafeHtmlPipe} from './utils/safe-html-pipe';
     ExpertScoringComponent,
     ScoringReportComponent,
     ChangeStatusModalComponent,
+    FeedbackComponent,
+    FeedbackModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -203,7 +207,8 @@ import {SafeHtmlPipe} from './utils/safe-html-pipe';
     WelcomeModalComponent,
     DeleteProjectModalComponent,
     WaitingModalComponent,
-    ChangeStatusModalComponent
+    ChangeStatusModalComponent,
+    FeedbackModalComponent
   ],
   imports: [
     FileUploadModule,

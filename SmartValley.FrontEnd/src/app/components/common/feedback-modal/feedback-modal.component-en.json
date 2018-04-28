@@ -1,0 +1,9 @@
+{
+  "FeedbackModalComponent": {
+    "Title": "Smart Valley Product Feedback",
+    "FirstName": "FirstName",
+    "LastName": "Last Name",
+    "Email": "Email",
+    "Text": "Text"
+  }
+}

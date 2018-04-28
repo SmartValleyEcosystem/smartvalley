@@ -1,0 +1,33 @@
+<button class="dialog-close" mat-dialog-close><i class="material-icons">close</i></button>
+<h2>{{ 'FeedbackModalComponent.Title' | translate }}</h2>
+<div class="form-control-row">
+  <p class="control-label">
+    <label for="first-name">{{ 'FeedbackModalComponent.FirstName' | translate }}</label>
+  </p>
+  <input class="input" type="text" id="first-name" name="first-name" [(ngModel)]="firstName">
+</div>
+
+<div class="form-control-row">
+  <p class="control-label">
+    <label for="last-name">{{ 'FeedbackModalComponent.LastName' | translate }}</label>
+  </p>
+  <input class="input" type="text" id="last-name" name="last-name" [(ngModel)]="lastName">
+</div>
+
+<div class="form-control-row">
+  <p class="control-label">
+    <label for="email">{{ 'FeedbackModalComponent.Email' | translate }}</label>
+  </p>
+  <input class="input" type="text" id="email" name="email" [(ngModel)]="email">
+</div>
+
+<div class="form-control-row">
+  <p class="control-label">
+    <label for="description">{{ 'FeedbackModalComponent.Text' | translate }}</label>
+  </p>
+  <textarea class="input" name="description" id="description" [(ngModel)]="description"></textarea>
+</div>
+
+<div class="form-control-row">
+  <button (click)="submit()" class="main-btn">Send</button>
+</div>

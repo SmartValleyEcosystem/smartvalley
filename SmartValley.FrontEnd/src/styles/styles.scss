@@ -423,7 +423,7 @@ a, button, span {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .title {

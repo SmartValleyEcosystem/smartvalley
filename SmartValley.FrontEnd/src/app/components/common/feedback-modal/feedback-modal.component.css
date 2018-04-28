@@ -1,0 +1,29 @@
+.input {
+    width: 100%;
+}
+
+.form-control-row {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.control-label {
+    margin-bottom: 8px;
+}
+
+.main-btn {
+    padding: 0 20px;
+}
+
+.dialog-close {
+    display: block;
+    float: right;
+    width: 36px;
+    background-color: rgba(216, 216, 216, 0);
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
