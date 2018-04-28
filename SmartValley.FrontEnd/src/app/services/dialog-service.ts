@@ -134,11 +134,11 @@ export class DialogService {
   }
 
   public async showInvestDialog(): Promise<InvestRequest> {
-    return <InvestRequest>this.openModalAsync(InvestModalComponent, {});
+    return this.openModalAsync(InvestModalComponent, {});
   }
 
   public async showFeedbackDialog(): Promise<FeedbackData> {
-      return <FeedbackData>this.openModalAsync(FeedbackModalComponent, {});
+      return this.openModalAsync(FeedbackModalComponent, {});
   }
 
   private openModal<TComponent, TData>(componentType: ComponentType<TComponent>,
