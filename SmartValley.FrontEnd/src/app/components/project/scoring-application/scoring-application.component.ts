@@ -29,6 +29,7 @@ export class ScoringApplicationComponent implements OnInit {
   public questionTypeDateTime = QuestionControlType[3];
   public questionTypeCheckBox = QuestionControlType[4];
   public questionTypeUrl = QuestionControlType[5];
+  public activePartition = '';
 
   public doesScoringApplicationExists: boolean;
   public isAuthor: boolean;
@@ -102,5 +103,11 @@ export class ScoringApplicationComponent implements OnInit {
 
   public navigateToEdit() {
     this.router.navigate([Paths.ScoringApplication + '/' + this.project.id]);
+  }
+
+  public onAppear(event, id) {
+      if (event.status) {
+          this.activePartition = id;
+      }
   }
 }

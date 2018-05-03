@@ -49,7 +49,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
   public disabled = false;
   public comboboxValues: { [id: number]: SelectItem[] };
   public savedTime: Date;
-  public activePartition: string = '';
+  public activePartition = '';
 
   @ViewChild('socialsContainer') private socialsContainer: ElementRef;
   @ViewChild('membersContainer') private membersContainer: ElementRef;

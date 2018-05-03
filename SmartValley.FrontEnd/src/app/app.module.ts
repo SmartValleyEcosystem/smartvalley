@@ -127,7 +127,7 @@ import {TranslateBinaryAnswer} from './utils/translate-binary-answer.pipe';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {NgInviewModule} from 'angular-inport';
 import {SafeHtmlPipe} from './utils/safe-html-pipe';
-import { InvestModalComponent } from './components/common/invest-modal/invest-modal.component';
+import {InvestModalComponent} from './components/common/invest-modal/invest-modal.component';
 import {FeedbackComponent} from './components/feedback/feedback.component';
 import {FeedbackModalComponent} from './components/common/feedback-modal/feedback-modal.component';
 
