@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AdminApiClient} from '../../api/admin/admin-api-client';
 import {DialogService} from '../../services/dialog-service';
 import {AdminContractClient} from '../../services/contract-clients/admin-contract-client';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {AdminResponse} from '../../api/admin/admin-response';
 import {NotificationsService} from 'angular2-notifications';
 import {UserApiClient} from '../../api/user/user-api-client';
@@ -23,14 +23,13 @@ export class AdminPanelComponent implements OnInit {
 
   public admins: Array<AdminResponse> = [];
 
-  public mainTabItems: string[] = ['admins', 'experts', 'scoring'];
+  public mainTabItems: string[] = ['admins', 'experts', 'scoring', 'feedbacks'];
   public subTabItems: string[] = ['expertList', 'applications'];
 
   public selectedMainTab = 0;
   public selectedSubTab = this.subTabItems[0];
 
-  constructor(private router: Router,
-              private location: Location,
+  constructor(private location: Location,
               private route: ActivatedRoute,
               private adminApiClient: AdminApiClient,
               private adminContractClient: AdminContractClient,

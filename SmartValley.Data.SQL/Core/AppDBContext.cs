@@ -16,6 +16,8 @@ namespace SmartValley.Data.SQL.Core
         {
         }
 
+        IQueryable<Feedback> IReadOnlyDataContext.Feedbacks => Feedbacks.AsNoTracking();
+
         IQueryable<Project> IReadOnlyDataContext.Projects => Projects.AsNoTracking();
 
         IQueryable<Scoring> IReadOnlyDataContext.Scorings => Scorings.AsNoTracking();
@@ -59,6 +61,8 @@ namespace SmartValley.Data.SQL.Core
         IQueryable<ScoringCriteriaMapping> IReadOnlyDataContext.ScoringCriteriaMappings => ScoringCriteriaMappings.AsNoTracking();
 
         IQueryable<EthereumTransaction> IReadOnlyDataContext.EthereumTransactions => EthereumTransactions.AsNoTracking();
+
+        public DbSet<Feedback> Feedbacks { get; set; }
 
         public DbSet<ProjectTeamMember> ProjectTeamMembers { get; set; }
 

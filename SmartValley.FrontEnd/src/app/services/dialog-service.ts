@@ -24,7 +24,7 @@ import {ChangeStatusModalComponent} from '../components/common/change-status-mod
 import {InvestModalComponent} from '../components/common/invest-modal/invest-modal.component';
 import {InvestRequest} from '../components/common/invest-modal/invest-data';
 import {FeedbackModalComponent} from '../components/common/feedback-modal/feedback-modal.component';
-import {FeedbackData} from '../components/common/feedback-modal/feedback';
+import {FeedbackRequest} from '../components/common/feedback-modal/feedback';
 
 @Injectable()
 export class DialogService {
@@ -137,7 +137,7 @@ export class DialogService {
     return this.openModalAsync(InvestModalComponent, {});
   }
 
-  public async showFeedbackDialog(): Promise<FeedbackData> {
+  public async showFeedbackDialog(): Promise<FeedbackRequest> {
       return this.openModalAsync(FeedbackModalComponent, {});
   }
 

@@ -10,6 +10,7 @@ namespace SmartValley.Data.SQL.Core
     public interface IEditableDataContext : IDisposable
     {
         DbSet<Project> Projects { get; }
+        DbSet<Feedback> Feedbacks { get; }
         DbSet<Scoring> Scorings { get; }
         DbSet<ScoringOffer> ScoringOffers { get; }
         DbSet<AreaScoring> AreaScorings { get; }

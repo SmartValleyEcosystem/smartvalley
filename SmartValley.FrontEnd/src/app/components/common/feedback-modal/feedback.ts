@@ -1,4 +1,4 @@
-export interface FeedbackData {
+export interface FeedbackRequest {
     firstName: string;
     lastName: string;
     email: string;

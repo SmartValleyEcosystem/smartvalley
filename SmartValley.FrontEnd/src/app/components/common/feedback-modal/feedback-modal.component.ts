@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialogRef} from '@angular/material';
 import {ChangeStatusModalComponent} from '../change-status-modal/change-status-modal.component';
-import {FeedbackData} from './feedback';
+import {FeedbackRequest} from './feedback';
 
 @Component({
   selector: 'app-feedback-modal',
@@ -21,7 +21,7 @@ export class FeedbackModalComponent implements OnInit {
 
   public submit() {
       this.feedbackModalComponent.close(
-          <FeedbackData>{
+          <FeedbackRequest>{
           firstName: this.firstName,
           lastName: this.lastName,
           email: this.email,

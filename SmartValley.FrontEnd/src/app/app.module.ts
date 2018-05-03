@@ -130,6 +130,8 @@ import {SafeHtmlPipe} from './utils/safe-html-pipe';
 import {InvestModalComponent} from './components/common/invest-modal/invest-modal.component';
 import {FeedbackComponent} from './components/feedback/feedback.component';
 import {FeedbackModalComponent} from './components/common/feedback-modal/feedback-modal.component';
+import {AdminFeedbacksComponent} from './components/admin-panel/admin-feedbacks/admin-feedbacks.component';
+import {FeedbackApiClient} from './api/feedback/feedback-api-client';
 
 @NgModule({
   declarations: [
@@ -194,7 +196,8 @@ import {FeedbackModalComponent} from './components/common/feedback-modal/feedbac
     ChangeStatusModalComponent,
     InvestModalComponent,
     FeedbackComponent,
-    FeedbackModalComponent
+    FeedbackModalComponent,
+    AdminFeedbacksComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -300,6 +303,7 @@ import {FeedbackModalComponent} from './components/common/feedback-modal/feedbac
     AreaService,
     AreaService,
     EnumHelper,
+    FeedbackApiClient,
     OffersApiClient,
     ScoringService,
     ProjectService,

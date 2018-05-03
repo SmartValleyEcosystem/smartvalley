@@ -6,6 +6,7 @@
     "AdminsTab": "Admins",
     "ExpertsTab": "Experts",
     "ScoringTab": "Scoring",
+    "FeedbackTab": "Feedbacks",
     "AlreadyAdmin": "Entered address is admin already"
   }
 }

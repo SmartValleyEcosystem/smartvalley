@@ -35,6 +35,7 @@ using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.Estimates;
 using SmartValley.WebApi.ExceptionHandler;
 using SmartValley.WebApi.Experts;
+using SmartValley.WebApi.Feedbacks;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.ScoringApplications;
 using SmartValley.WebApi.Scorings;
@@ -141,6 +142,8 @@ namespace SmartValley.WebApi
             services.AddTransient<IScoringApplicationRepository, ScoringApplicationRepository>();
             services.AddTransient<IScoringApplicationQuestionsRepository, ScoringApplicationQuestionsRepository>();
             services.AddTransient<IScoringApplicationService, ScoringApplicationService>();
+            services.AddTransient<IFeedbackRepository, FeedbackRepository>();
+            services.AddTransient<IFeedbackService, FeedbackService>();
 
             var serviceProvider = services.BuildServiceProvider();
             var siteOptions = serviceProvider.GetService<SiteOptions>();

@@ -1,39 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {DialogService} from '../../services/dialog-service';
-import {UserApiClient} from '../../api/user/user-api-client';
 import {NotificationsService} from 'angular2-notifications';
+import {FeedbackApiClient} from '../../api/feedback/feedback-api-client';
 
 @Component({
   selector: 'app-feedback',
   templateUrl: './feedback.component.html',
   styleUrls: ['./feedback.component.scss']
 })
-export class FeedbackComponent implements OnInit {
-  public isFeedbackHidden = false;
-  public isFeedbackSend = 'isFeedbackSend';
+export class FeedbackComponent {
 
   constructor(private dialogService: DialogService,
-              private userApiClient: UserApiClient,
-              private notificationService: NotificationsService) { }
-
-  ngOnInit() {
-    if ( localStorage.getItem(this.isFeedbackSend) ) {
-      this.isFeedbackHidden = true;
-    }
+              private feedbackApiClient: FeedbackApiClient,
+              private notificationService: NotificationsService) {
   }
 
   public async openFeedbackDialog() {
     const feedBackData = await this.dialogService.showFeedbackDialog();
     if (feedBackData) {
-        await this.userApiClient.addFeedbackAsync(feedBackData);
-        localStorage.setItem(this.isFeedbackSend, '1');
-        this.notificationService.success('Success', 'Feedback is sent');
+      await this.feedbackApiClient.sendFeedbackAsync(feedBackData);
+      this.notificationService.success('Success', 'Feedback is sent');
     }
   }
 
   public closeFeedback(event) {
     event.stopPropagation();
-    this.isFeedbackHidden = true;
   }
-
 }

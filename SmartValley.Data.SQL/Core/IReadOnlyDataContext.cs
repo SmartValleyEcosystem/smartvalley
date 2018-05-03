@@ -9,6 +9,7 @@ namespace SmartValley.Data.SQL.Core
     public interface IReadOnlyDataContext : IDisposable
     {
         IQueryable<Project> Projects { get; }
+        IQueryable<Feedback> Feedbacks { get; }
         IQueryable<Scoring> Scorings { get; }
         IQueryable<ScoringOffer> ScoringOffers { get; }
         IQueryable<AreaScoring> AreaScorings { get; }
