@@ -21,6 +21,9 @@ namespace SmartValley.Domain.Entities
             IEnumerable<AreaScoring> areaScorings,
             IEnumerable<ScoringOffer> scoringOffers)
         {
+            if (offersDueDate < creationDate)
+                throw new ArgumentOutOfRangeException(nameof(offersDueDate), "Offers due date cannot be earlier than creation date.");
+
             ProjectId = projectId;
             ContractAddress = contractAddress;
             CreationDate = creationDate;
