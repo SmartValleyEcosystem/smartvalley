@@ -11,14 +11,19 @@ namespace SmartValley.Domain.Entities
     {
         public Scoring()
         {
-            
         }
 
-        public Scoring(long projectId, Address contractAddress, DateTimeOffset offersDueDate, DateTimeOffset clockUtcNow, IEnumerable<AreaScoring> areaScorings, IEnumerable<ScoringOffer> scoringOffers)
+        public Scoring(
+            long projectId,
+            Address contractAddress,
+            DateTimeOffset offersDueDate,
+            DateTimeOffset creationDate,
+            IEnumerable<AreaScoring> areaScorings,
+            IEnumerable<ScoringOffer> scoringOffers)
         {
             ProjectId = projectId;
             ContractAddress = contractAddress;
-            CreationDate = clockUtcNow;
+            CreationDate = creationDate;
             OffersDueDate = offersDueDate;
 
             AreaScorings = new List<AreaScoring>(areaScorings);
