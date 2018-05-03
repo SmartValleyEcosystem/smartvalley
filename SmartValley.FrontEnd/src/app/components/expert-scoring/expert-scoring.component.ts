@@ -21,6 +21,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {SaveEstimatesRequest} from '../../api/estimates/save-estimates-request';
 import {QuestionControlType} from '../../api/scoring-application/question-control-type.enum';
 import {BalanceService} from '../../services/balance/balance.service';
+import {isNullOrUndefined} from 'util';
 
 @Component({
   selector: 'app-expert-scoring',
@@ -104,7 +105,7 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
       return;
     }
     for (const estimate of data.estimates) {
-      prepareFormData['answer_' + estimate.scoringCriterionId] = estimate.score;
+      prepareFormData['answer_' + estimate.scoringCriterionId] = isNullOrUndefined(estimate.score) ? '' : estimate.score;
       prepareFormData['comment_' + estimate.scoringCriterionId] = estimate.comment;
     }
 
@@ -198,7 +199,7 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
     this.dialogService.showSendReportDialog();
 
     await this.balanceService.updateBalanceAsync();
-    
+
     await this.router.navigate([Paths.ScoringList]);
   }
 
