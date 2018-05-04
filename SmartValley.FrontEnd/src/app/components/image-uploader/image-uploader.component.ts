@@ -29,6 +29,7 @@ export class ImageUploaderComponent implements ControlValueAccessor, OnChanges, 
 
   @Output() uploadHandler: EventEmitter<File> = new EventEmitter<File>();
   @Output() onRemove: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onMaxSizeError: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private nativeElement: ElementRef) {
   }
@@ -48,8 +49,10 @@ export class ImageUploaderComponent implements ControlValueAccessor, OnChanges, 
     };
     this.value = event.srcElement.files[0];
 
-    if (this.maxFileSize < this.value.size)
+    if (this.maxFileSize < this.value.size) {
       this.deleteFile();
+      this.onMaxSizeError.emit();
+    }
 
     reader.readAsDataURL(this.value);
     this.uploadHandler.emit(this.value);

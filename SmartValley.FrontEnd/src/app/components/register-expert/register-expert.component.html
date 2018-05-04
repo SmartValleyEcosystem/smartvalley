@@ -127,6 +127,7 @@
           accept="image/*"
           maxFileSize="5242880"
           formControlName="document"
+          (onMaxSizeError)="onDocumentSizeError()"
           #required>
         </app-image-uploader>
       </div>
@@ -140,6 +141,7 @@
           accept="image/*"
           maxFileSize="5242880"
           formControlName="photo"
+          (onMaxSizeError)="onPhotoSizeError()"
           #required>
         </app-image-uploader>
       </div>

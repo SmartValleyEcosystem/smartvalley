@@ -124,6 +124,14 @@ export class RegisterExpertComponent implements OnInit {
     }
   }
 
+  public onPhotoSizeError() {
+    this.notificationsService.error(this.translateService.instant('RegisterExpert.PhotoSizeError'));
+  }
+
+  public onDocumentSizeError() {
+    this.notificationsService.error(this.translateService.instant('RegisterExpert.DocumentSizeError'));
+  }
+
   private switchFileUploadValidity(element: any, isValid: boolean) {
     if (isValid) {
       element.el.nativeElement.classList.remove('ng-invalid');
