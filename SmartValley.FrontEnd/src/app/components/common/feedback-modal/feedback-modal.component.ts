@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialogRef} from '@angular/material';
-import {ChangeStatusModalComponent} from '../change-status-modal/change-status-modal.component';
 import {FeedbackRequest} from './feedback';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-feedback-modal',
@@ -13,19 +13,27 @@ export class FeedbackModalComponent implements OnInit {
   public lastName: string;
   public email: string;
   public description: string;
+  public feedbackForm: FormGroup;
 
-  constructor(private feedbackModalComponent: MatDialogRef<ChangeStatusModalComponent>) { }
+  constructor(private formBuilder: FormBuilder,
+              private feedbackModalComponent: MatDialogRef<FeedbackModalComponent>) { }
 
   ngOnInit() {
+    this.feedbackForm = this.formBuilder.group({
+      firstName: ['', Validators.maxLength(50)],
+      secondName: ['', Validators.maxLength(50)],
+      email: ['', [Validators.maxLength(50), Validators.pattern('^$|\\w+@\\w+\\.\\w+')]],
+      description: ['', [Validators.required, Validators.maxLength(1500)]]
+    });
   }
 
   public submit() {
       this.feedbackModalComponent.close(
           <FeedbackRequest>{
-          firstName: this.firstName,
-          lastName: this.lastName,
-          email: this.email,
-          text: this.description
+          firstName: this.feedbackForm.value.firstName,
+          lastName: this.feedbackForm.value.lastName,
+          email: this.feedbackForm.value.email === '' ? null : this.feedbackForm.value.email,
+          text: this.feedbackForm.value.description
         }
       );
   }

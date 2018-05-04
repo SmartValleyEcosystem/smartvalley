@@ -1,9 +1,11 @@
 {
   "FeedbackModalComponent": {
     "Title": "Smart Valley Product Feedback",
-    "FirstName": "FirstName",
+    "FirstName": "First Name",
     "LastName": "Last Name",
     "Email": "Email",
-    "Text": "Text"
+    "Text": "Text",
+    "Notify.Success.Title": "Success",
+    "Notify.Success.Text": "Thanks for the feedback"
   }
 }
