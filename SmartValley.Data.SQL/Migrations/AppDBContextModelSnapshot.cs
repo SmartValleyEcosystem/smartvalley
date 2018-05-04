@@ -256,15 +256,12 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Email")
-                        .IsRequired();
+                    b.Property<string>("Email");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasMaxLength(50);
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasMaxLength(50);
 
                     b.Property<string>("Text")

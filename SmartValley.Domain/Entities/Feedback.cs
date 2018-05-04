@@ -6,21 +6,21 @@ namespace SmartValley.Domain.Entities
     {
         public Feedback(string firstName, string lastName, string email, string text)
         {
-            firstName = FirstName;
-            lastName = LastName;
-            email = Email;
-            text = Text;
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            Text = text;
         }
 
         public long Id { get; set; }
 
-        [Required, MaxLength(50)]
+        [MaxLength(50)]
         public string FirstName { get; set; }
 
-        [Required, MaxLength(50)]
+        [MaxLength(50)]
         public string LastName { get; set; }
 
-        [Required, EmailAddress]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required, MaxLength(1500)]
