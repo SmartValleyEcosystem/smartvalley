@@ -1,0 +1,9 @@
+{
+  "AdminSubscriptions": {
+    "Email": "Email",
+    "Subscriber": "Subscriber",
+    "Phone": "Phone",
+    "Sum": "Text",
+    "ProjectName": "Project name"
+  }
+}

@@ -21,8 +21,8 @@ import {WelcomeModalData} from '../components/common/welcome-modal/welcome-modal
 import {DeleteProjectModalComponent} from '../components/common/delete-project-modal/delete-project-modal.component';
 import {WaitingModalComponent} from '../components/common/waiting-modal/waiting-modal.component';
 import {ChangeStatusModalComponent} from '../components/common/change-status-modal/change-status-modal.component';
-import {InvestModalComponent} from '../components/common/invest-modal/invest-modal.component';
-import {InvestRequest} from '../components/common/invest-modal/invest-data';
+import {SubscribeModalComponent} from '../components/common/subscribe-modal/subscribe-modal.component';
+import {SubscribeRequest} from '../components/common/subscribe-modal/subscribe-data';
 import {FeedbackModalComponent} from '../components/common/feedback-modal/feedback-modal.component';
 import {FeedbackRequest} from '../components/common/feedback-modal/feedback';
 
@@ -133,8 +133,8 @@ export class DialogService {
     return this.openModal(AlertModalComponent, data);
   }
 
-  public async showInvestDialog(): Promise<InvestRequest> {
-    return this.openModalAsync(InvestModalComponent, {});
+  public async showSubscribeDialog(): Promise<SubscribeRequest> {
+    return this.openModalAsync(SubscribeModalComponent, {});
   }
 
   public async showFeedbackDialog(): Promise<FeedbackRequest> {

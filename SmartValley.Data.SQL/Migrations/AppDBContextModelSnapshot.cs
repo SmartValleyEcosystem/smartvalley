@@ -524,6 +524,34 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("ScoringOffers");
                 });
 
+            modelBuilder.Entity("SmartValley.Domain.Entities.Subscription", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200);
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<long>("ProjectId");
+
+                    b.Property<string>("Sum")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Subscriptions");
+                });
+
             modelBuilder.Entity("SmartValley.Domain.Entities.User", b =>
                 {
                     b.Property<long>("Id")
@@ -820,6 +848,14 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasOne("SmartValley.Domain.Entities.Scoring", "Scoring")
                         .WithMany("ScoringOffers")
                         .HasForeignKey("ScoringId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.Entities.Subscription", b =>
+                {
+                    b.HasOne("SmartValley.Domain.Entities.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

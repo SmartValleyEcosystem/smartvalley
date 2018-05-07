@@ -20,6 +20,7 @@ export function multiTranslateLoaderFactory() {
     'components/admin-panel/admin-expert-application/admin-expert-application.component',
     'components/admin-panel/admin-scoring-projects/admin-scoring-project.component',
     'components/admin-panel/admin-feedbacks/admin-feedbacks.component',
+    'components/admin-panel/admin-subscriptions/admin-subscriptions.component',
     'components/expert-status/expert-status.component',
     'components/register-expert/register-expert.component',
     'components/footer/footer.component',
@@ -50,7 +51,7 @@ export function multiTranslateLoaderFactory() {
     'components/common/waiting-modal/waiting-modal.component',
     'components/scoring/scoring-payment/scoring-payment.component',
     'components/project/scoring-report/scoring-report.component',
-    'components/common/invest-modal/invest-modal.component',
+    'components/common/subscribe-modal/subscribe-modal.component',
     'components/common/feedback-modal/feedback-modal.component'
   ]);
 }

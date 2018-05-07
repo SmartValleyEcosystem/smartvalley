@@ -23,7 +23,7 @@ export class AdminPanelComponent implements OnInit {
 
   public admins: Array<AdminResponse> = [];
 
-  public mainTabItems: string[] = ['admins', 'experts', 'scoring', 'feedbacks'];
+  public mainTabItems: string[] = ['admins', 'experts', 'scoring', 'feedbacks', 'subscribers'];
   public subTabItems: string[] = ['expertList', 'applications'];
 
   public selectedMainTab = 0;

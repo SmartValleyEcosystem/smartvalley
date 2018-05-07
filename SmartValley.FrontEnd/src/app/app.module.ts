@@ -127,11 +127,13 @@ import {TranslateBinaryAnswer} from './utils/translate-binary-answer.pipe';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {NgInviewModule} from 'angular-inport';
 import {SafeHtmlPipe} from './utils/safe-html-pipe';
-import {InvestModalComponent} from './components/common/invest-modal/invest-modal.component';
+import {SubscribeModalComponent} from './components/common/subscribe-modal/subscribe-modal.component';
 import {FeedbackComponent} from './components/feedback/feedback.component';
 import {FeedbackModalComponent} from './components/common/feedback-modal/feedback-modal.component';
 import {AdminFeedbacksComponent} from './components/admin-panel/admin-feedbacks/admin-feedbacks.component';
 import {FeedbackApiClient} from './api/feedback/feedback-api-client';
+import {SubscriptionApiClient} from './api/subscription/subscription-api-client';
+import {AdminSubscriptionsComponent} from './components/admin-panel/admin-subscriptions/admin-subscriptions.component';
 
 @NgModule({
   declarations: [
@@ -194,10 +196,11 @@ import {FeedbackApiClient} from './api/feedback/feedback-api-client';
     ExpertScoringComponent,
     ScoringReportComponent,
     ChangeStatusModalComponent,
-    InvestModalComponent,
+    SubscribeModalComponent,
     FeedbackComponent,
     FeedbackModalComponent,
-    AdminFeedbacksComponent
+    AdminFeedbacksComponent,
+    AdminSubscriptionsComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -213,7 +216,7 @@ import {FeedbackApiClient} from './api/feedback/feedback-api-client';
     DeleteProjectModalComponent,
     WaitingModalComponent,
     ChangeStatusModalComponent,
-    InvestModalComponent,
+    SubscribeModalComponent,
     FeedbackModalComponent
   ],
   imports: [
@@ -303,6 +306,7 @@ import {FeedbackApiClient} from './api/feedback/feedback-api-client';
     AreaService,
     AreaService,
     EnumHelper,
+    SubscriptionApiClient,
     FeedbackApiClient,
     OffersApiClient,
     ScoringService,

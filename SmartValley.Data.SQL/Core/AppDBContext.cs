@@ -16,6 +16,8 @@ namespace SmartValley.Data.SQL.Core
         {
         }
 
+        IQueryable<Subscription> IReadOnlyDataContext.Subscriptions => Subscriptions.AsNoTracking();
+
         IQueryable<Feedback> IReadOnlyDataContext.Feedbacks => Feedbacks.AsNoTracking();
 
         IQueryable<Project> IReadOnlyDataContext.Projects => Projects.AsNoTracking();
@@ -63,6 +65,8 @@ namespace SmartValley.Data.SQL.Core
         IQueryable<EthereumTransaction> IReadOnlyDataContext.EthereumTransactions => EthereumTransactions.AsNoTracking();
 
         public DbSet<Feedback> Feedbacks { get; set; }
+
+        public DbSet<Subscription> Subscriptions { get; set; }
 
         public DbSet<ProjectTeamMember> ProjectTeamMembers { get; set; }
 
@@ -340,6 +344,30 @@ namespace SmartValley.Data.SQL.Core
 
             modelBuilder.Entity<EthereumTransaction>()
                         .HasOne(t => t.User);
+
+            modelBuilder.Entity<Subscription>()
+                        .Property(b => b.ProjectId)
+                        .IsRequired();
+
+            modelBuilder.Entity<Subscription>()
+                        .Property(b => b.Name)
+                        .IsRequired()
+                        .HasMaxLength(200);
+
+            modelBuilder.Entity<Subscription>()
+                        .Property(b => b.Phone)
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+            modelBuilder.Entity<Subscription>()
+                        .Property(b => b.Sum)
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+            modelBuilder.Entity<Subscription>()
+                        .HasOne(t => t.Project)
+                        .WithMany()
+                        .HasForeignKey(i=>i.ProjectId);
         }
     }
 }

@@ -39,6 +39,7 @@ using SmartValley.WebApi.Feedbacks;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.ScoringApplications;
 using SmartValley.WebApi.Scorings;
+using SmartValley.WebApi.Subscribers;
 using SmartValley.WebApi.Users;
 using SmartValley.WebApi.WebApi;
 using Swashbuckle.AspNetCore.Swagger;

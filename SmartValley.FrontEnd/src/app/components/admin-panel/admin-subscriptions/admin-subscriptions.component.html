@@ -1,0 +1,23 @@
+<div class="admin-experts-list">
+  <p-table [value]="subscribers" [lazy]="true" (onLazyLoad)="getSubscriptionsList($event)" [paginator]="true"
+           [rows]="10" [totalRecords]="totalRecords" [loading]="loading">
+    <ng-template pTemplate="header" let-columns>
+      <tr class="list-row list-row__header">
+        <th class="list-item">{{ 'AdminSubscriptions.ProjectName' | translate }}</th>
+        <th class="list-item">{{ 'AdminSubscriptions.Email' | translate }}</th>
+        <th class="list-item">{{ 'AdminSubscriptions.Subscriber' | translate }}</th>
+        <th class="list-item">{{ 'AdminSubscriptions.Phone' | translate }}</th>
+        <th class="list-item">{{ 'AdminSubscriptions.Sum' | translate }}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-subscriber let-columns="columns">
+      <tr class="list-row">
+        <td class="project-name"><a matTooltip="{{subscriber.projectName}}" [routerLink]="getProjectLink(subscriber.projectId)">{{subscriber.projectName}}</a></td>
+        <td>{{ subscriber.email }}</td>
+        <td>{{ subscriber.name }}</td>
+        <td>{{ subscriber.phone }}</td>
+        <td>{{ subscriber.sum }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

@@ -13,7 +13,7 @@ import {ScoringStartTransactionStatus} from '../../api/project/scoring-start-tra
 import {environment} from '../../../environments/environment';
 import {DialogService} from '../../services/dialog-service';
 import {NotificationsService} from 'angular2-notifications';
-import {UserApiClient} from '../../api/user/user-api-client';
+import {SubscriptionApiClient} from '../../api/subscription/subscription-api-client';
 
 @Component({
   selector: 'app-project',
@@ -53,7 +53,7 @@ export class ProjectComponent implements OnInit {
   constructor(private projectApiClient: ProjectApiClient,
               private router: Router,
               private route: ActivatedRoute,
-              private userApiClient: UserApiClient,
+              private subscriptionApiClient: SubscriptionApiClient,
               private userContext: UserContext,
               private dialogService: DialogService,
               private notificationService: NotificationsService) {
@@ -116,11 +116,11 @@ export class ProjectComponent implements OnInit {
     return Math.round(finishedOffers * 100 / totalOffers);
   }
 
-  public async showInvestDialog() {
-    const invest = await this.dialogService.showInvestDialog();
-    if (invest) {
-      await this.userApiClient.investAsync(invest, this.projectId);
-      this.notificationService.success('Success', 'Invest request is sent');
+  public async showSubscribeDialog() {
+    const subscribe = await this.dialogService.showSubscribeDialog();
+    if (subscribe) {
+      await this.subscriptionApiClient.subscribeAsync(subscribe, this.projectId);
+      this.notificationService.success('Success', 'Subscribe request is sent');
     }
   }
 
