@@ -123,4 +123,23 @@ export class ProjectComponent implements OnInit {
       this.notificationService.success('Success', 'Invest request is sent');
     }
   }
+
+  SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' };
+
+  swipe(action = this.SWIPE_ACTION.RIGHT) {
+    // Out of range
+    if (this.selectedTab < 0 || this.selectedTab > this.tabItems.length - 1 ) return;
+
+    // Swipe left, next tab
+    if (action === this.SWIPE_ACTION.LEFT) {
+      const isLast = this.selectedTab === this.tabItems.length - 1;
+      this.selectedTab = isLast ? this.selectedTab : this.selectedTab + 1;
+    }
+
+    // Swipe right, previous tab
+    if (action === this.SWIPE_ACTION.RIGHT) {
+      const isFirst = this.selectedTab === 0;
+      this.selectedTab = isFirst ? this.selectedTab : this.selectedTab - 1;
+    }
+  }
 }

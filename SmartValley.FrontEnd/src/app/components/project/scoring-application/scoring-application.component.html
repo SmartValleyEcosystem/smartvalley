@@ -1,4 +1,4 @@
-<div *ngIf="!doesScoringApplicationExists; else applicationExistBlock;">
+<div *ngIf="!doesScoringApplicationExists; else applicationExistBlock;" (swipeleft)="parent.swipe($event.type)" (swiperight)="parent.swipe($event.type)">
   <div *ngIf="isAuthor; else notAuthorBlock;">
     <div class="main-text">{{ 'ScoringApplication.DoesNotExistTextWithProposalToCreate' | translate }}
     </div>
@@ -11,7 +11,7 @@
   </ng-template>
 </div>
 <ng-template #applicationExistBlock>
-  <div class="content">
+  <div class="content" (swipeleft)="parent.swipe($event.type)" (swiperight)="parent.swipe($event.type)">
     <div class="partitions-page">
       <div class="partition">
         <h2 class="partition-title" id="partition_common" in-view (inview)="onAppear($event, 'partition_common')">{{ 'EditScoringApplication.CommonTitle' | translate }}</h2>

@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Inject, Input, OnInit} from '@angular/core';
 import {Paths} from '../../../paths';
 import {Router} from '@angular/router';
 import {ScoringApplicationApiClient} from '../../../api/scoring-application/scoring-application-api-client';
@@ -9,6 +9,7 @@ import {QuestionControlType} from '../../../api/scoring-application/question-con
 import {ProjectApiClient} from '../../../api/project/project-api-client';
 import {UserContext} from '../../../services/authentication/user-context';
 import {ProjectSummaryResponse} from '../../../api/project/project-summary-response';
+import {ProjectComponent} from '../project.component';
 
 @Component({
   selector: 'app-scoring-application',
@@ -35,7 +36,8 @@ export class ScoringApplicationComponent implements OnInit {
   public isAuthor: boolean;
   public isScoringPayed: boolean;
 
-  constructor(private router: Router,
+  constructor(@Inject(ProjectComponent) public parent: ProjectComponent,
+              private router: Router,
               private htmlElement: ElementRef,
               private scoringApplicationApiClient: ScoringApplicationApiClient,
               private projectApiClient: ProjectApiClient,

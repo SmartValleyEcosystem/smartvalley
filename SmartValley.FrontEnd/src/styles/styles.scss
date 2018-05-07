@@ -19,6 +19,10 @@ html, body {
   }
 }
 
+.mat-tab-header-pagination-controls-enabled .mat-tab-header-pagination {
+  display: none !important;
+}
+
 .social-icon {
   width: 24px;
   height: 24px;
@@ -223,16 +227,6 @@ div.mat-checkbox-frame {
 
 .white-card .mat-tab-label-active, .choose, .scoring-rating > span {
   color: rgb(180, 180, 180) !important;
-}
-
-.mat-tab-labels {
-  display: inline-block !important;
-  border-bottom: 1px solid #ddd;
-}
-
-.mat-tab-labels .mat-tab-label:first-child {
-  margin-left: 0px;
-  padding-left: 0px;
 }
 
 .card {

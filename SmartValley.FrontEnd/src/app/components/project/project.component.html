@@ -68,7 +68,7 @@
       </div>
     </div>
   </app-project-info>
-  <mat-tab-group [selectedIndex]="selectedTab">
+  <mat-tab-group [(selectedIndex)]="selectedTab">
     <mat-tab label="{{ 'MyProject.About' | translate }}">
       <app-project-about [projectId]="projectId"></app-project-about>
     </mat-tab>
