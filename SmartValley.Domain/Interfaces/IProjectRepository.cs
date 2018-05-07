@@ -22,7 +22,7 @@ namespace SmartValley.Domain.Interfaces
 
         Task<ProjectDetails> GetByAuthorIdAsync(long authorId);
 
-        Task<int> RemoveAsync(Project project);
+        void Delete(Project project);
 
         Task<int> UpdateAsync(Project project, params Expression<Func<Project, object>>[] properties);
 

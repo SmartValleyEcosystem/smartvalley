@@ -87,7 +87,7 @@ namespace SmartValley.WebApi.Projects
 
         public async Task<Project> UpdateAsync(long projectId, UpdateProjectRequest request)
         {
-            var project = await _projectRepository.GetByIdAsync(projectId);
+            var project = await _projectRepository.GetAsync(projectId);
             var country = await GetCountryAsync(request.CountryCode);
 
             project.Name = request.Name;
@@ -108,9 +108,10 @@ namespace SmartValley.WebApi.Projects
             project.Twitter = request.Twitter;
             project.Linkedin = request.Linkedin;
 
+            await _projectRepository.SaveChangesAsync();
+
             await UpdateTeamMembersAsync(request.TeamMembers.Where(t => t.Id != 0).ToArray(), project.Id);
             await AddTeamMembersAsync(request.TeamMembers.Where(t => t.Id == 0).ToArray(), project.Id);
-            await _projectRepository.UpdateWholeAsync(project);
 
             return project;
         }
@@ -121,9 +122,11 @@ namespace SmartValley.WebApi.Projects
             if (scoring != null)
                 throw new AppErrorException(ErrorCode.ProjectCouldntBeRemoved);
 
-            var project = await _projectRepository.GetByIdAsync(projectId);
+            var project = await _projectRepository.GetAsync(projectId);
 
-            await _projectRepository.RemoveAsync(project);
+            _projectRepository.Delete(project);
+
+            await _projectRepository.SaveChangesAsync();
         }
 
         private async Task UpdateTeamMembersAsync(IReadOnlyCollection<ProjectTeamMemberRequest> teamMemberRequests, long projectId)

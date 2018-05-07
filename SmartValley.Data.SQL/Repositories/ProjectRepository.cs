@@ -33,6 +33,11 @@ namespace SmartValley.Data.SQL.Repositories
                     select new ProjectDetails(project, scoring, country)).FirstOrDefaultAsync();
         }
 
+        public void Delete(Project project)
+        {
+            EditContext.Projects.Remove(project);
+        }
+
         public Task<Project> GetAsync(long projectId)
             => EditContext.Projects
                           .Include(p => p.Author)
