@@ -536,7 +536,6 @@ namespace SmartValley.Data.SQL.Migrations
                         .HasMaxLength(200);
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasMaxLength(50);
 
                     b.Property<long>("ProjectId");

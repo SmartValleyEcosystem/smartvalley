@@ -356,7 +356,6 @@ namespace SmartValley.Data.SQL.Core
 
             modelBuilder.Entity<Subscription>()
                         .Property(b => b.Phone)
-                        .IsRequired()
                         .HasMaxLength(50);
 
             modelBuilder.Entity<Subscription>()

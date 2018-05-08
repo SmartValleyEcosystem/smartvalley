@@ -13,7 +13,7 @@ namespace SmartValley.WebApi.Subscriptions.Requests
         [Required, MaxLength(100)]
         public string Sum { get; set; }
 
-        [Required, MaxLength(50)]
+        [MaxLength(50)]
         public string Phone { get; set; }
     }
 }
