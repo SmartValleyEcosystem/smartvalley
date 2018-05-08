@@ -209,10 +209,10 @@ textarea.ng-pristine.ng-invalid.ng-untouched.ng-dirty,
 
 .mat-tab-label {
   @media screen and (min-width: 320px) and (max-width: 768px) {
-    margin-left: 0 !important;
     display: block !important;
     text-align: left !important;
   }
+  padding-left: 0 !important;
 }
 
 .report-tab .mat-tab-label {
