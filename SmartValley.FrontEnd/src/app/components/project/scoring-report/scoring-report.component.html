@@ -42,10 +42,11 @@
       </ng-template>
       <div class="content">
         <h2 class="settings-title">{{ scoringInfo.areaName }}</h2>
-        <div class="scoring-question" *ngFor="let criteria of scoringInfo.scoringInfo.criteria; let index = index;"
+        <div class="scoring-question" *ngFor="let criteria of scoringInfo.scoringInfo.criteria; let index = index; let last = last;"
              class="criteria settings-block"
              [attr.data-selected]="false"
              (click)="chageActiveQuestion(index)"
+             [class.settings-block-last]="last"
              [class.active-question]="questionsActivity[index]">
           <div class="question-tooltip" *ngIf="criterionPrompts">
             <h3 class="question-tooltip__title">{{ 'ScoringReport.ProjectOwnerAnswer' | translate }}</h3>
