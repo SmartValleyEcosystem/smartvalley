@@ -68,7 +68,7 @@ namespace SmartValley.Data.SQL.Repositories
 
             return queryable.Select(o => new ScoringOfferDetails(o.scoringOffer.Status,
                                                                  o.scoringOffer.ExpirationTimestamp,
-                                                                 o.scoring.EstimatesDueDate,
+                                                                 o.scoringOffer.EstimatesDueDate,
                                                                  o.scoring.ContractAddress,
                                                                  o.scoring.Id,
                                                                  o.user.Id,

@@ -30,6 +30,7 @@
         ScoringApplicationNotFound,
         UserNotAuthor,
         TeamMemberNotFound,
-        ScoringNotFound
+        ScoringNotFound,
+        OfferNotFoundInContract
     }
 }

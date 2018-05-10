@@ -10,13 +10,15 @@ namespace SmartValley.Domain.Contracts
             string expertAddress,
             AreaType area,
             ScoringOfferStatus status,
-            DateTimeOffset? expirationTimestamp)
+            DateTimeOffset expirationTimestamp,
+            DateTimeOffset? estimatesDueDate)
         {
             ProjectExternalId = projectExternalId;
             ExpertAddress = expertAddress;
             Area = area;
             Status = status;
             ExpirationTimestamp = expirationTimestamp;
+            EstimatesDueDate = estimatesDueDate;
         }
 
         public Guid ProjectExternalId { get; }
@@ -27,6 +29,8 @@ namespace SmartValley.Domain.Contracts
 
         public ScoringOfferStatus Status { get; }
 
-        public DateTimeOffset? ExpirationTimestamp { get; }
+        public DateTimeOffset ExpirationTimestamp { get; }
+
+        public DateTimeOffset? EstimatesDueDate { get; }
     }
 }

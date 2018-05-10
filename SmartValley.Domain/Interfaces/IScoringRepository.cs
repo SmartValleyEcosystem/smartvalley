@@ -15,8 +15,6 @@ namespace SmartValley.Domain.Interfaces
 
         Task<IReadOnlyCollection<ScoringAreaStatistics>> GetIncompletedScoringAreaStatisticsAsync(DateTimeOffset tillDate);
 
-        Task<bool> HasEnoughExpertsAsync(long scoringId);
-
         Task SaveChangesAsync();
 
         Task<Scoring> GetAsync(long scoringId);

@@ -19,18 +19,10 @@ namespace SmartValley.Data.SQL.Repositories
         }
 
         public Task<Scoring> GetByProjectIdAsync(long projectId)
-            => EditContext.Scorings
-                          .Include(x => x.ExpertScorings).ThenInclude(x => x.Estimates)
-                          .Include(x => x.ScoringOffers)
-                          .Include(x => x.AreaScorings)
-                          .FirstOrDefaultAsync(scoring => scoring.ProjectId == projectId);
+            => GetQueryable().FirstOrDefaultAsync(scoring => scoring.ProjectId == projectId);
 
         public Task<Scoring> GetAsync(long scoringId)
-            => EditContext.Scorings
-                          .Include(x => x.ExpertScorings).ThenInclude(x => x.Estimates)
-                          .Include(x => x.ScoringOffers)
-                          .Include(x => x.AreaScorings)
-                          .FirstOrDefaultAsync(scoring => scoring.Id == scoringId);
+            => GetQueryable().FirstOrDefaultAsync(scoring => scoring.Id == scoringId);
 
         public async Task<IReadOnlyCollection<ScoringAreaStatistics>> GetIncompletedScoringAreaStatisticsAsync(DateTimeOffset tillDate)
         {
@@ -92,36 +84,16 @@ namespace SmartValley.Data.SQL.Repositories
                                                   Count = scoringAreaGroup.Count()
                                               }).ToArrayAsync();
 
-            return requiredCounts.Select(i =>
-                                             new ScoringAreaStatistics(
-                                                 i.AreaType,
-                                                 i.ScoringId,
-                                                 i.Count,
-                                                 acceptedCounts.FirstOrDefault(j => j.ScoringId == i.ScoringId && j.AreaType == i.AreaType)?.Count ?? 0,
-                                                 pendingCounts.FirstOrDefault(j => j.ScoringId == i.ScoringId && j.AreaType == i.AreaType)?.Count ?? 0,
-                                                 finishedCounts.FirstOrDefault(j => j.ScoringId == i.ScoringId && j.AreaType == i.AreaType)?.Count ?? 0,
-                                                 i.ScoringEndDate,
-                                                 i.OffersEndDate
-                                             )).ToArray();
-        }
-
-        public async Task<bool> HasEnoughExpertsAsync(long scoringId)
-        {
-            var scoringAreaCounts = await (from areaScoring in ReadContext.AreaScorings
-                                           join scoringOffer in ReadContext.ScoringOffers
-                                               on new {areaScoring.ScoringId, areaScoring.AreaId}
-                                               equals new {scoringOffer.ScoringId, scoringOffer.AreaId}
-                                           where scoringOffer.Status == ScoringOfferStatus.Accepted
-                                           where !areaScoring.Score.HasValue
-                                           where areaScoring.ScoringId == scoringId
-                                           group scoringOffer by new {scoringOffer.ScoringId, scoringOffer.AreaId, areaScoring.ExpertsCount}
-                                           into scoringAreaGroup
-                                           select new
-                                                  {
-                                                      Count = scoringAreaGroup.Count(),
-                                                      RequiredCount = scoringAreaGroup.Key.ExpertsCount
-                                                  }).ToArrayAsync();
-            return scoringAreaCounts.All(i => i.RequiredCount == i.Count);
+            return requiredCounts.Select(i => new ScoringAreaStatistics(
+                                             i.AreaType,
+                                             i.ScoringId,
+                                             i.Count,
+                                             acceptedCounts.FirstOrDefault(j => j.ScoringId == i.ScoringId && j.AreaType == i.AreaType)?.Count ?? 0,
+                                             pendingCounts.FirstOrDefault(j => j.ScoringId == i.ScoringId && j.AreaType == i.AreaType)?.Count ?? 0,
+                                             finishedCounts.FirstOrDefault(j => j.ScoringId == i.ScoringId && j.AreaType == i.AreaType)?.Count ?? 0,
+                                             i.ScoringEndDate,
+                                             i.OffersEndDate
+                                         )).ToArray();
         }
 
         public async Task<IReadOnlyCollection<ScoringProjectDetails>> GetScoringProjectsDetailsByScoringIdsAsync(IReadOnlyCollection<long> scoringIds)
@@ -144,5 +116,12 @@ namespace SmartValley.Data.SQL.Repositories
         {
             await EditContext.SaveAsync();
         }
+
+        private IQueryable<Scoring> GetQueryable()
+            => EditContext.Scorings
+                          .Include(x => x.ExpertScorings).ThenInclude(x => x.Estimates)
+                          .Include(x => x.ScoringOffers)
+                          .Include(x => x.AreaScorings)
+                          .Include(x => x.Project);
     }
 }

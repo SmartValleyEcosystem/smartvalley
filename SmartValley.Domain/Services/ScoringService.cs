@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Domain.Contracts;
@@ -39,22 +38,19 @@ namespace SmartValley.Domain.Services
         public async Task<long> StartAsync(long projectId, IDictionary<AreaType, int> areas)
         {
             var project = await _projectRepository.GetByIdAsync(projectId);
-            var contractOffers = await _scoringExpertsManagerContractClient.GetOffersAsync(project.ExternalId);
-            var pendingOffersDueDate = contractOffers.Max(i => i.ExpirationTimestamp);
+            var offers = await _scoringExpertsManagerContractClient.GetOffersAsync(project.ExternalId);
 
-            if (pendingOffersDueDate == null)
+            if (!offers.Any())
                 throw new AppErrorException(ErrorCode.PendingOffersNotFound);
 
-            var scoring = await CreateScoringAsync(project, pendingOffersDueDate.Value, areas, contractOffers);
-            return scoring.Id;
+            return await CreateScoringAsync(project, areas, offers);
         }
 
         public Task<Scoring> GetAsync(long scoringId)
             => _scoringRepository.GetAsync(scoringId);
 
-        private async Task<Scoring> CreateScoringAsync(
+        private async Task<long> CreateScoringAsync(
             Project project,
-            DateTimeOffset offersDueDate,
             IDictionary<AreaType, int> areas,
             IReadOnlyCollection<ScoringOfferInfo> contractOffers)
         {
@@ -62,10 +58,10 @@ namespace SmartValley.Domain.Services
 
             var areaScorings = areas.Select(x => new AreaScoring {AreaId = x.Key, ExpertsCount = x.Value}).ToList();
             var offers = await CreateOffersAsync(contractOffers);
-            var scoring = new Scoring(project.Id, contractAddress, offersDueDate, _clock.UtcNow, areaScorings, offers);
+            var scoring = new Scoring(project.Id, contractAddress, _clock.UtcNow, areaScorings, offers);
 
             await _scoringRepository.AddAsync(scoring);
-            return scoring;
+            return scoring.Id;
         }
 
         private async Task<IReadOnlyCollection<ScoringOffer>> CreateOffersAsync(IReadOnlyCollection<ScoringOfferInfo> contractOffers)

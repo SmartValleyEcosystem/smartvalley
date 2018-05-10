@@ -32,14 +32,18 @@ namespace SmartValley.Ethereum.Contracts.ScoringExpertsManager
                                 "getOffers",
                                 projectExternalId.ToBigInteger());
 
-            return offersDto.Experts.Select((e, i) => CreateOfferInfo(projectExternalId, e, offersDto.Areas[i], offersDto.States[i])).ToArray();
+            return offersDto.Experts
+                            .Select((e, i) => new ScoringOfferInfo(
+                                        projectExternalId,
+                                        e,
+                                        (AreaType) offersDto.Areas[i],
+                                        (ScoringOfferStatus) offersDto.States[i],
+                                        DateTimeOffset.FromUnixTimeSeconds(offersDto.ExpirationTimestamp),
+                                        ToNullableDate(offersDto.ScoringDeadlines[i])))
+                            .ToArray();
         }
 
-        private static ScoringOfferInfo CreateOfferInfo(Guid projectExternalId, string expertAddress, int area, long offerState)
-        {
-            return offerState > 2
-                       ? new ScoringOfferInfo(projectExternalId, expertAddress, (AreaType) area, ScoringOfferStatus.Pending, DateTimeOffset.FromUnixTimeSeconds(offerState))
-                       : new ScoringOfferInfo(projectExternalId, expertAddress, (AreaType) area, (ScoringOfferStatus) offerState, null);
-        }
+        private static DateTimeOffset? ToNullableDate(long unixTimeSeconds)
+            => unixTimeSeconds == 0 ? (DateTimeOffset?) null : DateTimeOffset.FromUnixTimeSeconds(unixTimeSeconds);
     }
 }
