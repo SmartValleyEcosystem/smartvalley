@@ -163,7 +163,7 @@ namespace SmartValley.WebApi.Experts
         {
             if (!scan.IsImageValid()
                 || !photo.IsImageValid()
-                || !cv.IsValid())
+                || !cv.IsCVValid())
             {
                 throw new AppErrorException(ErrorCode.InvalidFileUploaded);
             }

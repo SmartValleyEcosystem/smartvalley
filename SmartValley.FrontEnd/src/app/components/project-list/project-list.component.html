@@ -34,14 +34,18 @@
             <label class="control-label" for="scoring-filter-from">{{ 'ProjectList.ScoringRating' | translate }}</label>
           </p>
           <input class="input scoring-input" type="number" min="0" max="100" name="scoringRatingFrom"
+                 [class.ng-invalid]="scoringRatingFrom < 0 || scoringRatingFrom > 100 || scoringRatingFrom > scoringRatingTo"
+                 (change)="checkScoring()"
                  [(ngModel)]="scoringRatingFrom" placeholder="0" id="scoring-filter-from">
           <span class="dash">–</span>
           <input class="input scoring-input" type="number" min="0" max="100" name="scoringRatingTo"
+                 [class.ng-invalid]="scoringRatingTo < 0 || scoringRatingTo > 100 || scoringRatingFrom > scoringRatingTo"
+                 (change)="checkScoring()"
                  [(ngModel)]="scoringRatingTo" placeholder="100" id="scoring-filter-to">
         </div>
       </div>
-      <input type="submit" class="ghost-btn apply-filters" value="{{ 'ProjectList.ApplyFilters' | translate }}">
-      <input type="submit" class="main-btn apply-filters-mobile" value="{{ 'ProjectList.ApplyFilters' | translate }}">
+      <input [disabled]="!isFormValid" type="submit" class="ghost-btn apply-filters" value="{{ 'ProjectList.ApplyFilters' | translate }}">
+      <input [disabled]="!isFormValid" type="submit" class="main-btn apply-filters-mobile" value="{{ 'ProjectList.ApplyFilters' | translate }}">
       <span (click)="clearFilters()" class="clear-form">{{ 'ProjectList.ClearFilters' | translate }}</span>
     </form>
     <div *ngIf="checkProjects">
@@ -72,7 +76,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-project>
             <tr (click)="navigateToProject(project.id)">
-              <td class="project-name"><a [routerLink]="getProjectLink(project.id)">{{project.name}}</a></td>
+              <td class="project-name"><a matTooltip="{{project.name}}" [routerLink]="getProjectLink(project.id)"><span [innerHtml]="coloredText(project.name) | safeHtml"></span></a></td>
               <td>{{ 'Countries.' + project.country | translate }}</td>
               <td>{{ 'Categories.' + project.category | translate }}</td>
               <td *ngIf="project.scoringEndDate; else elseEndDate">{{ project.scoringEndDate | date:'yyyy-MM-dd' }}</td>

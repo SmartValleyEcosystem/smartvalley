@@ -42,6 +42,10 @@ p {
   margin: 20px 0;
 }
 
+.apply-filters[disabled] {
+  border: solid 1px #969696;
+}
+
 .filter-item {
   margin-right: 20px;
   @media screen and (min-width: 320px) and (max-width: 768px) {
@@ -129,6 +133,7 @@ p {
     width: 43%;
   }
 }
+
 .dash {
   @media screen and (min-width: 320px) and (max-width: 768px) {
     text-align: center;
@@ -239,6 +244,7 @@ p {
 .col-details {
   width: 40%;
 }
+
 .col-info {
   width: 60%;
 }

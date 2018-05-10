@@ -38,14 +38,14 @@ namespace SmartValley.Domain.Services
 
         public async Task<long> StartAsync(long projectId, IDictionary<AreaType, int> areas)
         {
-            var project = await _projectRepository.GetByIdAsync(projectId);
+            var project = await _projectRepository.GetAsync(projectId);
             var contractOffers = await _scoringExpertsManagerContractClient.GetOffersAsync(project.ExternalId);
-            var offersEndDate = contractOffers.Max(i => i.ExpirationTimestamp);
+            var pendingOffersDueDate = contractOffers.Max(i => i.ExpirationTimestamp);
 
-            if (offersEndDate == null)
+            if (pendingOffersDueDate == null)
                 throw new AppErrorException(ErrorCode.PendingOffersNotFound);
 
-            var scoring = await CreateScoringAsync(project, offersEndDate.Value, areas, contractOffers);
+            var scoring = await CreateScoringAsync(project, pendingOffersDueDate.Value, areas, contractOffers);
             return scoring.Id;
         }
 
@@ -54,25 +54,17 @@ namespace SmartValley.Domain.Services
 
         private async Task<Scoring> CreateScoringAsync(
             Project project,
-            DateTimeOffset offersEndDate,
+            DateTimeOffset offersDueDate,
             IDictionary<AreaType, int> areas,
             IReadOnlyCollection<ScoringOfferInfo> contractOffers)
         {
             var contractAddress = await _scoringManagerContractClient.GetScoringAddressAsync(project.ExternalId);
-            var scoring = new Scoring
-                          {
-                              ProjectId = project.Id,
-                              ContractAddress = contractAddress,
-                              CreationDate = _clock.UtcNow,
-                              OffersDueDate = offersEndDate,
-                              Status = ScoringStatus.InProgress,
-                              AreaScorings = areas.Select(x => new AreaScoring {AreaId = x.Key, ExpertsCount = x.Value}).ToList()
-                          };
+
+            var areaScorings = areas.Select(x => new AreaScoring {AreaId = x.Key, ExpertsCount = x.Value}).ToList();
             var offers = await CreateOffersAsync(contractOffers);
-            scoring.AddOffers(offers);
+            var scoring = new Scoring(project.Id, contractAddress, offersDueDate, _clock.UtcNow, areaScorings, offers);
 
             await _scoringRepository.AddAsync(scoring);
-
             return scoring;
         }
 

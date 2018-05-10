@@ -35,9 +35,21 @@
 }
 
 .settings-block {
+  position: relative;
   margin-bottom: 2px;
   width: 780px;
 }
+
+.settings-block:last-child {
+  .question-tooltip {
+    bottom: 0;
+    &:before {
+      top: inherit;
+      bottom: 50px;
+    }
+  }
+}
+
 .settings-title {
   width: 780px;
 }
@@ -49,13 +61,13 @@
 }
 .question-tooltip {
   display: none;
-  min-height: 140px;
   margin-top: -18px;
   width: 380px;
   position: absolute;
   background-color: #222034;
   padding: 20px;
-  right: 310px;
+  right: -400px;
+  min-height: 180px;
   &:before {
     content: '';
     width: 8px;

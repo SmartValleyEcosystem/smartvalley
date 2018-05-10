@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Component, ElementRef, OnInit, QueryList, ViewChildren, OnDestroy} from '@angular/core';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ScoringCriterionService} from '../../services/criteria/scoring-criterion.service';
@@ -20,13 +20,15 @@ import {Paths} from '../../paths';
 import {TranslateService} from '@ngx-translate/core';
 import {SaveEstimatesRequest} from '../../api/estimates/save-estimates-request';
 import {QuestionControlType} from '../../api/scoring-application/question-control-type.enum';
+import {BalanceService} from '../../services/balance/balance.service';
+import {isNullOrUndefined} from 'util';
 
 @Component({
   selector: 'app-expert-scoring',
   templateUrl: './expert-scoring.component.html',
   styleUrls: ['./expert-scoring.component.scss']
 })
-export class ExpertScoringComponent implements OnInit {
+export class ExpertScoringComponent implements OnInit, OnDestroy {
 
   public projectName = '';
   public projectId: number;
@@ -40,13 +42,15 @@ export class ExpertScoringComponent implements OnInit {
   public criterionPrompts: CriterionPromptResponse[];
   public questionTypeComboBox = QuestionControlType.Combobox;
   public isSaved = false;
-  public saveTime: string
+  public saveTime: string;
+  private timer: NodeJS.Timer;
 
   @ViewChildren('required') public requiredFields: QueryList<any>;
 
   constructor(private route: ActivatedRoute,
               private htmlElement: ElementRef,
               private formBuilder: FormBuilder,
+              private balanceService: BalanceService,
               private areaService: AreaService,
               private dialogService: DialogService,
               private projectApiClient: ProjectApiClient,
@@ -87,6 +91,12 @@ export class ExpertScoringComponent implements OnInit {
     const criterionPromptsResponse = await this.estimatesApiClient.getCriterionPromptsAsync(this.projectId, this.areaType);
     this.criterionPrompts = criterionPromptsResponse.items;
     this.questionsActivity = [true];
+
+    this.timer = <NodeJS.Timer>setInterval(async () => await this.saveDraft(), 60000);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.timer);
   }
 
   public addDraftData(data) {
@@ -95,7 +105,7 @@ export class ExpertScoringComponent implements OnInit {
       return;
     }
     for (const estimate of data.estimates) {
-      prepareFormData['answer_' + estimate.scoringCriterionId] = estimate.score;
+      prepareFormData['answer_' + estimate.scoringCriterionId] = isNullOrUndefined(estimate.score) ? '' : estimate.score;
       prepareFormData['comment_' + estimate.scoringCriterionId] = estimate.comment;
     }
 
@@ -187,6 +197,9 @@ export class ExpertScoringComponent implements OnInit {
     await this.estimatesApiClient.submitEstimatesAsync(submitRequest);
     transactionDialog.close();
     this.dialogService.showSendReportDialog();
+
+    await this.balanceService.updateBalanceAsync();
+
     await this.router.navigate([Paths.ScoringList]);
   }
 

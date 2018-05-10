@@ -100,7 +100,7 @@ export class AdminExpertApplicationComponent implements OnInit {
 
     transactionDialog.close();
 
-    await this.router.navigate([Paths.Admin]);
+    await this.router.navigate([Paths.Admin + '/experts/applications']);
   }
 
   public async rejectAsync(): Promise<void> {
@@ -127,6 +127,6 @@ export class AdminExpertApplicationComponent implements OnInit {
 
     transactionDialog.close();
 
-    await this.router.navigate([Paths.Admin]);
+    await this.router.navigate([Paths.Admin + '/experts/applications']);
   }
 }

@@ -125,6 +125,15 @@ import {ScoringShouldNotExistGuard} from './services/guards/scoring-should-not-e
 import {ChangeStatusModalComponent} from './components/common/change-status-modal/change-status-modal.component';
 import {TranslateBinaryAnswer} from './utils/translate-binary-answer.pipe';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {NgInviewModule} from 'angular-inport';
+import {SafeHtmlPipe} from './utils/safe-html-pipe';
+import {SubscribeModalComponent} from './components/common/subscribe-modal/subscribe-modal.component';
+import {FeedbackComponent} from './components/feedback/feedback.component';
+import {FeedbackModalComponent} from './components/common/feedback-modal/feedback-modal.component';
+import {AdminFeedbacksComponent} from './components/admin-panel/admin-feedbacks/admin-feedbacks.component';
+import {FeedbackApiClient} from './api/feedback/feedback-api-client';
+import {SubscriptionApiClient} from './api/subscription/subscription-api-client';
+import {AdminSubscriptionsComponent} from './components/admin-panel/admin-subscriptions/admin-subscriptions.component';
 
 @NgModule({
   declarations: [
@@ -146,6 +155,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     ReceiveEtherModalComponent,
     AccountComponent,
     DashIfEmptyPipe,
+    SafeHtmlPipe,
     TranslateBinaryAnswer,
     EditScoringApplicationComponent,
     FormatDatePipe,
@@ -185,7 +195,12 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MemberUploadPhotoComponent,
     ExpertScoringComponent,
     ScoringReportComponent,
-    ChangeStatusModalComponent
+    ChangeStatusModalComponent,
+    SubscribeModalComponent,
+    FeedbackComponent,
+    FeedbackModalComponent,
+    AdminFeedbacksComponent,
+    AdminSubscriptionsComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -200,7 +215,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     WelcomeModalComponent,
     DeleteProjectModalComponent,
     WaitingModalComponent,
-    ChangeStatusModalComponent
+    ChangeStatusModalComponent,
+    SubscribeModalComponent,
+    FeedbackModalComponent
   ],
   imports: [
     FileUploadModule,
@@ -229,6 +246,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     TooltipModule,
     RadioButtonModule,
     MatIconModule,
+    NgInviewModule,
     Ng2DeviceDetectorModule.forRoot(),
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
     TranslateModule.forRoot({
@@ -288,6 +306,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     AreaService,
     AreaService,
     EnumHelper,
+    SubscriptionApiClient,
+    FeedbackApiClient,
     OffersApiClient,
     ScoringService,
     ProjectService,

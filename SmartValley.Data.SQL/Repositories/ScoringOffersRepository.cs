@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Domain;
-using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
@@ -15,39 +13,11 @@ namespace SmartValley.Data.SQL.Repositories
     public class ScoringOffersRepository : IScoringOffersRepository
     {
         private readonly IReadOnlyDataContext _readContext;
-        private readonly IEditableDataContext _editContext;
 
-        public ScoringOffersRepository(IReadOnlyDataContext readContext, IEditableDataContext editContext)
+        public ScoringOffersRepository(IReadOnlyDataContext readContext)
         {
             _readContext = readContext;
-            _editContext = editContext;
         }
-
-        public Task<ScoringOffer> GetAsync(long projectId, AreaType areaType, long expertId)
-        {
-            return (from offer in _readContext.ScoringOffers
-                    join scoring in _readContext.Scorings on offer.ScoringId equals scoring.Id
-                    where scoring.ProjectId == projectId
-                    where offer.AreaId == areaType
-                    where offer.ExpertId == expertId
-                    select offer)
-                .FirstOrDefaultAsync();
-        }
-
-        public async Task<IReadOnlyCollection<ScoringOffer>> GetByScoringAsync(long scoringId)
-            => await _readContext.ScoringOffers.Where(o => o.ScoringId == scoringId).ToArrayAsync();
-
-        public Task AddAsync(IReadOnlyCollection<ScoringOffer> offers)
-        {
-            _editContext.ScoringOffers.AddRange(offers);
-            return _editContext.SaveAsync();
-        }
-
-        public Task AcceptAsync(long scoringId, long expertId, AreaType area)
-            => SetStatusAsync(scoringId, expertId, area, ScoringOfferStatus.Accepted);
-
-        public Task RejectAsync(long scoringId, long expertId, AreaType area)
-            => SetStatusAsync(scoringId, expertId, area, ScoringOfferStatus.Rejected);
 
         public async Task<IReadOnlyCollection<ScoringOfferDetails>> QueryAsync(OffersQuery query, DateTimeOffset now)
             => await GetQueryable(query, now).ToArrayAsync();
@@ -110,20 +80,6 @@ namespace SmartValley.Data.SQL.Repositories
                                                                  o.project.ExternalId,
                                                                  o.project.Id,
                                                                  o.scoring.Score));
-        }
-
-        private Task SetStatusAsync(long scoringId, long expertId, AreaType area, ScoringOfferStatus status)
-        {
-            var scoringOffer = new ScoringOffer
-                               {
-                                   ScoringId = scoringId,
-                                   ExpertId = expertId,
-                                   AreaId = area,
-                                   Status = status
-                               };
-
-            _editContext.ScoringOffers.Attach(scoringOffer).Property(s => s.Status).IsModified = true;
-            return _editContext.SaveAsync();
         }
     }
 }

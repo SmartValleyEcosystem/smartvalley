@@ -27,7 +27,9 @@
         ProjectCouldntBeRemoved,
         ProjectScoringApplicationNotFound,
         ScoringApplicationAlreadySubmitted,
+        ScoringApplicationNotFound,
         UserNotAuthor,
-        TeamMemberNotFound
+        TeamMemberNotFound,
+        ScoringNotFound
     }
 }

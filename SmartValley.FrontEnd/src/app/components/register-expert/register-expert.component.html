@@ -7,9 +7,9 @@
       <p class="control-label">
         {{ 'RegisterExpert.ExpertTypeLabel' | translate }}
       </p>
-      <div class="areas-wrapper">
+      <div class="areas-wrapper" [class.ng-invalid]="!isAreasSelected" #areasBlock>
         <div *ngFor="let area of areas" class="area">
-          <p-checkbox id="{{ area.value }}" [(ngModel)]="selectedAreas" value="{{area.value}}" inputId="{{ 'ny_' + area.value }}"></p-checkbox>
+          <p-checkbox (onChange)="isAreasCheckboxesValid()" id="{{ area.value }}" [(ngModel)]="selectedAreas" value="{{area.value}}" inputId="{{ 'ny_' + area.value }}"></p-checkbox>
           <label for="{{ 'ny_' + area.value }}">{{area.label}}</label>
         </div>
       </div>
@@ -20,7 +20,7 @@
           <p class="control-label">
             <label for="firstName">{{ 'RegisterExpert.FirstName' | translate }}</label>
           </p>
-          <input class="input" formControlName="firstName" id="firstName" placeholder="{{ 'RegisterExpert.NamePlaceholder' | translate }}" #required>
+          <input class="input" autocomplete="nope" formControlName="firstName" id="firstName" placeholder="{{ 'RegisterExpert.NamePlaceholder' | translate }}" #required>
         </div>
         <div class="control-wrapper">
           <p class="control-label">
@@ -53,7 +53,7 @@
           <p class="control-label">
             <label for="city">{{ 'RegisterExpert.City' | translate }}</label>
           </p>
-          <input class="input" placeholder="{{ 'RegisterExpert.City' | translate }}" formControlName="city" id="city" #required>
+          <input autocomplete="nope" class="input" placeholder="{{ 'RegisterExpert.City' | translate }}" formControlName="city" id="city" #required>
         </div>
       </div>
       <div class="control-row">
@@ -75,7 +75,7 @@
         </p>
         <p class="notify">{{ 'RegisterExpert.CvNotify' | translate }}</p>
         <p-fileUpload mode="advanced" auto="true" name="cv" customUpload="true" [showUploadButton]="false"
-                      [showCancelButton]="false" accept=".pdf,.doc,.docx" maxFileSize="5242880"
+                      [showCancelButton]="false" maxFileSize="5242880"
                       (uploadHandler)="onCvUpload($event)" (onRemove)="onCvUpload(null)" #required>
         </p-fileUpload>
       </div>
@@ -127,6 +127,7 @@
           accept="image/*"
           maxFileSize="5242880"
           formControlName="document"
+          (onMaxSizeError)="onDocumentSizeError()"
           #required>
         </app-image-uploader>
       </div>
@@ -140,6 +141,7 @@
           accept="image/*"
           maxFileSize="5242880"
           formControlName="photo"
+          (onMaxSizeError)="onPhotoSizeError()"
           #required>
         </app-image-uploader>
       </div>

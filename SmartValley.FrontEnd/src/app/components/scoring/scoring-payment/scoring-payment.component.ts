@@ -47,7 +47,7 @@ export class ScoringPaymentComponent implements OnInit {
 
   public async ngOnInit() {
 
-    //MVP
+    // MVP
     this.minimumExperts = 2;
 
     this.areas = this.areaService.areas;
@@ -74,9 +74,9 @@ export class ScoringPaymentComponent implements OnInit {
   public calculateTotalExperts() {
     this.totalExperts = 0;
     this.totalSum = 0;
-    for (const expert in this.expertsInArea) {
-      this.totalSum += (+this.areaCosts[expert] * this.expertsInArea[expert]);
-      this.totalExperts += this.expertsInArea[expert];
+    for (const area of Object.keys(this.expertsInArea)) {
+      this.totalSum += (+this.areaCosts[area] * this.expertsInArea[area]);
+      this.totalExperts += this.expertsInArea[area];
     }
   }
 
@@ -89,9 +89,9 @@ export class ScoringPaymentComponent implements OnInit {
   public async payAsync() {
     const areas: number[] = [];
     const areaExpertCounts: number[] = [];
-    for (const currentArea in this.expertsInArea) {
-      areas.push(+currentArea);
-      areaExpertCounts.push(this.expertsInArea[currentArea]);
+    for (const area of Object.keys(this.expertsInArea)) {
+      areas.push(+area);
+      areaExpertCounts.push(this.expertsInArea[area]);
     }
 
     if (areaExpertCounts.some(i => i < this.minimumExperts)) {
@@ -102,13 +102,8 @@ export class ScoringPaymentComponent implements OnInit {
     }
 
     const transactionHash = await this.scoringService.startAsync(this.externalId, areas, areaExpertCounts);
-
-    const dialog = this.dialogService.showTransactionDialog(this.translateService.instant('ScoringPayment.Dialog'),
-      transactionHash);
-
     await this.scoringApiClient.startAsync(this.projectId, areas, areaExpertCounts, transactionHash);
 
-    dialog.close();
-    this.router.navigate([Paths.Project + '/' + this.projectId]);
+    await this.router.navigate([Paths.Project + '/' + this.projectId]);
   }
 }

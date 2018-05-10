@@ -14,6 +14,20 @@
   color: #000;
 }
 
+.transaction-btn {
+  font-size: 12px;
+  padding: 3px 0px 0px;
+  height: 30px;
+  width: 190px;
+}
+
+.short-transaction-btn {
+  font-size: 12px;
+  padding: 3px 0px 0px;
+  height: 30px;
+  width: 100px;
+}
+
 .small-title {
   font-family: Roboto-Regular;
   font-size: 12px;
@@ -40,6 +54,10 @@
   clear: both;
   margin-top: 8px;
   margin-bottom: 24px;
+}
+
+.failed {
+  color: #e64e41;
 }
 
 .score .main-number {

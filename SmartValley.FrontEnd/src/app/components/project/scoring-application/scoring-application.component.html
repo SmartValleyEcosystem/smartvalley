@@ -1,4 +1,4 @@
-<div *ngIf="!doesScoringApplicationExists; else applicationExistBlock;">
+<div *ngIf="!doesScoringApplicationExists; else applicationExistBlock;" (swipeleft)="parent.swipe($event.type)" (swiperight)="parent.swipe($event.type)">
   <div *ngIf="isAuthor; else notAuthorBlock;">
     <div class="main-text">{{ 'ScoringApplication.DoesNotExistTextWithProposalToCreate' | translate }}
     </div>
@@ -11,10 +11,10 @@
   </ng-template>
 </div>
 <ng-template #applicationExistBlock>
-  <div class="content">
+  <div class="content" (swipeleft)="parent.swipe($event.type)" (swiperight)="parent.swipe($event.type)">
     <div class="partitions-page">
       <div class="partition">
-        <h2 class="partition-title" id="partition_common">{{ 'EditScoringApplication.CommonTitle' | translate }}</h2>
+        <h2 class="partition-title" id="partition_common" in-view (inview)="onAppear($event, 'partition_common')">{{ 'EditScoringApplication.CommonTitle' | translate }}</h2>
         <div class="partition-block">
           <div class="control-row">
             <p class="control-label">
@@ -74,7 +74,7 @@
             <div class="main-text">{{projectInfo.icoDate | formatDate | dashIfEmpty}}</div>
           </div>
         </div>
-        <h2 class="partition-title" id="partition_social">{{ 'EditScoringApplication.SocialMedia' | translate }}</h2>
+        <h2 class="partition-title" id="partition_social" #socialsContainer in-view (inview)="onAppear($event, 'partition_social')">{{ 'EditScoringApplication.SocialMedia' | translate }}</h2>
         <div class="partition-block">
           <div class="social-column">
             <div *ngIf="haveSocials; else haveNoSocialsBlock;">
@@ -122,7 +122,7 @@
             <a style="display: block;" class="partition-item" href="{{article}}" target="_blank" *ngFor="let article of articles">{{article}}</a>
           </div>
         </div>
-        <h2 class="partition-title" id="partition_team">{{ 'EditScoringApplication.TeamTitle' | translate }}</h2>
+        <h2 class="partition-title" id="partition_team" in-view (inview)="onAppear($event, 'partition_team')">{{ 'EditScoringApplication.TeamTitle' | translate }}</h2>
         <div class="partition-block">
           <div *ngIf="projectInfo.projectTeamMembers.length > 0; else haveNoMembersBlock;">
             <div class="member-column" [tooltipDisabled]="!member.about" [escape]="false" pTooltip="<p class='tooltip-text'>{{ member.about }}</p>" tooltipPosition="right" *ngFor="let member of projectInfo.projectTeamMembers;">
@@ -147,7 +147,7 @@
             {{ 'MyProjectAbout.NoTeamError' | translate }}
           </ng-template>
         </div>
-        <h2 class="partition-title" id="partition_advisers">{{ 'EditScoringApplication.AdvisersTitle' | translate
+        <h2 class="partition-title" id="partition_advisers" in-view (inview)="onAppear($event, 'partition_advisers')">{{ 'EditScoringApplication.AdvisersTitle' | translate
           }}</h2>
         <div class="partition-block">
           <div *ngIf="projectInfo.projectAdvisers.length > 0; else haveNoAdvisersBlock;">
@@ -179,7 +179,8 @@
           </ng-template>
         </div>
         <div *ngFor="let partition of partitions; let index = index;">
-          <h2 class="partition-title" id="partition_{{partition.order}}">
+          <h2 class="partition-title" id="partition_{{partition.order}}"
+              in-view (inview)="onAppear($event, 'partition_' + partition.order)" class="partition-title" id="partition_{{partition.order}}">
             {{index + 4}}. {{'EditScoringApplication.' + partition.name | translate}}
           </h2>
           <div class="partition-block">
@@ -202,7 +203,10 @@
                   <p class="control-label">
                     <label>{{'EditScoringApplication.' + question.key | translate }}</label>
                   </p>
-                  <div class="main-text">{{('EditScoringApplication.' + question.answer | dashIfEmpty) | translate}}</div>
+                  <div *ngIf="question.answer; else emptyAnswer" class="main-text">{{'EditScoringApplication.' + question.answer | translate}}</div>
+                  <ng-template #emptyAnswer>
+                    <div>&mdash;</div>
+                  </ng-template>
                 </div>
                 <div *ngSwitchCase="questionTypeDateTime">
                   <p class="control-label">
@@ -233,19 +237,24 @@
       <div class="partitions-menu">
         <sticky [sticky-offset-top]="20">
           <ul class="partitions-list">
-            <li class="partition-item" (click)="scrollToElement('common')">
+            <li class="partition-item" (click)="scrollToElement('common')"
+                [class.active]="activePartition === 'partition_common'">
               {{ 'EditScoringApplication.CommonTitle' | translate }}
             </li>
-            <li class="partition-item" (click)="scrollToElement('social')">
+            <li class="partition-item" (click)="scrollToElement('social')"
+                [class.active]="activePartition === 'partition_social'">
               {{ 'EditScoringApplication.SocialMedia' | translate }}
             </li>
-            <li class="partition-item" (click)="scrollToElement('team')">
+            <li class="partition-item" (click)="scrollToElement('team')"
+                [class.active]="activePartition === 'partition_team'">
               {{ 'EditScoringApplication.TeamTitle' | translate }}
             </li>
-            <li class="partition-item" (click)="scrollToElement('advisers')">
+            <li class="partition-item" (click)="scrollToElement('advisers')"
+                [class.active]="activePartition === 'partition_advisers'">
               {{ 'EditScoringApplication.AdvisersTitle' | translate }}
             </li>
             <li class="partition-item" (click)="scrollToElement(partition.order)"
+                [class.active]="activePartition === 'partition_' + partition.order"
                 *ngFor="let partition of partitions; let index = index;">
               {{index + 4}}. {{'EditScoringApplication.' + partition.name | translate}}
             </li>

@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {Paths} from '../../paths';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -12,14 +12,12 @@ import {DocumentEnum} from './document.enum';
 import {Country} from '../../services/common/country';
 import {TranslateService} from '@ngx-translate/core';
 import {SelectItem} from 'primeng/api';
-import {UserContext} from '../../services/authentication/user-context';
 import * as moment from 'moment';
 import {NotificationsService} from 'angular2-notifications';
 import {AreaService} from '../../services/expert/area.service';
 import {EnumHelper} from '../../utils/enum-helper';
-import {isNullOrUndefined, isUndefined} from 'util';
 import {Md5} from 'ts-md5';
-import {ImageUploaderHelper} from '../../utils/image-uploader-helper';
+import {FileUploaderHelper} from '../../utils/file-uploader-helper';
 
 const countries = <Country[]>require('../../../assets/countryList.json');
 
@@ -38,8 +36,10 @@ export class RegisterExpertComponent implements OnInit {
   public countries: SelectItem[];
   public areas: SelectItem[];
   public selectedAreas: AreaType[] = [];
+  public isAreasSelected = true;
 
   @ViewChildren('required') public requiredFields: QueryList<any>;
+  @ViewChild('areasBlock') private areasBlock: ElementRef;
 
   private cv: File;
   private document: File;
@@ -96,7 +96,11 @@ export class RegisterExpertComponent implements OnInit {
 
 
   public async applyAsync(): Promise<void> {
+
     if (!this.validateForm()) {
+      if (this.isAreasCheckboxesValid()) {
+        return;
+      }
       return;
     }
 
@@ -118,6 +122,14 @@ export class RegisterExpertComponent implements OnInit {
       this.cv = null;
       this.switchFileUploadValidity(element, false);
     }
+  }
+
+  public onPhotoSizeError() {
+    this.notificationsService.error(this.translateService.instant('RegisterExpert.PhotoSizeError'));
+  }
+
+  public onDocumentSizeError() {
+    this.notificationsService.error(this.translateService.instant('RegisterExpert.DocumentSizeError'));
   }
 
   private switchFileUploadValidity(element: any, isValid: boolean) {
@@ -144,9 +156,9 @@ export class RegisterExpertComponent implements OnInit {
 
   private validateForm(): boolean {
     if (!this.registryForm.invalid
-      && !isNullOrUndefined(this.cv)
-      && ImageUploaderHelper.checkImageExtensions(this.registryForm.value.document)
-      && ImageUploaderHelper.checkImageExtensions(this.registryForm.value.photo)) {
+      && FileUploaderHelper.checkCVExtensions(this.cv)
+      && FileUploaderHelper.checkImageExtensions(this.registryForm.value.document)
+      && FileUploaderHelper.checkImageExtensions(this.registryForm.value.photo)) {
       return true;
     }
 
@@ -273,5 +285,16 @@ export class RegisterExpertComponent implements OnInit {
 
     areas.forEach(a => applicationStr.concat(a.toString()));
     return '0x' + Md5.hashStr(applicationStr, false).toString();
+  }
+
+  public isAreasCheckboxesValid() {
+    this.isAreasSelected = true;
+    const areas = this.selectedAreas.map(a => +a);
+    if (!areas.length) {
+      this.isAreasSelected = false;
+      this.scrollToElement(this.areasBlock);
+      return true;
+    }
+    return false;
   }
 }

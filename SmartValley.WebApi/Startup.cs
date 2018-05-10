@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using IcoLab.Web.Common.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -34,9 +35,11 @@ using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.Estimates;
 using SmartValley.WebApi.ExceptionHandler;
 using SmartValley.WebApi.Experts;
+using SmartValley.WebApi.Feedbacks;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.ScoringApplications;
 using SmartValley.WebApi.Scorings;
+using SmartValley.WebApi.Subscribers;
 using SmartValley.WebApi.Users;
 using SmartValley.WebApi.WebApi;
 using Swashbuckle.AspNetCore.Swagger;
@@ -82,7 +85,6 @@ namespace SmartValley.WebApi
                                                                           };
                                   });
 
-            services.AddSingleton<InitializationService>();
             services.AddSingleton(provider => InitializeWeb3(provider.GetService<NethereumOptions>().RpcAddress));
             services.AddSingleton<IClock, UtcClock>();
             services.AddSingleton<EthereumMessageSigner>();
@@ -92,10 +94,10 @@ namespace SmartValley.WebApi
             services.AddSingleton<MailTokenService>();
             services.AddSingleton<MailSender>();
             services.AddSingleton<ITemplateProvider, TemplateProvider>(provider => new TemplateProvider(_currentEnvironment.ContentRootPath));
-            services.AddSingleton<ProjectTeamMembersStorageProvider>();
-            services.AddSingleton<ApplicationTeamMembersStorageProvider>();
-            services.AddSingleton<ExpertApplicationsStorageProvider>();
-            services.AddSingleton<ProjectStorageProvider>();
+            services.AddSingleton(InitializeProjectTeamMembersStorageProvider);
+            services.AddSingleton(InitializeApplicationTeamMembersStorageProvider);
+            services.AddSingleton(InitializeExpertApplicationsStorageProvider);
+            services.AddSingleton(InitializeProjectStorageProvider);
             services.AddSingleton<IScoringContractClient, ScoringContractClient>(
                 provider => new ScoringContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringContract));
             services.AddSingleton<IEtherManagerContractClient, EtherManagerContractClient>(
@@ -141,6 +143,8 @@ namespace SmartValley.WebApi
             services.AddTransient<IScoringApplicationRepository, ScoringApplicationRepository>();
             services.AddTransient<IScoringApplicationQuestionsRepository, ScoringApplicationQuestionsRepository>();
             services.AddTransient<IScoringApplicationService, ScoringApplicationService>();
+            services.AddTransient<IFeedbackRepository, FeedbackRepository>();
+            services.AddTransient<IFeedbackService, FeedbackService>();
 
             var serviceProvider = services.BuildServiceProvider();
             var siteOptions = serviceProvider.GetService<SiteOptions>();
@@ -148,11 +152,35 @@ namespace SmartValley.WebApi
             ConfigureCorsPolicy(services, siteOptions);
 
             var dataProtectionProvider = serviceProvider.GetService<IDataProtectionProvider>();
-            var endpointInstance = EndpointConfigurator.StartAsync(Configuration, _currentEnvironment.ContentRootPath, dataProtectionProvider).GetAwaiter().GetResult();
-            services.AddSingleton<IMessageSession>(endpointInstance);
+            services.AddSingleton<IMessageSession>(provider => EndpointConfigurator.StartAsync(Configuration, _currentEnvironment.ContentRootPath, dataProtectionProvider).GetAwaiter().GetResult());
+        }
 
-            var service = serviceProvider.GetService<InitializationService>();
-            service.InitializeAsync().Wait();
+        private static ApplicationTeamMembersStorageProvider InitializeApplicationTeamMembersStorageProvider(IServiceProvider serviceProvider)
+        {
+            var storageProvider = new ApplicationTeamMembersStorageProvider(serviceProvider.GetService<AzureStorageOptions>());
+            storageProvider.InitializeAsync().Wait();
+            return storageProvider;
+        }
+
+        private static ProjectTeamMembersStorageProvider InitializeProjectTeamMembersStorageProvider(IServiceProvider serviceProvider)
+        {
+            var storageProvider = new ProjectTeamMembersStorageProvider(serviceProvider.GetService<AzureStorageOptions>());
+            storageProvider.InitializeAsync().Wait();
+            return storageProvider;
+        }
+
+        private static ExpertApplicationsStorageProvider InitializeExpertApplicationsStorageProvider(IServiceProvider serviceProvider)
+        {
+            var storageProvider = new ExpertApplicationsStorageProvider(serviceProvider.GetService<AzureStorageOptions>());
+            storageProvider.InitializeAsync().Wait();
+            return storageProvider;
+        }
+
+        private static ProjectStorageProvider InitializeProjectStorageProvider(IServiceProvider serviceProvider)
+        {
+            var storageProvider = new ProjectStorageProvider(serviceProvider.GetService<AzureStorageOptions>());
+            storageProvider.InitializeAsync().Wait();
+            return storageProvider;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

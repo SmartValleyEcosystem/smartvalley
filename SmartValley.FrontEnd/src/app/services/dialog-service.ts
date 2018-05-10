@@ -21,6 +21,10 @@ import {WelcomeModalData} from '../components/common/welcome-modal/welcome-modal
 import {DeleteProjectModalComponent} from '../components/common/delete-project-modal/delete-project-modal.component';
 import {WaitingModalComponent} from '../components/common/waiting-modal/waiting-modal.component';
 import {ChangeStatusModalComponent} from '../components/common/change-status-modal/change-status-modal.component';
+import {SubscribeModalComponent} from '../components/common/subscribe-modal/subscribe-modal.component';
+import {SubscribeRequest} from '../components/common/subscribe-modal/subscribe-data';
+import {FeedbackModalComponent} from '../components/common/feedback-modal/feedback-modal.component';
+import {FeedbackRequest} from '../components/common/feedback-modal/feedback';
 
 @Injectable()
 export class DialogService {
@@ -129,6 +133,14 @@ export class DialogService {
     return this.openModal(AlertModalComponent, data);
   }
 
+  public async showSubscribeDialog(): Promise<SubscribeRequest> {
+    return this.openModalAsync(SubscribeModalComponent, {});
+  }
+
+  public async showFeedbackDialog(): Promise<FeedbackRequest> {
+      return this.openModalAsync(FeedbackModalComponent, {});
+  }
+
   private openModal<TComponent, TData>(componentType: ComponentType<TComponent>,
                                        data: TData,
                                        disableClose: boolean = false,
@@ -138,9 +150,9 @@ export class DialogService {
 
   private openModalAsync<TComponent, TData>(componentType: ComponentType<TComponent>,
                                             data: TData,
-                                            disableClose: boolean = false): Promise<boolean> {
+                                            disableClose: boolean = false): Promise<any> {
     return this.openModal(componentType, data, disableClose)
       .afterClosed()
-      .toPromise<boolean>();
+      .toPromise<any>();
   }
 }

@@ -33,18 +33,22 @@ namespace SmartValley.Data.SQL.Repositories
                     select new ProjectDetails(project, scoring, country)).FirstOrDefaultAsync();
         }
 
+        public void Delete(Project project)
+        {
+            EditContext.Projects.Remove(project);
+        }
+
+        public Task<Project> GetAsync(long projectId)
+            => EditContext.Projects
+                          .Include(p => p.Author)
+                          .Include(p => p.Country)
+                          .FirstOrDefaultAsync(p => p.Id == projectId);
+
+        public Task SaveChangesAsync()
+            => EditContext.SaveAsync();
+
         public Task<Project> GetByExternalIdAsync(Guid externalId)
             => ReadContext.Projects.FirstAsync(project => project.ExternalId == externalId);
-
-        public async Task<IReadOnlyCollection<ProjectDetails>> GetByExternalIdsAsync(IReadOnlyCollection<Guid> externalIds)
-        {
-            return await (from project in ReadContext.Projects
-                          join scoring in ReadContext.Scorings on project.Id equals scoring.ProjectId into s
-                          from scoring in s.DefaultIfEmpty()
-                          join country in ReadContext.Countries on project.CountryId equals country.Id
-                          where externalIds.Contains(project.ExternalId)
-                          select new ProjectDetails(project, scoring, country)).ToArrayAsync();
-        }
 
         public async Task<IReadOnlyCollection<ProjectDetails>> GetAllByNameAsync(string projectName)
         {

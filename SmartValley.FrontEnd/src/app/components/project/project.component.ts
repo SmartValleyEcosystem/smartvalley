@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {Paths} from '../../paths';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -9,6 +9,11 @@ import {ScoringStatus} from '../../services/scoring-status.enum';
 import {OfferStatus} from '../../api/scoring-offer/offer-status.enum';
 import {ScoringResponse} from '../../api/scoring/scoring-response';
 import {ErrorCode} from '../../shared/error-code.enum';
+import {ScoringStartTransactionStatus} from '../../api/project/scoring-start-transaction.status';
+import {environment} from '../../../environments/environment';
+import {DialogService} from '../../services/dialog-service';
+import {NotificationsService} from 'angular2-notifications';
+import {SubscriptionApiClient} from '../../api/subscription/subscription-api-client';
 
 @Component({
   selector: 'app-project',
@@ -18,7 +23,6 @@ import {ErrorCode} from '../../shared/error-code.enum';
 export class ProjectComponent implements OnInit {
 
   public tabItems: string[] = ['about', 'application', 'report'];
-  public isProjectExists = false;
   public projectId: number;
   public project: ProjectSummaryResponse;
   public editProjectsLink = Paths.ProjectEdit;
@@ -28,14 +32,31 @@ export class ProjectComponent implements OnInit {
   public ScoringStatusFinished = ScoringStatus.Finished;
   public ScoringStatusPending = ScoringStatus.Pending;
 
+  public ScoringStartTransactionStatus = ScoringStartTransactionStatus;
+
   public isAuthor = false;
   public isScoringApplicationTabAvailable = true;
   public scoringCompletenessInPercents;
+  public scoringStartTransactionUrl = '';
+
+  private currentGlobalOffset = 0;
+
+  @HostListener('window:scroll', ['$event'])
+  doSomething(event) {
+    if (event.target.scrollingElement.scrollTop === 0) {
+      event.target.scrollingElement.scrollTop = this.currentGlobalOffset;
+      return;
+    }
+    this.currentGlobalOffset = window.pageYOffset;
+  }
 
   constructor(private projectApiClient: ProjectApiClient,
               private router: Router,
               private route: ActivatedRoute,
-              private userContext: UserContext) {
+              private subscriptionApiClient: SubscriptionApiClient,
+              private userContext: UserContext,
+              private dialogService: DialogService,
+              private notificationService: NotificationsService) {
 
     route.params.subscribe(async () => {
       await this.reloadProjectAsync();
@@ -52,6 +73,7 @@ export class ProjectComponent implements OnInit {
     if (!isNullOrUndefined(this.projectId) && this.projectId === newProjectId) {
       return;
     }
+
     this.projectId = newProjectId;
     const selectedTabName = this.route.snapshot.paramMap.get('tab');
     if (!isNullOrUndefined(selectedTabName) && this.tabItems.includes(selectedTabName)) {
@@ -60,17 +82,17 @@ export class ProjectComponent implements OnInit {
 
     try {
       this.project = await this.projectApiClient.getProjectSummaryAsync(this.projectId);
-      if (this.project) {
-        this.isProjectExists = true;
+      if (this.project.scoring.scoringStatus === ScoringStatus.InProgress) {
+        this.scoringCompletenessInPercents = this.getScoringCompleteness(this.project.scoring);
+      }
 
-        if (this.project.scoring.scoringStatus === ScoringStatus.InProgress) {
-          this.scoringCompletenessInPercents = this.getScoringCompleteness(this.project.scoring);
-        }
+      if (!isNullOrUndefined(this.project.scoringStartTransactionHash)) {
+        this.scoringStartTransactionUrl = `${environment.etherscan_host}/tx/${this.project.scoringStartTransactionHash}`;
+      }
 
-        const currentUser = await this.userContext.getCurrentUser();
-        if (!isNullOrUndefined(currentUser) && this.project.authorId === currentUser.id) {
-          this.isAuthor = true;
-        }
+      const currentUser = await this.userContext.getCurrentUser();
+      if (!isNullOrUndefined(currentUser) && this.project.authorId === currentUser.id) {
+        this.isAuthor = true;
       }
     } catch (e) {
       switch (e.error.errorCode) {
@@ -92,5 +114,32 @@ export class ProjectComponent implements OnInit {
     const finishedOffers = scoring.offers.filter(o => o.status === OfferStatus.Finished).length;
     const totalOffers = scoring.requiredExpertsCount;
     return Math.round(finishedOffers * 100 / totalOffers);
+  }
+
+  public async showSubscribeDialog() {
+    const subscribe = await this.dialogService.showSubscribeDialog();
+    if (subscribe) {
+      await this.subscriptionApiClient.subscribeAsync(subscribe, this.projectId);
+      this.notificationService.success('Success', 'Subscribe request is sent');
+    }
+  }
+
+  SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' };
+
+  swipe(action = this.SWIPE_ACTION.RIGHT) {
+    // Out of range
+    if (this.selectedTab < 0 || this.selectedTab > this.tabItems.length - 1 ) return;
+
+    // Swipe left, next tab
+    if (action === this.SWIPE_ACTION.LEFT) {
+      const isLast = this.selectedTab === this.tabItems.length - 1;
+      this.selectedTab = isLast ? this.selectedTab : this.selectedTab + 1;
+    }
+
+    // Swipe right, previous tab
+    if (action === this.SWIPE_ACTION.RIGHT) {
+      const isFirst = this.selectedTab === 0;
+      this.selectedTab = isFirst ? this.selectedTab : this.selectedTab - 1;
+    }
   }
 }

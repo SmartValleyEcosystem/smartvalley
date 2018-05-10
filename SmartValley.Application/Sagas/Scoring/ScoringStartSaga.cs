@@ -17,21 +17,25 @@ namespace SmartValley.Application.Sagas.Scoring
         IHandleMessages<TransactionFailed>
     {
         private readonly IScoringService _scoringService;
+        private readonly IScoringApplicationService _scoringApplicationService;
 
-        public ScoringStartSaga(IScoringService scoringService)
+        public ScoringStartSaga(IScoringService scoringService, IScoringApplicationService scoringApplicationService)
         {
             _scoringService = scoringService;
+            _scoringApplicationService = scoringApplicationService;
         }
 
         protected override string CorrelationPropertyName => nameof(ScoringStartSagaData.TransactionHash);
 
-        public Task Handle(StartScoring message, IMessageHandlerContext context)
+        public async Task Handle(StartScoring message, IMessageHandlerContext context)
         {
             Data.ProjectId = message.ProjectId;
             Data.TransactionHash = message.TransactionHash;
             Data.ExpertCounts = message.ExpertCounts.Select(a => new AreaExpertsCount {AreaType = a.AreaType, ExpertsCount = a.ExpertsCount}).ToList();
 
-            return context.SendLocal(new WaitForTransaction {TransactionHash = message.TransactionHash});
+            await _scoringApplicationService.SetScoringTransactionAsync(message.ProjectId, message.TransactionHash);
+
+            await context.SendLocal(new WaitForTransaction {TransactionHash = message.TransactionHash});
         }
 
         public async Task Handle(TransactionCompleted message, IMessageHandlerContext context)

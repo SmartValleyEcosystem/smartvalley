@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ExpertApiClient} from '../../api/expert/expert-api-client';
 import {ScoredProject} from '../../api/expert/scored-project';
 import {Paths} from '../../paths';
 import {ProjectApiClient} from '../../api/project/project-api-client';
@@ -34,12 +33,12 @@ export class ProjectListComponent implements OnInit {
   public projectOnPageCount = 10;
   public totalProjects: number;
   public selectedCountryCode: string;
+  public isFormValid = true;
 
   @ViewChild(SelectComponent) category: SelectComponent;
   @ViewChild(AutocompleteComponent) country: AutocompleteComponent;
 
   constructor(private router: Router,
-              private expertApiClient: ExpertApiClient,
               private dictionariesService: DictionariesService,
               private projectApiClient: ProjectApiClient) {
     this.countries = this.dictionariesService.countries.map(i => <SelectItem>{
@@ -89,7 +88,10 @@ export class ProjectListComponent implements OnInit {
   }
 
   public async submitFilters() {
-    await this.updateProjectsAsync(0);
+    const validate = this.checkScoring();
+    if (validate) {
+      await this.updateProjectsAsync(0);
+    }
   }
 
   public async updateProjectsAsync(page: number) {
@@ -155,5 +157,59 @@ export class ProjectListComponent implements OnInit {
 
   public isSortableDirection(direction: SortDirection): boolean {
     return this.sortDirection === direction;
+  }
+
+  private coloredText(text: string) {
+    if (this.projectSearch === '') {
+      return text;
+    }
+
+    const lowerText: string = text.toLowerCase();
+    const lowerSearch = this.projectSearch.toLowerCase();
+
+    let coloredString = '';
+    const words = lowerText.split(lowerSearch);
+    for (let i = 0; i < words.length; i++) {
+      let startIndex = 0;
+      if (words[i] !== '') {
+        startIndex = lowerText.indexOf(words[i]) + words[i].length;
+      } else {
+        if (words.length > 1 && i > 0) {
+          startIndex = lowerText.indexOf(words[i - 1]) + words[i - 1].length;
+        }
+      }
+      const lastIndex: number = startIndex + lowerSearch.length;
+      const word = text.substring(startIndex, lastIndex);
+
+      if (word === '') {
+        continue;
+      }
+
+      const replacedWord = '<span style=\"background-color: #ffd038; color: black;\">' + word + '</span>';
+      coloredString = text.replace(word, replacedWord);
+    }
+
+    if (words.every(i => i === '')) {
+      const word = text.substring(0, lowerSearch.length);
+
+      const replacedWord = '<span style=\"background-color: #ffd038; color: black;\">' + word + '</span>';
+      coloredString = text.replace(word, replacedWord);
+    }
+
+    return coloredString === '' ? text : coloredString;
+  }
+
+  public checkScoring() {
+    this.isFormValid = true;
+    if (this.scoringRatingFrom > 100 || this.scoringRatingFrom < 0) {
+      this.isFormValid = false;
+    }
+    if (this.scoringRatingTo > 100 || this.scoringRatingTo < 0) {
+      this.isFormValid = false;
+    }
+    if (this.scoringRatingFrom > this.scoringRatingTo) {
+      this.isFormValid = false;
+    }
+    return this.isFormValid;
   }
 }

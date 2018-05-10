@@ -1,0 +1,37 @@
+<button class="dialog-close" mat-dialog-close><i class="material-icons">close</i></button>
+<h2>{{ 'FeedbackModalComponent.Title' | translate }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="feedbackForm">
+    <div class="form-control-row">
+      <p class="control-label">
+        <label for="firstName">{{ 'FeedbackModalComponent.FirstName' | translate }}</label>
+      </p>
+      <input class="input" type="text" id="firstName" name="firstName" formControlName="firstName">
+    </div>
+
+    <div class="form-control-row">
+      <p class="control-label">
+        <label for="secondName">{{ 'FeedbackModalComponent.LastName' | translate }}</label>
+      </p>
+      <input class="input" type="text" id="secondName" name="secondName" formControlName="secondName">
+    </div>
+
+    <div class="form-control-row">
+      <p class="control-label">
+        <label for="email">{{ 'FeedbackModalComponent.Email' | translate }}</label>
+      </p>
+      <input class="input" type="text" id="email" name="email" formControlName="email">
+    </div>
+
+    <div class="form-control-row">
+      <p class="control-label">
+        <label for="description">{{ 'FeedbackModalComponent.Text' | translate }}</label>
+      </p>
+      <textarea class="input" name="description" id="description" formControlName="description" #required></textarea>
+    </div>
+
+    <div class="form-control-row">
+      <button (click)="submit()" class="main-btn" [disabled]="feedbackForm.invalid">Send</button>
+    </div>
+  </form>
+</mat-dialog-content>

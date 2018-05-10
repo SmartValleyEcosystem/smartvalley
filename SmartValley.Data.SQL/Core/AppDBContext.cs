@@ -16,6 +16,10 @@ namespace SmartValley.Data.SQL.Core
         {
         }
 
+        IQueryable<Subscription> IReadOnlyDataContext.Subscriptions => Subscriptions.AsNoTracking();
+
+        IQueryable<Feedback> IReadOnlyDataContext.Feedbacks => Feedbacks.AsNoTracking();
+
         IQueryable<Project> IReadOnlyDataContext.Projects => Projects.AsNoTracking();
 
         IQueryable<Scoring> IReadOnlyDataContext.Scorings => Scorings.AsNoTracking();
@@ -57,6 +61,12 @@ namespace SmartValley.Data.SQL.Core
         IQueryable<ScoringApplicationAdviser> IReadOnlyDataContext.ScoringApplicationAdvisers => ScoringApplicationAdvisers.AsNoTracking();
 
         IQueryable<ScoringCriteriaMapping> IReadOnlyDataContext.ScoringCriteriaMappings => ScoringCriteriaMappings.AsNoTracking();
+
+        IQueryable<EthereumTransaction> IReadOnlyDataContext.EthereumTransactions => EthereumTransactions.AsNoTracking();
+
+        public DbSet<Feedback> Feedbacks { get; set; }
+
+        public DbSet<Subscription> Subscriptions { get; set; }
 
         public DbSet<ProjectTeamMember> ProjectTeamMembers { get; set; }
 
@@ -103,6 +113,8 @@ namespace SmartValley.Data.SQL.Core
         public DbSet<ExpertScoring> ExpertScorings { get; set; }
 
         public DbSet<ScoringCriteriaMapping> ScoringCriteriaMappings { get; set; }
+
+        public DbSet<EthereumTransaction> EthereumTransactions { get; set; }
 
         public IQueryable<T> GetAll<T>() where T : class
         {
@@ -245,12 +257,9 @@ namespace SmartValley.Data.SQL.Core
                         .HasOne(x => x.Question);
 
             modelBuilder.Entity<ScoringApplication>()
-                        .HasOne(x => x.Project);
-
-            modelBuilder.Entity<ScoringApplication>()
                         .HasMany(x => x.Answers)
-                        .WithOne(x=>x.ScoringApplication)
-                        .HasForeignKey(x=>x.ScoringApplicationId)
+                        .WithOne(x => x.ScoringApplication)
+                        .HasForeignKey(x => x.ScoringApplicationId)
                         .IsRequired();
 
             modelBuilder.Entity<ScoringApplication>()
@@ -286,6 +295,12 @@ namespace SmartValley.Data.SQL.Core
                                      sn.Property(x => x.Twitter).HasColumnName("TwitterLink");
                                  });
 
+            modelBuilder.Entity<ScoringApplication>()
+                        .HasOne(x => x.ScoringStartTransaction);
+
+            modelBuilder.Entity<ScoringApplication>()
+                        .HasOne<Project>();
+
             modelBuilder.Entity<ScoringApplicationQuestion>()
                         .HasIndex(x => x.Key)
                         .IsUnique();
@@ -315,6 +330,43 @@ namespace SmartValley.Data.SQL.Core
             modelBuilder.Entity<Estimate>()
                         .Property(x => x.Comment)
                         .IsRequired();
+
+            modelBuilder.Entity<EthereumTransaction>()
+                        .HasKey(r => r.Id);
+
+            modelBuilder.Entity<EthereumTransaction>()
+                        .HasIndex(r => r.Hash)
+                        .IsUnique();
+
+            modelBuilder.Entity<EthereumTransaction>()
+                        .Property(x => x.Hash)
+                        .IsRequired();
+
+            modelBuilder.Entity<EthereumTransaction>()
+                        .HasOne(t => t.User);
+
+            modelBuilder.Entity<Subscription>()
+                        .Property(b => b.ProjectId)
+                        .IsRequired();
+
+            modelBuilder.Entity<Subscription>()
+                        .Property(b => b.Name)
+                        .IsRequired()
+                        .HasMaxLength(200);
+
+            modelBuilder.Entity<Subscription>()
+                        .Property(b => b.Phone)
+                        .HasMaxLength(50);
+
+            modelBuilder.Entity<Subscription>()
+                        .Property(b => b.Sum)
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+            modelBuilder.Entity<Subscription>()
+                        .HasOne(t => t.Project)
+                        .WithMany()
+                        .HasForeignKey(i=>i.ProjectId);
         }
     }
 }

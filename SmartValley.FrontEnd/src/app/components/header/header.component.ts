@@ -13,9 +13,7 @@ import {isNullOrUndefined} from 'util';
 import {ProjectService} from '../../services/project/project.service';
 import {DialogService} from '../../services/dialog-service';
 import {User} from '../../services/authentication/user';
-import {ErrorCode} from '../../shared/error-code.enum';
 import {ExpertsRegistryContractClient} from '../../services/contract-clients/experts-registry-contract-client';
-import {SubmitEstimatesRequest} from '../../api/estimates/submit-estimates-request';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({

@@ -8,6 +8,7 @@ namespace SmartValley.Application.Extensions
     public static class FormFileExtensions
     {
         private static readonly string[] PhotoExtensions = { ".jpeg", ".jpg", ".png" };
+        private static readonly string[] CVExtensions = { ".doc", ".pdf", ".docx" };
         private const int FileSizeLimitBytes = 5242880;
 
         public static AzureFile ToAzureFile(this IFormFile formFile)
@@ -31,6 +32,11 @@ namespace SmartValley.Application.Extensions
         public static bool IsValid(this IFormFile file)
         {
             return file != null && file.Length < FileSizeLimitBytes;
+        }
+
+        public static bool IsCVValid(this IFormFile file)
+        {
+            return file.IsValid() && CVExtensions.Contains(Path.GetExtension(file.FileName).ToLower());
         }
     }
 }

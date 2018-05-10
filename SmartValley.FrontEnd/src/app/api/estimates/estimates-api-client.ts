@@ -33,7 +33,7 @@ export class EstimatesApiClient extends BaseApiClient {
   }
 
   async getCriterionPromptsAsync(projectId: number, areaType: number): Promise<CollectionResponse<CriterionPromptResponse>> {
-    return await this.http.get<CollectionResponse<CriterionPromptResponse>>(this.baseApiUrl + `/estimates/project/${projectId}/prompts/${areaType}`)
+    return this.http.get<CollectionResponse<CriterionPromptResponse>>(this.baseApiUrl + `/estimates/project/${projectId}/prompts/${areaType}`)
       .toPromise();
   };
 
@@ -44,6 +44,6 @@ export class EstimatesApiClient extends BaseApiClient {
   }
 
   async getScoringCriteriaAsync(): Promise<CollectionResponse<AreaScoringCriteriaResponse>> {
-    return await this.http.get<CollectionResponse<AreaScoringCriteriaResponse>>(this.baseApiUrl + '/estimates/criteria').toPromise();
+    return this.http.get<CollectionResponse<AreaScoringCriteriaResponse>>(this.baseApiUrl + '/estimates/criteria').toPromise();
   }
 }

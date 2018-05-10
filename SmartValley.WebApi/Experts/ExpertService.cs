@@ -98,8 +98,15 @@ namespace SmartValley.WebApi.Experts
         public Task<ExpertDetails> GetDetailsAsync(Address address)
             => _expertRepository.GetDetailsAsync(address);
 
-        public Task SetAvailabilityAsync(Address address, bool isAvailable)
-            => _expertRepository.SetAvailabilityAsync(address, isAvailable);
+        public async Task SetAvailabilityAsync(Address address, bool isAvailable)
+        {
+            var expert = await _expertRepository.GetByAddressAsync(address);
+            if (expert == null)
+                throw new AppErrorException(ErrorCode.ExpertNotFound);
+
+            expert.IsAvailable = isAvailable;
+            await _expertRepository.SaveChangesAsync();
+        }
 
         public Task<int> GetTotalCountExpertsAsync() => _expertRepository.GetTotalCountExpertsAsync();
 
@@ -115,7 +122,12 @@ namespace SmartValley.WebApi.Experts
 
             await _userRepository.UpdateWholeAsync(user);
             await _userRepository.AddRoleAsync(request.Address, RoleType.Expert);
-            await _expertRepository.AddAsync(new Expert {About = request.About, UserId = user.Id, IsAvailable = true}, request.Areas);
+
+            var expert = new Expert(user.Id, true, request.Areas, request.About);
+
+            _expertRepository.Add(expert);
+
+            await _expertRepository.SaveChangesAsync();
         }
 
         public async Task UpdateAreasAsync(Address address, IReadOnlyCollection<int> areas)
@@ -124,7 +136,8 @@ namespace SmartValley.WebApi.Experts
             if (expert == null)
                 throw new AppErrorException(ErrorCode.ExpertNotFound);
 
-            await _expertRepository.UpdateAreasAsync(expert.UserId, areas);
+            expert.SetAreas(areas);
+            await _expertRepository.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(Address address, ExpertUpdateRequest request)
@@ -153,8 +166,10 @@ namespace SmartValley.WebApi.Experts
         public async Task DeleteAsync(Address address)
         {
             await _userRepository.RemoveRoleAsync(address, RoleType.Expert);
-            var user = await _userRepository.GetByAddressAsync(address);
-            await _expertRepository.RemoveAsync(new Expert {IsAvailable = true, UserId = user.Id});
+
+            var expert = await _expertRepository.GetByAddressAsync(address);
+            _expertRepository.Remove(expert);
+            await _expertRepository.SaveChangesAsync();
         }
 
         public async Task AcceptApplicationAsync(long id, IReadOnlyCollection<int> areas)
@@ -173,17 +188,16 @@ namespace SmartValley.WebApi.Experts
             await _userRepository.UpdateWholeAsync(user);
 
             var expert = await _expertRepository.GetByAddressAsync(user.Address);
-            if (expert != null)
-                await _expertRepository.UpdateAreasAsync(user.Id, areas);
-            else
+            if (expert == null)
             {
-                await _expertRepository.AddAsync(new Expert { UserId = user.Id, IsAvailable = true }, areas);
-                await _userRepository.AddRoleAsync(user.Address, RoleType.Expert);
+                expert = new Expert(user.Id, true);
+                _expertRepository.Add(expert);
             }
-                
+
+            expert.SetAreas(areas);
+            await _expertRepository.SaveChangesAsync();
 
             await _expertApplicationRepository.SetAcceptedAsync(application, areas.ToList());
-
             await _mailService.SendExpertApplicationAcceptedAsync(user.Email, application.ExpertApplication.FirstName);
         }
 

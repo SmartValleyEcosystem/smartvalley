@@ -1,16 +1,21 @@
-<div *ngIf="!isProjectExists" class="content">
+<div *ngIf="!project" class="content">
   <h1 class="title">{{ 'MyProject.Title' | translate }}</h1>
 </div>
-<div *ngIf="isProjectExists" class="content">
+<div *ngIf="project" class="content">
   <h1 class="title">{{ project.name }}</h1>
   <app-project-info *ngIf="project" [project]="project">
     <div [ngSwitch]="project.scoring.scoringStatus" class="control-info-wrapper">
       <div *ngSwitchCase="ScoringStatusFinished">
         <div class="small-title">{{ 'MyProject.ProjectScore' | translate }}</div>
         <div class="score">
-            <div class="main-number">{{project.scoring.score | roundNumberPipe}}</div>/100
+          <div class="main-number">{{project.scoring.score | roundNumberPipe}}</div>/100
         </div>
-        <a *ngIf="isAuthor" [routerLink]="'/' + editProjectsLink" class="ghost-btn">{{ 'MyProject.EditInformation' | translate }}</a>
+        <div>
+          <button (click)="showSubscribeDialog()" class="main-btn">{{ 'MyProject.Subscribe' | translate }}</button>
+        </div>
+        <a *ngIf="isAuthor" [routerLink]="'/' + editProjectsLink" class="ghost-btn">
+          {{ 'MyProject.EditInformation' | translate }}
+        </a>
       </div>
       <div *ngSwitchCase="ScoringStatusInProgress">
         <div class="score" style="font-size: 20px;">
@@ -22,17 +27,48 @@
       </div>
       <div *ngSwitchCase="ScoringStatusPending">
         <div *ngIf="isAuthor">
-          <a *ngIf="!project.isApplicationSubmitted; else submitedBlock;" (click)="navigateToApplicationScoringAsync()"
-             class="main-btn">{{ 'MyProject.GetScore' | translate }}</a>
-          <ng-template #submitedBlock>
-            <span (click)="navigateToPaymentAsync()" class="main-btn">{{ 'MyProject.SendScore' | translate }}</span>
-          </ng-template>
-          <a [routerLink]="'/' + editProjectsLink" class="ghost-btn">{{ 'MyProject.EditInformation' | translate }}</a>
+          <div [ngSwitch]="project.scoringStartTransactionStatus">
+            <div *ngSwitchCase="ScoringStartTransactionStatus.NotSubmitted">
+              <a *ngIf="!project.isApplicationSubmitted; else submitedBlock;"
+                 (click)="navigateToApplicationScoringAsync()"
+                 class="main-btn">{{ 'MyProject.GetScore' | translate }}
+              </a>
+              <ng-template #submitedBlock>
+                <span (click)="navigateToPaymentAsync()" class="main-btn">
+                  {{ 'MyProject.SendScore' | translate }}
+                </span>
+              </ng-template>
+              <a [routerLink]="'/' + editProjectsLink" class="ghost-btn">
+                {{ 'MyProject.EditInformation' | translate }}
+              </a>
+            </div>
+            <div *ngSwitchCase="ScoringStartTransactionStatus.InProgress">
+              <div class="score" style="font-size: 20px;">
+                {{ 'MyProject.PaymentInProgress' | translate }}
+              </div>
+              <a target="_blank" [href]="scoringStartTransactionUrl" class="ghost-btn transaction-btn">
+                {{ 'MyProject.SeeTransaction' | translate }}
+              </a>
+            </div>
+            <div *ngSwitchCase="ScoringStartTransactionStatus.Failed">
+              <div class="score failed" style="font-size: 20px;">
+                {{ 'MyProject.PaymentFailed' | translate }}
+              </div>
+              <div>
+                <a (click)="navigateToPaymentAsync()" class="main-btn short-transaction-btn">
+                  {{ 'MyProject.TryAgain' | translate }}
+                </a>
+                <a target="_blank" [href]="scoringStartTransactionUrl" class="ghost-btn short-transaction-btn">
+                  {{ 'MyProject.SeeDetails' | translate }}
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </app-project-info>
-  <mat-tab-group [selectedIndex]="selectedTab">
+  <mat-tab-group [(selectedIndex)]="selectedTab">
     <mat-tab label="{{ 'MyProject.About' | translate }}">
       <app-project-about [projectId]="projectId"></app-project-about>
     </mat-tab>
@@ -40,7 +76,10 @@
       <app-scoring-application [project]="project"></app-scoring-application>
     </mat-tab>
     <mat-tab label="{{ 'MyProject.ScoringReport' | translate }}">
-      <app-scoring-report [scoringStatus]="project.scoring.scoringStatus" [projectId]="projectId" [isAuthor]="isAuthor"></app-scoring-report>
+      <app-scoring-report [scoringStatus]="project.scoring.scoringStatus"
+                          [projectId]="projectId"
+                          [isAuthor]="isAuthor">
+      </app-scoring-report>
     </mat-tab>
   </mat-tab-group>
 </div>

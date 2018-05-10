@@ -38,7 +38,7 @@ namespace SmartValley.WebApi.ScoringApplications
 
         public async Task SaveApplicationAsync(long projectId, SaveScoringApplicationRequest saveScoringApplicationRequest)
         {
-            var project = await _projectRepository.GetByIdAsync(projectId);
+            var project = await _projectRepository.GetAsync(projectId);
             if (project == null)
                 throw new AppErrorException(ErrorCode.ProjectNotFound);
 
@@ -111,6 +111,7 @@ namespace SmartValley.WebApi.ScoringApplications
         {
             var scoringApplication = await _scoringApplicationRepository.GetByProjectIdAsync(projectId);
             scoringApplication.IsSubmitted = true;
+            scoringApplication.Submitted = _clock.UtcNow;
 
             await _scoringApplicationRepository.SaveChangesAsync();
         }

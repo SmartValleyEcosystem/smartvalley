@@ -49,6 +49,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
   public disabled = false;
   public comboboxValues: { [id: number]: SelectItem[] };
   public savedTime: Date;
+  public activePartition = '';
 
   @ViewChild('socialsContainer') private socialsContainer: ElementRef;
   @ViewChild('membersContainer') private membersContainer: ElementRef;
@@ -95,6 +96,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
     await this.loadScoringApplicationDataAsync();
 
     this.timer = <NodeJS.Timer>setInterval(async () => await this.saveDraftAsync(), 60000);
+    this.activePartition = 'partition_common';
   }
 
   ngOnDestroy(): void {
@@ -219,6 +221,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
   }
 
   public scrollToPartition(elementId: string): void {
+    this.activePartition = 'partition_' + elementId;
     const element = this.htmlElement.nativeElement.querySelector('#partition_' + elementId);
     const containerOffset = element.offsetTop;
     const fieldOffset = element.offsetParent.offsetTop;
@@ -532,5 +535,11 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
   private loadEditedQuestion(partitions): void {
     partitions.selectMany(partition => partition.questions)
       .map(question => this.questionsGroup.controls['control_' + question.id].setValue(question.answer));
+  }
+
+  public onAppear(event, id) {
+    if (event.status) {
+      this.activePartition = id;
+    }
   }
 }

@@ -1,0 +1,13 @@
+.project-name {
+  font-size: 14px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    margin-bottom: 15px;
+    a {
+      font-size: 20px;
+    }
+  }
+}

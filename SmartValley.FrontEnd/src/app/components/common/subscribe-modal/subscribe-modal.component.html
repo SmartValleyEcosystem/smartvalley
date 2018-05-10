@@ -1,0 +1,35 @@
+<button class="dialog-close" mat-dialog-close><i class="material-icons">close</i></button>
+<h2>{{ 'SubscribeModalComponent.Title' | translate }}</h2>
+<form [formGroup]="subscribeForm" (ngSubmit)="submit()">
+  <div class="form-control-row">
+    <p class="control-label">
+      <label for="sum">{{ 'SubscribeModalComponent.Amount' | translate }}</label>
+    </p>
+    <input class="input" type="text" id="sum" name="sum" [formControlName]="'sum'" placeholder="{{ 'SubscribeModalComponent.SumPlaceholder' | translate }}">
+  </div>
+
+  <div class="form-control-row">
+    <p class="control-label">
+      <label for="name">{{ 'SubscribeModalComponent.Name' | translate }}</label>
+    </p>
+    <input class="input" type="text" id="name" name="name" [formControlName]="'name'" placeholder="{{ 'SubscribeModalComponent.NamePlaceholder' | translate }}">
+  </div>
+
+  <div class="form-control-row">
+    <p class="control-label">
+      <label for="email">{{ 'SubscribeModalComponent.Email' | translate }}</label>
+    </p>
+    <input class="input" type="text" id="email" name="email" [formControlName]="'email'" placeholder="{{ 'SubscribeModalComponent.EmailPlaceholder' | translate }}">
+  </div>
+
+  <div class="form-control-row">
+    <p class="control-label">
+      <label for="phone">{{ 'SubscribeModalComponent.Phone' | translate }}</label>
+    </p>
+    <input type="text" class="input" name="phone" id="phone" [formControlName]="'phone'" placeholder="{{ 'SubscribeModalComponent.PhonePlaceholder' | translate }}">
+  </div>
+
+  <div class="form-control-row">
+    <input type="submit" [disabled]="!subscribeForm.valid" value="{{ 'SubscribeModalComponent.Send' | translate }}" class="main-btn">
+  </div>
+</form>

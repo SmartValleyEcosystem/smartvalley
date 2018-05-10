@@ -4,6 +4,7 @@
          (focusout)="searchInputFocusStatusSwitch(false); hideSelectList();"
          [class.select-__input_focused]="selectedInput"
          (input)="onSelectInputChange()"
+         autocomplete="nope"
          [value]="selectedItemLabel"
          [placeholder]="placeholder" type="text" class="input project-select-input" id="{{elementId}}"
          name="{{elementName}}">

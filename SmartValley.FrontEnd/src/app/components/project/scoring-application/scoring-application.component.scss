@@ -7,6 +7,9 @@
   text-align: left;
   color: #000000;
   word-wrap: break-word;
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    width: auto;
+  }
 }
 
 .create-btn {
@@ -125,7 +128,6 @@ label {
 .control-row {
   margin-bottom: 20px;
   @media screen and (min-width: 320px) and (max-width: 768px) {
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -204,3 +206,6 @@ label {
   color: #a4a2b0;
 }
 
+.active {
+  color: #000;
+}

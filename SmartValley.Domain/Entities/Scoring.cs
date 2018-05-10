@@ -9,6 +9,33 @@ namespace SmartValley.Domain.Entities
 {
     public class Scoring : IEntityWithId
     {
+        public Scoring()
+        {
+        }
+
+        public Scoring(
+            long projectId,
+            Address contractAddress,
+            DateTimeOffset offersDueDate,
+            DateTimeOffset creationDate,
+            IEnumerable<AreaScoring> areaScorings,
+            IEnumerable<ScoringOffer> scoringOffers)
+        {
+            if (offersDueDate < creationDate)
+                throw new ArgumentOutOfRangeException(nameof(offersDueDate), "Offers due date cannot be earlier than creation date.");
+
+            ProjectId = projectId;
+            ContractAddress = contractAddress;
+            CreationDate = creationDate;
+            OffersDueDate = offersDueDate;
+
+            AreaScorings = new List<AreaScoring>(areaScorings);
+            ScoringOffers = new List<ScoringOffer>(scoringOffers);
+            ExpertScorings = new List<ExpertScoring>();
+
+            Status = ScoringStatus.InProgress;
+        }
+
         public long Id { get; set; }
 
         public long ProjectId { get; set; }
@@ -65,7 +92,7 @@ namespace SmartValley.Domain.Entities
         {
             var areaScoring = AreaScorings.FirstOrDefault(x => x.AreaId == areaType);
             if (areaScoring == null)
-                throw new InvalidOperationException($"Can't find score for area: '{areaType}'");
+                throw new InvalidOperationException($"Can't find score for area: '{areaType}', scoringId: '{Id}'");
 
             areaScoring.Score = score;
         }
@@ -74,7 +101,7 @@ namespace SmartValley.Domain.Entities
         {
             var areaScoring = AreaScorings.FirstOrDefault(x => x.AreaId == areaType);
             if (areaScoring == null)
-                throw new InvalidOperationException($"Can't find score for area: '{areaType}'");
+                throw new InvalidOperationException($"Can't find score for area: '{areaType}', scoringId: '{Id}'");
 
             return areaScoring;
         }
@@ -87,11 +114,17 @@ namespace SmartValley.Domain.Entities
 
         public void FinishOffer(long expertId, AreaType area)
         {
-            var offer = ScoringOffers.FirstOrDefault(o => o.AreaId == area && o.ExpertId == expertId);
-            if (offer == null)
-                throw new InvalidOperationException($"Can't find offer for area: '{area}', expertId: '{expertId}'");
+            SetOfferStatus(area, expertId, ScoringOfferStatus.Finished);
+        }
 
-            offer.Status = ScoringOfferStatus.Finished;
+        public void RejectOffer(AreaType area, long expertId)
+        {
+            SetOfferStatus(area, expertId, ScoringOfferStatus.Rejected);
+        }
+
+        public void AcceptOffer(AreaType area, long expertId)
+        {
+            SetOfferStatus(area, expertId, ScoringOfferStatus.Accepted);
         }
 
         public ScoringOffer GetOfferForExpertinArea(long expertId, AreaType area)
@@ -99,10 +132,19 @@ namespace SmartValley.Domain.Entities
             return ScoringOffers.FirstOrDefault(x => x.ExpertId == expertId && x.AreaId == area);
         }
 
-        public void AddOffers(IReadOnlyCollection<ScoringOffer> offers)
+        public void AddNewOffers(IReadOnlyCollection<ScoringOffer> offers)
         {
             foreach (var offer in offers)
                 ScoringOffers.Add(offer);
+        }
+
+        private void SetOfferStatus(AreaType area, long expertId, ScoringOfferStatus status)
+        {
+            var offer = ScoringOffers.FirstOrDefault(o => o.AreaId == area && o.ExpertId == expertId);
+            if (offer == null)
+                throw new InvalidOperationException($"Can't find offer for area: '{area}', expertId: '{expertId}', scoringId: '{Id}'");
+
+            offer.Status = status;
         }
     }
 }

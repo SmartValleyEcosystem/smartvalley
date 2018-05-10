@@ -1,7 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {ProjectApiClient} from '../../../api/project/project-api-client';
 import {ProjectAboutResponse} from '../../../api/project/project-about-response';
 import {isNullOrUndefined} from 'util';
+import {ProjectComponent} from '../project.component';
 
 @Component({
   selector: 'app-project-about',
@@ -14,7 +15,8 @@ export class ProjectAboutComponent implements OnInit {
   public haveSocials: boolean;
   @Input() projectId: number;
 
-  constructor(private projectApiClient: ProjectApiClient) {
+  constructor(@Inject(ProjectComponent) public parent: ProjectComponent,
+              private projectApiClient: ProjectApiClient) {
   }
 
   public async ngOnInit() {

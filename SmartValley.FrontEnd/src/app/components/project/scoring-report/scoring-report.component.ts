@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {AreaService} from '../../../services/expert/area.service';
 import {EstimatesApiClient} from '../../../api/estimates/estimates-api-client';
 import {AreasScoringInfo} from './areas-scoring-Info';
@@ -12,6 +12,7 @@ import {AreaType} from "../../../api/scoring/area-type.enum";
 import {CriterionPromptResponse} from '../../../api/estimates/criterion-prompt-response';
 import {CriterionPrompt} from '../../../api/estimates/criterion-prompt';
 import {QuestionControlType} from '../../../api/scoring-application/question-control-type.enum';
+import {ProjectComponent} from '../project.component';
 
 @Component({
   selector: 'app-scoring-report',
@@ -32,7 +33,8 @@ export class ScoringReportComponent implements OnInit {
   @Input() scoringStatus: ScoringStatus;
   @Input() isAuthor: boolean;
 
-  constructor(private router: Router,
+  constructor(@Inject(ProjectComponent) public parent: ProjectComponent,
+              private router: Router,
               private areaService: AreaService,
               private estimatesApiClient: EstimatesApiClient,
               private scoringCriterionService: ScoringCriterionService) {

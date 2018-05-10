@@ -9,14 +9,14 @@
             class="search-controls__project-list" [class.hidden]="isAutocompleteHidden">
           <li *ngFor="let project of projects" (click)="navigateToProject(project.id)"
               class="search-controls__project-item">
-            <p class="project-name">{{project.name}}</p>
+            <p class="project-name"><span [innerHtml]="coloredText(project.name) | safeHtml"></span></p>
             <p class="project-info">{{ 'Countries.' + project.country | translate }}</p>
             <p class="project-info">{{project.category}}</p>
           </li>
         </ul>
         <input (focus)="searchInputFocusStatusSwitch(true); showProjectList();"
                (focusout)="searchInputFocusStatusSwitch(false); hideProjectList();"
-               [class.search-controls__input_square]="squareInput"
+               [class.search-controls__input_square]="squareInput && projects.length"
                [formControl]="inputSearch"
                placeholder="{{ 'SearchWithAutoComplete.Placeholder' | translate}}" type="text"
                class="search-controls__input">

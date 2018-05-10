@@ -2,11 +2,79 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta property="og:title" content="Smart Valley - decentralized scoring" />
+  <meta property="og:description" content="Digital Silicon Valley — a place where innovations are born every day" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://mvp.smartvalley.io/" />
+  <meta property="og:image" content="https://mvp.smartvalley.io/assets/img/social-icons/OG-image.png" />
   <title>SmartValley</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="icon" type="image/x-icon" href="./assets/img/favicon.ico">
+  <style>
+    .load-screen {
+      position: absolute;
+      left:0;
+      right:0;
+      top:0;
+      bottom: 0;
+      background-color: #222034
+    }
+    .loader-wrapper {
+      text-align: center;
+      position: relative;
+      top: 35vh;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .load-screen__logo {
+      display: inline-block;
+      height: 5em;
+      vertical-align: top;
+      padding-right: 3rem;
+    }
+    .lds-ring {
+      display: inline-block;
+      position: relative;
+      width: 64px;
+      height: 64px;
+    }
+    .lds-ring div {
+      box-sizing: border-box;
+      display: block;
+      position: absolute;
+      width: 51px;
+      height: 51px;
+      margin: 6px;
+      border: 6px solid #ffd038;
+      border-radius: 50%;
+      animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      border-color: #ffd038 transparent transparent transparent;
+    }
+    .lds-ring div:nth-child(1) {
+      animation-delay: -0.45s;
+    }
+    .lds-ring div:nth-child(2) {
+      animation-delay: -0.3s;
+    }
+    .lds-ring div:nth-child(3) {
+      animation-delay: -0.15s;
+    }
+    @keyframes lds-ring {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
 
   <!-- Google Analytics -->
   <script>
@@ -21,10 +89,11 @@
 </head>
 <body>
 <app-root>
-  <div style="position: absolute; left:0; right:0; top:0; bottom: 0; background-color: #222034">
-    <div style="text-align: center; position: relative; top: 35vh;">
-      <img style="display: inline-block; height: 5em;  vertical-align: top; padding-right: 5.5em" src="/assets/img/big-logo.svg"
+  <div class="load-screen">
+    <div class="loader-wrapper">
+      <img class="load-screen__logo" src="/assets/img/big-logo.svg"
            alt="Smart valley">
+      <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
     </div>
   </div>
 </app-root>

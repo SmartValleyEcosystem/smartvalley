@@ -26,6 +26,10 @@
   cursor: pointer;
   outline: none;
 }
+ghost-btn[disabled] {
+  border: solid 1px #969696;
+  color: #969696;
+}
 .main-btn[disabled] {
   background-color: #a4a2b0;
   border-color: #969696;
@@ -205,10 +209,10 @@ textarea.ng-pristine.ng-invalid.ng-untouched.ng-dirty,
 
 .mat-tab-label {
   @media screen and (min-width: 320px) and (max-width: 768px) {
-    margin-left: 0 !important;
     display: block !important;
     text-align: left !important;
   }
+  padding-left: 0 !important;
 }
 
 .report-tab .mat-tab-label {
@@ -322,4 +326,7 @@ body .ui-radiobutton .ui-radiobutton-box.ui-state-active .ui-radiobutton-icon.fa
 body .ui-radiobutton .ui-radiobutton-box {
   position: relative;
   top: -3px;
+}
+body .ng-invalid .ui-chkbox .ui-chkbox-box {
+  border: solid 1px red !important;
 }

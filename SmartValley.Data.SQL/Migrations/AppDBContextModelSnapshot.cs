@@ -99,6 +99,32 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("Estimates");
                 });
 
+            modelBuilder.Entity("SmartValley.Domain.Entities.EthereumTransaction", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTimeOffset>("Created");
+
+                    b.Property<string>("Hash")
+                        .IsRequired();
+
+                    b.Property<int>("Status");
+
+                    b.Property<int>("Type");
+
+                    b.Property<long>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Hash")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EthereumTransactions");
+                });
+
             modelBuilder.Entity("SmartValley.Domain.Entities.Expert", b =>
                 {
                     b.Property<long>("UserId");
@@ -223,6 +249,28 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasIndex("ScoringId");
 
                     b.ToTable("ExpertScorings");
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.Entities.Feedback", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(1500);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Feedbacks");
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.Project", b =>
@@ -476,6 +524,33 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("ScoringOffers");
                 });
 
+            modelBuilder.Entity("SmartValley.Domain.Entities.Subscription", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200);
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(50);
+
+                    b.Property<long>("ProjectId");
+
+                    b.Property<string>("Sum")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Subscriptions");
+                });
+
             modelBuilder.Entity("SmartValley.Domain.Entities.User", b =>
                 {
                     b.Property<long>("Id")
@@ -547,6 +622,8 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<DateTimeOffset?>("Saved");
 
+                    b.Property<long?>("ScoringStartTransactionId");
+
                     b.Property<string>("Site");
 
                     b.Property<int?>("Stage");
@@ -561,6 +638,8 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.HasIndex("ProjectId")
                         .IsUnique();
+
+                    b.HasIndex("ScoringStartTransactionId");
 
                     b.ToTable("ScoringApplications");
                 });
@@ -655,6 +734,14 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasOne("SmartValley.Domain.Entities.ScoringCriterion", "ScoringCriterion")
                         .WithMany()
                         .HasForeignKey("ScoringCriterionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.Entities.EthereumTransaction", b =>
+                {
+                    b.HasOne("SmartValley.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -763,6 +850,14 @@ namespace SmartValley.Data.SQL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("SmartValley.Domain.Entities.Subscription", b =>
+                {
+                    b.HasOne("SmartValley.Domain.Entities.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("SmartValley.Domain.Entities.UserRole", b =>
                 {
                     b.HasOne("SmartValley.Domain.Entities.Role")
@@ -783,10 +878,14 @@ namespace SmartValley.Data.SQL.Migrations
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("SmartValley.Domain.Entities.Project", "Project")
+                    b.HasOne("SmartValley.Domain.Entities.Project")
                         .WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SmartValley.Domain.Entities.EthereumTransaction", "ScoringStartTransaction")
+                        .WithMany()
+                        .HasForeignKey("ScoringStartTransactionId");
 
                     b.OwnsOne("SmartValley.Domain.Entities.SocialNetworks", "SocialNetworks", b1 =>
                         {

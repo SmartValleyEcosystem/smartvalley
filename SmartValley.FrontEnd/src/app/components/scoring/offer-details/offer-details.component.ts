@@ -11,6 +11,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {Paths} from '../../../paths';
 import {ScoringOfferStatusResponse} from '../../../api/scoring-offer/scoring-offer-status-response';
 import {OfferStatus} from '../../../api/scoring-offer/offer-status.enum';
+import {BalanceService} from '../../../services/balance/balance.service';
 
 @Component({
   selector: 'app-offer-details',
@@ -26,6 +27,7 @@ export class OfferDetailsComponent implements OnInit {
   public OfferStatus = OfferStatus;
 
   constructor(private router: Router,
+              private balanceService: BalanceService,
               private projectApiClient: ProjectApiClient,
               private route: ActivatedRoute,
               private areaService: AreaService,
@@ -58,6 +60,9 @@ export class OfferDetailsComponent implements OnInit {
     await this.offersApiClient.acceptExpertOfferAsync(transactionHash, this.project.scoring.id, this.area.areaType);
 
     transactionDialog.close();
+
+    await this.balanceService.updateBalanceAsync();
+
     await this.router.navigate([Paths.Project + '/' + this.project.id + '/scoring/' + <number>this.area.areaType]);
   }
 
@@ -72,6 +77,9 @@ export class OfferDetailsComponent implements OnInit {
     await this.offersApiClient.declineExpertOfferAsync(transactionHash, this.project.scoring.id, this.area.areaType);
 
     transactionDialog.close();
+
+    await this.balanceService.updateBalanceAsync();
+
     await this.router.navigate([Paths.ScoringList]);
   }
 

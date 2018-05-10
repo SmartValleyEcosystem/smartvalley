@@ -2,9 +2,9 @@
 @import "../../node_modules/bootstrap/dist/css/bootstrap.css";
 
 html, body {
-  width: 100%;
   margin: 0;
   padding: 0;
+  width: 100vw;
 }
 
 .content {
@@ -17,6 +17,10 @@ html, body {
   @media screen and (min-width: 769px) and (max-width: 1200px) {
     width: 1200px;
   }
+}
+
+.mat-tab-header-pagination-controls-enabled .mat-tab-header-pagination {
+  display: none !important;
 }
 
 .social-icon {
@@ -74,6 +78,7 @@ html, body {
 body {
   background: #eeedf5;
   font-family: 'Roboto-Regular';
+  overflow-x: hidden;
 }
 
 .body-visible {
@@ -176,10 +181,12 @@ div.mat-checkbox-frame {
   min-width: 0px !important;
   color: white;
   opacity: 1 !important;
-  padding: inherit !important;
   font-size: 30px;
   font-weight: 100;
-  margin-left: 60px;
+}
+
+.report-tab .mat-tab-label {
+  padding: 0 !important;
 }
 
 .mat-ink-bar {
@@ -223,16 +230,6 @@ div.mat-checkbox-frame {
 
 .white-card .mat-tab-label-active, .choose, .scoring-rating > span {
   color: rgb(180, 180, 180) !important;
-}
-
-.mat-tab-labels {
-  display: inline-block !important;
-  border-bottom: 1px solid #ddd;
-}
-
-.mat-tab-labels .mat-tab-label:first-child {
-  margin-left: 0px;
-  padding-left: 0px;
 }
 
 .card {
@@ -423,7 +420,7 @@ a, button, span {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .title {

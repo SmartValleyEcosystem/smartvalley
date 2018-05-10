@@ -44,6 +44,8 @@
     "UploadNotify": "Yeah, sounds complicated, but we want to be sure that your document wasn't stolen.",
     "CheckEmail": "Check your email",
     "EmailNotify": "You get notification about job apply on this email",
-    "ExpertTypeLabel": "Which type of expert would you like to become? You could choose several if you are genious."
+    "ExpertTypeLabel": "Which type of expert would you like to become? You could choose several if you are genious.",
+    "DocumentSizeError": "Document is too big",
+    "PhotoSizeError": "Photo is too big"
   }
 }

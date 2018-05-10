@@ -10,6 +10,8 @@ namespace SmartValley.Data.SQL.Core
     public interface IEditableDataContext : IDisposable
     {
         DbSet<Project> Projects { get; }
+        DbSet<Feedback> Feedbacks { get; }
+        DbSet<Subscription> Subscriptions { get; }
         DbSet<Scoring> Scorings { get; }
         DbSet<ScoringOffer> ScoringOffers { get; }
         DbSet<AreaScoring> AreaScorings { get; }
@@ -28,6 +30,7 @@ namespace SmartValley.Data.SQL.Core
         DbSet<ScoringApplicationAnswer> ScoringApplicationAnswers { get; }
         DbSet<ScoringApplicationTeamMember> ScoringApplicationTeamMembers { get; }
         DbSet<ScoringApplicationAdviser> ScoringApplicationAdvisers { get; }
+        DbSet<EthereumTransaction> EthereumTransactions { get; }
 
         Task<int> SaveAsync();
         EntityEntry<T> Entity<T>(T x) where T : class;
