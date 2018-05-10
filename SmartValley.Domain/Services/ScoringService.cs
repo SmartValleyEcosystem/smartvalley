@@ -37,7 +37,7 @@ namespace SmartValley.Domain.Services
 
         public async Task<long> StartAsync(long projectId, IDictionary<AreaType, int> areas)
         {
-            var project = await _projectRepository.GetByIdAsync(projectId);
+            var project = await _projectRepository.GetAsync(projectId);
             var offers = await _scoringExpertsManagerContractClient.GetOffersAsync(project.ExternalId);
 
             if (!offers.Any())

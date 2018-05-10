@@ -16,10 +16,10 @@ export class SubscribeModalComponent implements OnInit {
 
   ngOnInit() {
     this.subscribeForm = this.formBuilder.group({
-        sum: ['', Validators.required],
-        name: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
-        phone: ['']
+        sum: ['', [Validators.required, Validators.maxLength(100)]],
+        name: ['', [Validators.required, Validators.maxLength(200)]],
+        email: ['', [Validators.required, Validators.pattern('\\w+@\\w+\\.\\w+')]],
+        phone: ['', [Validators.maxLength(50)]]
     });
   }
 

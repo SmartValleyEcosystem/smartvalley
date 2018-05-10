@@ -203,7 +203,10 @@
                   <p class="control-label">
                     <label>{{'EditScoringApplication.' + question.key | translate }}</label>
                   </p>
-                  <div class="main-text">{{('EditScoringApplication.' + question.answer | dashIfEmpty) | translate}}</div>
+                  <div *ngIf="question.answer; else emptyAnswer" class="main-text">{{'EditScoringApplication.' + question.answer | translate}}</div>
+                  <ng-template #emptyAnswer>
+                    <div>&mdash;</div>
+                  </ng-template>
                 </div>
                 <div *ngSwitchCase="questionTypeDateTime">
                   <p class="control-label">
