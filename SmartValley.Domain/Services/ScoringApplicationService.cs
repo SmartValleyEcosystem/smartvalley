@@ -22,7 +22,7 @@ namespace SmartValley.Domain.Services
         public async Task SetScoringTransactionAsync(long projectId, string transactionHash)
         {
             var application = await _scoringApplicationRepository.GetByProjectIdAsync(projectId) ?? throw new AppErrorException(ErrorCode.ScoringApplicationNotFound);
-            var project = await _projectRepository.GetByIdAsync(projectId);
+            var project = await _projectRepository.GetAsync(projectId);
             var transaction = new EthereumTransaction(
                 project.AuthorId,
                 transactionHash,
