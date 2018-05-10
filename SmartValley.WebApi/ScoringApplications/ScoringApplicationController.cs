@@ -31,8 +31,8 @@ namespace SmartValley.WebApi.ScoringApplications
             if (scoringApplication != null)
                 return ScoringApplicationResponse.InitializeFromApplication(questions, scoringApplication);
 
-            var project = await _projectService.GetDetailsAsync(projectId);
-            return ScoringApplicationResponse.CreateEmpty(questions, project.Project, project.Country, project.TeamMembers);
+            var project = await _projectService.GetAsync(projectId);
+            return ScoringApplicationResponse.CreateEmpty(questions, project);
         }
 
         [HttpPost, Authorize]
@@ -42,7 +42,7 @@ namespace SmartValley.WebApi.ScoringApplications
             if (!isAuthorizedToEditProjectAsync)
                 return Unauthorized();
 
-            await _scoringApplicationService.SaveApplicationAsync(projectId, saveScoringApplicationRequest);
+            await _scoringApplicationService.SaveAsync(projectId, saveScoringApplicationRequest);
             return NoContent();
         }
 

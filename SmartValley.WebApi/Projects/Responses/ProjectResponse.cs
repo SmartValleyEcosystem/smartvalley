@@ -22,18 +22,18 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public DateTimeOffset? ScoringEndDate { get; set; }
 
-        public static ProjectResponse Create(ProjectDetails projectDetails)
+        public static ProjectResponse Create(Project project)
         {
             return new ProjectResponse
                    {
-                       Id = projectDetails.Project.Id,
-                       Name = projectDetails.Project.Name,
-                       Country = projectDetails.Country.Code,
-                       Category = projectDetails.Project.Category,
-                       Description = projectDetails.Project.Description,
-                       Address = projectDetails.Scoring?.ContractAddress,
-                       Score = projectDetails.Scoring?.Score,
-                       ScoringEndDate = projectDetails.Scoring?.ScoringEndDate
+                       Id = project.Id,
+                       Name = project.Name,
+                       Country = project.Country?.Code,
+                       Category = project.Category,
+                       Description = project.Description,
+                       Address = project.Scoring?.ContractAddress,
+                       Score = project.Scoring?.Score,
+                       ScoringEndDate = project.Scoring?.ScoringEndDate
                    };
         }
     }

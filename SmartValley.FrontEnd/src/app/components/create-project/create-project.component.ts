@@ -371,7 +371,7 @@ export class CreateProjectComponent implements OnInit {
 
     const response = await this.projectService.updateAsync(request);
 
-    await Promise.all([this.sendProjectImageAsync(response.projectId), this.sendPhotosAsync(response.teamMembers)]);
+    await Promise.all([this.sendProjectImageAsync(response.projectId), this.sendPhotosAsync(response.projectId, response.teamMembers)]);
 
     this.notificationsService.success(
       this.translateService.instant('Common.Success'),
@@ -387,7 +387,7 @@ export class CreateProjectComponent implements OnInit {
 
     const response = await this.projectService.createAsync(request);
 
-    await Promise.all([this.sendProjectImageAsync(response.projectId), this.sendPhotosAsync(response.teamMembers)]);
+    await Promise.all([this.sendProjectImageAsync(response.projectId), this.sendPhotosAsync(response.projectId, response.teamMembers)]);
 
     this.notificationsService.success(
       this.translateService.instant('Common.Success'),
@@ -415,11 +415,11 @@ export class CreateProjectComponent implements OnInit {
     }
   }
 
-  private async sendPhotosAsync(teamMembers: TeamMemberResponse[]): Promise<void> {
+  private async sendPhotosAsync(projectId: number, teamMembers: TeamMemberResponse[]): Promise<void> {
     for (let i = 0; i < teamMembers.length; i++) {
       const memberNumber = i + 1;
       const photo = this.photos.find(p => p.elementId === 'photo__' + memberNumber);
-      if (photo.imgUrl) {
+      if (photo && photo.imgUrl) {
         if (photo.value) {
           if (!FileUploaderHelper.checkImageExtensions(photo.value)) {
             this.notificationsService.warn(
@@ -428,10 +428,10 @@ export class CreateProjectComponent implements OnInit {
             );
             return;
           }
-          await this.projectService.uploadTeamMemberPhotoAsync(teamMembers[i].id.toString(), photo.value);
+          await this.projectService.uploadTeamMemberPhotoAsync(projectId, teamMembers[i].id, photo.value);
         }
       } else {
-        await this.projectApiClient.deleteTeamMemberPhotoAsync(teamMembers[i].id);
+        await this.projectApiClient.deleteTeamMemberPhotoAsync(projectId, teamMembers[i].id);
       }
     }
   }

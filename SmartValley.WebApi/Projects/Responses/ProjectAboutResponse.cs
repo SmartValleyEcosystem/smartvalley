@@ -28,7 +28,7 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public List<ProjectTeamMemberResponse> TeamMembers { get; set; }
 
-        public static ProjectAboutResponse Create(Project project, IReadOnlyCollection<ProjectTeamMember> teamMembers)
+        public static ProjectAboutResponse Create(Project project)
         {
             return new ProjectAboutResponse
                    {
@@ -42,7 +42,7 @@ namespace SmartValley.WebApi.Projects.Responses
                        Telegram = project.Telegram,
                        Twitter = project.Twitter,
                        Github = project.Github,
-                       TeamMembers = teamMembers.Select(ProjectTeamMemberResponse.Create).ToList()
+                       TeamMembers = project.TeamMembers.Select(ProjectTeamMemberResponse.Create).ToList()
                    };
         }
     }
