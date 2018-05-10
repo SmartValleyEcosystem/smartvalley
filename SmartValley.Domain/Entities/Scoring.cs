@@ -114,12 +114,12 @@ namespace SmartValley.Domain.Entities
             SetOfferStatus(area, expertId, ScoringOfferStatus.Finished);
         }
 
-        public void RejectOffer(AreaType area, long expertId)
+        public void RejectOffer(long expertId, AreaType area)
         {
             SetOfferStatus(area, expertId, ScoringOfferStatus.Rejected);
         }
 
-        public void AcceptOffer(AreaType area, long expertId, DateTimeOffset estimatesDueDate, DateTimeOffset now)
+        public void AcceptOffer(long expertId, AreaType area, DateTimeOffset estimatesDueDate, DateTimeOffset now)
         {
             SetOfferStatus(area, expertId, ScoringOfferStatus.Accepted);
             SetOfferEstimatesDueDate(area, expertId, estimatesDueDate);
@@ -131,6 +131,12 @@ namespace SmartValley.Domain.Entities
                 ScoringStartDate = now;
 
             EstimatesDueDate = ScoringOffers.Max(o => o.EstimatesDueDate);
+        }
+
+        public void UpdateExpiredOffers(DateTimeOffset now)
+        {
+            foreach (var offer in ScoringOffers)
+                offer.UpdateStatus(now);
         }
 
         private bool HasEnoughExperts()

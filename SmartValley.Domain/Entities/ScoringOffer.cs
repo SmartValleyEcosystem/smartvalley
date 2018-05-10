@@ -19,5 +19,11 @@ namespace SmartValley.Domain.Entities
         public Scoring Scoring { get; set; }
 
         public Expert Expert { get; set; }
+
+        public void UpdateStatus(DateTimeOffset now)
+        {
+            if (Status == ScoringOfferStatus.Pending && ExpirationTimestamp < now || Status == ScoringOfferStatus.Accepted && EstimatesDueDate < now)
+                Status = ScoringOfferStatus.Expired;
+        }
     }
 }

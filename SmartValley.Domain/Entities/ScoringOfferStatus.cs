@@ -6,6 +6,6 @@
         Accepted = 1,
         Rejected = 2,
         Finished = 3,
-        TimedOut = 4
+        Expired = 4
     }
 }
