@@ -8,8 +8,6 @@ namespace SmartValley.Domain.Interfaces
 {
     public interface IProjectRepository
     {
-        Task<Project> GetByIdAsync(long id);
-
         Task<IReadOnlyCollection<ProjectDetails>> QueryAsync(ProjectsQuery projectsQuery);
 
         Task<int> GetQueryTotalCountAsync(ProjectsQuery projectsQuery);
@@ -23,10 +21,6 @@ namespace SmartValley.Domain.Interfaces
         Task<ProjectDetails> GetByAuthorIdAsync(long authorId);
 
         void Delete(Project project);
-
-        Task<int> UpdateAsync(Project project, params Expression<Func<Project, object>>[] properties);
-
-        Task<int> UpdateWholeAsync(Project project);
 
         Task<Project> GetAsync(long projectId);
 
