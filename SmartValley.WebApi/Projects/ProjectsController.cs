@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -47,9 +46,8 @@ namespace SmartValley.WebApi.Projects
         public async Task<ProjectAboutResponse> PostAsync([FromBody] CreateProjectRequest request)
         {
             var project = await _projectService.CreateAsync(User.GetUserId(), request);
-            var teamMembers = await _projectService.GetTeamAsync(project.Id);
 
-            return ProjectAboutResponse.Create(project, teamMembers);
+            return ProjectAboutResponse.Create(project);
         }
 
         [HttpPut("{id}")]
@@ -60,9 +58,8 @@ namespace SmartValley.WebApi.Projects
                 throw new AppErrorException(ErrorCode.UserNotAuthor);
 
             var project = await _projectService.UpdateAsync(id, request);
-            var teamMembers = await _projectService.GetTeamAsync(project.Id);
 
-            return ProjectAboutResponse.Create(project, teamMembers);
+            return ProjectAboutResponse.Create(project);
         }
 
         [HttpPut("{id}/image")]
@@ -101,28 +98,28 @@ namespace SmartValley.WebApi.Projects
             return NoContent();
         }
 
-        [HttpPut("teammember")]
+        [HttpPut("teammembers")]
         [Authorize]
         public async Task<IActionResult> UploadTeamMemberPhotoAsync([FromForm] AddProjectTeamMemberPhotoRequest request, IFormFile photo)
         {
             if (!photo.IsImageValid())
                 throw new AppErrorException(ErrorCode.InvalidFileUploaded);
 
-            if (!await _projectService.IsAuthorizedToEditProjectTeamMemberAsync(User.GetUserId(), request.ProjectTeamMemberId))
+            if (!await _projectService.IsAuthorizedToEditProjectTeamMemberAsync(User.GetUserId(), request.ProjectId))
                 return Unauthorized();
 
-            await _projectService.UpdateTeamMemberPhotoAsync(request.ProjectTeamMemberId, photo.ToAzureFile());
+            await _projectService.UpdateTeamMemberPhotoAsync(request.ProjectId, request.ProjectTeamMemberId, photo.ToAzureFile());
             return NoContent();
         }
 
-        [HttpDelete("teammember/{id}")]
+        [HttpDelete("{projectId}/teammembers/{teamMemberId}")]
         [Authorize]
-        public async Task<IActionResult> DeleteTeamMemberPhotoAsync(long id)
+        public async Task<IActionResult> DeleteTeamMemberPhotoAsync(long projectId, long teamMemberId)
         {
-            if (!await _projectService.IsAuthorizedToEditProjectTeamMemberAsync(User.GetUserId(), id))
+            if (!await _projectService.IsAuthorizedToEditProjectTeamMemberAsync(User.GetUserId(), projectId))
                 return Unauthorized();
 
-            await _projectService.DeleteTeamMemberPhotoAsync(id);
+            await _projectService.DeleteTeamMemberPhotoAsync(projectId, teamMemberId);
             return NoContent();
         }
 
@@ -142,9 +139,8 @@ namespace SmartValley.WebApi.Projects
         public async Task<ProjectAboutResponse> GetAboutAsync(long id)
         {
             var project = await _projectService.GetAsync(id);
-            var teamMembers = await _projectService.GetTeamAsync(id);
 
-            return ProjectAboutResponse.Create(project, teamMembers);
+            return ProjectAboutResponse.Create(project);
         }
 
         [HttpGet("search")]
@@ -200,30 +196,28 @@ namespace SmartValley.WebApi.Projects
             if (project == null)
                 return null;
 
-            project.TeamMembers = await _projectService.GetTeamAsync(project.Project.Id);
-
             return new MyProjectResponse
                    {
-                       Id = project.Project.Id,
-                       Name = project.Project.Name,
-                       Category = (int) project.Project.Category,
-                       Description = project.Project.Description,
-                       Stage = (int) project.Project.Stage,
+                       Id = project.Id,
+                       Name = project.Name,
+                       Category = (int) project.Category,
+                       Description = project.Description,
+                       Stage = (int) project.Stage,
                        CountryCode = project.Country.Code,
                        TeamMembers = project.TeamMembers?.Select(ProjectTeamMemberResponse.Create).ToArray(),
-                       IcoDate = project.Project.IcoDate,
-                       Website = project.Project.Website,
-                       ContactEmail = project.Project.ContactEmail,
-                       WhitePaperLink = project.Project.WhitePaperLink,
-                       Facebook = project.Project.Facebook,
-                       Reddit = project.Project.Reddit,
-                       BitcoinTalk = project.Project.BitcoinTalk,
-                       Telegram = project.Project.Telegram,
-                       Github = project.Project.Github,
-                       Medium = project.Project.Medium,
-                       Twitter = project.Project.Twitter,
-                       Linkedin = project.Project.Linkedin,
-                       ImageUrl = project.Project.ImageUrl
+                       IcoDate = project.IcoDate,
+                       Website = project.Website,
+                       ContactEmail = project.ContactEmail,
+                       WhitePaperLink = project.WhitePaperLink,
+                       Facebook = project.Facebook,
+                       Reddit = project.Reddit,
+                       BitcoinTalk = project.BitcoinTalk,
+                       Telegram = project.Telegram,
+                       Github = project.Github,
+                       Medium = project.Medium,
+                       Twitter = project.Twitter,
+                       Linkedin = project.Linkedin,
+                       ImageUrl = project.ImageUrl
                    };
         }
     }

@@ -1,10 +1,14 @@
 @import "../../node_modules/@angular/material/prebuilt-themes/purple-green.css";
 @import "../../node_modules/bootstrap/dist/css/bootstrap.css";
 
+html{
+  width: 100vw;
+  overflow-x: hidden;
+}
+
 html, body {
   margin: 0;
   padding: 0;
-  width: 100vw;
 }
 
 .content {
@@ -580,3 +584,4 @@ a, button, span {
   font-family: "Roboto-Thin";
   src: url("../assets/fonts/Roboto/Roboto-Thin.ttf") format("opentype");
 }
+

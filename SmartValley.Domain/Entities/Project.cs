@@ -1,11 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
 {
     public class Project : IEntityWithId
     {
+        public Project()
+        {
+            TeamMembers = new List<ProjectTeamMember>();
+        }
+
         public long Id { get; set; }
 
         [Required]
@@ -73,5 +80,44 @@ namespace SmartValley.Domain.Entities
         public User Author { get; set; }
 
         public Country Country { get; set; }
+
+        public Scoring Scoring { get; set; }
+
+        public ICollection<ProjectTeamMember> TeamMembers { get; }
+
+        public void UpdateTeamMemberPhotoLink(long memberId, string link)
+        {
+            var member = TeamMembers.FirstOrDefault(i => i.Id == memberId);
+            if (member != null)
+                member.PhotoUrl = link;
+        }
+
+        public ProjectTeamMember GetTeamMember(long memberId)
+        {
+            return TeamMembers.FirstOrDefault(i => i.Id == memberId);
+        }
+
+        public void UpdateMembers(IReadOnlyCollection<ProjectTeamMember> members)
+        {
+            var deletedMembers = TeamMembers.Where(t => !members.Select(m => m.Id).Contains(t.Id));
+
+            while (deletedMembers.Count() > 0)
+            {
+                TeamMembers.Remove(deletedMembers.First());
+            }
+
+            foreach (var member in members)
+            {
+                var existMember = TeamMembers.FirstOrDefault(m => m.Id == member.Id);
+                if (existMember != null)
+                {
+                    existMember.Update(member);
+                }
+                else
+                {
+                    TeamMembers.Add(member);
+                }
+            }
+        }
     }
 }

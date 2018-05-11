@@ -160,6 +160,12 @@ namespace SmartValley.Data.SQL.Core
             modelBuilder.Entity<Project>()
                         .HasIndex(p => new {p.Name});
 
+            modelBuilder.Entity<Project>()
+                        .HasMany(t => t.TeamMembers);
+
+            modelBuilder.Entity<Project>()
+                        .HasOne(t => t.Scoring);
+
             modelBuilder.Entity<User>()
                         .HasMany(c => c.Projects)
                         .WithOne(e => e.Author)

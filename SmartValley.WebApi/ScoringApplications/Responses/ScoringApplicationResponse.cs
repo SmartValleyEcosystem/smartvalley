@@ -18,10 +18,10 @@ namespace SmartValley.WebApi.ScoringApplications.Responses
 
         public bool IsSubmitted { get; set; }
 
-        public static ScoringApplicationResponse CreateEmpty(IEnumerable<ScoringApplicationQuestion> questions, Project project, Country projectCountry, IReadOnlyCollection<ProjectTeamMember> projectTeamMembers)
+        public static ScoringApplicationResponse CreateEmpty(IEnumerable<ScoringApplicationQuestion> questions, Project project)
         {
             var partitions = CreatePartitions(questions);
-            var projectInfo = ProjectApplicationInfoResponse.CreateFrom(project, projectCountry, projectTeamMembers);
+            var projectInfo = ProjectApplicationInfoResponse.CreateFrom(project);
 
             return new ScoringApplicationResponse
                    {

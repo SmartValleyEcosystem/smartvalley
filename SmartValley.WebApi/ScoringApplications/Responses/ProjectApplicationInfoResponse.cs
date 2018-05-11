@@ -34,7 +34,7 @@ namespace SmartValley.WebApi.ScoringApplications.Responses
 
         public IEnumerable<AdviserResponse> ProjectAdvisers { get; set; }
 
-        public static ProjectApplicationInfoResponse CreateFrom(Project project, Country projectCountry, IReadOnlyCollection<ProjectTeamMember> projectTeamMembers)
+        public static ProjectApplicationInfoResponse CreateFrom(Project project)
         {
             return new ProjectApplicationInfoResponse
                    {
@@ -42,7 +42,7 @@ namespace SmartValley.WebApi.ScoringApplications.Responses
                        Category = project.Category,
                        Stage = project.Stage,
                        Description = project.Description,
-                       CountryCode = projectCountry.Code,
+                       CountryCode = project.Country.Code,
                        WebSite = project.Website,
                        WhitePaperLink = project.WhitePaperLink,
                        IcoDate = project.IcoDate,
@@ -58,7 +58,7 @@ namespace SmartValley.WebApi.ScoringApplications.Responses
                                             Github = project.Github,
                                             Linkedin = project.Linkedin
                                         },
-                       ProjectTeamMembers = projectTeamMembers.Select(ProjectTeamMemberResponse.Create)
+                       ProjectTeamMembers = project.TeamMembers.Select(ProjectTeamMemberResponse.Create)
             };
         }
 
