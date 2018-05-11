@@ -18,8 +18,8 @@ namespace SmartValley.Ethereum.Contracts.Scoring.Dto
         [Parameter("uint256[]", "_areas", 3)]
         public List<int> Areas { get; set; }
 
-        [Parameter("bool[]", "_areaResults", 4)]
-        public List<bool> AreaResults { get; set; }
+        [Parameter("bool[]", "_areaCompleteness", 4)]
+        public List<bool> AreaCompleteness { get; set; }
 
         [Parameter("uint[]", "_areaScores", 5)]
         public List<long> AreaScores { get; set; }

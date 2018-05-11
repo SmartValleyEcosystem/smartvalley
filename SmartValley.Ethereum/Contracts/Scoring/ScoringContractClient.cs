@@ -40,7 +40,7 @@ namespace SmartValley.Ethereum.Contracts.Scoring
             for (var i = 0; i < dto.Areas.Count; i++)
             {
                 var area = (AreaType) dto.Areas[i];
-                var isCompleted = dto.AreaResults[i];
+                var isCompleted = dto.AreaCompleteness[i];
                 var areaScore = dto.AreaScores[i] / Math.Pow(10, ScorePrecision);
 
                 areaScores[area] = isCompleted ? areaScore : (double?) null;

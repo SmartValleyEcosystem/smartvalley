@@ -133,12 +133,6 @@ namespace SmartValley.Domain.Entities
             EstimatesDueDate = ScoringOffers.Max(o => o.EstimatesDueDate);
         }
 
-        public void UpdateExpiredOffers(DateTimeOffset now)
-        {
-            foreach (var offer in ScoringOffers)
-                offer.UpdateStatus(now);
-        }
-
         private bool HasEnoughExperts()
         {
             foreach (var areaScoring in AreaScorings)
