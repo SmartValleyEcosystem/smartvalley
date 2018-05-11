@@ -31,7 +31,7 @@ export class ProjectApiClient extends BaseApiClient {
   }
 
   public async uploadTeamMemberPhotoAsync(request: AddProjectTeamMemberPhotoRequest): Promise<void> {
-    await this.http.put(`${this.baseApiUrl}/projects/teammember`, request.body).toPromise();
+    await this.http.put(`${this.baseApiUrl}/projects/teammembers`, request.body).toPromise();
   }
 
   public async uploadProjectImageAsync(request: AddProjectImageRequest): Promise<void> {
@@ -42,8 +42,8 @@ export class ProjectApiClient extends BaseApiClient {
     await this.http.delete(`${this.baseApiUrl}/projects/${id}/image`).toPromise();
   }
 
-  public async deleteTeamMemberPhotoAsync(id: number): Promise<void> {
-    await this.http.delete(`${this.baseApiUrl}/projects/teammember/${id}`).toPromise();
+  public async deleteTeamMemberPhotoAsync(projectId: number, id: number): Promise<void> {
+    await this.http.delete(`${this.baseApiUrl}/projects/${projectId}/teammembers/${id}`).toPromise();
   }
 
  public async deleteAsync(projectId: number): Promise<void> {

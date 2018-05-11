@@ -9,19 +9,17 @@ namespace SmartValley.WebApi.Projects
 {
     public interface IProjectService
     {
-        Task<ProjectDetails> GetDetailsAsync(long projectId);
-
-        Task<IReadOnlyCollection<ProjectDetails>> QueryAsync(ProjectsQuery projectsQuery);
+        Task<IReadOnlyCollection<Project>> QueryAsync(ProjectsQuery projectsQuery);
 
         Task<int> GetQueryTotalCountAsync(ProjectsQuery projectsQuery);
 
-        Task<bool> IsAuthorizedToEditProjectTeamMemberAsync(long userId, long projectTeamMemberId);
+        Task<bool> IsAuthorizedToEditProjectTeamMemberAsync(long userId, long projectId);
 
         Task<bool> IsAuthorizedToEditProjectAsync(long projectId, long userId);
 
-        Task UpdateTeamMemberPhotoAsync(long projectTeamMemberId, AzureFile photo);
+        Task UpdateTeamMemberPhotoAsync(long projectId, long projectTeamMemberId, AzureFile photo);
 
-        Task<IReadOnlyCollection<ProjectDetails>> GetProjectsByNameAsync(string projectName);
+        Task<IReadOnlyCollection<Project>> GetProjectsByNameAsync(string projectName);
 
         Task<Project> CreateAsync(long userId, CreateProjectRequest request);
 
@@ -33,11 +31,9 @@ namespace SmartValley.WebApi.Projects
 
         Task<Project> GetAsync(long projectId);
 
-        Task<IReadOnlyCollection<ProjectTeamMember>> GetTeamAsync(long projectId);
+        Task<Project> GetByAuthorIdAsync(long authorId);
 
-        Task<ProjectDetails> GetByAuthorIdAsync(long authorId);
-
-        Task DeleteTeamMemberPhotoAsync(long projectTeamMemberId);
+        Task DeleteTeamMemberPhotoAsync(long projectId, long projectTeamMemberId);
 
         Task DeleteProjectImageAsync(long projectId);
     }

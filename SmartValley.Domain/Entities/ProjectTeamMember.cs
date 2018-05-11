@@ -29,6 +29,14 @@ namespace SmartValley.Domain.Entities
         [Url, MaxLength(200)]
         public string Linkedin { get; set; }
 
-        public Project Project { get; set; }
+        public void Update(ProjectTeamMember member)
+        {
+            ProjectId = member.ProjectId;
+            About = member.About;
+            Facebook = member.Facebook;
+            FullName = member.FullName;
+            Linkedin = member.Linkedin;
+            Role = member.Role;
+        }
     }
 }

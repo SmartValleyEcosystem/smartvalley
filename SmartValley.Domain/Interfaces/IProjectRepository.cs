@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using SmartValley.Domain.Entities;
 
@@ -8,17 +7,17 @@ namespace SmartValley.Domain.Interfaces
 {
     public interface IProjectRepository
     {
-        Task<IReadOnlyCollection<ProjectDetails>> QueryAsync(ProjectsQuery projectsQuery);
+        Task<IReadOnlyCollection<Project>> QueryAsync(ProjectsQuery projectsQuery);
 
         Task<int> GetQueryTotalCountAsync(ProjectsQuery projectsQuery);
 
-        Task<int> AddAsync(Project project);
+        void Add(Project project);
 
         Task<Project> GetByExternalIdAsync(Guid externalId);
 
-        Task<IReadOnlyCollection<ProjectDetails>> GetAllByNameAsync(string projectName);
+        Task<IReadOnlyCollection<Project>> GetAllByNameAsync(string projectName);
 
-        Task<ProjectDetails> GetByAuthorIdAsync(long authorId);
+        Task<Project> GetByAuthorIdAsync(long authorId);
 
         void Delete(Project project);
 

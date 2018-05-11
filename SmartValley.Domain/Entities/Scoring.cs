@@ -55,8 +55,6 @@ namespace SmartValley.Domain.Entities
 
         public DateTimeOffset? ScoringEndDate { get; set; }
 
-        public Project Project { get; set; }
-
         public ICollection<AreaScoring> AreaScorings { get; set; }
 
         public ICollection<ScoringOffer> ScoringOffers { get; set; }

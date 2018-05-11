@@ -47,9 +47,10 @@ export class ProjectService {
     }
   }
 
-  public async uploadTeamMemberPhotoAsync(memberId: string, photo: Blob): Promise<void> {
+  public async uploadTeamMemberPhotoAsync(projectId: number, memberId: number, photo: Blob): Promise<void> {
     const input = new FormData();
-    input.append('projectTeamMemberId', memberId);
+    input.append('projectId', projectId.toString());
+    input.append('projectTeamMemberId', memberId.toString());
     input.append('photo', photo);
     try {
       await this.projectApiClient.uploadTeamMemberPhotoAsync(<AddProjectTeamMemberPhotoRequest>{body: input});
