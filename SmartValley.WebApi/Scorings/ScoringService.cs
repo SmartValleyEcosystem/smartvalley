@@ -137,7 +137,8 @@ namespace SmartValley.WebApi.Scorings
 
         private async Task<ScoringOfferInfo> GetOfferAsync(long areaId, Scoring scoring, User expert)
         {
-            var offers = await _scoringExpertsManagerContractClient.GetOffersAsync(scoring.Project.ExternalId);
+            var project = await _projectRepository.GetAsync(scoring.ProjectId);
+            var offers = await _scoringExpertsManagerContractClient.GetOffersAsync(project.ExternalId);
             return offers.FirstOrDefault(o => o.Area == (AreaType) areaId && o.ExpertAddress == expert.Address);
         }
 

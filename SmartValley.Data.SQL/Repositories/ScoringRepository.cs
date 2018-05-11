@@ -121,7 +121,6 @@ namespace SmartValley.Data.SQL.Repositories
             => EditContext.Scorings
                           .Include(x => x.ExpertScorings).ThenInclude(x => x.Estimates)
                           .Include(x => x.ScoringOffers)
-                          .Include(x => x.AreaScorings)
-                          .Include(x => x.Project);
+                          .Include(x => x.AreaScorings);
     }
 }
