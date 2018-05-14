@@ -1,16 +1,12 @@
 {
-  "AdminExpertList": {
-    "Edit": "Edit",
-    "Delete": "Delete",
+  "AdminUsersList": {
+    "RegDate": "Reg date",
     "Actions": "Actions",
     "CreateNew": "Create new",
     "Address": "Address",
     "Email": "Email",
     "FirstName": "First name",
     "SecondName": "Second name",
-    "About": "About",
-    "Available": "Available",
-    "Categories": "Categories",
     "PrivateScoring": "Private scoring"
   }
 }

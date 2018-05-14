@@ -1,29 +1,16 @@
 <div class="container">
   <div class="row mx-auto">
-      <h1 class="title">{{ 'AdminPanel.Title' | translate }}</h1>
+    <h1 class="title">{{ 'AdminPanel.Title' | translate }}</h1>
   </div>
   <mat-tab-group [selectedIndex]="selectedMainTab" class="tab" (selectedTabChange)="onMainTabChange($event)">
-    <mat-tab label="{{ 'AdminPanel.AdminsTab' | translate }}">
-      <p-dataTable [value]="admins">
-        <p-column [style]="{'width': '24.4em'}" field="address" header="Address"></p-column>
-        <p-column field="email" header="Email"></p-column>
-        <p-column header="Actions">
-          <ng-template let-admin="rowData" pTemplate type="body">
-            <button (click)="deleteAsync(admin.address)" class="btn btn-link">
-              {{ 'AdminPanel.Delete' | translate }}
-            </button>
+    <mat-tab label="{{ 'AdminPanel.UsersTab' | translate }}">
+      <ngb-tabset [activeId]="selectedSubTab" type="pills" (tabChange)="onSubTabChange($event)">
+        <ngb-tab id="admins" title="{{ 'AdminPanel.AdminsTab' | translate }}">
+          <ng-template ngbTabContent>
+            <app-admin-admins-list></app-admin-admins-list>
           </ng-template>
-        </p-column>
-      </p-dataTable>
-      <div class="row mx-auto">
-        <a class="main-btn button-link"
-           (click)="createAsync()">{{ 'AdminPanel.Create' | translate }}
-        </a>
-      </div>
-    </mat-tab>
-    <mat-tab label="{{ 'AdminPanel.ExpertsTab' | translate }}">
-      <ngb-tabset [activeId]="selectedSubTab" type="pills"(tabChange)="onSubTabChange($event)">
-        <ngb-tab id="expertList" title="Experts list">
+        </ngb-tab>
+        <ngb-tab id="experts" title="Experts">
           <ng-template ngbTabContent>
             <app-admin-experts-list></app-admin-experts-list>
           </ng-template>
@@ -31,6 +18,11 @@
         <ngb-tab id="applications" title="Applications">
           <ng-template ngbTabContent>
             <app-admin-expert-applications-list></app-admin-expert-applications-list>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab id="all" title="All">
+          <ng-template ngbTabContent>
+            <app-admin-users-list></app-admin-users-list>
           </ng-template>
         </ngb-tab>
       </ngb-tabset>

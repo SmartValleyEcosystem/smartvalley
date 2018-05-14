@@ -18,9 +18,11 @@ namespace SmartValley.WebApi.Projects
         private readonly ICountryRepository _countryRepository;
         private readonly ProjectTeamMembersStorageProvider _projectTeamMembersStorageProvider;
         private readonly ProjectStorageProvider _projectStorageProvider;
+        private readonly IUserRepository _userRepository;
 
         public ProjectService(
             IProjectRepository projectRepository,
+            IUserRepository userRepository,
             ICountryRepository countryRepository,
             ProjectTeamMembersStorageProvider projectTeamMembersStorageProvider,
             ProjectStorageProvider projectStorageProvider)
@@ -29,6 +31,7 @@ namespace SmartValley.WebApi.Projects
             _countryRepository = countryRepository;
             _projectTeamMembersStorageProvider = projectTeamMembersStorageProvider;
             _projectStorageProvider = projectStorageProvider;
+            _userRepository = userRepository;
         }
 
         public Task<IReadOnlyCollection<Project>> QueryAsync(ProjectsQuery projectsQuery)
@@ -171,6 +174,8 @@ namespace SmartValley.WebApi.Projects
         private async Task<Project> AddProjectAsync(long userId, CreateProjectRequest request)
         {
             var country = await GetCountryAsync(request.CountryCode);
+            var user = await _userRepository.GetByIdAsync(userId);
+
             var project = new Project
                           {
                               Name = request.Name,
@@ -191,7 +196,8 @@ namespace SmartValley.WebApi.Projects
                               Github = request.Github,
                               Medium = request.Medium,
                               Twitter = request.Twitter,
-                              Linkedin = request.Linkedin
+                              Linkedin = request.Linkedin,
+                              IsPrivate = user.CanCreatePrivateProjects
                           };
 
             _projectRepository.Add(project);

@@ -32,6 +32,8 @@ namespace SmartValley.Domain
 
         public long ProjectId { get; }
 
+        public bool IsPrivate { get; }
+
         public double? FinalScore { get; set; }
 
         public ScoringOfferDetails(
@@ -48,6 +50,7 @@ namespace SmartValley.Domain
             AreaType areaType, 
             Guid projectExternalId,
             long projectId,
+            bool isPrivate,
             double? finalScore)
         {
             Status = status;
@@ -57,6 +60,7 @@ namespace SmartValley.Domain
             ScoringId = scoringId;
             ExpertId = expertId;
             Name = name;
+            IsPrivate = isPrivate;
             CountryCode = countryCode;
             Category = category;
             Description = description;

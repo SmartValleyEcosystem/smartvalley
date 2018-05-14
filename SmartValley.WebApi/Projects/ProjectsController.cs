@@ -23,21 +23,15 @@ namespace SmartValley.WebApi.Projects
     {
         private readonly IProjectService _projectService;
         private readonly IScoringService _scoringService;
-        private readonly ICountryRepository _countryRepository;
-        private readonly IUserService _userService;
         private readonly IScoringApplicationRepository _scoringApplicationRepository;
 
         public ProjectsController(
             IProjectService projectService,
             IScoringService scoringService,
-            ICountryRepository countryRepository,
-            IScoringApplicationRepository scoringApplicationRepository,
-            IUserService userService)
+            IScoringApplicationRepository scoringApplicationRepository)
         {
             _projectService = projectService;
             _scoringService = scoringService;
-            _countryRepository = countryRepository;
-            _userService = userService;
             _scoringApplicationRepository = scoringApplicationRepository;
         }
 
@@ -128,11 +122,9 @@ namespace SmartValley.WebApi.Projects
         {
             var project = await _projectService.GetAsync(id);
             var scoring = await _scoringService.GetByProjectIdAsync(id);
-            var country = await _countryRepository.GetByIdAsync(project.CountryId);
-            var author = await _userService.GetByIdAsync(project.AuthorId);
             var scoringApplication = await _scoringApplicationRepository.GetByProjectIdAsync(id);
 
-            return ProjectSummaryResponse.Create(project, country, scoring, scoringApplication, author);
+            return ProjectSummaryResponse.Create(project, scoring, scoringApplication);
         }
 
         [HttpGet("{id}/about")]

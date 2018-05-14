@@ -126,7 +126,7 @@ namespace SmartValley.WebApi.Experts
 
         [HttpGet("all")]
         [Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<PartialCollectionResponse<ExpertResponse>> GetAllExperts(AllExpertsRequest request)
+        public async Task<PartialCollectionResponse<ExpertResponse>> GetAllExperts(CollectionPageRequest request)
         {
             var experts = await _expertService.GetAllExpertsDetailsAsync(request.Offset, request.Count);
             var totalCount = await _expertService.GetTotalCountExpertsAsync();

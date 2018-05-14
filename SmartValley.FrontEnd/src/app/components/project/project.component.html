@@ -6,7 +6,11 @@
   <app-project-info *ngIf="project" [project]="project">
     <div [ngSwitch]="project.scoring.scoringStatus" class="control-info-wrapper">
       <div *ngSwitchCase="ScoringStatusFinished">
-        <div class="small-title">{{ 'MyProject.ProjectScore' | translate }}</div>
+        <div *ngIf="!project.isPrivate" class="small-title">{{ 'MyProject.ProjectScore' | translate }}</div>
+        <div *ngIf="project.isPrivate" class="small-title">
+          <i class="lock-icon material-icons">lock</i>
+          {{ 'MyProject.PrivateProjectScore' | translate }}
+        </div>
         <div class="score">
           <div class="main-number">{{project.scoring.score | roundNumberPipe}}</div>/100
         </div>
@@ -18,8 +22,12 @@
         </a>
       </div>
       <div *ngSwitchCase="ScoringStatusInProgress">
-        <div class="score" style="font-size: 20px;">
+        <div *ngIf="!project.isPrivate" class="score" style="font-size: 20px;">
           {{ 'MyProject.InProgress' | translate }}
+        </div>
+        <div *ngIf="project.isPrivate" class="score" style="font-size: 20px;">
+          <i class="lock-icon material-icons">lock</i>
+          {{ 'MyProject.PrivateInProgress' | translate }}
         </div>
         <div class="score progress-scoring" style="font-size: 20px;">
           {{scoringCompletenessInPercents}}{{ 'MyProject.CompletenessInPercents' | translate }}

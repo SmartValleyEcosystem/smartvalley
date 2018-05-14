@@ -16,4 +16,5 @@ export interface ScoringOfferResponse {
   expirationTimestamp: string;
   estimatesDueDate: string;
   finalScore: number;
+  isPrivate: boolean;
 }

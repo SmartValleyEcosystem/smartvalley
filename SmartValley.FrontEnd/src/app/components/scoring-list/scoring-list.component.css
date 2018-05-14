@@ -23,6 +23,13 @@
   margin-bottom: 20px;
 }
 
+.lock-icon {
+  position: absolute;
+  font-size: 17px;
+  left: 15px;
+  color: gray;
+}
+
 .control-label {
   width: 113.6px;
   height: 20px;
@@ -175,19 +182,19 @@ p {
   border-left-color: #ffd038;
 }
 
-.status-row{
+.status-row {
   position: relative;
   height: 36px;
 }
 
-.status-row label{
+.status-row label {
   position: absolute;
   margin-top: 6px;
   font-family: Roboto-Bold;
   color: #000000;
 }
 
-.status-row app-select{
+.status-row app-select {
   position: absolute;
   left: 116px;
 }
@@ -207,6 +214,7 @@ p {
 .table__name_col {
   width: 346px;
 }
+
 .attention-label {
   margin-bottom: 20px;
 }

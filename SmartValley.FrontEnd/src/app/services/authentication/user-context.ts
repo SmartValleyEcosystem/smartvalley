@@ -21,7 +21,8 @@ export class UserContext {
         userOptions.signature,
         userOptions.token,
         userOptions.email,
-        userOptions.roles
+        userOptions.roles,
+        userOptions.canCreatePrivateProjects
       );
     }
     return user;

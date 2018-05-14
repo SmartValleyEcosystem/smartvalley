@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using SmartValley.Domain.Core;
@@ -23,6 +24,10 @@ namespace SmartValley.Domain.Entities
 
         [MaxLength(50)]
         public string SecondName { get; set; }
+
+        public DateTime? RegistrationDate { get; set; }
+
+        public bool CanCreatePrivateProjects { get; set; }
 
         public Expert Expert { get; set; }
 

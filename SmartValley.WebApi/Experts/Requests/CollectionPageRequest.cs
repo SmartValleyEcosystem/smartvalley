@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SmartValley.WebApi.Subscriptions.Requests
+namespace SmartValley.WebApi.Experts.Requests
 {
-    public class AllSubscriptionsRequest
+    public class CollectionPageRequest
     {
-        public AllSubscriptionsRequest()
+        public CollectionPageRequest()
         {
             Count = 100;
         }

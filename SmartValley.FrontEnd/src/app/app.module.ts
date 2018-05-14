@@ -134,6 +134,8 @@ import {AdminFeedbacksComponent} from './components/admin-panel/admin-feedbacks/
 import {FeedbackApiClient} from './api/feedback/feedback-api-client';
 import {SubscriptionApiClient} from './api/subscription/subscription-api-client';
 import {AdminSubscriptionsComponent} from './components/admin-panel/admin-subscriptions/admin-subscriptions.component';
+import {AdminAdminsListComponent} from './components/admin-panel/admin-admins-list/admin-admins-list.component';
+import {AdminUsersListComponent} from './components/admin-panel/admin-users-list/admin-users-list.component';
 
 @NgModule({
   declarations: [
@@ -200,7 +202,9 @@ import {AdminSubscriptionsComponent} from './components/admin-panel/admin-subscr
     FeedbackComponent,
     FeedbackModalComponent,
     AdminFeedbacksComponent,
-    AdminSubscriptionsComponent
+    AdminSubscriptionsComponent,
+    AdminAdminsListComponent,
+    AdminUsersListComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,

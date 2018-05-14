@@ -124,7 +124,8 @@ export class AuthenticationService {
         account: account,
         signature: signature,
         token: response.token,
-        roles: response.roles
+        roles: response.roles,
+        canCreatePrivateProjects: response.canCreatePrivateProjects
     };
   }
 

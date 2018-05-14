@@ -76,6 +76,8 @@ namespace SmartValley.Domain.Entities
 
         [Url, MaxLength(200)]
         public string Github { get; set; }
+        
+        public bool IsPrivate { get; set; }
 
         public User Author { get; set; }
 

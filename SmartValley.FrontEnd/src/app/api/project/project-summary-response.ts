@@ -18,6 +18,7 @@ export interface ProjectSummaryResponse {
   authorId: number;
   authorAddress: string;
   isApplicationSubmitted: boolean;
+  isPrivate: boolean;
   scoring: ScoringResponse;
   scoringStartTransactionStatus: ScoringStartTransactionStatus;
   scoringStartTransactionHash: string;
