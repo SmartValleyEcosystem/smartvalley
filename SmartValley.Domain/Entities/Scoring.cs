@@ -16,24 +16,21 @@ namespace SmartValley.Domain.Entities
         public Scoring(
             long projectId,
             Address contractAddress,
-            DateTimeOffset offersDueDate,
             DateTimeOffset creationDate,
-            IEnumerable<AreaScoring> areaScorings,
-            IEnumerable<ScoringOffer> scoringOffers)
+            IReadOnlyCollection<AreaScoring> areaScorings,
+            IReadOnlyCollection<ScoringOffer> scoringOffers)
         {
-            if (offersDueDate < creationDate)
-                throw new ArgumentOutOfRangeException(nameof(offersDueDate), "Offers due date cannot be earlier than creation date.");
-
             ProjectId = projectId;
             ContractAddress = contractAddress;
             CreationDate = creationDate;
-            OffersDueDate = offersDueDate;
 
             AreaScorings = new List<AreaScoring>(areaScorings);
-            ScoringOffers = new List<ScoringOffer>(scoringOffers);
+            ScoringOffers = new List<ScoringOffer>();
             ExpertScorings = new List<ExpertScoring>();
 
             Status = ScoringStatus.InProgress;
+
+            AddOffers(scoringOffers);
         }
 
         public long Id { get; set; }
@@ -115,14 +112,35 @@ namespace SmartValley.Domain.Entities
             SetOfferStatus(area, expertId, ScoringOfferStatus.Finished);
         }
 
-        public void RejectOffer(AreaType area, long expertId)
+        public void RejectOffer(long expertId, AreaType area)
         {
             SetOfferStatus(area, expertId, ScoringOfferStatus.Rejected);
         }
 
-        public void AcceptOffer(AreaType area, long expertId)
+        public void AcceptOffer(long expertId, AreaType area, DateTimeOffset estimatesDueDate, DateTimeOffset now)
         {
             SetOfferStatus(area, expertId, ScoringOfferStatus.Accepted);
+            SetOfferEstimatesDueDate(area, expertId, estimatesDueDate);
+
+            if (!HasEnoughExperts())
+                return;
+
+            if (!ScoringStartDate.HasValue)
+                ScoringStartDate = now;
+
+            EstimatesDueDate = ScoringOffers.Max(o => o.EstimatesDueDate);
+        }
+
+        private bool HasEnoughExperts()
+        {
+            foreach (var areaScoring in AreaScorings)
+            {
+                var areaExpertsCount = ScoringOffers.Count(o => o.AreaId == areaScoring.AreaId && o.Status == ScoringOfferStatus.Accepted);
+                if (areaScoring.ExpertsCount > areaExpertsCount)
+                    return false;
+            }
+
+            return true;
         }
 
         public ScoringOffer GetOfferForExpertinArea(long expertId, AreaType area)
@@ -130,19 +148,35 @@ namespace SmartValley.Domain.Entities
             return ScoringOffers.FirstOrDefault(x => x.ExpertId == expertId && x.AreaId == area);
         }
 
-        public void AddNewOffers(IReadOnlyCollection<ScoringOffer> offers)
+        public void AddOffers(IReadOnlyCollection<ScoringOffer> offers)
         {
             foreach (var offer in offers)
+            {
                 ScoringOffers.Add(offer);
+
+                if (offer.ExpirationTimestamp > OffersDueDate)
+                    OffersDueDate = offer.ExpirationTimestamp;
+            }
         }
 
         private void SetOfferStatus(AreaType area, long expertId, ScoringOfferStatus status)
         {
-            var offer = ScoringOffers.FirstOrDefault(o => o.AreaId == area && o.ExpertId == expertId);
-            if (offer == null)
-                throw new InvalidOperationException($"Can't find offer for area: '{area}', expertId: '{expertId}', scoringId: '{Id}'");
+            var offer = GetOffer(area, expertId);
 
             offer.Status = status;
+        }
+
+        private void SetOfferEstimatesDueDate(AreaType area, long expertId, DateTimeOffset estimatesDueDate)
+        {
+            var offer = GetOffer(area, expertId);
+
+            offer.EstimatesDueDate = estimatesDueDate;
+        }
+
+        private ScoringOffer GetOffer(AreaType area, long expertId)
+        {
+            return ScoringOffers.FirstOrDefault(o => o.AreaId == area && o.ExpertId == expertId)
+                   ?? throw new InvalidOperationException($"Can't find offer for area: '{area}', expertId: '{expertId}', scoringId: '{Id}'");
         }
     }
 }
