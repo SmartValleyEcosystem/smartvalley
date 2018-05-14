@@ -16,6 +16,7 @@ export function multiTranslateLoaderFactory() {
     'components/create-project/create-project.component',
     'components/landing/landing.component',
     'components/admin-panel/admin-panel.component',
+    'components/admin-panel/admin-users-list/admin-users-list.component',
     'components/admin-panel/admin-expert-applications-list/admin-expert-applications-list.component',
     'components/admin-panel/admin-expert-application/admin-expert-application.component',
     'components/admin-panel/admin-scoring-projects/admin-scoring-project.component',

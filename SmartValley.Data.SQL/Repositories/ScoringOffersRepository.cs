@@ -79,6 +79,7 @@ namespace SmartValley.Data.SQL.Repositories
                                                                  o.scoringOffer.AreaId,
                                                                  o.project.ExternalId,
                                                                  o.project.Id,
+                                                                 o.project.IsPrivate,
                                                                  o.scoring.Score));
         }
     }

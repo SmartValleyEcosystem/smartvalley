@@ -17,7 +17,7 @@ namespace SmartValley.WebApi.Projects.Requests
         public int Count { get; set; }
 
         public bool OnlyScored { get; set; }
-        
+
         public string SearchString { get; set; }
 
         public Stage? Stage { get; set; }

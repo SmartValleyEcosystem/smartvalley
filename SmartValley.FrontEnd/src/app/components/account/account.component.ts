@@ -113,7 +113,7 @@ export class AccountComponent implements OnInit {
     }
     this.userForm.setValue({
       firstName: userResponse.firstName,
-      secondName: userResponse.secondName,
+      secondName: userResponse.lastName,
       email: this.currentUser.email,
       about: this.about
     });

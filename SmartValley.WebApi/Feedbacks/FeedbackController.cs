@@ -29,7 +29,7 @@ namespace SmartValley.WebApi.Feedbacks
 
         [HttpGet]
         [Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<PartialCollectionResponse<FeedbackResponse>> GetAsync(AllFeedbacksRequest request)
+        public async Task<PartialCollectionResponse<FeedbackResponse>> GetAsync(CollectionPageRequest request)
         {
             var feedbacks = await _feetbackService.GetAsync(request.Offset, request.Count);
             var totalCount = await _feetbackService.GetTotalCountAsync();

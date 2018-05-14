@@ -73,6 +73,7 @@ namespace SmartValley.Data.SQL.Repositories
                             where !query.Category.HasValue || project.Category == query.Category.Value
                             where !query.MinimumScore.HasValue || (project.Scoring.Score.HasValue && project.Scoring.Score.Value >= query.MinimumScore)
                             where !query.MaximumScore.HasValue || (project.Scoring.Score.HasValue && project.Scoring.Score.Value <= query.MaximumScore)
+                            where !project.IsPrivate
                             select project;
 
             if (enableSorting && query.OrderBy.HasValue)

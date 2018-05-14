@@ -1,6 +1,9 @@
 {
   "CreateProject": {
     "Title": "Create project",
+    "PrivateTitle": "Create private project",
+    "PublicProjectDesc": "The project you've created will be published. It will appear in search results, and other Smart Valley members will be able to see it.",
+    "PrivateProjectDesc": "The project you've created WILL NOT be published. It will not appear in search results, and other Smart Valley members will not be able to see it.",
     "Photo": "Photo",
     "ProjectImage": "Project image",
     "EditTitle": "Edit project",

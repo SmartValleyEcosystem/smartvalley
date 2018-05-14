@@ -39,6 +39,8 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public bool IsApplicationSubmitted { get; set; }
 
+        public bool IsPrivate { get; set; }
+
         public string AuthorAddress { get; set; }
 
         public ScoringStartTransactionStatus ScoringStartTransactionStatus { get; set; }
@@ -47,10 +49,8 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public static ProjectSummaryResponse Create(
             Project project,
-            Country country,
             Scoring scoring,
-            ScoringApplication scoringApplication,
-            User author)
+            ScoringApplication scoringApplication)
         {
             return new ProjectSummaryResponse
                    {
@@ -58,7 +58,7 @@ namespace SmartValley.WebApi.Projects.Responses
                        ExternalId = project.ExternalId.ToString(),
                        Name = project.Name,
                        ImageUrl = project.ImageUrl,
-                       CountryCode = country.Code,
+                       CountryCode = project.Country.Code,
                        StageId = (int) project.Stage,
                        Category = project.Category,
                        IcoDate = project.IcoDate,
@@ -70,7 +70,8 @@ namespace SmartValley.WebApi.Projects.Responses
                        IsApplicationSubmitted = scoringApplication?.IsSubmitted ?? false,
                        Scoring = ScoringResponse.FromScoring(scoring),
                        AuthorId = project.AuthorId,
-                       AuthorAddress = author.Address,
+                       AuthorAddress = project.Author.Address,
+                       IsPrivate = project.IsPrivate,
                        ScoringStartTransactionStatus = scoringApplication?.GetTransactionStatus() ?? ScoringStartTransactionStatus.NotSubmitted,
                        ScoringStartTransactionHash = scoringApplication?.ScoringStartTransaction?.Hash
                    };

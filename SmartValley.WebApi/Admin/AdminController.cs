@@ -2,14 +2,16 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SmartValley.Application;
 using SmartValley.Domain.Entities;
+using SmartValley.Domain.Exceptions;
+using SmartValley.Domain.Interfaces;
 using SmartValley.Ethereum;
 using SmartValley.WebApi.Admin.Request;
 using SmartValley.WebApi.Admin.Response;
 using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Experts.Requests;
+using SmartValley.WebApi.Users;
 using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Admin
@@ -22,17 +24,20 @@ namespace SmartValley.WebApi.Admin
         private readonly IExpertService _expertService;
         private readonly EthereumClient _ethereumClient;
         private readonly IAuthenticationService _authenticationService;
+        private readonly IUserService _userService;
 
         public AdminController(
             IExpertService expertService,
             IAdminService service,
             EthereumClient ethereumClient,
-            IAuthenticationService authenticationService)
+            IAuthenticationService authenticationService,
+            IUserService userService)
         {
             _service = service;
             _ethereumClient = ethereumClient;
             _expertService = expertService;
             _authenticationService = authenticationService;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -51,6 +56,28 @@ namespace SmartValley.WebApi.Admin
                       {
                           Items = admins.Select(i => new AdminResponse {Address = i.Address, Email = i.Email}).ToArray()
                       });
+        }
+
+        [HttpGet("users")]
+        public async Task<PartialCollectionResponse<UserResponse>> GetAllUsers(CollectionPageRequest request)
+        {
+            var totalCount = await _userService.GetTotalCountAsync();
+            var users = await _userService.GetAllAsync(request.Offset, request.Count);
+
+            return new PartialCollectionResponse<UserResponse>(
+                request.Offset, users.Count, totalCount, users.Select(UserResponse.Create).ToArray());
+        }
+
+        [HttpPut("users")]
+        public async Task<IActionResult> PutUserAsync([FromBody] AdminUserUpdateRequest request)
+        {
+            var user = await _userService.GetByAddressAsync(request.Address);
+            if (user == null)
+                throw new AppErrorException(ErrorCode.UserNotFound);
+
+            await _userService.SetCanCreatePrivateProjectsAsync(user.Address, request.CanCreatePrivateProjects);
+
+            return NoContent();
         }
 
         [HttpPut("experts/availability")]

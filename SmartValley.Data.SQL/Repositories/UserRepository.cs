@@ -18,6 +18,17 @@ namespace SmartValley.Data.SQL.Repositories
         {
         }
 
+        public new async Task<IReadOnlyCollection<User>> GetAllAsync(int offset, int count)
+        {
+            return await ReadContext.Users
+                             .Skip(offset)
+                             .Take(count)
+                             .ToArrayAsync();
+        }
+
+        public Task<int> GetTotalCountAsync()
+            => ReadContext.Users.CountAsync();
+
         public Task<User> GetByAddressAsync(Address address)
             => ReadContext.Users.FirstOrDefaultAsync(u => u.Address == address);
 

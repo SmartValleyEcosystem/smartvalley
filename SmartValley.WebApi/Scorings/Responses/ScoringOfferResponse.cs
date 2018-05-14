@@ -30,6 +30,8 @@ namespace SmartValley.WebApi.Scorings.Responses
 
         public DateTimeOffset? EstimatesDueDate { get; set; }
 
+        public bool IsPrivate { get; set; }
+
         public double? FinalScore { get; set; }
 
         public static ScoringOfferResponse Create(ScoringOfferDetails scoringOffer, DateTimeOffset now)
@@ -46,6 +48,7 @@ namespace SmartValley.WebApi.Scorings.Responses
                        ProjectExternalId = scoringOffer.ProjectExternalId,
                        ExpirationTimestamp = scoringOffer.ExpirationTimestamp,
                        EstimatesDueDate = scoringOffer.EstimatesDueDate,
+                       IsPrivate = scoringOffer.IsPrivate,
                        OfferStatus = scoringOffer.Status.ToApi(scoringOffer.ExpirationTimestamp, now),
                        ProjectId = scoringOffer.ProjectId,
                        FinalScore = scoringOffer.FinalScore

@@ -5,11 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Domain.Entities;
+using SmartValley.WebApi.Experts.Requests;
 using SmartValley.WebApi.Subscribers.Responses;
 using SmartValley.WebApi.Subscriptions.Requests;
 using SmartValley.WebApi.WebApi;
 
-namespace SmartValley.WebApi.Subscribers
+namespace SmartValley.WebApi.Subscriptions
 {
     [Route("api/subscriptions")]
     public class SubscriptionController : Controller
@@ -36,7 +37,7 @@ namespace SmartValley.WebApi.Subscribers
 
         [HttpGet]
         [Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<PartialCollectionResponse<SubscriptionResponse>> GetAsync(AllSubscriptionsRequest request)
+        public async Task<PartialCollectionResponse<SubscriptionResponse>> GetAsync(CollectionPageRequest request)
         {
             var subscriptionQuery = (from subscriber in _readContext.Subscriptions
                                  join project in _readContext.Projects on subscriber.ProjectId equals project.Id

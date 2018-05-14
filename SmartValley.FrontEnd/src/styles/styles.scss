@@ -1,7 +1,7 @@
 @import "../../node_modules/@angular/material/prebuilt-themes/purple-green.css";
 @import "../../node_modules/bootstrap/dist/css/bootstrap.css";
 
-html{
+html {
   width: 100vw;
   overflow-x: hidden;
 }
@@ -221,7 +221,9 @@ div.mat-checkbox-frame {
 }
 
 .nav-pills .nav-item {
-  padding: 0;
+  padding-left: 0;
+  padding-right: 50px;
+  width: initial;
 }
 
 .mat-tab-label-active {

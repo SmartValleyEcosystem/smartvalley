@@ -23,6 +23,7 @@ import {MemberUploadPhotoComponent} from '../member-upload-photo/member-upload-p
 import {StringExtensions} from '../../utils/string-extensions';
 import {ImageUploaderComponent} from '../image-uploader/image-uploader.component';
 import {FileUploaderHelper} from '../../utils/file-uploader-helper';
+import {UserContext} from '../../services/authentication/user-context';
 
 @Component({
   selector: 'app-create-project',
@@ -45,6 +46,7 @@ export class CreateProjectComponent implements OnInit {
 
   public isEditing = false;
   public canRemove = true;
+  public isPrivate = false;
   public editingData: MyProjectResponse;
   private projectId: number;
 
@@ -65,6 +67,7 @@ export class CreateProjectComponent implements OnInit {
               private dictionariesService: DictionariesService,
               private dialogService: DialogService,
               private scoringApiClient: ScoringApiClient,
+              private userContext: UserContext,
               private router: Router) {
 
     this.categories = this.dictionariesService.categories.map(i => <SelectItem>{
@@ -86,6 +89,8 @@ export class CreateProjectComponent implements OnInit {
       label: i.name,
       value: i.code
     });
+
+    this.isPrivate = this.userContext.getCurrentUser().canCreatePrivateProjects;
   }
 
   public async ngOnInit() {
