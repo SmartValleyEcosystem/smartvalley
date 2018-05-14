@@ -134,6 +134,7 @@ import {AdminFeedbacksComponent} from './components/admin-panel/admin-feedbacks/
 import {FeedbackApiClient} from './api/feedback/feedback-api-client';
 import {SubscriptionApiClient} from './api/subscription/subscription-api-client';
 import {AdminSubscriptionsComponent} from './components/admin-panel/admin-subscriptions/admin-subscriptions.component';
+import {QuillModule} from 'ngx-quill';
 import {AdminAdminsListComponent} from './components/admin-panel/admin-admins-list/admin-admins-list.component';
 import {AdminUsersListComponent} from './components/admin-panel/admin-users-list/admin-users-list.component';
 
@@ -251,6 +252,7 @@ import {AdminUsersListComponent} from './components/admin-panel/admin-users-list
     RadioButtonModule,
     MatIconModule,
     NgInviewModule,
+    QuillModule,
     Ng2DeviceDetectorModule.forRoot(),
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
     TranslateModule.forRoot({
