@@ -136,6 +136,8 @@ import {SubscriptionApiClient} from './api/subscription/subscription-api-client'
 import {AdminSubscriptionsComponent} from './components/admin-panel/admin-subscriptions/admin-subscriptions.component';
 import {AccordionModule} from 'primeng/accordion';
 import {TabViewModule} from 'primeng/tabview';
+import {QuillModule} from 'ngx-quill';
+import {AdminAdminsListComponent} from './components/admin-panel/admin-admins-list/admin-admins-list.component';
 
 @NgModule({
   declarations: [
@@ -251,6 +253,7 @@ import {TabViewModule} from 'primeng/tabview';
     RadioButtonModule,
     MatIconModule,
     NgInviewModule,
+    QuillModule,
     Ng2DeviceDetectorModule.forRoot(),
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
     TranslateModule.forRoot({

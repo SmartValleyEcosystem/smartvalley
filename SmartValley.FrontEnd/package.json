@@ -46,6 +46,7 @@
     "ng2-device-detector": "1.0.1",
     "ng2-sticky-kit": "^5.3.0",
     "ngx-progressbar": "2.1.1",
+    "ngx-quill": "^3.1.0",
     "popper": "1.0.1",
     "primeng": "5.2.3",
     "rxjs": "5.5.2",

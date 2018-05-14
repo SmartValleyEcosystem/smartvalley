@@ -47,9 +47,10 @@
           <p class="control-label">
             <label for="control_description">{{ 'EditScoringApplication.Description' | translate }}</label>
           </p>
-          <textarea class="input" formControlName="description" name="control_description" id="control_description"
-                    cols="30" rows="10" #required>
-          </textarea>
+          <quill-editor [modules]="editorOptions" placeholder="" [formats]="editorFormats" formControlName="description" name="control_description"
+                        placeholder=""
+                        id="control_description" #required>
+          </quill-editor>
         </div>
         <div class="form-control-row">
           <p class="control-label">
@@ -151,10 +152,10 @@
               <p class="control-label">
                 <label for="team_member_experience_{{member}}">{{ 'EditScoringApplication.Experience' | translate}}</label>
               </p>
-              <textarea class="input" formControlName="team_member_experience_{{member}}"
-                        placeholder="{{ 'EditScoringApplication.ExperiencePlaceholder' | translate}}"
-                        id="team_member_experience_{{member}}" #required>
-              </textarea>
+              <quill-editor [modules]="editorOptions" [formats]="editorFormats" formControlName="team_member_experience_{{member}}"
+                            placeholder="{{ 'EditScoringApplication.ExperiencePlaceholder' | translate}}"
+                            id="team_member_experience_{{member}}" #required>
+              </quill-editor>
             </div>
           </div>
           <span class="socials__add-button"
@@ -178,17 +179,19 @@
               <p class="control-label">
                 <label for="adviser_reason_{{adviser}}">{{ 'EditScoringApplication.Reason' | translate }}</label>
               </p>
-              <textarea class="input" formControlName="adviser_reason_{{adviser}}"
-                        id="adviser_reason_{{adviser}}" #required>
-              </textarea>
+              <quill-editor [modules]="editorOptions" [formats]="editorFormats" formControlName="adviser_reason_{{adviser}}"
+                            placeholder=""
+                            id="adviser_reason_{{adviser}}" #required>
+              </quill-editor>
             </div>
             <div class="control-row">
               <p class="control-label">
                 <label for="adviser_about_{{adviser}}">{{ 'EditScoringApplication.About' | translate }}</label>
               </p>
-              <textarea class="input" formControlName="adviser_about_{{adviser}}"
-                        id="adviser_about_{{adviser}}" #required>
-              </textarea>
+              <quill-editor [modules]="editorOptions" [formats]="editorFormats" formControlName="adviser_about_{{adviser}}"
+                            placeholder=""
+                            id="adviser_about_{{adviser}}" #required>
+              </quill-editor>
             </div>
             <div class="control-row">
               <p class="control-label">
@@ -226,8 +229,10 @@
                 <p class="control-label">
                   <label for="control_{{question.id}}">{{ 'EditScoringApplication.' + question.key | translate}}</label>
                 </p>
-                <textarea class="input" formControlName="{{'control_' + question.id}}" id="control_{{questionIndex}}"
-                          cols="30" rows="10" #required></textarea>
+                <quill-editor [modules]="editorOptions" [formats]="editorFormats" formControlName="{{'control_' + question.id}}"
+                              placeholder=""
+                              id="control_{{questionIndex}}" #required>
+                </quill-editor>
               </div>
               <div *ngSwitchCase="questionTypeComboBox">
                 <p class="control-label">
