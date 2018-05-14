@@ -82,7 +82,7 @@ namespace SmartValley.WebApi.Scorings
                 throw new AppErrorException(ErrorCode.ScoringNotFound);
 
             var expert = await _userRepository.GetByIdAsync(expertId);
-            var offer = await GetOfferAsync(areaId, scoring, expert);
+            var offer = await GetOfferFromContractAsync(areaId, scoring.ProjectId, expert);
             if (offer == null)
                 throw new AppErrorException(ErrorCode.OfferNotFoundInContract);
 
@@ -135,11 +135,11 @@ namespace SmartValley.WebApi.Scorings
         public Task<int> GetOffersQueryCountAsync(OffersQuery query, DateTimeOffset now)
             => _scoringOffersRepository.GetQueryCountAsync(query, now);
 
-        private async Task<ScoringOfferInfo> GetOfferAsync(long areaId, Scoring scoring, User expert)
+        private async Task<ScoringOfferInfo> GetOfferFromContractAsync(long areaId, long projectId, User expert)
         {
-            var project = await _projectRepository.GetAsync(scoring.ProjectId);
-            var offers = await _scoringExpertsManagerContractClient.GetOffersAsync(project.ExternalId);
-            return offers.FirstOrDefault(o => o.Area == (AreaType) areaId && o.ExpertAddress == expert.Address);
+            var project = await _projectRepository.GetAsync(projectId);
+            var contractOffers = await _scoringExpertsManagerContractClient.GetOffersAsync(project.ExternalId);
+            return contractOffers.FirstOrDefault(o => o.Area == (AreaType) areaId && o.ExpertAddress == expert.Address);
         }
 
         private Task<IReadOnlyCollection<User>> GetExpertsForOffersAsync(IReadOnlyCollection<ScoringOfferInfo> contractOffers)
