@@ -8,7 +8,7 @@ import {Paths} from '../../../paths';
 @Component({
   selector: 'app-admin-expert-applications-list',
   templateUrl: './admin-expert-applications-list.component.html',
-  styleUrls: ['./admin-expert-applications-list.component.css']
+  styleUrls: ['./admin-expert-applications-list.component.scss']
 })
 export class AdminExpertApplicationsListComponent implements OnInit {
 

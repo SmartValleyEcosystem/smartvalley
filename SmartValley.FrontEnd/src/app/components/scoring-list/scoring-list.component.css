@@ -8,21 +8,6 @@
   font-size: 14px;
 }
 
-.title {
-  width: 119px;
-  height: 40px;
-  font-family: Roboto-Bold;
-  font-size: 32px;
-  font-weight: bold;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 1.25;
-  letter-spacing: -0.1px;
-  text-align: left;
-  color: #000000;
-  margin-bottom: 20px;
-}
-
 .lock-icon {
   position: absolute;
   font-size: 17px;
