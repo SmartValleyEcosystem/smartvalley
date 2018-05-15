@@ -42,6 +42,7 @@ export class AdminExpertsListComponent implements OnInit {
       email: expert.email,
       about: expert.about,
       isAvailable: expert.isAvailable,
+      isInHouse: expert.isInHouse,
       areas: expert.areas.map(a => a.name),
     });
   }

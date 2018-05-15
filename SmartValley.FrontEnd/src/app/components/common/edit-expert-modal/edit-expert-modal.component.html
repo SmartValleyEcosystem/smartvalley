@@ -8,7 +8,6 @@
               {{ 'EditExpertModalComponent.Address' | translate }}
           </span>
         <span class="col-8 example-full-width">{{expertDetails.address}}</span>
-
       </div>
       <div class="row">
           <span class="col-4">
@@ -45,6 +44,14 @@
           <textarea matInput placeholder="{{ 'EditExpertModalComponent.About' | translate }}" formControlName="about"
                     name="about" [(ngModel)]="expertDetails.about" [(value)]="expertDetails.about"></textarea>
         </mat-form-field>
+      </div>
+      <div class="row">
+          <span class="col-4">
+              {{ 'EditExpertModalComponent.IsInHouse' | translate }}
+          </span>
+          <mat-checkbox class="col-8 example-full-width" formControlName="isInHouse" type="checkbox"
+                 name="isInHouse" [(ngModel)]="expertDetails.isInHouse" [(value)]="expertDetails.isInHouse">
+          </mat-checkbox>
       </div>
       <div class="row submit-row">
         <span class="offset-6 col-6">

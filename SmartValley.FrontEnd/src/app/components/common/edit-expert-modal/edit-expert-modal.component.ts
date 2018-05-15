@@ -28,6 +28,7 @@ export class EditExpertModalComponent implements OnInit {
     address: '',
     email: '',
     isAvailable: true,
+    isInHouse: false,
     firstName: '',
     secondName: '',
     areas: []
@@ -49,7 +50,8 @@ export class EditExpertModalComponent implements OnInit {
       email: ['', Validators.required],
       firstName: [''],
       secondName: [''],
-      about: ['']
+      about: [''],
+      isInHouse: [false]
     });
 
     this.expertDetails = await this.expertApiClient.getAsync(this.data.address);
@@ -59,7 +61,8 @@ export class EditExpertModalComponent implements OnInit {
       firstName: this.expertDetails.firstName,
       secondName: this.expertDetails.secondName,
       about: this.expertDetails.about,
-      email: this.expertDetails.email
+      email: this.expertDetails.email,
+      isInHouse: this.expertDetails.isInHouse
     });
 
     this.isAvailable = this.expertDetails.isAvailable;
@@ -124,7 +127,6 @@ export class EditExpertModalComponent implements OnInit {
     }
   }
 
-
   public async submitPersonalSettingsAsync() {
     const editExpertRequest = <AdminExpertUpdateRequest> {
       address: this.backendForm.value.address,
@@ -132,6 +134,7 @@ export class EditExpertModalComponent implements OnInit {
       firstName: this.backendForm.value.firstName,
       secondName: this.backendForm.value.secondName,
       about: this.backendForm.value.about,
+      isInHouse: this.backendForm.value.isInHouse,
       isAvailable: this.isAvailable || false
     };
 

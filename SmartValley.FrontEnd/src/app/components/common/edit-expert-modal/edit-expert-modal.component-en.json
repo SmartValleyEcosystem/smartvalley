@@ -8,6 +8,7 @@
     "FirstName": "First name",
     "SecondName": "Second name",
     "About": "About",
+    "IsInHouse": "Is in-house",
     "SavePersonal": "Save",
     "SaveExpert": "Save",
     "AvailableForWork": "Available for work",

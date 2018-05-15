@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SmartValley.Application;
 using SmartValley.Application.Extensions;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;

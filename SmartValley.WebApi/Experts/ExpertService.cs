@@ -108,6 +108,16 @@ namespace SmartValley.WebApi.Experts
             await _expertRepository.SaveChangesAsync();
         }
 
+        public async Task SetInHouseAsync(Address address, bool isInHouse)
+        {
+            var expert = await _expertRepository.GetByAddressAsync(address);
+            if (expert == null)
+                throw new AppErrorException(ErrorCode.ExpertNotFound);
+
+            expert.IsInHouse = isInHouse;
+            await _expertRepository.SaveChangesAsync();
+        }
+
         public Task<int> GetTotalCountExpertsAsync() => _expertRepository.GetTotalCountExpertsAsync();
 
         public async Task AddAsync(ExpertRequest request)
@@ -151,16 +161,6 @@ namespace SmartValley.WebApi.Experts
             expert.About = request.About;
 
             await _expertRepository.SaveChangesAsync();
-
-            //  https://rassvet-capital.atlassian.net/browse/ILT-730
-            //if (!string.IsNullOrEmpty(request.TransactionHash))
-            //{
-            //    await _expertRepository.UpdateAreasAsync(new Expert
-            //                                        {
-            //                                            IsAvailable = request.IsAvailable,
-            //                                            UserId = user.Id
-            //                                        }, request.Areas);
-            //}
         }
 
         public async Task DeleteAsync(Address address)

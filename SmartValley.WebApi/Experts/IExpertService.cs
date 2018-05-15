@@ -41,5 +41,7 @@ namespace SmartValley.WebApi.Experts
         Task SetAvailabilityAsync(Address address, bool isAvailable);
 
         Task<int> GetTotalCountExpertsAsync();
+
+        Task SetInHouseAsync(Address address, bool isInHouse);
     }
 }

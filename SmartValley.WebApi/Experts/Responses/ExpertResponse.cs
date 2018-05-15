@@ -18,6 +18,8 @@ namespace SmartValley.WebApi.Experts.Responses
 
         public bool IsAvailable { get; set; }
 
+        public bool IsInHouse { get; set; }
+
         public IReadOnlyCollection<AreaResponse> Areas { get; set; }
 
         public static ExpertResponse Create(ExpertDetails expertDetails)
@@ -28,6 +30,7 @@ namespace SmartValley.WebApi.Experts.Responses
                        Email = expertDetails.Email,
                        About = expertDetails.About,
                        IsAvailable = expertDetails.IsAvailable,
+                       IsInHouse = expertDetails.IsInHouse,
                        FirstName = expertDetails.FirstName,
                        SecondName = expertDetails.SecondName,
                        Areas = expertDetails.Areas.Select(j => new AreaResponse {Id = j.Id.FromDomain(), Name = j.Name}).ToArray()
