@@ -1,0 +1,44 @@
+@font-face {
+  font-family: 'PT Sans';
+  src: local('PT Sans'), local('PTSans-Regular'), url('/assets/fonts/PTSans/ptsans.woff2') format('woff2'), url('/assets/fonts/PTSans/ptsans.woff') format('woff'), url('/assets/fonts/PTSans/ptsans.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'PT Sans';
+  src: local('PT Sans Italic'), local('PTSans-Italic'), url('/assets/fonts/PTSans/ptsansitalic.woff2') format('woff2'), url('/assets/fonts/PTSans/ptsansitalic.woff') format('woff'), url('/assets/fonts/PTSans/ptsansitalic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'PT Sans';
+  src: local('PT Sans Bold'), local('PTSans-Bold'), url('/assets/fonts/PTSans/ptsansbold.woff2') format('woff2'), url('/assets/fonts/PTSans/ptsansbold.woff') format('woff'), url('/assets/fonts/PTSans/ptsansbold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'PT Sans';
+  src: local('PT Sans Bold Italic'), local('PTSans-BoldItalic'), url('/assets/fonts/PTSans/ptsansbolditalic.woff2') format('woff2'), url('/assets/fonts/PTSans/ptsansbolditalic.woff') format('woff'), url('/assets/fonts/PTSans/ptsansbolditalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'PT Sans Narrow';
+  src: local('PT Sans Narrow'), local('PTSans-Narrow'), url('/assets/fonts/PTSansNarrow/ptsansnarrow.woff2') format('woff2'), url('/assets/fonts/PTSansNarrow/ptsansnarrow.woff') format('woff'), url('/assets/fonts/PTSansNarrow/ptsansnarrow.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'PT Sans Narrow';
+  src: local('PT Sans Narrow Bold'), local('PTSans-NarrowBold'), url('/assets/fonts/PTSansNarrow/ptsansnarrowbold.woff2') format('woff2'), url('/assets/fonts/PTSansNarrow/ptsansnarrowbold.woff') format('woff'), url('/assets/fonts/PTSansNarrow/ptsansnarrowbold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+$text-size-h1: 32px;
+$text-size-h2: 24px;
+$text-size-h3: 16px;
+$text-size: 16px;
+$text-size-small: 14px;
+$font-pt: 'PT Sans', sans-serif;
+$font-pt-narrow: 'PT Sans Narrow', sans-serif;

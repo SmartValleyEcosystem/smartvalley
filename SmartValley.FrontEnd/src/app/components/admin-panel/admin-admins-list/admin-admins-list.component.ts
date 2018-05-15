@@ -13,7 +13,7 @@ import {LazyLoadEvent} from 'primeng/api';
 @Component({
   selector: 'app-admin-admins-list',
   templateUrl: './admin-admins-list.component.html',
-  styleUrls: ['./admin-admins-list.component.css']
+  styleUrls: ['./admin-admins-list.component.scss']
 })
 export class AdminAdminsListComponent implements OnInit {
 
