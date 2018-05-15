@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SmartValley.Application;
 using SmartValley.Domain.Interfaces;
 using SmartValley.Ethereum;
 using SmartValley.WebApi.Estimates.Requests;
@@ -51,9 +50,9 @@ namespace SmartValley.WebApi.Estimates
         [Authorize]
         [HttpGet]
         [Route("offer")]
-        public async Task<ExpertEstimateResponse> GetOfferEstimatesAsync(long projectId)
+        public async Task<ExpertEstimateResponse> GetOfferEstimatesAsync(long projectId, AreaType areaType)
         {
-            var expertConclusion = await _estimationService.GetOfferEstimateAsync(User.GetUserId(), projectId);
+            var expertConclusion = await _estimationService.GetOfferEstimateAsync(User.GetUserId(), projectId, areaType);
             if (expertConclusion == null)
             {
                 return ExpertEstimateResponse.Empty;

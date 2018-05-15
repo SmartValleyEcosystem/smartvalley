@@ -76,10 +76,10 @@ namespace SmartValley.WebApi.Estimates
             await _scoringRepository.SaveChangesAsync();
         }
 
-        public async Task<ExpertScoring> GetOfferEstimateAsync(long expertId, long projectId)
+        public async Task<ExpertScoring> GetOfferEstimateAsync(long expertId, long projectId, Experts.AreaType areaType)
         {
             var scoring = await _scoringRepository.GetByProjectIdAsync(projectId);
-            return scoring.ExpertScorings.FirstOrDefault(x => x.ExpertId == expertId);
+            return scoring.ExpertScorings.FirstOrDefault(x => x.ExpertId == expertId && x.Area == areaType.ToDomain());
         }
 
         public async Task SubmitEstimatesAsync(long expertId, SubmitEstimateRequest request)

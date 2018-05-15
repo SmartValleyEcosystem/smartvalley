@@ -33,12 +33,15 @@ export class EstimatesApiClient extends BaseApiClient {
   }
 
   async getCriterionPromptsAsync(projectId: number, areaType: number): Promise<CollectionResponse<CriterionPromptResponse>> {
-    return this.http.get<CollectionResponse<CriterionPromptResponse>>(this.baseApiUrl + `/estimates/project/${projectId}/prompts/${areaType}`)
+    const url = `${this.baseApiUrl}/estimates/project/${projectId}/prompts/${areaType}`;
+    return this.http.get<CollectionResponse<CriterionPromptResponse>>(url)
       .toPromise();
-  };
+  }
 
-  async getEstimatesDraftAsync(projectId) {
-    const parameters = new HttpParams().append('projectId', projectId.toString());
+  async getEstimatesDraftAsync(projectId: number, areaType: number) {
+    const parameters = new HttpParams()
+      .append('projectId', projectId.toString())
+      .append('areaType', areaType.toString());
     return await this.http.get(this.baseApiUrl + `/estimates/offer`, {params: parameters})
       .toPromise();
   }

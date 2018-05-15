@@ -85,7 +85,7 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
     this.projectName = projectSummary.name;
     this.projectExternalId = projectSummary.externalId;
 
-    const draftData = await this.estimatesApiClient.getEstimatesDraftAsync(this.projectId);
+    const draftData = await this.estimatesApiClient.getEstimatesDraftAsync(this.projectId, this.areaType);
     this.addDraftData(draftData);
 
     const criterionPromptsResponse = await this.estimatesApiClient.getCriterionPromptsAsync(this.projectId, this.areaType);
