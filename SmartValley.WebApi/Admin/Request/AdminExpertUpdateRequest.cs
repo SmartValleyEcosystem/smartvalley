@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using SmartValley.WebApi.Experts.Requests;
 
 namespace SmartValley.WebApi.Admin.Request
@@ -12,5 +11,7 @@ namespace SmartValley.WebApi.Admin.Request
         public string Email { get; set; }
 
         public string TransactionHash { get; set; }
+
+        public bool IsInHouse { get; set; }
     }
 }

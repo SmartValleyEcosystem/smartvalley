@@ -5,5 +5,6 @@ export interface AdminExpertItem {
   address: string;
   email: string;
   isAvailable: boolean;
+  isInHouse: boolean;
   areas: string[];
 }

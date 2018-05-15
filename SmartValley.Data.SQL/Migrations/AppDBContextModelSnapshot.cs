@@ -133,6 +133,8 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<bool>("IsAvailable");
 
+                    b.Property<bool>("IsInHouse");
+
                     b.HasKey("UserId");
 
                     b.ToTable("Experts");

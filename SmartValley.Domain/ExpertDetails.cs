@@ -18,13 +18,16 @@ namespace SmartValley.Domain
 
         public bool IsAvailable { get; }
 
+        public bool IsInHouse { get; set; }
+
         public IReadOnlyCollection<Area> Areas { get; }
 
-        public ExpertDetails(Address address, string email, string firstName, string secondName, string about, bool isAvailable, IReadOnlyCollection<Area> areas)
+        public ExpertDetails(Address address, string email, string firstName, string secondName, string about, bool isAvailable, IReadOnlyCollection<Area> areas, bool isInHouse)
         {
             Address = address;
             Email = email;
             IsAvailable = isAvailable;
+            IsInHouse = isInHouse;
             Areas = areas;
             About = about;
             FirstName = firstName;

@@ -100,6 +100,7 @@ namespace SmartValley.WebApi.Admin
         public async Task<IActionResult> UpdateExpertAsync([FromBody] AdminExpertUpdateRequest request)
         {
             await _expertService.UpdateAsync(request.Address, request);
+            await _expertService.SetInHouseAsync(request.Address, request.IsInHouse);
             await _authenticationService.ChangeEmailAsync(request.Address, request.Email);
             return NoContent();
         }

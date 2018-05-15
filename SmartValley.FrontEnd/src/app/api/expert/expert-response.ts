@@ -3,6 +3,7 @@ export interface ExpertResponse {
   email: string;
   about: string;
   isAvailable: boolean;
+  isInHouse: boolean;
   firstName: string;
   secondName: string;
   areas: any;

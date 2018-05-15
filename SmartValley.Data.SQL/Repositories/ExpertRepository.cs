@@ -77,7 +77,8 @@ namespace SmartValley.Data.SQL.Repositories
                 expertUser.User.SecondName,
                 expertUser.About,
                 expertUser.IsAvailable,
-                expertAreas
+                expertAreas,
+                expertUser.IsInHouse
             );
         }
 
@@ -103,7 +104,8 @@ namespace SmartValley.Data.SQL.Repositories
                                                                        expertUser.user.SecondName,
                                                                        expertUser.expert.About,
                                                                        expertUser.expert.IsAvailable,
-                                                                       lookUpAreas[expertUser.expert.UserId].ToArray())).ToArrayAsync();
+                                                                       lookUpAreas[expertUser.expert.UserId].ToArray(),
+                                                                       expertUser.expert.IsInHouse)).ToArrayAsync();
         }
     }
 }
