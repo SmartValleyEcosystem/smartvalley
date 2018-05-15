@@ -1,3 +1,5 @@
+@import "../../../../styles/fonts";
+
 .scoring-card {
   display: inline-block;
   padding: 0px;
@@ -51,6 +53,7 @@
 }
 
 .scoring-card-block {
+  font-family: $font-pt;
   position: relative;
   padding: 0px;
   min-width: 1090px;

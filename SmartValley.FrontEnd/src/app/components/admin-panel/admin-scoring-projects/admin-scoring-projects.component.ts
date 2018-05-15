@@ -20,7 +20,7 @@ import {OffersApiClient} from '../../../api/scoring-offer/offers-api-client';
 @Component({
   selector: 'app-admin-scoring-projects',
   templateUrl: './admin-scoring-projects.component.html',
-  styleUrls: ['./admin-scoring-projects.component.css']
+  styleUrls: ['./admin-scoring-projects.component.scss']
 })
 export class AdminScoringProjectsComponent implements OnInit {
 

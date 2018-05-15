@@ -1,3 +1,6 @@
+@import "./pallete.scss";
+@import "./fonts.scss";
+
 @import "../../node_modules/@angular/material/prebuilt-themes/purple-green.css";
 @import "../../node_modules/bootstrap/dist/css/bootstrap.css";
 
@@ -77,8 +80,12 @@ html, body {
 
 body {
   background: #eeedf5;
+<<<<<<< HEAD
   font-family: 'Roboto-Regular';
   overflow-x: hidden;
+=======
+  font-family: $font-pt;
+>>>>>>> 9ec56ec... SV-1147 change fonts (admin)
 }
 
 .body-visible {
@@ -102,10 +109,6 @@ body {
 
 .mat-button-wrapper {
   font-family: 'Roboto-Regular-Medium', sans-serif;
-}
-
-.mat-tab-group {
-  font-family: 'Roboto-Regular', sans-serif;
 }
 
 .mat-checkbox {
@@ -424,9 +427,11 @@ a, button, span {
 }
 
 .title {
+  font-weight: bold;
   font-size: 32px;
-  font-family: Roboto-Bold;
-  color: #000;
+  font-family: $font-pt-narrow;
+  color: $background-dark;
+  letter-spacing: 0.04em;
   margin-bottom: 20px;
 }
 
@@ -439,13 +444,6 @@ a, button, span {
   label {
     cursor: pointer;
   }
-}
-
-.title {
-  font-size: 32px;
-  font-family: Roboto-Bold;
-  color: #000;
-  margin-bottom: 20px;
 }
 
 .settings-block {
