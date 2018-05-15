@@ -71,7 +71,7 @@ namespace SmartValley.Domain.Entities
             if (!IsOfferAccepted(expertId, scoring.Area))
                 throw new AppErrorException(ErrorCode.AcceptedOfferNotFound);
 
-            var storedScoring = ExpertScorings.SingleOrDefault(x => x.ExpertId == expertId);
+            var storedScoring = ExpertScorings.SingleOrDefault(x => x.ExpertId == expertId && x.Area == scoring.Area);
             if (storedScoring == null)
             {
                 ExpertScorings.Add(scoring);
