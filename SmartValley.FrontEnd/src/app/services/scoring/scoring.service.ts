@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ScoringManagerContractClient} from '../contract-clients/scoring-manager-contract-client';
 import {Web3Service} from '../web3-service';
-import {ScoringContractClient} from '../contract-clients/scoring-contract-client';
 import {AreaType} from '../../api/scoring/area-type.enum';
 import {ConverterHelper} from '../converter-helper';
 import {NotificationsService} from 'angular2-notifications';
@@ -10,7 +9,6 @@ import {NotificationsService} from 'angular2-notifications';
 export class ScoringService {
 
   constructor(private scoringManagerContractClient: ScoringManagerContractClient,
-              private scoringContractClient: ScoringContractClient,
               private web3Service: Web3Service,
               private notificationService: NotificationsService) {
   }

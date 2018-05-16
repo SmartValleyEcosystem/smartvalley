@@ -24,7 +24,6 @@ export class ScoringExpertsManagerContractClient implements ContractClient {
   public async selectMissingExpertsAsync(projectId: string): Promise<string> {
     const contract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.userContext.getCurrentUser().account;
-
     return contract.selectMissingExperts(
       projectId.replace(/-/g, ''),
       {from: fromAddress});
