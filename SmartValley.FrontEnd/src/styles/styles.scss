@@ -482,7 +482,7 @@ a, button, span {
 }
 
 .material-icons {
-  font-family: 'Material Icons';
+  font-family: Material Icons;
   font-weight: normal;
   font-style: normal;
   font-size: 24px;  /* Preferred icon size */
@@ -507,12 +507,13 @@ a, button, span {
 }
 
 @font-face {
-  font-family: 'Material Icons';
+  font-family: "Material Icons";
   font-style: normal;
   font-weight: 400;
   src: local('Material Icons'),
   local('MaterialIcons-Regular'),
   url("../assets/fonts/MaterialIcons-Regular.woff2") format('woff2'),
+  url("../assets/fonts/MaterialIcons-Images.woff2") format('woff2'),
   url("../assets/fonts/MaterialIcons-Regular.woff") format('woff'),
   url("../assets/fonts/MaterialIcons-Regular.ttf") format('truetype');
 }
