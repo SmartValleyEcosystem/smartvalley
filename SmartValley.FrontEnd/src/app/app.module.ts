@@ -134,6 +134,7 @@ import {AdminFeedbacksComponent} from './components/admin-panel/admin-feedbacks/
 import {FeedbackApiClient} from './api/feedback/feedback-api-client';
 import {SubscriptionApiClient} from './api/subscription/subscription-api-client';
 import {AdminSubscriptionsComponent} from './components/admin-panel/admin-subscriptions/admin-subscriptions.component';
+import {AccordionModule} from 'primeng/accordion';
 
 @NgModule({
   declarations: [
@@ -231,6 +232,7 @@ import {AdminSubscriptionsComponent} from './components/admin-panel/admin-subscr
     BrowserModule,
     MatTooltipModule,
     CheckboxModule,
+    AccordionModule,
     HttpClientModule,
     BrowserAnimationsModule,
     DropdownModule,
