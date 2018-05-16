@@ -137,6 +137,7 @@ import {AdminSubscriptionsComponent} from './components/admin-panel/admin-subscr
 import {QuillModule} from 'ngx-quill';
 import {AdminAdminsListComponent} from './components/admin-panel/admin-admins-list/admin-admins-list.component';
 import {AdminUsersListComponent} from './components/admin-panel/admin-users-list/admin-users-list.component';
+import {AccordionModule} from 'primeng/accordion';
 
 @NgModule({
   declarations: [
@@ -236,6 +237,7 @@ import {AdminUsersListComponent} from './components/admin-panel/admin-users-list
     BrowserModule,
     MatTooltipModule,
     CheckboxModule,
+    AccordionModule,
     HttpClientModule,
     BrowserAnimationsModule,
     DropdownModule,

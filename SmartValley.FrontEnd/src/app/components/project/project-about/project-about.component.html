@@ -1,4 +1,4 @@
-<div *ngIf="projectInfo" class="info-wrapper" (swipeleft)="parent.swipe($event.type)" (swiperight)="parent.swipe($event.type)">
+<div *ngIf="projectInfo" class="info-wrapper">
   <h2 class="partition-title">{{ 'MyProjectAbout.Description' | translate }}</h2>
   <div class="partition-block">
     <quill-editor class="main-text without-border" [modules]="editorOptions" placeholder="" [formats]="editorFormats"
