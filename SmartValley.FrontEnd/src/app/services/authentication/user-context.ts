@@ -60,5 +60,4 @@ export class UserContext {
     }
     return false;
   }
-
 }

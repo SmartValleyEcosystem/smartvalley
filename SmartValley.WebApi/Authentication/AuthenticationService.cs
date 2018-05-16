@@ -77,18 +77,19 @@ namespace SmartValley.WebApi.Authentication
                     throw new AppErrorException(ErrorCode.AddressAlreadyExists);
 
                 user.Email = request.Email;
-                await _userRepository.UpdateWholeAsync(user);
             }
             else
             {
                 user = new User
                        {
                            Address = request.Address,
-                           Email = request.Email
+                           Email = request.Email,
+                           CanCreatePrivateProjects = request.CanCreatePrivateProjects
                        };
-                await _userRepository.AddAsync(user);
+                _userRepository.Add(user);
             }
 
+            await _userRepository.SaveChangesAsync();
             await _mailService.SendConfirmRegistrationAsync(user.Address, user.Email);
         }
 
@@ -124,7 +125,7 @@ namespace SmartValley.WebApi.Authentication
             user.Email = email;
             user.RegistrationDate = DateTime.UtcNow;
 
-            await _userRepository.UpdateWholeAsync(user);
+            await _userRepository.SaveChangesAsync();
         }
 
         public async Task ResendEmailAsync(Address address)

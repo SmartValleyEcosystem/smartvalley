@@ -3,5 +3,5 @@ export interface RegistrationRequest {
   email: string;
   signedText: string;
   signature: string;
+  canCreatePrivateProjects: boolean;
 }
-

@@ -7,7 +7,7 @@ namespace SmartValley.Domain.Interfaces
 {
     public interface IUserRepository
     {
-        Task<int> AddAsync(User user);
+        void Add(User user);
 
         Task<int> GetTotalCountAsync();
 
@@ -18,8 +18,6 @@ namespace SmartValley.Domain.Interfaces
         Task<IReadOnlyCollection<User>> GetByAddressesAsync(IReadOnlyCollection<Address> addresses);
 
         Task<User> GetByEmailAsync(string email);
-
-        Task<int> UpdateWholeAsync(User user);
 
         Task<IReadOnlyCollection<User>> GetByRoleAsync(RoleType type);
 
@@ -32,5 +30,7 @@ namespace SmartValley.Domain.Interfaces
         Task<IReadOnlyCollection<Role>> GetRolesByUserIdAsync(long userId);
 
         Task<User> GetByIdAsync(long userId);
+
+        Task SaveChangesAsync();
     }
 }
