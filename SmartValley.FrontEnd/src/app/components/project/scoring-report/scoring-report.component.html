@@ -1,4 +1,4 @@
-<div (swipeleft)="parent.swipe($event.type)" (swiperight)="parent.swipe($event.type)">
+<div>
   <div *ngIf="scoringStatus !== 2 && !isAuthor" class="content empty-result">
     <p>{{ 'ScoringReport.ProjectHaventScored' | translate }}</p>
   </div>
