@@ -23,7 +23,7 @@ namespace SmartValley.WebApi.Users
 
             user.CanCreatePrivateProjects = canCreatePrivateProjects;
 
-            await _repository.UpdateWholeAsync(user);
+            await _repository.SaveChangesAsync();
         }
 
         public Task<User> GetByAddressAsync(Address address)
@@ -41,7 +41,7 @@ namespace SmartValley.WebApi.Users
             user.FirstName = firstName;
             user.SecondName = secondName;
 
-            await _repository.UpdateWholeAsync(user);
+            await _repository.SaveChangesAsync();
         }
     }
 }

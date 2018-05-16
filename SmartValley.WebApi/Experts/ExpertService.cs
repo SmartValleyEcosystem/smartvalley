@@ -130,7 +130,7 @@ namespace SmartValley.WebApi.Experts
             user.FirstName = request.FirstName;
             user.Email = request.Email;
 
-            await _userRepository.UpdateWholeAsync(user);
+            await _userRepository.SaveChangesAsync();
             await _userRepository.AddRoleAsync(request.Address, RoleType.Expert);
 
             var expert = new Expert(user.Id, true, request.Areas, request.About);
@@ -185,7 +185,7 @@ namespace SmartValley.WebApi.Experts
             user.FirstName = application.ExpertApplication.FirstName;
             user.SecondName = application.ExpertApplication.LastName;
 
-            await _userRepository.UpdateWholeAsync(user);
+            await _userRepository.SaveChangesAsync();
 
             var expert = await _expertRepository.GetByAddressAsync(user.Address);
             if (expert == null)

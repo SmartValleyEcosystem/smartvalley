@@ -15,5 +15,8 @@ namespace SmartValley.WebApi.Authentication.Requests
 
         [Required]
         public string Signature { get; set; }
+
+        [Required]
+        public bool CanCreatePrivateProjects { get; set; }
     }
 }
