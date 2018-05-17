@@ -7,14 +7,16 @@ using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
 {
-    public class CountryRepository : EntityCrudRepository<Country>, ICountryRepository
+    public class CountryRepository : ICountryRepository
     {
-        public CountryRepository(IReadOnlyDataContext readContext, IEditableDataContext editContext)
-            : base(readContext, editContext)
+        private readonly IReadOnlyDataContext _readContext;
+
+        public CountryRepository(IReadOnlyDataContext readContext)
         {
+            _readContext = readContext;
         }
 
         public Task<Country> GetByCodeAsync(string code)
-            => ReadContext.Countries.FirstOrDefaultAsync(i => i.Code.Equals(code, StringComparison.OrdinalIgnoreCase));
+            => _readContext.Countries.FirstOrDefaultAsync(i => i.Code.Equals(code, StringComparison.OrdinalIgnoreCase));
     }
 }
