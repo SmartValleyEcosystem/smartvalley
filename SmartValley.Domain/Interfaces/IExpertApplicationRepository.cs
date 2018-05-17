@@ -11,13 +11,13 @@ namespace SmartValley.Domain.Interfaces
 
         Task<ExpertApplicationDetails> GetDetailsByIdAsync(long id);
 
-        Task<int> AddAsync(ExpertApplication expertApplication, IReadOnlyCollection<int> areas);
+        void Add(ExpertApplication expertApplication, IReadOnlyCollection<int> areas);
 
-        Task<int> UpdateWholeAsync(ExpertApplication expertApplication);
+        void SetAccepted(ExpertApplicationDetails applicationDetails, List<int> areas);
 
-        Task SetAcceptedAsync(ExpertApplicationDetails applicationDetails, List<int> areas);
+        void SetRejected(ExpertApplicationDetails applicationDetails);
 
-        Task SetRejectedAsync(ExpertApplicationDetails applicationDetails);
+        Task SaveChangesAsync();
 
         Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(Address address);
     }

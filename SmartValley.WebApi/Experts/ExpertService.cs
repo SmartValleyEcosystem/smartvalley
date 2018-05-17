@@ -58,7 +58,9 @@ namespace SmartValley.WebApi.Experts
                                         ApplyDate = _clock.UtcNow
                                     };
 
-            await _expertApplicationRepository.AddAsync(expertApplication, request.Areas);
+            _expertApplicationRepository.Add(expertApplication, request.Areas);
+
+            await _expertApplicationRepository.SaveChangesAsync();
 
             var applicationId = expertApplication.Id.ToString();
 
@@ -74,7 +76,7 @@ namespace SmartValley.WebApi.Experts
             expertApplication.CvUrl = links[1];
             expertApplication.PhotoUrl = links[2];
 
-            await _expertApplicationRepository.UpdateWholeAsync(expertApplication);
+            await _expertApplicationRepository.SaveChangesAsync();
         }
 
         public Task<ExpertApplicationDetails> GetApplicationByIdAsync(long id)
@@ -197,7 +199,8 @@ namespace SmartValley.WebApi.Experts
             expert.SetAreas(areas);
             await _expertRepository.SaveChangesAsync();
 
-            await _expertApplicationRepository.SetAcceptedAsync(application, areas.ToList());
+            _expertApplicationRepository.SetAccepted(application, areas.ToList());
+            await _expertApplicationRepository.SaveChangesAsync();
             await _mailService.SendExpertApplicationAcceptedAsync(user.Email, application.ExpertApplication.FirstName);
         }
 
@@ -207,7 +210,9 @@ namespace SmartValley.WebApi.Experts
             if (applicationDetails.ExpertApplication.Status != ExpertApplicationStatus.Pending)
                 throw new AppErrorException(ErrorCode.ExpertApplicationAlreadyProcessed);
 
-            await _expertApplicationRepository.SetRejectedAsync(applicationDetails);
+            _expertApplicationRepository.SetRejected(applicationDetails);
+
+            await _expertApplicationRepository.SaveChangesAsync();
 
             await _mailService.SendExpertApplicationRejectedAsync(applicationDetails.Email, applicationDetails.ExpertApplication.FirstName);
         }
