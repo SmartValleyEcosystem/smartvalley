@@ -24,7 +24,8 @@ export class ProjectAboutComponent implements OnInit {
       'color',
       'align',
       'blockquote',
-      'indent'
+      'indent',
+      'background'
   ];
   public editorOptions = {
       toolbar: {

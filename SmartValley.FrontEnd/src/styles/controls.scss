@@ -266,6 +266,41 @@ textarea.ng-pristine.ng-invalid.ng-untouched.ng-dirty,
   }
 }
 
+/* ng-prime tabs */
+
+body .ui-tabview.ui-widget-content {
+  background-color: transparent !important;
+}
+
+body .ui-tabview-panels .ui-widget-content {
+  background-color: transparent !important;
+}
+
+body .ui-tabview .ui-tabview-panel {
+  padding: 10px 0 !important;
+}
+body .ui-tabview.ui-tabview-top .ui-tabview-nav li {
+  background-color: transparent !important;
+  border: none !important;
+  &:hover {
+    border: none !important;
+  }
+  a {
+    .ui-tabview-title {
+      font-family: $font-pt;
+      font-weight: bold;
+      font-size: 24px;
+      color: #5d49f2;
+    }
+  }
+}
+body .ui-tabview.ui-tabview-top .ui-tabview-nav li.ui-state-active {
+  a {
+    .ui-tabview-title {
+      color: #000;
+    }
+  }
+}
 
 /* ng-prime upload */
 
@@ -341,4 +376,13 @@ body .ui-radiobutton .ui-radiobutton-box {
 }
 body .ng-invalid .ui-chkbox .ui-chkbox-box {
   border: solid 1px red !important;
+}
+
+
+/* quill adaptive */
+
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
+  @media screen and (min-width: 320px) and (max-width: 768px) {
+    width: auto;
+  }
 }

@@ -59,7 +59,8 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
         'list',
         'indent',
         'color',
-        'align'
+        'align',
+        'background'
       ];
   public editorOptions = {
           toolbar: {
