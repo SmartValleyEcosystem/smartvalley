@@ -18,10 +18,14 @@
     height: 40px;
   }
 }
+a.main-btn {
+  padding: 6px 20px;
+}
+
 .ghost-btn {
   font-family: "Roboto-Regular";
   font-size: 14px;
-  padding: 0 20px;
+  padding: 6px 20px;
   height: 36px;
   background-color: transparent;
   border: solid 1px #5d49f2;
@@ -33,6 +37,10 @@ ghost-btn[disabled] {
   border: solid 1px #969696;
   color: #969696;
 }
+.ghost-btn.small {
+  padding: 2px 20px !important;
+}
+
 .main-btn[disabled] {
   background-color: #a4a2b0;
   border-color: #969696;

@@ -98,7 +98,6 @@ import {EditScoringApplicationComponent} from './components/edit-scoring-applica
 import {StickyModule} from 'ng2-sticky-kit';
 import {InputSwitchComponent} from './components/input-switch/input-switch.component';
 import {ScoringService} from './services/scoring/scoring.service';
-import {ScoringContractClient} from './services/contract-clients/scoring-contract-client';
 import {ScoringCostComponent} from './components/common/scoring-cost-modal/scoring-cost.component';
 import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
 import {RegisterConfirmComponent} from './components/authentication/register-confirm/register-confirm.component';
@@ -319,7 +318,6 @@ import {AccordionModule} from 'primeng/accordion';
     OffersApiClient,
     ScoringService,
     ProjectService,
-    ScoringContractClient,
     ScoringApplicationApiClient,
     SubmittedScoringApplicationGuard,
     ScoringShouldNotExistGuard
