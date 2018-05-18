@@ -123,4 +123,8 @@ export class ProjectComponent implements OnInit {
       this.notificationService.success('Success', 'Subscribe request is sent');
     }
   }
+
+  public onChangeTab($event) {
+    this.router.navigate([Paths.Project + '/' + this.projectId + '/details/' + this.tabItems[$event.index]]);
+  }
 }

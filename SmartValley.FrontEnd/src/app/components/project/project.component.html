@@ -77,7 +77,7 @@
     </div>
   </app-project-info>
 
-  <p-tabView [activeIndex]="selectedTab">
+  <p-tabView [activeIndex]="selectedTab" (onChange)="onChangeTab($event)">
     <p-tabPanel header="{{ 'MyProject.About' | translate }}">
       <app-project-about [projectId]="projectId"></app-project-about>
     </p-tabPanel>
