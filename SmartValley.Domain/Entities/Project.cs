@@ -6,7 +6,7 @@ using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
 {
-    public class Project : IEntityWithId
+    public class Project
     {
         public Project()
         {
@@ -99,27 +99,9 @@ namespace SmartValley.Domain.Entities
             return TeamMembers.FirstOrDefault(i => i.Id == memberId);
         }
 
-        public void UpdateMembers(IReadOnlyCollection<ProjectTeamMember> members)
+        public void UpdateMembers(IReadOnlyCollection<ProjectTeamMember> modifiedMembers)
         {
-            var deletedMembers = TeamMembers.Where(t => !members.Select(m => m.Id).Contains(t.Id));
-
-            while (deletedMembers.Count() > 0)
-            {
-                TeamMembers.Remove(deletedMembers.First());
-            }
-
-            foreach (var member in members)
-            {
-                var existMember = TeamMembers.FirstOrDefault(m => m.Id == member.Id);
-                if (existMember != null)
-                {
-                    existMember.Update(member);
-                }
-                else
-                {
-                    TeamMembers.Add(member);
-                }
-            }
+            TeamMembers.Merge(modifiedMembers);
         }
     }
 }

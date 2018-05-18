@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
 {
-    public class Country: IEntityWithId
+    public class Country
     {
         public long Id { get; set; }
 
