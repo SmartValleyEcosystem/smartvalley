@@ -14,6 +14,7 @@ import {environment} from '../../../environments/environment';
 import {DialogService} from '../../services/dialog-service';
 import {NotificationsService} from 'angular2-notifications';
 import {SubscriptionApiClient} from '../../api/subscription/subscription-api-client';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-project',
@@ -52,6 +53,7 @@ export class ProjectComponent implements OnInit {
 
   constructor(private projectApiClient: ProjectApiClient,
               private router: Router,
+              private location: Location,
               private route: ActivatedRoute,
               private subscriptionApiClient: SubscriptionApiClient,
               private userContext: UserContext,
@@ -59,7 +61,6 @@ export class ProjectComponent implements OnInit {
               private notificationService: NotificationsService) {
 
     this.route.params.subscribe(async (params) => {
-        this.selectedTab = this.tabItems.indexOf(params['tab']);
         await this.reloadProjectAsync();
     });
     this.userContext.userContextChanged.subscribe(async () => await this.reloadProjectAsync());
@@ -126,6 +127,6 @@ export class ProjectComponent implements OnInit {
   }
 
   public onChangeTab($event) {
-    this.router.navigate([Paths.Project + '/' + this.projectId + '/details/' + this.tabItems[$event.index]]);
+      this.location.replaceState(Paths.Project + '/' + this.projectId + '/details/' + this.tabItems[$event.index]);
   }
 }
