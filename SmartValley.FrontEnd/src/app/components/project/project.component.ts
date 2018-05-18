@@ -58,6 +58,11 @@ export class ProjectComponent implements OnInit {
               private dialogService: DialogService,
               private notificationService: NotificationsService) {
 
+      this.route.params.subscribe( params =>
+      {
+          this.selectedTab = this.tabItems.indexOf(params['tab']);
+      } );
+
     route.params.subscribe(async () => {
       await this.reloadProjectAsync();
     });
