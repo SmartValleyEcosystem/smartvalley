@@ -49,7 +49,7 @@
         <p class="control-label">
           <label for="description">{{ 'CreateProject.Description' | translate }}</label>
         </p>
-        <quill-editor [modules]="editorOptions" placeholder="" [formats]="editorFormats"
+        <quill-editor [modules]="editorOptions" placeholder="{{ 'CreateProject.DescriptionPlaceholder' | translate }}" [formats]="editorFormats"
                       id="description" formControlName="description">
         </quill-editor>
       </div>
