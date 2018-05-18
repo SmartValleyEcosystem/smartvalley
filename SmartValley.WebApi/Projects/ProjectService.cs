@@ -112,16 +112,7 @@ namespace SmartValley.WebApi.Projects
 
         private void UpdateTeamMembers(IReadOnlyCollection<ProjectTeamMemberRequest> teamMemberRequests, Project project)
         {
-            var teamMembers = teamMemberRequests.Select(m => new ProjectTeamMember
-                                                             {
-                                                                 Id = m.Id,
-                                                                 ProjectId = project.Id,
-                                                                 FullName = m.FullName,
-                                                                 About = m.About,
-                                                                 Role = m.Role,
-                                                                 Facebook = m.Facebook,
-                                                                 Linkedin = m.Linkedin
-                                                             }).ToArray();
+            var teamMembers = teamMemberRequests.Select(m => new ProjectTeamMember(m.Id, m.FullName, m.Role, m.About, m.Facebook, m.Linkedin)).ToArray();
             project.UpdateMembers(teamMembers);
         }
 

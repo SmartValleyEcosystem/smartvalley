@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
 {
-    public class User : IEntityWithId
+    public class User
     {
         public long Id { get; set; }
         

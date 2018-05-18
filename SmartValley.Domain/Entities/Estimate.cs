@@ -1,8 +1,6 @@
-﻿using SmartValley.Domain.Core;
-
-namespace SmartValley.Domain.Entities
+﻿namespace SmartValley.Domain.Entities
 {
-    public class Estimate : IEntityWithId
+    public class Estimate
     {
         public long Id { get; set; }
 

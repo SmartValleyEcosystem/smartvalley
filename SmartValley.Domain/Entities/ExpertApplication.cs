@@ -1,10 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
 {
-    public class ExpertApplication : IEntityWithId
+    public class ExpertApplication
     {
         public long Id { get; set; }
 

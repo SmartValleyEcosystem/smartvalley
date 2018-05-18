@@ -1,8 +1,6 @@
-﻿using SmartValley.Domain.Core;
-
-namespace SmartValley.Domain.Entities
+﻿namespace SmartValley.Domain.Entities
 {
-    public class ScoringCriterion : IEntityWithId
+    public class ScoringCriterion
     {
         public long Id { get; set; }
 
