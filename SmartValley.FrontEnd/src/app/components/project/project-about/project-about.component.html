@@ -1,9 +1,10 @@
 <div *ngIf="projectInfo" class="info-wrapper">
   <h2 class="partition-title">{{ 'MyProjectAbout.Description' | translate }}</h2>
   <div class="partition-block">
-    <p>
-      {{projectInfo.description}}
-    </p>
+    <quill-editor class="main-text without-border" [modules]="editorOptions" placeholder="" [formats]="editorFormats"
+                  [readOnly]="true"
+                  [ngModel]="projectInfo.description | dashIfEmpty">
+    </quill-editor>
   </div>
   <h2 class="partition-title">{{ 'MyProjectAbout.CoreTeam' | translate }}</h2>
   <div class="partition-block">

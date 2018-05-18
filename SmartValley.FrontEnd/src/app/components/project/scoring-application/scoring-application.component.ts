@@ -36,6 +36,37 @@ export class ScoringApplicationComponent implements OnInit {
   public isAuthor: boolean;
   public isScoringPayed: boolean;
 
+  public editorFormats = [
+      'bold',
+      'underline',
+      'strike',
+      'header',
+      'italic',
+      'list',
+      'indent',
+      'color',
+      'align',
+      'background'
+  ];
+  public editorOptions = {
+      toolbar: {
+          container:
+              [
+                  ['bold', 'italic', 'underline', 'strike'],
+                  [{ 'header': 1 }, { 'header': 2 }],
+                  [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                  [{ 'indent': '-1' }, { 'indent': '+1' }],
+                  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                  [{ 'color': [] }, { 'background': [] }],
+                  [{ 'align': [] }],
+
+              ]
+      },
+      clipboard: {
+          matchVisual: false
+      }
+  };
+
   constructor(@Inject(ProjectComponent) public parent: ProjectComponent,
               private router: Router,
               private htmlElement: ElementRef,

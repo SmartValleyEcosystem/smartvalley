@@ -58,8 +58,9 @@ export class ProjectComponent implements OnInit {
               private dialogService: DialogService,
               private notificationService: NotificationsService) {
 
-    route.params.subscribe(async () => {
-      await this.reloadProjectAsync();
+    this.route.params.subscribe(async (params) => {
+        this.selectedTab = this.tabItems.indexOf(params['tab']);
+        await this.reloadProjectAsync();
     });
     this.userContext.userContextChanged.subscribe(async () => await this.reloadProjectAsync());
   }
@@ -122,5 +123,9 @@ export class ProjectComponent implements OnInit {
       await this.subscriptionApiClient.subscribeAsync(subscribe, this.projectId);
       this.notificationService.success('Success', 'Subscribe request is sent');
     }
+  }
+
+  public onChangeTab($event) {
+    this.router.navigate([Paths.Project + '/' + this.projectId + '/details/' + this.tabItems[$event.index]]);
   }
 }
