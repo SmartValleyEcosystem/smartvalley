@@ -301,6 +301,9 @@ body .ui-tabview.ui-tabview-top .ui-tabview-nav li.ui-state-active {
     }
   }
 }
+body .ui-tabview.ui-tabview-top .ui-tabview-nav li.ui-state-default:first-child a {
+  padding-left: 0 !important;
+}
 
 /* ng-prime upload */
 
