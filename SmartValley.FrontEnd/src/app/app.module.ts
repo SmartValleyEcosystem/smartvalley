@@ -137,6 +137,7 @@ import {QuillModule} from 'ngx-quill';
 import {AdminAdminsListComponent} from './components/admin-panel/admin-admins-list/admin-admins-list.component';
 import {AdminUsersListComponent} from './components/admin-panel/admin-users-list/admin-users-list.component';
 import {AccordionModule} from 'primeng/accordion';
+import {TabViewModule} from 'primeng/tabview';
 
 @NgModule({
   declarations: [
@@ -237,6 +238,7 @@ import {AccordionModule} from 'primeng/accordion';
     MatTooltipModule,
     CheckboxModule,
     AccordionModule,
+    TabViewModule,
     HttpClientModule,
     BrowserAnimationsModule,
     DropdownModule,

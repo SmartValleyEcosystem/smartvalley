@@ -45,6 +45,7 @@ export class ScoringApplicationComponent implements OnInit {
       'indent',
       'color',
       'align',
+      'background'
   ];
   public editorOptions = {
       toolbar: {

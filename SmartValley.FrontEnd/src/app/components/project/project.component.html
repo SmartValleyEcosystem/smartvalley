@@ -76,18 +76,19 @@
       </div>
     </div>
   </app-project-info>
-  <mat-tab-group [(selectedIndex)]="selectedTab">
-    <mat-tab label="{{ 'MyProject.About' | translate }}">
+
+  <p-tabView [activeIndex]="selectedTab" (onChange)="onChangeTab($event)">
+    <p-tabPanel header="{{ 'MyProject.About' | translate }}">
       <app-project-about [projectId]="projectId"></app-project-about>
-    </mat-tab>
-    <mat-tab *ngIf="isScoringApplicationTabAvailable" label="{{ 'MyProject.ScoringApplication' | translate }}">
+    </p-tabPanel>
+    <p-tabPanel *ngIf="isScoringApplicationTabAvailable" header="{{ 'MyProject.ScoringApplication' | translate }}">
       <app-scoring-application [project]="project"></app-scoring-application>
-    </mat-tab>
-    <mat-tab label="{{ 'MyProject.ScoringReport' | translate }}">
+    </p-tabPanel>
+    <p-tabPanel header="{{ 'MyProject.ScoringReport' | translate }}">
       <app-scoring-report [scoringStatus]="project.scoring.scoringStatus"
                           [projectId]="projectId"
                           [isAuthor]="isAuthor">
       </app-scoring-report>
-    </mat-tab>
-  </mat-tab-group>
+    </p-tabPanel>
+  </p-tabView>
 </div>
