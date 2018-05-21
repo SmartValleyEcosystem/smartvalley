@@ -16,7 +16,7 @@ namespace SmartValley.Ethereum
 
         public ContractOptions AdminRegistryContract { get; set; }
 
-        public ContractOptions ScoringManagerContract { get; set; }
+        public ContractOptions ScoringsRegistryContract { get; set; }
 
         public ContractOptions ScoringContract { get; set; }
 

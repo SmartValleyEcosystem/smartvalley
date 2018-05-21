@@ -14,7 +14,7 @@ namespace SmartValley.Domain.Services
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IScoringExpertsManagerContractClient _scoringExpertsManagerContractClient;
-        private readonly IScoringManagerContractClient _scoringManagerContractClient;
+        private readonly IScoringsRegistryContractClient _scoringsRegistryContractClient;
         private readonly IClock _clock;
         private readonly IScoringRepository _scoringRepository;
         private readonly IUserRepository _userRepository;
@@ -22,14 +22,14 @@ namespace SmartValley.Domain.Services
         public ScoringService(
             IProjectRepository projectRepository,
             IScoringExpertsManagerContractClient scoringExpertsManagerContractClient,
-            IScoringManagerContractClient scoringManagerContractClient,
+            IScoringsRegistryContractClient scoringsRegistryContractClient,
             IClock clock,
             IScoringRepository scoringRepository,
             IUserRepository userRepository)
         {
             _projectRepository = projectRepository;
             _scoringExpertsManagerContractClient = scoringExpertsManagerContractClient;
-            _scoringManagerContractClient = scoringManagerContractClient;
+            _scoringsRegistryContractClient = scoringsRegistryContractClient;
             _clock = clock;
             _scoringRepository = scoringRepository;
             _userRepository = userRepository;
@@ -54,7 +54,7 @@ namespace SmartValley.Domain.Services
             IDictionary<AreaType, int> areas,
             IReadOnlyCollection<ScoringOfferInfo> contractOffers)
         {
-            var contractAddress = await _scoringManagerContractClient.GetScoringAddressAsync(project.ExternalId);
+            var contractAddress = await _scoringsRegistryContractClient.GetScoringAddressAsync(project.ExternalId);
 
             var areaScorings = areas.Select(x => new AreaScoring {AreaId = x.Key, ExpertsCount = x.Value}).ToList();
             var offers = await CreateOffersAsync(contractOffers);
