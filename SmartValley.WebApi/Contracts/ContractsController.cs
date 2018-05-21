@@ -29,7 +29,7 @@ namespace SmartValley.WebApi.Contracts
         [HttpGet]
         public ContractResponse GetScoringManagerContract()
         {
-            var contractOptions = _nethereumOptions.ScoringManagerContract;
+            var contractOptions = _nethereumOptions.ScoringsRegistryContract;
             return new ContractResponse
                    {
                        Address = contractOptions.Address,
