@@ -20,6 +20,7 @@ export function multiTranslateLoaderFactory() {
     'components/admin-panel/admin-expert-applications-list/admin-expert-applications-list.component',
     'components/admin-panel/admin-expert-application/admin-expert-application.component',
     'components/admin-panel/admin-scoring-projects/admin-scoring-project.component',
+    'components/admin-panel/admin-projects-list/admin-projects.component',
     'components/admin-panel/admin-feedbacks/admin-feedbacks.component',
     'components/admin-panel/admin-subscriptions/admin-subscriptions.component',
     'components/expert-status/expert-status.component',

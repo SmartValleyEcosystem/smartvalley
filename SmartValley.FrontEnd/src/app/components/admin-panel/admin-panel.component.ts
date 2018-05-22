@@ -11,7 +11,7 @@ import {MatTabChangeEvent} from '@angular/material';
 })
 export class AdminPanelComponent {
 
-  public mainTabItems: string[] = ['users', 'scoring', 'feedbacks', 'subscribers'];
+  public mainTabItems: string[] = ['users', 'projects', 'scorings', 'feedbacks', 'subscriptions'];
   public subTabItems: string[] = ['admins', 'experts', 'applications', 'all'];
 
   public selectedMainTab = 0;
@@ -21,7 +21,7 @@ export class AdminPanelComponent {
   }
 
   public onMainTabChange($event: MatTabChangeEvent) {
-    if ($event.index === 1) {
+    if ($event.index === 0) {
       this.location.replaceState(Paths.Admin + '/' + this.mainTabItems[$event.index] + '/' + this.subTabItems[0]);
     } else {
       this.location.replaceState(Paths.Admin + '/' + this.mainTabItems[$event.index]);

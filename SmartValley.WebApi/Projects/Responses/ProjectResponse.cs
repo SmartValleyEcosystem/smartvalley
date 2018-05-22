@@ -10,17 +10,13 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public string Name { get; set; }
 
-        public string Address { get; set; }
-
         public string Country { get; set; }
 
         public Category Category { get; set; }
 
+        public ProjectScoringResponse Scoring { get; set; }
+
         public string Description { get; set; }
-
-        public double? Score { get; set; }
-
-        public DateTimeOffset? ScoringEndDate { get; set; }
 
         public static ProjectResponse Create(Project project)
         {
@@ -31,9 +27,7 @@ namespace SmartValley.WebApi.Projects.Responses
                        Country = project.Country?.Code,
                        Category = project.Category,
                        Description = project.Description,
-                       Address = project.Scoring?.ContractAddress,
-                       Score = project.Scoring?.Score,
-                       ScoringEndDate = project.Scoring?.ScoringEndDate
+                       Scoring = project.Scoring == null ? null : ProjectScoringResponse.Create(project.Scoring)
                    };
         }
     }

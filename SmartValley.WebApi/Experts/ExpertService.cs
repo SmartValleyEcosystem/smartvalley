@@ -94,11 +94,11 @@ namespace SmartValley.WebApi.Experts
             return await _expertApplicationRepository.GetExpertApplicationStatusAsync(address);
         }
 
-        public Task<Expert> GetAsync(long expertId)
-            => _expertRepository.GetAsync(expertId);
+        public Task<Expert> GetByIdAsync(long expertId)
+            => _expertRepository.GetByIdAsync(expertId);
 
-        public Task<ExpertDetails> GetDetailsAsync(Address address)
-            => _expertRepository.GetDetailsAsync(address);
+        public Task<Expert> GetByAddressAsync(Address address)
+            => _expertRepository.GetByAddressAsync(address);
 
         public async Task SetAvailabilityAsync(Address address, bool isAvailable)
         {
@@ -119,8 +119,6 @@ namespace SmartValley.WebApi.Experts
             expert.IsInHouse = isInHouse;
             await _expertRepository.SaveChangesAsync();
         }
-
-        public Task<int> GetTotalCountExpertsAsync() => _expertRepository.GetTotalCountExpertsAsync();
 
         public async Task AddAsync(ExpertRequest request)
         {
@@ -217,8 +215,8 @@ namespace SmartValley.WebApi.Experts
             await _mailService.SendExpertApplicationRejectedAsync(applicationDetails.Email, applicationDetails.ExpertApplication.FirstName);
         }
 
-        public Task<IReadOnlyCollection<ExpertDetails>> GetAllExpertsDetailsAsync(int offset, int count)
-            => _expertRepository.GetAllDetailsAsync(offset, count);
+        public Task<PagingCollection<Expert>> GetAsync(int offset, int count)
+            => _expertRepository.GetAsync(offset, count);
 
         public Task<IReadOnlyCollection<Area>> GetAreasAsync()
             => _expertRepository.GetAreasAsync();

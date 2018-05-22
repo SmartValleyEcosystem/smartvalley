@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
+using SmartValley.Data.SQL.Extensions;
 using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
@@ -91,13 +92,8 @@ namespace SmartValley.Data.SQL.Repositories
             await _editContext.SaveAsync();
         }
 
-        public async Task<IReadOnlyCollection<User>> GetAllAsync(int offset, int count)
-        {
-            return await _readContext.Users
-                                    .Skip(offset)
-                                    .Take(count)
-                                    .ToArrayAsync();
-        }
+        public Task<PagingCollection<User>> GetAsync(int offset, int count)
+            => _readContext.Users.GetPageAsync(offset, count);
 
         public async Task<IReadOnlyCollection<User>> GetByAddressesAsync(IReadOnlyCollection<Address> addresses)
         {
@@ -114,8 +110,5 @@ namespace SmartValley.Data.SQL.Repositories
                           where role.Id == type
                           select user).ToArrayAsync();
         }
-
-        public Task<int> GetTotalCountAsync()
-            => _readContext.Users.CountAsync();
     }
 }

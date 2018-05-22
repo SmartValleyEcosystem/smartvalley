@@ -1,9 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Domain;
-using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
@@ -19,12 +18,12 @@ namespace SmartValley.Data.SQL.Repositories
         }
 
         public Task<ScoringApplication> GetByProjectIdAsync(long projectId)
-            => All().FirstOrDefaultAsync(x => x.ProjectId == projectId);
+            => Entities().FirstOrDefaultAsync(x => x.ProjectId == projectId);
 
         public Task<ScoringApplication> GetByIdAsync(long id)
-            => All().FirstOrDefaultAsync(x => x.Id == id);
+            => Entities().FirstOrDefaultAsync(x => x.Id == id);
 
-        private IIncludableQueryable<ScoringApplication, EthereumTransaction> All()
+        private IQueryable<ScoringApplication> Entities()
         {
             return _editContext.ScoringApplications
                                .Include(x => x.Answers)

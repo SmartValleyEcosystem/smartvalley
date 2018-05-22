@@ -24,7 +24,7 @@ export class LandingComponent implements OnInit {
 
   public async ngOnInit() {
     this.projectsLink = Paths.ProjectList;
-    const projectResponse = await this.projectApiClient.queryProjectsAsync(<ProjectQuery>{
+    const projectResponse = await this.projectApiClient.getAsync(<ProjectQuery>{
       offset: 0,
       count: 10,
       onlyScored: false,
@@ -45,13 +45,13 @@ export class LandingComponent implements OnInit {
   private createScoredProject(response: ProjectResponse): ScoredProject {
     return <ScoredProject> {
       id: response.id,
-      address: response.address,
+      address: response.scoring ? response.scoring.contractAddress : '',
       category: response.category,
       country: response.country,
       description: response.description,
       name: response.name,
-      score: response.score,
-      scoringEndDate: response.scoringEndDate
+      score: response.scoring ? response.scoring.score : '',
+      scoringEndDate: response.scoring ? response.scoring.scoringEndDate : ''
     };
   }
 

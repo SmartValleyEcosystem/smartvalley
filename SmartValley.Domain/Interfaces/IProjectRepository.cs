@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain.Interfaces
 {
     public interface IProjectRepository
     {
-        Task<IReadOnlyCollection<Project>> QueryAsync(ProjectsQuery projectsQuery);
-
-        Task<int> GetQueryTotalCountAsync(ProjectsQuery projectsQuery);
+        Task<PagingCollection<Project>> GetAsync(ProjectsQuery query);
 
         void Add(Project project);
 
@@ -19,9 +18,9 @@ namespace SmartValley.Domain.Interfaces
 
         Task<Project> GetByAuthorIdAsync(long authorId);
 
-        void Delete(Project project);
+        void Remove(Project entity);
 
-        Task<Project> GetAsync(long projectId);
+        Task<Project> GetByIdAsync(long projectId);
 
         Task SaveChangesAsync();
     }

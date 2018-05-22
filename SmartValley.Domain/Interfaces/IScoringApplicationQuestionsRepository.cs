@@ -5,6 +5,6 @@ namespace SmartValley.Domain.Interfaces
 {
     public interface IScoringApplicationQuestionsRepository
     {
-        Task<IReadOnlyCollection<Entities.ScoringApplicationQuestion>> GetAllAsync();
+        Task<IReadOnlyCollection<Entities.ScoringApplicationQuestion>> GetAsync();
     }
 }

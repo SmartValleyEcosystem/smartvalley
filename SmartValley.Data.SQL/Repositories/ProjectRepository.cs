@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
+using SmartValley.Data.SQL.Extensions;
 using SmartValley.Domain;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
 {
-    // ReSharper disable once ClassNeverInstantiated.Global
     public class ProjectRepository : IProjectRepository
     {
         private readonly IEditableDataContext _editContext;
@@ -21,51 +21,10 @@ namespace SmartValley.Data.SQL.Repositories
             _editContext = editContext;
         }
 
-        public async Task<IReadOnlyCollection<Project>> QueryAsync(ProjectsQuery projectsQuery)
-            => await GetQueryable(projectsQuery).ToArrayAsync();
-
-        public Task<int> GetQueryTotalCountAsync(ProjectsQuery projectsQuery)
-            => GetQueryable(projectsQuery, false, false).CountAsync();
-
-        public void Add(Project project)
-        {
-            _editContext.Projects.Add(project);
-        }
-
-        public void Delete(Project project)
-        {
-            _editContext.Projects.Remove(project);
-        }
-
-        public Task<Project> GetByAuthorIdAsync(long authorId)
-            => Entities().FirstOrDefaultAsync(p => p.AuthorId == authorId);
-
-        public Task<Project> GetAsync(long projectId)
-            => Entities().FirstOrDefaultAsync(p => p.Id == projectId);
-
-        public Task SaveChangesAsync()
-            => _editContext.SaveAsync();
-
-        public Task<Project> GetByExternalIdAsync(Guid externalId)
-            => Entities().FirstOrDefaultAsync(project => project.ExternalId == externalId);
-
-        public void Remove(Project entity)
-        {
-            _editContext.Projects.Remove(entity);
-        }
-
-        public async Task<IReadOnlyCollection<Project>> GetAllByNameAsync(string projectName)
-            => await Entities().Where(p => p.Name.Contains(projectName)).ToArrayAsync();
-
-        private IQueryable<Project> Entities() => _editContext.Projects
-                                                              .Include(p => p.Author)
-                                                              .Include(p => p.Country)
-                                                              .Include(p => p.TeamMembers)
-                                                              .Include(p => p.Scoring);
-
-        private IQueryable<Project> GetQueryable(ProjectsQuery query, bool enablePaging = true, bool enableSorting = true)
+        public Task<PagingCollection<Project>> GetAsync(ProjectsQuery query)
         {
             var queryable = from project in Entities()
+                            join scoringApplication in _editContext.ScoringApplications on project.Id equals scoringApplication.ProjectId
                             where !query.OnlyScored || project.Scoring.Score.HasValue
                             where !query.Stage.HasValue || project.Stage == query.Stage.Value
                             where string.IsNullOrEmpty(query.SearchString) || project.Name.ToUpper().Contains(query.SearchString.ToUpper())
@@ -73,10 +32,11 @@ namespace SmartValley.Data.SQL.Repositories
                             where !query.Category.HasValue || project.Category == query.Category.Value
                             where !query.MinimumScore.HasValue || (project.Scoring.Score.HasValue && project.Scoring.Score.Value >= query.MinimumScore)
                             where !query.MaximumScore.HasValue || (project.Scoring.Score.HasValue && project.Scoring.Score.Value <= query.MaximumScore)
-                            where !project.IsPrivate
+                            where !query.IsPrivate.HasValue || (project.IsPrivate == query.IsPrivate && scoringApplication.IsSubmitted)
+                            where query.ScoringStatuses.Contains(project.Scoring.Status)
                             select project;
 
-            if (enableSorting && query.OrderBy.HasValue)
+            if (query.OrderBy.HasValue)
             {
                 switch (query.OrderBy)
                 {
@@ -103,14 +63,38 @@ namespace SmartValley.Data.SQL.Repositories
                 }
             }
 
-            if (enablePaging)
-            {
-                return queryable
-                    .Skip(query.Offset)
-                    .Take(query.Count);
-            }
-
-            return queryable;
+            return queryable.GetPageAsync(query.Offset, query.Count);
         }
+
+        public void Add(Project project)
+        {
+            _editContext.Projects.Add(project);
+        }
+
+        public Task<Project> GetByAuthorIdAsync(long authorId)
+            => Entities().FirstOrDefaultAsync(p => p.AuthorId == authorId);
+
+        public Task<Project> GetByIdAsync(long projectId)
+            => Entities().FirstOrDefaultAsync(p => p.Id == projectId);
+
+        public Task SaveChangesAsync()
+            => _editContext.SaveAsync();
+
+        public Task<Project> GetByExternalIdAsync(Guid externalId)
+            => Entities().FirstOrDefaultAsync(project => project.ExternalId == externalId);
+
+        public void Remove(Project entity)
+        {
+            _editContext.Projects.Remove(entity);
+        }
+
+        public async Task<IReadOnlyCollection<Project>> GetAllByNameAsync(string projectName)
+            => await Entities().Where(p => p.Name.Contains(projectName)).ToArrayAsync();
+
+        private IQueryable<Project> Entities() => _editContext.Projects
+                                                              .Include(p => p.Author)
+                                                              .Include(p => p.Country)
+                                                              .Include(p => p.TeamMembers)
+                                                              .Include(p => p.Scoring).ThenInclude(s=>s.ExpertScorings);
     }
 }

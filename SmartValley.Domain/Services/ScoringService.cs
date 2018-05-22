@@ -9,7 +9,6 @@ using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Domain.Services
 {
-    // ReSharper disable once ClassNeverInstantiated.Global
     public class ScoringService : IScoringService
     {
         private readonly IProjectRepository _projectRepository;
@@ -37,7 +36,7 @@ namespace SmartValley.Domain.Services
 
         public async Task<long> StartAsync(long projectId, IDictionary<AreaType, int> areas)
         {
-            var project = await _projectRepository.GetAsync(projectId);
+            var project = await _projectRepository.GetByIdAsync(projectId);
             var offers = await _scoringExpertsManagerContractClient.GetOffersAsync(project.ExternalId);
 
             if (!offers.Any())
@@ -46,8 +45,8 @@ namespace SmartValley.Domain.Services
             return await CreateScoringAsync(project, areas, offers);
         }
 
-        public Task<Scoring> GetAsync(long scoringId)
-            => _scoringRepository.GetAsync(scoringId);
+        public Task<Scoring> GetByIdAsync(long scoringId)
+            => _scoringRepository.GetByIdAsync(scoringId);
 
         private async Task<long> CreateScoringAsync(
             Project project,
@@ -60,7 +59,8 @@ namespace SmartValley.Domain.Services
             var offers = await CreateOffersAsync(contractOffers);
             var scoring = new Scoring(project.Id, contractAddress, _clock.UtcNow, areaScorings, offers);
 
-            await _scoringRepository.AddAsync(scoring);
+            _scoringRepository.Add(scoring);
+            await _scoringRepository.SaveChangesAsync();
             return scoring.Id;
         }
 

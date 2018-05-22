@@ -64,7 +64,7 @@ namespace SmartValley.Application.Sagas.Scoring
 
         private async Task SendOffersAsync(IMessageHandlerContext context, long scoringId)
         {
-            var scoring = await _scoringService.GetAsync(scoringId);
+            var scoring = await _scoringService.GetByIdAsync(scoringId);
 
             foreach (var expertId in scoring.ScoringOffers.Select(o => o.ExpertId).Distinct())
                 await context.SendLocal(new SendScoringOfferNotification {ExpertId = expertId});

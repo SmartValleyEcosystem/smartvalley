@@ -18,7 +18,7 @@ namespace SmartValley.Data.SQL.Repositories
             _readContext = readContext;
         }
 
-        public async Task<IReadOnlyCollection<ScoringCriterion>> GetAllAsync()
+        public async Task<IReadOnlyCollection<ScoringCriterion>> GetAsync()
         {
             return await _readContext.ScoringCriteria.ToArrayAsync();
         }

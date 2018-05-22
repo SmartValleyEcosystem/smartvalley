@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace SmartValley.WebApi.Users
+﻿namespace SmartValley.WebApi.Users
 {
     public class UpdateUserRequest
     {

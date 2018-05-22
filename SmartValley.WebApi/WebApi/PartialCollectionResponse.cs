@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace SmartValley.WebApi.WebApi
 {
-    public class PartialCollectionResponse<TItem> where TItem : new()
+    public class PartialCollectionResponse<TItem> where TItem : class
     {
         public IReadOnlyCollection<TItem> Items { get; }
 
@@ -12,10 +13,10 @@ namespace SmartValley.WebApi.WebApi
 
         public int TotalCount { get; }
 
-        public PartialCollectionResponse(int offset, int count, int totalCount, IReadOnlyCollection<TItem> items)
+        public PartialCollectionResponse(IReadOnlyCollection<TItem> items, int offset, int totalCount)
         {
             Offset = offset;
-            Count = count;
+            Count = items.Count;
             TotalCount = totalCount;
             Items = items;
         }

@@ -9,9 +9,7 @@ namespace SmartValley.Domain.Interfaces
     {
         void Add(User user);
 
-        Task<int> GetTotalCountAsync();
-
-        Task<IReadOnlyCollection<User>> GetAllAsync(int offset, int count);
+        Task<PagingCollection<User>> GetAsync(int offset, int count);
 
         Task<User> GetByAddressAsync(Address address);
 

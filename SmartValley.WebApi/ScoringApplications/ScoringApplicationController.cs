@@ -31,7 +31,7 @@ namespace SmartValley.WebApi.ScoringApplications
             if (scoringApplication != null)
                 return ScoringApplicationResponse.InitializeFromApplication(questions, scoringApplication);
 
-            var project = await _projectService.GetAsync(projectId);
+            var project = await _projectService.GetByIdAsync(projectId);
             return ScoringApplicationResponse.CreateEmpty(questions, project);
         }
 

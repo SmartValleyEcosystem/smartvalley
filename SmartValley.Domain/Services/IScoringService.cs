@@ -8,6 +8,6 @@ namespace SmartValley.Domain.Services
     {
         Task<long> StartAsync(long projectId, IDictionary<AreaType, int> areas);
 
-        Task<Scoring> GetAsync(long scoringId);
+        Task<Scoring> GetByIdAsync(long scoringId);
     }
 }

@@ -31,14 +31,14 @@ namespace SmartValley.WebApi.ScoringApplications
         }
 
         public Task<IReadOnlyCollection<ScoringApplicationQuestion>> GetQuestionsAsync()
-            => _scoringApplicationQuestionsRepository.GetAllAsync();
+            => _scoringApplicationQuestionsRepository.GetAsync();
 
         public Task<Domain.ScoringApplication> GetApplicationAsync(long projectId)
             => _scoringApplicationRepository.GetByProjectIdAsync(projectId);
 
         public async Task SaveAsync(long projectId, SaveScoringApplicationRequest saveScoringApplicationRequest)
         {
-            var project = await _projectRepository.GetAsync(projectId);
+            var project = await _projectRepository.GetByIdAsync(projectId);
             if (project == null)
                 throw new AppErrorException(ErrorCode.ProjectNotFound);
 

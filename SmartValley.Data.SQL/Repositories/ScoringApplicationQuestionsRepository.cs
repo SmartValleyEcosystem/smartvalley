@@ -15,7 +15,7 @@ namespace SmartValley.Data.SQL.Repositories
             _readContext = readContext;
         }
 
-        public async Task<IReadOnlyCollection<Domain.Entities.ScoringApplicationQuestion>> GetAllAsync() 
+        public async Task<IReadOnlyCollection<Domain.Entities.ScoringApplicationQuestion>> GetAsync() 
             => await _readContext.ScoringApplicationQuestions.ToArrayAsync();
     }
 }
