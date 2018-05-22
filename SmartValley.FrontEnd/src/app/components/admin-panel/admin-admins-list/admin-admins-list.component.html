@@ -1,0 +1,30 @@
+<div class="admin-experts-list" style="padding-top: 2em;">
+    <p-table [value]="admins" [lazy]="true" (onLazyLoad)="getAdminList($event)" [paginator]="true"
+             [rows]="10" [loading]="loading">
+        <ng-template pTemplate="header" let-columns>
+            <tr class="list-row list-row__header">
+                <th class="list-item">{{ 'AdminExpertList.Address' | translate }}</th>
+                <th class="list-item">{{ 'AdminExpertList.Email' | translate }}</th>
+                <th class="list-item">{{ 'AdminExpertList.Actions' | translate }}</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr class="list-row">
+                <td class="list-item" *ngFor="let col of ['address', 'email']">
+                    {{rowData[col]}}
+                </td>
+                <td>
+                    <button (click)="deleteAsync(admin.address)" class="btn btn-link">
+                        {{ 'AdminPanel.Delete' | translate }}
+                    </button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary" let-rowData>
+            <div style="float: left;">
+                <button class="main-btn" type="button" (click)="createAsync()">{{ 'AdminPanel.Create' | translate }}
+                </button>
+            </div>
+        </ng-template>
+    </p-table>
+</div>

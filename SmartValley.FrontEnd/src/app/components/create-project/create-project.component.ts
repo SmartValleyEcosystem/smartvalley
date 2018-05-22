@@ -48,6 +48,39 @@ export class CreateProjectComponent implements OnInit {
   public editingData: MyProjectResponse;
   private projectId: number;
 
+  public editorFormats = [
+      'bold',
+      'underline',
+      'strike',
+      'header',
+      'italic',
+      'list',
+      'indent',
+      'color',
+      'align',
+      'blockquote',
+      'indent',
+      'background'
+  ];
+  public editorOptions = {
+      toolbar: {
+          container:
+              [
+                  ['bold', 'italic', 'underline', 'strike'],
+                  [{ 'header': 1 }, { 'header': 2 }],
+                  [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                  [{ 'indent': '-1' }, { 'indent': '+1' }],
+                  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                  [{ 'color': [] }, { 'background': [] }],
+                  [{ 'align': [] }],
+
+              ]
+      },
+      clipboard: {
+          matchVisual: false
+      }
+  };
+
   @ViewChild('name') public nameRow: ElementRef;
   @ViewChild('category') public categoryRow: ElementRef;
   @ViewChild('stage') public stageRow: ElementRef;

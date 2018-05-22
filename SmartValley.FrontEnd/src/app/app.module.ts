@@ -204,7 +204,8 @@ import {AdminAdminsListComponent} from './components/admin-panel/admin-admins-li
     FeedbackComponent,
     FeedbackModalComponent,
     AdminFeedbacksComponent,
-    AdminSubscriptionsComponent
+    AdminSubscriptionsComponent,
+    AdminAdminsListComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
