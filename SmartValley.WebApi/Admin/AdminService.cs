@@ -21,7 +21,7 @@ namespace SmartValley.WebApi.Admin
         public Task DeleteAsync(Address address)
             => _userRepository.RemoveRoleAsync(address, RoleType.Admin);
 
-        public Task<IReadOnlyCollection<User>> GetAllAsync()
+        public Task<IReadOnlyCollection<User>> GetAsync()
             => _userRepository.GetByRoleAsync(RoleType.Admin);
 
         public Task<bool> IsAdminAsync(Address address)

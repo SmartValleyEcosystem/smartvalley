@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SmartValley.Domain;
+using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Experts.Responses
 {
@@ -22,18 +23,18 @@ namespace SmartValley.WebApi.Experts.Responses
 
         public IReadOnlyCollection<AreaResponse> Areas { get; set; }
 
-        public static ExpertResponse Create(ExpertDetails expertDetails)
+        public static ExpertResponse Create(Expert expert)
         {
             return new ExpertResponse
                    {
-                       Address = expertDetails.Address,
-                       Email = expertDetails.Email,
-                       About = expertDetails.About,
-                       IsAvailable = expertDetails.IsAvailable,
-                       IsInHouse = expertDetails.IsInHouse,
-                       FirstName = expertDetails.FirstName,
-                       SecondName = expertDetails.SecondName,
-                       Areas = expertDetails.Areas.Select(j => new AreaResponse {Id = j.Id.FromDomain(), Name = j.Name}).ToArray()
+                       Address = expert.User.Address,
+                       Email = expert.User.Email,
+                       About = expert.About,
+                       IsAvailable = expert.IsAvailable,
+                       IsInHouse = expert.IsInHouse,
+                       FirstName = expert.User.FirstName,
+                       SecondName = expert.User.SecondName,
+                       Areas = expert.ExpertAreas.Select(j => new AreaResponse {Id = j.Area.Id.FromDomain(), Name = j.Area.Name}).ToArray()
                    };
         }
     }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {LazyLoadEvent} from 'primeng/api';
 import {CollectionResponse} from '../../../api/collection-response';
 import {FeedbackResponse} from '../../../api/feedback/feedback-response';
@@ -10,10 +10,10 @@ import {AdminFeedbackItem} from './admin-feedback-item';
   templateUrl: './admin-feedbacks.component.html',
   styleUrls: ['./admin-feedbacks.component.css']
 })
-export class AdminFeedbacksComponent implements OnInit {
+export class AdminFeedbacksComponent {
 
   public totalRecords: number;
-  public loading: boolean;
+  public loading = false;
   public offset = 0;
   public pageSize = 10;
   public feedbacksResponses: CollectionResponse<FeedbackResponse>;
@@ -24,10 +24,6 @@ export class AdminFeedbacksComponent implements OnInit {
 
   public async getFeedbacksList(event: LazyLoadEvent) {
     this.offset = event.first;
-    await this.loadFeedbacksAsync();
-  }
-
-  async ngOnInit() {
     await this.loadFeedbacksAsync();
   }
 
@@ -47,5 +43,4 @@ export class AdminFeedbacksComponent implements OnInit {
     this.renderTableRows(this.feedbacksResponses.items);
     this.loading = false;
   }
-
 }

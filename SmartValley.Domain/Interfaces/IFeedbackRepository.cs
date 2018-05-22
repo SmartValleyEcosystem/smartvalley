@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain.Interfaces
@@ -8,9 +8,7 @@ namespace SmartValley.Domain.Interfaces
     {
         void Add(Feedback feedback);
 
-        Task<IReadOnlyCollection<Feedback>> GetAsync(int offset, int count);
-
-        Task<int> GetTotalCountAsync();
+        Task<PagingCollection<Feedback>> GetAsync(int offset, int count);
 
         Task SaveChangesAsync();
     }

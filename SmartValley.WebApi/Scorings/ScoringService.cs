@@ -77,7 +77,7 @@ namespace SmartValley.WebApi.Scorings
 
         public async Task AcceptOfferAsync(long scoringId, long areaId, long expertId)
         {
-            var scoring = await _scoringRepository.GetAsync(scoringId);
+            var scoring = await _scoringRepository.GetByIdAsync(scoringId);
             if (scoring == null)
                 throw new AppErrorException(ErrorCode.ScoringNotFound);
 
@@ -93,7 +93,7 @@ namespace SmartValley.WebApi.Scorings
 
         public async Task RejectOfferAsync(long scoringId, long areaId, long expertId)
         {
-            var scoring = await _scoringRepository.GetAsync(scoringId);
+            var scoring = await _scoringRepository.GetByIdAsync(scoringId);
             if (scoring == null)
                 throw new AppErrorException(ErrorCode.ScoringNotFound);
 
@@ -129,15 +129,12 @@ namespace SmartValley.WebApi.Scorings
         public Task<Scoring> GetByProjectIdAsync(long projectId)
             => _scoringRepository.GetByProjectIdAsync(projectId);
 
-        public Task<IReadOnlyCollection<ScoringOfferDetails>> QueryOffersAsync(OffersQuery query, DateTimeOffset now)
-            => _scoringOffersRepository.QueryAsync(query, now);
-
-        public Task<int> GetOffersQueryCountAsync(OffersQuery query, DateTimeOffset now)
-            => _scoringOffersRepository.GetQueryCountAsync(query, now);
+        public Task<PagingCollection<ScoringOfferDetails>> QueryOffersAsync(OffersQuery query, DateTimeOffset now)
+            => _scoringOffersRepository.GetAsync(query, now);
 
         private async Task<ScoringOfferInfo> GetOfferFromContractAsync(long areaId, long projectId, User expert)
         {
-            var project = await _projectRepository.GetAsync(projectId);
+            var project = await _projectRepository.GetByIdAsync(projectId);
             var contractOffers = await _scoringExpertsManagerContractClient.GetOffersAsync(project.ExternalId);
             return contractOffers.FirstOrDefault(o => o.Area == (AreaType) areaId && o.ExpertAddress == expert.Address);
         }

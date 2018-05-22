@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartValley.Application.Extensions;
+using SmartValley.Data.SQL.Extensions;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
@@ -11,6 +13,7 @@ using SmartValley.WebApi.Admin.Response;
 using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Experts.Requests;
+using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Users;
 using SmartValley.WebApi.WebApi;
 
@@ -51,7 +54,7 @@ namespace SmartValley.WebApi.Admin
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var admins = await _service.GetAllAsync();
+            var admins = await _service.GetAsync();
             return Ok(new CollectionResponse<AdminResponse>
                       {
                           Items = admins.Select(i => new AdminResponse {Address = i.Address, Email = i.Email}).ToArray()
@@ -61,11 +64,9 @@ namespace SmartValley.WebApi.Admin
         [HttpGet("users")]
         public async Task<PartialCollectionResponse<UserResponse>> GetAllUsers(CollectionPageRequest request)
         {
-            var totalCount = await _userService.GetTotalCountAsync();
-            var users = await _userService.GetAllAsync(request.Offset, request.Count);
+            var users = await _userService.GetAsync(request.Offset, request.Count);
 
-            return new PartialCollectionResponse<UserResponse>(
-                request.Offset, users.Count, totalCount, users.Select(UserResponse.Create).ToArray());
+            return users.ToPartialCollectionResponse(UserResponse.Create);
         }
 
         [HttpPut("users")]

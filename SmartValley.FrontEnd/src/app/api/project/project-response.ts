@@ -1,12 +1,11 @@
 import {Category} from '../../services/common/category';
+import {ProjectScoringResponse} from './project-scoring-response';
 
 export interface ProjectResponse {
   id: number;
   name: string;
-  address: string;
   country: string;
   category: Category;
   description: string;
-  score: number;
-  scoringEndDate: string;
+  scoring?: ProjectScoringResponse;
 }

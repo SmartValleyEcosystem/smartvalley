@@ -7,5 +7,7 @@
         public AreaType AreaId { get; set; }
 
         public Expert Expert { get; set; }
+
+        public Area Area { get; set; }
     }
 }

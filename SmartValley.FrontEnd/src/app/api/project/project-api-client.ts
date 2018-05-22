@@ -46,7 +46,7 @@ export class ProjectApiClient extends BaseApiClient {
     await this.http.delete(`${this.baseApiUrl}/projects/${projectId}/teammembers/${id}`).toPromise();
   }
 
- public async deleteAsync(projectId: number): Promise<void> {
+  public async deleteAsync(projectId: number): Promise<void> {
     await this.http.delete(`${this.baseApiUrl}/projects/${projectId}/`).toPromise();
   }
 
@@ -71,10 +71,10 @@ export class ProjectApiClient extends BaseApiClient {
       .toPromise();
   }
 
-  public queryProjectsAsync(query: ProjectQuery): Promise<CollectionResponse<ProjectResponse>> {
+  public getAsync(query: ProjectQuery): Promise<CollectionResponse<ProjectResponse>> {
     const checkParam = (param) => isNullOrUndefined(param) ? '' : param.toString();
 
-    const parameters = new HttpParams()
+    let parameters = new HttpParams()
       .append('offset', query.offset.toString())
       .append('count', query.count.toString())
       .append('onlyScored', query.onlyScored.toString())
@@ -85,10 +85,15 @@ export class ProjectApiClient extends BaseApiClient {
       .append('minimumScore', checkParam(query.minimumScore))
       .append('maximumScore', checkParam(query.maximumScore))
       .append('orderBy', checkParam(query.orderBy))
+      .append('isPrivate', checkParam(query.isPrivate.toString()))
       .append('sortDirection', checkParam(query.direction));
 
+    query.scoringStatuses.forEach(id => {
+      parameters = parameters.append('scoringStatuses', id.toString());
+    });
+
     return this.http
-      .get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/projects/query', {params: parameters})
+      .get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/projects', {params: parameters})
       .toPromise();
   }
 

@@ -1,0 +1,13 @@
+{
+  "AdminProjects": {
+    "Id": "ID",
+    "ProjectName": "Project name",
+    "CreateDate": "Create date",
+    "Status": "Status",
+    "Experts": "Experts",
+    "Actions": "Actions",
+    "New": "New",
+    "InProgress": "In progress",
+    "Finished": "Finished"
+  }
+}

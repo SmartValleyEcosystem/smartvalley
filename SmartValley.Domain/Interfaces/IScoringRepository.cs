@@ -7,7 +7,7 @@ namespace SmartValley.Domain.Interfaces
 {
     public interface IScoringRepository
     {
-        Task<int> AddAsync(Scoring scoring);
+        void Add(Scoring scoring);
 
         Task<Scoring> GetByProjectIdAsync(long projectId);
 
@@ -17,6 +17,6 @@ namespace SmartValley.Domain.Interfaces
 
         Task SaveChangesAsync();
 
-        Task<Scoring> GetAsync(long scoringId);
+        Task<Scoring> GetByIdAsync(long scoringId);
     }
 }

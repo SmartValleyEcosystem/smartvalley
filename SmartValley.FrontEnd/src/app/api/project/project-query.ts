@@ -1,5 +1,6 @@
 import {ProjectsOrderBy} from '../application/projects-order-by.enum';
 import {SortDirection} from '../sort-direction.enum';
+import {ScoringStatus} from '../../services/scoring-status.enum';
 
 export interface ProjectQuery {
   offset: number;
@@ -13,4 +14,6 @@ export interface ProjectQuery {
   maximumScore?: number;
   orderBy?: ProjectsOrderBy;
   direction?: SortDirection;
+  isPrivate?: boolean;
+  scoringStatuses: Array<ScoringStatus>;
 }

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
+using SmartValley.WebApi.Admin.Response;
 
 namespace SmartValley.WebApi.Users
 {
@@ -15,7 +15,8 @@ namespace SmartValley.WebApi.Users
             _repository = repository;
         }
 
-        public Task<IReadOnlyCollection<User>> GetAllAsync(int offset, int count) => _repository.GetAllAsync(offset, count);
+        public Task<PagingCollection<User>> GetAsync(int offset, int count) 
+            => _repository.GetAsync(offset, count);
 
         public async Task SetCanCreatePrivateProjectsAsync(Address address, bool canCreatePrivateProjects)
         {
@@ -31,8 +32,6 @@ namespace SmartValley.WebApi.Users
 
         public Task<User> GetByIdAsync(long id)
             => _repository.GetByIdAsync(id);
-        
-        public Task<int> GetTotalCountAsync() => _repository.GetTotalCountAsync();
 
         public async Task UpdateAsync(Address address, string firstName, string secondName)
         {

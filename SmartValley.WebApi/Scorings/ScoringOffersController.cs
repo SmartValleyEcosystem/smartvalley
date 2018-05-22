@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application;
+using SmartValley.Application.Extensions;
+using SmartValley.Data.SQL.Extensions;
 using SmartValley.Domain;
 using SmartValley.Domain.Interfaces;
 using SmartValley.Ethereum;
@@ -75,13 +77,8 @@ namespace SmartValley.WebApi.Scorings
                         };
             var now = _clock.UtcNow;
             var offers = await _scoringService.QueryOffersAsync(query, now);
-            var totalCount = await _scoringService.GetOffersQueryCountAsync(query, now);
 
-            return new PartialCollectionResponse<ScoringOfferResponse>(
-                request.Offset,
-                request.Count,
-                totalCount,
-                offers.Select(o => ScoringOfferResponse.Create(o, now)).ToArray());
+            return offers.ToPartialCollectionResponse(o => ScoringOfferResponse.Create(o, now));
         }
 
         [HttpPut]

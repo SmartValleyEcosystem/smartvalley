@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using SmartValley.Application.AzureStorage;
 using SmartValley.Domain;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.WebApi.Projects.Requests;
 
@@ -9,9 +10,7 @@ namespace SmartValley.WebApi.Projects
 {
     public interface IProjectService
     {
-        Task<IReadOnlyCollection<Project>> QueryAsync(ProjectsQuery projectsQuery);
-
-        Task<int> GetQueryTotalCountAsync(ProjectsQuery projectsQuery);
+        Task<PagingCollection<Project>> GetAsync(ProjectsQuery query);
 
         Task<bool> IsAuthorizedToEditProjectTeamMemberAsync(long userId, long projectId);
 
@@ -29,7 +28,7 @@ namespace SmartValley.WebApi.Projects
 
         Task UpdateImageAsync(long projectId, AzureFile image);
 
-        Task<Project> GetAsync(long projectId);
+        Task<Project> GetByIdAsync(long projectId);
 
         Task<Project> GetByAuthorIdAsync(long authorId);
 

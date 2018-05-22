@@ -67,13 +67,13 @@ export class ProjectListComponent implements OnInit {
   private createScoredProject(response: ProjectResponse): ScoredProject {
     return <ScoredProject> {
       id: response.id,
-      address: response.address,
+      address: response.scoring ? response.scoring.contractAddress : '',
       category: response.category,
       country: response.country,
       description: response.description,
       name: response.name,
-      score: response.score,
-      scoringEndDate: response.scoringEndDate
+      score: response.scoring ? response.scoring.score : '',
+      scoringEndDate: response.scoring ? response.scoring.scoringEndDate : ''
     };
   }
 
@@ -95,7 +95,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   public async updateProjectsAsync(page: number) {
-    const projectsResponse = await this.projectApiClient.queryProjectsAsync(<ProjectQuery>{
+    const projectsResponse = await this.projectApiClient.getAsync(<ProjectQuery>{
       offset: page * this.projectOnPageCount,
       count: this.projectOnPageCount,
       onlyScored: false,

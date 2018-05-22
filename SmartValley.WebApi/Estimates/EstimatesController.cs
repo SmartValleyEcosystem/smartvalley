@@ -79,7 +79,7 @@ namespace SmartValley.WebApi.Estimates
         [Route("criteria")]
         public async Task<CollectionResponse<AreaScoringCriteriaResponse>> GetCriteriaAsync()
         {
-            var criteria = await _scoringCriterionRepository.GetAllAsync();
+            var criteria = await _scoringCriterionRepository.GetAsync();
             return new CollectionResponse<AreaScoringCriteriaResponse>
                    {
                        Items = criteria

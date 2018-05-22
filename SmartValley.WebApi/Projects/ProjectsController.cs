@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application.Extensions;
+using SmartValley.Data.SQL.Extensions;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
@@ -13,7 +14,6 @@ using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Projects.Requests;
 using SmartValley.WebApi.Projects.Responses;
 using SmartValley.WebApi.Scorings;
-using SmartValley.WebApi.Users;
 using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Projects
@@ -33,6 +33,35 @@ namespace SmartValley.WebApi.Projects
             _projectService = projectService;
             _scoringService = scoringService;
             _scoringApplicationRepository = scoringApplicationRepository;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAsync([FromQuery] QueryProjectsRequest request)
+        {
+            if (request.IsPrivate == true && !User.IsInRole(nameof(RoleType.Admin)))
+            {
+                return Unauthorized();
+            }
+
+            var projectsQuery = new ProjectsQuery(
+                request.Offset,
+                request.Count,
+                request.IsPrivate,
+                request.OnlyScored,
+                request.SearchString,
+                request.Stage,
+                request.CountryCode,
+                request.Category,
+                request.MinimumScore,
+                request.MaximumScore,
+                request.OrderBy,
+                request.SortDirection,
+                request.ScoringStatuses
+            );
+
+            var projects = await _projectService.GetAsync(projectsQuery);
+
+            return Ok(projects.ToPartialCollectionResponse(ProjectResponse.Create));
         }
 
         [HttpPost]
@@ -120,7 +149,7 @@ namespace SmartValley.WebApi.Projects
         [HttpGet("{id}")]
         public async Task<ProjectSummaryResponse> GetSummaryAsync(long id)
         {
-            var project = await _projectService.GetAsync(id);
+            var project = await _projectService.GetByIdAsync(id);
             var scoring = await _scoringService.GetByProjectIdAsync(id);
             var scoringApplication = await _scoringApplicationRepository.GetByProjectIdAsync(id);
 
@@ -130,7 +159,7 @@ namespace SmartValley.WebApi.Projects
         [HttpGet("{id}/about")]
         public async Task<ProjectAboutResponse> GetAboutAsync(long id)
         {
-            var project = await _projectService.GetAsync(id);
+            var project = await _projectService.GetByIdAsync(id);
 
             return ProjectAboutResponse.Create(project);
         }
@@ -143,31 +172,6 @@ namespace SmartValley.WebApi.Projects
                    {
                        Items = projects.Select(ProjectSearchResponse.Create).ToArray()
                    };
-        }
-
-        [HttpGet("query")]
-        public async Task<PartialCollectionResponse<ProjectResponse>> QueryAsync([FromQuery] QueryProjectsRequest request)
-        {
-            var projectsQuery = new ProjectsQuery(
-                request.Offset,
-                request.Count,
-                request.OnlyScored,
-                request.SearchString,
-                request.Stage,
-                request.CountryCode,
-                request.Category,
-                request.MinimumScore,
-                request.MaximumScore,
-                request.OrderBy,
-                request.SortDirection
-            );
-            var projects = await _projectService.QueryAsync(projectsQuery);
-
-            var totalCount = await _projectService.GetQueryTotalCountAsync(projectsQuery);
-
-            var projectResponses = projects.Select(ProjectResponse.Create).ToArray();
-
-            return new PartialCollectionResponse<ProjectResponse>(request.Offset, projectResponses.Length, totalCount, projectResponses);
         }
 
         [HttpGet("scoring"), Authorize(Roles = nameof(RoleType.Admin))]

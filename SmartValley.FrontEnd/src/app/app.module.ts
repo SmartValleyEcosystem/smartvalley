@@ -138,6 +138,7 @@ import {AdminAdminsListComponent} from './components/admin-panel/admin-admins-li
 import {AdminUsersListComponent} from './components/admin-panel/admin-users-list/admin-users-list.component';
 import {AccordionModule} from 'primeng/accordion';
 import {TabViewModule} from 'primeng/tabview';
+import {AdminProjectsListComponent} from './components/admin-panel/admin-projects-list/admin-projects-list.component';
 
 @NgModule({
   declarations: [
@@ -206,7 +207,8 @@ import {TabViewModule} from 'primeng/tabview';
     AdminFeedbacksComponent,
     AdminSubscriptionsComponent,
     AdminAdminsListComponent,
-    AdminUsersListComponent
+    AdminUsersListComponent,
+    AdminProjectsListComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,

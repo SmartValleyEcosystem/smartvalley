@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application.AzureStorage;
 using SmartValley.Domain;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Projects.Requests;
+using SmartValley.WebApi.Projects.Responses;
 
 namespace SmartValley.WebApi.Projects
 {
@@ -34,24 +36,21 @@ namespace SmartValley.WebApi.Projects
             _userRepository = userRepository;
         }
 
-        public Task<IReadOnlyCollection<Project>> QueryAsync(ProjectsQuery projectsQuery)
-            => _projectRepository.QueryAsync(projectsQuery);
-
-        public Task<int> GetQueryTotalCountAsync(ProjectsQuery projectsQuery)
-            => _projectRepository.GetQueryTotalCountAsync(projectsQuery);
+        public Task<PagingCollection<Project>> GetAsync(ProjectsQuery query)
+            => _projectRepository.GetAsync(query);
 
         public Task<Project> GetByAuthorIdAsync(long authorId)
             => _projectRepository.GetByAuthorIdAsync(authorId);
 
         public async Task<bool> IsAuthorizedToEditProjectTeamMemberAsync(long userId, long projectId)
         {
-            var project = await GetAsync(projectId);
+            var project = await GetByIdAsync(projectId);
             return project.AuthorId == userId;
         }
 
         public async Task<bool> IsAuthorizedToEditProjectAsync(long projectId, long userId)
         {
-            var project = await GetAsync(projectId);
+            var project = await GetByIdAsync(projectId);
             return project.AuthorId == userId;
         }
 
@@ -72,7 +71,7 @@ namespace SmartValley.WebApi.Projects
 
         public async Task<Project> UpdateAsync(long projectId, UpdateProjectRequest request)
         {
-            var project = await _projectRepository.GetAsync(projectId);
+            var project = await _projectRepository.GetByIdAsync(projectId);
             var country = await GetCountryAsync(request.CountryCode);
 
             project.Name = request.Name;
@@ -101,11 +100,11 @@ namespace SmartValley.WebApi.Projects
 
         public async Task DeleteAsync(long projectId)
         {
-            var project = await _projectRepository.GetAsync(projectId);
+            var project = await _projectRepository.GetByIdAsync(projectId);
             if (project.Scoring != null)
                 throw new AppErrorException(ErrorCode.ProjectCouldntBeRemoved);
 
-            _projectRepository.Delete(project);
+            _projectRepository.Remove(project);
 
             await _projectRepository.SaveChangesAsync();
         }
@@ -120,14 +119,14 @@ namespace SmartValley.WebApi.Projects
         {
             var photoName = $"project-{projectTeamMemberId}/photo-{Guid.NewGuid()}{photo.Extension}";
             var link = await _projectTeamMembersStorageProvider.UploadAndGetUriAsync(photoName, photo);
-            var project = await GetAsync(projectId);
+            var project = await GetByIdAsync(projectId);
             project.UpdateTeamMemberPhotoLink(projectTeamMemberId, link);
             await _projectRepository.SaveChangesAsync();
         }
 
         public async Task DeleteTeamMemberPhotoAsync(long projectId, long projectTeamMemberId)
         {
-            var project = await GetAsync(projectId);
+            var project = await GetByIdAsync(projectId);
             var teamMember = project.GetTeamMember(projectTeamMemberId);
             if (teamMember == null)
                 throw new AppErrorException(ErrorCode.TeamMemberNotFound);
@@ -141,14 +140,14 @@ namespace SmartValley.WebApi.Projects
 
         public async Task UpdateImageAsync(long projectId, AzureFile image)
         {
-            var project = await _projectRepository.GetAsync(projectId);
+            var project = await _projectRepository.GetByIdAsync(projectId);
             project.ImageUrl = await UploadImageAndGetUrlAsync(projectId, image);
             await _projectRepository.SaveChangesAsync();
         }
 
         public async Task DeleteProjectImageAsync(long projectId)
         {
-            var project = await _projectRepository.GetAsync(projectId);
+            var project = await _projectRepository.GetByIdAsync(projectId);
             if (project == null)
                 throw new AppErrorException(ErrorCode.ProjectNotFound);
             if (project.ImageUrl == null)
@@ -159,8 +158,8 @@ namespace SmartValley.WebApi.Projects
             await _projectRepository.SaveChangesAsync();
         }
 
-        public async Task<Project> GetAsync(long projectId)
-            => await _projectRepository.GetAsync(projectId) ?? throw new AppErrorException(ErrorCode.ProjectNotFound);
+        public async Task<Project> GetByIdAsync(long projectId)
+            => await _projectRepository.GetByIdAsync(projectId) ?? throw new AppErrorException(ErrorCode.ProjectNotFound);
 
         private async Task<Project> AddProjectAsync(long userId, CreateProjectRequest request)
         {

@@ -28,19 +28,17 @@ namespace SmartValley.WebApi.Experts
 
         Task DeleteAsync(Address address);
 
-        Task<IReadOnlyCollection<ExpertDetails>> GetAllExpertsDetailsAsync(int offset, int count);
+        Task<PagingCollection<Expert>> GetAsync(int offset, int count);
 
         Task<IReadOnlyCollection<Area>> GetAreasAsync();
 
         Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(Address address);
 
-        Task<Expert> GetAsync(long expertId);
+        Task<Expert> GetByIdAsync(long expertId);
 
-        Task<ExpertDetails> GetDetailsAsync(Address address);
+        Task<Expert> GetByAddressAsync(Address address);
 
         Task SetAvailabilityAsync(Address address, bool isAvailable);
-
-        Task<int> GetTotalCountExpertsAsync();
 
         Task SetInHouseAsync(Address address, bool isInHouse);
     }

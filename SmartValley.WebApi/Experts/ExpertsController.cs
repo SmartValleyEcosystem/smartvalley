@@ -42,8 +42,8 @@ namespace SmartValley.WebApi.Experts
         [HttpGet]
         public async Task<ExpertResponse> GetExpertAsync(string address)
         {
-            var expertDetails = await _expertService.GetDetailsAsync(address);
-            return ExpertResponse.Create(expertDetails);
+            var expert = await _expertService.GetByAddressAsync(address);
+            return ExpertResponse.Create(expert);
         }
 
         [HttpGet, Route("{address}/status")]
@@ -127,17 +127,15 @@ namespace SmartValley.WebApi.Experts
         [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<PartialCollectionResponse<ExpertResponse>> GetAllExperts(CollectionPageRequest request)
         {
-            var experts = await _expertService.GetAllExpertsDetailsAsync(request.Offset, request.Count);
-            var totalCount = await _expertService.GetTotalCountExpertsAsync();
-            return new PartialCollectionResponse<ExpertResponse>(
-                request.Offset, experts.Count, totalCount, experts.Select(ExpertResponse.Create).ToArray());
+            var experts = await _expertService.GetAsync(request.Offset, request.Count);
+            return experts.ToPartialCollectionResponse(ExpertResponse.Create);
         }
 
         [HttpGet("availability")]
         [Authorize(Roles = nameof(RoleType.Expert))]
         public async Task<ExpertAvailabilityResponse> GetAvailabilityAsync()
         {
-            var expert = await _expertService.GetAsync(User.GetUserId());
+            var expert = await _expertService.GetByIdAsync(User.GetUserId());
             if (expert == null)
                 throw new AppErrorException(ErrorCode.ExpertNotFound);
 
