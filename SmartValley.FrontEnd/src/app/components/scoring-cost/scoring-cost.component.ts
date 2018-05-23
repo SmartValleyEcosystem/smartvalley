@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {AreaService} from '../../../services/expert/area.service';
-import {Area} from '../../../services/expert/area';
+import {AreaService} from '../../services/expert/area.service';
+import {Area} from '../../services/expert/area';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {ScoringService} from '../../../services/scoring/scoring.service';
-import {MatDialogRef} from "@angular/material";
+import {ScoringService} from '../../services/scoring/scoring.service';
 
 @Component({
   selector: 'app-scoring-cost',
@@ -18,8 +17,7 @@ export class ScoringCostComponent implements OnInit {
 
   constructor(private areaService: AreaService,
               private formBuilder: FormBuilder,
-              private scoringService: ScoringService,
-              private dialogRef: MatDialogRef<ScoringCostComponent>) {
+              private scoringService: ScoringService) {
     this.areas = this.areaService.areas;
   }
 
@@ -49,7 +47,6 @@ export class ScoringCostComponent implements OnInit {
       costs.push(area.cost);
     }
     await this.scoringService.setScoringCostAsync(areas, costs);
-    this.dialogRef.close();
   }
 
 }

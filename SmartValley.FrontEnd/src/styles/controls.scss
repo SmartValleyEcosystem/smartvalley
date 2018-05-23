@@ -308,6 +308,21 @@ body .ui-tabview.ui-tabview-top .ui-tabview-nav li {
     }
   }
 }
+body .admin-tabs {
+  .ui-tabview.ui-tabview-top .ui-tabview-nav li {
+    a .ui-tabview-title {
+        color: #828282;
+    }
+  }
+}
+
+body .sub-tabs .ui-tabview.ui-tabview-top {
+  a {
+    .ui-tabview-title {
+      font-size: 16px !important;
+    }
+  }
+}
 body .ui-tabview.ui-tabview-top .ui-tabview-nav li.ui-state-active {
   a {
     .ui-tabview-title {

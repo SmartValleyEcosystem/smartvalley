@@ -2,42 +2,51 @@
   <div class="row mx-auto">
     <h1 class="title">{{ 'AdminPanel.Title' | translate }}</h1>
   </div>
-  <mat-tab-group [selectedIndex]="selectedMainTab" class="tab" (selectedTabChange)="onMainTabChange($event)">
-    <mat-tab label="{{ 'AdminPanel.UsersTab' | translate }}">
-      <ngb-tabset [activeId]="selectedSubTab" type="pills" (tabChange)="onSubTabChange($event)">
-        <ngb-tab id="admins" title="{{ 'AdminPanel.AdminsTab' | translate }}">
-          <ng-template ngbTabContent>
-            <app-admin-admins-list></app-admin-admins-list>
-          </ng-template>
-        </ngb-tab>
-        <ngb-tab id="experts" title="Experts">
-          <ng-template ngbTabContent>
-            <app-admin-experts-list></app-admin-experts-list>
-          </ng-template>
-        </ngb-tab>
-        <ngb-tab id="applications" title="Applications">
-          <ng-template ngbTabContent>
-            <app-admin-expert-applications-list></app-admin-expert-applications-list>
-          </ng-template>
-        </ngb-tab>
-        <ngb-tab id="all" title="All">
-          <ng-template ngbTabContent>
-            <app-admin-users-list></app-admin-users-list>
-          </ng-template>
-        </ngb-tab>
-      </ngb-tabset>
-    </mat-tab>
-    <mat-tab label="{{ 'AdminPanel.ProjectTab' | translate }}">
-      <app-admin-projects-list></app-admin-projects-list>
-    </mat-tab>
-    <mat-tab label="{{ 'AdminPanel.ScoringTab' | translate }}">
-      <app-admin-scoring-projects></app-admin-scoring-projects>
-    </mat-tab>
+
+  <p-tabView class="admin-tabs" [activeIndex]="selectedMainTab" (onChange)="onMainTabChange($event)">
+
+    <p-tabPanel header="{{ 'AdminPanel.UsersTab' | translate }}">
+      <p-tabView class="sub-tabs" [activeIndex]="selectedSubTab" (onChange)="onSubTabChange($event, usersTab)">
+        <p-tabPanel header="{{ 'AdminPanel.AdminsTab' | translate }}">
+          <app-admin-admins-list></app-admin-admins-list>
+        </p-tabPanel>
+        <p-tabPanel header="{{ 'AdminPanel.ExpertsTab' | translate }}">
+          <app-admin-experts-list></app-admin-experts-list>
+        </p-tabPanel>
+        <p-tabPanel header="{{ 'AdminPanel.Founders' | translate }}">
+          <app-admin-users-list></app-admin-users-list>
+        </p-tabPanel>
+      </p-tabView>
+    </p-tabPanel>
+
+    <p-tabPanel header="{{ 'AdminPanel.ScoringTab' | translate }}">
+      <p-tabView class="sub-tabs" [activeIndex]="selectedSubTab" (onChange)="onSubTabChange($event, scoringTab)">
+        <p-tabPanel header="{{ 'AdminPanel.PublicScoring' | translate }}">
+          <app-admin-scoring-projects></app-admin-scoring-projects>
+        </p-tabPanel>
+        <p-tabPanel header="{{ 'AdminPanel.PrivateScoring' | translate }}">
+          <app-admin-projects-list></app-admin-projects-list>
+        </p-tabPanel>
+        <p-tabPanel header="{{ 'AdminPanel.ScoringCosts' | translate }}">
+          <app-scoring-cost></app-scoring-cost>
+        </p-tabPanel>
+      </p-tabView>
+    </p-tabPanel>
+
+    <p-tabPanel header="{{ 'AdminPanel.Requests' | translate }}">
+      <p-tabView class="sub-tabs" [activeIndex]="selectedSubTab" (onChange)="onSubTabChange($event, requestsTab)">
+        <p-tabPanel header="{{ 'AdminPanel.RequestForExpert' | translate }}">
+          <app-admin-expert-applications-list></app-admin-expert-applications-list>
+        </p-tabPanel>
+        <p-tabPanel header="{{ 'AdminPanel.Feedback' | translate }}">
+          <app-admin-feedbacks></app-admin-feedbacks>
+        </p-tabPanel>
+        <p-tabPanel header="{{ 'AdminPanel.SubscriptionsTab' | translate }}">
+          <app-admin-subscriptions></app-admin-subscriptions>
+        </p-tabPanel>
+      </p-tabView>
+    </p-tabPanel>
+
+  </p-tabView>
     <mat-tab label="{{ 'AdminPanel.FeedbackTab' | translate }}">
-      <app-admin-feedbacks></app-admin-feedbacks>
-    </mat-tab>
-    <mat-tab label="{{ 'AdminPanel.SubscriptionsTab' | translate }}">
-      <app-admin-subscriptions></app-admin-subscriptions>
-    </mat-tab>
-  </mat-tab-group>
 </div>
