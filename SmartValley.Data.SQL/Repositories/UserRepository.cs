@@ -93,11 +93,11 @@ namespace SmartValley.Data.SQL.Repositories
         }
 
         public Task<PagingCollection<User>> GetAsync(int offset, int count)
-            => _readContext.Users.GetPageAsync(offset, count);
+            => _editContext.Users.GetPageAsync(offset, count);
 
         public async Task<IReadOnlyCollection<User>> GetByAddressesAsync(IReadOnlyCollection<Address> addresses)
         {
-            return await _readContext.Users
+            return await _editContext.Users
                                     .Where(user => addresses.Contains(user.Address))
                                     .ToArrayAsync();
         }
