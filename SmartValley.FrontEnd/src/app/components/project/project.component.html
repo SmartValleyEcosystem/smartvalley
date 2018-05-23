@@ -42,9 +42,9 @@
                  class="main-btn">{{ 'MyProject.GetScore' | translate }}
               </a>
               <ng-template #submitedBlock>
-                <span (click)="navigateToPaymentAsync()" class="main-btn">
+                <button (click)="navigateToPaymentAsync()" class="main-btn">
                   {{ 'MyProject.SendScore' | translate }}
-                </span>
+                </button>
               </ng-template>
               <a [routerLink]="'/' + editProjectsLink" class="ghost-btn">
                 {{ 'MyProject.EditInformation' | translate }}

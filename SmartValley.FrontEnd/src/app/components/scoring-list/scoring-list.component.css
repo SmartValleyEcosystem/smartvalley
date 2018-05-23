@@ -14,6 +14,12 @@
   left: 15px;
   color: gray;
 }
+.lock-icon {
+  position: absolute;
+  font-size: 17px;
+  left: 15px;
+  color: gray;
+}
 
 .control-label {
   width: 113.6px;
