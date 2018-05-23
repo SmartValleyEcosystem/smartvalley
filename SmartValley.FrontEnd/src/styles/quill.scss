@@ -35,6 +35,9 @@
   white-space: pre-wrap;
   word-wrap: break-word;
 }
+.ql-disabled .ql-editor {
+  min-height: 0 !important;
+}
 .ql-editor > * {
   cursor: text;
 }
