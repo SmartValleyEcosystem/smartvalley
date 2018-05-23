@@ -60,18 +60,13 @@ export class ExpertApiClient extends BaseApiClient {
       .append('offset', offset.toString())
       .append('count', count.toString());
 
-    return this.http.get<CollectionResponse<ExpertResponse>>(`${this.baseApiUrl}/experts/all/`, {
+    return this.http.get<CollectionResponse<ExpertResponse>>(`${this.baseApiUrl}/experts`, {
       params: parameters
     }).toPromise();
   }
 
   public getAsync(address: string): Promise<ExpertResponse> {
-    const parameters = new HttpParams()
-      .append('address', address);
-
-    return this.http.get<ExpertResponse>(`${this.baseApiUrl}/experts/`, {
-      params: parameters
-    }).toPromise();
+    return this.http.get<ExpertResponse>(`${this.baseApiUrl}/experts/${address}`).toPromise();
   }
 
   public createAsync(expertRequest: ExpertRequest) {

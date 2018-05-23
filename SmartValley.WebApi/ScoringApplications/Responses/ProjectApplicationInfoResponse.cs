@@ -59,7 +59,7 @@ namespace SmartValley.WebApi.ScoringApplications.Responses
                                             Linkedin = project.Linkedin
                                         },
                        ProjectTeamMembers = project.TeamMembers.Select(ProjectTeamMemberResponse.Create)
-            };
+                   };
         }
 
         public static ProjectApplicationInfoResponse CreateFrom(Domain.ScoringApplication scoringApplication)

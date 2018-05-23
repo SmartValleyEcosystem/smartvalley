@@ -24,7 +24,8 @@ namespace SmartValley.Data.SQL.Repositories
         public Task<PagingCollection<Project>> GetAsync(ProjectsQuery query)
         {
             var queryable = from project in Entities()
-                            join scoringApplication in _editContext.ScoringApplications on project.Id equals scoringApplication.ProjectId
+                            join scoringApplication in _editContext.ScoringApplications on project.Id equals scoringApplication.ProjectId into ps
+                            from scoringApplication in ps.DefaultIfEmpty()
                             where !query.OnlyScored || project.Scoring.Score.HasValue
                             where !query.Stage.HasValue || project.Stage == query.Stage.Value
                             where string.IsNullOrEmpty(query.SearchString) || project.Name.ToUpper().Contains(query.SearchString.ToUpper())
@@ -32,8 +33,8 @@ namespace SmartValley.Data.SQL.Repositories
                             where !query.Category.HasValue || project.Category == query.Category.Value
                             where !query.MinimumScore.HasValue || (project.Scoring.Score.HasValue && project.Scoring.Score.Value >= query.MinimumScore)
                             where !query.MaximumScore.HasValue || (project.Scoring.Score.HasValue && project.Scoring.Score.Value <= query.MaximumScore)
-                            where !query.IsPrivate.HasValue || (project.IsPrivate == query.IsPrivate && scoringApplication.IsSubmitted)
-                            where query.ScoringStatuses.Contains(project.Scoring.Status)
+                            where (!query.IsPrivate.HasValue && project.IsPrivate == false) || (query.IsPrivate.HasValue && project.IsPrivate == query.IsPrivate && scoringApplication.IsSubmitted)
+                            where query.ScoringStatuses.Count == 0 || query.ScoringStatuses.Contains(project.Scoring.Status)
                             select project;
 
             if (query.OrderBy.HasValue)

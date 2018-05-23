@@ -29,6 +29,8 @@ export class ScoringReportComponent implements OnInit {
   public areaType: number;
   public criterionIsReady = false;
 
+  public ScoringStatus = ScoringStatus;
+
   @Input() projectId: number;
   @Input() scoringStatus: ScoringStatus;
   @Input() isAuthor: boolean;

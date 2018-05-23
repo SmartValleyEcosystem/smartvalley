@@ -4,75 +4,85 @@
 <div *ngIf="project" class="content">
   <h1 class="title">{{ project.name }}</h1>
   <app-project-info *ngIf="project" [project]="project">
-    <div [ngSwitch]="project.scoring.scoringStatus" class="control-info-wrapper">
-      <div *ngSwitchCase="ScoringStatusFinished">
-        <div *ngIf="!project.isPrivate" class="small-title">{{ 'MyProject.ProjectScore' | translate }}</div>
-        <div *ngIf="project.isPrivate" class="small-title">
-          <i class="lock-icon material-icons">lock</i>
-          {{ 'MyProject.PrivateProjectScore' | translate }}
+    <div [ngSwitch]="getScoringStatus()" class="control-info-wrapper">
+      <div *ngSwitchCase="ScoringStatus.FillingApplication">
+        <div *ngIf="isAuthor">
+          <a (click)="navigateToApplicationScoringAsync()"
+             class="main-btn">{{ 'MyProject.GetScore' | translate }}
+          </a>
+          <a [routerLink]="'/' + editProjectsLink" class="ghost-btn">
+            {{ 'MyProject.EditInformation' | translate }}
+          </a>
         </div>
-        <div class="score">
-          <div class="main-number">{{project.scoring.score | roundNumberPipe}}</div>/100
-        </div>
-        <div>
-          <button (click)="showSubscribeDialog()" class="main-btn">{{ 'MyProject.Subscribe' | translate }}</button>
-        </div>
-        <a *ngIf="isAuthor" [routerLink]="'/' + editProjectsLink" class="ghost-btn">
-          {{ 'MyProject.EditInformation' | translate }}
-        </a>
       </div>
-      <div *ngSwitchCase="ScoringStatusInProgress">
-        <div *ngIf="!project.isPrivate" class="score" style="font-size: 20px;">
-          {{ 'MyProject.InProgress' | translate }}
+      <div *ngSwitchCase="ScoringStatus.ReadyForPayment">
+        <div *ngIf="isAuthor">
+          <button (click)="navigateToPaymentAsync()" class="main-btn">
+                  {{ 'MyProject.SendScore' | translate }}
+          </button>
+          <a [routerLink]="'/' + editProjectsLink" class="ghost-btn">
+            {{ 'MyProject.EditInformation' | translate }}
+          </a>
         </div>
-        <div *ngIf="project.isPrivate" class="score" style="font-size: 20px;">
+      </div>
+      <div *ngSwitchCase="ScoringStatus.PaymentInProcess">
+        <div *ngIf="isAuthor">
+          <div class="score" style="font-size: 20px;">
+            {{ 'MyProject.PaymentInProgress' | translate }}
+          </div>
+          <a target="_blank" [href]="scoringStartTransactionUrl" class="ghost-btn transaction-btn">
+            {{ 'MyProject.SeeTransaction' | translate }}
+          </a>
+        </div>
+      </div>
+      <div *ngSwitchCase="ScoringStatus.PaymentFailed">
+        <div *ngIf="isAuthor">
+          <div class="score failed" style="font-size: 20px;">
+            {{ 'MyProject.PaymentFailed' | translate }}
+          </div>
+          <div>
+            <a (click)="navigateToPaymentAsync()" class="main-btn short-transaction-btn">
+              {{ 'MyProject.TryAgain' | translate }}
+            </a>
+            <a target="_blank" [href]="scoringStartTransactionUrl" class="ghost-btn short-transaction-btn">
+              {{ 'MyProject.SeeDetails' | translate }}
+            </a>
+          </div>
+        </div>
+      </div>
+      <div *ngSwitchCase="ScoringStatus.InProgress">
+        <div *ngIf="project.isPrivate; else publicProject" class="score" style="font-size: 20px;">
           <i class="lock-icon material-icons">lock</i>
           {{ 'MyProject.PrivateInProgress' | translate }}
         </div>
-        <div class="score progress-scoring" style="font-size: 20px;">
-          {{scoringCompletenessInPercents}}{{ 'MyProject.CompletenessInPercents' | translate }}
-        </div>
-      </div>
-      <div *ngSwitchCase="ScoringStatusPending">
-        <div *ngIf="isAuthor">
-          <div [ngSwitch]="project.scoringStartTransactionStatus">
-            <div *ngSwitchCase="ScoringStartTransactionStatus.NotSubmitted">
-              <a *ngIf="!project.isApplicationSubmitted; else submitedBlock;"
-                 (click)="navigateToApplicationScoringAsync()"
-                 class="main-btn">{{ 'MyProject.GetScore' | translate }}
-              </a>
-              <ng-template #submitedBlock>
-                <button (click)="navigateToPaymentAsync()" class="main-btn">
-                  {{ 'MyProject.SendScore' | translate }}
-                </button>
-              </ng-template>
-              <a [routerLink]="'/' + editProjectsLink" class="ghost-btn">
-                {{ 'MyProject.EditInformation' | translate }}
-              </a>
-            </div>
-            <div *ngSwitchCase="ScoringStartTransactionStatus.InProgress">
-              <div class="score" style="font-size: 20px;">
-                {{ 'MyProject.PaymentInProgress' | translate }}
-              </div>
-              <a target="_blank" [href]="scoringStartTransactionUrl" class="ghost-btn transaction-btn">
-                {{ 'MyProject.SeeTransaction' | translate }}
-              </a>
-            </div>
-            <div *ngSwitchCase="ScoringStartTransactionStatus.Failed">
-              <div class="score failed" style="font-size: 20px;">
-                {{ 'MyProject.PaymentFailed' | translate }}
-              </div>
-              <div>
-                <a (click)="navigateToPaymentAsync()" class="main-btn short-transaction-btn">
-                  {{ 'MyProject.TryAgain' | translate }}
-                </a>
-                <a target="_blank" [href]="scoringStartTransactionUrl" class="ghost-btn short-transaction-btn">
-                  {{ 'MyProject.SeeDetails' | translate }}
-                </a>
-              </div>
+        <ng-template #publicProject>
+          <div class="score" style="font-size: 20px;">
+            {{ 'MyProject.InProgress' | translate }}
+            <div class="score progress-scoring" style="font-size: 20px;">
+              {{scoringCompletenessInPercents}}{{ 'MyProject.CompletenessInPercents' | translate }}
             </div>
           </div>
+        </ng-template>
+      </div>
+      <div *ngSwitchCase="ScoringStatus.Finished">
+        <div *ngIf="project.isPrivate; else publicProject" class="small-title">
+          <i class="lock-icon material-icons">lock</i>
+          {{ 'MyProject.PrivateProjectScore' | translate }}
         </div>
+        <ng-template #publicProject>
+          <div class="small-title">{{ 'MyProject.ProjectScore' | translate }}</div>
+        </ng-template>
+        <div class="score">
+          <div class="main-number">{{project.scoring.score | roundNumberPipe}}</div>/100
+        </div>
+        <a *ngIf="isAuthor; else guest" [routerLink]="'/' + editProjectsLink" class="ghost-btn">
+          {{ 'MyProject.EditInformation' | translate }}
+        </a>
+        <ng-template #guest>
+          <div>
+            <button (click)="showSubscribeDialog()" class="main-btn">{{ 'MyProject.Subscribe' | translate }}</button>
+          </div>
+        </ng-template>
       </div>
     </div>
   </app-project-info>
@@ -81,11 +91,11 @@
     <p-tabPanel header="{{ 'MyProject.About' | translate }}">
       <app-project-about [projectId]="projectId"></app-project-about>
     </p-tabPanel>
-    <p-tabPanel *ngIf="isScoringApplicationTabAvailable" header="{{ 'MyProject.ScoringApplication' | translate }}">
-      <app-scoring-application [project]="project"></app-scoring-application>
+    <p-tabPanel header="{{ 'MyProject.ScoringApplication' | translate }}">
+      <app-scoring-application [scoringStatus]="getScoringStatus()" [project]="project"></app-scoring-application>
     </p-tabPanel>
-    <p-tabPanel header="{{ 'MyProject.ScoringReport' | translate }}">
-      <app-scoring-report [scoringStatus]="project.scoring.scoringStatus"
+    <p-tabPanel *ngIf="isReportTabAvailable()" header="{{ 'MyProject.ScoringReport' | translate }}">
+      <app-scoring-report [scoringStatus]="getScoringStatus()"
                           [projectId]="projectId"
                           [isAuthor]="isAuthor">
       </app-scoring-report>

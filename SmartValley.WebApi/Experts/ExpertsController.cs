@@ -39,7 +39,7 @@ namespace SmartValley.WebApi.Experts
                    };
         }
 
-        [HttpGet]
+        [HttpGet("{address}")]
         public async Task<ExpertResponse> GetExpertAsync(string address)
         {
             var expert = await _expertService.GetByAddressAsync(address);
@@ -123,7 +123,7 @@ namespace SmartValley.WebApi.Experts
             return NoContent();
         }
 
-        [HttpGet("all")]
+        [HttpGet]
         [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<PartialCollectionResponse<ExpertResponse>> GetAllExperts(CollectionPageRequest request)
         {
