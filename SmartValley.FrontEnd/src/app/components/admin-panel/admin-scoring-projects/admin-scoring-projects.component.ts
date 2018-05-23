@@ -131,8 +131,4 @@ export class AdminScoringProjectsComponent implements OnInit {
   async ngOnInit() {
     await this.updateProjectsAsync();
   }
-
-  public showScoringCostDialog() {
-    this.dialogService.showScoringCostDialog();
-  }
 }

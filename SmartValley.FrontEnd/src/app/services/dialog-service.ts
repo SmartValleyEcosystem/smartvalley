@@ -15,7 +15,6 @@ import {CreateNewExpertModalComponent} from '../components/common/create-new-exp
 import {EditExpertModalComponent} from '../components/common/edit-expert-modal/edit-expert-modal.component';
 import {SetExpertsModalComponent} from '../components/common/set-experts-modal/set-experts-modal.component';
 import {EditExpertModalData} from '../components/common/edit-expert-modal/edit-expert-modal-data';
-import {ScoringCostComponent} from '../components/common/scoring-cost-modal/scoring-cost.component';
 import {WelcomeModalComponent} from '../components/common/welcome-modal/welcome-modal.component';
 import {WelcomeModalData} from '../components/common/welcome-modal/welcome-modal-data';
 import {DeleteProjectModalComponent} from '../components/common/delete-project-modal/delete-project-modal.component';
@@ -50,12 +49,6 @@ export class DialogService {
     return this.openModal(AddAdminModalComponent, {})
       .afterClosed()
       .toPromise<string>();
-  }
-
-  public showScoringCostDialog(): Promise<void> {
-    return this.openModal(ScoringCostComponent, {})
-      .afterClosed()
-      .toPromise<void>();
   }
 
   public showMetamaskManualAlert(): MatDialogRef<MetamaskManualModalComponent> {

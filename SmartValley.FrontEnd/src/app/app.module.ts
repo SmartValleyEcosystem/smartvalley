@@ -98,7 +98,7 @@ import {EditScoringApplicationComponent} from './components/edit-scoring-applica
 import {StickyModule} from 'ng2-sticky-kit';
 import {InputSwitchComponent} from './components/input-switch/input-switch.component';
 import {ScoringService} from './services/scoring/scoring.service';
-import {ScoringCostComponent} from './components/common/scoring-cost-modal/scoring-cost.component';
+import {ScoringCostComponent} from './components/scoring-cost/scoring-cost.component';
 import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
 import {RegisterConfirmComponent} from './components/authentication/register-confirm/register-confirm.component';
 import {RegisterComponent} from './components/authentication/register/register.component';

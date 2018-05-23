@@ -10,6 +10,15 @@
     "FeedbackTab": "Feedbacks",
     "UsersTab": "Users",
     "SubscriptionsTab": "Subscriptions",
-    "AlreadyAdmin": "Entered address is admin already"
+    "AlreadyAdmin": "Entered address is admin already",
+    "Requests": "Requests",
+    "Founders": "Founders",
+    "Soon": "Soon...",
+    "ScoringCosts": "Scoring Costs",
+    "PrivateScoring": "Private Scoring",
+    "PublicScoring": "Public Scoring",
+    "RequestForExpert": "Request for expert",
+    "Feedback": "Feedback",
+    "Invest": "Invest"
   }
 }

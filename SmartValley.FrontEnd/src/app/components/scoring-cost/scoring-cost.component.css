@@ -1,0 +1,14 @@
+.control-row {
+    margin-bottom: 20px;
+}
+.row {
+    margin: 0;
+    width: 30%;
+}
+.form {
+    display: flex;
+    flex-wrap: wrap;
+}
+.submit-row {
+    width: 100%;
+}

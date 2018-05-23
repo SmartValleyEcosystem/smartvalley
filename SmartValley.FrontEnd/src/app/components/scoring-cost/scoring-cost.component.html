@@ -1,0 +1,19 @@
+<div *ngIf="isLoaded">
+  <form [formGroup]="scoringCostForm" class="form" novalidate>
+      <div *ngFor="let area of scoringCostForm.get('areas')['controls']; let index = index;" class="row">
+        <div [formGroup]="area">
+            <div class="control-row">
+                <p class="control-label">
+                    <label for="{{ 'area_' + index }}">{{area.value.name}}</label>
+                </p>
+                <input class="input input-wide" id="{{ 'area_' + index }}" formControlName="cost" #required>
+            </div>
+        </div>
+      </div>
+      <div class="submit-row">
+          <button class="main-btn" (click)="submitAsync()">
+              Save changes
+          </button>
+      </div>
+  </form>
+</div>

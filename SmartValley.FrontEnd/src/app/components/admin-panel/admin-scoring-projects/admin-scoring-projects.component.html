@@ -1,6 +1,3 @@
-<div>
-  <a class="main-btn button-link" (click)="showScoringCostDialog()">Scoring cost</a>
-</div>
 <div style="display: inline-block; margin-right: 2em; margin-bottom: 1em;"
      *ngFor="let category of categories">
   <p-checkbox [(ngModel)]="selectedCategories" value="{{category.value}}" (onChange)="onCheckAsync()"></p-checkbox>
