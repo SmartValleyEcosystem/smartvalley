@@ -13,7 +13,7 @@ export class AdminPanelComponent implements OnInit {
   public mainTabItems: string[] = ['users', 'scoring', 'requests'];
   public usersTab: string[] = ['admins', 'experts', 'founders'];
   public scoringTab: string[] = ['public-scoring', 'private-scoring', 'scoring-costs'];
-  public requestsTab: string[] = ['requests-for-expert', 'feedback', 'invest'];
+  public requestsTab: string[] = ['requests-for-expert', 'feedback', 'subscriptions'];
 
   public selectedMainTab = 0;
   public selectedSubTab = 0;
