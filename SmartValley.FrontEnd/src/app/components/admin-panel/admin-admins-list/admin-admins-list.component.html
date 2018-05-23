@@ -1,5 +1,5 @@
 <div class="admin-experts-list" style="padding-top: 2em;">
-  <p-table [value]="admins" [lazy]="true" (onLazyLoad)="getAdminList($event)" [paginator]="true"
+  <p-table class="admin-table" [value]="admins" [lazy]="true" (onLazyLoad)="getAdminList($event)" [paginator]="true"
            [rows]="10" [loading]="loading">
     <ng-template pTemplate="header" let-columns>
       <tr class="list-row list-row__header">
@@ -14,9 +14,7 @@
           {{rowData[col]}}
         </td>
         <td>
-          <button (click)="deleteAsync(admin.address)" class="btn btn-link">
-            {{ 'AdminPanel.Delete' | translate }}
-          </button>
+          <img (click)="deleteAsync(admin.address)" src="/assets/img/controls/delete.svg" alt="{{ 'AdminPanel.Delete' | translate }}">
         </td>
       </tr>
     </ng-template>

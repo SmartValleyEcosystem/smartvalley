@@ -1,5 +1,5 @@
 <div class="admin-experts-list">
-  <p-table [value]="experts" [lazy]="true" (onLazyLoad)="getExpertList($event)" [paginator]="true"
+  <p-table class="admin-table" [value]="experts" [lazy]="true" (onLazyLoad)="getExpertList($event)" [paginator]="true"
            [rows]="10" [totalRecords]="totalRecords" [loading]="loading">
     <ng-template pTemplate="header" let-columns>
       <tr class="list-row list-row__header">
@@ -20,9 +20,7 @@
           {{rowData[col]}}
         </td>
         <td>
-          <button (click)="showExpertEditDialog(rowData)" class="btn btn-link">
-          {{ 'AdminExpertList.Edit' | translate }}
-          </button>
+          <span (click)="showExpertEditDialog(rowData)" class="edit-icon" title="{{ 'AdminExpertList.Edit' | translate }}"></span>
 
           <!--https://rassvet-capital.atlassian.net/browse/ILT-730-->
           <!--<button (click)="deleteAsync(rowData.address)" class="btn btn-link">-->
