@@ -18,6 +18,7 @@ import {Paths} from '../../paths';
 import * as moment from 'moment';
 import {ProjectApplicationInfoResponse} from '../../api/scoring-application/project-application-info-response';
 import {NotificationsService} from 'angular2-notifications';
+import {ProjectApiClient} from '../../api/project/project-api-client';
 
 @Component({
   selector: 'app-edit-scoring-application',
@@ -81,6 +82,8 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
           }
         };
 
+  private isPrivateProject: boolean;
+
   @ViewChild('socialsContainer') private socialsContainer: ElementRef;
   @ViewChild('membersContainer') private membersContainer: ElementRef;
   @ViewChildren('required') public requiredFields: QueryList<any>;
@@ -94,6 +97,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
               private formBuilder: FormBuilder,
               private htmlElement: ElementRef,
               private route: ActivatedRoute,
+              private projectApiClient: ProjectApiClient,
               private router: Router) {
   }
 
@@ -120,6 +124,8 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
     this.questions = await this.scoringApplicationApiClient.getScoringApplicationsAsync(this.projectId);
     this.partitions = this.questions.partitions;
     this.projectInfo = this.questions.projectInfo;
+    const project = await this.projectApiClient.getProjectSummaryAsync(this.projectId);
+    this.isPrivateProject = project.isPrivate;
     this.comboboxValues = this.getQuestionSelectItems(this.partitions);
 
     this.addQuestionsFormControls(this.partitions);
@@ -308,7 +314,12 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
     if (isValid) {
       await this.saveDraftAsync();
       await this.scoringApplicationApiClient.submitAsync(this.projectId);
-      await this.router.navigate([Paths.Project + '/' + this.projectId + '/payment']);
+
+      if (this.isPrivateProject) {
+        await this.router.navigate([Paths.Project + '/' + this.projectId]);
+      } else {
+        await this.router.navigate([Paths.Project + '/' + this.projectId + '/payment']);
+      }
     }
   }
 

@@ -85,12 +85,14 @@ export class ProjectApiClient extends BaseApiClient {
       .append('minimumScore', checkParam(query.minimumScore))
       .append('maximumScore', checkParam(query.maximumScore))
       .append('orderBy', checkParam(query.orderBy))
-      .append('isPrivate', checkParam(query.isPrivate.toString()))
+      .append('isPrivate', checkParam(query.isPrivate))
       .append('sortDirection', checkParam(query.direction));
 
-    query.scoringStatuses.forEach(id => {
-      parameters = parameters.append('scoringStatuses', id.toString());
-    });
+    if (query.scoringStatuses) {
+      query.scoringStatuses.forEach(id => {
+        parameters = parameters.append('scoringStatuses', id.toString());
+      });
+    }
 
     return this.http
       .get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/projects', {params: parameters})

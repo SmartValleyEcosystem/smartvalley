@@ -9,7 +9,6 @@ import {ScoringApiClient} from '../../../api/scoring/scoring-api-client';
 import {ProjectApiClient} from '../../../api/project/project-api-client';
 import {Paths} from '../../../paths';
 import {ProjectSummaryResponse} from '../../../api/project/project-summary-response';
-import {DialogService} from '../../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
 import {NotificationsService} from 'angular2-notifications';
 
@@ -39,7 +38,6 @@ export class ScoringPaymentComponent implements OnInit {
               private balanceService: BalanceService,
               private scoringApiClient: ScoringApiClient,
               private scoringService: ScoringService,
-              private dialogService: DialogService,
               private notificationsService: NotificationsService,
               private translateService: TranslateService) {
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));

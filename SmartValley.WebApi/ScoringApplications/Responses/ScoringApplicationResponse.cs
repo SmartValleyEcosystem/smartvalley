@@ -62,7 +62,7 @@ namespace SmartValley.WebApi.ScoringApplications.Responses
                    .ToArray();
         }
 
-        private static ScoringApplicationQuestionResponse CreateEmptyQuestion(Domain.Entities.ScoringApplicationQuestion q)
+        private static ScoringApplicationQuestionResponse CreateEmptyQuestion(ScoringApplicationQuestion q)
         {
             return new ScoringApplicationQuestionResponse
                    {
@@ -76,7 +76,7 @@ namespace SmartValley.WebApi.ScoringApplications.Responses
                    };
         }
 
-        private void SetAnswersFromApplication(Domain.ScoringApplication application)
+        private void SetAnswersFromApplication(ScoringApplication application)
         {
             foreach (var answer in application.Answers)
             {

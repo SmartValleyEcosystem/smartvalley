@@ -29,14 +29,9 @@ export class ProjectComponent implements OnInit {
   public editProjectsLink = Paths.ProjectEdit;
   public selectedTab = 0;
 
-  public ScoringStatusInProgress = ScoringStatus.InProgress;
-  public ScoringStatusFinished = ScoringStatus.Finished;
-  public ScoringStatusPending = ScoringStatus.Pending;
-
-  public ScoringStartTransactionStatus = ScoringStartTransactionStatus;
+  public ScoringStatus = ScoringStatus;
 
   public isAuthor = false;
-  public isScoringApplicationTabAvailable = true;
   public scoringCompletenessInPercents;
   public scoringStartTransactionUrl = '';
 
@@ -128,5 +123,46 @@ export class ProjectComponent implements OnInit {
 
   public onChangeTab($event) {
       this.location.replaceState(Paths.Project + '/' + this.projectId + '/details/' + this.tabItems[$event.index]);
+  }
+
+  public isReportTabAvailable(): boolean {
+    return !this.project.isPrivate || this.project.scoring.scoringStatus === ScoringStatus.Finished;
+  }
+
+  public getScoringStatus(): ScoringStatus {
+    const scoringStatus = this.getOriginalScoringStatus();
+    const hiddenPrivateScoringStatuses = [
+      ScoringStatus.ReadyForPayment,
+      ScoringStatus.PaymentInProcess,
+      ScoringStatus.PaymentFailed
+    ];
+
+    if (this.project.isPrivate && this.isAuthor && hiddenPrivateScoringStatuses.includes(scoringStatus)) {
+      return ScoringStatus.InProgress;
+    } else {
+      return scoringStatus;
+    }
+  }
+
+  private getOriginalScoringStatus(): ScoringStatus {
+    if (this.project.scoring.scoringStatus === ScoringStatus.FillingApplication) {
+      if (this.project.scoringStartTransactionStatus === ScoringStartTransactionStatus.NotSubmitted) {
+        if (this.project.isApplicationSubmitted) {
+          return ScoringStatus.ReadyForPayment;
+        } else {
+          return ScoringStatus.FillingApplication;
+        }
+      }
+
+      if (this.project.scoringStartTransactionStatus === ScoringStartTransactionStatus.InProgress) {
+        return ScoringStatus.PaymentInProcess;
+      }
+
+      if (this.project.scoringStartTransactionStatus === ScoringStartTransactionStatus.Failed) {
+        return ScoringStatus.PaymentFailed;
+      }
+    }
+
+    return this.project.scoring.scoringStatus;
   }
 }
