@@ -57,7 +57,7 @@ namespace SmartValley.Data.SQL.Repositories
             return Entities().GetPageAsync(offset, count);
         }
 
-        private IQueryable<Expert> Entities() => _readContext.Experts
+        private IQueryable<Expert> Entities() => _editContext.Experts
                                                              .Include(i => i.User)
                                                              .Include(i => i.ExpertAreas).ThenInclude(a => a.Area);
     }
