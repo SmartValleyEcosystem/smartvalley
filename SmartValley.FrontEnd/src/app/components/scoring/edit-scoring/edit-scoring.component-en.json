@@ -1,0 +1,14 @@
+{
+  "EditScoring": {
+    "ActivatePrivateExpert": "Activate private expert",
+    "Analyst": "Analyst",
+    "Marketer": "Marketer",
+    "Financial": "Financial",
+    "Tech": "Tech",
+    "HR": "HR",
+    "StartScoring": "Start scoring private project",
+    "ReOpen": "Reopen private scoring",
+    "ErrorExpertsCountTitle": "Not enough experts",
+    "ErrorExpertsCountMessage": "Please select one or more experts"
+  }
+}

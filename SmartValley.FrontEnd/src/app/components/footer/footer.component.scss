@@ -15,7 +15,10 @@
     padding: 20px;
     width: 100%;
   }
+  clear: both;
+  margin-top: 20px;
 }
+
 .footer-menu-list, .footer-menu-list a {
   list-style: none;
   text-align: left;
@@ -40,6 +43,7 @@
   width: 420px;
   margin: 0;
 }
+
 @media screen and (min-width: 320px) and (max-width: 768px) {
   .footer-col {
     margin: 0 auto;
@@ -62,6 +66,7 @@
     margin-bottom: 30px;
   }
 }
+
 .social-icon:last-child {
   margin-right: 0;
 }

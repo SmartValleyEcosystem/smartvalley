@@ -97,6 +97,7 @@ export class ScoringPaymentComponent implements OnInit {
         this.translateService.instant('Common.ToFewExpertsErroTitle'),
         this.translateService.instant('Common.ToFewExpertsErrorMessage')
       );
+      return;
     }
 
     const transactionHash = await this.scoringService.startAsync(this.externalId, areas, areaExpertCounts);

@@ -8,7 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.css']
 })
-export class AdminPanelComponent implements OnInit {
+export class AdminPanelComponent {
 
   public mainTabItems: string[] = ['users', 'scoring', 'requests'];
   public usersTab: string[] = ['admins', 'experts', 'founders'];
@@ -18,34 +18,44 @@ export class AdminPanelComponent implements OnInit {
   public selectedMainTab = 0;
   public selectedSubTab = 0;
 
-  constructor(
-        private location: Location,
-        private router: Router,
-        private route: ActivatedRoute) {
-      this.route.params.subscribe( params => this.selectedMainTab = this.mainTabItems.indexOf(params['mainTab']) );
+  constructor(private router: Router,
+              private route: ActivatedRoute) {
+    const mainTab = this.route.snapshot.paramMap.get('mainTab');
+    if (mainTab) {
+      this.selectedMainTab = this.mainTabItems.indexOf(mainTab);
+    }
+    const subTab = this.route.snapshot.paramMap.get('subTab');
+    if (subTab) {
+      this.selectedSubTab = this.getSubTabIndex(this.selectedMainTab, subTab);
+    }
+    this.router.navigate([Paths.Admin + '/' + this.mainTabItems[this.selectedMainTab] + '/' + this.getSubTabLink(this.selectedMainTab, this.selectedSubTab)]);
   }
 
-  public ngOnInit() {
-    this.selectedMainTab = this.mainTabItems.indexOf(this.route.snapshot.paramMap.get('mainTab'));
-    if (this.route.snapshot.paramMap.get('subTab')) {
-        this.selectedSubTab = this.getSubTabIndex(this.selectedMainTab, this.route.snapshot.paramMap.get('subTab'));
+  public getSubTabLink(mainTabIndex: number, subItemIndex: number): string {
+    switch (mainTabIndex) {
+      case 0 :
+        return this.usersTab[subItemIndex];
+      case 1 :
+        return this.scoringTab[subItemIndex];
+      case 2 :
+        return this.requestsTab[subItemIndex];
     }
   }
 
-public getSubTabIndex(mainTabIndex: number, subItemName: string): number {
+  public getSubTabIndex(mainTabIndex: number, subItemName: string): number {
     switch (mainTabIndex) {
-        case 0 :
-            return this.usersTab.indexOf(subItemName);
-        case 1 :
-            return this.scoringTab.indexOf(subItemName);
-        case 2 :
-            return this.requestsTab.indexOf(subItemName);
+      case 0 :
+        return this.usersTab.indexOf(subItemName);
+      case 1 :
+        return this.scoringTab.indexOf(subItemName);
+      case 2 :
+        return this.requestsTab.indexOf(subItemName);
     }
   }
 
   public onMainTabChange($event) {
     this.selectedMainTab = $event.index;
-    this.selectedSubTab =  0;
+    this.selectedSubTab = 0;
     this.router.navigate([Paths.Admin + '/' + this.mainTabItems[$event.index] + '/']);
   }
 

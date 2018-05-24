@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ExpertApiClient} from '../../../api/expert/expert-api-client';
 import {LazyLoadEvent} from 'primeng/api';
-import {AdminExpertItem} from './admin-expert-item';
 import {DialogService} from '../../../services/dialog-service';
 import {ExpertDeleteRequest} from '../../../api/expert/expert-delete-request';
 import {CollectionResponse} from '../../../api/collection-response';
@@ -20,7 +19,7 @@ export class AdminExpertsListComponent implements OnInit {
   public offset = 0;
   public pageSize = 10;
   public expertsResponse: CollectionResponse<ExpertResponse>;
-  public experts: AdminExpertItem[] = [];
+  public experts: ExpertResponse[] = [];
   public transactionHash: string;
   public deleteExpertRequest: ExpertDeleteRequest;
 
@@ -32,19 +31,6 @@ export class AdminExpertsListComponent implements OnInit {
   public async getExpertList(event: LazyLoadEvent) {
     this.offset = event.first;
     await this.loadExpertsAsync();
-  }
-
-  public renderTableRows(expertResponseItems: ExpertResponse[]) {
-    this.experts = expertResponseItems.map(expert => <AdminExpertItem>{
-      firstName: expert.firstName,
-      secondName: expert.secondName,
-      address: expert.address,
-      email: expert.email,
-      about: expert.about,
-      isAvailable: expert.isAvailable,
-      isInHouse: expert.isInHouse,
-      areas: expert.areas.map(a => a.name),
-    });
   }
 
   public async showDialogToCreateNewExpert() {
@@ -63,7 +49,7 @@ export class AdminExpertsListComponent implements OnInit {
     };
     this.expertsResponse = await this.expertApiClient.getExpertsListAsync(getExpertsRequest);
     this.totalRecords = this.expertsResponse.totalCount;
-    this.renderTableRows(this.expertsResponse.items);
+    this.experts = this.expertsResponse.items;
     this.loading = false;
   }
 

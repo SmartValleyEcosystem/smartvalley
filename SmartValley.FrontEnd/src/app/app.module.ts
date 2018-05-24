@@ -139,6 +139,7 @@ import {AdminUsersListComponent} from './components/admin-panel/admin-users-list
 import {AccordionModule} from 'primeng/accordion';
 import {TabViewModule} from 'primeng/tabview';
 import {AdminProjectsListComponent} from './components/admin-panel/admin-projects-list/admin-projects-list.component';
+import { EditScoringComponent } from './components/scoring/edit-scoring/edit-scoring.component';
 import {PrivateScoringModalComponent} from './components/common/private-scoring-modal/private-scoring-modal.component';
 
 @NgModule({
@@ -210,6 +211,7 @@ import {PrivateScoringModalComponent} from './components/common/private-scoring-
     AdminAdminsListComponent,
     AdminUsersListComponent,
     AdminProjectsListComponent,
+    EditScoringComponent,
     PrivateScoringModalComponent
   ],
   entryComponents: [
