@@ -19,6 +19,7 @@ import * as moment from 'moment';
 import {ProjectApplicationInfoResponse} from '../../api/scoring-application/project-application-info-response';
 import {NotificationsService} from 'angular2-notifications';
 import {ProjectApiClient} from '../../api/project/project-api-client';
+import {DialogService} from '../../services/dialog-service';
 
 @Component({
   selector: 'app-edit-scoring-application',
@@ -51,6 +52,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
   public comboboxValues: { [id: number]: SelectItem[] };
   public savedTime: Date;
   public activePartition = '';
+  public questionsReady = false;
   public editorFormats = [
         'bold',
         'underline',
@@ -97,6 +99,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
               private formBuilder: FormBuilder,
               private htmlElement: ElementRef,
               private route: ActivatedRoute,
+              private dialogService: DialogService,
               private projectApiClient: ProjectApiClient,
               private router: Router) {
   }
@@ -275,6 +278,8 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
         }
         this.questionsGroup.addControl('control_' + question.id, control);
       });
+
+    this.questionsReady = true;
   }
 
   public getQuestionTypeById(id: number): string {
@@ -582,5 +587,12 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
     if (event.status) {
       this.activePartition = id;
     }
+  }
+
+  public async showAlertModal() {
+      const submit = await this.dialogService.showPrivateScoringApplicationDialog();
+      if (submit) {
+          await this.onSubmitAsync();
+      }
   }
 }

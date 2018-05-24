@@ -139,6 +139,7 @@ import {AdminUsersListComponent} from './components/admin-panel/admin-users-list
 import {AccordionModule} from 'primeng/accordion';
 import {TabViewModule} from 'primeng/tabview';
 import {AdminProjectsListComponent} from './components/admin-panel/admin-projects-list/admin-projects-list.component';
+import {PrivateScoringModalComponent} from './components/common/private-scoring-modal/private-scoring-modal.component';
 
 @NgModule({
   declarations: [
@@ -208,7 +209,8 @@ import {AdminProjectsListComponent} from './components/admin-panel/admin-project
     AdminSubscriptionsComponent,
     AdminAdminsListComponent,
     AdminUsersListComponent,
-    AdminProjectsListComponent
+    AdminProjectsListComponent,
+    PrivateScoringModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -225,7 +227,8 @@ import {AdminProjectsListComponent} from './components/admin-panel/admin-project
     WaitingModalComponent,
     ChangeStatusModalComponent,
     SubscribeModalComponent,
-    FeedbackModalComponent
+    FeedbackModalComponent,
+    PrivateScoringModalComponent
   ],
   imports: [
     FileUploadModule,
