@@ -1,4 +1,7 @@
+import {AreaResponse} from './area-response';
+
 export interface ExpertResponse {
+  id: number;
   address: string;
   email: string;
   about: string;
@@ -6,5 +9,5 @@ export interface ExpertResponse {
   isInHouse: boolean;
   firstName: string;
   secondName: string;
-  areas: any;
+  areas: Array<AreaResponse>;
 }

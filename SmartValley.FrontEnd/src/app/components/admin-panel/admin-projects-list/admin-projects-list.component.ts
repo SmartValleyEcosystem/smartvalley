@@ -1,10 +1,12 @@
 import {Component} from '@angular/core';
 import {ProjectResponse} from '../../../api/project/project-response';
 import {ProjectApiClient} from '../../../api/project/project-api-client';
-import {LazyLoadEvent} from 'primeng/api';
+import {LazyLoadEvent, SelectItem} from 'primeng/api';
 import {ProjectQuery} from '../../../api/project/project-query';
 import {ScoringStatus} from '../../../services/scoring-status.enum';
-import {MatCheckboxChange} from '@angular/material';
+import {TranslateService} from '@ngx-translate/core';
+import {Router} from '@angular/router';
+import {Paths} from '../../../paths';
 
 @Component({
   selector: 'app-admin-projects-list',
@@ -19,21 +21,23 @@ export class AdminProjectsListComponent {
   public pageSize = 10;
   public projects: ProjectResponse[] = [];
 
-  public ScoringStatus = ScoringStatus;
-  public currentScoringStatuses?: ScoringStatus[] = [];
+  public statuses: SelectItem[] = [];
+  selectedStatuses: any[] = [];
 
-  constructor(private projectApiClient: ProjectApiClient) {
+  public ScoringStatus = ScoringStatus;
+
+  constructor(private router: Router,
+              private translateService: TranslateService,
+              private projectApiClient: ProjectApiClient) {
+
+    this.statuses = [
+      {label: this.translateService.instant('AdminProjects.New'), value: ScoringStatus.FillingApplication},
+      {label: this.translateService.instant('AdminProjects.InProgress'), value: ScoringStatus.InProgress},
+      {label: this.translateService.instant('AdminProjects.Finished'), value: ScoringStatus.Finished}
+    ];
   }
 
-  async changeStatusAsync(status: number, event: MatCheckboxChange) {
-    if (event.checked) {
-      this.currentScoringStatuses.push(status);
-    } else {
-      const index = this.currentScoringStatuses.indexOf(status, 0);
-      if (index > -1) {
-        this.currentScoringStatuses.splice(index, 1);
-      }
-    }
+  async onCheckAsync() {
     await this.renderingProjectsAsync();
   }
 
@@ -44,7 +48,7 @@ export class AdminProjectsListComponent {
       count: this.pageSize,
       onlyScored: false,
       isPrivate: true,
-      scoringStatuses: this.currentScoringStatuses
+      scoringStatuses: this.selectedStatuses.map(i => <ScoringStatus>i)
     });
     this.totalRecords = response.totalCount;
     this.projects = response.items;
@@ -54,5 +58,9 @@ export class AdminProjectsListComponent {
   public async updateProjects(event: LazyLoadEvent) {
     this.offset = event.first;
     await this.renderingProjectsAsync();
+  }
+
+  public async navigateToEditScoring(projectId: number) {
+    this.router.navigate([Paths.Project + `/${projectId}/edit-scoring`]);
   }
 }

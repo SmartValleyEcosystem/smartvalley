@@ -44,6 +44,7 @@ export function multiTranslateLoaderFactory() {
     'components/edit-scoring-application/edit-scoring-application.component',
     'components/common/confirm-email/confirm-email.component',
     'components/project/project.component',
+    'components/scoring/edit-scoring/edit-scoring.component',
     'components/project-info/project-info.component',
     'components/project/project-about/project-about.component',
     'components/common/waiting-modal/waiting-modal.component',
