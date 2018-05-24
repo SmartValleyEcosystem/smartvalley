@@ -17,4 +17,5 @@ export interface ScoringOfferResponse {
   estimatesDueDate: string;
   finalScore: number;
   isPrivate: boolean;
+  expertId: number;
 }

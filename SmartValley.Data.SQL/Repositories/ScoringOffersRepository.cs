@@ -35,8 +35,6 @@ namespace SmartValley.Data.SQL.Repositories
                                                            scoring.ContractAddress,
                                                            scoring.Id,
                                                            user.Id,
-                                                           user.FirstName,
-                                                           user.SecondName,
                                                            project.Name,
                                                            country.Code,
                                                            project.Category,
