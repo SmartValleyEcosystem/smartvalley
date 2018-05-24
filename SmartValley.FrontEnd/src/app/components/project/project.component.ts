@@ -28,6 +28,7 @@ export class ProjectComponent implements OnInit {
   public project: ProjectSummaryResponse;
   public editProjectsLink = Paths.ProjectEdit;
   public selectedTab = 0;
+  public isAdmin: boolean;
 
   public ScoringStatus = ScoringStatus;
 
@@ -62,6 +63,8 @@ export class ProjectComponent implements OnInit {
   }
 
   public async ngOnInit() {
+    const currentUser = this.userContext.getCurrentUser();
+    this.isAdmin = currentUser.isAdmin;
     await this.reloadProjectAsync();
   }
 
@@ -126,7 +129,7 @@ export class ProjectComponent implements OnInit {
   }
 
   public isReportTabAvailable(): boolean {
-    return !this.project.isPrivate || this.project.scoring.scoringStatus === ScoringStatus.Finished;
+    return !this.project.isPrivate || this.project.scoring.scoringStatus === ScoringStatus.Finished || this.isAdmin;
   }
 
   public getScoringStatus(): ScoringStatus {
