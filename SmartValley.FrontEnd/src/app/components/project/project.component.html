@@ -87,15 +87,15 @@
     </div>
   </app-project-info>
 
-  <p-tabView [activeIndex]="selectedTab" (onChange)="onChangeTab($event)">
+  <p-tabView *ngIf="project" [activeIndex]="selectedTab" (onChange)="onChangeTab($event)">
     <p-tabPanel header="{{ 'MyProject.About' | translate }}">
       <app-project-about [projectId]="projectId"></app-project-about>
     </p-tabPanel>
     <p-tabPanel header="{{ 'MyProject.ScoringApplication' | translate }}">
       <app-scoring-application [scoringStatus]="getScoringStatus()" [project]="project"></app-scoring-application>
     </p-tabPanel>
-    <p-tabPanel *ngIf="isReportTabAvailable()" header="{{ 'MyProject.ScoringReport' | translate }}">
-      <app-scoring-report [scoringStatus]="getScoringStatus()"
+    <p-tabPanel [headerStyleClass]="reportTabClass()" header="{{ 'MyProject.ScoringReport' | translate }}">
+      <app-scoring-report *ngIf="isReportTabAvailable()" [scoringStatus]="getScoringStatus()"
                           [projectId]="projectId"
                           [isAuthor]="isAuthor">
       </app-scoring-report>
