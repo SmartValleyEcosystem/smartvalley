@@ -10,6 +10,8 @@ namespace SmartValley.WebApi.Scorings.Responses
 
         public long ProjectId { get; set; }
 
+        public long ExpertId { get; set; }
+
         public long Area { get; set; }
 
         public string Name { get; set; }
@@ -51,7 +53,8 @@ namespace SmartValley.WebApi.Scorings.Responses
                        IsPrivate = scoringOffer.IsPrivate,
                        OfferStatus = scoringOffer.Status.ToApi(scoringOffer.ExpirationTimestamp, now),
                        ProjectId = scoringOffer.ProjectId,
-                       FinalScore = scoringOffer.FinalScore
+                       FinalScore = scoringOffer.FinalScore,
+                       ExpertId = scoringOffer.ExpertId
                    };
         }
     }

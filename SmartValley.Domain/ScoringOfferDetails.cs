@@ -18,10 +18,6 @@ namespace SmartValley.Domain
 
         public long ExpertId { get; }
 
-        public string ExpertFirstName { get; set; }
-
-        public string ExpertLastName { get; set; }
-
         public string Name { get; }
 
         public string CountryCode { get; }
@@ -47,8 +43,6 @@ namespace SmartValley.Domain
             Address scoringContractAddress,
             long scoringId,
             long expertId,
-            string expertFirstName,
-            string expertLastName,
             string name,
             string countryCode,
             Category category,
@@ -65,8 +59,6 @@ namespace SmartValley.Domain
             ScoringContractAddress = scoringContractAddress;
             ScoringId = scoringId;
             ExpertId = expertId;
-            ExpertFirstName = expertFirstName;
-            ExpertLastName = expertLastName;
             Name = name;
             IsPrivate = isPrivate;
             CountryCode = countryCode;
