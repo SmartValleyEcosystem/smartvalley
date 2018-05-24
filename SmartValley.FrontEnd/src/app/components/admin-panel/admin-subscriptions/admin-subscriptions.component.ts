@@ -15,7 +15,7 @@ import {Paths} from '../../../paths';
 export class AdminSubscriptionsComponent implements OnInit {
 
   public totalRecords: number;
-  public loading: boolean;
+  public loading = true;
   public offset = 0;
   public pageSize = 10;
   public subscribersResponses: CollectionResponse<SubscriptionResponse>;
@@ -52,7 +52,6 @@ export class AdminSubscriptionsComponent implements OnInit {
   }
 
   private async loadSubscriptionsResponsesAsync(): Promise<void> {
-    this.loading = true;
     this.subscribersResponses = await this.subscriberApiClient.getAsync(this.offset, this.pageSize);
     this.totalRecords = this.subscribersResponses.totalCount;
     this.renderTableRows(this.subscribersResponses.items);
