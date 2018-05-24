@@ -11,6 +11,8 @@ import {OfferStatus} from '../../api/scoring-offer/offer-status.enum';
 import {OffersQuery} from '../../api/scoring-offer/offers-query';
 import {Paginator} from 'primeng/primeng';
 import {isNullOrUndefined} from 'util';
+import {UserContext} from '../../services/authentication/user-context';
+import {User} from '../../services/authentication/user';
 
 @Component({
   selector: 'app-scoring-list',
@@ -34,12 +36,15 @@ export class ScoringListComponent implements OnInit {
     value: null
   };
 
+  private user: User;
+
   @ViewChild(Paginator) paginator: Paginator;
   public OfferStatus = OfferStatus;
 
   constructor(private router: Router,
               private dictionariesService: DictionariesService,
-              private offersApiClient: OffersApiClient) {
+              private offersApiClient: OffersApiClient,
+              private userContext: UserContext) {
     this.offerStatuses = this.dictionariesService.offerStatuses.map(i => <SelectItem>{
       label: i.value,
       value: i.id
@@ -50,7 +55,7 @@ export class ScoringListComponent implements OnInit {
   async ngOnInit() {
     this.sortDirection = this.ASC;
     this.sortedBy = OffersOrderBy.Status;
-
+    this.user = this.userContext.getCurrentUser();
     await this.updateOffersAsync(0);
   }
 
@@ -74,7 +79,8 @@ export class ScoringListComponent implements OnInit {
       count: this.offersOnPageCount,
       status: this.selectedOfferStatus,
       orderBy: this.sortedBy,
-      sortDirection: this.sortDirection
+      sortDirection: this.sortDirection,
+      expertId: this.user.id
     });
     this.offers = offersResponse.items;
     this.totalOffers = offersResponse.totalCount;

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application.Extensions;
+using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.Ethereum;
@@ -125,9 +126,15 @@ namespace SmartValley.WebApi.Experts
 
         [HttpGet]
         [Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<PartialCollectionResponse<ExpertResponse>> GetAllExperts(CollectionPageRequest request)
+        public async Task<PartialCollectionResponse<ExpertResponse>> GetAsync(QueryExpertsRequest request)
         {
-            var experts = await _expertService.GetAsync(request.Offset, request.Count);
+            var query = new ExpertsQuery
+                        {
+                            IsInHouse = request.IsInHouse,
+                            Count = request.Count,
+                            Offset = request.Offset
+                        };
+            var experts = await _expertService.GetAsync(query);
             return experts.ToPartialCollectionResponse(ExpertResponse.Create);
         }
 

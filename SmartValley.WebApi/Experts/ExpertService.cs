@@ -215,8 +215,8 @@ namespace SmartValley.WebApi.Experts
             await _mailService.SendExpertApplicationRejectedAsync(applicationDetails.Email, applicationDetails.ExpertApplication.FirstName);
         }
 
-        public Task<PagingCollection<Expert>> GetAsync(int offset, int count)
-            => _expertRepository.GetAsync(offset, count);
+        public Task<PagingCollection<Expert>> GetAsync(ExpertsQuery query)
+            => _expertRepository.GetAsync(query);
 
         public Task<IReadOnlyCollection<Area>> GetAreasAsync()
             => _expertRepository.GetAreasAsync();

@@ -7,7 +7,7 @@ namespace SmartValley.Domain.Interfaces
 {
     public interface IExpertRepository
     {
-        Task<PagingCollection<Expert>> GetAsync(int offset, int count);
+        Task<PagingCollection<Expert>> GetAsync(ExpertsQuery query);
 
         void Remove(Expert expert);
 

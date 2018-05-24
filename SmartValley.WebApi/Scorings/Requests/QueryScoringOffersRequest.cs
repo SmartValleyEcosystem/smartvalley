@@ -20,5 +20,9 @@ namespace SmartValley.WebApi.Scorings.Requests
         public ScoringOffersOrderBy OrderBy { get; set; }
 
         public SortDirection SortDirection { get; set; }
+
+        public long? ScoringId { get; set; }
+
+        public long? ExpertId { get; set; }
     }
 }

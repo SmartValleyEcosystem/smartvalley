@@ -14,6 +14,8 @@ import {ExpertRequest} from './expert-request';
 import {ExpertDeleteRequest} from './expert-delete-request';
 import {ExpertUpdateRequest} from './expert-update-request';
 import {ExpertAvailabilityStatusResponse} from './expert-availability-status-response';
+import {GetExpertsRequest} from './get-experts-request';
+import {isNullOrUndefined} from 'util';
 
 @Injectable()
 export class ExpertApiClient extends BaseApiClient {
@@ -55,10 +57,13 @@ export class ExpertApiClient extends BaseApiClient {
     }).toPromise();
   }
 
-  public getExpertsListAsync(offset: number, count: number): Promise<CollectionResponse<ExpertResponse>> {
+  public getExpertsListAsync(getExpertsRequest: GetExpertsRequest): Promise<CollectionResponse<ExpertResponse>> {
+    const checkParam = (param) => isNullOrUndefined(param) ? '' : param.toString();
+
     const parameters = new HttpParams()
-      .append('offset', offset.toString())
-      .append('count', count.toString());
+      .append('offset', getExpertsRequest.offset.toString())
+      .append('count', getExpertsRequest.count.toString())
+      .append('isInHouse', checkParam(getExpertsRequest.isInHouse));
 
     return this.http.get<CollectionResponse<ExpertResponse>>(`${this.baseApiUrl}/experts`, {
       params: parameters

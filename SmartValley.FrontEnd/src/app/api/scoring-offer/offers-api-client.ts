@@ -57,10 +57,12 @@ export class OffersApiClient extends BaseApiClient {
       .append('count', query.count.toString())
       .append('status', checkParam(query.status))
       .append('orderBy', checkParam(query.orderBy))
-      .append('sortDirection', checkParam(query.sortDirection));
+      .append('sortDirection', checkParam(query.sortDirection))
+      .append('expertId', checkParam(query.expertId))
+      .append('scoringId', checkParam(query.scoringId));
 
     return this.http.get<CollectionResponse<ScoringOfferResponse>>(
-      `${this.baseApiUrl}/scoring/offers/query`,
+      `${this.baseApiUrl}/scoring/offers`,
       {params: parameters})
       .toPromise();
   }

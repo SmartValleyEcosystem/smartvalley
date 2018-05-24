@@ -28,7 +28,7 @@ namespace SmartValley.WebApi.Experts
 
         Task DeleteAsync(Address address);
 
-        Task<PagingCollection<Expert>> GetAsync(int offset, int count);
+        Task<PagingCollection<Expert>> GetAsync(ExpertsQuery query);
 
         Task<IReadOnlyCollection<Area>> GetAreasAsync();
 
