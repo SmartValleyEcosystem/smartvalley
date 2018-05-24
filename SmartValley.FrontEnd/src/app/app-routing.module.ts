@@ -31,6 +31,7 @@ import {OfferStatus} from './api/scoring-offer/offer-status.enum';
 import {ExpertScoringComponent} from './components/expert-scoring/expert-scoring.component';
 import {ScoringListComponent} from './components/scoring-list/scoring-list.component';
 import {ScoringShouldNotExistGuard} from './services/guards/scoring-should-not-exist.guard';
+import {PrivateApplicationShouldNotBeSubmitted} from './services/guards/private-application-should-not-be-submitted.guard';
 import {EditScoringComponent} from './components/scoring/edit-scoring/edit-scoring.component';
 
 const appRoutes: Routes = [
@@ -107,7 +108,7 @@ const appRoutes: Routes = [
     {
       path: Paths.ScoringApplication + '/:id',
       component: EditScoringApplicationComponent,
-      canActivate: [ScoringShouldNotExistGuard]
+      canActivate: [ScoringShouldNotExistGuard, PrivateApplicationShouldNotBeSubmitted]
     },
     {
       path: Paths.Project + '/:id/payment',
