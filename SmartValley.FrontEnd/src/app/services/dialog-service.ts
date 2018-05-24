@@ -24,6 +24,7 @@ import {SubscribeModalComponent} from '../components/common/subscribe-modal/subs
 import {SubscribeRequest} from '../components/common/subscribe-modal/subscribe-data';
 import {FeedbackModalComponent} from '../components/common/feedback-modal/feedback-modal.component';
 import {FeedbackRequest} from '../components/common/feedback-modal/feedback';
+import {PrivateScoringModalComponent} from '../components/common/private-scoring-modal/private-scoring-modal.component';
 
 @Injectable()
 export class DialogService {
@@ -124,6 +125,10 @@ export class DialogService {
       button: this.translateService.instant('ExpertScoring.ModalOk')
     };
     return this.openModal(AlertModalComponent, data);
+  }
+
+  public async showPrivateScoringApplicationDialog(): Promise<boolean> {
+    return this.openModalAsync(PrivateScoringModalComponent, {});
   }
 
   public async showSubscribeDialog(): Promise<SubscribeRequest> {
