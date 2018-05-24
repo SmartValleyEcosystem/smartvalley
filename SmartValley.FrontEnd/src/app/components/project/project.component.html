@@ -27,7 +27,7 @@
       </div>
       <div *ngSwitchCase="ScoringStatus.PaymentInProcess">
         <div *ngIf="isAuthor">
-          <div class="score" style="font-size: 20px;">
+          <div class="score">
             {{ 'MyProject.PaymentInProgress' | translate }}
           </div>
           <a target="_blank" [href]="scoringStartTransactionUrl" class="ghost-btn transaction-btn">
@@ -37,7 +37,7 @@
       </div>
       <div *ngSwitchCase="ScoringStatus.PaymentFailed">
         <div *ngIf="isAuthor">
-          <div class="score failed" style="font-size: 20px;">
+          <div class="score failed">
             {{ 'MyProject.PaymentFailed' | translate }}
           </div>
           <div>
@@ -51,14 +51,14 @@
         </div>
       </div>
       <div *ngSwitchCase="ScoringStatus.InProgress">
-        <div *ngIf="project.isPrivate; else publicProject" class="score" style="font-size: 20px;">
+        <div *ngIf="project.isPrivate; else publicProject" class="score">
           <i class="lock-icon material-icons">lock</i>
           {{ 'MyProject.PrivateInProgress' | translate }}
         </div>
         <ng-template #publicProject>
-          <div class="score" style="font-size: 20px;">
+          <div class="score">
             {{ 'MyProject.InProgress' | translate }}
-            <div class="score progress-scoring" style="font-size: 20px;">
+            <div class="score progress-scoring">
               {{scoringCompletenessInPercents}}{{ 'MyProject.CompletenessInPercents' | translate }}
             </div>
           </div>
@@ -72,7 +72,7 @@
         <ng-template #publicProject>
           <div class="small-title">{{ 'MyProject.ProjectScore' | translate }}</div>
         </ng-template>
-        <div class="score">
+        <div class="score score__attention">
           <div class="main-number">{{project.scoring.score | roundNumberPipe}}</div>/100
         </div>
         <a *ngIf="isAuthor; else guest" [routerLink]="'/' + editProjectsLink" class="ghost-btn">
