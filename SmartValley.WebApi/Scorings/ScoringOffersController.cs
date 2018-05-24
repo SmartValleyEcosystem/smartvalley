@@ -1,18 +1,14 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SmartValley.Application;
-using SmartValley.Application.Extensions;
-using SmartValley.Data.SQL.Extensions;
 using SmartValley.Domain;
+using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 using SmartValley.Ethereum;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Scorings.Requests;
 using SmartValley.WebApi.Scorings.Responses;
-using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Scorings
 {
@@ -62,23 +58,32 @@ namespace SmartValley.WebApi.Scorings
                    };
         }
 
-        [HttpGet("query")]
-        public async Task<PartialCollectionResponse<ScoringOfferResponse>> QueryAsync([FromQuery] QueryScoringOffersRequest request)
+        [HttpGet]
+        public async Task<IActionResult> QueryAsync([FromQuery] QueryScoringOffersRequest request)
         {
+            var isAdmin = User.IsInRole(nameof(RoleType.Admin));
+
+            if (request.ExpertId.HasValue && request.ExpertId.Value != User.GetUserId() && !isAdmin
+                || !request.ExpertId.HasValue && !isAdmin)
+            {
+                return Unauthorized();
+            }
+
             var query = new OffersQuery
                         {
-                            ExpertId = User.GetUserId(),
+                            ExpertId = request.ExpertId,
                             OrderBy = request.OrderBy,
                             SortDirection = request.SortDirection,
-                            OnlyTimedOut = request.Status == ScoringOfferStatus.Timeout,
+                            OnlyTimedOut = request.Status.HasValue && request.Status.Value == ScoringOfferStatus.Timeout,
                             Status = request.Status?.ToDomain(),
                             Offset = request.Offset,
-                            Count = request.Count
+                            Count = request.Count,
+                            ScoringId = request.ScoringId
                         };
             var now = _clock.UtcNow;
             var offers = await _scoringService.QueryOffersAsync(query, now);
 
-            return offers.ToPartialCollectionResponse(o => ScoringOfferResponse.Create(o, now));
+            return Ok(offers.ToPartialCollectionResponse(o => ScoringOfferResponse.Create(o, now)));
         }
 
         [HttpPut]

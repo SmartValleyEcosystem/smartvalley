@@ -57,7 +57,11 @@ export class AdminExpertsListComponent implements OnInit {
 
   private async loadExpertsAsync(): Promise<void> {
     this.loading = true;
-    this.expertsResponse = (await this.expertApiClient.getExpertsListAsync(this.offset, this.pageSize));
+    const getExpertsRequest = {
+      offset: this.offset,
+      count: this.pageSize
+    };
+    this.expertsResponse = await this.expertApiClient.getExpertsListAsync(getExpertsRequest);
     this.totalRecords = this.expertsResponse.totalCount;
     this.renderTableRows(this.expertsResponse.items);
     this.loading = false;

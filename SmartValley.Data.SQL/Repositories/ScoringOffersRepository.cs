@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Data.SQL.Extensions;
 using SmartValley.Domain;
@@ -27,7 +25,8 @@ namespace SmartValley.Data.SQL.Repositories
                             join project in _readContext.Projects on scoring.ProjectId equals project.Id
                             join user in _readContext.Users on scoringOffer.ExpertId equals user.Id
                             join country in _readContext.Countries on project.CountryId equals country.Id
-                            where user.Id == query.ExpertId
+                            where !query.ExpertId.HasValue || user.Id == query.ExpertId.Value
+                            where !query.ScoringId.HasValue || scoring.Id == query.ScoringId.Value
                             where !query.OnlyTimedOut || scoringOffer.ExpirationTimestamp < now
                             where !query.Status.HasValue || query.Status == scoringOffer.Status
                             select new ScoringOfferDetails(scoringOffer.Status,
@@ -36,6 +35,8 @@ namespace SmartValley.Data.SQL.Repositories
                                                            scoring.ContractAddress,
                                                            scoring.Id,
                                                            user.Id,
+                                                           user.FirstName,
+                                                           user.SecondName,
                                                            project.Name,
                                                            country.Code,
                                                            project.Category,

@@ -18,6 +18,10 @@ namespace SmartValley.Domain
 
         public long ExpertId { get; }
 
+        public string ExpertFirstName { get; set; }
+
+        public string ExpertLastName { get; set; }
+
         public string Name { get; }
 
         public string CountryCode { get; }
@@ -37,17 +41,19 @@ namespace SmartValley.Domain
         public double? FinalScore { get; set; }
 
         public ScoringOfferDetails(
-            ScoringOfferStatus status, 
-            DateTimeOffset? expirationTimestamp, 
-            DateTimeOffset? estimatesDueDate, 
-            Address scoringContractAddress, 
-            long scoringId, 
-            long expertId, 
-            string name, 
-            string countryCode, 
-            Category category, 
-            string description, 
-            AreaType areaType, 
+            ScoringOfferStatus status,
+            DateTimeOffset? expirationTimestamp,
+            DateTimeOffset? estimatesDueDate,
+            Address scoringContractAddress,
+            long scoringId,
+            long expertId,
+            string expertFirstName,
+            string expertLastName,
+            string name,
+            string countryCode,
+            Category category,
+            string description,
+            AreaType areaType,
             Guid projectExternalId,
             long projectId,
             bool isPrivate,
@@ -59,6 +65,8 @@ namespace SmartValley.Domain
             ScoringContractAddress = scoringContractAddress;
             ScoringId = scoringId;
             ExpertId = expertId;
+            ExpertFirstName = expertFirstName;
+            ExpertLastName = expertLastName;
             Name = name;
             IsPrivate = isPrivate;
             CountryCode = countryCode;

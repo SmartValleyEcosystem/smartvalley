@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Data.SQL.Extensions;
+using SmartValley.Domain;
 using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
@@ -50,9 +51,11 @@ namespace SmartValley.Data.SQL.Repositories
             await _editContext.SaveAsync();
         }
 
-        public Task<PagingCollection<Expert>> GetAsync(int offset, int count)
+        public Task<PagingCollection<Expert>> GetAsync(ExpertsQuery query)
         {
-            return Entities().GetPageAsync(offset, count);
+            return Entities()
+                   .Where(x => !query.IsInHouse.HasValue || query.IsInHouse.Value == x.IsInHouse)
+                   .GetPageAsync(query.Offset, query.Count);
         }
 
         private IQueryable<Expert> Entities() => _editContext.Experts

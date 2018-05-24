@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Application.Extensions;
-using SmartValley.Data.SQL.Extensions;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
