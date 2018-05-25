@@ -16,7 +16,7 @@ import {Paths} from '../../../paths';
 export class AdminProjectsListComponent {
 
   public totalRecords: number;
-  public loading = false;
+  public loading = true;
   public offset = 0;
   public pageSize = 10;
   public projects: ProjectResponse[] = [];
@@ -42,7 +42,6 @@ export class AdminProjectsListComponent {
   }
 
   private async renderingProjectsAsync() {
-    this.loading = true;
     const response = await this.projectApiClient.getAsync(<ProjectQuery>{
       offset: this.offset,
       count: this.pageSize,

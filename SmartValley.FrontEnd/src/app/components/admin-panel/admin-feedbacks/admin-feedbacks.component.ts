@@ -13,7 +13,7 @@ import {AdminFeedbackItem} from './admin-feedback-item';
 export class AdminFeedbacksComponent {
 
   public totalRecords: number;
-  public loading = false;
+  public loading = true;
   public offset = 0;
   public pageSize = 10;
   public feedbacksResponses: CollectionResponse<FeedbackResponse>;
@@ -37,7 +37,6 @@ export class AdminFeedbacksComponent {
   }
 
   private async loadFeedbacksAsync(): Promise<void> {
-    this.loading = true;
     this.feedbacksResponses = (await this.feedbackApiClient.getFeedbacksListAsync(this.offset, this.pageSize));
     this.totalRecords = this.feedbacksResponses.totalCount;
     this.renderTableRows(this.feedbacksResponses.items);

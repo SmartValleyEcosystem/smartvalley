@@ -8,7 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.css']
 })
-export class AdminPanelComponent {
+export class AdminPanelComponent implements OnInit {
 
   public mainTabItems: string[] = ['users', 'scoring', 'requests'];
   public usersTab: string[] = ['admins', 'experts', 'founders'];
@@ -19,16 +19,19 @@ export class AdminPanelComponent {
   public selectedSubTab = 0;
 
   constructor(private router: Router,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute) {}
+
+  public ngOnInit() {
     const mainTab = this.route.snapshot.paramMap.get('mainTab');
-    if (mainTab) {
-      this.selectedMainTab = this.mainTabItems.indexOf(mainTab);
-    }
     const subTab = this.route.snapshot.paramMap.get('subTab');
-    if (subTab) {
-      this.selectedSubTab = this.getSubTabIndex(this.selectedMainTab, subTab);
+
+    if (mainTab && this.mainTabItems.indexOf(mainTab) !== -1) {
+        this.selectedMainTab = this.mainTabItems.indexOf(mainTab);
     }
-    this.router.navigate([Paths.Admin + '/' + this.mainTabItems[this.selectedMainTab] + '/' + this.getSubTabLink(this.selectedMainTab, this.selectedSubTab)]);
+
+    if (subTab && this.getSubTabIndex(this.selectedMainTab, subTab) !== -1) {
+        this.selectedSubTab = this.getSubTabIndex(this.selectedMainTab, subTab);
+    }
   }
 
   public getSubTabLink(mainTabIndex: number, subItemIndex: number): string {
@@ -56,10 +59,11 @@ export class AdminPanelComponent {
   public onMainTabChange($event) {
     this.selectedMainTab = $event.index;
     this.selectedSubTab = 0;
-    this.router.navigate([Paths.Admin + '/' + this.mainTabItems[$event.index] + '/']);
+    this.router.navigate([Paths.Admin + '/' + this.mainTabItems[$event.index] + '/' + this.getSubTabLink(this.selectedMainTab, this.selectedSubTab)]);
   }
 
   public onSubTabChange($event, tab: string[]) {
+    this.selectedSubTab = $event.index;
     this.router.navigate([Paths.Admin + '/' + this.mainTabItems[this.selectedMainTab] + '/' + tab[$event.index]]);
   }
 }

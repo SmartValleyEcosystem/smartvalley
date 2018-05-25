@@ -19,8 +19,6 @@ export class AdminAdminsListComponent implements OnInit {
 
   public admins: Array<AdminResponse> = [];
 
-  public loading: boolean;
-
   constructor(private adminApiClient: AdminApiClient,
               private adminContractClient: AdminContractClient,
               private notificationsService: NotificationsService,
