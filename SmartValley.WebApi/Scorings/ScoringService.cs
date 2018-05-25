@@ -23,6 +23,7 @@ namespace SmartValley.WebApi.Scorings
         private readonly IScoringExpertsManagerContractClient _scoringExpertsManagerContractClient;
         private readonly MailService _mailService;
         private readonly IClock _clock;
+        private readonly IScoringContractClient _scoringContractClient;
         private readonly IUserRepository _userRepository;
 
         public ScoringService(
@@ -32,7 +33,8 @@ namespace SmartValley.WebApi.Scorings
             IScoringExpertsManagerContractClient scoringExpertsManagerContractClient,
             MailService mailService,
             IUserRepository userRepository,
-            IClock clock)
+            IClock clock,
+            IScoringContractClient scoringContractClient)
         {
             _projectRepository = projectRepository;
             _scoringRepository = scoringRepository;
@@ -41,6 +43,7 @@ namespace SmartValley.WebApi.Scorings
             _mailService = mailService;
             _userRepository = userRepository;
             _clock = clock;
+            _scoringContractClient = scoringContractClient;
         }
 
         public async Task<ScoringOffer> GetOfferAsync(long projectId, AreaType areaType, long expertId)
@@ -131,6 +134,44 @@ namespace SmartValley.WebApi.Scorings
 
         public Task<PagingCollection<ScoringOfferDetails>> QueryOffersAsync(OffersQuery query, DateTimeOffset now)
             => _scoringOffersRepository.GetAsync(query, now);
+
+        public async Task FinishAsync(long scoringId)
+        {
+            var scoring = await _scoringRepository.GetByIdAsync(scoringId);
+            if (scoring == null)
+                throw new AppErrorException(ErrorCode.ScoringNotFound);
+
+            var project = await _projectRepository.GetByIdAsync(scoring.ProjectId);
+            if (project == null)
+                throw new AppErrorException(ErrorCode.ProjectNotFound);
+
+            if (!project.IsPrivate)
+                throw new AppErrorException(ErrorCode.ServerError, "'Finish' is allowed only for private scoring.");
+
+            var scoringStatistics = await _scoringContractClient.GetScoringStatisticsAsync(scoring.ContractAddress);
+            if (!scoringStatistics.Score.HasValue)
+                throw new AppErrorException(ErrorCode.ServerError, "Unable to retrieve scoring estimate.");
+
+            scoring.Finish(scoringStatistics.Score.Value, _clock.UtcNow);
+            await _scoringRepository.SaveChangesAsync();
+        }
+
+        public async Task ReopenAsync(long scoringId)
+        {
+            var scoring = await _scoringRepository.GetByIdAsync(scoringId);
+            if (scoring == null)
+                throw new AppErrorException(ErrorCode.ScoringNotFound);
+
+            var project = await _projectRepository.GetByIdAsync(scoring.ProjectId);
+            if (project == null)
+                throw new AppErrorException(ErrorCode.ProjectNotFound);
+
+            if (!project.IsPrivate)
+                throw new AppErrorException(ErrorCode.ServerError, "'Open' is allowed only for private scoring.");
+
+            scoring.Reopen();
+            await _scoringRepository.SaveChangesAsync();
+        }
 
         private async Task<ScoringOfferInfo> GetOfferFromContractAsync(long areaId, long projectId, User expert)
         {

@@ -23,5 +23,9 @@ namespace SmartValley.WebApi.Scorings
         Task<Scoring> GetByProjectIdAsync(long projectId);
 
         Task<PagingCollection<ScoringOfferDetails>> QueryOffersAsync(OffersQuery query, DateTimeOffset now);
+
+        Task FinishAsync(long scoringId);
+
+        Task ReopenAsync(long scoringId);
     }
 }
