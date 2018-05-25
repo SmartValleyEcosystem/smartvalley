@@ -19,6 +19,8 @@ import {GetExpertsRequest} from '../../../api/expert/get-experts-request';
 import {LazyLoadEvent} from 'primeng/api';
 import {OffersQuery} from '../../../api/scoring-offer/offers-query';
 import {ExpertAreaItem} from './expert-area-item';
+import {ScoringOfferResponse} from '../../../api/scoring-offer/scoring-offer-response';
+import {OfferStatus} from '../../../api/scoring-offer/offer-status.enum';
 
 @Component({
   selector: 'app-edit-scoring',
@@ -32,6 +34,7 @@ export class EditScoringComponent implements OnInit {
 
   public allExpertsResponse: CollectionResponse<ExpertResponse>;
   public experts: ExpertResponse[] = [];
+  public offers: ScoringOfferResponse[] = [];
   public expertAreas: ExpertAreaItem[] = [];
 
   public totalRecords: number;
@@ -78,6 +81,7 @@ export class EditScoringComponent implements OnInit {
     this.expertAreas = offersResponse.items.map(i => <ExpertAreaItem> {expertId: i.expertId, areaId: i.area});
     this.totalRecords = this.allExpertsResponse.totalCount;
     this.experts = this.allExpertsResponse.items;
+    this.offers = offersResponse.items;
     this.loading = false;
   }
 
@@ -162,16 +166,40 @@ export class EditScoringComponent implements OnInit {
     await this.router.navigate([Paths.Admin + '/scoring/private-scoring']);
   }
 
+  public async finishPrivateScoringAsync(): Promise<void> {
+
+    await this.scoringApiClient.finishAsync(this.project.scoring.id);
+
+    await this.router.navigate([Paths.Admin + '/scoring/private-scoring']);
+  }
+
+  public async reopenPrivateScoringAsync(): Promise<void> {
+
+    await this.scoringApiClient.reopenAsync(this.project.scoring.id);
+
+    await this.router.navigate([Paths.Admin + '/scoring/private-scoring']);
+  }
+
   public canStart(): boolean {
     return this.project.scoring && this.project.scoring.scoringStatus === ScoringStatus.FillingApplication;
   }
 
   public canEdit(): boolean {
-    return this.project.scoring.scoringStatus === ScoringStatus.InProgress;// && this.scoringExperts !== this.allExpertsResponse.items;
+    return this.project.scoring.scoringStatus === ScoringStatus.InProgress && this.expertAreas !== this.offers.map(i => <ExpertAreaItem> {
+      expertId: i.expertId,
+      areaId: i.area
+    });
+  }
+
+  public canReopen(): boolean {
+    return this.project.scoring && this.project.scoring.scoringStatus === ScoringStatus.Finished;
   }
 
   public canFinished(): boolean {
-    return this.project.scoring.scoringStatus === ScoringStatus.InProgress;
+    this.calculateData();
+    return this.project.scoring.scoringStatus === ScoringStatus.InProgress
+      && this.offers.every(o => o.offerStatus === OfferStatus.Finished)
+      && !this.areaExpertCounts.some(i => i > 0);
   }
 
   private expertCountsByArea(areaId: AreaType): number {
