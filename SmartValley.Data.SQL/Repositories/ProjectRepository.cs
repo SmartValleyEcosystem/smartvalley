@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -88,9 +87,6 @@ namespace SmartValley.Data.SQL.Repositories
         {
             _editContext.Projects.Remove(entity);
         }
-
-        public async Task<IReadOnlyCollection<Project>> GetAllByNameAsync(string projectName)
-            => await Entities().Where(p => p.Name.Contains(projectName)).ToArrayAsync();
 
         private IQueryable<Project> Entities() => _editContext.Projects
                                                               .Include(p => p.Author)

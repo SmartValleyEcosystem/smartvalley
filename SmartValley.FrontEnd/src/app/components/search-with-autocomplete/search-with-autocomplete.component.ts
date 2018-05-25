@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {ProjectApiClient} from '../../api/project/project-api-client';
-import {SearchProjectResponse} from '../../api/project/search-projects-response';
 import {Paths} from '../../paths';
 import {Router} from '@angular/router';
 import {Constants} from '../../constants';
@@ -8,6 +7,8 @@ import {FormControl} from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/throttleTime';
 import 'rxjs/add/observable/fromEvent';
+import {ProjectQuery} from '../../api/project/project-query';
+import {ProjectResponse} from '../../api/project/project-response';
 @Component({
   selector: 'app-search-with-autocomplete',
   templateUrl: './search-with-autocomplete.component.html',
@@ -15,7 +16,7 @@ import 'rxjs/add/observable/fromEvent';
 })
 export class SearchWithAutocompleteComponent implements OnInit {
 
-  public projects: SearchProjectResponse[] = [];
+  public projects: ProjectResponse[] = [];
   public isAutocompleteHidden: boolean;
   public isProjectListHovered: boolean;
   public isSearchInputInFocus: boolean;
@@ -61,7 +62,12 @@ export class SearchWithAutocompleteComponent implements OnInit {
   }
 
   public async searchRequestAsync(search) {
-    const searchResult = await this.projectApiClient.getProjectsBySearchStringAsync(search);
+    const searchResult = await this.projectApiClient.getAsync(<ProjectQuery>{
+      offset: 0,
+      count: 10,
+      searchString: search,
+      onlyScored: false,
+    });
     this.projects = searchResult.items;
   }
 
