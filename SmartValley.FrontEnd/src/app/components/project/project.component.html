@@ -54,7 +54,7 @@
       <div *ngSwitchCase="ScoringStatus.InProgress">
         <div class="score">
           <p class="score__label">{{ 'MyProject.InProgress' | translate }}</p>
-          <div class="score progress-scoring">
+          <div class="score progress-scoring" *ngIf="!project.isPrivate">
             {{scoringCompletenessInPercents}}{{ 'MyProject.CompletenessInPercents' | translate }}
           </div>
         </div>
