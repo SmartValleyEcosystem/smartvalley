@@ -18,38 +18,52 @@ export class AdminPanelComponent implements OnInit {
   public selectedMainTab = 0;
   public selectedSubTab = 0;
 
-  constructor(
-        private location: Location,
-        private router: Router,
-        private route: ActivatedRoute) {
-      this.route.params.subscribe( params => this.selectedMainTab = this.mainTabItems.indexOf(params['mainTab']) );
-  }
+  constructor(private router: Router,
+              private route: ActivatedRoute) {}
 
   public ngOnInit() {
-    this.selectedMainTab = this.mainTabItems.indexOf(this.route.snapshot.paramMap.get('mainTab'));
-    if (this.route.snapshot.paramMap.get('subTab')) {
-        this.selectedSubTab = this.getSubTabIndex(this.selectedMainTab, this.route.snapshot.paramMap.get('subTab'));
+    const mainTab = this.route.snapshot.paramMap.get('mainTab');
+    const subTab = this.route.snapshot.paramMap.get('subTab');
+
+    if (mainTab && this.mainTabItems.indexOf(mainTab) !== -1) {
+        this.selectedMainTab = this.mainTabItems.indexOf(mainTab);
+    }
+
+    if (subTab && this.getSubTabIndex(this.selectedMainTab, subTab) !== -1) {
+        this.selectedSubTab = this.getSubTabIndex(this.selectedMainTab, subTab);
     }
   }
 
-public getSubTabIndex(mainTabIndex: number, subItemName: string): number {
+  public getSubTabLink(mainTabIndex: number, subItemIndex: number): string {
     switch (mainTabIndex) {
-        case 0 :
-            return this.usersTab.indexOf(subItemName);
-        case 1 :
-            return this.scoringTab.indexOf(subItemName);
-        case 2 :
-            return this.requestsTab.indexOf(subItemName);
+      case 0 :
+        return this.usersTab[subItemIndex];
+      case 1 :
+        return this.scoringTab[subItemIndex];
+      case 2 :
+        return this.requestsTab[subItemIndex];
+    }
+  }
+
+  public getSubTabIndex(mainTabIndex: number, subItemName: string): number {
+    switch (mainTabIndex) {
+      case 0 :
+        return this.usersTab.indexOf(subItemName);
+      case 1 :
+        return this.scoringTab.indexOf(subItemName);
+      case 2 :
+        return this.requestsTab.indexOf(subItemName);
     }
   }
 
   public onMainTabChange($event) {
     this.selectedMainTab = $event.index;
-    this.selectedSubTab =  0;
-    this.router.navigate([Paths.Admin + '/' + this.mainTabItems[$event.index] + '/']);
+    this.selectedSubTab = 0;
+    this.router.navigate([Paths.Admin + '/' + this.mainTabItems[$event.index] + '/' + this.getSubTabLink(this.selectedMainTab, this.selectedSubTab)]);
   }
 
   public onSubTabChange($event, tab: string[]) {
+    this.selectedSubTab = $event.index;
     this.router.navigate([Paths.Admin + '/' + this.mainTabItems[this.selectedMainTab] + '/' + tab[$event.index]]);
   }
 }

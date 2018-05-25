@@ -32,6 +32,7 @@
     height: 40px;
   }
 }
+
 a.main-btn {
   padding: 6px 20px;
 }
@@ -47,10 +48,12 @@ a.main-btn {
   cursor: pointer;
   outline: none;
 }
+
 ghost-btn[disabled] {
   border: solid 1px #969696;
   color: #969696;
 }
+
 .ghost-btn.small {
   padding: 2px 20px !important;
 }
@@ -59,6 +62,7 @@ ghost-btn[disabled] {
   background-color: #a4a2b0;
   border-color: #969696;
 }
+
 .input {
   height: 36px;
   color: #000;
@@ -68,15 +72,18 @@ ghost-btn[disabled] {
   border: solid 1px #a4a2b0;
   outline: none;
 }
+
 textarea.input {
   padding: 10px;
   min-height: 132px;
   width: 640px;
 }
+
 .sortable {
   cursor: pointer;
   position: relative;
 }
+
 .sortable:after,
 .sortable:before {
   content: '';
@@ -86,17 +93,21 @@ textarea.input {
   height: 15px;
   right: -17px;
 }
+
 .sortable:after {
   background-image: url(/assets/img/table-controls/arrow-down-gray.svg);
   top: 8px;
 }
+
 .sortable:before {
   top: -9px;
   background-image: url(/assets/img/table-controls/arrow-up-gray.svg);
 }
+
 .sortable__active.sortable__active_asc.sortable:before {
   background-image: url(/assets/img/table-controls/arrow-up-white.svg);
 }
+
 .sortable__active.sortable__active_desc.sortable:after {
   background-image: url(/assets/img/table-controls/arrow-down-white.svg);
 }
@@ -111,22 +122,25 @@ textarea.input {
   border: 1px solid #a4a2b0;
   height: 36px;
 }
+
 .input-switch__on {
   border-radius: 18px 0 0 18px;
   border-right: none;
 }
+
 .input-switch__off {
   border-radius: 0 18px 18px 0;
 }
+
 .selected {
   background: #231a5d;
   color: #fff;
 }
+
 .sex-switch .input-switch__off,
 .sex-switch .input-switch__on {
   width: 90px;
 }
-
 
 /* ng prime paginator restyle */
 
@@ -135,19 +149,23 @@ body .ui-paginator {
   margin-bottom: 100px !important;
   background-color: transparent !important;
 }
+
 body .admin-table .ui-paginator {
   margin-bottom: -5px !important;
 }
+
 body .ui-widget-header {
   background-color: transparent !important;
   border: none !important;
 }
+
 body .ui-paginator .ui-paginator-first,
 body .ui-paginator .ui-paginator-prev,
 body .ui-paginator .ui-paginator-next,
 body .ui-paginator .ui-paginator-last {
   color: #5d49f2 !important;
 }
+
 body .ui-paginator .ui-paginator-pages .ui-paginator-page {
   text-align: center !important;
   font-size: 18px !important;
@@ -156,10 +174,12 @@ body .ui-paginator .ui-paginator-pages .ui-paginator-page {
   width: 30px !important;
   height: 30px !important;
 }
+
 body .ui-state-active, body .ui-state-highlight {
   color: #000 !important;
   background-color: #ffd038 !important;
 }
+
 body .ui-paginator .ui-paginator-pages .ui-paginator-page {
   padding: 2px 0 0 !important;
 }
@@ -188,14 +208,17 @@ textarea.ng-dirty.ng-invalid,
 p-calendar.ng-dirty.ng-invalid .ui-inputtext {
   border-color: red !important;
 }
+
 input.ng-valid {
   border-color: #a4a2b0 !important;
 }
+
 .input-component.ng-dirty.ng-invalid .ui-inputtext.input-date,
 .input-component.ng-dirty.ng-invalid .input,
 quill-editor.ng-dirty.ng-invalid .ql-container{
   border-color: red !important;
 }
+
 .input-component.ng-pristine.ng-invalid.ng-untouched.ng-dirty .input-switch__on,
 .input-component.ng-pristine.ng-invalid.ng-untouched.ng-dirty .input-switch__off {
   border-color: red !important;
@@ -215,21 +238,25 @@ textarea.ng-pristine.ng-invalid.ng-untouched.ng-dirty,
 
 /* angular-material tabs */
 
-.mat-tab-label-content	{
+.mat-tab-label-content {
   font-family: $font-pt;
   font-weight: bold;
   font-size: 24px;
   color: #5d49f2;
 }
+
 .mat-tab-label-active .mat-tab-label-content {
   color: #000;
 }
+
 .mat-ink-bar {
   display: none;
 }
+
 .mat-tab-labels {
   border-bottom: none !important;
 }
+
 .mat-tab-body-wrapper {
   margin-top: 24px !important;
 }
@@ -245,6 +272,7 @@ textarea.ng-pristine.ng-invalid.ng-untouched.ng-dirty,
 .report-tab .mat-tab-label {
   margin: 0 1px 0;
 }
+
 .report-tab .mat-tab-label {
   height: auto;
   &:hover {
@@ -254,6 +282,7 @@ textarea.ng-pristine.ng-invalid.ng-untouched.ng-dirty,
     width: 20%;
   }
 }
+
 .report-tab .mat-tab-label-content {
   width: 234px;
   height: 155px;
@@ -267,13 +296,16 @@ textarea.ng-pristine.ng-invalid.ng-untouched.ng-dirty,
     height: 50px;
   }
 }
+
 .report-tab .mat-tab-list {
   padding: 4px 0;
 }
+
 .report-tab .mat-tab-label-active .mat-tab-label-content {
   background: #231a5d;
   color: #fff;
 }
+
 .report-tab .mat-tab-labels {
   @media screen and (min-width: 320px) and (max-width: 768px) {
     display: flex !important;
@@ -294,6 +326,7 @@ body .ui-tabview-panels .ui-widget-content {
 body .ui-tabview .ui-tabview-panel {
   padding: 10px 0 !important;
 }
+
 body .ui-tabview.ui-tabview-top .ui-tabview-nav li {
   background-color: transparent !important;
   border: none !important;
@@ -309,10 +342,11 @@ body .ui-tabview.ui-tabview-top .ui-tabview-nav li {
     }
   }
 }
+
 body .admin-tabs {
   .ui-tabview.ui-tabview-top .ui-tabview-nav li {
     a .ui-tabview-title {
-        color: #828282;
+      color: #828282;
     }
   }
 }
@@ -324,6 +358,7 @@ body .sub-tabs .ui-tabview.ui-tabview-top {
     }
   }
 }
+
 body .ui-tabview.ui-tabview-top .ui-tabview-nav li.ui-state-active {
   a {
     .ui-tabview-title {
@@ -331,6 +366,7 @@ body .ui-tabview.ui-tabview-top .ui-tabview-nav li.ui-state-active {
     }
   }
 }
+
 body .ui-tabview.ui-tabview-top .ui-tabview-nav li.ui-state-default:first-child a {
   padding-left: 0 !important;
 }
@@ -360,9 +396,11 @@ p-fileUpload.ng-dirty.ng-invalid .ui-fileupload-choose.ui-button {
 body .ui-widget-content {
   background-color: #fff !important;
 }
+
 body .ui-button {
   background-color: transparent !important;
 }
+
 body .ui-button .fa-close:before {
   content: '';
   display: inline-block;
@@ -372,7 +410,6 @@ body .ui-button .fa-close:before {
   background-size: cover;
 }
 
-
 /* ng-prime checkbox */
 
 body .ui-chkbox .ui-chkbox-box {
@@ -380,11 +417,13 @@ body .ui-chkbox .ui-chkbox-box {
   width: 24px;
   height: 24px;
 }
+
 body .ui-chkbox .ui-chkbox-box.ui-state-active {
   background-color: #fff !important;
   padding-top: 2px;
   color: #5d49f2;
 }
+
 .ui-chkbox-box .fa-check:before {
   color: #5d49f2;
 }
@@ -395,22 +434,25 @@ body .ui-radiobutton-box {
   width: 20px;
   height: 20px;
 }
+
 body .ui-radiobutton-box.ui-state-active {
   background-color: #fff !important;
 }
+
 body .ui-radiobutton .ui-radiobutton-box.ui-state-active .ui-radiobutton-icon.fa-circle {
   color: #5d49f2 !important;
   padding-top: 3px;
   font-size: 14px;
 }
+
 body .ui-radiobutton .ui-radiobutton-box {
   position: relative;
   top: -3px;
 }
+
 body .ng-invalid .ui-chkbox .ui-chkbox-box {
   border: solid 1px red !important;
 }
-
 
 /* quill adaptive */
 
@@ -419,3 +461,23 @@ body .ng-invalid .ui-chkbox .ui-chkbox-box {
     width: auto;
   }
 }
+<<<<<<< HEAD
+=======
+
+.mat-checkbox-disabled:not(.mat-checkbox-checked) .mat-checkbox-frame {
+  border-color: #a4a2b0 !important;
+}
+
+.mat-checkbox-frame {
+  border-width: 2px !important;
+  border-color: #686868 !important;
+}
+
+.mat-checkbox-background {
+  background-color: white !important;
+}
+
+.mat-checkbox-checkmark-path {
+  stroke: rgba(0, 0, 0, .87) !important;
+}
+>>>>>>> 5ebc9878ca3ca19e04c537891e8848ece6aa8d07

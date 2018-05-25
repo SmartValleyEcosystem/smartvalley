@@ -6,6 +6,8 @@ namespace SmartValley.WebApi.Experts.Responses
 {
     public class ExpertResponse
     {
+        public long Id { get; set; }
+
         public string Address { get; set; }
 
         public string Email { get; set; }
@@ -26,6 +28,7 @@ namespace SmartValley.WebApi.Experts.Responses
         {
             return new ExpertResponse
                    {
+                       Id = expert.UserId,
                        Address = expert.User.Address,
                        Email = expert.User.Email,
                        About = expert.About,
