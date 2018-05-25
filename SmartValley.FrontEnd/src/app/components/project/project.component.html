@@ -2,7 +2,8 @@
   <h1 class="title">{{ 'MyProject.Title' | translate }}</h1>
 </div>
 <div *ngIf="project" class="content">
-  <h1 class="title">{{ project.name }}</h1>
+  <h1 *ngIf="!project.isPrivate" class="title">{{ project.name }}</h1>
+  <h1 *ngIf="project.isPrivate" class="title">{{ project.name }} [{{ 'MyProject.Private' | translate }}]</h1>
   <app-project-info *ngIf="project" [project]="project">
     <div [ngSwitch]="getScoringStatus()" class="control-info-wrapper">
       <div *ngSwitchCase="ScoringStatus.FillingApplication">
@@ -18,7 +19,7 @@
       <div *ngSwitchCase="ScoringStatus.ReadyForPayment">
         <div *ngIf="isAuthor">
           <button (click)="navigateToPaymentAsync()" class="main-btn">
-                  {{ 'MyProject.SendScore' | translate }}
+            {{ 'MyProject.SendScore' | translate }}
           </button>
           <a [routerLink]="'/' + editProjectsLink" class="ghost-btn">
             {{ 'MyProject.EditInformation' | translate }}
@@ -51,29 +52,18 @@
         </div>
       </div>
       <div *ngSwitchCase="ScoringStatus.InProgress">
-        <div *ngIf="project.isPrivate; else publicProject" class="score">
-          <i class="lock-icon material-icons">lock</i>
-          {{ 'MyProject.PrivateInProgress' | translate }}
-        </div>
-        <ng-template #publicProject>
-          <div class="score">
-            <p class="score__label">{{ 'MyProject.InProgress' | translate }}</p>
-            <div class="score progress-scoring">
-              {{scoringCompletenessInPercents}}{{ 'MyProject.CompletenessInPercents' | translate }}
-            </div>
+        <div class="score">
+          <p class="score__label">{{ 'MyProject.InProgress' | translate }}</p>
+          <div class="score progress-scoring">
+            {{scoringCompletenessInPercents}}{{ 'MyProject.CompletenessInPercents' | translate }}
           </div>
-        </ng-template>
+        </div>
       </div>
       <div *ngSwitchCase="ScoringStatus.Finished">
-        <div *ngIf="project.isPrivate; else publicProject" class="small-title">
-          <i class="lock-icon material-icons">lock</i>
-          {{ 'MyProject.PrivateProjectScore' | translate }}
-        </div>
-        <ng-template #publicProject>
-          <div class="small-title">{{ 'MyProject.ProjectScore' | translate }}</div>
-        </ng-template>
+        <div class="small-title">{{ 'MyProject.ProjectScore' | translate }}</div>
         <div class="score score__attention">
-          <div class="main-number">{{project.scoring.score | roundNumberPipe}}</div>/100
+          <div class="main-number">{{project.scoring.score | roundNumberPipe}}</div>
+          /100
         </div>
         <a *ngIf="isAuthor; else guest" [routerLink]="'/' + editProjectsLink" class="ghost-btn">
           {{ 'MyProject.EditInformation' | translate }}
