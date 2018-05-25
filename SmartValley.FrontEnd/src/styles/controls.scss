@@ -192,7 +192,8 @@ input.ng-valid {
   border-color: #a4a2b0 !important;
 }
 .input-component.ng-dirty.ng-invalid .ui-inputtext.input-date,
-.input-component.ng-dirty.ng-invalid .input {
+.input-component.ng-dirty.ng-invalid .input,
+quill-editor.ng-dirty.ng-invalid .ql-container{
   border-color: red !important;
 }
 .input-component.ng-pristine.ng-invalid.ng-untouched.ng-dirty .input-switch__on,

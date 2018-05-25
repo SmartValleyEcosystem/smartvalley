@@ -241,7 +241,7 @@ export class CreateProjectComponent implements OnInit {
       description: ['', [Validators.required, Validators.maxLength(2000)]],
       website: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
       whitePaperLink: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
-      contactEmail: ['', Validators.maxLength(200)],
+      contactEmail: ['', [Validators.maxLength(200), Validators.pattern('\\w+@\\w+\\.\\w+')]],
       projectImage: [''],
       icoDate: [''],
       category: ['', [Validators.required]],
