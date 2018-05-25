@@ -33,7 +33,7 @@ namespace SmartValley.Data.SQL.Repositories
                             where !query.Category.HasValue || project.Category == query.Category.Value
                             where !query.MinimumScore.HasValue || (project.Scoring.Score.HasValue && project.Scoring.Score.Value >= query.MinimumScore)
                             where !query.MaximumScore.HasValue || (project.Scoring.Score.HasValue && project.Scoring.Score.Value <= query.MaximumScore)
-                            where !query.IsPrivate.HasValue || (project.IsPrivate == query.IsPrivate && scoringApplication.IsSubmitted)
+                            where (!query.IsPrivate.HasValue && project.IsPrivate == false) || (query.IsPrivate.HasValue && project.IsPrivate == query.IsPrivate && scoringApplication.IsSubmitted)
                             where query.ScoringStatuses.Count == 0 || query.ScoringStatuses.Contains(project.Scoring.Status)
                             select project;
 
