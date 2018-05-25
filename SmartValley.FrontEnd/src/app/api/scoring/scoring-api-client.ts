@@ -4,6 +4,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {StartProjectScoringRequest} from './start-project-scoring-request';
 import {AreaRequest} from './area-request';
 import {ScoringResponse} from './scoring-response';
+import {UpdateScoringRequest} from './update-scoring-request';
 
 @Injectable()
 export class ScoringApiClient extends BaseApiClient {
@@ -33,12 +34,12 @@ export class ScoringApiClient extends BaseApiClient {
   }
 
   public async finishAsync(scoringId: number): Promise<void> {
-    return this.http.post(this.baseApiUrl + '/scoring/finish/{$scoringId}')
+    return this.http.post(this.baseApiUrl + '/scoring/finish', <UpdateScoringRequest> {scoringId: scoringId})
       .toPromise();
   }
 
   public async reopenAsync(scoringId: number): Promise<void> {
-    return this.http.post(this.baseApiUrl + '/scoring/reopen/{$scoringId}')
+    return this.http.post(this.baseApiUrl + '/scoring/reopen', <UpdateScoringRequest> {scoringId: scoringId})
       .toPromise();
   }
 }

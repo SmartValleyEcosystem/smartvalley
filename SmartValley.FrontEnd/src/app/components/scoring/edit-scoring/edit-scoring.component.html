@@ -58,7 +58,10 @@
   <button mat-fab class="action-btn" *ngIf="canEdit()" (click)="setExpertsAsync()">
     <mat-icon>save</mat-icon>
   </button>
-  <button mat-fab class="action-btn" *ngIf="canFinished()" (click)="setExpertsAsync()">
+  <button mat-fab class="action-btn" *ngIf="canFinished()" (click)="finishPrivateScoringAsync()">
     <mat-icon>done</mat-icon>
+  </button>
+  <button mat-fab class="action-btn" *ngIf="canReopen()" (click)="reopenPrivateScoringAsync()">
+    <mat-icon>play_arrow</mat-icon>
   </button>
 </div>

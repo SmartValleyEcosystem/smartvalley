@@ -54,16 +54,16 @@ namespace SmartValley.WebApi.Scorings
 
         [HttpPost, Authorize(Roles = nameof(RoleType.Admin))]
         [Route("finish")]
-        public async Task FinishAsync(long scoringId)
+        public async Task FinishAsync([FromBody] UpdateScoringRequest request)
         {
-            await _scoringService.FinishAsync(scoringId);
+            await _scoringService.FinishAsync(request.ScoringId);
         }
 
         [HttpPost, Authorize(Roles = nameof(RoleType.Admin))]
         [Route("reopen")]
-        public async Task ReopenAsync(long scoringId)
+        public async Task ReopenAsync([FromBody] UpdateScoringRequest request)
         {
-            await _scoringService.ReopenAsync(scoringId);
+            await _scoringService.ReopenAsync(request.ScoringId);
         }
     }
 }
