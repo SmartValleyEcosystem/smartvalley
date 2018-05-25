@@ -1,3 +1,5 @@
-<h2>{{ 'PrivateScoringModal.Description' | translate }}</h2>
-<button class="main-btn" (click)="submit(false)">{{ 'PrivateScoringModal.Cancel' | translate }}</button>
+<button class="dialog-close" mat-dialog-close><i class="material-icons">close</i></button>
+<h2>{{ 'PrivateScoringModal.Title' | translate }}</h2>
+<p>{{ 'PrivateScoringModal.Description' | translate }}</p>
 <button class="main-btn" (click)="submit(true)">{{ 'PrivateScoringModal.Submit' | translate }}</button>
+<button class="main-btn" (click)="submit(false)">{{ 'PrivateScoringModal.Cancel' | translate }}</button>

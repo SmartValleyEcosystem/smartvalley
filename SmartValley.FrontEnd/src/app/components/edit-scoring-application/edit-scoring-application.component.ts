@@ -248,7 +248,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
       website: ['', [Validators.required, Validators.maxLength(200), Validators.pattern('https?://.+')]],
       description: ['', [Validators.required, Validators.required, Validators.maxLength(2000)]],
       linkToWP: ['', [Validators.required, Validators.maxLength(200), Validators.pattern('https?://.+')]],
-      email: ['', [Validators.required, Validators.maxLength(200)]]
+      email: ['', [Validators.required, Validators.maxLength(200), Validators.pattern('\\w+@\\w+\\.\\w+')]]
     };
     this.questionFormGroup = this.formBuilder.group({
       commonGroup: this.formBuilder.group(commonFormControls),
