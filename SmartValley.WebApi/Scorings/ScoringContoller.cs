@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NServiceBus;
+using SmartValley.Domain.Entities;
 using SmartValley.Messages.Commands;
 using SmartValley.WebApi.Scorings.Requests;
 using SmartValley.WebApi.Scorings.Responses;
@@ -49,6 +50,20 @@ namespace SmartValley.WebApi.Scorings
             await _messageSession.SendLocal(command);
 
             return NoContent();
+        }
+
+        [HttpPost, Authorize(Roles = nameof(RoleType.Admin))]
+        [Route("finish")]
+        public async Task FinishAsync(long scoringId)
+        {
+            await _scoringService.FinishAsync(scoringId);
+        }
+
+        [HttpPost, Authorize(Roles = nameof(RoleType.Admin))]
+        [Route("reopen")]
+        public async Task ReopenAsync(long scoringId)
+        {
+            await _scoringService.ReopenAsync(scoringId);
         }
     }
 }

@@ -31,4 +31,14 @@ export class ScoringApiClient extends BaseApiClient {
       .get<ScoringResponse>(this.baseApiUrl + '/scoring', {params: parameters})
       .toPromise();
   }
+
+  public async finishAsync(scoringId: number): Promise<void> {
+    return this.http.post(this.baseApiUrl + '/scoring/finish/{$scoringId}')
+      .toPromise();
+  }
+
+  public async reopenAsync(scoringId: number): Promise<void> {
+    return this.http.post(this.baseApiUrl + '/scoring/reopen/{$scoringId}')
+      .toPromise();
+  }
 }

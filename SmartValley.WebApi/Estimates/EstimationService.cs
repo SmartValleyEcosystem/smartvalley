@@ -90,8 +90,9 @@ namespace SmartValley.WebApi.Estimates
             if (!scoring.IsOfferAccepted(expertId, area))
                 throw new AppErrorException(ErrorCode.AcceptedOfferNotFound);
 
-            await UpdateProjectScoringAsync(scoring, area);
             scoring.FinishOffer(expertId, area);
+
+            await UpdateProjectScoringAsync(scoring, area);
             await _scoringRepository.SaveChangesAsync();
         }
 
@@ -174,9 +175,7 @@ namespace SmartValley.WebApi.Estimates
             var scoringStatistics = await _scoringContractClient.GetScoringStatisticsAsync(scoring.ContractAddress);
             if (scoringStatistics.Score.HasValue)
             {
-                scoring.Score = scoringStatistics.Score;
-                scoring.ScoringEndDate = _clock.UtcNow;
-                scoring.Status = ScoringStatus.Finished;
+                scoring.Finish(scoringStatistics.Score.Value, _clock.UtcNow);
             }
 
             var areaScore = scoringStatistics.AreaScores[area];

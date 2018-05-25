@@ -7,9 +7,10 @@ using SmartValley.Domain.Exceptions;
 
 namespace SmartValley.Domain.Entities
 {
-    public class Scoring : IEntityWithId
+    public class Scoring
     {
-        public Scoring()
+        // ReSharper disable once UnusedMember.Local
+        private Scoring()
         {
         }
 
@@ -131,18 +132,30 @@ namespace SmartValley.Domain.Entities
             EstimatesDueDate = ScoringOffers.Max(o => o.EstimatesDueDate);
         }
 
-        private bool HasEnoughExperts()
+        public void Finish(double score, DateTimeOffset endDate)
         {
-            foreach (var areaScoring in AreaScorings)
+            if (ScoringOffers.Any(x => x.Status != ScoringOfferStatus.Finished) || AnyAreaHasNoOffers())
             {
-                var areaExpertsCount = ScoringOffers.Count(o => o.AreaId == areaScoring.AreaId && o.Status == ScoringOfferStatus.Accepted);
-                if (areaScoring.ExpertsCount > areaExpertsCount)
-                    return false;
+                throw new AppErrorException(ErrorCode.ServerError, "All offers should be finished and all areas should have score.");
             }
 
-            return true;
+            Score = score;
+            ScoringEndDate = endDate;
+            Status = ScoringStatus.Finished;
         }
 
+        public void Reopen()
+        {
+            if (Status != ScoringStatus.Finished)
+            {
+                throw new AppErrorException(ErrorCode.ServerError, "Scoring should be finished.");
+            }
+
+            Score = null;
+            ScoringEndDate = null;
+            Status = ScoringStatus.InProgress;
+        }
+        
         public ScoringOffer GetOfferForExpertinArea(long expertId, AreaType area)
         {
             return ScoringOffers.FirstOrDefault(x => x.ExpertId == expertId && x.AreaId == area);
@@ -157,6 +170,18 @@ namespace SmartValley.Domain.Entities
                 if (offer.ExpirationTimestamp > OffersDueDate)
                     OffersDueDate = offer.ExpirationTimestamp;
             }
+        }
+
+        private bool HasEnoughExperts()
+        {
+            foreach (var areaScoring in AreaScorings)
+            {
+                var areaExpertsCount = ScoringOffers.Count(o => o.AreaId == areaScoring.AreaId && o.Status == ScoringOfferStatus.Accepted);
+                if (areaScoring.ExpertsCount > areaExpertsCount)
+                    return false;
+            }
+
+            return true;
         }
 
         private void SetOfferStatus(AreaType area, long expertId, ScoringOfferStatus status)
@@ -177,6 +202,11 @@ namespace SmartValley.Domain.Entities
         {
             return ScoringOffers.FirstOrDefault(o => o.AreaId == area && o.ExpertId == expertId)
                    ?? throw new InvalidOperationException($"Can't find offer for area: '{area}', expertId: '{expertId}', scoringId: '{Id}'");
+        }
+
+        private bool AnyAreaHasNoOffers()
+        {
+            return AreaScorings.Any(x => ScoringOffers.Count(y => y.AreaId == x.AreaId) == 0);
         }
     }
 }
