@@ -6,7 +6,6 @@ import {CollectionResponse} from '../collection-response';
 import {GetScoringProjectsRequest} from './get-scoring-projects-request';
 import {MyProjectResponse} from './my-project-response';
 import {ScoringProjectResponse} from '../scoring-application/scoring-project-response';
-import {SearchProjectResponse} from './search-projects-response';
 import {CreateProjectRequest} from './create-project-request';
 import {ProjectQuery} from './project-query';
 import {isNullOrUndefined} from 'util';
@@ -60,14 +59,6 @@ export class ProjectApiClient extends BaseApiClient {
   public async getMyProjectAsync(): Promise<MyProjectResponse> {
     return this.http
       .get<MyProjectResponse>(this.baseApiUrl + '/projects/my')
-      .toPromise();
-  }
-
-  public getProjectsBySearchStringAsync(searchString: string): Promise<CollectionResponse<SearchProjectResponse>> {
-    const parameters = new HttpParams().append('SearchString', searchString);
-
-    return this.http
-      .get<CollectionResponse<SearchProjectResponse>>(this.baseApiUrl + '/projects/search', {params: parameters})
       .toPromise();
   }
 

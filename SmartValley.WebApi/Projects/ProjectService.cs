@@ -9,7 +9,6 @@ using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Projects.Requests;
-using SmartValley.WebApi.Projects.Responses;
 
 namespace SmartValley.WebApi.Projects
 {
@@ -53,9 +52,6 @@ namespace SmartValley.WebApi.Projects
             var project = await GetByIdAsync(projectId);
             return project.AuthorId == userId;
         }
-
-        public Task<IReadOnlyCollection<Project>> GetProjectsByNameAsync(string projectName)
-            => _projectRepository.GetAllByNameAsync(projectName);
 
         public async Task<Project> CreateAsync(long userId, CreateProjectRequest request)
         {

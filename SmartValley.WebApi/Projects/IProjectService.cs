@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using SmartValley.Application.AzureStorage;
 using SmartValley.Domain;
 using SmartValley.Domain.Core;
@@ -17,8 +16,6 @@ namespace SmartValley.WebApi.Projects
         Task<bool> IsAuthorizedToEditProjectAsync(long projectId, long userId);
 
         Task UpdateTeamMemberPhotoAsync(long projectId, long projectTeamMemberId, AzureFile photo);
-
-        Task<IReadOnlyCollection<Project>> GetProjectsByNameAsync(string projectName);
 
         Task<Project> CreateAsync(long userId, CreateProjectRequest request);
 
