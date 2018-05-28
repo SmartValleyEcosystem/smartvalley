@@ -211,7 +211,7 @@ export class EditScoringComponent implements OnInit {
     if (expert) {
       const areas = this.expertAreas.filter(i => i.expertId === expertId);
       if (!event.checked) {
-        this.expertAreas = this.expertAreas.filter(item => areas.some(i => i.areaId !== item.areaId && i.expertId !== item.expertId));
+        this.expertAreas = this.expertAreas.filter(i => i.expertId !== expertId);
         return;
       }
       if (event.checked) {
