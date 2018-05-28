@@ -163,16 +163,6 @@ namespace SmartValley.WebApi.Projects
             return ProjectAboutResponse.Create(project);
         }
 
-        [HttpGet("search")]
-        public async Task<CollectionResponse<ProjectSearchResponse>> SearchProjectAsync(ProjectSearchRequest request)
-        {
-            var projects = await _projectService.GetProjectsByNameAsync(request.SearchString);
-            return new CollectionResponse<ProjectSearchResponse>
-                   {
-                       Items = projects.Select(ProjectSearchResponse.Create).ToArray()
-                   };
-        }
-
         [HttpGet("scoring"), Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<CollectionResponse<ScoringProjectResponse>> GetScoringProjectsAsync([FromQuery] IReadOnlyCollection<ScoringProjectStatus> statuses)
         {
