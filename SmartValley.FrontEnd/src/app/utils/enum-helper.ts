@@ -13,7 +13,7 @@ export class EnumHelper {
   public getDocumentTypes(): SelectItem[] {
     return [
       {label: this.translateService.instant('Passport'), value: DocumentEnum.Passport},
-      {label: this.translateService.instant('DriverLicense'), value: DocumentEnum.DriverLicense},
+      {label: this.translateService.instant('Driver License'), value: DocumentEnum.DriverLicense},
       {label: this.translateService.instant('Id'), value: DocumentEnum.Id},
       {label: this.translateService.instant('Other'), value: DocumentEnum.Other}
     ];

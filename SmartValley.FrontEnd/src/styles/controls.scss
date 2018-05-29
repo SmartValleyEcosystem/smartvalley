@@ -463,17 +463,24 @@ body .ng-invalid .ui-chkbox .ui-chkbox-box {
 }
 
 .mat-checkbox-disabled:not(.mat-checkbox-checked) .mat-checkbox-frame {
-  border-color: #a4a2b0 !important;
+  border-color: #a4a2b02b !important;
+  background-color: #e9ecef21 !important;
 }
 
 .mat-checkbox-frame {
-  border-width: 2px !important;
-  border-color: #686868 !important;
+  border-width: 1px !important;
+  border-color: #ced4da  !important;
+  z-index: 1;
 }
 
 .mat-checkbox-background {
   background-color: white !important;
 }
+
+/*.mat-checkbox-disabled .mat-checkbox-background {
+  background-color: #e9ecef !important;
+  border-color: #a4a2b02b !important;
+}*/
 
 .mat-checkbox-checkmark-path {
   stroke: rgba(0, 0, 0, .87) !important;

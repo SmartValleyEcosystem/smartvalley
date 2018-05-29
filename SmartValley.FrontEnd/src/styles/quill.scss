@@ -1,8 +1,11 @@
+@import "./fonts.scss";
+
 .ql-container {
   box-sizing: border-box;
   height: 100%;
   margin: 0px;
   position: relative;
+  font-family: $font-pt;
 }
 .ql-container.ql-disabled .ql-tooltip {
   visibility: hidden;
