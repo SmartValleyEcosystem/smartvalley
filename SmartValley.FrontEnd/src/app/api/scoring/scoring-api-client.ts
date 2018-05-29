@@ -34,12 +34,12 @@ export class ScoringApiClient extends BaseApiClient {
   }
 
   public async finishAsync(scoringId: number): Promise<void> {
-    return this.http.post(this.baseApiUrl + '/scoring/finish', <UpdateScoringRequest> {scoringId: scoringId})
+    await this.http.post(this.baseApiUrl + '/scoring/finish', <UpdateScoringRequest> {scoringId: scoringId})
       .toPromise();
   }
 
   public async reopenAsync(scoringId: number): Promise<void> {
-    return this.http.post(this.baseApiUrl + '/scoring/reopen', <UpdateScoringRequest> {scoringId: scoringId})
+    await this.http.post(this.baseApiUrl + '/scoring/reopen', <UpdateScoringRequest> {scoringId: scoringId})
       .toPromise();
   }
 }

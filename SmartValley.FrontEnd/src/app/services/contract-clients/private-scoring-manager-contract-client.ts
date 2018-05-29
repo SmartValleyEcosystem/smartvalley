@@ -5,7 +5,7 @@ import {UserContext} from '../authentication/user-context';
 import {ScoringManagerContractClientBase} from './scoring-manager-contract-client-base';
 
 @Injectable()
-export class ScoringManagerContractClient extends ScoringManagerContractClientBase {
+export class PrivateScoringManagerContractClient extends ScoringManagerContractClientBase {
 
   public abi: string;
   public address: string;
@@ -17,24 +17,20 @@ export class ScoringManagerContractClient extends ScoringManagerContractClientBa
   }
 
   public async initializeAsync(): Promise<void> {
-    const scoringManagerContract = await this.contractClient.getScoringManagerContractAsync();
-    this.abi = scoringManagerContract.abi;
-    this.address = scoringManagerContract.address;
+    const contract = await this.contractClient.getPrivateScoringManagerContractAsync();
+    this.abi = contract.abi;
+    this.address = contract.address;
   }
 
   public async startAsync(projectExternalId: string,
                           areas: Array<number>,
-                          areaExpertCounts: Array<number>,
-                          scoringCostEth: number): Promise<string> {
-    const scoringManagerContract = this.web3Service.getContract(this.abi, this.address);
+                          expertAddresses: Array<string>): Promise<string> {
+    const contract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.userContext.getCurrentUser().account;
-    return await scoringManagerContract.start(
+    return await contract.start(
       projectExternalId.replace(/-/g, ''),
       areas,
-      areaExpertCounts,
-      {
-        from: fromAddress,
-        value: this.web3Service.toWei(scoringCostEth)
-      });
+      expertAddresses,
+      {from: fromAddress});
   }
 }

@@ -12,7 +12,7 @@ namespace SmartValley.Domain.Services
     public class ScoringService : IScoringService
     {
         private readonly IProjectRepository _projectRepository;
-        private readonly IScoringExpertsManagerContractClient _scoringExpertsManagerContractClient;
+        private readonly IScoringOffersManagerContractClient _scoringOffersManagerContractClient;
         private readonly IScoringsRegistryContractClient _scoringsRegistryContractClient;
         private readonly IClock _clock;
         private readonly IScoringRepository _scoringRepository;
@@ -20,14 +20,14 @@ namespace SmartValley.Domain.Services
 
         public ScoringService(
             IProjectRepository projectRepository,
-            IScoringExpertsManagerContractClient scoringExpertsManagerContractClient,
+            IScoringOffersManagerContractClient scoringOffersManagerContractClient,
             IScoringsRegistryContractClient scoringsRegistryContractClient,
             IClock clock,
             IScoringRepository scoringRepository,
             IUserRepository userRepository)
         {
             _projectRepository = projectRepository;
-            _scoringExpertsManagerContractClient = scoringExpertsManagerContractClient;
+            _scoringOffersManagerContractClient = scoringOffersManagerContractClient;
             _scoringsRegistryContractClient = scoringsRegistryContractClient;
             _clock = clock;
             _scoringRepository = scoringRepository;
@@ -37,7 +37,7 @@ namespace SmartValley.Domain.Services
         public async Task<long> StartAsync(long projectId, IDictionary<AreaType, int> areas)
         {
             var project = await _projectRepository.GetByIdAsync(projectId);
-            var offers = await _scoringExpertsManagerContractClient.GetOffersAsync(project.ExternalId);
+            var offers = await _scoringOffersManagerContractClient.GetOffersAsync(project.ExternalId);
 
             if (!offers.Any())
                 throw new AppErrorException(ErrorCode.PendingOffersNotFound);

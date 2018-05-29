@@ -20,7 +20,7 @@ namespace SmartValley.WebApi.Scorings
         private readonly IProjectRepository _projectRepository;
         private readonly IScoringRepository _scoringRepository;
         private readonly IScoringOffersRepository _scoringOffersRepository;
-        private readonly IScoringExpertsManagerContractClient _scoringExpertsManagerContractClient;
+        private readonly IScoringOffersManagerContractClient _scoringOffersManagerContractClient;
         private readonly MailService _mailService;
         private readonly IClock _clock;
         private readonly IScoringContractClient _scoringContractClient;
@@ -30,7 +30,7 @@ namespace SmartValley.WebApi.Scorings
             IProjectRepository projectRepository,
             IScoringRepository scoringRepository,
             IScoringOffersRepository scoringOffersRepository,
-            IScoringExpertsManagerContractClient scoringExpertsManagerContractClient,
+            IScoringOffersManagerContractClient scoringOffersManagerContractClient,
             MailService mailService,
             IUserRepository userRepository,
             IClock clock,
@@ -39,7 +39,7 @@ namespace SmartValley.WebApi.Scorings
             _projectRepository = projectRepository;
             _scoringRepository = scoringRepository;
             _scoringOffersRepository = scoringOffersRepository;
-            _scoringExpertsManagerContractClient = scoringExpertsManagerContractClient;
+            _scoringOffersManagerContractClient = scoringOffersManagerContractClient;
             _mailService = mailService;
             _userRepository = userRepository;
             _clock = clock;
@@ -89,7 +89,7 @@ namespace SmartValley.WebApi.Scorings
             if (offer == null)
                 throw new AppErrorException(ErrorCode.OfferNotFoundInContract);
 
-            scoring.AcceptOffer(expertId, (AreaType) areaId, offer.EstimatesDueDate.Value, _clock.UtcNow);
+            scoring.AcceptOffer(expertId, (AreaType) areaId, offer.EstimatesDueDate, _clock.UtcNow);
 
             await _scoringRepository.SaveChangesAsync();
         }
@@ -106,7 +106,7 @@ namespace SmartValley.WebApi.Scorings
 
         public async Task UpdateOffersAsync(Guid projectExternalId)
         {
-            var contractOffers = await _scoringExpertsManagerContractClient.GetOffersAsync(projectExternalId);
+            var contractOffers = await _scoringOffersManagerContractClient.GetOffersAsync(projectExternalId);
 
             var experts = await GetExpertsForOffersAsync(contractOffers);
             var expertsDictionary = experts.ToDictionary(e => e.Address, e => e.Id);
@@ -148,11 +148,9 @@ namespace SmartValley.WebApi.Scorings
             if (!project.IsPrivate)
                 throw new AppErrorException(ErrorCode.ServerError, "'Finish' is allowed only for private scoring.");
 
-            var scoringStatistics = await _scoringContractClient.GetScoringStatisticsAsync(scoring.ContractAddress);
-            if (!scoringStatistics.Score.HasValue)
-                throw new AppErrorException(ErrorCode.ServerError, "Unable to retrieve scoring estimate.");
+            var scoringResults = await _scoringContractClient.GetResultsAsync(scoring.ContractAddress);
 
-            scoring.Finish(scoringStatistics.Score.Value, _clock.UtcNow);
+            scoring.Finish(scoringResults.Score, _clock.UtcNow);
             await _scoringRepository.SaveChangesAsync();
         }
 
@@ -176,7 +174,7 @@ namespace SmartValley.WebApi.Scorings
         private async Task<ScoringOfferInfo> GetOfferFromContractAsync(long areaId, long projectId, User expert)
         {
             var project = await _projectRepository.GetByIdAsync(projectId);
-            var contractOffers = await _scoringExpertsManagerContractClient.GetOffersAsync(project.ExternalId);
+            var contractOffers = await _scoringOffersManagerContractClient.GetOffersAsync(project.ExternalId);
             return contractOffers.FirstOrDefault(o => o.Area == (AreaType) areaId && o.ExpertAddress == expert.Address);
         }
 

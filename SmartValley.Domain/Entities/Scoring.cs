@@ -155,7 +155,7 @@ namespace SmartValley.Domain.Entities
             ScoringEndDate = null;
             Status = ScoringStatus.InProgress;
         }
-        
+
         public ScoringOffer GetOfferForExpertinArea(long expertId, AreaType area)
         {
             return ScoringOffers.FirstOrDefault(x => x.ExpertId == expertId && x.AreaId == area);
@@ -208,5 +208,16 @@ namespace SmartValley.Domain.Entities
         {
             return AreaScorings.Any(x => ScoringOffers.Count(y => y.AreaId == x.AreaId) == 0);
         }
+
+        public bool HasEnoughEstimatesInArea(AreaType area)
+        {
+            var areaScoring = AreaScorings.FirstOrDefault(a => a.AreaId == area);
+            if (areaScoring == null)
+                throw new InvalidOperationException($"Scoring '{Id}' does not contain specified area '{area}'.");
+
+            return areaScoring.ExpertsCount == ScoringOffers.Count(o => o.AreaId == area && o.Status == ScoringOfferStatus.Finished);
+        }
+
+        public bool AreAllAreasCompleted() => AreaScorings.All(a => a.Score.HasValue);
     }
 }

@@ -57,7 +57,7 @@ import {CompositeGuard} from './services/guards/composite.guard';
 import {GuardFactory} from './services/guards/guard-factory';
 import {DashIfEmptyPipe} from './utils/dash-if-empty.pipe';
 import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-authenticated.guard';
-import {ScoringExpertsManagerContractClient} from './services/contract-clients/scoring-experts-manager-contract-client';
+import {ScoringOffersManagerContractClient} from './services/contract-clients/scoring-offers-manager-contract-client.service';
 import {FormatDatePipe} from './utils/format-date.pipe';
 import {AuthenticationApiClient} from './api/authentication/authentication-api-client';
 import {UserContext} from './services/authentication/user-context';
@@ -139,9 +139,10 @@ import {AdminUsersListComponent} from './components/admin-panel/admin-users-list
 import {AccordionModule} from 'primeng/accordion';
 import {TabViewModule} from 'primeng/tabview';
 import {AdminProjectsListComponent} from './components/admin-panel/admin-projects-list/admin-projects-list.component';
-import { EditScoringComponent } from './components/scoring/edit-scoring/edit-scoring.component';
+import {EditScoringComponent} from './components/scoring/edit-scoring/edit-scoring.component';
 import {PrivateScoringModalComponent} from './components/common/private-scoring-modal/private-scoring-modal.component';
 import {PrivateApplicationShouldNotBeSubmitted} from './services/guards/private-application-should-not-be-submitted.guard';
+import {PrivateScoringManagerContractClient} from './services/contract-clients/private-scoring-manager-contract-client';
 
 @NgModule({
   declarations: [
@@ -298,7 +299,7 @@ import {PrivateApplicationShouldNotBeSubmitted} from './services/guards/private-
     EstimatesApiClient,
     ExpertApiClient,
     ExpertsRegistryContractClient,
-    ScoringExpertsManagerContractClient,
+    ScoringOffersManagerContractClient,
     AdminApiClient,
     AuthenticationApiClient,
     AuthenticationService,
@@ -308,6 +309,7 @@ import {PrivateApplicationShouldNotBeSubmitted} from './services/guards/private-
     Web3Service,
     DialogService,
     ScoringManagerContractClient,
+    PrivateScoringManagerContractClient,
     BlockiesService,
     BalanceService,
     InitializationService,

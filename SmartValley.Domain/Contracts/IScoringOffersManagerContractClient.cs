@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace SmartValley.Domain.Contracts
 {
-    public interface IScoringExpertsManagerContractClient
+    public interface IScoringOffersManagerContractClient
     {
         Task<IReadOnlyCollection<ScoringOfferInfo>> GetOffersAsync(Guid projectExternalId);
     }
