@@ -23,30 +23,21 @@ namespace SmartValley.Ethereum.Contracts.Scoring
             _contractAbi = contractOptions.Abi;
         }
 
-        public async Task<IReadOnlyCollection<EstimateScore>> GetEstimatesAsync(string scoringAddress)
+        public async Task<ScoringResults> GetResultsAsync(string scoringAddress)
         {
-            var estimates = await _contractClient.CallFunctionDeserializingToObjectAsync<EstimatesDto>(scoringAddress, _contractAbi, "getEstimates");
-            return estimates
-                   .ScoringCriteria
-                   .Select((scoringCriterionId, i) => new EstimateScore(scoringCriterionId, (Score) estimates.Scores[i], estimates.Experts[i]))
-                   .ToArray();
-        }
+            var dto = await _contractClient.CallFunctionDeserializingToObjectAsync<ScoringResultsDto>(scoringAddress, _contractAbi, "getResults");
 
-        public async Task<ProjectScoringStatistics> GetScoringStatisticsAsync(string scoringAddress)
-        {
-            var dto = await _contractClient.CallFunctionDeserializingToObjectAsync<ScoringStatisticsDto>(scoringAddress, _contractAbi, "getResults");
-
-            var areaScores = new Dictionary<AreaType, double?>();
+            var areaScores = new Dictionary<AreaType, double>();
             for (var i = 0; i < dto.Areas.Count; i++)
             {
                 var area = (AreaType) dto.Areas[i];
                 var areaScore = dto.AreaScores[i] / Math.Pow(10, ScorePrecision);
 
-                areaScores[area] = dto.AreaCompleteness[i] ? areaScore : (double?) null;
+                areaScores[area] = areaScore;
             }
 
-            var score = dto.IsScored ? dto.Score / Math.Pow(10, ScorePrecision) : (double?) null;
-            return new ProjectScoringStatistics(score, areaScores);
+            var score = dto.Score / Math.Pow(10, ScorePrecision);
+            return new ScoringResults(score, areaScores);
         }
     }
 }

@@ -30,15 +30,11 @@ export class AdminContractClient implements ContractClient {
   public async addAsync(accountAddress: string): Promise<string> {
     const fromAddress = await this.userContext.getCurrentUser().account;
     const contract = this.web3Service.getContract(this.abi, this.address);
-    return await contract.add(
-      accountAddress,
-      {from: fromAddress});
+    return await contract.add(accountAddress, {from: fromAddress});
   }
 
   public async deleteAsync(accountAddress: string, fromAddress: string): Promise<string> {
     const contract = this.web3Service.getContract(this.abi, this.address);
-    return await contract.remove(
-      accountAddress,
-      {from: fromAddress});
+    return await contract.remove(accountAddress, {from: fromAddress});
   }
 }

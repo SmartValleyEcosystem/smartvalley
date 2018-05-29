@@ -22,7 +22,7 @@ using SmartValley.Domain.Contracts;
 using SmartValley.Domain.Interfaces;
 using SmartValley.Domain.Services;
 using SmartValley.Ethereum;
-using SmartValley.Ethereum.Contracts.ScoringExpertsManager;
+using SmartValley.Ethereum.Contracts.ScoringOffersManager;
 using SmartValley.Ethereum.Contracts.ScoringsRegistry;
 using SmartValley.Ethereum.Contracts.SmartValley.Application.Contracts;
 using SmartValley.Messages.Events;
@@ -142,10 +142,10 @@ namespace SmartValley.WebApi
             containerBuilder.RegisterType<EthereumContractClient>().AsSelf();
             containerBuilder.RegisterType<EthereumClient>().AsSelf();
 
-            containerBuilder.Register(context => new ScoringExpertsManagerContractClient(
+            containerBuilder.Register(context => new ScoringOffersManagerContractClient(
                                           context.Resolve<EthereumContractClient>(),
-                                          context.Resolve<NethereumOptions>().ScoringExpertsManagerContract))
-                            .As<IScoringExpertsManagerContractClient>();
+                                          context.Resolve<NethereumOptions>().ScoringOffersManagerContract))
+                            .As<IScoringOffersManagerContractClient>();
 
             containerBuilder.Register(context => new ScoringsRegistryContractClient(
                                           context.Resolve<EthereumContractClient>(),

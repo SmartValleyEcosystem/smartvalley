@@ -7,21 +7,15 @@ using Nethereum.ABI.FunctionEncoding.Attributes;
 namespace SmartValley.Ethereum.Contracts.Scoring.Dto
 {
     [FunctionOutput]
-    public class ScoringStatisticsDto
+    public class ScoringResultsDto
     {
-        [Parameter("bool", "_isScored", 1)]
-        public bool IsScored { get; set; }
-
-        [Parameter("uint256", "_score", 2)]
+        [Parameter("uint256", "_score", 1)]
         public int Score { get; set; }
 
-        [Parameter("uint256[]", "_areas", 3)]
+        [Parameter("uint256[]", "_areas", 2)]
         public List<int> Areas { get; set; }
 
-        [Parameter("bool[]", "_areaCompleteness", 4)]
-        public List<bool> AreaCompleteness { get; set; }
-
-        [Parameter("uint[]", "_areaScores", 5)]
+        [Parameter("uint[]", "_areaScores", 3)]
         public List<long> AreaScores { get; set; }
     }
 }

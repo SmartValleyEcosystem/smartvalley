@@ -4,7 +4,7 @@ using Nethereum.ABI.FunctionEncoding.Attributes;
 // ReSharper disable CollectionNeverUpdated.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace SmartValley.Ethereum.Contracts.ScoringExpertsManager.Dto
+namespace SmartValley.Ethereum.Contracts.ScoringOffersManager.Dto
 {
     [FunctionOutput]
     public class OffersDto
@@ -18,10 +18,10 @@ namespace SmartValley.Ethereum.Contracts.ScoringExpertsManager.Dto
         [Parameter("uint256[]", "_states", 3)]
         public List<long> States { get; set; }
 
-        [Parameter("uint256[]", "_deadlines", 4)]
-        public List<long> ScoringDeadlines { get; set; }
+        [Parameter("uint256", "_scoringDeadline", 4)]
+        public long ScoringDeadline { get; set; }
 
-        [Parameter("uint256", "_expirationTimestamp", 5)]
-        public long ExpirationTimestamp { get; set; }
+        [Parameter("uint256", "_acceptingDeadline", 5)]
+        public long AcceptingDeadline { get; set; }
     }
 }

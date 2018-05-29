@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AreaType} from '../../../api/scoring/area-type.enum';
 import {MatCheckboxChange} from '@angular/material';
-import {ScoringManagerContractClient} from '../../../services/contract-clients/scoring-manager-contract-client';
 import {ScoringApiClient} from '../../../api/scoring/scoring-api-client';
 import {Paths} from '../../../paths';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -9,7 +8,7 @@ import {ProjectApiClient} from '../../../api/project/project-api-client';
 import {ProjectSummaryResponse} from '../../../api/project/project-summary-response';
 import {TranslateService} from '@ngx-translate/core';
 import {NotificationsService} from 'angular2-notifications';
-import {ScoringExpertsManagerContractClient} from '../../../services/contract-clients/scoring-experts-manager-contract-client';
+import {ScoringOffersManagerContractClient} from '../../../services/contract-clients/scoring-offers-manager-contract-client.service';
 import {ScoringStatus} from '../../../services/scoring-status.enum';
 import {OffersApiClient} from '../../../api/scoring-offer/offers-api-client';
 import {CollectionResponse} from '../../../api/collection-response';
@@ -21,6 +20,7 @@ import {OffersQuery} from '../../../api/scoring-offer/offers-query';
 import {ExpertAreaItem} from './expert-area-item';
 import {ScoringOfferResponse} from '../../../api/scoring-offer/scoring-offer-response';
 import {OfferStatus} from '../../../api/scoring-offer/offer-status.enum';
+import {PrivateScoringManagerContractClient} from '../../../services/contract-clients/private-scoring-manager-contract-client';
 
 @Component({
   selector: 'app-edit-scoring',
@@ -55,8 +55,8 @@ export class EditScoringComponent implements OnInit {
               private translateService: TranslateService,
               private offersApiClient: OffersApiClient,
               private notificationsService: NotificationsService,
-              private scoringExpertsManagerContractClient: ScoringExpertsManagerContractClient,
-              private scoringManagerContractClient: ScoringManagerContractClient) {
+              private scoringExpertsManagerContractClient: ScoringOffersManagerContractClient,
+              private privateScoringManagerContractClient: PrivateScoringManagerContractClient) {
   }
 
   async ngOnInit() {
@@ -140,7 +140,7 @@ export class EditScoringComponent implements OnInit {
       return;
     }
 
-    const transactionHash = await this.scoringExpertsManagerContractClient.setExpertsAsync(this.project.externalId, this.areas, this.expertsAddresses);
+    const transactionHash = await this.scoringExpertsManagerContractClient.forceSetExpertsAsync(this.project.externalId, this.areas, this.expertsAddresses);
 
     await this.offersApiClient.updateOffersAsync(this.project.externalId, transactionHash);
 
@@ -159,7 +159,7 @@ export class EditScoringComponent implements OnInit {
       return;
     }
 
-    const transactionHash = await this.scoringManagerContractClient.startPrivateAsync(this.project.externalId, this.areas, this.expertsAddresses);
+    const transactionHash = await this.privateScoringManagerContractClient.startAsync(this.project.externalId, this.areas, this.expertsAddresses);
 
     await this.scoringApiClient.startAsync(this.project.id, this.uniqAreas, this.areaExpertCounts, transactionHash);
 

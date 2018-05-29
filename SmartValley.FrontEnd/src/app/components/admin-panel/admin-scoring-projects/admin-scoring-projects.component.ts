@@ -7,7 +7,7 @@ import {SelectItem} from 'primeng/api';
 import {ProjectApiClient} from '../../../api/project/project-api-client';
 import {BlockiesService} from '../../../services/blockies-service';
 import * as moment from 'moment';
-import {ScoringExpertsManagerContractClient} from '../../../services/contract-clients/scoring-experts-manager-contract-client';
+import {ScoringOffersManagerContractClient} from '../../../services/contract-clients/scoring-offers-manager-contract-client.service';
 import {ScoreColorsService} from '../../../services/project/score-colors.service';
 import {GetScoringProjectsRequest} from '../../../api/project/get-scoring-projects-request';
 import {StatusRequest} from '../../../api/project/status-request';
@@ -33,7 +33,7 @@ export class AdminScoringProjectsComponent implements OnInit {
               public scoreColorsService: ScoreColorsService,
               private blockiesService: BlockiesService,
               private dialogService: DialogService,
-              private scoringExpertsManagerContractClient: ScoringExpertsManagerContractClient,
+              private scoringExpertsManagerContractClient: ScoringOffersManagerContractClient,
               private translateService: TranslateService,
               private offersApiClient: OffersApiClient,
               private areaService: AreaService) {
@@ -73,7 +73,7 @@ export class AdminScoringProjectsComponent implements OnInit {
   }
 
   async relaunchAsync(projectExternalId: string) {
-    const transactionHash = await this.scoringExpertsManagerContractClient.selectMissingExpertsAsync(projectExternalId);
+    const transactionHash = await this.scoringExpertsManagerContractClient.regenerateOffersAsync(projectExternalId);
     if (transactionHash == null) {
       return;
     }

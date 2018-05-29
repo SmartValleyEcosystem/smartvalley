@@ -27,7 +27,7 @@ using SmartValley.Domain.Interfaces;
 using SmartValley.Ethereum;
 using SmartValley.Ethereum.Contracts.EtherManager;
 using SmartValley.Ethereum.Contracts.Scoring;
-using SmartValley.Ethereum.Contracts.ScoringExpertsManager;
+using SmartValley.Ethereum.Contracts.ScoringOffersManager;
 using SmartValley.Ethereum.Contracts.ScoringsRegistry;
 using SmartValley.Ethereum.Contracts.SmartValley.Application.Contracts;
 using SmartValley.WebApi.Admin;
@@ -104,8 +104,8 @@ namespace SmartValley.WebApi
                 provider => new EtherManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().EtherManagerContract));
             services.AddSingleton<IScoringsRegistryContractClient, ScoringsRegistryContractClient>(
                 provider => new ScoringsRegistryContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringsRegistryContract));
-            services.AddSingleton<IScoringExpertsManagerContractClient, ScoringExpertsManagerContractClient>(
-                provider => new ScoringExpertsManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringExpertsManagerContract));
+            services.AddSingleton<IScoringOffersManagerContractClient, ScoringOffersManagerContractClient>(
+                provider => new ScoringOffersManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringOffersManagerContract));
 
             services.AddMemoryCache();
 

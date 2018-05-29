@@ -5,7 +5,7 @@ import {ContractClient} from './contract-client';
 import {UserContext} from '../authentication/user-context';
 
 @Injectable()
-export class ScoringExpertsManagerContractClient implements ContractClient {
+export class ScoringOffersManagerContractClient implements ContractClient {
 
   public abi: string;
   public address: string;
@@ -16,15 +16,15 @@ export class ScoringExpertsManagerContractClient implements ContractClient {
   }
 
   public async initializeAsync(): Promise<void> {
-    const scoringExpertsManagerContract = await this.contractClient.getScoringExpertsManagerContractAsync();
-    this.abi = scoringExpertsManagerContract.abi;
-    this.address = scoringExpertsManagerContract.address;
+    const scoringOffersManagerContract = await this.contractClient.getScoringOffersManagerContractAsync();
+    this.abi = scoringOffersManagerContract.abi;
+    this.address = scoringOffersManagerContract.address;
   }
 
-  public async selectMissingExpertsAsync(projectId: string): Promise<string> {
+  public async regenerateOffersAsync(projectId: string): Promise<string> {
     const contract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.userContext.getCurrentUser().account;
-    return contract.selectMissingExperts(
+    return contract.regenerate(
       projectId.replace(/-/g, ''),
       {from: fromAddress});
   }
@@ -35,7 +35,20 @@ export class ScoringExpertsManagerContractClient implements ContractClient {
     const contract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.userContext.getCurrentUser().account;
 
-    return contract.setExperts(
+    return contract.set(
+      projectExternalId.replace(/-/g, ''),
+      areas,
+      experts,
+      {from: fromAddress});
+  }
+
+  public async forceSetExpertsAsync(projectExternalId: string,
+                                    areas: Array<number>,
+                                    experts: Array<string>): Promise<string> {
+    const contract = this.web3Service.getContract(this.abi, this.address);
+    const fromAddress = this.userContext.getCurrentUser().account;
+
+    return contract.forceSet(
       projectExternalId.replace(/-/g, ''),
       areas,
       experts,
