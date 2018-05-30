@@ -16,6 +16,9 @@ using Nethereum.JsonRpc.IpcClient;
 using Nethereum.Signer;
 using Nethereum.Web3;
 using NServiceBus;
+using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.Elasticsearch;
 using SmartValley.Application;
 using SmartValley.Application.AzureStorage;
 using SmartValley.Application.Email;
@@ -39,9 +42,7 @@ using SmartValley.WebApi.Feedbacks;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.ScoringApplications;
 using SmartValley.WebApi.Scorings;
-using SmartValley.WebApi.Subscribers;
 using SmartValley.WebApi.Users;
-using SmartValley.WebApi.WebApi;
 using Swashbuckle.AspNetCore.Swagger;
 using Headers = SmartValley.WebApi.WebApi.Headers;
 
@@ -84,6 +85,11 @@ namespace SmartValley.WebApi
                                                                               ValidateIssuerSigningKey = true
                                                                           };
                                   });
+
+            Log.Logger = new LoggerConfiguration()
+                         .MinimumLevel.Error()
+                         .WriteTo.MSSqlServer(Configuration.GetConnectionString("DefaultConnection"), "Logs")
+                         .CreateLogger();
 
             services.AddSingleton(provider => InitializeWeb3(provider.GetService<NethereumOptions>().RpcAddress));
             services.AddSingleton<IClock, UtcClock>();
@@ -188,6 +194,7 @@ namespace SmartValley.WebApi
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            loggerFactory.AddSerilog();
 
             app.UseCors(CorsPolicyName);
 
@@ -216,16 +223,16 @@ namespace SmartValley.WebApi
         private void ConfigureCorsPolicy(IServiceCollection services, SiteOptions siteOptions)
         {
             var corsPolicy = new CorsPolicyBuilder()
-                             .WithOrigins(_currentEnvironment.IsProduction() ? siteOptions.Root : "*")
-                             .AllowAnyHeader()
-                             .AllowAnyMethod()
-                             .WithExposedHeaders(Headers.XNewAuthToken,
-                                                 Headers.XNewRoles,
-                                                 Headers.XEthereumAddress,
-                                                 Headers.XSignature,
-                                                 Headers.XSignedText)
-                             .AllowCredentials()
-                             .Build();
+                .WithOrigins(_currentEnvironment.IsProduction() ? siteOptions.Root : "*")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .WithExposedHeaders(Headers.XNewAuthToken,
+                                    Headers.XNewRoles,
+                                    Headers.XEthereumAddress,
+                                    Headers.XSignature,
+                                    Headers.XSignedText)
+                .AllowCredentials()
+                .Build();
 
             services.AddCors(options => { options.AddPolicy(CorsPolicyName, corsPolicy); });
         }
