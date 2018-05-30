@@ -39,8 +39,8 @@ namespace SmartValley.Data.SQL.Repositories
                                         where !areaScoring.Score.HasValue
                                         select new
                                                {
-                                                   OffersEndDate = scoring.OffersDueDate,
-                                                   ScoringEndDate = scoring.EstimatesDueDate,
+                                                   OffersEndDate = scoring.AcceptingDeadline,
+                                                   ScoringEndDate = scoring.ScoringDeadline,
                                                    areaScoring.ScoringId,
                                                    AreaType = areaScoring.AreaId,
                                                    Count = areaScoring.ExpertsCount
@@ -80,9 +80,10 @@ namespace SmartValley.Data.SQL.Repositories
                                        join scoringOffer in _readContext.ScoringOffers
                                            on new {areaScoring.ScoringId, areaScoring.AreaId}
                                            equals new {scoringOffer.ScoringId, scoringOffer.AreaId}
+                                       join scoring in _readContext.Scorings on scoringOffer.ScoringId equals scoring.Id
+                                       where scoring.AcceptingDeadline >= tillDate
                                        where scoringOffer.Status == ScoringOfferStatus.Pending
                                        where !areaScoring.Score.HasValue
-                                       where scoringOffer.ExpirationTimestamp >= tillDate
                                        group scoringOffer by new {scoringOffer.ScoringId, scoringOffer.AreaId}
                                        into scoringAreaGroup
                                        select new
@@ -116,7 +117,7 @@ namespace SmartValley.Data.SQL.Repositories
                               scoring.ContractAddress,
                               project.Name,
                               scoring.CreationDate,
-                              scoring.OffersDueDate))
+                              scoring.AcceptingDeadline))
                        .ToArrayAsync();
         }
 
@@ -127,8 +128,8 @@ namespace SmartValley.Data.SQL.Repositories
 
         private IQueryable<Scoring> Entities()
             => _editContext.Scorings
-                          .Include(x => x.ExpertScorings).ThenInclude(x => x.Estimates)
-                          .Include(x => x.ScoringOffers)
-                          .Include(x => x.AreaScorings);
+                           .Include(x => x.ExpertScorings).ThenInclude(x => x.Estimates)
+                           .Include(x => x.ScoringOffers)
+                           .Include(x => x.AreaScorings);
     }
 }

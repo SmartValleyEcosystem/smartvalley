@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SmartValley.Domain.Entities
+﻿namespace SmartValley.Domain.Entities
 {
     public class ScoringOffer
     {
@@ -9,10 +7,6 @@ namespace SmartValley.Domain.Entities
         public long ExpertId { get; set; }
 
         public AreaType AreaId { get; set; }
-
-        public DateTimeOffset ExpirationTimestamp { get; set; }
-
-        public DateTimeOffset? EstimatesDueDate { get; set; }
 
         public ScoringOfferStatus Status { get; set; }
 

@@ -7,19 +7,14 @@
          [rows]="pageSize" [totalRecords]="totalRecords" [loading]="loading">
   <ng-template pTemplate="header" let-columns>
     <tr class="list-row list-row__header">
-      <th class="list-item">{{ 'AdminProjects.Id' | translate }}</th>
       <th class="list-item">{{ 'AdminProjects.ProjectName' | translate }}</th>
       <th class="list-item">{{ 'AdminProjects.CreateDate' | translate }}</th>
       <th class="list-item">{{ 'AdminProjects.Status' | translate }}</th>
-      <th class="list-item">{{ 'AdminProjects.Experts' | translate }}</th>
       <th class="list-item">{{ 'AdminProjects.Actions' | translate }}</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-project let-columns="columns">
     <tr class="list-row" (click)="navigateToEditScoring(project.id)">
-      <td class="list-item">
-        {{project.id}}
-      </td>
       <td class="list-item">
         {{project.name}}
       </td>
@@ -36,12 +31,6 @@
       </td>
       <td *ngIf="project.scoring == null" class="list-item">
         -
-      </td>
-      <td *ngIf="project.scoring != null" class="list-item">
-        {{project.scoring.expertsCount}}
-      </td>
-      <td *ngIf="project.scoring == null" class="list-item">
-        0
       </td>
       <td class="list-item">
 

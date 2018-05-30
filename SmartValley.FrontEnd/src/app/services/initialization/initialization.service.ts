@@ -9,6 +9,7 @@ import {AreaService} from '../expert/area.service';
 import {ScoringOffersManagerContractClient} from '../contract-clients/scoring-offers-manager-contract-client.service';
 import {DictionariesService} from '../common/dictionaries.service';
 import {PrivateScoringManagerContractClient} from '../contract-clients/private-scoring-manager-contract-client';
+import {ScoringParametersProviderContractClient} from '../contract-clients/scoring-parameters-provider-contract-client';
 
 @Injectable()
 export class InitializationService {
@@ -21,6 +22,7 @@ export class InitializationService {
               private scoringManagerContractClient: ScoringManagerContractClient,
               private privateScoringManagerContractClient: PrivateScoringManagerContractClient,
               private scoringOffersManagerContractClient: ScoringOffersManagerContractClient,
+              private scoringParametersProviderContractClient: ScoringParametersProviderContractClient,
               private authenticationService: AuthenticationService,
               private areaService: AreaService,
               private dictionariesService: DictionariesService) {
@@ -37,6 +39,7 @@ export class InitializationService {
 
   private async initializeAppInternalAsync(): Promise<void> {
     await Promise.all([
+      this.scoringParametersProviderContractClient.initializeAsync(),
       this.authenticationService.initializeAsync(),
       this.scoringCriterionService.initializeAsync(),
       this.adminContractClient.initializeAsync(),

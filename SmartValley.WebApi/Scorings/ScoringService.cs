@@ -89,7 +89,7 @@ namespace SmartValley.WebApi.Scorings
             if (offer == null)
                 throw new AppErrorException(ErrorCode.OfferNotFoundInContract);
 
-            scoring.AcceptOffer(expertId, (AreaType) areaId, offer.EstimatesDueDate, _clock.UtcNow);
+            scoring.AcceptOffer(expertId, (AreaType) areaId, _clock.UtcNow);
 
             await _scoringRepository.SaveChangesAsync();
         }
@@ -106,15 +106,15 @@ namespace SmartValley.WebApi.Scorings
 
         public async Task UpdateOffersAsync(Guid projectExternalId)
         {
-            var contractOffers = await _scoringOffersManagerContractClient.GetOffersAsync(projectExternalId);
+            var scoringInfo = await _scoringOffersManagerContractClient.GetScoringInfoAsync(projectExternalId);
 
-            var experts = await GetExpertsForOffersAsync(contractOffers);
+            var experts = await GetExpertsForOffersAsync(scoringInfo.Offers);
             var expertsDictionary = experts.ToDictionary(e => e.Address, e => e.Id);
 
             var project = await _projectRepository.GetByExternalIdAsync(projectExternalId);
             var scoring = await _scoringRepository.GetByProjectIdAsync(project.Id);
 
-            var newOffers = contractOffers
+            var newOffers = scoringInfo.Offers
                             .Where(o => !scoring.ScoringOffers.Any(e => e.AreaId == o.Area && e.ExpertId == expertsDictionary[o.ExpertAddress]))
                             .Select(o => CreateOffer(scoring.Id, expertsDictionary[o.ExpertAddress], o))
                             .ToArray();
@@ -174,8 +174,8 @@ namespace SmartValley.WebApi.Scorings
         private async Task<ScoringOfferInfo> GetOfferFromContractAsync(long areaId, long projectId, User expert)
         {
             var project = await _projectRepository.GetByIdAsync(projectId);
-            var contractOffers = await _scoringOffersManagerContractClient.GetOffersAsync(project.ExternalId);
-            return contractOffers.FirstOrDefault(o => o.Area == (AreaType) areaId && o.ExpertAddress == expert.Address);
+            var scoringInfo = await _scoringOffersManagerContractClient.GetScoringInfoAsync(project.ExternalId);
+            return scoringInfo.Offers.FirstOrDefault(o => o.Area == (AreaType) areaId && o.ExpertAddress == expert.Address);
         }
 
         private Task<IReadOnlyCollection<User>> GetExpertsForOffersAsync(IReadOnlyCollection<ScoringOfferInfo> contractOffers)
@@ -213,9 +213,7 @@ namespace SmartValley.WebApi.Scorings
                        AreaId = offerInfo.Area,
                        ExpertId = expertId,
                        ScoringId = scoringId,
-                       Status = offerInfo.Status,
-                       ExpirationTimestamp = offerInfo.ExpirationTimestamp,
-                       EstimatesDueDate = offerInfo.EstimatesDueDate
+                       Status = offerInfo.Status
                    };
         }
 

@@ -24,7 +24,7 @@ namespace SmartValley.Ethereum.Contracts.ScoringOffersManager
             _contractAbi = contractOptions.Abi;
         }
 
-        public async Task<IReadOnlyCollection<ScoringOfferInfo>> GetOffersAsync(Guid projectExternalId)
+        public async Task<ScoringInfo> GetScoringInfoAsync(Guid projectExternalId)
         {
             var offersDto = await _contractClient.CallFunctionDeserializingToObjectAsync<OffersDto>(
                                 _contractAddress,
@@ -32,15 +32,15 @@ namespace SmartValley.Ethereum.Contracts.ScoringOffersManager
                                 "get",
                                 projectExternalId.ToBigInteger());
 
-            return offersDto.Experts
-                            .Select((e, i) => new ScoringOfferInfo(
-                                        projectExternalId,
-                                        e,
-                                        (AreaType) offersDto.Areas[i],
-                                        (ScoringOfferStatus) offersDto.States[i],
-                                        ToDateTimeOffset(offersDto.AcceptingDeadline),
-                                        ToDateTimeOffset(offersDto.ScoringDeadline)))
-                            .ToArray();
+            return new ScoringInfo(projectExternalId,
+                                   offersDto.Experts.Select((e, i) => new ScoringOfferInfo(
+                                                      e,
+                                                      (AreaType)offersDto.Areas[i],
+                                                      (ScoringOfferStatus)offersDto.States[i]
+                                                  )).ToArray(),
+                                   ToDateTimeOffset(offersDto.AcceptingDeadline),
+                                   ToDateTimeOffset(offersDto.ScoringDeadline)
+            );
         }
 
         private static DateTimeOffset ToDateTimeOffset(long unixTimeSeconds)

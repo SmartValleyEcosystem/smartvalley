@@ -37,12 +37,12 @@ namespace SmartValley.Domain.Services
         public async Task<long> StartAsync(long projectId, IDictionary<AreaType, int> areas)
         {
             var project = await _projectRepository.GetByIdAsync(projectId);
-            var offers = await _scoringOffersManagerContractClient.GetOffersAsync(project.ExternalId);
+            var scoringInfo = await _scoringOffersManagerContractClient.GetScoringInfoAsync(project.ExternalId);
 
-            if (!offers.Any())
+            if (!scoringInfo.Offers.Any())
                 throw new AppErrorException(ErrorCode.PendingOffersNotFound);
 
-            return await CreateScoringAsync(project, areas, offers);
+            return await CreateScoringAsync(project, areas, scoringInfo);
         }
 
         public Task<Scoring> GetByIdAsync(long scoringId)
@@ -51,29 +51,27 @@ namespace SmartValley.Domain.Services
         private async Task<long> CreateScoringAsync(
             Project project,
             IDictionary<AreaType, int> areas,
-            IReadOnlyCollection<ScoringOfferInfo> contractOffers)
+            ScoringInfo scoringInfo)
         {
             var contractAddress = await _scoringsRegistryContractClient.GetScoringAddressAsync(project.ExternalId);
 
             var areaScorings = areas.Select(x => new AreaScoring {AreaId = x.Key, ExpertsCount = x.Value}).ToList();
-            var offers = await CreateOffersAsync(contractOffers);
-            var scoring = new Scoring(project.Id, contractAddress, _clock.UtcNow, areaScorings, offers);
+            var offers = await CreateOffersAsync(scoringInfo.Offers);
+            var scoring = new Scoring(project.Id, contractAddress, _clock.UtcNow, scoringInfo.ScoringDeadline, areaScorings, offers);
 
             _scoringRepository.Add(scoring);
             await _scoringRepository.SaveChangesAsync();
             return scoring.Id;
         }
 
-        private async Task<IReadOnlyCollection<ScoringOffer>> CreateOffersAsync(IReadOnlyCollection<ScoringOfferInfo> contractOffers)
+        private async Task<IReadOnlyCollection<ScoringOffer>> CreateOffersAsync(IReadOnlyCollection<ScoringOfferInfo> offers)
         {
-            var experts = await GetExpertsForOffersAsync(contractOffers);
-            return contractOffers
-                   .Select(o => new ScoringOffer
+            var experts = await GetExpertsForOffersAsync(offers);
+            return offers.Select(o => new ScoringOffer
                                 {
                                     AreaId = o.Area,
                                     ExpertId = experts.First(e => e.Address == o.ExpertAddress).Id,
-                                    Status = o.Status,
-                                    ExpirationTimestamp = o.ExpirationTimestamp
+                                    Status = o.Status
                                 })
                    .ToArray();
         }

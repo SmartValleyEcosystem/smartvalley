@@ -228,6 +228,8 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.HasKey("ExpertId", "AreaId");
 
+                    b.HasIndex("AreaId");
+
                     b.ToTable("ExpertAreas");
                 });
 
@@ -406,19 +408,19 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTimeOffset>("AcceptingDeadline");
+
                     b.Property<Address>("ContractAddress")
                         .HasConversion(new ValueConverter<Address, string>(v => default(string), v => default(Address)))
                         .HasMaxLength(42);
 
                     b.Property<DateTimeOffset>("CreationDate");
 
-                    b.Property<DateTimeOffset?>("EstimatesDueDate");
-
-                    b.Property<DateTimeOffset>("OffersDueDate");
-
                     b.Property<long>("ProjectId");
 
                     b.Property<double?>("Score");
+
+                    b.Property<DateTimeOffset>("ScoringDeadline");
 
                     b.Property<DateTimeOffset?>("ScoringEndDate");
 
@@ -514,10 +516,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<int>("AreaId");
 
                     b.Property<long>("ExpertId");
-
-                    b.Property<DateTimeOffset?>("EstimatesDueDate");
-
-                    b.Property<DateTimeOffset>("ExpirationTimestamp");
 
                     b.Property<int>("Status");
 
@@ -786,6 +784,11 @@ namespace SmartValley.Data.SQL.Migrations
 
             modelBuilder.Entity("SmartValley.Domain.Entities.ExpertArea", b =>
                 {
+                    b.HasOne("SmartValley.Domain.Entities.Area", "Area")
+                        .WithMany()
+                        .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("SmartValley.Domain.Entities.Expert", "Expert")
                         .WithMany("ExpertAreas")
                         .HasForeignKey("ExpertId")

@@ -92,6 +92,6 @@ namespace SmartValley.Data.SQL.Repositories
                                                               .Include(p => p.Author)
                                                               .Include(p => p.Country)
                                                               .Include(p => p.TeamMembers)
-                                                              .Include(p => p.Scoring).ThenInclude(s => s.ExpertScorings);
+                                                              .Include(p => p.Scoring);
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
+using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
 using SmartValley.Ethereum;
 using SmartValley.WebApi.Experts;
@@ -49,8 +50,12 @@ namespace SmartValley.WebApi.Scorings
         [HttpGet("status")]
         public async Task<ScoringOfferStatusResponse> GetOfferStatusAsync(GetScoringOfferStatusRequest request)
         {
+            var scoring = await _scoringService.GetByProjectIdAsync(request.ProjectId);
+            if (scoring == null)
+                throw new AppErrorException(ErrorCode.ScoringNotFound);
+
             var offer = await _scoringService.GetOfferAsync(request.ProjectId, request.AreaType.ToDomain(), User.GetUserId());
-            var offerStatus = offer?.Status.ToApi(offer.ExpirationTimestamp, _clock.UtcNow);
+            var offerStatus = offer?.Status.ToApi(scoring.AcceptingDeadline, _clock.UtcNow);
             return new ScoringOfferStatusResponse
                    {
                        Status = offerStatus,
