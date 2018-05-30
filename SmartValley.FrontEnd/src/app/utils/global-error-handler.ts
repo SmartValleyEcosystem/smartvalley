@@ -1,7 +1,7 @@
 import {ErrorHandler, Injectable, Injector} from '@angular/core';
 import {LocationStrategy, PathLocationStrategy} from '@angular/common';
-import {LogRequest} from '../api/logging/log-request';
 import {LoggingApiClient} from '../api/logging/logging-api-client';
+import {LogErrorRequest} from '../api/logging/log-error-request';
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
@@ -13,7 +13,7 @@ export class GlobalErrorHandler implements ErrorHandler {
         const message = error.message ? error.message : error.toString();
         const url = location instanceof PathLocationStrategy
             ? location.path() : '';
-        const errorLog: LogRequest = {
+        const errorLog: LogErrorRequest = {
             error: error.stack,
             message: message,
             url: url,
