@@ -27,11 +27,11 @@ namespace SmartValley.Data.SQL.Repositories
                             join country in _readContext.Countries on project.CountryId equals country.Id
                             where !query.ExpertId.HasValue || user.Id == query.ExpertId.Value
                             where !query.ScoringId.HasValue || scoring.Id == query.ScoringId.Value
-                            where !query.OnlyTimedOut || scoringOffer.ExpirationTimestamp < now
+                            where !query.OnlyTimedOut || (scoring.AcceptingDeadline < now && scoring.Status == ScoringStatus.Pending)
                             where !query.Status.HasValue || query.Status == scoringOffer.Status
                             select new ScoringOfferDetails(scoringOffer.Status,
-                                                           scoringOffer.ExpirationTimestamp,
-                                                           scoringOffer.EstimatesDueDate,
+                                                           scoring.AcceptingDeadline,
+                                                           scoring.ScoringDeadline,
                                                            scoring.ContractAddress,
                                                            scoring.Id,
                                                            user.Id,

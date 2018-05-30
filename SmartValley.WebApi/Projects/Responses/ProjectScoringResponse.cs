@@ -25,8 +25,6 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public DateTimeOffset? ScoringEndDate { get; set; }
 
-        public int? ExpertsCount { get; set; }
-
         public static ProjectScoringResponse Create(Scoring scoring)
         {
             return new ProjectScoringResponse
@@ -37,10 +35,9 @@ namespace SmartValley.WebApi.Projects.Responses
                        Status = scoring.Status,
                        ScoringStartDate = scoring.ScoringStartDate,
                        CreationDate = scoring.CreationDate,
-                       OffersDueDate = scoring.OffersDueDate,
-                       EstimatesDueDate = scoring.EstimatesDueDate,
-                       ScoringEndDate = scoring.ScoringEndDate,
-                       ExpertsCount = scoring.ExpertScorings.Count
+                       OffersDueDate = scoring.AcceptingDeadline,
+                       EstimatesDueDate = scoring.ScoringDeadline,
+                       ScoringEndDate = scoring.ScoringEndDate
             };
         }
     }

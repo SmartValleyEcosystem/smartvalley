@@ -18,6 +18,7 @@ namespace SmartValley.Domain.Entities
             long projectId,
             Address contractAddress,
             DateTimeOffset creationDate,
+            DateTimeOffset scoringDeadline,
             IReadOnlyCollection<AreaScoring> areaScorings,
             IReadOnlyCollection<ScoringOffer> scoringOffers)
         {
@@ -32,6 +33,8 @@ namespace SmartValley.Domain.Entities
             Status = ScoringStatus.InProgress;
 
             AddOffers(scoringOffers);
+
+            SetScoringDeadline(scoringDeadline);
         }
 
         public long Id { get; set; }
@@ -50,9 +53,9 @@ namespace SmartValley.Domain.Entities
 
         public DateTimeOffset CreationDate { get; set; }
 
-        public DateTimeOffset OffersDueDate { get; set; }
+        public DateTimeOffset AcceptingDeadline { get; set; }
 
-        public DateTimeOffset? EstimatesDueDate { get; set; }
+        public DateTimeOffset ScoringDeadline { get; set; }
 
         public DateTimeOffset? ScoringEndDate { get; set; }
 
@@ -118,18 +121,15 @@ namespace SmartValley.Domain.Entities
             SetOfferStatus(area, expertId, ScoringOfferStatus.Rejected);
         }
 
-        public void AcceptOffer(long expertId, AreaType area, DateTimeOffset estimatesDueDate, DateTimeOffset now)
+        public void AcceptOffer(long expertId, AreaType area, DateTimeOffset now)
         {
             SetOfferStatus(area, expertId, ScoringOfferStatus.Accepted);
-            SetOfferEstimatesDueDate(area, expertId, estimatesDueDate);
 
             if (!HasEnoughExperts())
                 return;
 
             if (!ScoringStartDate.HasValue)
                 ScoringStartDate = now;
-
-            EstimatesDueDate = ScoringOffers.Max(o => o.EstimatesDueDate);
         }
 
         public void Finish(double score, DateTimeOffset endDate)
@@ -166,9 +166,6 @@ namespace SmartValley.Domain.Entities
             foreach (var offer in offers)
             {
                 ScoringOffers.Add(offer);
-
-                if (offer.ExpirationTimestamp > OffersDueDate)
-                    OffersDueDate = offer.ExpirationTimestamp;
             }
         }
 
@@ -191,11 +188,9 @@ namespace SmartValley.Domain.Entities
             offer.Status = status;
         }
 
-        private void SetOfferEstimatesDueDate(AreaType area, long expertId, DateTimeOffset estimatesDueDate)
+        private void SetScoringDeadline(DateTimeOffset scoringDeadline)
         {
-            var offer = GetOffer(area, expertId);
-
-            offer.EstimatesDueDate = estimatesDueDate;
+            ScoringDeadline = scoringDeadline;
         }
 
         private ScoringOffer GetOffer(AreaType area, long expertId)

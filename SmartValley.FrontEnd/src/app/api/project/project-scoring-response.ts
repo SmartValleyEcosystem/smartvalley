@@ -14,5 +14,4 @@ export interface ProjectScoringResponse {
   scoringEndDate: string;
   estimatesDueDate: string;
   scoringStatus: number;
-  expertsCount: number;
 }
