@@ -74,8 +74,8 @@
           <label>{{ 'RegisterExpert.CV' | translate }}</label>
         </p>
         <p class="notify">{{ 'RegisterExpert.CvNotify' | translate }}</p>
-        <p-fileUpload mode="advanced" auto="true" name="cv" customUpload="true" [showUploadButton]="false"
-                      [showCancelButton]="false" maxFileSize="5242880"
+        <p-fileUpload mode="advanced" auto="true" name="cv" [customUpload]="true" [showUploadButton]="false"
+                      [showCancelButton]="false" [maxFileSize]="5242880"
                       (uploadHandler)="onCvUpload($event)" (onRemove)="onCvUpload(null)" #required>
         </p-fileUpload>
       </div>
