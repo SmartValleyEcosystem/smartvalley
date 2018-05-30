@@ -163,9 +163,8 @@ export class RegisterExpertComponent implements OnInit {
 
   private validateForm(): boolean {
     if (!this.registryForm.invalid
-      && FileUploaderHelper.checkCVExtensions(this.cv)
-      && FileUploaderHelper.checkImageExtensions(this.registryForm.value.document)
-      && FileUploaderHelper.checkImageExtensions(this.registryForm.value.photo)) {
+      && this.cv != null
+      && FileUploaderHelper.checkCVExtensions(this.cv)) {
       return true;
     }
 
