@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, ErrorHandler} from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppComponent} from './app.component';
 import {MetamaskHowtoComponent} from './components/metamask-howto/metamask-howto.component';
@@ -138,6 +138,8 @@ import {AccordionModule} from 'primeng/accordion';
 import {TabViewModule} from 'primeng/tabview';
 import {QuillModule} from 'ngx-quill';
 import {AdminAdminsListComponent} from './components/admin-panel/admin-admins-list/admin-admins-list.component';
+import {GlobalErrorHandler} from './utils/global-error-handler';
+import {LoggingApiClient} from './api/logging/logging-api-client';
 
 @NgModule({
   declarations: [
@@ -280,6 +282,10 @@ import {AdminAdminsListComponent} from './components/admin-panel/admin-admins-li
       useClass: NgProgressInterceptor,
       multi: true
     },
+    {
+        provide: ErrorHandler,
+        useClass: GlobalErrorHandler
+    },
     DictionariesService,
     BalanceApiClient,
     ContractApiClient,
@@ -322,7 +328,8 @@ import {AdminAdminsListComponent} from './components/admin-panel/admin-admins-li
     ScoringContractClient,
     ScoringApplicationApiClient,
     SubmittedScoringApplicationGuard,
-    ScoringShouldNotExistGuard
+    ScoringShouldNotExistGuard,
+    LoggingApiClient
   ],
   bootstrap: [AppComponent]
 })
