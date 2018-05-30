@@ -143,6 +143,7 @@ import {EditScoringComponent} from './components/scoring/edit-scoring/edit-scori
 import {PrivateScoringModalComponent} from './components/common/private-scoring-modal/private-scoring-modal.component';
 import {PrivateApplicationShouldNotBeSubmitted} from './services/guards/private-application-should-not-be-submitted.guard';
 import {PrivateScoringManagerContractClient} from './services/contract-clients/private-scoring-manager-contract-client';
+import {ScoringParametersProviderContractClient} from './services/contract-clients/scoring-parameters-provider-contract-client';
 
 @NgModule({
   declarations: [
@@ -333,7 +334,8 @@ import {PrivateScoringManagerContractClient} from './services/contract-clients/p
     ProjectService,
     ScoringApplicationApiClient,
     SubmittedScoringApplicationGuard,
-    ScoringShouldNotExistGuard
+    ScoringShouldNotExistGuard,
+    ScoringParametersProviderContractClient
   ],
   bootstrap: [AppComponent]
 })
