@@ -75,7 +75,7 @@
         </p>
         <p class="notify">{{ 'RegisterExpert.CvNotify' | translate }}</p>
         <p-fileUpload mode="advanced" auto="true" name="cv" [customUpload]="true" [showUploadButton]="false"
-                      [showCancelButton]="false" [maxFileSize]="5242880"
+                      [showCancelButton]="false" [maxFileSize]="5242880" accept=".doc,.docx,.pdf,.DOC,.DOCX,.PDF"
                       (uploadHandler)="onCvUpload($event)" (onRemove)="onCvUpload(null)" #required>
         </p-fileUpload>
       </div>
@@ -124,7 +124,7 @@
         <app-image-uploader
           class="input-component"
           name="document"
-          accept="image/*"
+          accept=".png,.jpg,.jpeg"
           maxFileSize="5242880"
           formControlName="document"
           (onMaxSizeError)="onDocumentSizeError()"
@@ -138,7 +138,7 @@
         <app-image-uploader
           class="input-component"
           name="photo"
-          accept="image/*"
+          accept=".png,.jpg,.jpeg"
           maxFileSize="5242880"
           formControlName="photo"
           (onMaxSizeError)="onPhotoSizeError()"
@@ -146,6 +146,6 @@
         </app-image-uploader>
       </div>
     </div>
-    <input (click)="applyAsync()" [disabled]="isSubmitting" class="main-btn submit-btn" type="submit" value="{{ 'RegisterExpert.Submit' | translate }}">
+    <input [disabled]="isSubmitting" class="main-btn submit-btn" type="submit" value="{{ 'RegisterExpert.Submit' | translate }}">
   </form>
 </div>
