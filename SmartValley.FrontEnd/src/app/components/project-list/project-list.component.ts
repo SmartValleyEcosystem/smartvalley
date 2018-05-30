@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ScoredProject} from '../../api/expert/scored-project';
 import {Paths} from '../../paths';
 import {ProjectApiClient} from '../../api/project/project-api-client';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectsOrderBy} from '../../api/application/projects-order-by.enum';
 import {SortDirection} from '../../api/sort-direction.enum';
 import {ProjectResponse} from '../../api/project/project-response';
@@ -39,6 +39,7 @@ export class ProjectListComponent implements OnInit {
   @ViewChild(AutocompleteComponent) country: AutocompleteComponent;
 
   constructor(private router: Router,
+              private route: ActivatedRoute,
               private dictionariesService: DictionariesService,
               private projectApiClient: ProjectApiClient) {
     this.countries = this.dictionariesService.countries.map(i => <SelectItem>{
@@ -55,7 +56,7 @@ export class ProjectListComponent implements OnInit {
   async ngOnInit() {
     this.sortDirection = this.DESC;
     this.sortedBy = ProjectsOrderBy.ScoringEndDate;
-    this.projectSearch = '';
+    this.projectSearch = this.route.snapshot.paramMap.get('search') || '';
 
     await this.updateProjectsAsync(0);
   }
