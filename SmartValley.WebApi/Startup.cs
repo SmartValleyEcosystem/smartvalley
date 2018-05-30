@@ -17,8 +17,6 @@ using Nethereum.Signer;
 using Nethereum.Web3;
 using NServiceBus;
 using Serilog;
-using Serilog.Events;
-using Serilog.Sinks.Elasticsearch;
 using SmartValley.Application;
 using SmartValley.Application.AzureStorage;
 using SmartValley.Application.Email;
