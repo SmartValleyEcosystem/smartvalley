@@ -117,7 +117,12 @@ export class RegisterExpertComponent implements OnInit {
     const element = this.requiredFields.find(f => f.name === 'cv');
     if (event !== null) {
       this.cv = event.files[0];
-      this.switchFileUploadValidity(element, true);
+      if (FileUploaderHelper.checkCVExtensions(this.cv)) {
+        this.switchFileUploadValidity(element, true);
+      } else {
+        this.switchFileUploadValidity(element, false);
+        this.notificationsService.error(this.translateService.instant('RegisterExpert.CVFormatError'));
+      }
     } else {
       this.cv = null;
       this.switchFileUploadValidity(element, false);
@@ -136,7 +141,9 @@ export class RegisterExpertComponent implements OnInit {
     if (isValid) {
       element.el.nativeElement.classList.remove('ng-invalid');
       element.el.nativeElement.classList.remove('ng-dirty');
+      element.el.nativeElement.classList.add('ng-valid');
     } else {
+      element.el.nativeElement.classList.remove('ng-valid');
       element.el.nativeElement.classList.add('ng-invalid');
       element.el.nativeElement.classList.add('ng-dirty');
     }
