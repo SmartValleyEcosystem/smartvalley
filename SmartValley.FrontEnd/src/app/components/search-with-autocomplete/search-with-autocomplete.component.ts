@@ -76,7 +76,7 @@ export class SearchWithAutocompleteComponent implements OnInit {
   }
 
   public submit() {
-    this.router.navigate([Paths.ProjectList], {queryParams: {search: this.inputSearch.value}});
+    this.router.navigate([Paths.ProjectList + '/' + this.inputSearch.value]);
   }
 
   private coloredText(text: string) {
