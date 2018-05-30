@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, ErrorHandler} from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppComponent} from './app.component';
 import {MetamaskHowtoComponent} from './components/metamask-howto/metamask-howto.component';
@@ -144,6 +144,8 @@ import {PrivateScoringModalComponent} from './components/common/private-scoring-
 import {PrivateApplicationShouldNotBeSubmitted} from './services/guards/private-application-should-not-be-submitted.guard';
 import {PrivateScoringManagerContractClient} from './services/contract-clients/private-scoring-manager-contract-client';
 import {ScoringParametersProviderContractClient} from './services/contract-clients/scoring-parameters-provider-contract-client';
+import {GlobalErrorHandler} from './utils/global-error-handler';
+import {LoggingApiClient} from './api/logging/logging-api-client';
 
 @NgModule({
   declarations: [
@@ -291,6 +293,10 @@ import {ScoringParametersProviderContractClient} from './services/contract-clien
       useClass: NgProgressInterceptor,
       multi: true
     },
+    {
+        provide: ErrorHandler,
+        useClass: GlobalErrorHandler
+    },
     DictionariesService,
     BalanceApiClient,
     ContractApiClient,
@@ -335,7 +341,8 @@ import {ScoringParametersProviderContractClient} from './services/contract-clien
     ScoringApplicationApiClient,
     SubmittedScoringApplicationGuard,
     ScoringShouldNotExistGuard,
-    ScoringParametersProviderContractClient
+    ScoringParametersProviderContractClient,
+    LoggingApiClient
   ],
   bootstrap: [AppComponent]
 })
