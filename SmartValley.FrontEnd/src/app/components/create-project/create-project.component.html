@@ -87,13 +87,13 @@
           <label>{{ 'CreateProject.ProjectImage' | translate }}</label>
         </p>
         <p class="input-attention image-upload">{{ 'ExpertUploadPhoto.FileInfoTip' | translate }}</p>
-        <app-image-uploader
+        <app-file-uploader
           class="input-component"
           name="projectImage"
           accept="image/*"
           maxFileSize="5242880"
           formControlName="projectImage"
-          #projectImage></app-image-uploader>
+          #projectImage></app-file-uploader>
       </div>
     </div>
     <h2 class="settings-title">{{ 'CreateProject.SocialMedia' | translate }}</h2>

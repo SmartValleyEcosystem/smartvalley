@@ -12,7 +12,7 @@ export function multiTranslateLoaderFactory() {
     'services/common/stages',
     'services/common/offerStatuses',
     'components/header/header.component',
-    'components/image-uploader/image-uploader.component',
+    'components/file-uploader/file-uploader.component',
     'components/create-project/create-project.component',
     'components/landing/landing.component',
     'components/admin-panel/admin-panel.component',

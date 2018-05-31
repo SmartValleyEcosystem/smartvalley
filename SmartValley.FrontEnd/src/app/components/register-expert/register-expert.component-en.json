@@ -47,6 +47,8 @@
     "ExpertTypeLabel": "Which type of expert would you like to become? You could choose several if you are genious.",
     "DocumentSizeError": "Document is too big",
     "CVFormatError": "CV extention incorrect",
-    "PhotoSizeError": "Photo is too big"
+    "PhotoSizeError": "Photo is too big",
+    "DocumentMimeTypeError": "Allowed formats: pdf, doc, docx.",
+    "ImageMimeTypeError": "Allowed formats: jpg, png."
   }
 }

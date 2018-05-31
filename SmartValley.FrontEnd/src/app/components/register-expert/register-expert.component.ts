@@ -86,6 +86,7 @@ export class RegisterExpertComponent implements OnInit {
       document: ['', [Validators.required]],
       photo: ['', [Validators.required]],
       city: ['', [Validators.required, Validators.maxLength(50)]],
+      cv: ['', [Validators.required]],
       selectedSex: [''],
       selectedDocumentType: [DocumentEnum.Passport],
       birthDate: ['', [Validators.required, Validators.maxLength(100)]],
@@ -113,28 +114,16 @@ export class RegisterExpertComponent implements OnInit {
     this.isSubmitting = false;
   }
 
-  public onCvUpload(event: any) {
-    const element = this.requiredFields.find(f => f.name === 'cv');
-    if (event !== null) {
-      this.cv = event.files[0];
-      if (FileUploaderHelper.checkCVExtensions(this.cv)) {
-        this.switchFileUploadValidity(element, true);
-      } else {
-        this.switchFileUploadValidity(element, false);
-        this.notificationsService.error(this.translateService.instant('RegisterExpert.CVFormatError'));
-      }
-    } else {
-      this.cv = null;
-      this.switchFileUploadValidity(element, false);
-    }
-  }
-
   public onPhotoSizeError() {
     this.notificationsService.error(this.translateService.instant('RegisterExpert.PhotoSizeError'));
   }
 
   public onDocumentSizeError() {
     this.notificationsService.error(this.translateService.instant('RegisterExpert.DocumentSizeError'));
+  }
+
+  public onMimeTypeError(errorlabel: string, uploadElement: string) {
+    this.notificationsService.error(this.translateService.instant('RegisterExpert.' + errorlabel));
   }
 
   private switchFileUploadValidity(element: any, isValid: boolean) {
@@ -163,8 +152,9 @@ export class RegisterExpertComponent implements OnInit {
 
   private validateForm(): boolean {
     if (!this.registryForm.invalid
-      && this.cv != null
-      && FileUploaderHelper.checkCVExtensions(this.cv)) {
+      && FileUploaderHelper.checkCVExtensions(this.registryForm.value.cv)
+      && FileUploaderHelper.checkImageExtensions(this.registryForm.value.document)
+      && FileUploaderHelper.checkImageExtensions(this.registryForm.value.photo)) {
       return true;
     }
 
@@ -218,7 +208,7 @@ export class RegisterExpertComponent implements OnInit {
     const input = new FormData();
     input.append('scan', form.document);
     input.append('photo', form.photo);
-    input.append('cv', this.cv);
+    input.append('cv', this.registryForm.value.cv);
     input.append('transactionHash', transactionHash);
     input.append('sex', form.selectedSex === '' ? SexEnum.NotSpecified.toString() :
       (form.selectedSex ? SexEnum.Male.toString() : SexEnum.Female.toString()));
