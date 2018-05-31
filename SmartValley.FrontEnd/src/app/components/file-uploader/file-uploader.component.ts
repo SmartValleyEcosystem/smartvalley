@@ -7,22 +7,23 @@ import {
 } from '@angular/forms';
 
 @Component({
-  selector: 'app-image-uploader',
-  templateUrl: './image-uploader.component.html',
-  styleUrls: ['./image-uploader.component.scss'],
+  selector: 'app-file-uploader',
+  templateUrl: './file-uploader.component.html',
+  styleUrls: ['./file-uploader.component.scss'],
   providers: [
-    {provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => ImageUploaderComponent), multi: true},
-    {provide: NG_VALIDATORS, useExisting: forwardRef(() => ImageUploaderComponent), multi: true}
+    {provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => FileUploaderComponent), multi: true},
+    {provide: NG_VALIDATORS, useExisting: forwardRef(() => FileUploaderComponent), multi: true}
   ]
 })
-export class ImageUploaderComponent implements ControlValueAccessor, OnChanges, OnInit {
-
+export class FileUploaderComponent implements ControlValueAccessor, OnChanges, OnInit {
   private _value: File;
   public imgUrl: string;
+  public fileName: string;
 
   @Input() accept: string;
   @Input() name: string;
   @Input() maxFileSize: number;
+  @Input() usePreview = true;
   @Input() form?: FormGroup;
 
   @ViewChild('input') inputElement: ElementRef;
@@ -30,6 +31,7 @@ export class ImageUploaderComponent implements ControlValueAccessor, OnChanges, 
   @Output() uploadHandler: EventEmitter<File> = new EventEmitter<File>();
   @Output() onRemove: EventEmitter<any> = new EventEmitter<any>();
   @Output() onMaxSizeError: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onMimeTypeError: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private nativeElement: ElementRef) {
   }
@@ -42,16 +44,28 @@ export class ImageUploaderComponent implements ControlValueAccessor, OnChanges, 
   }
 
   private uploadFile(event: any) {
+    const acceptedFormats = this.accept.split(', ');
+
     const reader = new FileReader();
     reader.onload = (e: Event & { target: { result: string } }) => {
       this.imgUrl = e.target.result;
       this.inputElement.nativeElement.value = null;
     };
+
     this.value = event.srcElement.files[0];
 
     if (this.maxFileSize < this.value.size) {
       this.deleteFile();
       this.onMaxSizeError.emit();
+      return;
+    }
+
+    this.fileName = event.srcElement.files[0].name;
+
+    if (!acceptedFormats.includes(event.target.files[0].type)) {
+        this.deleteFile();
+        this.onMimeTypeError.emit();
+        return;
     }
 
     reader.readAsDataURL(this.value);
@@ -60,6 +74,7 @@ export class ImageUploaderComponent implements ControlValueAccessor, OnChanges, 
 
   private deleteFile() {
     this.imgUrl = null;
+    this.fileName = null;
     this.value = null;
     this.onRemove.emit();
   }

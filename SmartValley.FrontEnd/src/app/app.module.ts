@@ -117,7 +117,7 @@ import {ExpertSelectorComponent} from './components/scoring/scoring-payment/expe
 import {OfferDetailsComponent} from './components/scoring/offer-details/offer-details.component';
 import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scoring-application.guard';
 import {ScoringListComponent} from './components/scoring-list/scoring-list.component';
-import {ImageUploaderComponent} from './components/image-uploader/image-uploader.component';
+import {FileUploaderComponent} from './components/file-uploader/file-uploader.component';
 import {MemberUploadPhotoComponent} from './components/member-upload-photo/member-upload-photo.component';
 import {ScoringReportComponent} from './components/project/scoring-report/scoring-report.component';
 import {ScoringShouldNotExistGuard} from './services/guards/scoring-should-not-exist.guard';
@@ -203,7 +203,7 @@ import {LoggingApiClient} from './api/logging/logging-api-client';
     ScoringPaymentComponent,
     ExpertSelectorComponent,
     OfferDetailsComponent,
-    ImageUploaderComponent,
+    FileUploaderComponent,
     MemberUploadPhotoComponent,
     ExpertScoringComponent,
     ScoringReportComponent,

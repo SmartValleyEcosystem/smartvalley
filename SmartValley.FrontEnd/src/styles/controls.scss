@@ -385,6 +385,10 @@ body .ui-tabview.ui-tabview-top .ui-tabview-nav li.ui-state-default:first-child 
   color: #000;
 }
 
+.ui-fileupload .ui-fileupload-buttonbar {
+  padding: 0 !important;
+}
+
 p-fileUpload.ng-dirty.ng-invalid .ui-fileupload-choose.ui-button {
   border: solid 1px red !important;
 }

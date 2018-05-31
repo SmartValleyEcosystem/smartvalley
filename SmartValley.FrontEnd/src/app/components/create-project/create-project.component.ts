@@ -21,7 +21,7 @@ import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {TeamMemberResponse} from '../../api/project/team-member-response';
 import {MemberUploadPhotoComponent} from '../member-upload-photo/member-upload-photo.component';
 import {StringExtensions} from '../../utils/string-extensions';
-import {ImageUploaderComponent} from '../image-uploader/image-uploader.component';
+import {FileUploaderComponent} from '../file-uploader/file-uploader.component';
 import {FileUploaderHelper} from '../../utils/file-uploader-helper';
 import {UserContext} from '../../services/authentication/user-context';
 
@@ -90,7 +90,7 @@ export class CreateProjectComponent implements OnInit {
   @ViewChild('description') public descriptionRow: ElementRef;
   @ViewChildren('required') public requiredFields: QueryList<any>;
   @ViewChildren('photo') photos: QueryList<MemberUploadPhotoComponent>;
-  @ViewChild('projectImage') projectImage: ImageUploaderComponent;
+  @ViewChild('projectImage') projectImage: FileUploaderComponent;
 
   constructor(private formBuilder: FormBuilder,
               private notificationsService: NotificationsService,
