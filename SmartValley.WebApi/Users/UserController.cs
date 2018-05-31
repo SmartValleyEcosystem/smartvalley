@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.Authentication.Requests;
 using SmartValley.WebApi.Authentication.Responses;
+using SmartValley.WebApi.Users.Requests;
 using SmartValley.WebApi.Users.Responses;
 
 namespace SmartValley.WebApi.Users
@@ -22,17 +23,10 @@ namespace SmartValley.WebApi.Users
 
         [HttpGet]
         [Route("{address}")]
-        public async Task<GetUserResponse> GetByAddressAsync(string address)
+        public async Task<UserResponse> GetByAddressAsync(string address)
         {
             var user = await _userService.GetByAddressAsync(address);
-            return new GetUserResponse
-                   {
-                       Address = user?.Address,
-                       Email = user?.Email,
-                       FirstName = user?.FirstName,
-                       LastName = user?.SecondName,
-                       IsEmailConfirmed = user != null && user.IsEmailConfirmed
-                   };
+            return UserResponse.Create(user);
         }
 
         [HttpGet("{address}/email")]
@@ -50,7 +44,7 @@ namespace SmartValley.WebApi.Users
         [HttpPut]
         public async Task<EmptyResponse> UpdateUserAsync([FromBody] UpdateUserRequest request)
         {
-            await _userService.UpdateAsync(User.Identity.Name, request.FirstName, request.SecondName);
+            await _userService.UpdateAsync(User.Identity.Name, request);
             return new EmptyResponse();
         }
 

@@ -25,6 +25,7 @@ export class EditExpertModalComponent implements OnInit {
   public areas: Area[] = this.areaService.areas;
   public expertDetails: ExpertResponse = <ExpertResponse> {
     about: '',
+    bitcointalk: '',
     address: '',
     email: '',
     isAvailable: true,
@@ -33,7 +34,6 @@ export class EditExpertModalComponent implements OnInit {
     secondName: '',
     areas: []
   };
-  public isAvailable: boolean;
 
   constructor(private adminApiClient: AdminApiClient,
               private expertApiClient: ExpertApiClient,
@@ -51,7 +51,9 @@ export class EditExpertModalComponent implements OnInit {
       firstName: [''],
       secondName: [''],
       about: [''],
-      isInHouse: [false]
+      bitcointalk: ['', Validators.pattern('https?://.+')],
+      isInHouse: [false],
+      isAvailable: [false]
     });
 
     this.expertDetails = await this.expertApiClient.getAsync(this.data.address);
@@ -62,10 +64,10 @@ export class EditExpertModalComponent implements OnInit {
       secondName: this.expertDetails.secondName,
       about: this.expertDetails.about,
       email: this.expertDetails.email,
-      isInHouse: this.expertDetails.isInHouse
+      isInHouse: this.expertDetails.isInHouse,
+      bitcointalk: this.expertDetails.bitcointalk,
+      isAvailable: this.expertDetails.isAvailable
     });
-
-    this.isAvailable = this.expertDetails.isAvailable;
 
     this.expertDetails.areas.map(a => {
       this.selectedCategories[a.id] = true;
@@ -107,7 +109,7 @@ export class EditExpertModalComponent implements OnInit {
   private async updateAvailabilityAsync(): Promise<void> {
 
     const address = this.backendForm.value.address;
-    const isAvailable = this.isAvailable || false;
+    const isAvailable = this.backendForm.value.isAvailable || false;
     if (isAvailable !== this.expertDetails.isAvailable) {
 
       let transactionHash: string;
@@ -121,7 +123,7 @@ export class EditExpertModalComponent implements OnInit {
       const adminSetAvailabilityRequest = <AdminSetAvailabilityRequest>{
         address: address,
         transactionHash: transactionHash,
-        value: this.isAvailable
+        value: isAvailable
       };
       await this.adminApiClient.setExpertAvailabilityAsync(adminSetAvailabilityRequest);
     }
@@ -134,8 +136,9 @@ export class EditExpertModalComponent implements OnInit {
       firstName: this.backendForm.value.firstName,
       secondName: this.backendForm.value.secondName,
       about: this.backendForm.value.about,
+      bitcointalk: this.backendForm.value.bitcointalk,
       isInHouse: this.backendForm.value.isInHouse,
-      isAvailable: this.isAvailable || false
+      isAvailable: this.backendForm.value.isAvailable || false
     };
 
     await this.adminApiClient.updateExpertAsync(editExpertRequest);

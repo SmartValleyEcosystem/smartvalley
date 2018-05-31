@@ -8,6 +8,7 @@
         <th class="list-item">{{ 'AdminExpertList.FirstName' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.SecondName' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.About' | translate }}</th>
+        <th class="list-item">{{ 'AdminExpertList.BitcointalkLink' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.IsAvailable' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.IsInHouse' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.Categories' | translate }}</th>
@@ -16,7 +17,7 @@
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr class="list-row">
-        <td class="list-item" *ngFor="let col of ['address', 'email', 'firstName', 'secondName', 'about', 'isAvailable', 'isInHouse', 'areas']">
+        <td class="list-item" *ngFor="let col of ['address', 'email', 'firstName', 'secondName', 'about', 'bitcointalk', 'isAvailable', 'isInHouse', 'areas']">
           {{rowData[col]}}
         </td>
         <td>

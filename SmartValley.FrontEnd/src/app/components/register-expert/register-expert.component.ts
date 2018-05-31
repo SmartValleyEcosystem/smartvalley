@@ -18,6 +18,8 @@ import {AreaService} from '../../services/expert/area.service';
 import {EnumHelper} from '../../utils/enum-helper';
 import {Md5} from 'ts-md5';
 import {FileUploaderHelper} from '../../utils/file-uploader-helper';
+import {UserApiClient} from '../../api/user/user-api-client';
+import {UserContext} from '../../services/authentication/user-context';
 
 const countries = <Country[]>require('../../../assets/countryList.json');
 
@@ -42,25 +44,26 @@ export class RegisterExpertComponent implements OnInit {
   @ViewChild('areasBlock') private areasBlock: ElementRef;
 
   private cv: File;
-  private document: File;
   private photo: File;
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
               private expertApiClient: ExpertApiClient,
+              private userApiClient: UserApiClient,
               private dialogService: DialogService,
               private notificationsService: NotificationsService,
               private translateService: TranslateService,
               private expertsRegistryContractClient: ExpertsRegistryContractClient,
               private areaService: AreaService,
+              private userContext: UserContext,
               private enumHelper: EnumHelper) {
   }
 
-  public ngOnInit(): void {
-    this.createForm();
+  public async ngOnInit() {
+    await this.createFormAsync();
   }
 
-  private createForm() {
+  private async createFormAsync(): Promise<void> {
     this.sex = this.enumHelper.getSexes();
     this.documentTypes = this.enumHelper.getDocumentTypes();
 
@@ -78,6 +81,7 @@ export class RegisterExpertComponent implements OnInit {
     this.registryForm = this.formBuilder.group({
       firstName: ['', [Validators.required, Validators.maxLength(50)]],
       secondName: ['', [Validators.required, Validators.maxLength(50)]],
+      bitcointalk: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
       linkedin: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
       facebook: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
       why: ['', [Validators.required, Validators.maxLength(1500)]],
@@ -93,6 +97,12 @@ export class RegisterExpertComponent implements OnInit {
       number: ['', [Validators.required, Validators.maxLength(30)]],
       documentTypes: [this.documentTypes],
     });
+
+    const userResponse = await this.userApiClient.getByAddressAsync(this.userContext.getCurrentUser().account);
+
+    this.registryForm.controls['firstName'].setValue(userResponse.firstName);
+    this.registryForm.controls['secondName'].setValue(userResponse.lastName);
+    this.registryForm.controls['bitcointalk'].setValue(userResponse.bitcointalk);
   }
 
 
@@ -219,6 +229,7 @@ export class RegisterExpertComponent implements OnInit {
     input.append('documentType', form.selectedDocumentType);
     input.append('facebookLink', form.facebook);
     input.append('linkedInLink', form.linkedin);
+    input.append('bitcointalkLink', form.bitcointalk);
     input.append('firstName', form.firstName);
     input.append('lastName', form.secondName);
     input.append('description', form.description);
@@ -274,6 +285,7 @@ export class RegisterExpertComponent implements OnInit {
       form.selectedDocumentType +
       form.facebook +
       form.linkedIn +
+      form.bitcointalk +
       form.firstName +
       form.secondName +
       form.description +

@@ -5,6 +5,7 @@ using SmartValley.Data.SQL.Core;
 using SmartValley.Data.SQL.Extensions;
 using SmartValley.Domain;
 using SmartValley.Domain.Core;
+using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
@@ -27,7 +28,9 @@ namespace SmartValley.Data.SQL.Repositories
                             join country in _readContext.Countries on project.CountryId equals country.Id
                             where !query.ExpertId.HasValue || user.Id == query.ExpertId.Value
                             where !query.ScoringId.HasValue || scoring.Id == query.ScoringId.Value
-                            where !query.OnlyTimedOut || (scoring.AcceptingDeadline < now && scoring.Status == ScoringStatus.Pending)
+                            where !query.OnlyTimedOut
+                                  || (scoring.AcceptingDeadline < now && scoringOffer.Status == ScoringOfferStatus.Pending)
+                                  || (scoring.ScoringDeadline < now && scoringOffer.Status == ScoringOfferStatus.Accepted)
                             where !query.Status.HasValue || query.Status == scoringOffer.Status
                             select new ScoringOfferDetails(scoringOffer.Status,
                                                            scoring.AcceptingDeadline,

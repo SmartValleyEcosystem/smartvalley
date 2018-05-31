@@ -12,7 +12,7 @@ namespace SmartValley.WebApi.Experts
     {
         Task CreateApplicationAsync(CreateExpertApplicationRequest request, long userId, AzureFile cv, AzureFile scan, AzureFile photo);
 
-        Task<ExpertApplicationDetails> GetApplicationByIdAsync(long id);
+        Task<ExpertApplication> GetApplicationByIdAsync(long id);
 
         Task<IReadOnlyCollection<ExpertApplication>> GetPendingApplicationsAsync();
 
@@ -21,8 +21,6 @@ namespace SmartValley.WebApi.Experts
         Task RejectApplicationAsync(long id);
 
         Task AddAsync(ExpertRequest request);
-
-        Task UpdateAsync(Address address, ExpertUpdateRequest request);
 
         Task UpdateAreasAsync(Address address, IReadOnlyCollection<int> areas);
 

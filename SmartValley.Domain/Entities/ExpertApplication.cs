@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace SmartValley.Domain.Entities
 {
@@ -23,9 +25,7 @@ namespace SmartValley.Domain.Entities
 
         public Sex Sex { get; set; }
 
-        [Required]
-        [MaxLength(100)]
-        public string Country { get; set; }
+        public long CountryId { get; set; }
 
         [Required]
         [MaxLength(50)]
@@ -36,7 +36,10 @@ namespace SmartValley.Domain.Entities
 
         [MaxLength(400)]
         public string FacebookLink { get; set; }
-        
+
+        [MaxLength(400)]
+        public string BitcointalkLink { get; set; }
+
         [MaxLength(1500)]
         public string Description { get; set; }
 
@@ -61,5 +64,38 @@ namespace SmartValley.Domain.Entities
         public ExpertApplicationStatus Status { get; set; }
 
         public User Applicant { get; set; }
+
+        public ICollection<ExpertApplicationArea> ExpertApplicationAreas { get; set; }
+
+        public void SetAreas(IReadOnlyCollection<int> areas)
+        {
+            foreach (var areaType in areas)
+            {
+                ExpertApplicationAreas.Add(new ExpertApplicationArea
+                                           {
+                                               AreaId = (AreaType) areaType
+                                           });
+            }
+        }
+
+        public void SetAccepted(IReadOnlyCollection<int> areas)
+        {
+            Status = ExpertApplicationStatus.Accepted;
+
+            foreach (var area in ExpertApplicationAreas)
+            {
+                area.Status = areas.Contains((int) area.AreaId) ? ExpertApplicationStatus.Accepted : ExpertApplicationStatus.Rejected;
+            }
+        }
+
+        public void SetRejected()
+        {
+            Status = ExpertApplicationStatus.Rejected;
+
+            foreach (var area in ExpertApplicationAreas)
+            {
+                area.Status = ExpertApplicationStatus.Rejected;
+            }
+        }
     }
 }

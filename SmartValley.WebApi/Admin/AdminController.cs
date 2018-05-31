@@ -2,17 +2,13 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SmartValley.Application.Extensions;
-using SmartValley.Data.SQL.Extensions;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
-using SmartValley.Domain.Interfaces;
 using SmartValley.Ethereum;
 using SmartValley.WebApi.Admin.Request;
 using SmartValley.WebApi.Admin.Response;
 using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.Experts;
-using SmartValley.WebApi.Experts.Requests;
 using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Users;
 using SmartValley.WebApi.WebApi;
@@ -100,7 +96,7 @@ namespace SmartValley.WebApi.Admin
         [HttpPut("experts")]
         public async Task<IActionResult> UpdateExpertAsync([FromBody] AdminExpertUpdateRequest request)
         {
-            await _expertService.UpdateAsync(request.Address, request);
+            await _userService.UpdateAsync(request.Address, request);
             await _expertService.SetInHouseAsync(request.Address, request.IsInHouse);
             await _authenticationService.ChangeEmailAsync(request.Address, request.Email);
             return NoContent();

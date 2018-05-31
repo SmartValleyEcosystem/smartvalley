@@ -23,6 +23,12 @@
           <p class="input-attention">{{ 'Account.EmailAttention' | translate }}</p>
         </label>
       </div>
+      <div *ngIf="currentUser.isExpert" class="control-row">
+        <label class="control-label">
+          <div class="control-label__title">{{ 'Account.BitcointalkLink' | translate }}</div>
+          <input class="input wide-input" formControlName="bitcointalk" placeholder="https://">
+        </label>
+      </div>
     </div>
     <div *ngIf="currentUser.isExpert">
       <h2 class="settings-title">{{ 'Account.Bio' | translate }}</h2>

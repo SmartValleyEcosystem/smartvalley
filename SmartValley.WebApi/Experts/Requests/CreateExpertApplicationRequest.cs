@@ -37,6 +37,9 @@ namespace SmartValley.WebApi.Experts.Requests
         [MaxLength(400)]
         public string FacebookLink { get; set; }
 
+        [MaxLength(400)]
+        public string BitcointalkLink { get; set; }
+
         [MaxLength(1500)]
         public string Description { get; set; }
 
