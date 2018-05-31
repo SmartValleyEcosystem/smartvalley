@@ -107,24 +107,38 @@ namespace SmartValley.WebApi.Scorings
         public async Task UpdateOffersAsync(Guid projectExternalId)
         {
             var scoringInfo = await _scoringOffersManagerContractClient.GetScoringInfoAsync(projectExternalId);
-
             var experts = await GetExpertsForOffersAsync(scoringInfo.Offers);
             var expertsDictionary = experts.ToDictionary(e => e.Address, e => e.Id);
 
             var project = await _projectRepository.GetByExternalIdAsync(projectExternalId);
             var scoring = await _scoringRepository.GetByProjectIdAsync(project.Id);
 
+            var removedOffers = scoring.ScoringOffers
+                                       .Where(o => !scoringInfo.Offers.Any(e => expertsDictionary[e.ExpertAddress] == o.ExpertId && e.Area == o.AreaId))
+                                       .ToArray();
+            scoring.RemoveOffers(removedOffers);
+
+            foreach (var offer in scoring.ScoringOffers)
+            {
+                var blockChainOffer = scoringInfo.Offers.FirstOrDefault(x => expertsDictionary[x.ExpertAddress] == offer.ExpertId && x.Area == offer.AreaId);
+                if (blockChainOffer != null && blockChainOffer.Status != offer.Status)
+                {
+                    offer.Status = blockChainOffer.Status;
+                }
+            }
+
             var newOffers = scoringInfo.Offers
-                            .Where(o => !scoring.ScoringOffers.Any(e => e.AreaId == o.Area && e.ExpertId == expertsDictionary[o.ExpertAddress]))
-                            .Select(o => CreateOffer(scoring.Id, expertsDictionary[o.ExpertAddress], o))
-                            .ToArray();
+                                       .Where(o => !scoring.ScoringOffers.Any(e => e.AreaId == o.Area && e.ExpertId == expertsDictionary[o.ExpertAddress]))
+                                       .Select(o => new ScoringOffer(expertsDictionary[o.ExpertAddress], o.Area, o.Status))
+                                       .ToArray();
+            if (newOffers.Any())
+            {
+                scoring.AddOffers(newOffers);
+                await NotifyExpertsAsync(newOffers, experts);
+            }
 
-            if (!newOffers.Any())
-                return;
-
-            scoring.AddOffers(newOffers);
-
-            await NotifyExpertsAsync(newOffers, experts);
+            scoring.AcceptingDeadline = scoringInfo.AcceptingDeadline;
+            scoring.ScoringDeadline = scoringInfo.ScoringDeadline;
 
             await _scoringRepository.SaveChangesAsync();
         }
@@ -204,17 +218,6 @@ namespace SmartValley.WebApi.Scorings
             {
                 // TODO https://rassvet-capital.atlassian.net/browse/ILT-763
             }
-        }
-
-        private static ScoringOffer CreateOffer(long scoringId, long expertId, ScoringOfferInfo offerInfo)
-        {
-            return new ScoringOffer
-                   {
-                       AreaId = offerInfo.Area,
-                       ExpertId = expertId,
-                       ScoringId = scoringId,
-                       Status = offerInfo.Status
-                   };
         }
 
         private async Task<IEnumerable<ScoringProjectDetailsWithCounts>> ConvertAreaStatisticsToProjectDetailsAsync(
