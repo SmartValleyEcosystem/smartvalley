@@ -98,7 +98,7 @@ export class HeaderComponent implements OnInit {
         }
       }
     }
-  };
+  }
 
   private async updateProjectsAsync(): Promise<void> {
     const myProjectResponse = await this.projectApiClient.getMyProjectAsync();

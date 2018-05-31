@@ -1,4 +1,4 @@
-import {ScoringOfferResponse} from '../scoring/scoring-offer-response';
+import {ScoringOfferResponse} from './scoring-offer-response';
 import {ScoringStatus} from '../../services/scoring-status.enum';
 
 export interface ScoringResponse {

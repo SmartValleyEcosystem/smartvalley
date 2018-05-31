@@ -29,13 +29,6 @@
         <div class="col-8">
           <span *ngIf="project.startDate !== ''" class="big-size medium_rate">{{ 'AdminScoringProject.StartDate' | translate }}: {{project.startDate}}</span>
         </div>
-        <div class="col-4 text-right">
-          <a *ngIf="project.statusCode !== ScoringProjectStatus.InProgress"
-             class="main-btn button-link"
-             (click)="setExpertsAsync(project.projectExternalId)">
-            {{ 'AdminScoringProject.SetExperts' | translate }}
-          </a>
-        </div>
       </div>
     </div>
   </div>

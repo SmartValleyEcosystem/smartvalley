@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../../services/authentication/authentication-service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {isNullOrUndefined} from 'util';
 
 @Component({
@@ -12,7 +12,7 @@ import {isNullOrUndefined} from 'util';
 export class RegisterComponent {
 
   public form: FormGroup;
-  private canCreatePrivateProjects = false;
+  private readonly canCreatePrivateProjects: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
@@ -22,7 +22,7 @@ export class RegisterComponent {
     }
 
     if (!isNullOrUndefined(localStorage.getItem('canCreatePrivateProjects')) &&
-        JSON.parse(localStorage.getItem('canCreatePrivateProjects'))) {
+      JSON.parse(localStorage.getItem('canCreatePrivateProjects'))) {
       this.canCreatePrivateProjects = true;
     }
 

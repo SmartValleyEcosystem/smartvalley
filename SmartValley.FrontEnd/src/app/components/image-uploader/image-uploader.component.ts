@@ -64,11 +64,9 @@ export class ImageUploaderComponent implements ControlValueAccessor, OnChanges, 
     this.onRemove.emit();
   }
 
-  public propagateChange: any = () => {
-  };
+  public propagateChange: any = () => {}
 
-  public validateFn: any = () => {
-  };
+  public validateFn: any = () => {}
 
   get value(): File | null {
     return this._value;

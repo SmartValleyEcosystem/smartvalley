@@ -10,19 +10,21 @@ class CustomArray<T> extends Array<T> {
 
 declare global {
   interface Array<T> {
-    selectMany<U> (this: T[], selector: (x: T) => U[]): CustomArray<U>;
+    selectMany<U>(this: T[], selector: (x: T) => U[]): CustomArray<U>;
 
-    first (this: T[], selector?: (x: T) => boolean): T;
+    first(this: T[], selector?: (x: T) => boolean): T;
 
-    last (this: T[], selector?: (x: T) => boolean): T;
+    last(this: T[], selector?: (x: T) => boolean): T;
 
-    firstOrDefault (this: T[], selector?: (x: T) => boolean): T;
+    firstOrDefault(this: T[], selector?: (x: T) => boolean): T;
   }
 }
 
 if (!Array.prototype.firstOrDefault) {
   Array.prototype.firstOrDefault = function (this, selector?: (x) => boolean) {
-    if (isNullOrUndefined(selector)) return this[0];
+    if (isNullOrUndefined(selector)) {
+      return this[0];
+    }
 
     return this.filter(selector)[0];
   };

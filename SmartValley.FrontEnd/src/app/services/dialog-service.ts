@@ -106,8 +106,12 @@ export class DialogService {
   public async changeStatusDialogAsync(activityStatus: boolean, address: string): Promise<boolean> {
     return this.openModalAsync(ChangeStatusModalComponent, {
       title: this.translateService.instant('Header.StatusChanging'),
-      message: activityStatus ? this.translateService.instant('Header.DialogDescriptionToActive') : this.translateService.instant('Header.DialogDescriptionToInactive'),
-      button: activityStatus ? this.translateService.instant('Header.ChangeToActive') : this.translateService.instant('Header.ChangeToInactive'),
+      message: activityStatus
+        ? this.translateService.instant('Header.DialogDescriptionToActive')
+        : this.translateService.instant('Header.DialogDescriptionToInactive'),
+      button: activityStatus
+        ? this.translateService.instant('Header.ChangeToActive')
+        : this.translateService.instant('Header.ChangeToInactive'),
       close: this.translateService.instant('Header.NoClose'),
       activity: activityStatus,
       expertAddress: address
