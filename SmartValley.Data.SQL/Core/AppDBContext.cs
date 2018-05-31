@@ -255,9 +255,8 @@ namespace SmartValley.Data.SQL.Core
             modelBuilder.Entity<ScoringOffer>()
                         .HasIndex(e => new {e.ScoringId, e.AreaId, e.ExpertId});
 
-            modelBuilder.Entity<ScoringOffer>()
-                        .HasOne(o => o.Scoring)
-                        .WithMany(s => s.ScoringOffers);
+            modelBuilder.Entity<Scoring>()
+                        .HasMany(o => o.ScoringOffers);
 
             modelBuilder.Entity<ScoringApplicationAnswer>()
                         .HasOne(x => x.Question);

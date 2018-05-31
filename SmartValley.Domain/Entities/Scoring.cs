@@ -169,6 +169,18 @@ namespace SmartValley.Domain.Entities
             }
         }
 
+        public void RemoveOffers(IReadOnlyCollection<ScoringOffer> offers)
+        {
+            foreach (var offer in offers)
+            {
+                var offerToDelete = ScoringOffers.FirstOrDefault(x => x.ExpertId == offer.ExpertId && x.AreaId == offer.AreaId);
+                if (offerToDelete == null)
+                    throw new AppErrorException(ErrorCode.ServerError, $"Can find offer: expertId: '{offer.ExpertId}', areaId: '{offer.AreaId}'.");
+
+                ScoringOffers.Remove(offerToDelete);
+            }
+        }
+
         private bool HasEnoughExperts()
         {
             foreach (var areaScoring in AreaScorings)

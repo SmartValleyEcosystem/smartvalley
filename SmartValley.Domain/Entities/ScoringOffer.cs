@@ -2,16 +2,29 @@
 {
     public class ScoringOffer
     {
-        public long ScoringId { get; set; }
+        // ReSharper disable once UnusedMember.Local
+        private ScoringOffer()
+        {
+            
+        }
 
-        public long ExpertId { get; set; }
+        public ScoringOffer(long expertId, AreaType areaId, ScoringOfferStatus status)
+        {
+            ExpertId = expertId;
+            AreaId = areaId;
+            Status = status;
+        }
 
-        public AreaType AreaId { get; set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        public long ScoringId { get; private set; }
+
+        public long ExpertId { get; private set; }
+
+        public AreaType AreaId { get; private set; }
 
         public ScoringOfferStatus Status { get; set; }
 
-        public Scoring Scoring { get; set; }
-
-        public Expert Expert { get; set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        public Expert Expert { get; private set; }
     }
 }

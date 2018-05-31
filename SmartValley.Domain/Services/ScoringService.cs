@@ -67,12 +67,7 @@ namespace SmartValley.Domain.Services
         private async Task<IReadOnlyCollection<ScoringOffer>> CreateOffersAsync(IReadOnlyCollection<ScoringOfferInfo> offers)
         {
             var experts = await GetExpertsForOffersAsync(offers);
-            return offers.Select(o => new ScoringOffer
-                                {
-                                    AreaId = o.Area,
-                                    ExpertId = experts.First(e => e.Address == o.ExpertAddress).Id,
-                                    Status = o.Status
-                                })
+            return offers.Select(o => new ScoringOffer(experts.First(e => e.Address == o.ExpertAddress).Id, o.Area, o.Status))
                    .ToArray();
         }
 
