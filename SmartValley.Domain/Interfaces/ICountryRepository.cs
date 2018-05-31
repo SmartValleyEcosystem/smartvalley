@@ -6,5 +6,7 @@ namespace SmartValley.Domain.Interfaces
     public interface ICountryRepository
     {
         Task<Country> GetByCodeAsync(string code);
+
+        Task<Country> GetByIdAsync(long id);
     }
 }

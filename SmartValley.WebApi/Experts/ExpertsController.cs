@@ -7,10 +7,12 @@ using SmartValley.Application.Extensions;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
+using SmartValley.Domain.Interfaces;
 using SmartValley.Ethereum;
 using SmartValley.WebApi.Experts.Requests;
 using SmartValley.WebApi.Experts.Responses;
 using SmartValley.WebApi.Extensions;
+using SmartValley.WebApi.Users;
 using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Experts
@@ -20,14 +22,23 @@ namespace SmartValley.WebApi.Experts
     {
         private readonly IExpertService _expertService;
         private readonly EthereumClient _ethereumClient;
+        private readonly ICountryRepository _countryRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
 
         public ExpertsController(
             IExpertService expertService,
-            EthereumClient ethereumClient)
+            IUserService userService,
+            EthereumClient ethereumClient,
+            ICountryRepository countryRepository,
+            IUserRepository userRepository)
         {
             _ethereumClient = ethereumClient;
             _expertService = expertService;
             _ethereumClient = ethereumClient;
+            _countryRepository = countryRepository;
+            _userRepository = userRepository;
+            _userService = userService;
         }
 
         [HttpGet, Route("areas")]
@@ -69,8 +80,19 @@ namespace SmartValley.WebApi.Experts
         [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<ExpertApplicationResponse> GetApplicationByIdAsync(long id)
         {
-            var applicationDetails = await _expertService.GetApplicationByIdAsync(id);
-            return ExpertApplicationResponse.Create(applicationDetails);
+            var application = await _expertService.GetApplicationByIdAsync(id);
+            if(application == null)
+                throw new AppErrorException(ErrorCode.ApplicationNotFound);
+
+            var country = await _countryRepository.GetByIdAsync(application.CountryId);
+            if (country == null)
+                throw new AppErrorException(ErrorCode.CountryNotFound);
+
+            var applicant = await _userRepository.GetByIdAsync(application.ApplicantId);
+            if (applicant == null)
+                throw new AppErrorException(ErrorCode.UserNotFound);
+
+            return ExpertApplicationResponse.Create(application, applicant, country);
         }
 
         [HttpPost("applications/{id}/accept")]
@@ -104,14 +126,6 @@ namespace SmartValley.WebApi.Experts
         {
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
             await _expertService.AddAsync(request);
-            return NoContent();
-        }
-
-        [HttpPut]
-        [Authorize(Roles = nameof(RoleType.Expert))]
-        public async Task<IActionResult> UpdateExpertAsync([FromBody] ExpertUpdateRequest request)
-        {
-            await _expertService.UpdateAsync(User.Identity.Name, request);
             return NoContent();
         }
 

@@ -18,5 +18,8 @@ namespace SmartValley.Data.SQL.Repositories
 
         public Task<Country> GetByCodeAsync(string code)
             => _readContext.Countries.FirstOrDefaultAsync(i => i.Code.Equals(code, StringComparison.OrdinalIgnoreCase));
+
+        public Task<Country> GetByIdAsync(long id)
+            => _readContext.Countries.FirstOrDefaultAsync(i => i.Id == id);
     }
 }

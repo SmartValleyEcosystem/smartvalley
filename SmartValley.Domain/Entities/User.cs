@@ -28,6 +28,24 @@ namespace SmartValley.Domain.Entities
 
         public bool CanCreatePrivateProjects { get; set; }
 
+        public DateTime? BirthDate { get; set; }
+
+        public Sex? Sex { get; set; }
+
+        public long? CountryId { get; set; }
+
+        public string City { get; set; }
+
+        public string LinkedInLink { get; set; }
+
+        public string FacebookLink { get; set; }
+
+        public string BitcointalkLink { get; set; }
+
+        public string About { get; set; }
+
+        public Country Country { get; set; }
+
         public Expert Expert { get; set; }
 
         public IEnumerable<Project> Projects { get; set; }

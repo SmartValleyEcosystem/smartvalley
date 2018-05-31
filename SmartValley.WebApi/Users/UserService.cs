@@ -2,7 +2,7 @@
 using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
-using SmartValley.WebApi.Admin.Response;
+using SmartValley.WebApi.Users.Requests;
 
 namespace SmartValley.WebApi.Users
 {
@@ -33,12 +33,14 @@ namespace SmartValley.WebApi.Users
         public Task<User> GetByIdAsync(long id)
             => _repository.GetByIdAsync(id);
 
-        public async Task UpdateAsync(Address address, string firstName, string secondName)
+        public async Task UpdateAsync(Address address, UpdateUserRequest request)
         {
             var user = await _repository.GetByAddressAsync(address);
 
-            user.FirstName = firstName;
-            user.SecondName = secondName;
+            user.FirstName = request.FirstName;
+            user.SecondName = request.SecondName;
+            user.BitcointalkLink = request.Bitcointalk;
+            user.About = request.About;
 
             await _repository.SaveChangesAsync();
         }

@@ -12,7 +12,6 @@ using SmartValley.WebApi.Projects.Requests;
 
 namespace SmartValley.WebApi.Projects
 {
-    // ReSharper disable once ClassNeverInstantiated.Global
     public class ProjectService : IProjectService
     {
         private readonly IProjectRepository _projectRepository;

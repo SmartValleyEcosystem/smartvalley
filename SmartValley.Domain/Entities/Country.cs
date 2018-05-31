@@ -9,8 +9,10 @@ namespace SmartValley.Domain.Entities
 
         [Required, MaxLength(2)]
         public string Code { get; set; }
-        
+
+        public ICollection<User> Users { get; set; }
         public ICollection<Project> Projects { get; set; }
         public ICollection<ScoringApplication> ScoringApplications { get; set; }
+        public ICollection<ExpertApplication> ExpertApplications { get; set; }
     }
 }

@@ -12,7 +12,6 @@ import {RejectApplicationRequest} from './reject-application-request';
 import {ExpertResponse} from './expert-response';
 import {ExpertRequest} from './expert-request';
 import {ExpertDeleteRequest} from './expert-delete-request';
-import {ExpertUpdateRequest} from './expert-update-request';
 import {ExpertAvailabilityStatusResponse} from './expert-availability-status-response';
 import {GetExpertsRequest} from './get-experts-request';
 import {isNullOrUndefined} from 'util';
@@ -76,10 +75,6 @@ export class ExpertApiClient extends BaseApiClient {
 
   public createAsync(expertRequest: ExpertRequest) {
     return this.http.post(`${this.baseApiUrl}/experts/`, expertRequest).toPromise();
-  }
-
-  public updateAsync(updateRequest: ExpertUpdateRequest) {
-    return this.http.put(this.baseApiUrl + '/experts/', updateRequest).toPromise();
   }
 
   public deleteAsync(deleteRequest: ExpertDeleteRequest) {
