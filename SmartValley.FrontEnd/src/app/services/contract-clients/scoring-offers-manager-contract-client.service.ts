@@ -42,19 +42,6 @@ export class ScoringOffersManagerContractClient implements ContractClient {
       {from: fromAddress});
   }
 
-  public async forceSetExpertsAsync(projectExternalId: string,
-                                    areas: Array<number>,
-                                    experts: Array<string>): Promise<string> {
-    const contract = this.web3Service.getContract(this.abi, this.address);
-    const fromAddress = this.userContext.getCurrentUser().account;
-
-    return contract.forceSet(
-      projectExternalId.replace(/-/g, ''),
-      areas,
-      experts,
-      {from: fromAddress});
-  }
-
   public async acceptOfferAsync(projectExternalId: string,
                                 area: number): Promise<string> {
     const contract = this.web3Service.getContract(this.abi, this.address);

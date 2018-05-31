@@ -45,7 +45,7 @@ export class EditScoringComponent implements OnInit {
   private areas: number[] = [];
   private expertsAddresses: string[] = [];
   private areaExpertCounts: number[] = [];
-  private uniqAreas: number[] = [];
+  private uniqueAreas: number[] = [];
 
   constructor(private expertApiClient: ExpertApiClient,
               private projectApiClient: ProjectApiClient,
@@ -107,7 +107,7 @@ export class EditScoringComponent implements OnInit {
   }
 
   private calculateData() {
-    this.uniqAreas = [];
+    this.uniqueAreas = [];
     this.expertsAddresses = [];
     this.areaExpertCounts = [];
     this.areas = [];
@@ -122,7 +122,7 @@ export class EditScoringComponent implements OnInit {
 
     for (const area of Object.keys(this.AreaType)) {
       if (+area) {
-        this.uniqAreas.push(+area);
+        this.uniqueAreas.push(+area);
         this.areaExpertCounts.push(this.expertCountsByArea(+area));
       }
     }
@@ -140,7 +140,10 @@ export class EditScoringComponent implements OnInit {
       return;
     }
 
-    const transactionHash = await this.scoringExpertsManagerContractClient.forceSetExpertsAsync(this.project.externalId, this.areas, this.expertsAddresses);
+    const transactionHash = await this.scoringExpertsManagerContractClient.setExpertsAsync(
+      this.project.externalId,
+      this.areas,
+      this.expertsAddresses);
 
     await this.offersApiClient.updateOffersAsync(this.project.externalId, transactionHash);
 
@@ -159,9 +162,12 @@ export class EditScoringComponent implements OnInit {
       return;
     }
 
-    const transactionHash = await this.privateScoringManagerContractClient.startAsync(this.project.externalId, this.areas, this.expertsAddresses);
+    const transactionHash = await this.privateScoringManagerContractClient.startAsync(
+      this.project.externalId,
+      this.areas,
+      this.expertsAddresses);
 
-    await this.scoringApiClient.startAsync(this.project.id, this.uniqAreas, this.areaExpertCounts, transactionHash);
+    await this.scoringApiClient.startAsync(this.project.id, this.uniqueAreas, this.areaExpertCounts, transactionHash);
 
     await this.router.navigate([Paths.Admin + '/scoring/private-scoring']);
   }
@@ -209,7 +215,6 @@ export class EditScoringComponent implements OnInit {
   public onExpertChecked(event: MatCheckboxChange, expertId: number) {
     const expert = this.experts.firstOrDefault(i => i.id === expertId);
     if (expert) {
-      const areas = this.expertAreas.filter(i => i.expertId === expertId);
       if (!event.checked) {
         this.expertAreas = this.expertAreas.filter(i => i.expertId !== expertId);
         return;

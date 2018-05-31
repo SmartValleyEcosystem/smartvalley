@@ -49,8 +49,9 @@ export class MemberUploadPhotoComponent implements ControlValueAccessor, OnChang
     };
     this.value = event.srcElement.files[0];
 
-    if (this.maxFileSize < this.value.size)
+    if (this.maxFileSize < this.value.size) {
       this.deleteFile();
+    }
 
     reader.readAsDataURL(this.value);
     this.uploadHandler.emit(this.value);
@@ -62,11 +63,9 @@ export class MemberUploadPhotoComponent implements ControlValueAccessor, OnChang
     this.onRemove.emit();
   }
 
-  public propagateChange: any = () => {
-  }
+  public propagateChange: any = () => {}
 
-  public validateFn: any = () => {
-  }
+  public validateFn: any = () => {}
 
   get value(): File | null {
     return this._value;

@@ -99,31 +99,6 @@ export class AdminScoringProjectsComponent implements OnInit {
     }
   }
 
-  async setExpertsAsync(projectId: string) {
-    const project = this.projects.find(i => i.projectExternalId === projectId);
-    const areas = project.areasExperts.filter(i => i.acceptedCount < i.requiredCount).map(i => i.area);
-    const areaExperts = await this.dialogService.showSetExpertsDialogAsync(areas);
-
-    if (isNullOrUndefined(areaExperts)) {
-      return;
-    }
-    const areaTypes = areaExperts.map(i => i.areaType);
-    const addresses = areaExperts.map(i => i.address);
-    const transactionHash = await this.scoringExpertsManagerContractClient.setExpertsAsync(projectId, areaTypes, addresses);
-    if (transactionHash == null) {
-      return;
-    }
-
-    const transactionDialog = this.dialogService.showTransactionDialog(
-      this.translateService.instant('AdminScoringProject.Dialog'),
-      transactionHash
-    );
-
-    await this.offersApiClient.updateOffersAsync(projectId, transactionHash);
-
-    transactionDialog.close();
-  }
-
   async onCheckAsync() {
     await this.updateProjectsAsync();
   }

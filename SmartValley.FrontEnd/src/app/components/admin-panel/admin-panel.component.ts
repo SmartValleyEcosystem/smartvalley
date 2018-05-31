@@ -19,18 +19,19 @@ export class AdminPanelComponent implements OnInit {
   public selectedSubTab = 0;
 
   constructor(private router: Router,
-              private route: ActivatedRoute) {}
+              private route: ActivatedRoute) {
+  }
 
   public ngOnInit() {
     const mainTab = this.route.snapshot.paramMap.get('mainTab');
     const subTab = this.route.snapshot.paramMap.get('subTab');
 
     if (mainTab && this.mainTabItems.indexOf(mainTab) !== -1) {
-        this.selectedMainTab = this.mainTabItems.indexOf(mainTab);
+      this.selectedMainTab = this.mainTabItems.indexOf(mainTab);
     }
 
     if (subTab && this.getSubTabIndex(this.selectedMainTab, subTab) !== -1) {
-        this.selectedSubTab = this.getSubTabIndex(this.selectedMainTab, subTab);
+      this.selectedSubTab = this.getSubTabIndex(this.selectedMainTab, subTab);
     }
   }
 
@@ -59,7 +60,8 @@ export class AdminPanelComponent implements OnInit {
   public onMainTabChange($event) {
     this.selectedMainTab = $event.index;
     this.selectedSubTab = 0;
-    this.router.navigate([Paths.Admin + '/' + this.mainTabItems[$event.index] + '/' + this.getSubTabLink(this.selectedMainTab, this.selectedSubTab)]);
+    const path = `${Paths.Admin}/${this.mainTabItems[$event.index]}/${this.getSubTabLink(this.selectedMainTab, this.selectedSubTab)}`;
+    this.router.navigate([path]);
   }
 
   public onSubTabChange($event, tab: string[]) {

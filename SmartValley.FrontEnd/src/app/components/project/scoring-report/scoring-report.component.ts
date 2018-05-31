@@ -8,7 +8,7 @@ import {Paths} from '../../../paths';
 import {Router} from '@angular/router';
 import {ScoringStatus} from '../../../services/scoring-status.enum';
 import {OfferStatus} from '../../../api/scoring-offer/offer-status.enum';
-import {AreaType} from "../../../api/scoring/area-type.enum";
+import {AreaType} from '../../../api/scoring/area-type.enum';
 import {CriterionPromptResponse} from '../../../api/estimates/criterion-prompt-response';
 import {CriterionPrompt} from '../../../api/estimates/criterion-prompt';
 import {QuestionControlType} from '../../../api/scoring-application/question-control-type.enum';
@@ -64,7 +64,7 @@ export class ScoringReportComponent implements OnInit {
   public getCriterionInfo(id): CriterionPrompt[] {
     const criterionPrompts = this.criterionPrompts.find((c) => c.scoringCriterionId === id);
     if (criterionPrompts) {
-     return criterionPrompts.prompts;
+      return criterionPrompts.prompts;
     }
     return null;
   }
@@ -74,7 +74,7 @@ export class ScoringReportComponent implements OnInit {
   }
 
   public getQuestionById(id: number): string {
-    return this.scoringCriterionResponse.selectMany(s => s.criteria).find(c => c.id === id ).name;
+    return this.scoringCriterionResponse.selectMany(s => s.criteria).find(c => c.id === id).name;
   }
 
   public async navigateToApplicationScoringAsync(): Promise<void> {
@@ -88,7 +88,7 @@ export class ScoringReportComponent implements OnInit {
       .length;
   }
 
-  public chageActiveQuestion(id: number) {
+  public changeActiveQuestion(id: number) {
     const indexOfCurrentSelected = this.questionsActivity.indexOf(true);
     this.questionsActivity = this.questionsActivity.map(() => false);
     if (indexOfCurrentSelected !== id) {
@@ -96,7 +96,7 @@ export class ScoringReportComponent implements OnInit {
     }
   }
 
-  public onTabChange () {
+  public onTabChange() {
     this.questionsActivity = [];
   }
 }

@@ -14,6 +14,14 @@ export class AddAdminModalComponent implements OnInit {
               private dialogRef: MatDialogRef<AddAdminModalComponent>) {
   }
 
+  public static validateWalletAddress(control: AbstractControl) {
+    const address = control.value;
+    if (!address || /^(0x)[0-9a-f]{40}$/i.test(address)) {
+      return null;
+    }
+    return {'walletAddress': true};
+  }
+
   ngOnInit() {
     this.form = this.formBuilder.group({
       address: ['', [Validators.required, AddAdminModalComponent.validateWalletAddress]],
@@ -22,13 +30,5 @@ export class AddAdminModalComponent implements OnInit {
 
   submit(form) {
     this.dialogRef.close(form.value.address);
-  }
-
-  public static validateWalletAddress(control: AbstractControl) {
-    const address = control.value;
-    if (!address || /^(0x)[0-9a-f]{40}$/i.test(address)) {
-      return null;
-    }
-    return {'walletAddress': true};
   }
 }
