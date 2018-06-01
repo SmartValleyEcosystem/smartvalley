@@ -29,7 +29,7 @@
     <button *ngIf="!isExpert" class="main-btn" (click)="navigateToExpertApplication()">{{ 'Header.BecomeAnExpert' | translate }}</button>
     <button *ngIf="showReceiveEtherButton" class="main-btn receive-ether-btn" (click)="receiveEtherAsync()">{{ 'Header.ReceiveEther' | translate }}</button>
     <nav class="header-nav__authenticated">
-      <a *ngIf="isAuthenticated && isExpert" class="header-nav__link" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + scroginsLink">{{'Header.Scoring' | translate }}</a>
+      <a *ngIf="isAuthenticated && isExpert" class="header-nav__link" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + scoringsLink">{{'Header.Scoring' | translate }}</a>
       <a *ngIf="isAuthenticated && haveProject" class="header-nav__link" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + myProjectLink">{{'Header.MyProject' | translate }}</a>
       <a *ngIf="isAuthenticated" class="header-nav__link" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/account'">{{'Header.Account' | translate }}</a>
       <span *ngIf="isAuthenticated" class="header-nav__login-logout" (click)="logout()">
