@@ -33,7 +33,7 @@ export class UserContext {
       return;
     }
     localStorage.setItem(this.userKey, JSON.stringify(user));
-    this.userContextChanged.emit(user);
+    this.userContextChanged.emit(this.getCurrentUser());
   }
 
   public deleteCurrentUser() {

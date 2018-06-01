@@ -81,7 +81,7 @@ import {EnumHelper} from './utils/enum-helper';
 import {AdminExpertsListComponent} from './components/admin-panel/admin-experts-list/admin-experts-list.component';
 import {CreateNewExpertModalComponent} from './components/common/create-new-expert-modal/create-new-expert-modal.component';
 import {EditExpertModalComponent} from './components/common/edit-expert-modal/edit-expert-modal.component';
-import {ExpertStatusGuard} from './services/guards/expert-status.guard';
+import {ShouldNotBeExpertGuard} from './services/guards/should-not-be-expert.guard';
 import {AdminScoringProjectsComponent} from './components/admin-panel/admin-scoring-projects/admin-scoring-projects.component';
 import {SetExpertsModalComponent} from './components/common/set-experts-modal/set-experts-modal.component';
 import {OffersApiClient} from './api/scoring-offer/offers-api-client';
@@ -327,7 +327,7 @@ import {LoggingApiClient} from './api/logging/logging-api-client';
     ShouldBeAdminGuard,
     GuardFactory,
     CompositeGuard,
-    ExpertStatusGuard,
+    ShouldNotBeExpertGuard,
     OfferStatusGuard,
     PrivateApplicationShouldNotBeSubmitted,
     AreaService,

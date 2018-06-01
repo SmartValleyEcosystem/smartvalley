@@ -95,10 +95,6 @@ namespace SmartValley.WebApi.Experts
 
         public async Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(Address address)
         {
-            var expert = await _expertRepository.GetByAddressAsync(address);
-            if (expert != null)
-                return ExpertApplicationStatus.Accepted;
-
             var user = await _userRepository.GetByAddressAsync(address);
             if (user == null)
                 throw new AppErrorException(ErrorCode.UserNotFound);
