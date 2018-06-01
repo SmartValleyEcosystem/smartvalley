@@ -16,21 +16,27 @@ namespace SmartValley.WebApi.Projects
     {
         private readonly IProjectRepository _projectRepository;
         private readonly ICountryRepository _countryRepository;
+        private readonly IScoringOffersRepository _scoringOffersRepository;
         private readonly ProjectTeamMembersStorageProvider _projectTeamMembersStorageProvider;
         private readonly ProjectStorageProvider _projectStorageProvider;
+        private readonly IClock _clock;
         private readonly IUserRepository _userRepository;
 
         public ProjectService(
             IProjectRepository projectRepository,
             IUserRepository userRepository,
             ICountryRepository countryRepository,
+            IScoringOffersRepository scoringOffersRepository,
             ProjectTeamMembersStorageProvider projectTeamMembersStorageProvider,
-            ProjectStorageProvider projectStorageProvider)
+            ProjectStorageProvider projectStorageProvider,
+            IClock clock)
         {
             _projectRepository = projectRepository;
             _countryRepository = countryRepository;
+            _scoringOffersRepository = scoringOffersRepository;
             _projectTeamMembersStorageProvider = projectTeamMembersStorageProvider;
             _projectStorageProvider = projectStorageProvider;
+            _clock = clock;
             _userRepository = userRepository;
         }
 
@@ -50,6 +56,29 @@ namespace SmartValley.WebApi.Projects
         {
             var project = await GetByIdAsync(projectId);
             return project.AuthorId == userId;
+        }
+
+        public async Task<bool> IsAuthorizedToSeeProjectAsync(long projectId, long? userId)
+        {
+            var project = await GetByIdAsync(projectId);
+            if (!project.IsPrivate)
+                return true;
+
+            if (!userId.HasValue)
+                return false;
+
+            if (project.AuthorId == userId.Value)
+                return true;
+
+            var user = await _userRepository.GetByIdAsync(userId.Value);
+            var isAdmin = await _userRepository.HasRoleAsync(user.Address, RoleType.Admin);
+            if (isAdmin)
+                return true;
+
+            var offersQuery = new OffersQuery {ExpertId = userId, ScoringId = project.Scoring.Id};
+            var offers = await _scoringOffersRepository.GetAsync(offersQuery, _clock.UtcNow);
+
+            return offers.Any();
         }
 
         public async Task<Project> CreateAsync(long userId, CreateProjectRequest request)

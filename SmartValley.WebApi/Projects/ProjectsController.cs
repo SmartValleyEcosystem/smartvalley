@@ -146,6 +146,7 @@ namespace SmartValley.WebApi.Projects
         }
 
         [HttpGet("{id}")]
+        [CanSeeProject("id")]
         public async Task<ProjectSummaryResponse> GetSummaryAsync(long id)
         {
             var project = await _projectService.GetByIdAsync(id);

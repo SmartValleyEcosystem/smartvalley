@@ -7,6 +7,7 @@ using SmartValley.Domain.Entities;
 using SmartValley.Messages.Commands;
 using SmartValley.WebApi.Scorings.Requests;
 using SmartValley.WebApi.Scorings.Responses;
+using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Scorings
 {
@@ -24,6 +25,7 @@ namespace SmartValley.WebApi.Scorings
         }
 
         [HttpGet]
+        [CanSeeProject("projectId")]
         public async Task<ScoringResponse> GetByProjectIdAsync(long projectId)
         {
             var scoring = await _scoringService.GetByProjectIdAsync(projectId);
