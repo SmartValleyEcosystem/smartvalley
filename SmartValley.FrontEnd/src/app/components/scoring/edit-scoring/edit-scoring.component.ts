@@ -201,11 +201,11 @@ export class EditScoringComponent implements OnInit {
     return this.project.scoring && this.project.scoring.scoringStatus === ScoringStatus.Finished;
   }
 
-  public canFinished(): boolean {
+  public canFinish(): boolean {
     this.calculateData();
     return this.project.scoring.scoringStatus === ScoringStatus.InProgress
       && this.offers.every(o => o.offerStatus === OfferStatus.Finished)
-      && !this.areaExpertCounts.some(i => i > 0);
+      && !this.areaExpertCounts.some(i => i === 0);
   }
 
   private expertCountsByArea(areaId: AreaType): number {
