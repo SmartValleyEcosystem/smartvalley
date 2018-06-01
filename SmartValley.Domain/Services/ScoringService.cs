@@ -57,7 +57,14 @@ namespace SmartValley.Domain.Services
 
             var areaScorings = areas.Select(x => new AreaScoring {AreaId = x.Key, ExpertsCount = x.Value}).ToList();
             var offers = await CreateOffersAsync(scoringInfo.Offers);
-            var scoring = new Scoring(project.Id, contractAddress, _clock.UtcNow, scoringInfo.ScoringDeadline, areaScorings, offers);
+            var scoring = new Scoring(
+                project.Id,
+                contractAddress,
+                _clock.UtcNow,
+                scoringInfo.AcceptingDeadline,
+                scoringInfo.ScoringDeadline,
+                areaScorings,
+                offers);
 
             _scoringRepository.Add(scoring);
             await _scoringRepository.SaveChangesAsync();
@@ -68,7 +75,7 @@ namespace SmartValley.Domain.Services
         {
             var experts = await GetExpertsForOffersAsync(offers);
             return offers.Select(o => new ScoringOffer(experts.First(e => e.Address == o.ExpertAddress).Id, o.Area, o.Status))
-                   .ToArray();
+                         .ToArray();
         }
 
         private Task<IReadOnlyCollection<User>> GetExpertsForOffersAsync(IReadOnlyCollection<ScoringOfferInfo> contractOffers)

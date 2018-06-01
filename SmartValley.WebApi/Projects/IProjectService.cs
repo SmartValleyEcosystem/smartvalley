@@ -15,6 +15,8 @@ namespace SmartValley.WebApi.Projects
 
         Task<bool> IsAuthorizedToEditProjectAsync(long projectId, long userId);
 
+        Task<bool> IsAuthorizedToSeeProjectAsync(long id, long? userId);
+
         Task UpdateTeamMemberPhotoAsync(long projectId, long projectTeamMemberId, AzureFile photo);
 
         Task<Project> CreateAsync(long userId, CreateProjectRequest request);

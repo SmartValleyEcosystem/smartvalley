@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using SmartValley.Domain.Exceptions;
@@ -13,6 +12,14 @@ namespace SmartValley.WebApi.Extensions
             var userIdClaim = user.Claims.FirstOrDefault(c => c.Type == "UserId");
             if (userIdClaim == null)
                 throw new AppErrorException(ErrorCode.AuthenticationError);
+            return Convert.ToInt64(userIdClaim.Value);
+        }
+
+        public static long? TryGetUserId(this ClaimsPrincipal user)
+        {
+            var userIdClaim = user.Claims.FirstOrDefault(c => c.Type == "UserId");
+            if (userIdClaim == null)
+                return null;
             return Convert.ToInt64(userIdClaim.Value);
         }
     }

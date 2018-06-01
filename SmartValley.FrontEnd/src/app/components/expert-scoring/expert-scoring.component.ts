@@ -41,10 +41,10 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
   public areasCriterion: ScoringCriteriaGroup[] = [];
   public scoringForm: FormGroup;
   public questionsActivity: Array<boolean> = [];
-  public criterionPrompts: CriterionPromptResponse[];
   public questionTypeComboBox = QuestionControlType.Combobox;
   public isSaved = false;
   public saveTime: string;
+  public criterionInfo: { [id: number]: CriterionPrompt[] } = {};
   private timer: NodeJS.Timer;
 
   @ViewChildren('required') public requiredFields: QueryList<any>;
@@ -92,10 +92,17 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
     this.addDraftData(draftData);
 
     const criterionPromptsResponse = await this.estimatesApiClient.getCriterionPromptsAsync(this.projectId, this.areaType);
-    this.criterionPrompts = criterionPromptsResponse.items;
+    const criterionPrompts: CriterionPromptResponse[] = criterionPromptsResponse.items;
     this.questionsActivity = [true];
 
     this.timer = <NodeJS.Timer>setInterval(async () => await this.saveDraft(), 60000);
+
+    for (const group of this.areasCriterion) {
+      for (const criteria of group.criteria) {
+          this.criterionInfo[criteria.id] = criterionPrompts.find((c) => c.scoringCriterionId === criteria.id).prompts;
+      }
+    }
+
   }
 
   ngOnDestroy(): void {
@@ -114,10 +121,6 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
 
     prepareFormData['conclusion'] = data.conclusion;
     this.scoringForm.setValue(prepareFormData);
-  }
-
-  public getCriterionInfo(id): CriterionPrompt[] {
-    return this.criterionPrompts.find((c) => c.scoringCriterionId === id).prompts;
   }
 
   private validateForm(): boolean {

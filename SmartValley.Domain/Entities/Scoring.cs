@@ -18,6 +18,7 @@ namespace SmartValley.Domain.Entities
             long projectId,
             Address contractAddress,
             DateTimeOffset creationDate,
+            DateTimeOffset acceptingDeadline,
             DateTimeOffset scoringDeadline,
             IReadOnlyCollection<AreaScoring> areaScorings,
             IReadOnlyCollection<ScoringOffer> scoringOffers)
@@ -25,6 +26,8 @@ namespace SmartValley.Domain.Entities
             ProjectId = projectId;
             ContractAddress = contractAddress;
             CreationDate = creationDate;
+            AcceptingDeadline = acceptingDeadline;
+            ScoringDeadline = scoringDeadline;
 
             AreaScorings = new List<AreaScoring>(areaScorings);
             ScoringOffers = new List<ScoringOffer>();
@@ -33,8 +36,6 @@ namespace SmartValley.Domain.Entities
             Status = ScoringStatus.InProgress;
 
             AddOffers(scoringOffers);
-
-            SetScoringDeadline(scoringDeadline);
         }
 
         public long Id { get; set; }
@@ -198,11 +199,6 @@ namespace SmartValley.Domain.Entities
             var offer = GetOffer(area, expertId);
 
             offer.Status = status;
-        }
-
-        private void SetScoringDeadline(DateTimeOffset scoringDeadline)
-        {
-            ScoringDeadline = scoringDeadline;
         }
 
         private ScoringOffer GetOffer(AreaType area, long expertId)

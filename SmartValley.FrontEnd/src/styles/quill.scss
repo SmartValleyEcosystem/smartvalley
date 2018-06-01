@@ -936,9 +936,24 @@
 .ql-container.ql-snow {
   border: 1px solid #a4a2b0;
 }
-.without-border .ql-container.ql-snow {
+.without-border .ql-container.ql-snow,
+.without-border .tooltip-formatted-text{
   border: none;
 }
-.without-border .ql-editor {
+.without-border .ql-editor,
+.without-border .tooltip-formatted-text {
   padding: 0;
+}
+.tooltip-formatted-text {
+  .ql-toolbar.ql-snow + .ql-container.ql-snow {
+    background: transparent;
+    width: 100%;
+    border: none;
+  }
+  .ql-disabled .ql-editor {
+    padding: 0;
+  }
+  .ql-editor span {
+    color: #fff !important;
+  }
 }

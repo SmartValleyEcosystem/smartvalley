@@ -32,10 +32,10 @@ export class HeaderComponent implements OnInit {
   public accountImgUrl: string;
   public projectsLink: string;
   public accountLink: string;
-  public scroginsLink: string;
+  public scoringsLink: string;
   public adminPanelLink: string;
   public myProjectLink: string;
-  public isExpert: false;
+  public isExpert = false;
   public showExpertPanel = false;
   public isUserExpert = false;
   public isExpertActive: boolean;
@@ -114,7 +114,7 @@ export class HeaderComponent implements OnInit {
       this.accountAddress = user.account;
       this.isExpert = user.isExpert;
       this.isAdmin = user.isAdmin;
-      this.scroginsLink = Paths.ScoringList;
+      this.scoringsLink = Paths.ScoringList;
       this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
       this.showExpertPanel = user.isExpert && this.router.url !== '/';
     } else {
