@@ -35,8 +35,7 @@ export class HeaderComponent implements OnInit {
   public scroginsLink: string;
   public adminPanelLink: string;
   public myProjectLink: string;
-  public expertStatus?: ExpertApplicationStatus;
-  public ExpertApplicationStatus = ExpertApplicationStatus;
+  public isExpert: false;
   public showExpertPanel = false;
   public isUserExpert = false;
   public isExpertActive: boolean;
@@ -113,20 +112,16 @@ export class HeaderComponent implements OnInit {
       await this.updateProjectsAsync();
       this.isAuthenticated = true;
       this.accountAddress = user.account;
-      const expertStatusResponse = await this.expertApiClient.getExpertStatusAsync(this.accountAddress);
-      this.expertStatus = expertStatusResponse.status;
+      this.isExpert = user.isExpert;
+      this.isAdmin = user.isAdmin;
       this.scroginsLink = Paths.ScoringList;
       this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
-      this.isAdmin = user.roles.includes('Admin');
-      if (user.isExpert && this.router.url !== '/') {
-        this.showExpertPanel = true;
-      } else {
-        this.showExpertPanel = false;
-      }
+      this.showExpertPanel = user.isExpert && this.router.url !== '/';
     } else {
       this.showExpertPanel = false;
       this.isAuthenticated = false;
       this.isAdmin = false;
+      this.isExpert = false;
       this.haveProject = false;
       this.myProjectLink = '';
     }
@@ -155,11 +150,12 @@ export class HeaderComponent implements OnInit {
 
   async navigateToExpertApplication() {
     if (await this.authenticationService.authenticateAsync()) {
-      if (this.expertStatus === ExpertApplicationStatus.Pending) {
+      const status = (await this.expertApiClient.getExpertStatusAsync(this.accountAddress)).status;
+      if (status === ExpertApplicationStatus.Pending) {
         await this.router.navigate([Paths.ExpertStatus]);
-      } else if (this.expertStatus === ExpertApplicationStatus.Accepted) {
+      } else if (status === ExpertApplicationStatus.Accepted) {
         await this.router.navigate([Paths.ScoringList]);
-      } else if (this.expertStatus === ExpertApplicationStatus.Rejected) {
+      } else if (status === ExpertApplicationStatus.Rejected) {
         await this.router.navigate([Paths.ExpertStatus]);
       } else {
         await this.router.navigate([Paths.RegisterExpert]);

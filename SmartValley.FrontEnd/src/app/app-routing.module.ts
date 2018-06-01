@@ -14,8 +14,7 @@ import {AdminPanelComponent} from './components/admin-panel/admin-panel.componen
 import {ExpertStatusComponent} from './components/expert-status/expert-status.component';
 import {RegisterExpertComponent} from './components/register-expert/register-expert.component';
 import {AdminExpertApplicationComponent} from './components/admin-panel/admin-expert-application/admin-expert-application.component';
-import {ExpertStatusGuard} from './services/guards/expert-status.guard';
-import {ExpertApplicationStatus} from './services/expert/expert-application-status.enum';
+import {ShouldNotBeExpertGuard} from './services/guards/should-not-be-expert.guard';
 import {OfferStatusGuard} from './services/guards/offer-status.guard';
 import {ProjectListComponent} from './components/project-list/project-list.component';
 import {RegisterComponent} from './components/authentication/register/register.component';
@@ -79,26 +78,13 @@ const appRoutes: Routes = [
     {path: Paths.ProjectEdit, component: CreateProjectComponent},
     {
       path: Paths.ExpertStatus,
-      canActivate: [ExpertStatusGuard],
-      component: ExpertStatusComponent,
-      data: {
-        expertStatuses: [
-          ExpertApplicationStatus.None,
-          ExpertApplicationStatus.Rejected,
-          ExpertApplicationStatus.Pending
-        ]
-      }
+      canActivate: [ShouldNotBeExpertGuard],
+      component: ExpertStatusComponent
     },
     {
       path: Paths.RegisterExpert,
-      canActivate: [ExpertStatusGuard, ShouldHaveEthGuard],
-      component: RegisterExpertComponent,
-      data: {
-        expertStatuses: [
-          ExpertApplicationStatus.None,
-          ExpertApplicationStatus.Rejected
-        ]
-      }
+      canActivate: [ShouldNotBeExpertGuard, ShouldHaveEthGuard],
+      component: RegisterExpertComponent
     },
     {path: Paths.ProjectList, component: ProjectListComponent},
     {path: Paths.ScoringList, component: ScoringListComponent},
