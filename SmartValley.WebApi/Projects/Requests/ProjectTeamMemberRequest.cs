@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
-using SmartValley.Domain.Entities;
-using SmartValley.WebApi.WebApi;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SmartValley.WebApi.Projects.Requests
 {
