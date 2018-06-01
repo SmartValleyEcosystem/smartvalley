@@ -7,6 +7,11 @@ namespace SmartValley.Domain.Entities
 {
     public class ExpertApplication
     {
+        public ExpertApplication()
+        {
+            ExpertApplicationAreas = new List<ExpertApplicationArea>();
+        }    
+
         public long Id { get; set; }
 
         public long ApplicantId { get; set; }
