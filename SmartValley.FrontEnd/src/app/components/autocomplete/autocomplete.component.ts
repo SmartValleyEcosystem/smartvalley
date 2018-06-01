@@ -1,8 +1,8 @@
-import {Component, Input, Output, forwardRef, OnChanges, EventEmitter, ElementRef, OnInit} from '@angular/core';
+import {Component, Input, Output, forwardRef, OnChanges, EventEmitter, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SelectItem} from 'primeng/api';
 import {FormGroup, FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
-
+import {ColorHelper} from '../../utils/color-helper';
 
 @Component({
   selector: 'app-autocomplete',
@@ -21,6 +21,8 @@ export class AutocompleteComponent implements ControlValueAccessor, OnChanges, O
   public isSearchInputInFocus: boolean;
   public squareInput = false;
   public selectedItemLabel: string;
+  public focusedItem = 0;
+  public enteredText = '';
 
   @Input('selectedItemValue') _selectedItemValue: string | number | null = null;
   @Input() placeholder: string;
@@ -32,6 +34,9 @@ export class AutocompleteComponent implements ControlValueAccessor, OnChanges, O
   @Input() form?: FormGroup;
   @Input() defaultValue?: string | number;
   @Output() onSelect: EventEmitter<string | number | null> = new EventEmitter<string | number | null>();
+
+  @ViewChild('autocompleteInput') autocompleteInput;
+  @ViewChild('autocompleteList') autocompleteList;
 
   constructor(private translateService: TranslateService,
               private nativeElement: ElementRef) {
@@ -66,6 +71,7 @@ export class AutocompleteComponent implements ControlValueAccessor, OnChanges, O
   }
 
   public hideItemsList() {
+    this.focusedItem = 0;
     if (this.isAreaListHovered) {
       return;
     }
@@ -84,8 +90,23 @@ export class AutocompleteComponent implements ControlValueAccessor, OnChanges, O
     this.isSearchInputInFocus = status;
   }
 
+  public autocompleteKeyDown(event) {
+    if (event.code === 'ArrowDown' && this.focusedItem < this.items.length - 1) this.focusedItem++;
+    if (event.code === 'ArrowUp' && this.focusedItem > 0) this.focusedItem--;
+    this.scrollToFocusedItem(this.focusedItem);
+    if (event.code === 'Enter') {
+      this.selectItem(this.items[this.focusedItem].label, this.items[this.focusedItem].value);
+      this.autocompleteInput.nativeElement.blur();
+    }
+  }
+
+  public scrollToFocusedItem(focusedItem) {
+    this.autocompleteList.nativeElement.scrollTop = this.autocompleteList.nativeElement.getElementsByTagName('li')[focusedItem].offsetTop;
+  }
+
   public selectItem(label: string, value: string | number | null) {
     this.selectedItemLabel = label;
+    this.autocompleteInput.nativeElement.value = label;
     this.selectedItemValue = value;
     if (this.isNeedToTranslate) {
       this.selectedItemLabel = this.translateService.instant(label);
@@ -95,6 +116,8 @@ export class AutocompleteComponent implements ControlValueAccessor, OnChanges, O
   }
 
   public onAutocompleteInputChange(event) {
+    this.focusedItem = 0;
+    this.enteredText = event.target.value;
     this.selectedItemValue = '';
     this.items = this.allItems.filter(c => c.label.toLowerCase().includes(event.target.value.toLowerCase()));
   }
@@ -139,5 +162,9 @@ export class AutocompleteComponent implements ControlValueAccessor, OnChanges, O
 
   registerOnChange(fn) {
     this.propagateChange = fn;
+  }
+
+  public markedText(text: string) {
+    return ColorHelper.coloredText(text, this.enteredText);
   }
 }

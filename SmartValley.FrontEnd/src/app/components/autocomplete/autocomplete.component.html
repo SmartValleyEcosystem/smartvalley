@@ -2,17 +2,21 @@
   <i class="search-icon material-icons" (click)="showItemsList()">search</i>
   <input (focus)="searchInputFocusStatusSwitch(true); showItemsList();"
          (focusout)="searchInputFocusStatusSwitch(false); hideItemsList();"
+         (keydown)="autocompleteKeyDown($event);"
          [class.autocomplete-item__focused]="squareInput"
          (input)="onAutocompleteInputChange($event)"
          [value]="selectedItemLabel"
          [placeholder]="placeholder" type="text" class="input filter-autocomplete" id="{{elementId}}"
          autocomplete="nope"
-         name="{{elementName}}">
+         name="{{elementName}}" #autocompleteInput>
   <ul (mouseenter)="selectListHoverStatusSwitch(true)"
       (mouseleave)="selectListHoverStatusSwitch(false); hideItemsList();"
-      class="autocomplete-list" [class.hidden]="isAutocompleteHidden">
-    <li *ngFor="let item of items" (click)="selectItem(item.label, item.value)" class="autocomplete-item">
-      <p class="item-name">{{ item.label | translate }}</p>
+      class="autocomplete-list" [class.hidden]="isAutocompleteHidden" #autocompleteList>
+    <li *ngFor="let item of items; let index = index;"
+        (click)="selectItem(item.label, item.value)"
+        class="autocomplete-item"
+        [class.autocomplete-item-active]="index === focusedItem">
+      <p class="item-name"><span [innerHtml]="markedText(item.label | translate) | safeHtml"></span></p>
     </li>
   </ul>
 </div>
