@@ -39,7 +39,7 @@ export class EditScoringComponent implements OnInit {
   public expertAreas: ExpertAreaItem[] = [];
 
   public totalRecords: number;
-  public loading: boolean;
+  public loading = true;
   public offset = 0;
   public pageSize = 1000;
 
@@ -234,42 +234,34 @@ export class EditScoringComponent implements OnInit {
 
   public onExpertChecked(event: MatCheckboxChange, expertId: number) {
     const expert = this.experts.firstOrDefault(i => i.id === expertId);
-    if (expert) {
-      if (!event.checked) {
-        this.expertAreas = this.expertAreas.filter(i => i.expertId !== expertId);
-        return;
-      }
-      if (event.checked) {
-        const newAreas = expert.areas.map(i => <ExpertAreaItem> {expertId: expert.id, areaId: i.id});
-        for (let i = 0; i < newAreas.length; i++) {
-          this.expertAreas.push(newAreas[i]);
-        }
-        return;
+    if (!expert) {
+      return;
+    }
+
+    if (!event.checked) {
+      this.expertAreas = this.expertAreas.filter(i => i.expertId !== expertId);
+    } else {
+      const newAreas = expert.areas.map(i => <ExpertAreaItem> {expertId: expert.id, areaId: i.id});
+      for (let i = 0; i < newAreas.length; i++) {
+        this.expertAreas.push(newAreas[i]);
       }
     }
   }
 
   public onAreaChecked(event: MatCheckboxChange, expertId: number, areaType: AreaType) {
     const expert = this.experts.firstOrDefault(i => i.id === expertId);
-    if (expert) {
-      const area = expert.areas.firstOrDefault(i => <AreaType> i.id === areaType);
-      if (area) {
-        if (!event.checked) {
-          this.expertAreas = this.expertAreas.filter(item => item !== <ExpertAreaItem> {
-            areaId: item.areaId,
-            expertId: item.expertId
-          });
-          return;
-        }
-        if (event.checked) {
-          this.expertAreas.push(<ExpertAreaItem> {expertId: expert.id, areaId: areaType});
-          return;
-        }
-      } else {
-        if (event.checked) {
+    if (!expert) {
+      return;
+    }
 
-        }
-      }
+    if (!expert.areas.some(i => <AreaType> i.id === areaType)) {
+      return;
+    }
+
+    if (!event.checked) {
+      this.expertAreas = this.expertAreas.filter(item => item.areaId !== areaType || item.expertId !== expertId);
+    } else {
+      this.expertAreas.push(<ExpertAreaItem> {expertId: expertId, areaId: areaType});
     }
   }
 }
