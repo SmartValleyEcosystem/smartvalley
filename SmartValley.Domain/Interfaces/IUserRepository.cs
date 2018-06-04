@@ -19,11 +19,11 @@ namespace SmartValley.Domain.Interfaces
 
         Task<IReadOnlyCollection<User>> GetByRoleAsync(RoleType type);
 
-        Task AddRoleAsync(Address address, RoleType type);
+        Task AddRoleAsync(long userId, RoleType type);
 
         Task<bool> HasRoleAsync(Address address, RoleType type);
 
-        Task RemoveRoleAsync(Address address, RoleType type);
+        Task RemoveRoleAsync(long userId, RoleType type);
 
         Task<IReadOnlyCollection<Role>> GetRolesByUserIdAsync(long userId);
 

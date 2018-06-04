@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +8,7 @@ using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ExpertApplicationRepository : IExpertApplicationRepository
     {
         private readonly IReadOnlyDataContext _readContext;
@@ -21,26 +21,24 @@ namespace SmartValley.Data.SQL.Repositories
         }
 
         public async Task<IReadOnlyCollection<ExpertApplication>> GetAllByStatusAsync(ExpertApplicationStatus status)
-        {
-            return await _readContext.ExpertApplications.Where(e => e.Status == status).ToArrayAsync();
-        }
+            => await _readContext.ExpertApplications.Where(e => e.Status == status).ToArrayAsync();
 
         public Task<ExpertApplication> GetByIdAsync(long id)
             => Entities().FirstOrDefaultAsync(e => e.Id == id);
 
-        public Task<ExpertApplication> GetByUserIdAsync(long userId)
-            => Entities().FirstOrDefaultAsync(e => e.ApplicantId == userId);
+        public Task<ExpertApplication> GetByApplicantIdAsync(long userId)
+            => Entities()
+               .Where(e => e.ApplicantId == userId)
+               .OrderByDescending(e => e.ApplyDate)
+               .FirstOrDefaultAsync();
 
         public void Add(ExpertApplication expertApplication)
-        {
-            _editContext.ExpertApplications.Add(expertApplication);
-        }
+            => _editContext.ExpertApplications.Add(expertApplication);
 
         public Task SaveChangesAsync()
             => _editContext.SaveAsync();
 
         private IQueryable<ExpertApplication> Entities()
-            => _editContext.ExpertApplications
-                           .Include(x => x.ExpertApplicationAreas);
+            => _editContext.ExpertApplications.Include(x => x.ExpertApplicationAreas);
     }
 }

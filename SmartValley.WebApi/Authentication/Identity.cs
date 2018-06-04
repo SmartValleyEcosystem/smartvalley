@@ -19,7 +19,6 @@ namespace SmartValley.WebApi.Authentication
 
         public IReadOnlyCollection<string> Roles { get; set; }
 
-
         public Identity(long id, Address address, string email, bool isAuthenticated, string token, IReadOnlyCollection<string> roles, bool canCreatePrivateProjects)
         {
             Id = id;

@@ -10,7 +10,7 @@ namespace SmartValley.Domain.Interfaces
 
         Task<ExpertApplication> GetByIdAsync(long id);
 
-        Task<ExpertApplication> GetByUserIdAsync(long userId);
+        Task<ExpertApplication> GetByApplicantIdAsync(long userId);
 
         void Add(ExpertApplication expertApplication);
 

@@ -12,7 +12,5 @@ namespace SmartValley.WebApi.Admin
         Task DeleteAsync(Address address);
 
         Task<IReadOnlyCollection<User>> GetAsync();
-
-        Task<bool> IsAdminAsync(Address address);
     }
 }
