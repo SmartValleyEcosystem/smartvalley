@@ -40,7 +40,7 @@ export class EditScoringComponent implements OnInit {
   public totalRecords: number;
   public loading = true;
   public offset = 0;
-  public pageSize = 1000;
+  public pageSize = 100;
 
   private areas: number[] = [];
   private expertsAddresses: string[] = [];
