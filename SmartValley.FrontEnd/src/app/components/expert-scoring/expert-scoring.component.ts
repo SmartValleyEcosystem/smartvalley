@@ -264,8 +264,4 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
   public getProjectApplictionLink() {
     return Paths.Project + '/' + this.projectId + '/details/application';
   }
-
-  async navigateToProjectApplication() {
-    await this.router.navigate([Paths.Project + '/' + this.projectId + '/details/application']);
-  }
 }

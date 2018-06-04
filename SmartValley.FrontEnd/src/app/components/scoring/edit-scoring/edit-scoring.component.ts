@@ -21,6 +21,7 @@ import {ExpertAreaItem} from './expert-area-item';
 import {ScoringOfferResponse} from '../../../api/scoring-offer/scoring-offer-response';
 import {OfferStatus} from '../../../api/scoring-offer/offer-status.enum';
 import {PrivateScoringManagerContractClient} from '../../../services/contract-clients/private-scoring-manager-contract-client';
+import {DialogService} from '../../../services/dialog-service';
 
 @Component({
   selector: 'app-edit-scoring',
@@ -48,6 +49,7 @@ export class EditScoringComponent implements OnInit {
   private uniqueAreas: number[] = [];
 
   constructor(private expertApiClient: ExpertApiClient,
+              private dialogService: DialogService,
               private projectApiClient: ProjectApiClient,
               private router: Router,
               private route: ActivatedRoute,
@@ -145,7 +147,14 @@ export class EditScoringComponent implements OnInit {
       this.areas,
       this.expertsAddresses);
 
+    const transactionDialog = this.dialogService.showTransactionDialog(
+      this.translateService.instant('EditScoring.Dialog'),
+      transactionHash
+    );
+
     await this.offersApiClient.updateAsync(this.project.externalId, transactionHash);
+
+    transactionDialog.close();
 
     await this.router.navigate([Paths.Admin + '/scoring/private-scoring']);
   }
@@ -167,7 +176,14 @@ export class EditScoringComponent implements OnInit {
       this.areas,
       this.expertsAddresses);
 
+    const transactionDialog = this.dialogService.showTransactionDialog(
+      this.translateService.instant('EditScoring.Dialog'),
+      transactionHash
+    );
+
     await this.scoringApiClient.startAsync(this.project.id, this.uniqueAreas, this.areaExpertCounts, transactionHash);
+
+    transactionDialog.close();
 
     await this.router.navigate([Paths.Admin + '/scoring/private-scoring']);
   }
@@ -184,6 +200,10 @@ export class EditScoringComponent implements OnInit {
     await this.scoringApiClient.reopenAsync(this.project.scoring.id);
 
     await this.router.navigate([Paths.Admin + '/scoring/private-scoring']);
+  }
+
+  public async navigateToProjectReport() {
+    await this.router.navigate([Paths.Project + '/' + this.project.id + '/details/report']);
   }
 
   public canStart(): boolean {

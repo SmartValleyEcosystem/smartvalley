@@ -52,16 +52,19 @@
     </ng-template>
   </p-table>
 
-  <button mat-fab class="action-btn" *ngIf="canStart()" (click)="startPrivateScoringAsync()">
+  <button mat-fab class="action-btn" *ngIf="canStart()" title="{{ 'EditScoring.StartScoring' | translate }}" (click)="startPrivateScoringAsync()">
     <mat-icon>play_arrow</mat-icon>
   </button>
-  <button mat-fab class="action-btn" *ngIf="canEdit()" (click)="setExpertsAsync()">
+  <button mat-fab class="action-btn" *ngIf="canEdit()" title="{{ 'EditScoring.UpdateExperts' | translate }}" (click)="setExpertsAsync()">
     <mat-icon>save</mat-icon>
   </button>
-  <button mat-fab class="action-btn" *ngIf="canFinish()" (click)="finishPrivateScoringAsync()">
+  <button mat-fab class="action-btn" *ngIf="canFinish()" title="{{ 'EditScoring.FinishScoring' | translate }}" (click)="finishPrivateScoringAsync()">
     <mat-icon>done</mat-icon>
   </button>
-  <button mat-fab class="action-btn" *ngIf="canReopen()" (click)="reopenPrivateScoringAsync()">
+  <button mat-fab class="action-btn" *ngIf="canReopen()" title="{{ 'EditScoring.ReOpen' | translate }}" (click)="reopenPrivateScoringAsync()">
     <mat-icon>play_arrow</mat-icon>
+  </button>
+  <button mat-fab class="action-btn" title="{{ 'EditScoring.SeeProject' | translate }}" (click)="navigateToProjectReport()">
+    <mat-icon>remove_red_eye</mat-icon>
   </button>
 </div>
