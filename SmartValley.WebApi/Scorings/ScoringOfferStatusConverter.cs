@@ -16,8 +16,8 @@ namespace SmartValley.WebApi.Scorings
                     return Domain.Entities.ScoringOfferStatus.Rejected;
                 case ScoringOfferStatus.Finished:
                     return Domain.Entities.ScoringOfferStatus.Finished;
-                case ScoringOfferStatus.Timeout:
-                    return null;
+                case ScoringOfferStatus.Expired:
+                    return Domain.Entities.ScoringOfferStatus.Expired;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(status), status, null);
             }
@@ -28,13 +28,15 @@ namespace SmartValley.WebApi.Scorings
             switch (status)
             {
                 case Domain.Entities.ScoringOfferStatus.Pending:
-                    return expirationTimestamp < now ? ScoringOfferStatus.Timeout : ScoringOfferStatus.Pending;
+                    return expirationTimestamp < now ? ScoringOfferStatus.Expired : ScoringOfferStatus.Pending;
                 case Domain.Entities.ScoringOfferStatus.Accepted:
                     return ScoringOfferStatus.Accepted;
                 case Domain.Entities.ScoringOfferStatus.Rejected:
                     return ScoringOfferStatus.Rejected;
                 case Domain.Entities.ScoringOfferStatus.Finished:
                     return ScoringOfferStatus.Finished;
+                case Domain.Entities.ScoringOfferStatus.Expired:
+                    return ScoringOfferStatus.Expired;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(status), status, null);
             }

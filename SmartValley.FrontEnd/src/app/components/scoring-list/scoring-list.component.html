@@ -54,8 +54,8 @@
                 <div *ngSwitchCase="OfferStatus.Finished">
                   {{ 'ScoringList.Scored' | translate }}
                 </div>
-                <div *ngSwitchCase="OfferStatus.Timeout">
-                  {{ 'ScoringList.Timeout' | translate }}
+                <div *ngSwitchCase="OfferStatus.Expired">
+                  {{ 'ScoringList.Expired' | translate }}
                 </div>
                 <div *ngSwitchCase="OfferStatus.Rejected">
                   {{ 'ScoringList.Refused' | translate }}
@@ -80,7 +80,7 @@
                 <td class="project-progress gray-color-text scoring-col" [ngSwitch]="project.offerStatus">
                   <div class="padding-progress" *ngSwitchCase="OfferStatus.Finished">{{ 'ScoringList.ScoringInProgress' | translate }}
                   </div>
-                  <div class="padding-progress" *ngSwitchCase="OfferStatus.Timeout">{{ 'ScoringList.ScoringInProgress' | translate }}
+                  <div class="padding-progress" *ngSwitchCase="OfferStatus.Expired">{{ 'ScoringList.ScoringInProgress' | translate }}
                   </div>
                   <div class="padding-progress" *ngSwitchCase="OfferStatus.Rejected">{{ 'ScoringList.ScoringInProgress' | translate }}
                   </div>

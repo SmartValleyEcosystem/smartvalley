@@ -3,5 +3,5 @@ export enum OfferStatus {
   Accepted = 1,
   Rejected = 2,
   Finished = 3,
-  Timeout = 4
+  Expired = 4
 }
