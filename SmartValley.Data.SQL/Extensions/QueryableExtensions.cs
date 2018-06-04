@@ -11,9 +11,9 @@ namespace SmartValley.Data.SQL.Extensions
         {
             var totalCount = await source.CountAsync();
             var entities = await source
-                .Skip(offset)
-                .Take(count)
-                .ToArrayAsync();
+                                 .Skip(offset)
+                                 .Take(count)
+                                 .ToArrayAsync();
 
             return new PagingCollection<TEntity>(entities, totalCount, offset);
         }

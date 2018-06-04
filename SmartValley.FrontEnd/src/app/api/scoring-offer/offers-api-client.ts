@@ -16,7 +16,7 @@ export class OffersApiClient extends BaseApiClient {
     super();
   }
 
-  public getOfferStatusAsync(projectId: number, areaType: number): Promise<ScoringOfferStatusResponse> {
+  public getStatusAsync(projectId: number, areaType: number): Promise<ScoringOfferStatusResponse> {
     const parameters = new HttpParams()
       .append('projectId', projectId.toString())
       .append('areaType', areaType.toString());
@@ -26,7 +26,7 @@ export class OffersApiClient extends BaseApiClient {
     }).toPromise();
   }
 
-  public async acceptExpertOfferAsync(transactionHash: string, scoringId: number, areaId: AreaType) {
+  public async acceptAsync(transactionHash: string, scoringId: number, areaId: AreaType) {
     await this.http.put(this.baseApiUrl + '/scoring/offers/accept/', <ChangeStatusExpertOfferRequest> {
       transactionHash: transactionHash,
       scoringId: scoringId,
@@ -34,7 +34,7 @@ export class OffersApiClient extends BaseApiClient {
     }).toPromise();
   }
 
-  public async declineExpertOfferAsync(transactionHash: string, scoringId: number, areaId: AreaType) {
+  public async declineAsync(transactionHash: string, scoringId: number, areaId: AreaType) {
     await this.http.put(this.baseApiUrl + '/scoring/offers/reject/', <ChangeStatusExpertOfferRequest>{
       transactionHash: transactionHash,
       scoringId: scoringId,
@@ -42,7 +42,7 @@ export class OffersApiClient extends BaseApiClient {
     }).toPromise();
   }
 
-  public async updateOffersAsync(projectExternalId: string, transactionHash: string): Promise<void> {
+  public async updateAsync(projectExternalId: string, transactionHash: string): Promise<void> {
     await this.http.put(this.baseApiUrl + '/scoring/offers', <UpdateOffersRequest>{
       projectExternalId: projectExternalId,
       transactionHash: transactionHash
@@ -59,6 +59,7 @@ export class OffersApiClient extends BaseApiClient {
       .append('orderBy', checkParam(query.orderBy))
       .append('sortDirection', checkParam(query.sortDirection))
       .append('expertId', checkParam(query.expertId))
+      .append('projectId', checkParam(query.projectId))
       .append('scoringId', checkParam(query.scoringId));
 
     return this.http.get<CollectionResponse<ScoringOfferResponse>>(

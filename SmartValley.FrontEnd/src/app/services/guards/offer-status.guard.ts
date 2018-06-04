@@ -12,7 +12,7 @@ export class OfferStatusGuard implements CanActivate {
     const projectId = +route.paramMap.get('id');
     const areaType = +route.paramMap.get('areaType');
 
-    const statusResponse = await this.offersApiClient.getOfferStatusAsync(projectId, areaType);
+    const statusResponse = await this.offersApiClient.getStatusAsync(projectId, areaType);
     return route.data.offerStatuses.includes(statusResponse.status);
   }
 }

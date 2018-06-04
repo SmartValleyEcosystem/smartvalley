@@ -83,7 +83,8 @@ namespace SmartValley.WebApi.Scorings
                             Status = request.Status?.ToDomain(),
                             Offset = request.Offset,
                             Count = request.Count,
-                            ScoringId = request.ScoringId
+                            ScoringId = request.ScoringId,
+                            ProjectId = request.ProjectId
                         };
             var now = _clock.UtcNow;
             var offers = await _scoringService.QueryOffersAsync(query, now);

@@ -145,7 +145,7 @@ export class EditScoringComponent implements OnInit {
       this.areas,
       this.expertsAddresses);
 
-    await this.offersApiClient.updateOffersAsync(this.project.externalId, transactionHash);
+    await this.offersApiClient.updateAsync(this.project.externalId, transactionHash);
 
     await this.router.navigate([Paths.Admin + '/scoring/private-scoring']);
   }

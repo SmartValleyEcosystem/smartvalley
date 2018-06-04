@@ -83,7 +83,7 @@ export class AdminScoringProjectsComponent implements OnInit {
       transactionHash
     );
 
-    await this.offersApiClient.updateOffersAsync(projectExternalId, transactionHash);
+    await this.offersApiClient.updateAsync(projectExternalId, transactionHash);
 
     transactionDialog.close();
   }
