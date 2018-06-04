@@ -86,6 +86,7 @@
     </p-tabPanel>
     <p-tabPanel [headerStyleClass]="reportTabClass()" header="{{ 'MyProject.ScoringReport' | translate }}">
       <app-scoring-report *ngIf="isReportTabAvailable()" [scoringStatus]="getScoringStatus()"
+                          [isPrivate]="project.isPrivate"
                           [projectId]="projectId"
                           [isAuthor]="isAuthor">
       </app-scoring-report>
