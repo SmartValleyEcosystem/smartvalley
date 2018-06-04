@@ -79,7 +79,7 @@ namespace SmartValley.WebApi.Scorings
                             ExpertId = request.ExpertId,
                             OrderBy = request.OrderBy,
                             SortDirection = request.SortDirection,
-                            OnlyTimedOut = request.Status.HasValue && request.Status.Value == ScoringOfferStatus.Timeout,
+                            OnlyTimedOut = request.Status.HasValue && request.Status.Value == ScoringOfferStatus.Expired,
                             Status = request.Status?.ToDomain(),
                             Offset = request.Offset,
                             Count = request.Count,
