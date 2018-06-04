@@ -24,11 +24,9 @@ namespace SmartValley.WebApi.Experts
         private readonly EthereumClient _ethereumClient;
         private readonly ICountryRepository _countryRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IUserService _userService;
 
         public ExpertsController(
             IExpertService expertService,
-            IUserService userService,
             EthereumClient ethereumClient,
             ICountryRepository countryRepository,
             IUserRepository userRepository)
@@ -38,7 +36,6 @@ namespace SmartValley.WebApi.Experts
             _ethereumClient = ethereumClient;
             _countryRepository = countryRepository;
             _userRepository = userRepository;
-            _userService = userService;
         }
 
         [HttpGet, Route("areas")]
@@ -81,7 +78,7 @@ namespace SmartValley.WebApi.Experts
         public async Task<ExpertApplicationResponse> GetApplicationByIdAsync(long id)
         {
             var application = await _expertService.GetApplicationByIdAsync(id);
-            if(application == null)
+            if (application == null)
                 throw new AppErrorException(ErrorCode.ApplicationNotFound);
 
             var country = await _countryRepository.GetByIdAsync(application.CountryId);

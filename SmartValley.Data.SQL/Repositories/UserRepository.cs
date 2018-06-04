@@ -12,6 +12,7 @@ using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class UserRepository : IUserRepository
     {
         private readonly IReadOnlyDataContext _readContext;
@@ -30,25 +31,20 @@ namespace SmartValley.Data.SQL.Repositories
 
         public Task<User> GetByAddressAsync(Address address)
             => _editContext.Users.FirstOrDefaultAsync(u => u.Address == address);
-        
+
         public Task<User> GetByEmailAsync(string email)
             => _editContext.Users.FirstOrDefaultAsync(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
 
-        public Task<User> GetByIdAsync(long userId) 
+        public Task<User> GetByIdAsync(long userId)
             => _editContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
 
-        public async Task AddRoleAsync(Address address, RoleType type)
+        public async Task AddRoleAsync(long userId, RoleType type)
         {
-            var user = await _readContext.Users.FirstOrDefaultAsync(i => i.Address == address);
-            if (user == null)
-                throw new AppErrorException(ErrorCode.UserNotFound, $"User at address '{address}' not found.");
-
             var role = await _readContext.Roles.FirstOrDefaultAsync(i => i.Id == type);
             if (role == null)
                 throw new AppErrorException(ErrorCode.RoleNotFound, $"Role '{type}' not found.");
 
-            await _editContext.UserRoles.AddAsync(new UserRole {RoleId = role.Id, UserId = user.Id});
-            await _editContext.SaveAsync();
+            _editContext.UserRoles.Add(new UserRole {RoleId = role.Id, UserId = userId});
         }
 
         public Task<bool> HasRoleAsync(Address address, RoleType type)
@@ -60,22 +56,13 @@ namespace SmartValley.Data.SQL.Repositories
                     select user).AnyAsync();
         }
 
-        public async Task RemoveRoleAsync(Address address, RoleType type)
+        public async Task RemoveRoleAsync(long userId, RoleType type)
         {
-            var user = await _readContext.Users.FirstOrDefaultAsync(i => i.Address == address);
-            if (user == null)
-                throw new AppErrorException(ErrorCode.UserNotFound, $"User at address '{address}' not found.");
-
-            var role = await _readContext.Roles.FirstOrDefaultAsync(i => i.Id == type);
-            if (role == null)
-                throw new AppErrorException(ErrorCode.RoleNotFound, $"Role '{type}' not found.");
-
-            var userRole = await _readContext.UserRoles.FirstOrDefaultAsync(i => i.RoleId == role.Id && i.UserId == user.Id);
+            var userRole = await _readContext.UserRoles.FirstOrDefaultAsync(i => i.RoleId == type && i.UserId == userId);
             if (userRole == null)
-                throw new AppErrorException(ErrorCode.UserHaveNoRole, $"User at address '{address}' has no '{type}' role.");
+                throw new AppErrorException(ErrorCode.UserHaveNoRole, $"User with Id = '{userId}' has no '{type}' role.");
 
             _editContext.UserRoles.Remove(userRole);
-            await _editContext.SaveAsync();
         }
 
         public async Task<IReadOnlyCollection<Role>> GetRolesByUserIdAsync(long userId)
@@ -86,7 +73,7 @@ namespace SmartValley.Data.SQL.Repositories
                           where user.Id == userId
                           select role).ToArrayAsync();
         }
-        
+
         public async Task SaveChangesAsync()
         {
             await _editContext.SaveAsync();
@@ -98,8 +85,8 @@ namespace SmartValley.Data.SQL.Repositories
         public async Task<IReadOnlyCollection<User>> GetByAddressesAsync(IReadOnlyCollection<Address> addresses)
         {
             return await _editContext.Users
-                                    .Where(user => addresses.Contains(user.Address))
-                                    .ToArrayAsync();
+                                     .Where(user => addresses.Contains(user.Address))
+                                     .ToArrayAsync();
         }
 
         public async Task<IReadOnlyCollection<User>> GetByRoleAsync(RoleType type)

@@ -19,7 +19,7 @@ namespace SmartValley.WebApi.Admin
     [Authorize(Roles = nameof(RoleType.Admin))]
     public class AdminController : Controller
     {
-        private readonly IAdminService _service;
+        private readonly IAdminService _adminService;
         private readonly IExpertService _expertService;
         private readonly EthereumClient _ethereumClient;
         private readonly IAuthenticationService _authenticationService;
@@ -27,12 +27,12 @@ namespace SmartValley.WebApi.Admin
 
         public AdminController(
             IExpertService expertService,
-            IAdminService service,
+            IAdminService adminService,
             EthereumClient ethereumClient,
             IAuthenticationService authenticationService,
             IUserService userService)
         {
-            _service = service;
+            _adminService = adminService;
             _ethereumClient = ethereumClient;
             _expertService = expertService;
             _authenticationService = authenticationService;
@@ -43,14 +43,14 @@ namespace SmartValley.WebApi.Admin
         public async Task<IActionResult> Post([FromBody] AdminRequest request)
         {
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
-            await _service.AddAsync(request.Address);
+            await _adminService.AddAsync(request.Address);
             return NoContent();
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var admins = await _service.GetAsync();
+            var admins = await _adminService.GetAsync();
             return Ok(new CollectionResponse<AdminResponse>
                       {
                           Items = admins.Select(i => new AdminResponse {Address = i.Address, Email = i.Email}).ToArray()
@@ -106,7 +106,7 @@ namespace SmartValley.WebApi.Admin
         public async Task<IActionResult> Delete(string address, string transactionHash)
         {
             await _ethereumClient.WaitForConfirmationAsync(transactionHash);
-            await _service.DeleteAsync(address);
+            await _adminService.DeleteAsync(address);
             return NoContent();
         }
     }

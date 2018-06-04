@@ -99,8 +99,7 @@ namespace SmartValley.WebApi.Experts
             if (user == null)
                 throw new AppErrorException(ErrorCode.UserNotFound);
 
-            var application = await _expertApplicationRepository.GetByUserIdAsync(user.Id);
-
+            var application = await _expertApplicationRepository.GetByApplicantIdAsync(user.Id);
             return application?.Status ?? ExpertApplicationStatus.None;
         }
 
@@ -141,8 +140,8 @@ namespace SmartValley.WebApi.Experts
             user.Email = request.Email;
             user.About = request.About;
 
+            await _userRepository.AddRoleAsync(user.Id, RoleType.Expert);
             await _userRepository.SaveChangesAsync();
-            await _userRepository.AddRoleAsync(request.Address, RoleType.Expert);
 
             var expert = new Expert(user.Id, true);
             expert.SetAreas(request.Areas);
@@ -164,7 +163,12 @@ namespace SmartValley.WebApi.Experts
 
         public async Task DeleteAsync(Address address)
         {
-            await _userRepository.RemoveRoleAsync(address, RoleType.Expert);
+            var user = await _userRepository.GetByAddressAsync(address);
+            if (user == null)
+                throw new AppErrorException(ErrorCode.UserNotFound);
+
+            await _userRepository.RemoveRoleAsync(user.Id, RoleType.Expert);
+            await _userRepository.SaveChangesAsync();
 
             var expert = await _expertRepository.GetByAddressAsync(address);
             _expertRepository.Remove(expert);
@@ -191,6 +195,7 @@ namespace SmartValley.WebApi.Experts
             user.BirthDate = application.BirthDate;
             user.Sex = application.Sex;
 
+            await _userRepository.AddRoleAsync(user.Id, RoleType.Expert);
             await _userRepository.SaveChangesAsync();
 
             var expert = await _expertRepository.GetByAddressAsync(user.Address);
