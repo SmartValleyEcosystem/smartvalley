@@ -32,6 +32,7 @@ import {ScoringListComponent} from './components/scoring-list/scoring-list.compo
 import {ScoringShouldNotExistGuard} from './services/guards/scoring-should-not-exist.guard';
 import {PrivateApplicationShouldNotBeSubmitted} from './services/guards/private-application-should-not-be-submitted.guard';
 import {EditScoringComponent} from './components/scoring/edit-scoring/edit-scoring.component';
+import {PrivateScoringAvailabilityGuard} from './services/guards/private-scoring-availability.guard';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -89,8 +90,16 @@ const appRoutes: Routes = [
     {path: Paths.ProjectList, component: ProjectListComponent},
     {path: Paths.ScoringList, component: ScoringListComponent},
     {path: Paths.ProjectList + '/:search', component: ProjectListComponent},
-    {path: Paths.Project + '/:id', component: ProjectComponent},
-    {path: Paths.Project + '/:id/details/:tab', component: ProjectComponent},
+    {
+      path: Paths.Project + '/:id',
+      component: ProjectComponent,
+      canActivate: [PrivateScoringAvailabilityGuard]
+    },
+    {
+      path: Paths.Project + '/:id/details/:tab',
+      component: ProjectComponent,
+      canActivate: [PrivateScoringAvailabilityGuard]
+    },
     {
       path: Paths.ScoringApplication + '/:id',
       component: EditScoringApplicationComponent,
