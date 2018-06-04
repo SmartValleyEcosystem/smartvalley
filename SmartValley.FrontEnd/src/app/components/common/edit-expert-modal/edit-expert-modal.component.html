@@ -66,15 +66,15 @@
           </mat-dialog-actions>
         </span>
       </div>
-    </form>
-    <h3 class="sub-header">{{'EditExpertModalComponent.Blockchain' | translate}}</h3>
-    <div class="row">
+      <h3 class="sub-header">{{'EditExpertModalComponent.Blockchain' | translate}}</h3>
+      <div class="row">
         <span class="col-6">
           <mat-checkbox align="start" name="available" formControlName="isAvailable">
             {{ 'EditExpertModalComponent.AvailableForWork' | translate }}
           </mat-checkbox>
         </span>
-    </div>
+      </div>
+    </form>
     <div *ngFor="let area of areas" class="row">
       <span class="col-6">
         <mat-checkbox align="start" name="{{'area' + area.areaType}}"
