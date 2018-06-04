@@ -1,5 +1,5 @@
 <div>
-  <div *ngIf="scoringStatus !== ScoringStatus.Finished && !isAuthor" class="content empty-result">
+  <div *ngIf="scoringStatus !== ScoringStatus.Finished && !isAuthor && !isAdmin" class="content empty-result">
     <p>{{ 'ScoringReport.ProjectHaventScored' | translate }}</p>
   </div>
 
@@ -27,8 +27,9 @@
       </li>
     </ul>
   </div>
-
-  <mat-tab-group *ngIf="scoringStatus === ScoringStatus.Finished" class="report-tab" (selectChange)="onTabChange()">
+  <mat-tab-group
+          *ngIf="scoringStatus === ScoringStatus.Finished || (isAdmin && isPrivate && scoringStatus === ScoringStatus.InProgress)"
+           class="report-tab" (selectChange)="onTabChange()">
     <mat-tab *ngFor="let scoringInfo of areasScoringInfo" label="{{ scoringInfo.areaName }}">
       <ng-template mat-tab-label>
         <div class="label-wrapper">
@@ -36,6 +37,7 @@
             {{ scoringInfo.areaName }}
           </p>
           <p class="label-score">
+            <span *ngIf="isAdmin">&mdash;</span>
             {{scoringInfo.scoringInfo.score}}<span class="max-score">/{{getMaxScoreByArea(scoringInfo.areaType)}}</span>
           </p>
         </div>

@@ -13,6 +13,7 @@ import {CriterionPromptResponse} from '../../../api/estimates/criterion-prompt-r
 import {CriterionPrompt} from '../../../api/estimates/criterion-prompt';
 import {QuestionControlType} from '../../../api/scoring-application/question-control-type.enum';
 import {ProjectComponent} from '../project.component';
+import {UserContext} from '../../../services/authentication/user-context';
 
 @Component({
   selector: 'app-scoring-report',
@@ -28,21 +29,28 @@ export class ScoringReportComponent implements OnInit {
   public questionsActivity: boolean[] = [];
   public areaType: number;
   public criterionIsReady = false;
+  public isAdmin = false;
 
   public ScoringStatus = ScoringStatus;
 
   @Input() projectId: number;
+  @Input() isPrivate: boolean;
   @Input() scoringStatus: ScoringStatus;
   @Input() isAuthor: boolean;
 
   constructor(@Inject(ProjectComponent) public parent: ProjectComponent,
               private router: Router,
+              private userContext: UserContext,
               private areaService: AreaService,
               private estimatesApiClient: EstimatesApiClient,
               private scoringCriterionService: ScoringCriterionService) {
   }
 
   public async ngOnInit() {
+    const currentUser = this.userContext.getCurrentUser();
+    if (currentUser) {
+        this.isAdmin = currentUser.isAdmin;
+    }
     const estimates = await this.estimatesApiClient.getAsync(this.projectId);
     for (const item of estimates.items) {
       const estimatesForArea = estimates.items.find(e => e.areaType === item.areaType);
