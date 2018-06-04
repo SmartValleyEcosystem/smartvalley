@@ -10,6 +10,7 @@ using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ScoringOffersRepository : IScoringOffersRepository
     {
         private readonly IReadOnlyDataContext _readContext;
@@ -28,9 +29,10 @@ namespace SmartValley.Data.SQL.Repositories
                             join country in _readContext.Countries on project.CountryId equals country.Id
                             where !query.ExpertId.HasValue || user.Id == query.ExpertId.Value
                             where !query.ScoringId.HasValue || scoring.Id == query.ScoringId.Value
+                            where !query.ProjectId.HasValue || project.Id == query.ProjectId.Value
                             where !query.OnlyTimedOut
-                                  || (scoring.AcceptingDeadline < now && scoringOffer.Status == ScoringOfferStatus.Pending)
-                                  || (scoring.ScoringDeadline < now && scoringOffer.Status == ScoringOfferStatus.Accepted)
+                                  || scoring.AcceptingDeadline < now && scoringOffer.Status == ScoringOfferStatus.Pending
+                                  || scoring.ScoringDeadline < now && scoringOffer.Status == ScoringOfferStatus.Accepted
                             where !query.Status.HasValue || query.Status == scoringOffer.Status
                             select new ScoringOfferDetails(scoringOffer.Status,
                                                            scoring.AcceptingDeadline,

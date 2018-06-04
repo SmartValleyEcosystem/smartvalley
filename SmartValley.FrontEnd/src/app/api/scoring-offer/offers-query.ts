@@ -10,4 +10,5 @@ export interface OffersQuery {
   sortDirection?: SortDirection;
   expertId?: number;
   scoringId?: number;
+  projectId?: number;
 }

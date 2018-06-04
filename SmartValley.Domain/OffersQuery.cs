@@ -12,8 +12,10 @@ namespace SmartValley.Domain
 
         public long? ScoringId { get; set; }
 
+        public long? ProjectId { get; set; }
+
         public bool OnlyTimedOut { get; set; }
-        
+
         public ScoringOfferStatus? Status { get; set; }
 
         public ScoringOffersOrderBy? OrderBy { get; set; }
