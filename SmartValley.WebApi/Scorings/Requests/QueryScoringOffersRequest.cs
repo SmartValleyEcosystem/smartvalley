@@ -1,4 +1,5 @@
-﻿using SmartValley.Domain;
+﻿using System.ComponentModel.DataAnnotations;
+using SmartValley.Domain;
 
 namespace SmartValley.WebApi.Scorings.Requests
 {
@@ -9,9 +10,10 @@ namespace SmartValley.WebApi.Scorings.Requests
             Count = 100;
         }
 
+        [Range(0, int.MaxValue)]
         public int Offset { get; set; }
 
-        //[Range(1, 100)]
+        [Range(1, 100)]
         public int Count { get; set; }
 
         public ScoringOfferStatus? Status { get; set; }
