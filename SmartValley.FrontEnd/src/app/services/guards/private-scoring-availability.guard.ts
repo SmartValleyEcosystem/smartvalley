@@ -24,6 +24,10 @@ export class PrivateScoringAvailabilityGuard implements CanActivate {
       const projectId = +next.paramMap.get('id');
       const currentProject = await this.projectApiClient.getProjectSummaryAsync(projectId);
 
+      if (!currentProject.isPrivate) {
+          return true;
+      }
+
       const isAdmin = user.isAdmin;
       const isExpert = user.isExpert;
       const isProjectOwner = currentProject.authorId === user.id;

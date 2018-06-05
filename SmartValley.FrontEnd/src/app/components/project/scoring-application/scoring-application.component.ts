@@ -129,7 +129,7 @@ export class ScoringApplicationComponent implements OnInit {
     const element = this.htmlElement.nativeElement.querySelector('#partition_' + elementId);
     const containerOffset = element.offsetTop;
     const fieldOffset = element.offsetParent.offsetTop;
-    window.scrollTo({left: 0, top: containerOffset + fieldOffset + 500, behavior: 'smooth'});
+    window.scrollTo({left: 0, top: containerOffset + fieldOffset, behavior: 'smooth'});
   }
 
   public navigateToCreateForm() {
