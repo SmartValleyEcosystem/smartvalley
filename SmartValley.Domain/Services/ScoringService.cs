@@ -34,7 +34,7 @@ namespace SmartValley.Domain.Services
             _userRepository = userRepository;
         }
 
-        public async Task<long> StartAsync(long projectId, IDictionary<AreaType, int> areas)
+        public async Task<long> StartAsync(long projectId)
         {
             var project = await _projectRepository.GetByIdAsync(projectId);
             var scoringInfo = await _scoringOffersManagerContractClient.GetScoringInfoAsync(project.ExternalId);
@@ -42,7 +42,7 @@ namespace SmartValley.Domain.Services
             if (!scoringInfo.Offers.Any())
                 throw new AppErrorException(ErrorCode.PendingOffersNotFound);
 
-            return await CreateScoringAsync(project, areas, scoringInfo);
+            return await CreateScoringAsync(project, scoringInfo);
         }
 
         public Task<Scoring> GetByIdAsync(long scoringId)
@@ -50,12 +50,11 @@ namespace SmartValley.Domain.Services
 
         private async Task<long> CreateScoringAsync(
             Project project,
-            IDictionary<AreaType, int> areas,
             ScoringInfo scoringInfo)
         {
             var contractAddress = await _scoringsRegistryContractClient.GetScoringAddressAsync(project.ExternalId);
 
-            var areaScorings = areas.Select(x => new AreaScoring {AreaId = x.Key, ExpertsCount = x.Value}).ToList();
+            var areaScorings = await _scoringsRegistryContractClient.GetRequiredExpertsCountsAsync(project.ExternalId);
             var offers = await CreateOffersAsync(scoringInfo.Offers);
             var scoring = new Scoring(
                 project.Id,
@@ -63,7 +62,7 @@ namespace SmartValley.Domain.Services
                 _clock.UtcNow,
                 scoringInfo.AcceptingDeadline,
                 scoringInfo.ScoringDeadline,
-                areaScorings,
+                areaScorings.Select(x => new AreaScoring {AreaId = x.Area, ExpertsCount = x.Count}).ToArray(),
                 offers);
 
             _scoringRepository.Add(scoring);
