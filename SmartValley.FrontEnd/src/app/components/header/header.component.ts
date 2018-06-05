@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {NavigationEnd, Router, RouterEvent} from '@angular/router';
 import {Paths} from '../../paths';
@@ -15,13 +15,14 @@ import {DialogService} from '../../services/dialog-service';
 import {User} from '../../services/authentication/user';
 import {ExpertsRegistryContractClient} from '../../services/contract-clients/experts-registry-contract-client';
 import {TranslateService} from '@ngx-translate/core';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
 
   public currentBalance: number;
   public showReceiveEtherButton: boolean;
@@ -40,6 +41,7 @@ export class HeaderComponent implements OnInit {
   public isUserExpert = false;
   public isExpertActive: boolean;
   public isMobileMenuVisible = false;
+  public routerSubscriber: Subscription;
 
   constructor(private balanceService: BalanceService,
               private blockiesService: BlockiesService,
@@ -57,7 +59,7 @@ export class HeaderComponent implements OnInit {
       this.myProjectLink = '';
     });
 
-    this.router.events.subscribe(async (event: RouterEvent) => await this.checkExpertPanelVisibilityAsync(event));
+    this.routerSubscriber = this.router.events.subscribe(async (event: RouterEvent) => await this.checkExpertPanelVisibilityAsync(event));
     this.projectService.projectsCreated.subscribe(async () => await this.updateProjectsAsync());
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
     this.userContext.userContextChanged.subscribe(async (user) => await this.updateAccountAsync(user));
@@ -195,6 +197,10 @@ export class HeaderComponent implements OnInit {
       transactionDialog.close();
       this.isExpertActive = !isExpertActive;
     }
+  }
+
+  public ngOnDestroy() {
+      this.routerSubscriber.unsubscribe();
   }
 
   public switchMobileMenuVisibility() {
