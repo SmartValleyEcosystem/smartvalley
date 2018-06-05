@@ -5,8 +5,7 @@
     "CreateNew": "Create new",
     "Address": "Address",
     "Email": "Email",
-    "FirstName": "First name",
-    "SecondName": "Second name",
+    "FullName": "Full name",
     "PrivateScoring": "Private scoring"
   }
 }

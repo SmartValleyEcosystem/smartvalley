@@ -7,7 +7,6 @@
         <th class="list-item">{{ 'AdminExpertList.Email' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.FullName' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.About' | translate }}</th>
-        <th class="list-item">{{ 'AdminExpertList.BitcointalkLink' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.IsAvailable' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.IsInHouse' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.Categories' | translate }}</th>
@@ -22,7 +21,7 @@
         <td class="list-item">
           {{(rowData.firstName||'') + ' ' + (rowData.secondName||'')}}
         </td>
-        <td class="list-item" *ngFor="let col of ['about', 'bitcointalk', 'isAvailable', 'isInHouse']">
+        <td class="list-item" *ngFor="let col of ['about', 'isAvailable', 'isInHouse']">
           {{rowData[col]}}
         </td>
         <td class="list-item">

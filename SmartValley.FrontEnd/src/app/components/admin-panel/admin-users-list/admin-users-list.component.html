@@ -4,8 +4,7 @@
     <ng-template pTemplate="header" let-columns>
       <tr class="list-row list-row__header">
         <th class="list-item">{{ 'AdminUsersList.RegDate' | translate }}</th>
-        <th class="list-item">{{ 'AdminUsersList.FirstName' | translate }}</th>
-        <th class="list-item">{{ 'AdminUsersList.SecondName' | translate }}</th>
+        <th class="list-item">{{ 'AdminUsersList.FullName' | translate }}</th>
         <th class="list-item">{{ 'AdminUsersList.Address' | translate }}</th>
         <th class="list-item">{{ 'AdminUsersList.Email' | translate }}</th>
         <th class="list-item">{{ 'AdminUsersList.PrivateScoring' | translate }}</th>
@@ -17,7 +16,10 @@
         <td class="list-item">
           {{rowData['registrationDate'] | date:'yyyy-MM-dd'}}
         </td>
-        <td class="list-item" *ngFor="let col of ['firstName', 'lastName', 'address', 'email']" style="overflow-wrap: break-word;">
+        <td class="list-item">
+          {{(rowData.firstName||'') + ' ' + (rowData.lastName||'')}}
+        </td>
+        <td class="list-item" *ngFor="let col of ['address', 'email']" style="overflow-wrap: break-word;">
           {{rowData[col]}}
         </td>
         <td>
