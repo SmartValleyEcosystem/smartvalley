@@ -67,11 +67,9 @@
                   {{ 'ScoringList.TookTheOffer' | translate }}
                 </div>
               </td>
-              <td *ngIf="project.acceptingDeadline; else elseEndDate">{{ project.acceptingDeadline | date:'dd MMM HH:mm' }}
+              <td>
+              {{ getDeadline(project) | date:'dd MMM HH:mm' | dashIfEmpty}}
               </td>
-              <ng-template #elseEndDate>
-                <td>&mdash;</td>
-              </ng-template>
               <td *ngIf="project.finalScore; else elseScore" class="scoring-col gray-color-text">
                 {{ 'ScoringList.Finished' | translate }}:
                 <span class="primary-color-text">{{project.finalScore | roundNumberPipe}}</span>/100

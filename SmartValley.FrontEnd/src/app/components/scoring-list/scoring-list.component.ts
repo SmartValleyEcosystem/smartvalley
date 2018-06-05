@@ -126,6 +126,10 @@ export class ScoringListComponent implements OnInit {
     }
   }
 
+  public getDeadline(offer: ScoringOfferResponse) {
+    return offer.isPrivate ? null : (offer.offerStatus === 1 ? offer.scoringDeadline : offer.acceptingDeadline);
+  }
+
   public navigateToProjectScoring(projectId: number, area: number, event: MouseEvent) {
     event.stopPropagation();
     this.router.navigate([Paths.ScoringOffer + '/' + projectId + '/' + area]);
