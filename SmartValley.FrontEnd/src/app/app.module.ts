@@ -142,6 +142,7 @@ import {AdminProjectsListComponent} from './components/admin-panel/admin-project
 import {EditScoringComponent} from './components/scoring/edit-scoring/edit-scoring.component';
 import {PrivateScoringModalComponent} from './components/common/private-scoring-modal/private-scoring-modal.component';
 import {PrivateApplicationShouldNotBeSubmitted} from './services/guards/private-application-should-not-be-submitted.guard';
+import {PrivateScoringAvailabilityGuard} from './services/guards/private-scoring-availability.guard';
 import {PrivateScoringManagerContractClient} from './services/contract-clients/private-scoring-manager-contract-client';
 import {ScoringParametersProviderContractClient} from './services/contract-clients/scoring-parameters-provider-contract-client';
 import {GlobalErrorHandler} from './utils/global-error-handler';
@@ -330,6 +331,7 @@ import {LoggingApiClient} from './api/logging/logging-api-client';
     ShouldNotBeExpertGuard,
     OfferStatusGuard,
     PrivateApplicationShouldNotBeSubmitted,
+    PrivateScoringAvailabilityGuard,
     AreaService,
     AreaService,
     EnumHelper,

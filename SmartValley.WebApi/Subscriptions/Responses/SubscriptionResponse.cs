@@ -1,6 +1,6 @@
 ﻿using SmartValley.Domain.Entities;
 
-namespace SmartValley.WebApi.Subscribers.Responses
+namespace SmartValley.WebApi.Subscriptions.Responses
 {
     public class SubscriptionResponse
     {

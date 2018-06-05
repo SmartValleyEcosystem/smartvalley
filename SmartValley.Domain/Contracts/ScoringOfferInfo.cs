@@ -1,5 +1,4 @@
-﻿using System;
-using SmartValley.Domain.Entities;
+﻿using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain.Contracts
 {

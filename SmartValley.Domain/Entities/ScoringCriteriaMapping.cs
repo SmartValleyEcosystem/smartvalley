@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace SmartValley.Domain.Entities
+﻿namespace SmartValley.Domain.Entities
 {
     public class ScoringCriteriaMapping
     {

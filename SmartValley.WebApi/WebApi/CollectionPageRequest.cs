@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace SmartValley.WebApi.WebApi
+﻿namespace SmartValley.WebApi.WebApi
 {
     public class CollectionPageRequest
     {

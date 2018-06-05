@@ -43,7 +43,7 @@ namespace SmartValley.Application.Email
 
             template = template
                        .Replace("{SUBJECT}", "Please confirm email")
-                       .Replace("{BODY}", $"You get this mail because you initiated email changing. Please click on the link below to confirm new email. Before this we will send all important information to the old.")
+                       .Replace("{BODY}", "You get this mail because you initiated email changing. Please click on the link below to confirm new email. Before this we will send all important information to the old.")
                        .Replace("{BUTTON}", "Update email")
                        .Replace("{BUTTONHREF}", _siteUrls.GetConfirmEmailUrl(token, true));
 

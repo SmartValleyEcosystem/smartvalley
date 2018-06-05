@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Feedbacks.Requests;
-using SmartValley.WebApi.Feedbacks.Responses;
 
 namespace SmartValley.WebApi.Feedbacks
 {

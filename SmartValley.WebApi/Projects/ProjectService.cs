@@ -75,7 +75,12 @@ namespace SmartValley.WebApi.Projects
             if (isAdmin)
                 return true;
 
-            var offersQuery = new OffersQuery {ExpertId = userId, ScoringId = project.Scoring.Id};
+            if (project.Scoring == null)
+            {
+                return false;
+            }
+
+            var offersQuery = new OffersQuery {ExpertId = userId, ScoringId = project.Scoring.Id, Count = 1, Offset = 0};
             var offers = await _scoringOffersRepository.GetAsync(offersQuery, _clock.UtcNow);
 
             return offers.Any();

@@ -33,7 +33,7 @@ namespace SmartValley.WebApi.ScoringApplications
         public Task<IReadOnlyCollection<ScoringApplicationQuestion>> GetQuestionsAsync()
             => _scoringApplicationQuestionsRepository.GetAsync();
 
-        public Task<Domain.ScoringApplication> GetApplicationAsync(long projectId)
+        public Task<ScoringApplication> GetApplicationAsync(long projectId)
             => _scoringApplicationRepository.GetByProjectIdAsync(projectId);
 
         public async Task SaveAsync(long projectId, SaveScoringApplicationRequest saveScoringApplicationRequest)
