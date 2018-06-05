@@ -103,11 +103,16 @@ namespace SmartValley.WebApi.Estimates
             await _scoringRepository.SaveChangesAsync();
         }
 
-        public async Task<IReadOnlyCollection<ScoringStatisticsInArea>> GetScoringStatisticsAsync(long projectId)
+        public async Task<ScoringStatistics> GetScoringStatisticsAsync(long projectId)
         {
             var scoring = await _scoringRepository.GetByProjectIdAsync(projectId);
             if (scoring == null)
-                return new ScoringStatisticsInArea[0];
+            {
+                return new ScoringStatistics
+                       {
+                           ScoringStatisticsInArea = new ScoringStatisticsInArea[0]
+                       };
+            }
 
             var result = new List<ScoringStatisticsInArea>();
             foreach (var areaScoring in scoring.AreaScorings)
@@ -122,7 +127,14 @@ namespace SmartValley.WebApi.Estimates
                 result.Add(statistics);
             }
 
-            return result;
+
+
+            return new ScoringStatistics
+                   {
+                       AcceptingDeadline = scoring.AcceptingDeadline,
+                       ScoringDeadline = scoring.ScoringDeadline,
+                       ScoringStatisticsInArea = result
+                   };
         }
 
         public async Task<IReadOnlyCollection<ScoringCriterionPrompt>> GetCriterionPromptsAsync(long projectId, AreaType areaType)

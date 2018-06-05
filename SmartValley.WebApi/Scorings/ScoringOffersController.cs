@@ -55,7 +55,7 @@ namespace SmartValley.WebApi.Scorings
                 throw new AppErrorException(ErrorCode.ScoringNotFound);
 
             var offer = await _scoringService.GetOfferAsync(request.ProjectId, request.AreaType.ToDomain(), User.GetUserId());
-            var offerStatus = offer?.Status.ToApi(scoring.AcceptingDeadline, _clock.UtcNow);
+            var offerStatus = offer?.Status.ToApi(scoring.AcceptingDeadline, scoring.ScoringDeadline, _clock.UtcNow);
             return new ScoringOfferStatusResponse
                    {
                        Status = offerStatus,
@@ -79,7 +79,6 @@ namespace SmartValley.WebApi.Scorings
                             ExpertId = request.ExpertId,
                             OrderBy = request.OrderBy,
                             SortDirection = request.SortDirection,
-                            OnlyTimedOut = request.Status.HasValue && request.Status.Value == ScoringOfferStatus.Expired,
                             Status = request.Status?.ToDomain(),
                             Offset = request.Offset,
                             Count = request.Count,

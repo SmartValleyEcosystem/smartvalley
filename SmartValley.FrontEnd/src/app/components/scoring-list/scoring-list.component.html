@@ -67,7 +67,7 @@
                   {{ 'ScoringList.TookTheOffer' | translate }}
                 </div>
               </td>
-              <td *ngIf="project.expirationTimestamp; else elseEndDate">{{ project.expirationTimestamp | date:'dd MMM HH:mm' }}
+              <td *ngIf="project.acceptingDeadline; else elseEndDate">{{ project.acceptingDeadline | date:'dd MMM HH:mm' }}
               </td>
               <ng-template #elseEndDate>
                 <td>&mdash;</td>

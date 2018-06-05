@@ -50,7 +50,8 @@ namespace SmartValley.WebApi.Projects.Responses
         public static ProjectSummaryResponse Create(
             Project project,
             Scoring scoring,
-            ScoringApplication scoringApplication)
+            ScoringApplication scoringApplication,
+            DateTimeOffset now)
         {
             return new ProjectSummaryResponse
                    {
@@ -68,7 +69,7 @@ namespace SmartValley.WebApi.Projects.Responses
                        Telegram = project.Telegram,
                        Twitter = project.Twitter,
                        IsApplicationSubmitted = scoringApplication?.IsSubmitted ?? false,
-                       Scoring = ScoringResponse.FromScoring(scoring),
+                       Scoring = ScoringResponse.FromScoring(scoring, now),
                        AuthorId = project.AuthorId,
                        AuthorAddress = project.Author.Address,
                        IsPrivate = project.IsPrivate,

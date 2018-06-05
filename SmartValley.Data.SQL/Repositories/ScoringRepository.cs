@@ -32,7 +32,7 @@ namespace SmartValley.Data.SQL.Repositories
         public Task<Scoring> GetByIdAsync(long scoringId)
             => Entities().FirstOrDefaultAsync(scoring => scoring.Id == scoringId);
 
-        public async Task<IReadOnlyCollection<ScoringAreaStatistics>> GetIncompletedScoringAreaStatisticsAsync(DateTimeOffset tillDate)
+        public async Task<IReadOnlyCollection<ScoringAreaStatistics>> GetIncompletedScoringAreaStatisticsAsync(DateTimeOffset now)
         {
             var requiredCounts = await (from areaScoring in _readContext.AreaScorings
                                         join scoring in _readContext.Scorings on areaScoring.ScoringId equals scoring.Id
@@ -65,6 +65,8 @@ namespace SmartValley.Data.SQL.Repositories
                                         join scoringOffer in _readContext.ScoringOffers
                                             on new {areaScoring.ScoringId, areaScoring.AreaId}
                                             equals new {scoringOffer.ScoringId, scoringOffer.AreaId}
+                                        join scoring in _readContext.Scorings on scoringOffer.ScoringId equals scoring.Id
+                                        where scoring.ScoringDeadline >= now
                                         where scoringOffer.Status == ScoringOfferStatus.Accepted
                                         where !areaScoring.Score.HasValue
                                         group scoringOffer by new {scoringOffer.ScoringId, scoringOffer.AreaId}
@@ -81,7 +83,7 @@ namespace SmartValley.Data.SQL.Repositories
                                            on new {areaScoring.ScoringId, areaScoring.AreaId}
                                            equals new {scoringOffer.ScoringId, scoringOffer.AreaId}
                                        join scoring in _readContext.Scorings on scoringOffer.ScoringId equals scoring.Id
-                                       where scoring.AcceptingDeadline >= tillDate
+                                       where scoring.AcceptingDeadline >= now
                                        where scoringOffer.Status == ScoringOfferStatus.Pending
                                        where !areaScoring.Score.HasValue
                                        group scoringOffer by new {scoringOffer.ScoringId, scoringOffer.AreaId}

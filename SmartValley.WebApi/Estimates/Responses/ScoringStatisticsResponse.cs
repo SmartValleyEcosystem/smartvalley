@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SmartValley.Domain;
 using SmartValley.WebApi.Experts;
@@ -20,14 +21,14 @@ namespace SmartValley.WebApi.Estimates.Responses
 
         public AreaType AreaType { get; set; }
 
-        public static ScoringStatisticsInAreaResponse Create(ScoringStatisticsInArea scoringStatisticsInArea)
+        public static ScoringStatisticsInAreaResponse Create(ScoringStatisticsInArea scoringStatisticsInArea, DateTimeOffset acceptingDeadline, DateTimeOffset scoringDeadline, DateTimeOffset now)
         {
             return new ScoringStatisticsInAreaResponse
                    {
                        Score = scoringStatisticsInArea.Score,
                        RequiredExpertsCount = scoringStatisticsInArea.RequiredExpertsCount,
                        Conclusions = scoringStatisticsInArea.Scorings.Select(ScoringAreaConslusionResponse.FromDomain),
-                       Offers = scoringStatisticsInArea.Offers.Select(ScoringOfferAreaResponse.FromDomain).ToArray(),
+                       Offers = scoringStatisticsInArea.Offers.Select(x => ScoringOfferAreaResponse.FromDomain(x, acceptingDeadline, scoringDeadline, now)).ToArray(),
                        Criteria = scoringStatisticsInArea
                                   .Scorings
                                   .SelectMany(x => x.Estimates)
