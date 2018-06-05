@@ -25,12 +25,11 @@
         -
       </td>
       <td *ngIf="project.scoring != null" class="list-item" [ngSwitch]="project.scoring.status">
-        <span *ngSwitchCase="ScoringStatus.Pending">{{ 'AdminProjects.New' | translate }}</span>
         <span *ngSwitchCase="ScoringStatus.InProgress">{{ 'AdminProjects.InProgress' | translate }}</span>
         <span *ngSwitchCase="ScoringStatus.Finished">{{ 'AdminProjects.Finished' | translate }}</span>
       </td>
       <td *ngIf="project.scoring == null" class="list-item">
-        -
+        {{ 'AdminProjects.New' | translate }}
       </td>
       <td class="list-item">
         <span (click)="navigateToEditScoring(project.id)" class="edit-icon" title="{{ 'AdminProjects.Edit' | translate }}"></span>
