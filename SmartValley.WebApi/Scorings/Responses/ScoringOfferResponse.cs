@@ -28,9 +28,9 @@ namespace SmartValley.WebApi.Scorings.Responses
 
         public Guid ProjectExternalId { get; set; }
 
-        public DateTimeOffset? ExpirationTimestamp { get; set; }
+        public DateTimeOffset AcceptingDeadline { get; set; }
 
-        public DateTimeOffset? EstimatesDueDate { get; set; }
+        public DateTimeOffset ScoringDeadline { get; set; }
 
         public bool IsPrivate { get; set; }
 
@@ -48,10 +48,10 @@ namespace SmartValley.WebApi.Scorings.Responses
                        CountryCode = scoringOffer.CountryCode,
                        ScoringId = scoringOffer.ScoringId,
                        ProjectExternalId = scoringOffer.ProjectExternalId,
-                       ExpirationTimestamp = scoringOffer.ExpirationTimestamp,
-                       EstimatesDueDate = scoringOffer.EstimatesDueDate,
+                       AcceptingDeadline = scoringOffer.AcceptingDeadline,
+                       ScoringDeadline = scoringOffer.ScoringDeadline,
                        IsPrivate = scoringOffer.IsPrivate,
-                       OfferStatus = scoringOffer.Status.ToApi(scoringOffer.ExpirationTimestamp, now),
+                       OfferStatus = scoringOffer.Status.ToApi(scoringOffer.AcceptingDeadline, scoringOffer.ScoringDeadline, now),
                        ProjectId = scoringOffer.ProjectId,
                        FinalScore = scoringOffer.FinalScore,
                        ExpertId = scoringOffer.ExpertId

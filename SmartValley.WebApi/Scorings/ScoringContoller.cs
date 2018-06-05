@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NServiceBus;
 using SmartValley.Domain.Entities;
+using SmartValley.Domain.Interfaces;
 using SmartValley.Messages.Commands;
 using SmartValley.WebApi.Scorings.Requests;
 using SmartValley.WebApi.Scorings.Responses;
@@ -16,11 +17,13 @@ namespace SmartValley.WebApi.Scorings
     {
         private readonly IScoringService _scoringService;
         private readonly IMessageSession _messageSession;
+        private readonly IClock _clock;
 
-        public ScoringContoller(IScoringService scoringService, IMessageSession messageSession)
+        public ScoringContoller(IScoringService scoringService, IMessageSession messageSession, IClock clock)
         {
             _scoringService = scoringService;
             _messageSession = messageSession;
+            _clock = clock;
         }
 
         [HttpGet]
@@ -28,7 +31,7 @@ namespace SmartValley.WebApi.Scorings
         public async Task<ScoringResponse> GetByProjectIdAsync(long projectId)
         {
             var scoring = await _scoringService.GetByProjectIdAsync(projectId);
-            return ScoringResponse.FromScoring(scoring);
+            return ScoringResponse.FromScoring(scoring, _clock.UtcNow);
         }
 
         [HttpPost]

@@ -23,15 +23,18 @@ namespace SmartValley.WebApi.Projects
         private readonly IProjectService _projectService;
         private readonly IScoringService _scoringService;
         private readonly IScoringApplicationRepository _scoringApplicationRepository;
+        private readonly IClock _clock;
 
         public ProjectsController(
             IProjectService projectService,
             IScoringService scoringService,
-            IScoringApplicationRepository scoringApplicationRepository)
+            IScoringApplicationRepository scoringApplicationRepository,
+            IClock clock)
         {
             _projectService = projectService;
             _scoringService = scoringService;
             _scoringApplicationRepository = scoringApplicationRepository;
+            _clock = clock;
         }
 
         [HttpGet]
@@ -153,7 +156,7 @@ namespace SmartValley.WebApi.Projects
             var scoring = await _scoringService.GetByProjectIdAsync(id);
             var scoringApplication = await _scoringApplicationRepository.GetByProjectIdAsync(id);
 
-            return ProjectSummaryResponse.Create(project, scoring, scoringApplication);
+            return ProjectSummaryResponse.Create(project, scoring, scoringApplication, _clock.UtcNow);
         }
 
         [HttpGet("{id}/about")]

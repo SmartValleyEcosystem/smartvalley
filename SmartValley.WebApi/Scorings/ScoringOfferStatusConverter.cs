@@ -23,14 +23,14 @@ namespace SmartValley.WebApi.Scorings
             }
         }
 
-        public static ScoringOfferStatus ToApi(this Domain.Entities.ScoringOfferStatus status, DateTimeOffset? expirationTimestamp, DateTimeOffset now)
+        public static ScoringOfferStatus ToApi(this Domain.Entities.ScoringOfferStatus status, DateTimeOffset acceptingDeadline, DateTimeOffset scoringDeadline, DateTimeOffset now)
         {
             switch (status)
             {
                 case Domain.Entities.ScoringOfferStatus.Pending:
-                    return expirationTimestamp < now ? ScoringOfferStatus.Expired : ScoringOfferStatus.Pending;
+                    return acceptingDeadline < now ? ScoringOfferStatus.Expired : ScoringOfferStatus.Pending;
                 case Domain.Entities.ScoringOfferStatus.Accepted:
-                    return ScoringOfferStatus.Accepted;
+                    return scoringDeadline < now ? ScoringOfferStatus.Expired : ScoringOfferStatus.Accepted;
                 case Domain.Entities.ScoringOfferStatus.Rejected:
                     return ScoringOfferStatus.Rejected;
                 case Domain.Entities.ScoringOfferStatus.Finished:

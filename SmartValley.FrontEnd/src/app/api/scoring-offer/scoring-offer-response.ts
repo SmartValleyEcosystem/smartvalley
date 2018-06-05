@@ -13,8 +13,8 @@ export interface ScoringOfferResponse {
   description: string;
   offerStatus: OfferStatus;
   projectExternalId: string;
-  expirationTimestamp: string;
-  estimatesDueDate: string;
+  acceptingDeadline: string;
+  scoringDeadline: string;
   finalScore: number;
   isPrivate: boolean;
   expertId: number;
