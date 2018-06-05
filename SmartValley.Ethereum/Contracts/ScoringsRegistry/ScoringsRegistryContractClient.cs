@@ -38,7 +38,11 @@ namespace SmartValley.Ethereum.Contracts.ScoringsRegistry
 
         public async Task<IReadOnlyCollection<AreaExpertsCount>> GetRequiredExpertsCountsAsync(Guid projectExternalId)
         {
-            var requiredExpertsCounts = await _contractClient.CallFunctionAsync<AreaExpertsCountDto>(_contractAddress, _contractAbi, "getRequiredExpertsCounts", projectExternalId.ToBigInteger());
+            var requiredExpertsCounts = await _contractClient.CallFunctionDeserializingToObjectAsync<AreaExpertsCountDto>(
+                                            _contractAddress,
+                                            _contractAbi,
+                                            "getRequiredExpertsCounts",
+                                            projectExternalId.ToBigInteger());
 
             return requiredExpertsCounts.Areas.Select((a, i) => new AreaExpertsCount {Area = (AreaType) a, Count = requiredExpertsCounts.Counts[i]}).ToArray();
         }
