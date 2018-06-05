@@ -181,7 +181,7 @@ export class EditScoringComponent implements OnInit {
       transactionHash
     );
 
-    await this.scoringApiClient.startAsync(this.project.id, this.uniqueAreas, this.areaExpertCounts, transactionHash);
+    await this.scoringApiClient.startAsync(this.project.id, transactionHash);
 
     transactionDialog.close();
 
