@@ -101,7 +101,7 @@ export class ScoringPaymentComponent implements OnInit {
     }
 
     const transactionHash = await this.scoringService.startAsync(this.externalId, areas, areaExpertCounts);
-    await this.scoringApiClient.startAsync(this.projectId, areas, areaExpertCounts, transactionHash);
+    await this.scoringApiClient.startAsync(this.projectId, transactionHash);
 
     await this.router.navigate([Paths.Project + '/' + this.projectId]);
   }

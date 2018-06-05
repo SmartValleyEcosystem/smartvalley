@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Persistence.Sql;
+using SmartValley.Domain.Contracts;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Services;
 using SmartValley.Messages.Commands;
@@ -31,7 +32,6 @@ namespace SmartValley.Application.Sagas.Scoring
         {
             Data.ProjectId = message.ProjectId;
             Data.TransactionHash = message.TransactionHash;
-            Data.ExpertCounts = message.ExpertCounts.Select(a => new AreaExpertsCount {AreaType = a.AreaType, ExpertsCount = a.ExpertsCount}).ToList();
 
             await _scoringApplicationService.SetScoringTransactionAsync(message.ProjectId, message.TransactionHash);
 
@@ -40,8 +40,7 @@ namespace SmartValley.Application.Sagas.Scoring
 
         public async Task Handle(TransactionCompleted message, IMessageHandlerContext context)
         {
-            var expertCountsDictionary = Data.ExpertCounts.ToDictionary(a => (AreaType) a.AreaType, a => a.ExpertsCount);
-            var scoringId = await _scoringService.StartAsync(Data.ProjectId, expertCountsDictionary);
+            var scoringId = await _scoringService.StartAsync(Data.ProjectId);
 
             await SendOffersAsync(context, scoringId);
 

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NServiceBus;
@@ -39,14 +38,7 @@ namespace SmartValley.WebApi.Scorings
             var command = new StartScoring
                           {
                               ProjectId = request.ProjectId,
-                              TransactionHash = request.TransactionHash,
-                              ExpertCounts = request.Areas
-                                             .Select(a => new AreaExpertsCount
-                                                          {
-                                                              AreaType = (int) a.Area,
-                                                              ExpertsCount = a.ExpertsCount
-                                                          })
-                                             .ToArray()
+                              TransactionHash = request.TransactionHash
                           };
 
             await _messageSession.SendLocal(command);

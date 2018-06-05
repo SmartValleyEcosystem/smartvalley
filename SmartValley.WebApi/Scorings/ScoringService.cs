@@ -14,7 +14,6 @@ using AreaType = SmartValley.Domain.Entities.AreaType;
 
 namespace SmartValley.WebApi.Scorings
 {
-    // ReSharper disable once ClassNeverInstantiated.Global
     public class ScoringService : IScoringService
     {
         private readonly IProjectRepository _projectRepository;
@@ -25,10 +24,12 @@ namespace SmartValley.WebApi.Scorings
         private readonly IClock _clock;
         private readonly IScoringContractClient _scoringContractClient;
         private readonly IUserRepository _userRepository;
+        private readonly IScoringsRegistryContractClient _scoringsRegistryContractClient;
 
         public ScoringService(
             IProjectRepository projectRepository,
             IScoringRepository scoringRepository,
+            IScoringsRegistryContractClient scoringsRegistryContractClient,
             IScoringOffersRepository scoringOffersRepository,
             IScoringOffersManagerContractClient scoringOffersManagerContractClient,
             MailService mailService,
@@ -43,6 +44,7 @@ namespace SmartValley.WebApi.Scorings
             _mailService = mailService;
             _userRepository = userRepository;
             _clock = clock;
+            _scoringsRegistryContractClient = scoringsRegistryContractClient;
             _scoringContractClient = scoringContractClient;
         }
 
@@ -73,6 +75,8 @@ namespace SmartValley.WebApi.Scorings
             {
                 var acceptedAndDoNotEstimateStatistics = statistics.Where(i => i.AcceptedCount > i.FinishedCount && i.ScoringEndDate?.Date < _clock.UtcNow);
                 result.AddRange(await ConvertAreaStatisticsToProjectDetailsAsync(ScoringProjectStatus.AcceptedAndDoNotEstimate, acceptedAndDoNotEstimateStatistics));
+
+                return result;
             }
 
             return result;
@@ -137,6 +141,9 @@ namespace SmartValley.WebApi.Scorings
                 await NotifyExpertsAsync(newOffers, experts);
             }
 
+            var requiredExpertsCount = await _scoringsRegistryContractClient.GetRequiredExpertsCountsAsync(projectExternalId);
+            scoring.UpdateExpertsCounts(requiredExpertsCount);
+
             scoring.AcceptingDeadline = scoringInfo.AcceptingDeadline;
             scoring.ScoringDeadline = scoringInfo.ScoringDeadline;
 
@@ -163,6 +170,12 @@ namespace SmartValley.WebApi.Scorings
                 throw new AppErrorException(ErrorCode.ServerError, "'Finish' is allowed only for private scoring.");
 
             var scoringResults = await _scoringContractClient.GetResultsAsync(scoring.ContractAddress);
+
+            foreach (var area in scoringResults.AreaScores.Keys)
+            {
+                if (scoring.HasEnoughEstimatesInArea(area))
+                    scoring.SetScoreForArea(area, scoringResults.AreaScores[area]);
+            }
 
             scoring.Finish(scoringResults.Score, _clock.UtcNow);
             await _scoringRepository.SaveChangesAsync();
