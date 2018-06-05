@@ -37,8 +37,8 @@
             {{ scoringInfo.areaName }}
           </p>
           <p class="label-score">
-            <span *ngIf="isAdmin">&mdash;</span>
-            {{scoringInfo.scoringInfo.score}}<span class="max-score">/{{getMaxScoreByArea(scoringInfo.areaType)}}</span>
+            {{scoringInfo.scoringInfo.score | dashIfEmpty}}
+            <span class="max-score">/{{getMaxScoreByArea(scoringInfo.areaType)}}</span>
           </p>
         </div>
       </ng-template>
