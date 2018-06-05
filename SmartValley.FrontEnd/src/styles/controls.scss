@@ -439,6 +439,11 @@ body .ui-radiobutton-box {
   height: 20px;
 }
 
+body .ui-radiobutton-label {
+  display: initial;
+  cursor: pointer;
+}
+
 body .ui-radiobutton-box.ui-state-active {
   background-color: #fff !important;
 }
@@ -451,7 +456,7 @@ body .ui-radiobutton .ui-radiobutton-box.ui-state-active .ui-radiobutton-icon.fa
 
 body .ui-radiobutton .ui-radiobutton-box {
   position: relative;
-  top: -3px;
+  top: 0px;
 }
 
 body .ng-invalid .ui-chkbox .ui-chkbox-box {

@@ -14,7 +14,7 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-project let-columns="columns">
-    <tr class="list-row" (click)="navigateToEditScoring(project.id)">
+    <tr class="list-row">
       <td class="list-item">
         {{project.name}}
       </td>
@@ -34,6 +34,9 @@
       </td>
       <td class="list-item">
         <span (click)="navigateToEditScoring(project.id)" class="edit-icon" title="{{ 'AdminProjects.Edit' | translate }}"></span>
+        <span (click)="navigateToProject(project.id)" class="view-project-icon" title="{{ 'AdminProjects.View' | translate }}">
+          <mat-icon>remove_red_eye</mat-icon>
+        </span>
       </td>
     </tr>
   </ng-template>

@@ -1,0 +1,10 @@
+.view-project-icon {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  border-radius: 100px;
+  position: relative;
+  padding-top: 6px;
+  text-align: center;
+  background-color: #E0E0E0;
+}

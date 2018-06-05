@@ -14,7 +14,7 @@
           {{rowData[col]}}
         </td>
         <td>
-          <img (click)="deleteAsync(admin.address)" src="/assets/img/controls/delete.svg" alt="{{ 'AdminPanel.Delete' | translate }}">
+          <img (click)="deleteAsync(rowData.address)" src="/assets/img/controls/delete.svg" alt="{{ 'AdminPanel.Delete' | translate }}">
         </td>
       </tr>
     </ng-template>
