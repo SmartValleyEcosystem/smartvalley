@@ -5,6 +5,7 @@ using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.ScoringApplications.Requests;
 using SmartValley.WebApi.ScoringApplications.Responses;
+using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.ScoringApplications
 {
@@ -23,6 +24,7 @@ namespace SmartValley.WebApi.ScoringApplications
         }
 
         [HttpGet]
+        [CanSeeProject("projectId")]
         public async Task<ScoringApplicationResponse> GetByProjectIdAsync(long projectId)
         {
             var questions = await _scoringApplicationService.GetQuestionsAsync();
@@ -47,14 +49,14 @@ namespace SmartValley.WebApi.ScoringApplications
         }
 
         [HttpPut("submit"), Authorize]
-         public async Task<IActionResult> SubmitAsync(long projectId)
-         {
-             var isAuthorizedToEditProjectAsync = await _projectService.IsAuthorizedToEditProjectAsync(projectId, User.GetUserId());
-             if (!isAuthorizedToEditProjectAsync)
-                 return Unauthorized();
- 
-             await _scoringApplicationService.SubmitApplicationAsync(projectId);
-             return NoContent();
-         }
-     }
- }
+        public async Task<IActionResult> SubmitAsync(long projectId)
+        {
+            var isAuthorizedToEditProjectAsync = await _projectService.IsAuthorizedToEditProjectAsync(projectId, User.GetUserId());
+            if (!isAuthorizedToEditProjectAsync)
+                return Unauthorized();
+
+            await _scoringApplicationService.SubmitApplicationAsync(projectId);
+            return NoContent();
+        }
+    }
+}

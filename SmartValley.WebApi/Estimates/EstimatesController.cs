@@ -69,6 +69,7 @@ namespace SmartValley.WebApi.Estimates
         }
 
         [HttpGet]
+        [CanSeeProject("projectId")]
         public async Task<CollectionResponse<ScoringStatisticsInAreaResponse>> GetEstimatesAsync(long projectId)
         {
             var scoringStatistics = await _estimationService.GetScoringStatisticsAsync(projectId);
