@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SmartValley.Domain.Entities
 {
     public class Expert
     {
-
         public Expert(long userId, bool isAvailable, bool isInHouse = false)
         {
             UserId = userId;
@@ -30,7 +28,7 @@ namespace SmartValley.Domain.Entities
 
             foreach (var area in areas)
             {
-                ExpertAreas.Add(new ExpertArea { AreaId = (AreaType)area });
+                ExpertAreas.Add(new ExpertArea {AreaId = (AreaType) area});
             }
         }
     }

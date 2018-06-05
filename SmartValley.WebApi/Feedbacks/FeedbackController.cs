@@ -1,11 +1,7 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SmartValley.Application.Extensions;
-using SmartValley.Data.SQL.Extensions;
 using SmartValley.Domain.Entities;
-using SmartValley.WebApi.Experts.Requests;
 using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Feedbacks.Requests;
 using SmartValley.WebApi.Feedbacks.Responses;

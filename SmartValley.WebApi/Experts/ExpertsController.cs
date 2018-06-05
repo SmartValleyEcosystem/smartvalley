@@ -12,7 +12,6 @@ using SmartValley.Ethereum;
 using SmartValley.WebApi.Experts.Requests;
 using SmartValley.WebApi.Experts.Responses;
 using SmartValley.WebApi.Extensions;
-using SmartValley.WebApi.Users;
 using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Experts
@@ -178,7 +177,7 @@ namespace SmartValley.WebApi.Experts
         {
             if (!scan.IsImageValid()
                 || !photo.IsImageValid()
-                || !cv.IsCVValid())
+                || !cv.IsCvValid())
             {
                 throw new AppErrorException(ErrorCode.InvalidFileUploaded);
             }
