@@ -176,14 +176,7 @@ export class EditScoringComponent implements OnInit {
       this.areas,
       this.expertsAddresses);
 
-    const transactionDialog = this.dialogService.showTransactionDialog(
-      this.translateService.instant('EditScoring.Dialog'),
-      transactionHash
-    );
-
     await this.scoringApiClient.startAsync(this.project.id, transactionHash);
-
-    transactionDialog.close();
 
     await this.router.navigate([Paths.Admin + '/scoring/private-scoring']);
   }
