@@ -5,8 +5,7 @@
       <tr class="list-row list-row__header">
         <th class="list-item">{{ 'AdminExpertList.Address' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.Email' | translate }}</th>
-        <th class="list-item">{{ 'AdminExpertList.FirstName' | translate }}</th>
-        <th class="list-item">{{ 'AdminExpertList.SecondName' | translate }}</th>
+        <th class="list-item">{{ 'AdminExpertList.FullName' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.About' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.BitcointalkLink' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.IsAvailable' | translate }}</th>
@@ -17,8 +16,19 @@
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr class="list-row">
-        <td class="list-item" *ngFor="let col of ['address', 'email', 'firstName', 'secondName', 'about', 'bitcointalk', 'isAvailable', 'isInHouse', 'areas']">
+        <td class="list-item" *ngFor="let col of ['address', 'email']">
           {{rowData[col]}}
+        </td>
+        <td class="list-item">
+          {{(rowData.firstName||'') + ' ' + (rowData.secondName||'')}}
+        </td>
+        <td class="list-item" *ngFor="let col of ['about', 'bitcointalk', 'isAvailable', 'isInHouse']">
+          {{rowData[col]}}
+        </td>
+        <td class="list-item">
+          <div *ngFor="let area of rowData.areas">
+            {{area.name}}
+          </div>
         </td>
         <td>
           <span (click)="showExpertEditDialog(rowData)" class="edit-icon" title="{{ 'AdminExpertList.Edit' | translate }}"></span>

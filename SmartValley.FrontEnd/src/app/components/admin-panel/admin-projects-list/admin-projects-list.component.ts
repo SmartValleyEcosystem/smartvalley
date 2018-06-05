@@ -62,4 +62,8 @@ export class AdminProjectsListComponent {
   public async navigateToEditScoring(projectId: number) {
     this.router.navigate([Paths.Project + `/${projectId}/edit-scoring`]);
   }
+
+  public async navigateToProject(projectId: number) {
+    await this.router.navigate([Paths.Project + '/' + projectId]);
+  }
 }

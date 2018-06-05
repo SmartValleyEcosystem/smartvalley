@@ -7,4 +7,5 @@
 .list-item {
     max-width: 200px;
     overflow: hidden;
+    word-wrap: break-word;
 }
