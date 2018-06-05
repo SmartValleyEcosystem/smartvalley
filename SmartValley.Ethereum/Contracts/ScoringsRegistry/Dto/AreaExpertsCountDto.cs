@@ -3,6 +3,7 @@ using Nethereum.ABI.FunctionEncoding.Attributes;
 
 namespace SmartValley.Ethereum.Contracts.ScoringsRegistry.Dto
 {
+    [FunctionOutput]
     public class AreaExpertsCountDto
     {
         [Parameter("uint256[]", "_counts", 1)]
