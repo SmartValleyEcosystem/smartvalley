@@ -90,9 +90,11 @@
         <app-file-uploader
           class="input-component"
           name="projectImage"
-          accept="image/*"
+          accept="image/gif, image/jpeg, image/pjpeg, image/png"
           maxFileSize="5242880"
           formControlName="projectImage"
+          (onMimeTypeError)="onMimeTypeError('ImageMimeTypeError', 'notify')"
+          (onMaxSizeError)="onPhotoSizeError()"
           #projectImage></app-file-uploader>
       </div>
     </div>
