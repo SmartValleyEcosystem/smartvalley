@@ -38,6 +38,7 @@ export class CreateNewExpertModalComponent implements OnInit {
     }
     async ngOnInit() {
         this.areas = this.areaService.areas;
+        this.selectedCategories = [];
         let formGroupInputs = {
             address: ['', [Validators.required, AddAdminModalComponent.validateWalletAddress]],
             available: [''],
