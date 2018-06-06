@@ -17,6 +17,7 @@ namespace SmartValley.WebApi.Estimates
     {
         private readonly IScoringContractClient _scoringContractClient;
         private readonly IScoringRepository _scoringRepository;
+        private readonly IProjectRepository _projectRepository;
         private readonly IClock _clock;
         private readonly IScoringCriterionRepository _scoringCriterionRepository;
         private readonly IScoringApplicationRepository _scoringApplicationRepository;
@@ -42,12 +43,14 @@ namespace SmartValley.WebApi.Estimates
         public EstimationService(
             IScoringContractClient scoringContractClient,
             IScoringRepository scoringRepository,
+            IProjectRepository projectRepository,
             IClock clock,
             IScoringCriterionRepository scoringCriterionRepository,
             IScoringApplicationRepository scoringApplicationRepository)
         {
             _scoringContractClient = scoringContractClient;
             _scoringRepository = scoringRepository;
+            _projectRepository = projectRepository;
             _clock = clock;
             _scoringCriterionRepository = scoringCriterionRepository;
             _scoringApplicationRepository = scoringApplicationRepository;
@@ -97,7 +100,8 @@ namespace SmartValley.WebApi.Estimates
             if (scoring.HasEnoughEstimatesInArea(area))
                 scoring.SetScoreForArea(area, areaScore);
 
-            if (scoring.AreAllAreasCompleted())
+            var project = await _projectRepository.GetByIdAsync(scoring.ProjectId);
+            if (!project.IsPrivate && scoring.AreAllAreasCompleted())
                 scoring.Finish(scoringResults.Score, _clock.UtcNow);
 
             await _scoringRepository.SaveChangesAsync();
@@ -126,8 +130,6 @@ namespace SmartValley.WebApi.Estimates
                                                              areaScoring.AreaId);
                 result.Add(statistics);
             }
-
-
 
             return new ScoringStatistics
                    {
