@@ -68,7 +68,7 @@ export class CreateNewExpertModalComponent implements OnInit {
                 }
             }
         }
-        this.transactionHash = ( await this.expertsRegistryContractClient.addAsync(form.value.address, [1]) );
+        this.transactionHash = ( await this.expertsRegistryContractClient.addAsync(form.value.address, this.selectedCategories) );
         this.newExpertRequest = {
             transactionHash: this.transactionHash,
             address: form.value.address,
