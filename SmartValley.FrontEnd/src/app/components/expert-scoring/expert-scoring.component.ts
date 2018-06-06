@@ -178,28 +178,32 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
     }
   }
 
-  public async submitFormAsync() {
-    if (!this.validateForm()) {
-      return;
-    }
-
+  private async submitEstimates(): Promise<string>
+  {
     let transactionHash = '';
 
     if (this.project.isPrivate) {
-        transactionHash = await this.privateScoringManagerContractClient.submitEstimatesAsync(
-            this.projectExternalId,
-            this.areaType,
-            this.scoringForm.get('conclusion').value,
-            this.getEstimate()
-        );
+      transactionHash = await this.privateScoringManagerContractClient.submitEstimatesAsync(
+        this.projectExternalId,
+        this.areaType,
+        this.scoringForm.get('conclusion').value,
+        this.getEstimate()
+      );
     } else {
-        transactionHash = await this.scoringManagerContractClient.submitEstimatesAsync(
-            this.projectExternalId,
-            this.areaType,
-            this.scoringForm.get('conclusion').value,
-            this.getEstimate()
-        );
+      transactionHash = await this.scoringManagerContractClient.submitEstimatesAsync(
+        this.projectExternalId,
+        this.areaType,
+        this.scoringForm.get('conclusion').value,
+        this.getEstimate()
+      );
     }
+
+    return transactionHash;
+  }
+
+  private async submit()
+  {
+    const transactionHash = await this.submitEstimates();
 
     const transactionDialog = this.dialogService.showTransactionDialog(
       this.translateService.instant('OfferDetails.Dialog'),
@@ -218,6 +222,15 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
     await this.balanceService.updateBalanceAsync();
 
     await this.router.navigate([Paths.ScoringList]);
+  }
+
+  public async submitFormAsync() {
+    if (!this.validateForm()) {
+      return;
+    }
+
+    await this.saveDraft();
+    await this.submit();
   }
 
   public getEstimate(): Estimate[] {
