@@ -37,7 +37,7 @@ namespace SmartValley.Domain.Entities
         public ICollection<ScoringOffer> ScoringOffers { get; set; }
 
         public ICollection<ExpertScoring> ExpertScorings { get; set; }
-        
+
         private Scoring()
         {
         }
@@ -160,6 +160,10 @@ namespace SmartValley.Domain.Entities
                     throw new AppErrorException(ErrorCode.ServerError, $"Can find offer: expertId: '{offer.ExpertId}', areaId: '{offer.AreaId}'.");
 
                 ScoringOffers.Remove(offerToDelete);
+
+                var storedScoring = ExpertScorings.FirstOrDefault(x => x.ExpertId == offer.ExpertId && x.Area == offer.AreaId);
+                if (storedScoring != null)
+                    ExpertScorings.Remove(storedScoring);
             }
         }
 
