@@ -135,6 +135,7 @@ namespace SmartValley.WebApi.Scorings
                                        .Where(o => !scoring.ScoringOffers.Any(e => e.AreaId == o.Area && e.ExpertId == expertsDictionary[o.ExpertAddress]))
                                        .Select(o => new ScoringOffer(expertsDictionary[o.ExpertAddress], o.Area, o.Status))
                                        .ToArray();
+            
             if (newOffers.Any())
             {
                 scoring.AddOffers(newOffers);
