@@ -7,6 +7,8 @@ import {ScoringStatus} from '../../../services/scoring-status.enum';
 import {TranslateService} from '@ngx-translate/core';
 import {Router} from '@angular/router';
 import {Paths} from '../../../paths';
+import {SortDirection} from '../../../api/sort-direction.enum';
+import {ProjectsOrderBy} from '../../../api/application/projects-order-by.enum';
 
 @Component({
   selector: 'app-admin-projects-list',
@@ -47,6 +49,8 @@ export class AdminProjectsListComponent {
       count: this.pageSize,
       onlyScored: false,
       isPrivate: true,
+      orderBy: ProjectsOrderBy.CreationDate,
+      direction: SortDirection.Descending,
       scoringStatuses: this.selectedStatuses.map(i => <ScoringStatus>i)
     });
     this.totalRecords = response.totalCount;

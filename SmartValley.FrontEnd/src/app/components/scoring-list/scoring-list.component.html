@@ -64,7 +64,7 @@
                   {{ 'ScoringList.Request' | translate }}
                 </div>
                 <div *ngSwitchCase="OfferStatus.Accepted">
-                  {{ 'ScoringList.TookTheOffer' | translate }}
+                  {{ 'ScoringList.TookTheOffer' | translate }}<span *ngIf="!project.isPrivate">{{ 'ScoringList.Payments' }}</span>
                 </div>
               </td>
               <td>

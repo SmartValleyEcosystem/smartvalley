@@ -185,14 +185,14 @@ export class EditScoringComponent implements OnInit {
 
     await this.scoringApiClient.finishAsync(this.project.scoring.id);
 
-    await this.router.navigate([Paths.Admin + '/scoring/private-scoring']);
+    await this.ngOnInit();
   }
 
   public async reopenPrivateScoringAsync(): Promise<void> {
 
     await this.scoringApiClient.reopenAsync(this.project.scoring.id);
 
-    await this.router.navigate([Paths.Admin + '/scoring/private-scoring']);
+    await this.ngOnInit();
   }
 
   public async navigateToProjectReport() {
