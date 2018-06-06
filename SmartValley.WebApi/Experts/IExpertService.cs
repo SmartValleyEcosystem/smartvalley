@@ -12,7 +12,7 @@ namespace SmartValley.WebApi.Experts
     {
         Task CreateApplicationAsync(CreateExpertApplicationRequest request, long userId, AzureFile cv, AzureFile scan, AzureFile photo);
 
-        Task<ExpertApplicationDetails> GetApplicationByIdAsync(long id);
+        Task<ExpertApplication> GetApplicationByIdAsync(long id);
 
         Task<IReadOnlyCollection<ExpertApplication>> GetPendingApplicationsAsync();
 
@@ -22,24 +22,22 @@ namespace SmartValley.WebApi.Experts
 
         Task AddAsync(ExpertRequest request);
 
-        Task UpdateAsync(Address address, ExpertUpdateRequest request);
-
         Task UpdateAreasAsync(Address address, IReadOnlyCollection<int> areas);
 
         Task DeleteAsync(Address address);
 
-        Task<IReadOnlyCollection<ExpertDetails>> GetAllExpertsDetailsAsync(int offset, int count);
+        Task<PagingCollection<Expert>> GetAsync(ExpertsQuery query);
 
         Task<IReadOnlyCollection<Area>> GetAreasAsync();
 
         Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(Address address);
 
-        Task<Expert> GetAsync(long expertId);
+        Task<Expert> GetByIdAsync(long expertId);
 
-        Task<ExpertDetails> GetDetailsAsync(Address address);
+        Task<Expert> GetByAddressAsync(Address address);
 
         Task SetAvailabilityAsync(Address address, bool isAvailable);
 
-        Task<int> GetTotalCountExpertsAsync();
+        Task SetInHouseAsync(Address address, bool isInHouse);
     }
 }

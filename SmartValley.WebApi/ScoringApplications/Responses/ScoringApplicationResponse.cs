@@ -18,10 +18,10 @@ namespace SmartValley.WebApi.ScoringApplications.Responses
 
         public bool IsSubmitted { get; set; }
 
-        public static ScoringApplicationResponse CreateEmpty(IEnumerable<ScoringApplicationQuestion> questions, Project project, Country projectCountry, IReadOnlyCollection<ProjectTeamMember> projectTeamMembers)
+        public static ScoringApplicationResponse CreateEmpty(IEnumerable<ScoringApplicationQuestion> questions, Project project)
         {
             var partitions = CreatePartitions(questions);
-            var projectInfo = ProjectApplicationInfoResponse.CreateFrom(project, projectCountry, projectTeamMembers);
+            var projectInfo = ProjectApplicationInfoResponse.CreateFrom(project);
 
             return new ScoringApplicationResponse
                    {
@@ -62,7 +62,7 @@ namespace SmartValley.WebApi.ScoringApplications.Responses
                    .ToArray();
         }
 
-        private static ScoringApplicationQuestionResponse CreateEmptyQuestion(Domain.Entities.ScoringApplicationQuestion q)
+        private static ScoringApplicationQuestionResponse CreateEmptyQuestion(ScoringApplicationQuestion q)
         {
             return new ScoringApplicationQuestionResponse
                    {
@@ -76,7 +76,7 @@ namespace SmartValley.WebApi.ScoringApplications.Responses
                    };
         }
 
-        private void SetAnswersFromApplication(Domain.ScoringApplication application)
+        private void SetAnswersFromApplication(ScoringApplication application)
         {
             foreach (var answer in application.Answers)
             {

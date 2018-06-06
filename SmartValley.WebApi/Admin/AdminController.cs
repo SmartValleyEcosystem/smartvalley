@@ -2,14 +2,15 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SmartValley.Application;
 using SmartValley.Domain.Entities;
+using SmartValley.Domain.Exceptions;
 using SmartValley.Ethereum;
 using SmartValley.WebApi.Admin.Request;
 using SmartValley.WebApi.Admin.Response;
 using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.Experts;
-using SmartValley.WebApi.Experts.Requests;
+using SmartValley.WebApi.Extensions;
+using SmartValley.WebApi.Users;
 using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Admin
@@ -18,39 +19,62 @@ namespace SmartValley.WebApi.Admin
     [Authorize(Roles = nameof(RoleType.Admin))]
     public class AdminController : Controller
     {
-        private readonly IAdminService _service;
+        private readonly IAdminService _adminService;
         private readonly IExpertService _expertService;
         private readonly EthereumClient _ethereumClient;
         private readonly IAuthenticationService _authenticationService;
+        private readonly IUserService _userService;
 
         public AdminController(
             IExpertService expertService,
-            IAdminService service,
+            IAdminService adminService,
             EthereumClient ethereumClient,
-            IAuthenticationService authenticationService)
+            IAuthenticationService authenticationService,
+            IUserService userService)
         {
-            _service = service;
+            _adminService = adminService;
             _ethereumClient = ethereumClient;
             _expertService = expertService;
             _authenticationService = authenticationService;
+            _userService = userService;
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] AdminRequest request)
         {
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
-            await _service.AddAsync(request.Address);
+            await _adminService.AddAsync(request.Address);
             return NoContent();
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var admins = await _service.GetAllAsync();
+            var admins = await _adminService.GetAsync();
             return Ok(new CollectionResponse<AdminResponse>
                       {
                           Items = admins.Select(i => new AdminResponse {Address = i.Address, Email = i.Email}).ToArray()
                       });
+        }
+
+        [HttpGet("users")]
+        public async Task<PartialCollectionResponse<UserResponse>> GetAllUsers(CollectionPageRequest request)
+        {
+            var users = await _userService.GetAsync(request.Offset, request.Count);
+
+            return users.ToPartialCollectionResponse(UserResponse.Create);
+        }
+
+        [HttpPut("users")]
+        public async Task<IActionResult> PutUserAsync([FromBody] AdminUserUpdateRequest request)
+        {
+            var user = await _userService.GetByAddressAsync(request.Address);
+            if (user == null)
+                throw new AppErrorException(ErrorCode.UserNotFound);
+
+            await _userService.SetCanCreatePrivateProjectsAsync(user.Address, request.CanCreatePrivateProjects);
+
+            return NoContent();
         }
 
         [HttpPut("experts/availability")]
@@ -72,7 +96,8 @@ namespace SmartValley.WebApi.Admin
         [HttpPut("experts")]
         public async Task<IActionResult> UpdateExpertAsync([FromBody] AdminExpertUpdateRequest request)
         {
-            await _expertService.UpdateAsync(request.Address, request);
+            await _userService.UpdateAsync(request.Address, request);
+            await _expertService.SetInHouseAsync(request.Address, request.IsInHouse);
             await _authenticationService.ChangeEmailAsync(request.Address, request.Email);
             return NoContent();
         }
@@ -81,7 +106,7 @@ namespace SmartValley.WebApi.Admin
         public async Task<IActionResult> Delete(string address, string transactionHash)
         {
             await _ethereumClient.WaitForConfirmationAsync(transactionHash);
-            await _service.DeleteAsync(address);
+            await _adminService.DeleteAsync(address);
             return NoContent();
         }
     }

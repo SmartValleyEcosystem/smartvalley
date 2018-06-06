@@ -28,8 +28,8 @@ using SmartValley.Domain.Interfaces;
 using SmartValley.Ethereum;
 using SmartValley.Ethereum.Contracts.EtherManager;
 using SmartValley.Ethereum.Contracts.Scoring;
-using SmartValley.Ethereum.Contracts.ScoringExpertsManager;
-using SmartValley.Ethereum.Contracts.ScoringManager;
+using SmartValley.Ethereum.Contracts.ScoringOffersManager;
+using SmartValley.Ethereum.Contracts.ScoringsRegistry;
 using SmartValley.Ethereum.Contracts.SmartValley.Application.Contracts;
 using SmartValley.WebApi.Admin;
 using SmartValley.WebApi.Authentication;
@@ -64,7 +64,7 @@ namespace SmartValley.WebApi
         // ReSharper disable once UnusedMember.Global
         public void ConfigureServices(IServiceCollection services)
         {
-            services.ConfigureOptions(Configuration, typeof(NethereumOptions), typeof(AuthenticationOptions), typeof(SiteOptions), typeof(SmtpOptions), typeof(AzureStorageOptions), typeof(ScoringOptions));
+            services.ConfigureOptions(Configuration, typeof(NethereumOptions), typeof(AuthenticationOptions), typeof(SiteOptions), typeof(SmtpOptions), typeof(AzureStorageOptions));
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Info {Title = "SmartValley API", Version = "v1"}); });
 
@@ -106,10 +106,10 @@ namespace SmartValley.WebApi
                 provider => new ScoringContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringContract));
             services.AddSingleton<IEtherManagerContractClient, EtherManagerContractClient>(
                 provider => new EtherManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().EtherManagerContract));
-            services.AddSingleton<IScoringManagerContractClient, ScoringManagerContractClient>(
-                provider => new ScoringManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringManagerContract));
-            services.AddSingleton<IScoringExpertsManagerContractClient, ScoringExpertsManagerContractClient>(
-                provider => new ScoringExpertsManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringExpertsManagerContract));
+            services.AddSingleton<IScoringsRegistryContractClient, ScoringsRegistryContractClient>(
+                provider => new ScoringsRegistryContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringsRegistryContract));
+            services.AddSingleton<IScoringOffersManagerContractClient, ScoringOffersManagerContractClient>(
+                provider => new ScoringOffersManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringOffersManagerContract));
 
             services.AddMemoryCache();
 
@@ -143,7 +143,6 @@ namespace SmartValley.WebApi
             services.AddTransient<IExpertApplicationRepository, ExpertApplicationRepository>();
             services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<IExpertApplicationRepository, ExpertApplicationRepository>();
-            services.AddTransient<IProjectTeamMemberRepository, ProjectTeamMemberRepository>();
             services.AddTransient<IScoringApplicationRepository, ScoringApplicationRepository>();
             services.AddTransient<IScoringApplicationQuestionsRepository, ScoringApplicationQuestionsRepository>();
             services.AddTransient<IScoringApplicationService, ScoringApplicationService>();

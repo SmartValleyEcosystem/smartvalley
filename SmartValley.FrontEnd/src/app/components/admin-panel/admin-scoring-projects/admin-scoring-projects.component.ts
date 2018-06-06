@@ -7,7 +7,7 @@ import {SelectItem} from 'primeng/api';
 import {ProjectApiClient} from '../../../api/project/project-api-client';
 import {BlockiesService} from '../../../services/blockies-service';
 import * as moment from 'moment';
-import {ScoringExpertsManagerContractClient} from '../../../services/contract-clients/scoring-experts-manager-contract-client';
+import {ScoringOffersManagerContractClient} from '../../../services/contract-clients/scoring-offers-manager-contract-client.service';
 import {ScoreColorsService} from '../../../services/project/score-colors.service';
 import {GetScoringProjectsRequest} from '../../../api/project/get-scoring-projects-request';
 import {StatusRequest} from '../../../api/project/status-request';
@@ -33,7 +33,7 @@ export class AdminScoringProjectsComponent implements OnInit {
               public scoreColorsService: ScoreColorsService,
               private blockiesService: BlockiesService,
               private dialogService: DialogService,
-              private scoringExpertsManagerContractClient: ScoringExpertsManagerContractClient,
+              private scoringExpertsManagerContractClient: ScoringOffersManagerContractClient,
               private translateService: TranslateService,
               private offersApiClient: OffersApiClient,
               private areaService: AreaService) {
@@ -73,7 +73,7 @@ export class AdminScoringProjectsComponent implements OnInit {
   }
 
   async relaunchAsync(projectExternalId: string) {
-    const transactionHash = await this.scoringExpertsManagerContractClient.selectMissingExpertsAsync(projectExternalId);
+    const transactionHash = await this.scoringExpertsManagerContractClient.regenerateOffersAsync(projectExternalId);
     if (transactionHash == null) {
       return;
     }
@@ -83,7 +83,7 @@ export class AdminScoringProjectsComponent implements OnInit {
       transactionHash
     );
 
-    await this.offersApiClient.updateOffersAsync(projectExternalId, transactionHash);
+    await this.offersApiClient.updateAsync(projectExternalId, transactionHash);
 
     transactionDialog.close();
   }
@@ -99,40 +99,11 @@ export class AdminScoringProjectsComponent implements OnInit {
     }
   }
 
-  async setExpertsAsync(projectId: string) {
-    const project = this.projects.find(i => i.projectExternalId === projectId);
-    const areas = project.areasExperts.filter(i => i.acceptedCount < i.requiredCount).map(i => i.area);
-    const areaExperts = await this.dialogService.showSetExpertsDialogAsync(areas);
-
-    if (isNullOrUndefined(areaExperts)) {
-      return;
-    }
-    const areaTypes = areaExperts.map(i => i.areaType);
-    const addresses = areaExperts.map(i => i.address);
-    const transactionHash = await this.scoringExpertsManagerContractClient.setExpertsAsync(projectId, areaTypes, addresses);
-    if (transactionHash == null) {
-      return;
-    }
-
-    const transactionDialog = this.dialogService.showTransactionDialog(
-      this.translateService.instant('AdminScoringProject.Dialog'),
-      transactionHash
-    );
-
-    await this.offersApiClient.updateOffersAsync(projectId, transactionHash);
-
-    transactionDialog.close();
-  }
-
   async onCheckAsync() {
     await this.updateProjectsAsync();
   }
 
   async ngOnInit() {
     await this.updateProjectsAsync();
-  }
-
-  public showScoringCostDialog() {
-    this.dialogService.showScoringCostDialog();
   }
 }

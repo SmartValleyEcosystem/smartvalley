@@ -8,11 +8,12 @@ import {Paths} from '../../../paths';
 import {Router} from '@angular/router';
 import {ScoringStatus} from '../../../services/scoring-status.enum';
 import {OfferStatus} from '../../../api/scoring-offer/offer-status.enum';
-import {AreaType} from "../../../api/scoring/area-type.enum";
+import {AreaType} from '../../../api/scoring/area-type.enum';
 import {CriterionPromptResponse} from '../../../api/estimates/criterion-prompt-response';
 import {CriterionPrompt} from '../../../api/estimates/criterion-prompt';
 import {QuestionControlType} from '../../../api/scoring-application/question-control-type.enum';
 import {ProjectComponent} from '../project.component';
+import {UserContext} from '../../../services/authentication/user-context';
 
 @Component({
   selector: 'app-scoring-report',
@@ -28,19 +29,28 @@ export class ScoringReportComponent implements OnInit {
   public questionsActivity: boolean[] = [];
   public areaType: number;
   public criterionIsReady = false;
+  public isAdmin = false;
+
+  public ScoringStatus = ScoringStatus;
 
   @Input() projectId: number;
+  @Input() isPrivate: boolean;
   @Input() scoringStatus: ScoringStatus;
   @Input() isAuthor: boolean;
 
   constructor(@Inject(ProjectComponent) public parent: ProjectComponent,
               private router: Router,
+              private userContext: UserContext,
               private areaService: AreaService,
               private estimatesApiClient: EstimatesApiClient,
               private scoringCriterionService: ScoringCriterionService) {
   }
 
   public async ngOnInit() {
+    const currentUser = this.userContext.getCurrentUser();
+    if (currentUser) {
+        this.isAdmin = currentUser.isAdmin;
+    }
     const estimates = await this.estimatesApiClient.getAsync(this.projectId);
     for (const item of estimates.items) {
       const estimatesForArea = estimates.items.find(e => e.areaType === item.areaType);
@@ -62,7 +72,7 @@ export class ScoringReportComponent implements OnInit {
   public getCriterionInfo(id): CriterionPrompt[] {
     const criterionPrompts = this.criterionPrompts.find((c) => c.scoringCriterionId === id);
     if (criterionPrompts) {
-     return criterionPrompts.prompts;
+      return criterionPrompts.prompts;
     }
     return null;
   }
@@ -72,7 +82,7 @@ export class ScoringReportComponent implements OnInit {
   }
 
   public getQuestionById(id: number): string {
-    return this.scoringCriterionResponse.selectMany(s => s.criteria).find(c => c.id === id ).name;
+    return this.scoringCriterionResponse.selectMany(s => s.criteria).find(c => c.id === id).name;
   }
 
   public async navigateToApplicationScoringAsync(): Promise<void> {
@@ -86,7 +96,7 @@ export class ScoringReportComponent implements OnInit {
       .length;
   }
 
-  public chageActiveQuestion(id: number) {
+  public changeActiveQuestion(id: number) {
     const indexOfCurrentSelected = this.questionsActivity.indexOf(true);
     this.questionsActivity = this.questionsActivity.map(() => false);
     if (indexOfCurrentSelected !== id) {
@@ -94,7 +104,7 @@ export class ScoringReportComponent implements OnInit {
     }
   }
 
-  public onTabChange () {
+  public onTabChange() {
     this.questionsActivity = [];
   }
 }

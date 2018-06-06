@@ -3,15 +3,10 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Converters;
-using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SmartValley.Data.SQL.Core;
-using SmartValley.Domain;
 using SmartValley.Domain.Core;
-using SmartValley.Domain.Entities;
 
 namespace SmartValley.Data.SQL.Migrations
 {
@@ -133,6 +128,8 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<bool>("IsAvailable");
 
+                    b.Property<bool>("IsInHouse");
+
                     b.HasKey("UserId");
 
                     b.ToTable("Experts");
@@ -226,6 +223,8 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.HasKey("ExpertId", "AreaId");
 
+                    b.HasIndex("AreaId");
+
                     b.ToTable("ExpertAreas");
                 });
 
@@ -306,6 +305,8 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<string>("ImageUrl")
                         .HasMaxLength(200);
+
+                    b.Property<bool>("IsPrivate");
 
                     b.Property<string>("Linkedin")
                         .HasMaxLength(200);
@@ -402,19 +403,19 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTimeOffset>("AcceptingDeadline");
+
                     b.Property<Address>("ContractAddress")
                         .HasConversion(new ValueConverter<Address, string>(v => default(string), v => default(Address)))
                         .HasMaxLength(42);
 
                     b.Property<DateTimeOffset>("CreationDate");
 
-                    b.Property<DateTimeOffset?>("EstimatesDueDate");
-
-                    b.Property<DateTimeOffset>("OffersDueDate");
-
                     b.Property<long>("ProjectId");
 
                     b.Property<double?>("Score");
+
+                    b.Property<DateTimeOffset>("ScoringDeadline");
 
                     b.Property<DateTimeOffset?>("ScoringEndDate");
 
@@ -511,8 +512,6 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<long>("ExpertId");
 
-                    b.Property<DateTimeOffset?>("ExpirationTimestamp");
-
                     b.Property<int>("Status");
 
                     b.HasKey("ScoringId", "AreaId", "ExpertId");
@@ -560,6 +559,8 @@ namespace SmartValley.Data.SQL.Migrations
                         .HasConversion(new ValueConverter<Address, string>(v => default(string), v => default(Address)))
                         .HasMaxLength(42);
 
+                    b.Property<bool>("CanCreatePrivateProjects");
+
                     b.Property<string>("Email")
                         .IsRequired();
 
@@ -567,6 +568,8 @@ namespace SmartValley.Data.SQL.Migrations
                         .HasMaxLength(50);
 
                     b.Property<bool>("IsEmailConfirmed");
+
+                    b.Property<DateTime?>("RegistrationDate");
 
                     b.Property<string>("SecondName")
                         .HasMaxLength(50);
@@ -776,6 +779,11 @@ namespace SmartValley.Data.SQL.Migrations
 
             modelBuilder.Entity("SmartValley.Domain.Entities.ExpertArea", b =>
                 {
+                    b.HasOne("SmartValley.Domain.Entities.Area", "Area")
+                        .WithMany()
+                        .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("SmartValley.Domain.Entities.Expert", "Expert")
                         .WithMany("ExpertAreas")
                         .HasForeignKey("ExpertId")
@@ -810,17 +818,17 @@ namespace SmartValley.Data.SQL.Migrations
 
             modelBuilder.Entity("SmartValley.Domain.Entities.ProjectTeamMember", b =>
                 {
-                    b.HasOne("SmartValley.Domain.Entities.Project", "Project")
-                        .WithMany()
+                    b.HasOne("SmartValley.Domain.Entities.Project")
+                        .WithMany("TeamMembers")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.Scoring", b =>
                 {
-                    b.HasOne("SmartValley.Domain.Entities.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
+                    b.HasOne("SmartValley.Domain.Entities.Project")
+                        .WithOne("Scoring")
+                        .HasForeignKey("SmartValley.Domain.Entities.Scoring", "ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

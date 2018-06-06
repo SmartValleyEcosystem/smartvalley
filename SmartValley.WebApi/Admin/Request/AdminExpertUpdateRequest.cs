@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using SmartValley.WebApi.Experts.Requests;
+﻿using System.ComponentModel.DataAnnotations;
+using SmartValley.WebApi.Users.Requests;
 
 namespace SmartValley.WebApi.Admin.Request
 {
-    public class AdminExpertUpdateRequest : ExpertUpdateRequest
+    public class AdminExpertUpdateRequest : UpdateUserRequest
     {
         [Required]
         public string Address { get; set; }
@@ -12,5 +11,9 @@ namespace SmartValley.WebApi.Admin.Request
         public string Email { get; set; }
 
         public string TransactionHash { get; set; }
+
+        public bool IsInHouse { get; set; }
+
+        public bool IsAvailable { get; set; }
     }
 }

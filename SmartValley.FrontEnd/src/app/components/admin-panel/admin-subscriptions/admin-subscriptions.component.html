@@ -1,5 +1,5 @@
 <div class="admin-experts-list">
-  <p-table [value]="subscribers" [lazy]="true" (onLazyLoad)="getSubscriptionsList($event)" [paginator]="true"
+  <p-table class="admin-table" [value]="subscribers" [lazy]="true" (onLazyLoad)="getSubscriptionsList($event)" [paginator]="true"
            [rows]="10" [totalRecords]="totalRecords" [loading]="loading">
     <ng-template pTemplate="header" let-columns>
       <tr class="list-row list-row__header">

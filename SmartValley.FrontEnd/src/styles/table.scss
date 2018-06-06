@@ -1,4 +1,5 @@
 @import "fonts";
+@import "pallete";
 
 .ui-table-wrapper table {
   margin: 20px 0;
@@ -6,7 +7,7 @@
   font-size: 14px;
   text-align: left;
   color: #231a5d;
-  background: #fff;
+  background: $background-light;
 }
 .ui-table-wrapper table th {
   background: #635d90;
@@ -44,4 +45,31 @@
 }
 .ui-table-wrapper table a {
    color: #5d49f2;
- }
+}
+
+.admin-table {
+  .ui-table-wrapper table {
+    background: $background-light;
+  }
+  .ui-table-wrapper table th {
+    background: $background-light;
+    font-size: 14px;
+    color: $background-dark;
+  }
+  .ui-table-wrapper table tr {
+    color: $background-dark;
+    border-bottom: none;
+    &:hover {
+      background: $accents-green !important;
+    }
+    &:nth-child(odd) {
+      background: $background-gray;
+    }
+    &:nth-child(even) {
+      background: $background-light;
+    }
+    td:last-child {
+      padding: 18px 40px !important;
+    }
+  }
+}

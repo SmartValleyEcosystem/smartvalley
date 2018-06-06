@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Experts.Responses
@@ -44,28 +43,28 @@ namespace SmartValley.WebApi.Experts.Responses
 
         public string CvUrl { get; set; }
 
-        public static ExpertApplicationResponse Create(ExpertApplicationDetails applicationDetails)
+        public static ExpertApplicationResponse Create(ExpertApplication application, User applicant, Country country)
         {
             return new ExpertApplicationResponse
                    {
-                       Id = applicationDetails.ExpertApplication.Id,
-                       Address = applicationDetails.Address,
-                       DocumentType = applicationDetails.ExpertApplication.DocumentType.FromDomain(),
-                       Sex = applicationDetails.ExpertApplication.Sex,
-                       Areas = applicationDetails.Areas.Select(s => (int) s.Id).ToArray(),
-                       Why = applicationDetails.ExpertApplication.Why,
-                       LastName = applicationDetails.ExpertApplication.LastName,
-                       LinkedInLink = applicationDetails.ExpertApplication.LinkedInLink,
-                       City = applicationDetails.ExpertApplication.City,
-                       FirstName = applicationDetails.ExpertApplication.FirstName,
-                       DocumentNumber = applicationDetails.ExpertApplication.DocumentNumber,
-                       BirthDate = applicationDetails.ExpertApplication.BirthDate,
-                       FacebookLink = applicationDetails.ExpertApplication.FacebookLink,
-                       Description = applicationDetails.ExpertApplication.Description,
-                       CvUrl = applicationDetails.ExpertApplication.CvUrl,
-                       PhotoUrl = applicationDetails.ExpertApplication.PhotoUrl,
-                       ScanUrl = applicationDetails.ExpertApplication.ScanUrl,
-                       CountryIsoCode = applicationDetails.ExpertApplication.Country
+                       Id = application.Id,
+                       Address = applicant.Address,
+                       DocumentType = application.DocumentType.FromDomain(),
+                       Sex = application.Sex,
+                       Areas = application.ExpertApplicationAreas.Select(s => (int) s.AreaId).ToArray(),
+                       Why = application.Why,
+                       LastName = application.LastName,
+                       LinkedInLink = application.LinkedInLink,
+                       City = application.City,
+                       FirstName = application.FirstName,
+                       DocumentNumber = application.DocumentNumber,
+                       BirthDate = application.BirthDate,
+                       FacebookLink = application.FacebookLink,
+                       Description = application.Description,
+                       CvUrl = application.CvUrl,
+                       PhotoUrl = application.PhotoUrl,
+                       ScanUrl = application.ScanUrl,
+                       CountryIsoCode = country.Code
                    };
         }
     }

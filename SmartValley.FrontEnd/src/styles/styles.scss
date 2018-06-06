@@ -1,13 +1,16 @@
 @import "./pallete.scss";
 @import "./fonts.scss";
-
 @import "../../node_modules/@angular/material/prebuilt-themes/purple-green.css";
 @import "../../node_modules/bootstrap/dist/css/bootstrap.css";
+
+html {
+  width: 100vw;
+  overflow-x: hidden;
+}
 
 html, body {
   margin: 0;
   padding: 0;
-  width: 100vw;
 }
 
 .content {
@@ -215,7 +218,9 @@ div.mat-checkbox-frame {
 }
 
 .nav-pills .nav-item {
-  padding: 0;
+  padding-left: 0;
+  padding-right: 50px;
+  width: initial;
 }
 
 .mat-tab-label-active {
@@ -306,12 +311,14 @@ div.mat-tab-body-content {
   background-color: rgb(72, 138, 232);
 }
 
-.mat-checkbox-checkmark-path {
-  stroke: white !important;
-}
-
 .mat-checkbox:not(.mat-checkbox-disabled).mat-accent .mat-checkbox-ripple .mat-ripple-element {
   background-color: rgba(72, 138, 232, .26);
+}
+
+.statuses {
+  display: inline-block;
+  margin-right: 2em;
+  margin-bottom: 1em;
 }
 
 .sw-content {
@@ -422,9 +429,9 @@ a, button, span {
 }
 
 .title {
+  font-family: $font-pt-narrow;
   font-weight: bold;
   font-size: 32px;
-  font-family: $font-pt-narrow;
   color: $background-dark;
   letter-spacing: 0.04em;
   margin-bottom: 20px;
@@ -478,7 +485,7 @@ a, button, span {
   font-family: Material Icons;
   font-weight: normal;
   font-style: normal;
-  font-size: 24px;  /* Preferred icon size */
+  font-size: 24px; /* Preferred icon size */
   display: inline-block;
   line-height: 1;
   text-transform: none;
@@ -610,3 +617,4 @@ a, button, span {
   font-family: "Roboto-Thin";
   src: url("../assets/fonts/Roboto/Roboto-Thin.ttf") format("opentype");
 }
+

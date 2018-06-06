@@ -12,13 +12,15 @@ export function multiTranslateLoaderFactory() {
     'services/common/stages',
     'services/common/offerStatuses',
     'components/header/header.component',
-    'components/image-uploader/image-uploader.component',
+    'components/file-uploader/file-uploader.component',
     'components/create-project/create-project.component',
     'components/landing/landing.component',
     'components/admin-panel/admin-panel.component',
+    'components/admin-panel/admin-users-list/admin-users-list.component',
     'components/admin-panel/admin-expert-applications-list/admin-expert-applications-list.component',
     'components/admin-panel/admin-expert-application/admin-expert-application.component',
     'components/admin-panel/admin-scoring-projects/admin-scoring-project.component',
+    'components/admin-panel/admin-projects-list/admin-projects.component',
     'components/admin-panel/admin-feedbacks/admin-feedbacks.component',
     'components/admin-panel/admin-subscriptions/admin-subscriptions.component',
     'components/expert-status/expert-status.component',
@@ -42,6 +44,7 @@ export function multiTranslateLoaderFactory() {
     'components/edit-scoring-application/edit-scoring-application.component',
     'components/common/confirm-email/confirm-email.component',
     'components/project/project.component',
+    'components/scoring/edit-scoring/edit-scoring.component',
     'components/project-info/project-info.component',
     'components/project/project-about/project-about.component',
     'components/common/waiting-modal/waiting-modal.component',
@@ -52,6 +55,7 @@ export function multiTranslateLoaderFactory() {
     'components/scoring/scoring-payment/scoring-payment.component',
     'components/project/scoring-report/scoring-report.component',
     'components/common/subscribe-modal/subscribe-modal.component',
-    'components/common/feedback-modal/feedback-modal.component'
+    'components/common/feedback-modal/feedback-modal.component',
+    'components/common/private-scoring-modal/private-scoring-modal.component'
   ]);
 }

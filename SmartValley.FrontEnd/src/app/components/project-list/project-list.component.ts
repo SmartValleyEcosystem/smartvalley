@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ScoredProject} from '../../api/expert/scored-project';
 import {Paths} from '../../paths';
 import {ProjectApiClient} from '../../api/project/project-api-client';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectsOrderBy} from '../../api/application/projects-order-by.enum';
 import {SortDirection} from '../../api/sort-direction.enum';
 import {ProjectResponse} from '../../api/project/project-response';
@@ -39,6 +39,7 @@ export class ProjectListComponent implements OnInit {
   @ViewChild(AutocompleteComponent) country: AutocompleteComponent;
 
   constructor(private router: Router,
+              private route: ActivatedRoute,
               private dictionariesService: DictionariesService,
               private projectApiClient: ProjectApiClient) {
     this.countries = this.dictionariesService.countries.map(i => <SelectItem>{
@@ -55,7 +56,7 @@ export class ProjectListComponent implements OnInit {
   async ngOnInit() {
     this.sortDirection = this.DESC;
     this.sortedBy = ProjectsOrderBy.ScoringEndDate;
-    this.projectSearch = '';
+    this.projectSearch = this.route.snapshot.paramMap.get('search') || '';
 
     await this.updateProjectsAsync(0);
   }
@@ -67,13 +68,13 @@ export class ProjectListComponent implements OnInit {
   private createScoredProject(response: ProjectResponse): ScoredProject {
     return <ScoredProject> {
       id: response.id,
-      address: response.address,
+      address: response.scoring ? response.scoring.contractAddress : '',
       category: response.category,
       country: response.country,
       description: response.description,
       name: response.name,
-      score: response.score,
-      scoringEndDate: response.scoringEndDate
+      score: response.scoring ? response.scoring.score : '',
+      scoringEndDate: response.scoring ? response.scoring.scoringEndDate : ''
     };
   }
 
@@ -95,7 +96,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   public async updateProjectsAsync(page: number) {
-    const projectsResponse = await this.projectApiClient.queryProjectsAsync(<ProjectQuery>{
+    const projectsResponse = await this.projectApiClient.getAsync(<ProjectQuery>{
       offset: page * this.projectOnPageCount,
       count: this.projectOnPageCount,
       onlyScored: false,

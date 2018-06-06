@@ -10,6 +10,7 @@ namespace SmartValley.WebApi.Scorings.Requests
             Count = 100;
         }
 
+        [Range(0, int.MaxValue)]
         public int Offset { get; set; }
 
         [Range(1, 100)]
@@ -17,8 +18,14 @@ namespace SmartValley.WebApi.Scorings.Requests
 
         public ScoringOfferStatus? Status { get; set; }
 
-        public ScoringOffersOrderBy OrderBy { get; set; }
+        public ScoringOffersOrderBy? OrderBy { get; set; }
 
-        public SortDirection SortDirection { get; set; }
+        public SortDirection? SortDirection { get; set; }
+
+        public long? ProjectId { get; set; }
+
+        public long? ScoringId { get; set; }
+
+        public long? ExpertId { get; set; }
     }
 }

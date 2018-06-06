@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -14,7 +13,6 @@ using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Projects.Requests;
 using SmartValley.WebApi.Projects.Responses;
 using SmartValley.WebApi.Scorings;
-using SmartValley.WebApi.Users;
 using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Projects
@@ -24,22 +22,48 @@ namespace SmartValley.WebApi.Projects
     {
         private readonly IProjectService _projectService;
         private readonly IScoringService _scoringService;
-        private readonly ICountryRepository _countryRepository;
-        private readonly IUserService _userService;
         private readonly IScoringApplicationRepository _scoringApplicationRepository;
+        private readonly IClock _clock;
 
         public ProjectsController(
             IProjectService projectService,
             IScoringService scoringService,
-            ICountryRepository countryRepository,
             IScoringApplicationRepository scoringApplicationRepository,
-            IUserService userService)
+            IClock clock)
         {
             _projectService = projectService;
             _scoringService = scoringService;
-            _countryRepository = countryRepository;
-            _userService = userService;
             _scoringApplicationRepository = scoringApplicationRepository;
+            _clock = clock;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAsync([FromQuery] QueryProjectsRequest request)
+        {
+            if (request.IsPrivate == true && !User.IsInRole(nameof(RoleType.Admin)))
+            {
+                return Unauthorized();
+            }
+
+            var projectsQuery = new ProjectsQuery(
+                request.Offset,
+                request.Count,
+                request.IsPrivate,
+                request.OnlyScored,
+                request.SearchString,
+                request.Stage,
+                request.CountryCode,
+                request.Category,
+                request.MinimumScore,
+                request.MaximumScore,
+                request.OrderBy,
+                request.SortDirection,
+                request.ScoringStatuses
+            );
+
+            var projects = await _projectService.GetAsync(projectsQuery);
+
+            return Ok(projects.ToPartialCollectionResponse(ProjectResponse.Create));
         }
 
         [HttpPost]
@@ -47,9 +71,8 @@ namespace SmartValley.WebApi.Projects
         public async Task<ProjectAboutResponse> PostAsync([FromBody] CreateProjectRequest request)
         {
             var project = await _projectService.CreateAsync(User.GetUserId(), request);
-            var teamMembers = await _projectService.GetTeamAsync(project.Id);
 
-            return ProjectAboutResponse.Create(project, teamMembers);
+            return ProjectAboutResponse.Create(project);
         }
 
         [HttpPut("{id}")]
@@ -60,9 +83,8 @@ namespace SmartValley.WebApi.Projects
                 throw new AppErrorException(ErrorCode.UserNotAuthor);
 
             var project = await _projectService.UpdateAsync(id, request);
-            var teamMembers = await _projectService.GetTeamAsync(project.Id);
 
-            return ProjectAboutResponse.Create(project, teamMembers);
+            return ProjectAboutResponse.Create(project);
         }
 
         [HttpPut("{id}/image")]
@@ -101,85 +123,49 @@ namespace SmartValley.WebApi.Projects
             return NoContent();
         }
 
-        [HttpPut("teammember")]
+        [HttpPut("teammembers")]
         [Authorize]
         public async Task<IActionResult> UploadTeamMemberPhotoAsync([FromForm] AddProjectTeamMemberPhotoRequest request, IFormFile photo)
         {
             if (!photo.IsImageValid())
                 throw new AppErrorException(ErrorCode.InvalidFileUploaded);
 
-            if (!await _projectService.IsAuthorizedToEditProjectTeamMemberAsync(User.GetUserId(), request.ProjectTeamMemberId))
+            if (!await _projectService.IsAuthorizedToEditProjectTeamMemberAsync(User.GetUserId(), request.ProjectId))
                 return Unauthorized();
 
-            await _projectService.UpdateTeamMemberPhotoAsync(request.ProjectTeamMemberId, photo.ToAzureFile());
+            await _projectService.UpdateTeamMemberPhotoAsync(request.ProjectId, request.ProjectTeamMemberId, photo.ToAzureFile());
             return NoContent();
         }
 
-        [HttpDelete("teammember/{id}")]
+        [HttpDelete("{projectId}/teammembers/{teamMemberId}")]
         [Authorize]
-        public async Task<IActionResult> DeleteTeamMemberPhotoAsync(long id)
+        public async Task<IActionResult> DeleteTeamMemberPhotoAsync(long projectId, long teamMemberId)
         {
-            if (!await _projectService.IsAuthorizedToEditProjectTeamMemberAsync(User.GetUserId(), id))
+            if (!await _projectService.IsAuthorizedToEditProjectTeamMemberAsync(User.GetUserId(), projectId))
                 return Unauthorized();
 
-            await _projectService.DeleteTeamMemberPhotoAsync(id);
+            await _projectService.DeleteTeamMemberPhotoAsync(projectId, teamMemberId);
             return NoContent();
         }
 
         [HttpGet("{id}")]
+        [CanSeeProject("id")]
         public async Task<ProjectSummaryResponse> GetSummaryAsync(long id)
         {
-            var project = await _projectService.GetAsync(id);
+            var project = await _projectService.GetByIdAsync(id);
             var scoring = await _scoringService.GetByProjectIdAsync(id);
-            var country = await _countryRepository.GetByIdAsync(project.CountryId);
-            var author = await _userService.GetByIdAsync(project.AuthorId);
             var scoringApplication = await _scoringApplicationRepository.GetByProjectIdAsync(id);
 
-            return ProjectSummaryResponse.Create(project, country, scoring, scoringApplication, author);
+            return ProjectSummaryResponse.Create(project, scoring, scoringApplication, _clock.UtcNow);
         }
 
         [HttpGet("{id}/about")]
+        [CanSeeProject("id")]
         public async Task<ProjectAboutResponse> GetAboutAsync(long id)
         {
-            var project = await _projectService.GetAsync(id);
-            var teamMembers = await _projectService.GetTeamAsync(id);
+            var project = await _projectService.GetByIdAsync(id);
 
-            return ProjectAboutResponse.Create(project, teamMembers);
-        }
-
-        [HttpGet("search")]
-        public async Task<CollectionResponse<ProjectSearchResponse>> SearchProjectAsync(ProjectSearchRequest request)
-        {
-            var projects = await _projectService.GetProjectsByNameAsync(request.SearchString);
-            return new CollectionResponse<ProjectSearchResponse>
-                   {
-                       Items = projects.Select(ProjectSearchResponse.Create).ToArray()
-                   };
-        }
-
-        [HttpGet("query")]
-        public async Task<PartialCollectionResponse<ProjectResponse>> QueryAsync([FromQuery] QueryProjectsRequest request)
-        {
-            var projectsQuery = new ProjectsQuery(
-                request.Offset,
-                request.Count,
-                request.OnlyScored,
-                request.SearchString,
-                request.Stage,
-                request.CountryCode,
-                request.Category,
-                request.MinimumScore,
-                request.MaximumScore,
-                request.OrderBy,
-                request.SortDirection
-            );
-            var projects = await _projectService.QueryAsync(projectsQuery);
-
-            var totalCount = await _projectService.GetQueryTotalCountAsync(projectsQuery);
-
-            var projectResponses = projects.Select(ProjectResponse.Create).ToArray();
-
-            return new PartialCollectionResponse<ProjectResponse>(request.Offset, projectResponses.Length, totalCount, projectResponses);
+            return ProjectAboutResponse.Create(project);
         }
 
         [HttpGet("scoring"), Authorize(Roles = nameof(RoleType.Admin))]
@@ -200,30 +186,28 @@ namespace SmartValley.WebApi.Projects
             if (project == null)
                 return null;
 
-            project.TeamMembers = await _projectService.GetTeamAsync(project.Project.Id);
-
             return new MyProjectResponse
                    {
-                       Id = project.Project.Id,
-                       Name = project.Project.Name,
-                       Category = (int) project.Project.Category,
-                       Description = project.Project.Description,
-                       Stage = (int) project.Project.Stage,
+                       Id = project.Id,
+                       Name = project.Name,
+                       Category = (int) project.Category,
+                       Description = project.Description,
+                       Stage = (int) project.Stage,
                        CountryCode = project.Country.Code,
                        TeamMembers = project.TeamMembers?.Select(ProjectTeamMemberResponse.Create).ToArray(),
-                       IcoDate = project.Project.IcoDate,
-                       Website = project.Project.Website,
-                       ContactEmail = project.Project.ContactEmail,
-                       WhitePaperLink = project.Project.WhitePaperLink,
-                       Facebook = project.Project.Facebook,
-                       Reddit = project.Project.Reddit,
-                       BitcoinTalk = project.Project.BitcoinTalk,
-                       Telegram = project.Project.Telegram,
-                       Github = project.Project.Github,
-                       Medium = project.Project.Medium,
-                       Twitter = project.Project.Twitter,
-                       Linkedin = project.Project.Linkedin,
-                       ImageUrl = project.Project.ImageUrl
+                       IcoDate = project.IcoDate,
+                       Website = project.Website,
+                       ContactEmail = project.ContactEmail,
+                       WhitePaperLink = project.WhitePaperLink,
+                       Facebook = project.Facebook,
+                       Reddit = project.Reddit,
+                       BitcoinTalk = project.BitcoinTalk,
+                       Telegram = project.Telegram,
+                       Github = project.Github,
+                       Medium = project.Medium,
+                       Twitter = project.Twitter,
+                       Linkedin = project.Linkedin,
+                       ImageUrl = project.ImageUrl
                    };
         }
     }

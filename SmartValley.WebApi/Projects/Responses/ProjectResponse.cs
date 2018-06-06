@@ -1,6 +1,4 @@
-﻿using System;
-using SmartValley.Domain;
-using SmartValley.Domain.Entities;
+﻿using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Projects.Responses
 {
@@ -10,30 +8,24 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public string Name { get; set; }
 
-        public string Address { get; set; }
-
         public string Country { get; set; }
 
         public Category Category { get; set; }
 
+        public ProjectScoringResponse Scoring { get; set; }
+
         public string Description { get; set; }
 
-        public double? Score { get; set; }
-
-        public DateTimeOffset? ScoringEndDate { get; set; }
-
-        public static ProjectResponse Create(ProjectDetails projectDetails)
+        public static ProjectResponse Create(Project project)
         {
             return new ProjectResponse
                    {
-                       Id = projectDetails.Project.Id,
-                       Name = projectDetails.Project.Name,
-                       Country = projectDetails.Country.Code,
-                       Category = projectDetails.Project.Category,
-                       Description = projectDetails.Project.Description,
-                       Address = projectDetails.Scoring?.ContractAddress,
-                       Score = projectDetails.Scoring?.Score,
-                       ScoringEndDate = projectDetails.Scoring?.ScoringEndDate
+                       Id = project.Id,
+                       Name = project.Name,
+                       Country = project.Country?.Code,
+                       Category = project.Category,
+                       Description = project.Description,
+                       Scoring = project.Scoring == null ? null : ProjectScoringResponse.Create(project.Scoring)
                    };
         }
     }

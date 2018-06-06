@@ -28,15 +28,11 @@ export class ProjectComponent implements OnInit {
   public project: ProjectSummaryResponse;
   public editProjectsLink = Paths.ProjectEdit;
   public selectedTab = 0;
+  public isAdmin: boolean;
 
-  public ScoringStatusInProgress = ScoringStatus.InProgress;
-  public ScoringStatusFinished = ScoringStatus.Finished;
-  public ScoringStatusPending = ScoringStatus.Pending;
-
-  public ScoringStartTransactionStatus = ScoringStartTransactionStatus;
+  public ScoringStatus = ScoringStatus;
 
   public isAuthor = false;
-  public isScoringApplicationTabAvailable = true;
   public scoringCompletenessInPercents;
   public scoringStartTransactionUrl = '';
 
@@ -67,6 +63,10 @@ export class ProjectComponent implements OnInit {
   }
 
   public async ngOnInit() {
+    const currentUser = this.userContext.getCurrentUser();
+    if (currentUser) {
+        this.isAdmin = currentUser.isAdmin;
+    }
     await this.reloadProjectAsync();
   }
 
@@ -78,9 +78,6 @@ export class ProjectComponent implements OnInit {
 
     this.projectId = newProjectId;
     const selectedTabName = this.route.snapshot.paramMap.get('tab');
-    if (!isNullOrUndefined(selectedTabName) && this.tabItems.includes(selectedTabName)) {
-      this.selectedTab = this.tabItems.indexOf(selectedTabName);
-    }
 
     try {
       this.project = await this.projectApiClient.getProjectSummaryAsync(this.projectId);
@@ -96,6 +93,15 @@ export class ProjectComponent implements OnInit {
       if (!isNullOrUndefined(currentUser) && this.project.authorId === currentUser.id) {
         this.isAuthor = true;
       }
+
+      if (!isNullOrUndefined(selectedTabName) && this.tabItems.includes(selectedTabName)) {
+          if (this.project.isPrivate && !this.isAdmin && selectedTabName === 'report') {
+            this.location.replaceState(Paths.Project + '/' + this.projectId + '/details/' + this.tabItems[0]);
+          } else {
+            this.selectedTab = this.tabItems.indexOf(selectedTabName);
+          }
+      }
+
     } catch (e) {
       switch (e.error.errorCode) {
         case ErrorCode.ProjectNotFound:
@@ -128,5 +134,50 @@ export class ProjectComponent implements OnInit {
 
   public onChangeTab($event) {
       this.location.replaceState(Paths.Project + '/' + this.projectId + '/details/' + this.tabItems[$event.index]);
+  }
+
+  public isReportTabAvailable(): boolean {
+    return !this.project.isPrivate || this.project.scoring.scoringStatus === ScoringStatus.Finished || this.isAdmin;
+  }
+
+  public reportTabClass(): string {
+    return this.isReportTabAvailable() === true ? '' : 'hidden';
+  }
+
+  public getScoringStatus(): ScoringStatus {
+    const scoringStatus = this.getOriginalScoringStatus();
+    const hiddenPrivateScoringStatuses = [
+      ScoringStatus.ReadyForPayment,
+      ScoringStatus.PaymentInProcess,
+      ScoringStatus.PaymentFailed
+    ];
+
+    if (this.project.isPrivate && this.isAuthor && hiddenPrivateScoringStatuses.includes(scoringStatus)) {
+      return ScoringStatus.InProgress;
+    } else {
+      return scoringStatus;
+    }
+  }
+
+  private getOriginalScoringStatus(): ScoringStatus {
+    if (this.project.scoring.scoringStatus === ScoringStatus.FillingApplication) {
+      if (this.project.scoringStartTransactionStatus === ScoringStartTransactionStatus.NotSubmitted) {
+        if (this.project.isApplicationSubmitted) {
+          return ScoringStatus.ReadyForPayment;
+        } else {
+          return ScoringStatus.FillingApplication;
+        }
+      }
+
+      if (this.project.scoringStartTransactionStatus === ScoringStartTransactionStatus.InProgress) {
+        return ScoringStatus.PaymentInProcess;
+      }
+
+      if (this.project.scoringStartTransactionStatus === ScoringStartTransactionStatus.Failed) {
+        return ScoringStatus.PaymentFailed;
+      }
+    }
+
+    return this.project.scoring.scoringStatus;
   }
 }

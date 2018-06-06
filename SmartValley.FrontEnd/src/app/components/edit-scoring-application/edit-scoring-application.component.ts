@@ -18,6 +18,8 @@ import {Paths} from '../../paths';
 import * as moment from 'moment';
 import {ProjectApplicationInfoResponse} from '../../api/scoring-application/project-application-info-response';
 import {NotificationsService} from 'angular2-notifications';
+import {ProjectApiClient} from '../../api/project/project-api-client';
+import {DialogService} from '../../services/dialog-service';
 
 @Component({
   selector: 'app-edit-scoring-application',
@@ -50,7 +52,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
   public comboboxValues: { [id: number]: SelectItem[] };
   public savedTime: Date;
   public activePartition = '';
-
+  public questionsReady = false;
   public editorFormats = [
         'bold',
         'underline',
@@ -82,6 +84,8 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
           }
         };
 
+  private isPrivateProject: boolean;
+
   @ViewChild('socialsContainer') private socialsContainer: ElementRef;
   @ViewChild('membersContainer') private membersContainer: ElementRef;
   @ViewChildren('required') public requiredFields: QueryList<any>;
@@ -95,6 +99,8 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
               private formBuilder: FormBuilder,
               private htmlElement: ElementRef,
               private route: ActivatedRoute,
+              private dialogService: DialogService,
+              private projectApiClient: ProjectApiClient,
               private router: Router) {
   }
 
@@ -121,6 +127,8 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
     this.questions = await this.scoringApplicationApiClient.getScoringApplicationsAsync(this.projectId);
     this.partitions = this.questions.partitions;
     this.projectInfo = this.questions.projectInfo;
+    const project = await this.projectApiClient.getProjectSummaryAsync(this.projectId);
+    this.isPrivateProject = project.isPrivate;
     this.comboboxValues = this.getQuestionSelectItems(this.partitions);
 
     this.addQuestionsFormControls(this.partitions);
@@ -240,7 +248,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
       website: ['', [Validators.required, Validators.maxLength(200), Validators.pattern('https?://.+')]],
       description: ['', [Validators.required, Validators.required, Validators.maxLength(2000)]],
       linkToWP: ['', [Validators.required, Validators.maxLength(200), Validators.pattern('https?://.+')]],
-      email: ['', [Validators.required, Validators.maxLength(200)]]
+      email: ['', [Validators.required, Validators.maxLength(200), Validators.pattern('\\w+@\\w+\\.\\w+')]]
     };
     this.questionFormGroup = this.formBuilder.group({
       commonGroup: this.formBuilder.group(commonFormControls),
@@ -270,6 +278,8 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
         }
         this.questionsGroup.addControl('control_' + question.id, control);
       });
+
+    this.questionsReady = true;
   }
 
   public getQuestionTypeById(id: number): string {
@@ -309,7 +319,12 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
     if (isValid) {
       await this.saveDraftAsync();
       await this.scoringApplicationApiClient.submitAsync(this.projectId);
-      await this.router.navigate([Paths.Project + '/' + this.projectId + '/payment']);
+
+      if (this.isPrivateProject) {
+        await this.router.navigate([Paths.Project + '/' + this.projectId]);
+      } else {
+        await this.router.navigate([Paths.Project + '/' + this.projectId + '/payment']);
+      }
     }
   }
 
@@ -572,5 +587,12 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
     if (event.status) {
       this.activePartition = id;
     }
+  }
+
+  public async showAlertModal() {
+      const submit = await this.dialogService.showPrivateScoringApplicationDialog();
+      if (submit) {
+          await this.onSubmitAsync();
+      }
   }
 }

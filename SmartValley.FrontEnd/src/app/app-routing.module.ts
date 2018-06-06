@@ -14,8 +14,7 @@ import {AdminPanelComponent} from './components/admin-panel/admin-panel.componen
 import {ExpertStatusComponent} from './components/expert-status/expert-status.component';
 import {RegisterExpertComponent} from './components/register-expert/register-expert.component';
 import {AdminExpertApplicationComponent} from './components/admin-panel/admin-expert-application/admin-expert-application.component';
-import {ExpertStatusGuard} from './services/guards/expert-status.guard';
-import {ExpertApplicationStatus} from './services/expert/expert-application-status.enum';
+import {ShouldNotBeExpertGuard} from './services/guards/should-not-be-expert.guard';
 import {OfferStatusGuard} from './services/guards/offer-status.guard';
 import {ProjectListComponent} from './components/project-list/project-list.component';
 import {RegisterComponent} from './components/authentication/register/register.component';
@@ -31,6 +30,9 @@ import {OfferStatus} from './api/scoring-offer/offer-status.enum';
 import {ExpertScoringComponent} from './components/expert-scoring/expert-scoring.component';
 import {ScoringListComponent} from './components/scoring-list/scoring-list.component';
 import {ScoringShouldNotExistGuard} from './services/guards/scoring-should-not-exist.guard';
+import {PrivateApplicationShouldNotBeSubmitted} from './services/guards/private-application-should-not-be-submitted.guard';
+import {EditScoringComponent} from './components/scoring/edit-scoring/edit-scoring.component';
+import {PrivateScoringAvailabilityGuard} from './services/guards/private-scoring-availability.guard';
 
 const appRoutes: Routes = [
   {path: Paths.Initialization, component: InitializationComponent},
@@ -77,41 +79,44 @@ const appRoutes: Routes = [
     {path: Paths.ProjectEdit, component: CreateProjectComponent},
     {
       path: Paths.ExpertStatus,
-      canActivate: [ExpertStatusGuard],
-      component: ExpertStatusComponent,
-      data: {
-        expertStatuses: [
-          ExpertApplicationStatus.None,
-          ExpertApplicationStatus.Rejected,
-          ExpertApplicationStatus.Pending
-        ]
-      }
+      canActivate: [ShouldNotBeExpertGuard],
+      component: ExpertStatusComponent
     },
     {
       path: Paths.RegisterExpert,
-      canActivate: [ExpertStatusGuard, ShouldHaveEthGuard],
-      component: RegisterExpertComponent,
-      data: {
-        expertStatuses: [
-          ExpertApplicationStatus.None,
-          ExpertApplicationStatus.Rejected
-        ]
-      }
+      canActivate: [ShouldNotBeExpertGuard, ShouldHaveEthGuard],
+      component: RegisterExpertComponent
     },
     {path: Paths.ProjectList, component: ProjectListComponent},
     {path: Paths.ScoringList, component: ScoringListComponent},
     {path: Paths.ProjectList + '/:search', component: ProjectListComponent},
-    {path: Paths.Project + '/:id', component: ProjectComponent},
-    {path: Paths.Project + '/:id/details/:tab', component: ProjectComponent},
+    {
+      path: Paths.Project + '/:id',
+      component: ProjectComponent,
+      canActivate: [PrivateScoringAvailabilityGuard]
+    },
+    {
+      path: Paths.Project + '/:id/details/:tab',
+      component: ProjectComponent,
+      canActivate: [PrivateScoringAvailabilityGuard]
+    },
     {
       path: Paths.ScoringApplication + '/:id',
       component: EditScoringApplicationComponent,
-      canActivate: [ScoringShouldNotExistGuard]
+      canActivate: [ScoringShouldNotExistGuard, PrivateApplicationShouldNotBeSubmitted]
     },
     {
       path: Paths.Project + '/:id/payment',
       component: ScoringPaymentComponent,
       canActivate: [SubmittedScoringApplicationGuard, ScoringShouldNotExistGuard, ShouldHaveEthGuard],
+      data: {
+        shouldBeSubmitted: true
+      }
+    },
+    {
+      path: Paths.Project + '/:id/edit-scoring',
+      component: EditScoringComponent,
+      canActivate: [SubmittedScoringApplicationGuard],
       data: {
         shouldBeSubmitted: true
       }

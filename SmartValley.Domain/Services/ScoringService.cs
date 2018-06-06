@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Domain.Contracts;
@@ -10,76 +9,72 @@ using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Domain.Services
 {
-    // ReSharper disable once ClassNeverInstantiated.Global
     public class ScoringService : IScoringService
     {
         private readonly IProjectRepository _projectRepository;
-        private readonly IScoringExpertsManagerContractClient _scoringExpertsManagerContractClient;
-        private readonly IScoringManagerContractClient _scoringManagerContractClient;
+        private readonly IScoringOffersManagerContractClient _scoringOffersManagerContractClient;
+        private readonly IScoringsRegistryContractClient _scoringsRegistryContractClient;
         private readonly IClock _clock;
         private readonly IScoringRepository _scoringRepository;
         private readonly IUserRepository _userRepository;
 
         public ScoringService(
             IProjectRepository projectRepository,
-            IScoringExpertsManagerContractClient scoringExpertsManagerContractClient,
-            IScoringManagerContractClient scoringManagerContractClient,
+            IScoringOffersManagerContractClient scoringOffersManagerContractClient,
+            IScoringsRegistryContractClient scoringsRegistryContractClient,
             IClock clock,
             IScoringRepository scoringRepository,
             IUserRepository userRepository)
         {
             _projectRepository = projectRepository;
-            _scoringExpertsManagerContractClient = scoringExpertsManagerContractClient;
-            _scoringManagerContractClient = scoringManagerContractClient;
+            _scoringOffersManagerContractClient = scoringOffersManagerContractClient;
+            _scoringsRegistryContractClient = scoringsRegistryContractClient;
             _clock = clock;
             _scoringRepository = scoringRepository;
             _userRepository = userRepository;
         }
 
-        public async Task<long> StartAsync(long projectId, IDictionary<AreaType, int> areas)
+        public async Task<long> StartAsync(long projectId)
         {
-            var project = await _projectRepository.GetAsync(projectId);
-            var contractOffers = await _scoringExpertsManagerContractClient.GetOffersAsync(project.ExternalId);
-            var pendingOffersDueDate = contractOffers.Max(i => i.ExpirationTimestamp);
+            var project = await _projectRepository.GetByIdAsync(projectId);
+            var scoringInfo = await _scoringOffersManagerContractClient.GetScoringInfoAsync(project.ExternalId);
 
-            if (pendingOffersDueDate == null)
+            if (!scoringInfo.Offers.Any())
                 throw new AppErrorException(ErrorCode.PendingOffersNotFound);
 
-            var scoring = await CreateScoringAsync(project, pendingOffersDueDate.Value, areas, contractOffers);
+            return await CreateScoringAsync(project, scoringInfo);
+        }
+
+        public Task<Scoring> GetByIdAsync(long scoringId)
+            => _scoringRepository.GetByIdAsync(scoringId);
+
+        private async Task<long> CreateScoringAsync(
+            Project project,
+            ScoringInfo scoringInfo)
+        {
+            var contractAddress = await _scoringsRegistryContractClient.GetScoringAddressAsync(project.ExternalId);
+
+            var areaScorings = await _scoringsRegistryContractClient.GetRequiredExpertsCountsAsync(project.ExternalId);
+            var offers = await CreateOffersAsync(scoringInfo.Offers);
+            var scoring = new Scoring(
+                project.Id,
+                contractAddress,
+                _clock.UtcNow,
+                scoringInfo.AcceptingDeadline,
+                scoringInfo.ScoringDeadline,
+                areaScorings.Select(x => new AreaScoring {AreaId = x.Area, ExpertsCount = x.Count}).ToArray(),
+                offers);
+
+            _scoringRepository.Add(scoring);
+            await _scoringRepository.SaveChangesAsync();
             return scoring.Id;
         }
 
-        public Task<Scoring> GetAsync(long scoringId)
-            => _scoringRepository.GetAsync(scoringId);
-
-        private async Task<Scoring> CreateScoringAsync(
-            Project project,
-            DateTimeOffset offersDueDate,
-            IDictionary<AreaType, int> areas,
-            IReadOnlyCollection<ScoringOfferInfo> contractOffers)
+        private async Task<IReadOnlyCollection<ScoringOffer>> CreateOffersAsync(IReadOnlyCollection<ScoringOfferInfo> offers)
         {
-            var contractAddress = await _scoringManagerContractClient.GetScoringAddressAsync(project.ExternalId);
-
-            var areaScorings = areas.Select(x => new AreaScoring {AreaId = x.Key, ExpertsCount = x.Value}).ToList();
-            var offers = await CreateOffersAsync(contractOffers);
-            var scoring = new Scoring(project.Id, contractAddress, offersDueDate, _clock.UtcNow, areaScorings, offers);
-
-            await _scoringRepository.AddAsync(scoring);
-            return scoring;
-        }
-
-        private async Task<IReadOnlyCollection<ScoringOffer>> CreateOffersAsync(IReadOnlyCollection<ScoringOfferInfo> contractOffers)
-        {
-            var experts = await GetExpertsForOffersAsync(contractOffers);
-            return contractOffers
-                   .Select(o => new ScoringOffer
-                                {
-                                    AreaId = o.Area,
-                                    ExpertId = experts.First(e => e.Address == o.ExpertAddress).Id,
-                                    Status = o.Status,
-                                    ExpirationTimestamp = o.ExpirationTimestamp
-                                })
-                   .ToArray();
+            var experts = await GetExpertsForOffersAsync(offers);
+            return offers.Select(o => new ScoringOffer(experts.First(e => e.Address == o.ExpertAddress).Id, o.Area, o.Status))
+                         .ToArray();
         }
 
         private Task<IReadOnlyCollection<User>> GetExpertsForOffersAsync(IReadOnlyCollection<ScoringOfferInfo> contractOffers)

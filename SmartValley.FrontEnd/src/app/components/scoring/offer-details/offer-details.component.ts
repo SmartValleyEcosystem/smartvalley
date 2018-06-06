@@ -4,7 +4,7 @@ import {ProjectApiClient} from '../../../api/project/project-api-client';
 import {ProjectSummaryResponse} from '../../../api/project/project-summary-response';
 import {Area} from '../../../services/expert/area';
 import {AreaService} from '../../../services/expert/area.service';
-import {ScoringExpertsManagerContractClient} from '../../../services/contract-clients/scoring-experts-manager-contract-client';
+import {ScoringOffersManagerContractClient} from '../../../services/contract-clients/scoring-offers-manager-contract-client.service';
 import {OffersApiClient} from '../../../api/scoring-offer/offers-api-client';
 import {DialogService} from '../../../services/dialog-service';
 import {TranslateService} from '@ngx-translate/core';
@@ -31,7 +31,7 @@ export class OfferDetailsComponent implements OnInit {
               private projectApiClient: ProjectApiClient,
               private route: ActivatedRoute,
               private areaService: AreaService,
-              private scoringExpertsManagerContractClient: ScoringExpertsManagerContractClient,
+              private scoringExpertsManagerContractClient: ScoringOffersManagerContractClient,
               private offersApiClient: OffersApiClient,
               private dialogService: DialogService,
               private translateService: TranslateService) {
@@ -42,7 +42,7 @@ export class OfferDetailsComponent implements OnInit {
     const areaType = +this.route.snapshot.paramMap.get('areaType');
     this.area = this.areaService.areas.find(i => i.areaType === areaType);
     this.project = await this.projectApiClient.getProjectSummaryAsync(projectId);
-    this.offer = await this.offersApiClient.getOfferStatusAsync(this.project.id, this.area.areaType);
+    this.offer = await this.offersApiClient.getStatusAsync(this.project.id, this.area.areaType);
 
     if (this.project && this.area && this.project.scoring.id) {
       this.isProjectExists = true;
@@ -57,7 +57,7 @@ export class OfferDetailsComponent implements OnInit {
       transactionHash
     );
 
-    await this.offersApiClient.acceptExpertOfferAsync(transactionHash, this.project.scoring.id, this.area.areaType);
+    await this.offersApiClient.acceptAsync(transactionHash, this.project.scoring.id, this.area.areaType);
 
     transactionDialog.close();
 
@@ -74,7 +74,7 @@ export class OfferDetailsComponent implements OnInit {
       transactionHash
     );
 
-    await this.offersApiClient.declineExpertOfferAsync(transactionHash, this.project.scoring.id, this.area.areaType);
+    await this.offersApiClient.declineAsync(transactionHash, this.project.scoring.id, this.area.areaType);
 
     transactionDialog.close();
 

@@ -2,9 +2,10 @@
 {
     public enum ScoringOfferStatus
     {
-        Pending,
-        Accepted,
-        Rejected,
-        Finished
+        Pending = 0,
+        Accepted = 1,
+        Rejected = 2,
+        Finished = 3,
+        Expired = 4
     }
 }

@@ -57,7 +57,7 @@ import {CompositeGuard} from './services/guards/composite.guard';
 import {GuardFactory} from './services/guards/guard-factory';
 import {DashIfEmptyPipe} from './utils/dash-if-empty.pipe';
 import {ShouldBeAuthenticatedGuard} from './services/authentication/should-be-authenticated.guard';
-import {ScoringExpertsManagerContractClient} from './services/contract-clients/scoring-experts-manager-contract-client';
+import {ScoringOffersManagerContractClient} from './services/contract-clients/scoring-offers-manager-contract-client.service';
 import {FormatDatePipe} from './utils/format-date.pipe';
 import {AuthenticationApiClient} from './api/authentication/authentication-api-client';
 import {UserContext} from './services/authentication/user-context';
@@ -81,7 +81,7 @@ import {EnumHelper} from './utils/enum-helper';
 import {AdminExpertsListComponent} from './components/admin-panel/admin-experts-list/admin-experts-list.component';
 import {CreateNewExpertModalComponent} from './components/common/create-new-expert-modal/create-new-expert-modal.component';
 import {EditExpertModalComponent} from './components/common/edit-expert-modal/edit-expert-modal.component';
-import {ExpertStatusGuard} from './services/guards/expert-status.guard';
+import {ShouldNotBeExpertGuard} from './services/guards/should-not-be-expert.guard';
 import {AdminScoringProjectsComponent} from './components/admin-panel/admin-scoring-projects/admin-scoring-projects.component';
 import {SetExpertsModalComponent} from './components/common/set-experts-modal/set-experts-modal.component';
 import {OffersApiClient} from './api/scoring-offer/offers-api-client';
@@ -98,8 +98,7 @@ import {EditScoringApplicationComponent} from './components/edit-scoring-applica
 import {StickyModule} from 'ng2-sticky-kit';
 import {InputSwitchComponent} from './components/input-switch/input-switch.component';
 import {ScoringService} from './services/scoring/scoring.service';
-import {ScoringContractClient} from './services/contract-clients/scoring-contract-client';
-import {ScoringCostComponent} from './components/common/scoring-cost-modal/scoring-cost.component';
+import {ScoringCostComponent} from './components/scoring-cost/scoring-cost.component';
 import {ConfirmEmailComponent} from './components/common/confirm-email/confirm-email.component';
 import {RegisterConfirmComponent} from './components/authentication/register-confirm/register-confirm.component';
 import {RegisterComponent} from './components/authentication/register/register.component';
@@ -118,7 +117,7 @@ import {ExpertSelectorComponent} from './components/scoring/scoring-payment/expe
 import {OfferDetailsComponent} from './components/scoring/offer-details/offer-details.component';
 import {SubmittedScoringApplicationGuard} from './services/guards/submitted-scoring-application.guard';
 import {ScoringListComponent} from './components/scoring-list/scoring-list.component';
-import {ImageUploaderComponent} from './components/image-uploader/image-uploader.component';
+import {FileUploaderComponent} from './components/file-uploader/file-uploader.component';
 import {MemberUploadPhotoComponent} from './components/member-upload-photo/member-upload-photo.component';
 import {ScoringReportComponent} from './components/project/scoring-report/scoring-report.component';
 import {ScoringShouldNotExistGuard} from './services/guards/scoring-should-not-exist.guard';
@@ -134,10 +133,18 @@ import {AdminFeedbacksComponent} from './components/admin-panel/admin-feedbacks/
 import {FeedbackApiClient} from './api/feedback/feedback-api-client';
 import {SubscriptionApiClient} from './api/subscription/subscription-api-client';
 import {AdminSubscriptionsComponent} from './components/admin-panel/admin-subscriptions/admin-subscriptions.component';
-import {AccordionModule} from 'primeng/accordion';
-import {TabViewModule} from 'primeng/tabview';
 import {QuillModule} from 'ngx-quill';
 import {AdminAdminsListComponent} from './components/admin-panel/admin-admins-list/admin-admins-list.component';
+import {AdminUsersListComponent} from './components/admin-panel/admin-users-list/admin-users-list.component';
+import {AccordionModule} from 'primeng/accordion';
+import {TabViewModule} from 'primeng/tabview';
+import {AdminProjectsListComponent} from './components/admin-panel/admin-projects-list/admin-projects-list.component';
+import {EditScoringComponent} from './components/scoring/edit-scoring/edit-scoring.component';
+import {PrivateScoringModalComponent} from './components/common/private-scoring-modal/private-scoring-modal.component';
+import {PrivateApplicationShouldNotBeSubmitted} from './services/guards/private-application-should-not-be-submitted.guard';
+import {PrivateScoringAvailabilityGuard} from './services/guards/private-scoring-availability.guard';
+import {PrivateScoringManagerContractClient} from './services/contract-clients/private-scoring-manager-contract-client';
+import {ScoringParametersProviderContractClient} from './services/contract-clients/scoring-parameters-provider-contract-client';
 import {GlobalErrorHandler} from './utils/global-error-handler';
 import {LoggingApiClient} from './api/logging/logging-api-client';
 
@@ -197,7 +204,7 @@ import {LoggingApiClient} from './api/logging/logging-api-client';
     ScoringPaymentComponent,
     ExpertSelectorComponent,
     OfferDetailsComponent,
-    ImageUploaderComponent,
+    FileUploaderComponent,
     MemberUploadPhotoComponent,
     ExpertScoringComponent,
     ScoringReportComponent,
@@ -207,7 +214,11 @@ import {LoggingApiClient} from './api/logging/logging-api-client';
     FeedbackModalComponent,
     AdminFeedbacksComponent,
     AdminSubscriptionsComponent,
-    AdminAdminsListComponent
+    AdminAdminsListComponent,
+    AdminUsersListComponent,
+    AdminProjectsListComponent,
+    EditScoringComponent,
+    PrivateScoringModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -224,7 +235,8 @@ import {LoggingApiClient} from './api/logging/logging-api-client';
     WaitingModalComponent,
     ChangeStatusModalComponent,
     SubscribeModalComponent,
-    FeedbackModalComponent
+    FeedbackModalComponent,
+    PrivateScoringModalComponent
   ],
   imports: [
     FileUploadModule,
@@ -295,7 +307,7 @@ import {LoggingApiClient} from './api/logging/logging-api-client';
     EstimatesApiClient,
     ExpertApiClient,
     ExpertsRegistryContractClient,
-    ScoringExpertsManagerContractClient,
+    ScoringOffersManagerContractClient,
     AdminApiClient,
     AuthenticationApiClient,
     AuthenticationService,
@@ -305,6 +317,7 @@ import {LoggingApiClient} from './api/logging/logging-api-client';
     Web3Service,
     DialogService,
     ScoringManagerContractClient,
+    PrivateScoringManagerContractClient,
     BlockiesService,
     BalanceService,
     InitializationService,
@@ -315,8 +328,10 @@ import {LoggingApiClient} from './api/logging/logging-api-client';
     ShouldBeAdminGuard,
     GuardFactory,
     CompositeGuard,
-    ExpertStatusGuard,
+    ShouldNotBeExpertGuard,
     OfferStatusGuard,
+    PrivateApplicationShouldNotBeSubmitted,
+    PrivateScoringAvailabilityGuard,
     AreaService,
     AreaService,
     EnumHelper,
@@ -325,10 +340,10 @@ import {LoggingApiClient} from './api/logging/logging-api-client';
     OffersApiClient,
     ScoringService,
     ProjectService,
-    ScoringContractClient,
     ScoringApplicationApiClient,
     SubmittedScoringApplicationGuard,
     ScoringShouldNotExistGuard,
+    ScoringParametersProviderContractClient,
     LoggingApiClient
   ],
   bootstrap: [AppComponent]

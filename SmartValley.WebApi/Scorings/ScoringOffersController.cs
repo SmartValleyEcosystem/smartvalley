@@ -1,16 +1,15 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SmartValley.Application;
 using SmartValley.Domain;
+using SmartValley.Domain.Entities;
+using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
 using SmartValley.Ethereum;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Scorings.Requests;
 using SmartValley.WebApi.Scorings.Responses;
-using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Scorings
 {
@@ -51,8 +50,12 @@ namespace SmartValley.WebApi.Scorings
         [HttpGet("status")]
         public async Task<ScoringOfferStatusResponse> GetOfferStatusAsync(GetScoringOfferStatusRequest request)
         {
+            var scoring = await _scoringService.GetByProjectIdAsync(request.ProjectId);
+            if (scoring == null)
+                throw new AppErrorException(ErrorCode.ScoringNotFound);
+
             var offer = await _scoringService.GetOfferAsync(request.ProjectId, request.AreaType.ToDomain(), User.GetUserId());
-            var offerStatus = offer?.Status.ToApi(offer.ExpirationTimestamp, _clock.UtcNow);
+            var offerStatus = offer?.Status.ToApi(scoring.AcceptingDeadline, scoring.ScoringDeadline, _clock.UtcNow);
             return new ScoringOfferStatusResponse
                    {
                        Status = offerStatus,
@@ -60,28 +63,32 @@ namespace SmartValley.WebApi.Scorings
                    };
         }
 
-        [HttpGet("query")]
-        public async Task<PartialCollectionResponse<ScoringOfferResponse>> QueryAsync([FromQuery] QueryScoringOffersRequest request)
+        [HttpGet]
+        public async Task<IActionResult> QueryAsync([FromQuery] QueryScoringOffersRequest request)
         {
+            var isAdmin = User.IsInRole(nameof(RoleType.Admin));
+
+            if (request.ExpertId.HasValue && request.ExpertId.Value != User.GetUserId() && !isAdmin
+                || !request.ExpertId.HasValue && !isAdmin)
+            {
+                return Unauthorized();
+            }
+
             var query = new OffersQuery
                         {
-                            ExpertId = User.GetUserId(),
+                            ExpertId = request.ExpertId,
                             OrderBy = request.OrderBy,
                             SortDirection = request.SortDirection,
-                            OnlyTimedOut = request.Status == ScoringOfferStatus.Timeout,
                             Status = request.Status?.ToDomain(),
                             Offset = request.Offset,
-                            Count = request.Count
+                            Count = request.Count,
+                            ScoringId = request.ScoringId,
+                            ProjectId = request.ProjectId
                         };
             var now = _clock.UtcNow;
             var offers = await _scoringService.QueryOffersAsync(query, now);
-            var totalCount = await _scoringService.GetOffersQueryCountAsync(query, now);
 
-            return new PartialCollectionResponse<ScoringOfferResponse>(
-                request.Offset,
-                request.Count,
-                totalCount,
-                offers.Select(o => ScoringOfferResponse.Create(o, now)).ToArray());
+            return Ok(offers.ToPartialCollectionResponse(o => ScoringOfferResponse.Create(o, now)));
         }
 
         [HttpPut]

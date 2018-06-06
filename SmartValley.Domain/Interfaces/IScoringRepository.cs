@@ -7,18 +7,16 @@ namespace SmartValley.Domain.Interfaces
 {
     public interface IScoringRepository
     {
-        Task<int> AddAsync(Scoring scoring);
+        void Add(Scoring scoring);
 
         Task<Scoring> GetByProjectIdAsync(long projectId);
 
         Task<IReadOnlyCollection<ScoringProjectDetails>> GetScoringProjectsDetailsByScoringIdsAsync(IReadOnlyCollection<long> scoringIds);
 
-        Task<IReadOnlyCollection<ScoringAreaStatistics>> GetIncompletedScoringAreaStatisticsAsync(DateTimeOffset tillDate);
-
-        Task<bool> HasEnoughExpertsAsync(long scoringId);
+        Task<IReadOnlyCollection<ScoringAreaStatistics>> GetIncompletedScoringAreaStatisticsAsync(DateTimeOffset now);
 
         Task SaveChangesAsync();
 
-        Task<Scoring> GetAsync(long scoringId);
+        Task<Scoring> GetByIdAsync(long scoringId);
     }
 }

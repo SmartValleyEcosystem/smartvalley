@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
 {
-    public class EstimateComment : IEntityWithId
+    public class EstimateComment
     {
         public long Id { get; set; }
 

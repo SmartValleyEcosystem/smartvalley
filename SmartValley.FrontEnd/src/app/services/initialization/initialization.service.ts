@@ -6,8 +6,10 @@ import {AuthenticationService} from '../authentication/authentication-service';
 import {AdminContractClient} from '../contract-clients/admin-contract-client';
 import {ExpertsRegistryContractClient} from '../contract-clients/experts-registry-contract-client';
 import {AreaService} from '../expert/area.service';
-import {ScoringExpertsManagerContractClient} from '../contract-clients/scoring-experts-manager-contract-client';
+import {ScoringOffersManagerContractClient} from '../contract-clients/scoring-offers-manager-contract-client.service';
 import {DictionariesService} from '../common/dictionaries.service';
+import {PrivateScoringManagerContractClient} from '../contract-clients/private-scoring-manager-contract-client';
+import {ScoringParametersProviderContractClient} from '../contract-clients/scoring-parameters-provider-contract-client';
 
 @Injectable()
 export class InitializationService {
@@ -18,7 +20,9 @@ export class InitializationService {
               private adminContractClient: AdminContractClient,
               private expertContractClient: ExpertsRegistryContractClient,
               private scoringManagerContractClient: ScoringManagerContractClient,
-              private scoringExpertsManagerContractClient: ScoringExpertsManagerContractClient,
+              private privateScoringManagerContractClient: PrivateScoringManagerContractClient,
+              private scoringOffersManagerContractClient: ScoringOffersManagerContractClient,
+              private scoringParametersProviderContractClient: ScoringParametersProviderContractClient,
               private authenticationService: AuthenticationService,
               private areaService: AreaService,
               private dictionariesService: DictionariesService) {
@@ -35,11 +39,13 @@ export class InitializationService {
 
   private async initializeAppInternalAsync(): Promise<void> {
     await Promise.all([
+      this.scoringParametersProviderContractClient.initializeAsync(),
       this.authenticationService.initializeAsync(),
       this.scoringCriterionService.initializeAsync(),
       this.adminContractClient.initializeAsync(),
       this.scoringManagerContractClient.initializeAsync(),
-      this.scoringExpertsManagerContractClient.initializeAsync(),
+      this.privateScoringManagerContractClient.initializeAsync(),
+      this.scoringOffersManagerContractClient.initializeAsync(),
       this.expertContractClient.initializeAsync(),
       this.areaService.initializeAsync(),
       this.dictionariesService.initializeAsync()

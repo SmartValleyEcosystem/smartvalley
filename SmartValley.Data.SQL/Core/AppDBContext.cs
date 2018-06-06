@@ -46,8 +46,6 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<ExpertApplication> IReadOnlyDataContext.ExpertApplications => ExpertApplications.AsNoTracking();
 
-        IQueryable<ExpertApplicationArea> IReadOnlyDataContext.ExpertApplicationAreas => ExpertApplicationAreas.AsNoTracking();
-
         IQueryable<Country> IReadOnlyDataContext.Countries => Countries.AsNoTracking();
 
         IQueryable<ScoringApplicationQuestion> IReadOnlyDataContext.ScoringApplicationQuestions => ScoringApplicationQuestions.AsNoTracking();
@@ -160,6 +158,12 @@ namespace SmartValley.Data.SQL.Core
             modelBuilder.Entity<Project>()
                         .HasIndex(p => new {p.Name});
 
+            modelBuilder.Entity<Project>()
+                        .HasMany(t => t.TeamMembers);
+
+            modelBuilder.Entity<Project>()
+                        .HasOne(t => t.Scoring);
+
             modelBuilder.Entity<User>()
                         .HasMany(c => c.Projects)
                         .WithOne(e => e.Author)
@@ -217,6 +221,11 @@ namespace SmartValley.Data.SQL.Core
             modelBuilder.Entity<ExpertApplicationArea>()
                         .HasKey(e => new {e.ExpertApplicationId, AreaType = e.AreaId});
 
+            modelBuilder.Entity<ExpertApplication>()
+                        .HasMany(e => e.ExpertApplicationAreas)
+                        .WithOne(e => e.ExpertApplication)
+                        .HasForeignKey(k => k.ExpertApplicationId);
+
             modelBuilder.Entity<Expert>()
                         .HasKey(r => r.UserId);
 
@@ -237,6 +246,11 @@ namespace SmartValley.Data.SQL.Core
                         .HasIndex(u => u.Code)
                         .IsUnique();
 
+            modelBuilder.Entity<Country>()
+                        .HasMany(i => i.ExpertApplications)
+                        .WithOne()
+                        .HasForeignKey(k => k.CountryId);
+
             modelBuilder.Entity<AreaScoring>()
                         .HasKey(e => new {e.ScoringId, e.AreaId});
 
@@ -249,9 +263,8 @@ namespace SmartValley.Data.SQL.Core
             modelBuilder.Entity<ScoringOffer>()
                         .HasIndex(e => new {e.ScoringId, e.AreaId, e.ExpertId});
 
-            modelBuilder.Entity<ScoringOffer>()
-                        .HasOne(o => o.Scoring)
-                        .WithMany(s => s.ScoringOffers);
+            modelBuilder.Entity<Scoring>()
+                        .HasMany(o => o.ScoringOffers);
 
             modelBuilder.Entity<ScoringApplicationAnswer>()
                         .HasOne(x => x.Question);
@@ -366,7 +379,28 @@ namespace SmartValley.Data.SQL.Core
             modelBuilder.Entity<Subscription>()
                         .HasOne(t => t.Project)
                         .WithMany()
-                        .HasForeignKey(i=>i.ProjectId);
+                        .HasForeignKey(i => i.ProjectId);
+
+            modelBuilder.Entity<User>()
+                        .HasOne(x => x.Country)
+                        .WithMany(x => x.Users)
+                        .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<User>()
+                        .Property(b => b.City)
+                        .HasMaxLength(100);
+
+            modelBuilder.Entity<User>()
+                        .Property(b => b.LinkedInLink)
+                        .HasMaxLength(400);
+
+            modelBuilder.Entity<User>()
+                        .Property(b => b.FacebookLink)
+                        .HasMaxLength(400);
+
+            modelBuilder.Entity<User>()
+                        .Property(b => b.BitcointalkLink)
+                        .HasMaxLength(400);
         }
     }
 }

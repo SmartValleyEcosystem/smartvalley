@@ -24,7 +24,6 @@ namespace SmartValley.Data.SQL.Core
         DbSet<Expert> Experts { get; }
         DbSet<ExpertArea> ExpertAreas { get; }
         DbSet<ExpertApplication> ExpertApplications { get; }
-        DbSet<ExpertApplicationArea> ExpertApplicationAreas { get; }
         DbSet<Country> Countries { get; }
         DbSet<ScoringApplication> ScoringApplications { get; }
         DbSet<ScoringApplicationAnswer> ScoringApplicationAnswers { get; }

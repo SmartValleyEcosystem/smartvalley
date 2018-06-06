@@ -22,6 +22,7 @@ import {SaveEstimatesRequest} from '../../api/estimates/save-estimates-request';
 import {QuestionControlType} from '../../api/scoring-application/question-control-type.enum';
 import {BalanceService} from '../../services/balance/balance.service';
 import {isNullOrUndefined} from 'util';
+import {PrivateScoringManagerContractClient} from '../../services/contract-clients/private-scoring-manager-contract-client';
 
 @Component({
   selector: 'app-expert-scoring',
@@ -30,6 +31,7 @@ import {isNullOrUndefined} from 'util';
 })
 export class ExpertScoringComponent implements OnInit, OnDestroy {
 
+  public project: ProjectSummaryResponse;
   public projectName = '';
   public projectId: number;
   public projectExternalId: string;
@@ -39,10 +41,10 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
   public areasCriterion: ScoringCriteriaGroup[] = [];
   public scoringForm: FormGroup;
   public questionsActivity: Array<boolean> = [];
-  public criterionPrompts: CriterionPromptResponse[];
   public questionTypeComboBox = QuestionControlType.Combobox;
   public isSaved = false;
   public saveTime: string;
+  public criterionInfo: { [id: number]: CriterionPrompt[] } = {};
   private timer: NodeJS.Timer;
 
   @ViewChildren('required') public requiredFields: QueryList<any>;
@@ -57,6 +59,7 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
               private estimatesApiClient: EstimatesApiClient,
               private scoringCriterionService: ScoringCriterionService,
               private scoringManagerContractClient: ScoringManagerContractClient,
+              private privateScoringManagerContractClient: PrivateScoringManagerContractClient,
               private translateService: TranslateService,
               private router: Router) {
   }
@@ -81,18 +84,25 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
 
     this.scoringForm = this.formBuilder.group(scoringFields);
 
-    const projectSummary: ProjectSummaryResponse = await this.projectApiClient.getProjectSummaryAsync(this.projectId);
-    this.projectName = projectSummary.name;
-    this.projectExternalId = projectSummary.externalId;
+    this.project = await this.projectApiClient.getProjectSummaryAsync(this.projectId);
+    this.projectName = this.project.name;
+    this.projectExternalId = this.project.externalId;
 
-    const draftData = await this.estimatesApiClient.getEstimatesDraftAsync(this.projectId);
+    const draftData = await this.estimatesApiClient.getEstimatesDraftAsync(this.projectId, this.areaType);
     this.addDraftData(draftData);
 
     const criterionPromptsResponse = await this.estimatesApiClient.getCriterionPromptsAsync(this.projectId, this.areaType);
-    this.criterionPrompts = criterionPromptsResponse.items;
+    const criterionPrompts: CriterionPromptResponse[] = criterionPromptsResponse.items;
     this.questionsActivity = [true];
 
     this.timer = <NodeJS.Timer>setInterval(async () => await this.saveDraft(), 60000);
+
+    for (const group of this.areasCriterion) {
+      for (const criteria of group.criteria) {
+          this.criterionInfo[criteria.id] = criterionPrompts.find((c) => c.scoringCriterionId === criteria.id).prompts;
+      }
+    }
+
   }
 
   ngOnDestroy(): void {
@@ -111,10 +121,6 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
 
     prepareFormData['conclusion'] = data.conclusion;
     this.scoringForm.setValue(prepareFormData);
-  }
-
-  public getCriterionInfo(id): CriterionPrompt[] {
-    return this.criterionPrompts.find((c) => c.scoringCriterionId === id).prompts;
   }
 
   private validateForm(): boolean {
@@ -177,12 +183,23 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const transactionHash = await this.scoringManagerContractClient.submitEstimatesAsync(
-      this.projectExternalId,
-      this.areaType,
-      this.scoringForm.get('conclusion').value,
-      this.getEstimate()
-    );
+    let transactionHash = '';
+
+    if (this.project.isPrivate) {
+        transactionHash = await this.privateScoringManagerContractClient.submitEstimatesAsync(
+            this.projectExternalId,
+            this.areaType,
+            this.scoringForm.get('conclusion').value,
+            this.getEstimate()
+        );
+    } else {
+        transactionHash = await this.scoringManagerContractClient.submitEstimatesAsync(
+            this.projectExternalId,
+            this.areaType,
+            this.scoringForm.get('conclusion').value,
+            this.getEstimate()
+        );
+    }
 
     const transactionDialog = this.dialogService.showTransactionDialog(
       this.translateService.instant('OfferDetails.Dialog'),
@@ -246,9 +263,5 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
 
   public getProjectApplictionLink() {
     return Paths.Project + '/' + this.projectId + '/details/application';
-  }
-
-  async navigateToProjectApplication() {
-    await this.router.navigate([Paths.Project + '/' + this.projectId + '/details/application']);
   }
 }

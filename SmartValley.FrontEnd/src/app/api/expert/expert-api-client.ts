@@ -12,8 +12,9 @@ import {RejectApplicationRequest} from './reject-application-request';
 import {ExpertResponse} from './expert-response';
 import {ExpertRequest} from './expert-request';
 import {ExpertDeleteRequest} from './expert-delete-request';
-import {ExpertUpdateRequest} from './expert-update-request';
 import {ExpertAvailabilityStatusResponse} from './expert-availability-status-response';
+import {GetExpertsRequest} from './get-experts-request';
+import {isNullOrUndefined} from 'util';
 
 @Injectable()
 export class ExpertApiClient extends BaseApiClient {
@@ -55,31 +56,25 @@ export class ExpertApiClient extends BaseApiClient {
     }).toPromise();
   }
 
-  public getExpertsListAsync(offset: number, count: number): Promise<CollectionResponse<ExpertResponse>> {
-    const parameters = new HttpParams()
-      .append('offset', offset.toString())
-      .append('count', count.toString());
+  public getExpertsListAsync(getExpertsRequest: GetExpertsRequest): Promise<CollectionResponse<ExpertResponse>> {
+    const checkParam = (param) => isNullOrUndefined(param) ? '' : param.toString();
 
-    return this.http.get<CollectionResponse<ExpertResponse>>(`${this.baseApiUrl}/experts/all/`, {
+    const parameters = new HttpParams()
+      .append('offset', getExpertsRequest.offset.toString())
+      .append('count', getExpertsRequest.count.toString())
+      .append('isInHouse', checkParam(getExpertsRequest.isInHouse));
+
+    return this.http.get<CollectionResponse<ExpertResponse>>(`${this.baseApiUrl}/experts`, {
       params: parameters
     }).toPromise();
   }
 
   public getAsync(address: string): Promise<ExpertResponse> {
-    const parameters = new HttpParams()
-      .append('address', address);
-
-    return this.http.get<ExpertResponse>(`${this.baseApiUrl}/experts/`, {
-      params: parameters
-    }).toPromise();
+    return this.http.get<ExpertResponse>(`${this.baseApiUrl}/experts/${address}`).toPromise();
   }
 
   public createAsync(expertRequest: ExpertRequest) {
     return this.http.post(`${this.baseApiUrl}/experts/`, expertRequest).toPromise();
-  }
-
-  public updateAsync(updateRequest: ExpertUpdateRequest) {
-    return this.http.put(this.baseApiUrl + '/experts/', updateRequest).toPromise();
   }
 
   public deleteAsync(deleteRequest: ExpertDeleteRequest) {

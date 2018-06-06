@@ -1,11 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
 {
-    public class Project : IEntityWithId
+    public class Project
     {
+        public Project()
+        {
+            TeamMembers = new List<ProjectTeamMember>();
+        }
+
         public long Id { get; set; }
 
         [Required]
@@ -69,9 +76,32 @@ namespace SmartValley.Domain.Entities
 
         [Url, MaxLength(200)]
         public string Github { get; set; }
+        
+        public bool IsPrivate { get; set; }
 
         public User Author { get; set; }
 
         public Country Country { get; set; }
+
+        public Scoring Scoring { get; set; }
+
+        public ICollection<ProjectTeamMember> TeamMembers { get; }
+
+        public void UpdateTeamMemberPhotoLink(long memberId, string link)
+        {
+            var member = TeamMembers.FirstOrDefault(i => i.Id == memberId);
+            if (member != null)
+                member.PhotoUrl = link;
+        }
+
+        public ProjectTeamMember GetTeamMember(long memberId)
+        {
+            return TeamMembers.FirstOrDefault(i => i.Id == memberId);
+        }
+
+        public void UpdateMembers(IReadOnlyCollection<ProjectTeamMember> modifiedMembers)
+        {
+            TeamMembers.Merge(modifiedMembers);
+        }
     }
 }

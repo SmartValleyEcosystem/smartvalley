@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SmartValley.Application;
 using SmartValley.Domain.Interfaces;
 using SmartValley.Ethereum;
 using SmartValley.WebApi.Estimates.Requests;
@@ -19,15 +18,18 @@ namespace SmartValley.WebApi.Estimates
         private readonly EthereumClient _ethereumClient;
         private readonly IEstimationService _estimationService;
         private readonly IScoringCriterionRepository _scoringCriterionRepository;
+        private readonly IClock _clock;
 
         public EstimatesController(
             EthereumClient ethereumClient,
             IEstimationService estimationService,
-            IScoringCriterionRepository scoringCriterionRepository)
+            IScoringCriterionRepository scoringCriterionRepository,
+            IClock clock)
         {
             _ethereumClient = ethereumClient;
             _estimationService = estimationService;
             _scoringCriterionRepository = scoringCriterionRepository;
+            _clock = clock;
         }
 
         [Authorize]
@@ -51,9 +53,9 @@ namespace SmartValley.WebApi.Estimates
         [Authorize]
         [HttpGet]
         [Route("offer")]
-        public async Task<ExpertEstimateResponse> GetOfferEstimatesAsync(long projectId)
+        public async Task<ExpertEstimateResponse> GetOfferEstimatesAsync(long projectId, AreaType areaType)
         {
-            var expertConclusion = await _estimationService.GetOfferEstimateAsync(User.GetUserId(), projectId);
+            var expertConclusion = await _estimationService.GetOfferEstimateAsync(User.GetUserId(), projectId, areaType);
             if (expertConclusion == null)
             {
                 return ExpertEstimateResponse.Empty;
@@ -67,12 +69,13 @@ namespace SmartValley.WebApi.Estimates
         }
 
         [HttpGet]
+        [CanSeeProject("projectId")]
         public async Task<CollectionResponse<ScoringStatisticsInAreaResponse>> GetEstimatesAsync(long projectId)
         {
             var scoringStatistics = await _estimationService.GetScoringStatisticsAsync(projectId);
             return new CollectionResponse<ScoringStatisticsInAreaResponse>
                    {
-                       Items = scoringStatistics.Select(ScoringStatisticsInAreaResponse.Create).ToArray()
+                       Items = scoringStatistics.ScoringStatisticsInArea.Select(x => ScoringStatisticsInAreaResponse.Create(x, scoringStatistics.AcceptingDeadline, scoringStatistics.ScoringDeadline, _clock.UtcNow)).ToArray()
                    };
         }
 
@@ -80,7 +83,7 @@ namespace SmartValley.WebApi.Estimates
         [Route("criteria")]
         public async Task<CollectionResponse<AreaScoringCriteriaResponse>> GetCriteriaAsync()
         {
-            var criteria = await _scoringCriterionRepository.GetAllAsync();
+            var criteria = await _scoringCriterionRepository.GetAsync();
             return new CollectionResponse<AreaScoringCriteriaResponse>
                    {
                        Items = criteria

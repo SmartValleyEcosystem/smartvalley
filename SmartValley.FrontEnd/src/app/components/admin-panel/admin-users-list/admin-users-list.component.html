@@ -1,0 +1,36 @@
+<div class="admin-experts-list" style="padding-top: 2em;">
+  <p-table class="admin-table" [value]="users" [lazy]="true" (onLazyLoad)="getUserList($event)" [paginator]="true"
+           [rows]="10" [totalRecords]="totalRecords" [loading]="loading">
+    <ng-template pTemplate="header" let-columns>
+      <tr class="list-row list-row__header">
+        <th class="list-item">{{ 'AdminUsersList.RegDate' | translate }}</th>
+        <th class="list-item">{{ 'AdminUsersList.FullName' | translate }}</th>
+        <th class="list-item">{{ 'AdminUsersList.Address' | translate }}</th>
+        <th class="list-item">{{ 'AdminUsersList.Email' | translate }}</th>
+        <th class="list-item">{{ 'AdminUsersList.PrivateScoring' | translate }}</th>
+        <!--<th class="list-item">{{ 'AdminExpertList.Actions' | translate }}</th>-->
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr class="list-row">
+        <td class="list-item">
+          {{rowData['registrationDate'] | date:'yyyy-MM-dd'}}
+        </td>
+        <td class="list-item">
+          {{(rowData.firstName||'') + ' ' + (rowData.lastName||'')}}
+        </td>
+        <td class="list-item" *ngFor="let col of ['address', 'email']" style="overflow-wrap: break-word;">
+          {{rowData[col]}}
+        </td>
+        <td>
+          <mat-checkbox
+            (change)="onChangeUserPrivateAsync(rowData['address'])"
+            [(ngModel)]="rowData['canCreatePrivateProjects']"
+          ></mat-checkbox>
+        </td>
+        <!--<td>-->
+        <!--</td>-->
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

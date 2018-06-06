@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using SmartValley.Application.AzureStorage;
 using SmartValley.Domain;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.WebApi.Projects.Requests;
 
@@ -9,19 +9,15 @@ namespace SmartValley.WebApi.Projects
 {
     public interface IProjectService
     {
-        Task<ProjectDetails> GetDetailsAsync(long projectId);
+        Task<PagingCollection<Project>> GetAsync(ProjectsQuery query);
 
-        Task<IReadOnlyCollection<ProjectDetails>> QueryAsync(ProjectsQuery projectsQuery);
-
-        Task<int> GetQueryTotalCountAsync(ProjectsQuery projectsQuery);
-
-        Task<bool> IsAuthorizedToEditProjectTeamMemberAsync(long userId, long projectTeamMemberId);
+        Task<bool> IsAuthorizedToEditProjectTeamMemberAsync(long userId, long projectId);
 
         Task<bool> IsAuthorizedToEditProjectAsync(long projectId, long userId);
 
-        Task UpdateTeamMemberPhotoAsync(long projectTeamMemberId, AzureFile photo);
+        Task<bool> IsAuthorizedToSeeProjectAsync(long id, long? userId);
 
-        Task<IReadOnlyCollection<ProjectDetails>> GetProjectsByNameAsync(string projectName);
+        Task UpdateTeamMemberPhotoAsync(long projectId, long projectTeamMemberId, AzureFile photo);
 
         Task<Project> CreateAsync(long userId, CreateProjectRequest request);
 
@@ -31,13 +27,11 @@ namespace SmartValley.WebApi.Projects
 
         Task UpdateImageAsync(long projectId, AzureFile image);
 
-        Task<Project> GetAsync(long projectId);
+        Task<Project> GetByIdAsync(long projectId);
 
-        Task<IReadOnlyCollection<ProjectTeamMember>> GetTeamAsync(long projectId);
+        Task<Project> GetByAuthorIdAsync(long authorId);
 
-        Task<ProjectDetails> GetByAuthorIdAsync(long authorId);
-
-        Task DeleteTeamMemberPhotoAsync(long projectTeamMemberId);
+        Task DeleteTeamMemberPhotoAsync(long projectId, long projectTeamMemberId);
 
         Task DeleteProjectImageAsync(long projectId);
     }

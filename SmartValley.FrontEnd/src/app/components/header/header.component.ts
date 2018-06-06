@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
 import {NavigationEnd, Router, RouterEvent} from '@angular/router';
 import {Paths} from '../../paths';
@@ -15,13 +15,14 @@ import {DialogService} from '../../services/dialog-service';
 import {User} from '../../services/authentication/user';
 import {ExpertsRegistryContractClient} from '../../services/contract-clients/experts-registry-contract-client';
 import {TranslateService} from '@ngx-translate/core';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
 
   public currentBalance: number;
   public showReceiveEtherButton: boolean;
@@ -32,15 +33,15 @@ export class HeaderComponent implements OnInit {
   public accountImgUrl: string;
   public projectsLink: string;
   public accountLink: string;
-  public scroginsLink: string;
+  public scoringsLink: string;
   public adminPanelLink: string;
   public myProjectLink: string;
-  public expertStatus?: ExpertApplicationStatus;
-  public ExpertApplicationStatus = ExpertApplicationStatus;
+  public isExpert = false;
   public showExpertPanel = false;
   public isUserExpert = false;
   public isExpertActive: boolean;
   public isMobileMenuVisible = false;
+  public routerSubscriber: Subscription;
 
   constructor(private balanceService: BalanceService,
               private blockiesService: BlockiesService,
@@ -58,7 +59,7 @@ export class HeaderComponent implements OnInit {
       this.myProjectLink = '';
     });
 
-    this.router.events.subscribe(async (event: RouterEvent) => await this.checkExpertPanelVisibilityAsync(event));
+    this.routerSubscriber = this.router.events.subscribe(async (event: RouterEvent) => await this.checkExpertPanelVisibilityAsync(event));
     this.projectService.projectsCreated.subscribe(async () => await this.updateProjectsAsync());
     this.balanceService.balanceChanged.subscribe((balance: Balance) => this.updateBalance(balance));
     this.userContext.userContextChanged.subscribe(async (user) => await this.updateAccountAsync(user));
@@ -98,7 +99,7 @@ export class HeaderComponent implements OnInit {
         }
       }
     }
-  };
+  }
 
   private async updateProjectsAsync(): Promise<void> {
     const myProjectResponse = await this.projectApiClient.getMyProjectAsync();
@@ -113,20 +114,16 @@ export class HeaderComponent implements OnInit {
       await this.updateProjectsAsync();
       this.isAuthenticated = true;
       this.accountAddress = user.account;
-      const expertStatusResponse = await this.expertApiClient.getExpertStatusAsync(this.accountAddress);
-      this.expertStatus = expertStatusResponse.status;
-      this.scroginsLink = Paths.ScoringList;
+      this.isExpert = user.isExpert;
+      this.isAdmin = user.isAdmin;
+      this.scoringsLink = Paths.ScoringList;
       this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
-      this.isAdmin = user.roles.includes('Admin');
-      if (user.isExpert && this.router.url !== '/') {
-        this.showExpertPanel = true;
-      } else {
-        this.showExpertPanel = false;
-      }
+      this.showExpertPanel = user.isExpert && this.router.url !== '/';
     } else {
       this.showExpertPanel = false;
       this.isAuthenticated = false;
       this.isAdmin = false;
+      this.isExpert = false;
       this.haveProject = false;
       this.myProjectLink = '';
     }
@@ -155,11 +152,12 @@ export class HeaderComponent implements OnInit {
 
   async navigateToExpertApplication() {
     if (await this.authenticationService.authenticateAsync()) {
-      if (this.expertStatus === ExpertApplicationStatus.Pending) {
+      const status = (await this.expertApiClient.getExpertStatusAsync(this.accountAddress)).status;
+      if (status === ExpertApplicationStatus.Pending) {
         await this.router.navigate([Paths.ExpertStatus]);
-      } else if (this.expertStatus === ExpertApplicationStatus.Accepted) {
+      } else if (status === ExpertApplicationStatus.Accepted) {
         await this.router.navigate([Paths.ScoringList]);
-      } else if (this.expertStatus === ExpertApplicationStatus.Rejected) {
+      } else if (status === ExpertApplicationStatus.Rejected) {
         await this.router.navigate([Paths.ExpertStatus]);
       } else {
         await this.router.navigate([Paths.RegisterExpert]);
@@ -199,6 +197,10 @@ export class HeaderComponent implements OnInit {
       transactionDialog.close();
       this.isExpertActive = !isExpertActive;
     }
+  }
+
+  public ngOnDestroy() {
+      this.routerSubscriber.unsubscribe();
   }
 
   public switchMobileMenuVisibility() {

@@ -1,33 +1,36 @@
 <div class="admin-experts-list">
-  <p-table [value]="experts" [lazy]="true" (onLazyLoad)="getExpertList($event)" [paginator]="true"
+  <p-table class="admin-table" [value]="experts" [lazy]="true" (onLazyLoad)="getExpertList($event)" [paginator]="true"
            [rows]="10" [totalRecords]="totalRecords" [loading]="loading">
     <ng-template pTemplate="header" let-columns>
       <tr class="list-row list-row__header">
         <th class="list-item">{{ 'AdminExpertList.Address' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.Email' | translate }}</th>
-        <th class="list-item">{{ 'AdminExpertList.FirstName' | translate }}</th>
-        <th class="list-item">{{ 'AdminExpertList.SecondName' | translate }}</th>
+        <th class="list-item">{{ 'AdminExpertList.FullName' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.About' | translate }}</th>
-        <th class="list-item">{{ 'AdminExpertList.Available' | translate }}</th>
+        <th class="list-item">{{ 'AdminExpertList.IsAvailable' | translate }}</th>
+        <th class="list-item">{{ 'AdminExpertList.IsInHouse' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.Categories' | translate }}</th>
         <th class="list-item">{{ 'AdminExpertList.Actions' | translate }}</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr class="list-row">
-        <td class="list-item" *ngFor="let col of ['address', 'email', 'firstName', 'secondName', 'about', 'isAvailable', 'areas']">
+        <td class="list-item" *ngFor="let col of ['address', 'email']">
           {{rowData[col]}}
         </td>
+        <td class="list-item">
+          {{(rowData.firstName||'') + ' ' + (rowData.secondName||'')}}
+        </td>
+        <td class="list-item" *ngFor="let col of ['about', 'isAvailable', 'isInHouse']">
+          {{rowData[col]}}
+        </td>
+        <td class="list-item">
+          <div *ngFor="let area of rowData.areas">
+            {{area.name}}
+          </div>
+        </td>
         <td>
-          <button (click)="showExpertEditDialog(rowData)" class="btn btn-link">
-          {{ 'AdminExpertList.Edit' | translate }}
-          </button>
-
-          <!--https://rassvet-capital.atlassian.net/browse/ILT-730-->
-          <!--<button (click)="deleteAsync(rowData.address)" class="btn btn-link">-->
-            <!--{{ 'AdminExpertList.Delete' | translate }}-->
-          <!--</button>-->
-
+          <span (click)="showExpertEditDialog(rowData)" class="edit-icon" title="{{ 'AdminExpertList.Edit' | translate }}"></span>
         </td>
       </tr>
     </ng-template>

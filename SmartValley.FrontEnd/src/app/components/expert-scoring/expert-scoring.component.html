@@ -1,5 +1,4 @@
 <div class="content">
-  <form name="scoringForm" [formGroup]="scoringForm" autocomplete="off" (ngSubmit)="submitFormAsync()">
     <h1 class="title">{{ 'ExpertScoring.Title' | translate }} {{ projectName }}</h1>
     <div class="area-title-row">
       <span class="area-title">{{ 'ExpertScoring.YourScore' | translate }} {{areaTypeName}}</span>
@@ -14,19 +13,23 @@
            [attr.data-selected]="false"
            (click)="chageActiveQuestion(groupIndex === 0 ? questionIndex : questionIndex + (groupIndex * areasCriterion[groupIndex -1].criteria.length))"
            [class.active-question]="questionsActivity[groupIndex === 0 ? questionIndex : questionIndex + (groupIndex * areasCriterion[groupIndex -1].criteria.length)]">
-        <div class="question-tooltip" *ngIf="criterionPrompts">
+        <div class="question-tooltip">
           <h3 class="question-tooltip__title">{{ 'ExpertScoring.ProjectOwnerAnswer' | translate }}</h3>
-          <div *ngFor="let info of getCriterionInfo(criteria.id)">
+          <div *ngFor="let info of criterionInfo[criteria.id]; let infoIndex = index;">
             <div class="empty-popup"
-                 *ngIf="getCriterionInfo(criteria.id).length === 1 && !info.answer && !info.projectAdvisers.length && !info.socialNetworks && !info.projectTeamMembers.length">
+                 *ngIf="criterionInfo[criteria.id].length === 1 && !info.answer && !info.projectAdvisers.length && !info.socialNetworks && !info.projectTeamMembers.length">
               <p class="info-description empty-info">
                 {{ 'ExpertScoring.NoInformation' | translate }}
               </p>
             </div>
-
             <div class="info-wrapper" *ngIf="info.answer">
               <p *ngIf="info.title" class="info-title">{{ ('EditScoringApplication.' + info.title) | translate }}</p>
-              <p *ngIf="info.questionControlType !== questionTypeComboBox" class="info-description">{{ info.answer | translateBinaryAnswer }}</p>
+              <p *ngIf="info.questionControlType !== questionTypeComboBox" class="info-description">
+                <quill-editor class="main-text tooltip-formatted-text" [modules]="editorOptions" placeholder="" [formats]="editorFormats"
+                              [readOnly]="true"
+                              [ngModel]="info.answer | translateBinaryAnswer">
+                </quill-editor>
+              </p>
               <p *ngIf="info.questionControlType == questionTypeComboBox" class="info-description">{{ ('EditScoringApplication.' + info.answer) | translate }}</p>
             </div>
 
@@ -93,11 +96,10 @@
                 </div>
               </div>
             </div>
-
           </div>
         </div>
         <div class="question">{{questionIndex + 1}}. {{criteria.name}}</div>
-        <ul class="options-list">
+        <ul [formGroup]="scoringForm" class="options-list">
           <li *ngFor="let option of criteria.options">
             <p-radioButton name="answer_{{criteria.id}}" formControlName="answer_{{criteria.id}}"
                            value="{{option.score}}"
@@ -105,7 +107,7 @@
             </p-radioButton>
           </li>
         </ul>
-        <div class="control-row">
+        <div class="control-row" [formGroup]="scoringForm">
           <p class="control-label">
             <label for="comment{{criteria.id}}">{{ 'ExpertScoring.Comment' | translate }}</label>
           </p>
@@ -116,7 +118,7 @@
         </div>
       </div>
     </div>
-    <div class="group-wrapper">
+    <div class="group-wrapper" [formGroup]="scoringForm">
       <h2 class="settings-title">{{ 'ExpertScoring.Conclusion' | translate }}</h2>
       <div class="settings-block settings-block_last">
         <div class="control-row">
@@ -128,9 +130,8 @@
       </div>
     </div>
     <div class="submit-wrapper">
-      <input type="submit" value="{{ 'ExpertScoring.Finish' | translate }}" class="main-btn submit-btn">
+      <button type="submit" (click)="submitFormAsync()" class="main-btn submit-btn">{{ 'ExpertScoring.Finish' | translate }}</button>
       <span class="ghost-btn label-btn" (click)="saveDraft()">{{ 'ExpertScoring.SaveDraft' | translate }}</span>
       <span class="save-label" [class.label-visible]="isSaved">Saved {{ saveTime }}</span>
     </div>
-  </form>
 </div>

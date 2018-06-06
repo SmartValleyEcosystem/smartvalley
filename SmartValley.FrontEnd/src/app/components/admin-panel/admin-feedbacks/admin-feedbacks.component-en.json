@@ -1,8 +1,7 @@
 {
   "AdminFeedbacks": {
     "Email": "Email",
-    "FirstName": "First name",
-    "SecondName": "Second name",
+    "FullName": "Full name",
     "Text": "Text"
   }
 }

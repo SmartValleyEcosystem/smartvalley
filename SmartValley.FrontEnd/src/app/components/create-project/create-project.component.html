@@ -1,6 +1,15 @@
 <div class="content">
   <form (ngSubmit)="submitAsync()" novalidate [formGroup]="applicationForm" autocomplete="off">
-    <h1 *ngIf="!isEditProjectRoute" class="title">{{ 'CreateProject.Title' | translate }}</h1>
+    <div *ngIf="!isEditProjectRoute">
+      <div *ngIf="!isPrivate">
+        <h1 class="title">{{ 'CreateProject.Title' | translate }}</h1>
+        <div style="margin-bottom: 20px;">{{ 'CreateProject.PublicProjectDesc' | translate }}</div>
+      </div>
+      <div *ngIf="isPrivate">
+        <h1 class="title">{{ 'CreateProject.PrivateTitle' | translate }}</h1>
+        <div style="margin-bottom: 20px;">{{ 'CreateProject.PrivateProjectDesc' | translate }}</div>
+      </div>
+    </div>
     <h1 *ngIf="isEditProjectRoute" class="title">{{ 'CreateProject.EditTitle' | translate }}</h1>
     <h2 class="settings-title">{{ 'CreateProject.CommonInformation' | translate }}</h2>
     <div class="settings-block">
@@ -63,7 +72,8 @@
           <label for="ico-date">{{ 'CreateProject.IcoDate' | translate }}</label>
         </p>
         <p-calendar [inputId]="'ico-date'" formControlName="icoDate"
-                    [inputStyleClass]="'input input-date'" dateFormat="dd.mm.yy" [yearNavigator]="true" yearRange="2000:2050"></p-calendar>
+                    [inputStyleClass]="'input input-date'" dateFormat="dd.mm.yy" [yearNavigator]="true"
+                    yearRange="2000:2050"></p-calendar>
       </div>
       <div class="control-row">
         <p class="control-label">
@@ -77,13 +87,13 @@
           <label>{{ 'CreateProject.ProjectImage' | translate }}</label>
         </p>
         <p class="input-attention image-upload">{{ 'ExpertUploadPhoto.FileInfoTip' | translate }}</p>
-        <app-image-uploader
+        <app-file-uploader
           class="input-component"
           name="projectImage"
           accept="image/*"
           maxFileSize="5242880"
           formControlName="projectImage"
-          #projectImage></app-image-uploader>
+          #projectImage></app-file-uploader>
       </div>
     </div>
     <h2 class="settings-title">{{ 'CreateProject.SocialMedia' | translate }}</h2>

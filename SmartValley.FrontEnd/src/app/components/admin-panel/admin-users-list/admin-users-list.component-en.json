@@ -1,0 +1,11 @@
+{
+  "AdminUsersList": {
+    "RegDate": "Reg date",
+    "Actions": "Actions",
+    "CreateNew": "Create new",
+    "Address": "Address",
+    "Email": "Email",
+    "FullName": "Full name",
+    "PrivateScoring": "Private scoring"
+  }
+}

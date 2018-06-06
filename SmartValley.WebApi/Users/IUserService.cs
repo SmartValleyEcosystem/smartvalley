@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
+using SmartValley.WebApi.Users.Requests;
 
 namespace SmartValley.WebApi.Users
 {
@@ -10,6 +11,10 @@ namespace SmartValley.WebApi.Users
 
         Task<User> GetByIdAsync(long id);
 
-        Task UpdateAsync(Address address, string firstName, string secondName);
+        Task<PagingCollection<User>> GetAsync(int offset, int count);
+
+        Task UpdateAsync(Address address, UpdateUserRequest request);
+
+        Task SetCanCreatePrivateProjectsAsync(Address address, bool canCreatePrivateProjects);
     }
 }

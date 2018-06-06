@@ -1,0 +1,11 @@
+<label class="input input-button upload-btn">
+    <span class="input-button__text">{{'ExpertUploadPhoto.Upload' | translate }}</span>
+    <input #input type="file" [name]="name" [accept]="accept" (change)="onChange($event)"/>
+</label>
+<p *ngIf="fileName" class="file-name">{{ fileName }}</p>
+<div class="photo-container" *ngIf="imgUrl && usePreview">
+  <img class="uploaded-photo" [src]="imgUrl"/>
+  <div class="button-container">
+    <button (click)="deleteFile()">{{'ExpertUploadPhoto.Delete' | translate }}</button>
+  </div>
+</div>

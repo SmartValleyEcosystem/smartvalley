@@ -1,7 +1,9 @@
+@import "../../../../styles/fonts.scss";
+
 .main-text {
   width: 586px;
   min-height: 20px;
-  font-family: Roboto-Regular;
+  font-family: $font-pt;
   font-size: 16px;
   line-height: 1.43;
   text-align: left;
@@ -10,6 +12,10 @@
   @media screen and (min-width: 320px) and (max-width: 768px) {
     width: auto;
   }
+}
+
+div.main-text span {
+  font-size: 16px !important;
 }
 
 .create-btn {
@@ -208,4 +214,8 @@ label {
 
 .active {
   color: #000;
+}
+
+input.ghost-btn {
+  padding-top: 4px !important;
 }

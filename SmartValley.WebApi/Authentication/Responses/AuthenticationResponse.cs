@@ -10,6 +10,8 @@ namespace SmartValley.WebApi.Authentication.Responses
 
         public string Token { get; set; }
 
+        public bool CanCreatePrivateProjects { get; set; }
+
         public IReadOnlyCollection<string> Roles { get; set; }
     }
 }

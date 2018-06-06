@@ -21,7 +21,8 @@ export class UserContext {
         userOptions.signature,
         userOptions.token,
         userOptions.email,
-        userOptions.roles
+        userOptions.roles,
+        userOptions.canCreatePrivateProjects
       );
     }
     return user;
@@ -32,7 +33,7 @@ export class UserContext {
       return;
     }
     localStorage.setItem(this.userKey, JSON.stringify(user));
-    this.userContextChanged.emit(user);
+    this.userContextChanged.emit(this.getCurrentUser());
   }
 
   public deleteCurrentUser() {
@@ -59,5 +60,4 @@ export class UserContext {
     }
     return false;
   }
-
 }

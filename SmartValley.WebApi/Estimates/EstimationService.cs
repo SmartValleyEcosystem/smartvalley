@@ -76,10 +76,10 @@ namespace SmartValley.WebApi.Estimates
             await _scoringRepository.SaveChangesAsync();
         }
 
-        public async Task<ExpertScoring> GetOfferEstimateAsync(long expertId, long projectId)
+        public async Task<ExpertScoring> GetOfferEstimateAsync(long expertId, long projectId, Experts.AreaType areaType)
         {
             var scoring = await _scoringRepository.GetByProjectIdAsync(projectId);
-            return scoring.ExpertScorings.FirstOrDefault(x => x.ExpertId == expertId);
+            return scoring.ExpertScorings.FirstOrDefault(x => x.ExpertId == expertId && x.Area == areaType.ToDomain());
         }
 
         public async Task SubmitEstimatesAsync(long expertId, SubmitEstimateRequest request)
@@ -90,16 +90,29 @@ namespace SmartValley.WebApi.Estimates
             if (!scoring.IsOfferAccepted(expertId, area))
                 throw new AppErrorException(ErrorCode.AcceptedOfferNotFound);
 
-            await UpdateProjectScoringAsync(scoring, area);
             scoring.FinishOffer(expertId, area);
+
+            var scoringResults = await _scoringContractClient.GetResultsAsync(scoring.ContractAddress);
+            var areaScore = scoringResults.AreaScores[area];
+            if (scoring.HasEnoughEstimatesInArea(area))
+                scoring.SetScoreForArea(area, areaScore);
+
+            if (scoring.AreAllAreasCompleted())
+                scoring.Finish(scoringResults.Score, _clock.UtcNow);
+
             await _scoringRepository.SaveChangesAsync();
         }
 
-        public async Task<IReadOnlyCollection<ScoringStatisticsInArea>> GetScoringStatisticsAsync(long projectId)
+        public async Task<ScoringStatistics> GetScoringStatisticsAsync(long projectId)
         {
             var scoring = await _scoringRepository.GetByProjectIdAsync(projectId);
             if (scoring == null)
-                return new ScoringStatisticsInArea[0];
+            {
+                return new ScoringStatistics
+                       {
+                           ScoringStatisticsInArea = new ScoringStatisticsInArea[0]
+                       };
+            }
 
             var result = new List<ScoringStatisticsInArea>();
             foreach (var areaScoring in scoring.AreaScorings)
@@ -108,11 +121,20 @@ namespace SmartValley.WebApi.Estimates
                 var offers = scoring.ScoringOffers.Where(s => s.AreaId == areaScoring.AreaId).ToArray();
                 var statistics = new ScoringStatisticsInArea(areaScoring.Score,
                                                              areaScoring.ExpertsCount,
-                                                             expertScorings, offers, areaScoring.AreaId);
+                                                             expertScorings,
+                                                             offers,
+                                                             areaScoring.AreaId);
                 result.Add(statistics);
             }
 
-            return result;
+
+
+            return new ScoringStatistics
+                   {
+                       AcceptingDeadline = scoring.AcceptingDeadline,
+                       ScoringDeadline = scoring.ScoringDeadline,
+                       ScoringStatisticsInArea = result
+                   };
         }
 
         public async Task<IReadOnlyCollection<ScoringCriterionPrompt>> GetCriterionPromptsAsync(long projectId, AreaType areaType)
@@ -166,23 +188,6 @@ namespace SmartValley.WebApi.Estimates
                                        Advisers = scoringApplication.Advisers.ToArray(),
                                        PromptType = ScoringCriterionPromptType.Advisers
                                    });
-            }
-        }
-
-        private async Task UpdateProjectScoringAsync(Scoring scoring, AreaType area)
-        {
-            var scoringStatistics = await _scoringContractClient.GetScoringStatisticsAsync(scoring.ContractAddress);
-            if (scoringStatistics.Score.HasValue)
-            {
-                scoring.Score = scoringStatistics.Score;
-                scoring.ScoringEndDate = _clock.UtcNow;
-                scoring.Status = ScoringStatus.Finished;
-            }
-
-            var areaScore = scoringStatistics.AreaScores[area];
-            if (areaScore.HasValue)
-            {
-                scoring.SetScoreForArea(area, areaScore.Value);
             }
         }
     }

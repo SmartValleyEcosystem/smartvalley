@@ -25,8 +25,9 @@ namespace SmartValley.WebApi.Authentication
                        Id = identity.Id,
                        Token = identity.Token,
                        Email = identity.Email,
-                       Roles = identity.Roles
-                   };
+                       Roles = identity.Roles,
+                       CanCreatePrivateProjects = identity.CanCreatePrivateProjects
+            };
         }
 
         [HttpPost("register")]

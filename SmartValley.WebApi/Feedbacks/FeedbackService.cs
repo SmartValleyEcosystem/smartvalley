@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 using SmartValley.WebApi.Feedbacks.Requests;
@@ -21,9 +21,7 @@ namespace SmartValley.WebApi.Feedbacks
             return _repository.SaveChangesAsync();
         }
 
-        public Task<IReadOnlyCollection<Feedback>> GetAsync(int offset, int count)
+        public Task<PagingCollection<Feedback>> GetAsync(int offset, int count)
             => _repository.GetAsync(offset, count);
-
-        public Task<int> GetTotalCountAsync() => _repository.GetTotalCountAsync();
     }
 }

@@ -8,9 +8,9 @@ namespace SmartValley.Domain
     {
         public ScoringOfferStatus Status { get; }
 
-        public DateTimeOffset? ExpirationTimestamp { get; }
+        public DateTimeOffset AcceptingDeadline { get; }
 
-        public DateTimeOffset? EstimatesDueDate { get; }
+        public DateTimeOffset ScoringDeadline { get; }
 
         public Address ScoringContractAddress { get; }
 
@@ -32,31 +32,35 @@ namespace SmartValley.Domain
 
         public long ProjectId { get; }
 
+        public bool IsPrivate { get; }
+
         public double? FinalScore { get; set; }
 
         public ScoringOfferDetails(
-            ScoringOfferStatus status, 
-            DateTimeOffset? expirationTimestamp, 
-            DateTimeOffset? estimatesDueDate, 
-            Address scoringContractAddress, 
-            long scoringId, 
-            long expertId, 
-            string name, 
-            string countryCode, 
-            Category category, 
-            string description, 
-            AreaType areaType, 
+            ScoringOfferStatus status,
+            DateTimeOffset acceptingDeadline,
+            DateTimeOffset scoringDeadline,
+            Address scoringContractAddress,
+            long scoringId,
+            long expertId,
+            string name,
+            string countryCode,
+            Category category,
+            string description,
+            AreaType areaType,
             Guid projectExternalId,
             long projectId,
+            bool isPrivate,
             double? finalScore)
         {
             Status = status;
-            ExpirationTimestamp = expirationTimestamp;
-            EstimatesDueDate = estimatesDueDate;
+            AcceptingDeadline = acceptingDeadline;
+            ScoringDeadline = scoringDeadline;
             ScoringContractAddress = scoringContractAddress;
             ScoringId = scoringId;
             ExpertId = expertId;
             Name = name;
+            IsPrivate = isPrivate;
             CountryCode = countryCode;
             Category = category;
             Description = description;

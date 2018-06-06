@@ -49,12 +49,13 @@
                   </div>
                 </div>
               </td>
-              <td [ngSwitch]="project.offerStatus">
+              <td [ngSwitch]="project.offerStatus" style="position: relative;">
+                <i *ngIf="project.isPrivate" class="lock-icon material-icons">lock</i>
                 <div *ngSwitchCase="OfferStatus.Finished">
                   {{ 'ScoringList.Scored' | translate }}
                 </div>
-                <div *ngSwitchCase="OfferStatus.Timeout">
-                  {{ 'ScoringList.Timeout' | translate }}
+                <div *ngSwitchCase="OfferStatus.Expired">
+                  {{ 'ScoringList.Expired' | translate }}
                 </div>
                 <div *ngSwitchCase="OfferStatus.Rejected">
                   {{ 'ScoringList.Refused' | translate }}
@@ -66,11 +67,9 @@
                   {{ 'ScoringList.TookTheOffer' | translate }}
                 </div>
               </td>
-              <td *ngIf="project.expirationTimestamp; else elseEndDate">{{ project.expirationTimestamp | date:'dd MMM HH:mm' }}
+              <td>
+              {{ getDeadline(project) | date:'dd MMM HH:mm' | dashIfEmpty}}
               </td>
-              <ng-template #elseEndDate>
-                <td>&mdash;</td>
-              </ng-template>
               <td *ngIf="project.finalScore; else elseScore" class="scoring-col gray-color-text">
                 {{ 'ScoringList.Finished' | translate }}:
                 <span class="primary-color-text">{{project.finalScore | roundNumberPipe}}</span>/100
@@ -79,7 +78,7 @@
                 <td class="project-progress gray-color-text scoring-col" [ngSwitch]="project.offerStatus">
                   <div class="padding-progress" *ngSwitchCase="OfferStatus.Finished">{{ 'ScoringList.ScoringInProgress' | translate }}
                   </div>
-                  <div class="padding-progress" *ngSwitchCase="OfferStatus.Timeout">{{ 'ScoringList.ScoringInProgress' | translate }}
+                  <div class="padding-progress" *ngSwitchCase="OfferStatus.Expired">{{ 'ScoringList.ScoringInProgress' | translate }}
                   </div>
                   <div class="padding-progress" *ngSwitchCase="OfferStatus.Rejected">{{ 'ScoringList.ScoringInProgress' | translate }}
                   </div>

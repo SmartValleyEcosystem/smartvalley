@@ -50,7 +50,7 @@
   min-height: 30px;
   padding: 5px;
 }
-.autocomplete-item:hover {
+.autocomplete-item:hover, .autocomplete-item-active {
   background-color: rgba(229, 229, 229, 0.4);
   cursor: pointer;
 }

@@ -6,7 +6,6 @@ import {CollectionResponse} from '../collection-response';
 import {GetScoringProjectsRequest} from './get-scoring-projects-request';
 import {MyProjectResponse} from './my-project-response';
 import {ScoringProjectResponse} from '../scoring-application/scoring-project-response';
-import {SearchProjectResponse} from './search-projects-response';
 import {CreateProjectRequest} from './create-project-request';
 import {ProjectQuery} from './project-query';
 import {isNullOrUndefined} from 'util';
@@ -31,7 +30,7 @@ export class ProjectApiClient extends BaseApiClient {
   }
 
   public async uploadTeamMemberPhotoAsync(request: AddProjectTeamMemberPhotoRequest): Promise<void> {
-    await this.http.put(`${this.baseApiUrl}/projects/teammember`, request.body).toPromise();
+    await this.http.put(`${this.baseApiUrl}/projects/teammembers`, request.body).toPromise();
   }
 
   public async uploadProjectImageAsync(request: AddProjectImageRequest): Promise<void> {
@@ -42,11 +41,11 @@ export class ProjectApiClient extends BaseApiClient {
     await this.http.delete(`${this.baseApiUrl}/projects/${id}/image`).toPromise();
   }
 
-  public async deleteTeamMemberPhotoAsync(id: number): Promise<void> {
-    await this.http.delete(`${this.baseApiUrl}/projects/teammember/${id}`).toPromise();
+  public async deleteTeamMemberPhotoAsync(projectId: number, id: number): Promise<void> {
+    await this.http.delete(`${this.baseApiUrl}/projects/${projectId}/teammembers/${id}`).toPromise();
   }
 
- public async deleteAsync(projectId: number): Promise<void> {
+  public async deleteAsync(projectId: number): Promise<void> {
     await this.http.delete(`${this.baseApiUrl}/projects/${projectId}/`).toPromise();
   }
 
@@ -63,18 +62,10 @@ export class ProjectApiClient extends BaseApiClient {
       .toPromise();
   }
 
-  public getProjectsBySearchStringAsync(searchString: string): Promise<CollectionResponse<SearchProjectResponse>> {
-    const parameters = new HttpParams().append('SearchString', searchString);
-
-    return this.http
-      .get<CollectionResponse<SearchProjectResponse>>(this.baseApiUrl + '/projects/search', {params: parameters})
-      .toPromise();
-  }
-
-  public queryProjectsAsync(query: ProjectQuery): Promise<CollectionResponse<ProjectResponse>> {
+  public getAsync(query: ProjectQuery): Promise<CollectionResponse<ProjectResponse>> {
     const checkParam = (param) => isNullOrUndefined(param) ? '' : param.toString();
 
-    const parameters = new HttpParams()
+    let parameters = new HttpParams()
       .append('offset', query.offset.toString())
       .append('count', query.count.toString())
       .append('onlyScored', query.onlyScored.toString())
@@ -85,10 +76,17 @@ export class ProjectApiClient extends BaseApiClient {
       .append('minimumScore', checkParam(query.minimumScore))
       .append('maximumScore', checkParam(query.maximumScore))
       .append('orderBy', checkParam(query.orderBy))
+      .append('isPrivate', checkParam(query.isPrivate))
       .append('sortDirection', checkParam(query.direction));
 
+    if (query.scoringStatuses) {
+      query.scoringStatuses.forEach(id => {
+        parameters = parameters.append('scoringStatuses', id.toString());
+      });
+    }
+
     return this.http
-      .get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/projects/query', {params: parameters})
+      .get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/projects', {params: parameters})
       .toPromise();
   }
 

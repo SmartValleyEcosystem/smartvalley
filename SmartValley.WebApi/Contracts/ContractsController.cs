@@ -14,10 +14,10 @@ namespace SmartValley.WebApi.Contracts
             _nethereumOptions = nethereumOptions;
         }
 
-        [HttpGet("scoringExpertsManager")]
-        public ContractResponse GetScoringExpertsManagerContract()
+        [HttpGet("scoringOffersManager")]
+        public ContractResponse GetScoringOffersManagerContract()
         {
-            var contractOptions = _nethereumOptions.ScoringExpertsManagerContract;
+            var contractOptions = _nethereumOptions.ScoringOffersManagerContract;
             return new ContractResponse
                    {
                        Address = contractOptions.Address,
@@ -30,6 +30,30 @@ namespace SmartValley.WebApi.Contracts
         public ContractResponse GetScoringManagerContract()
         {
             var contractOptions = _nethereumOptions.ScoringManagerContract;
+            return new ContractResponse
+                   {
+                       Address = contractOptions.Address,
+                       Abi = contractOptions.Abi,
+                   };
+        }
+
+        [Route("privateScoringManager")]
+        [HttpGet]
+        public ContractResponse GetPrivateScoringManagerContract()
+        {
+            var contractOptions = _nethereumOptions.PrivateScoringManagerContract;
+            return new ContractResponse
+                   {
+                       Address = contractOptions.Address,
+                       Abi = contractOptions.Abi,
+                   };
+        }
+
+        [Route("scoringsRegistry")]
+        [HttpGet]
+        public ContractResponse GetScoringsRegistryContract()
+        {
+            var contractOptions = _nethereumOptions.ScoringsRegistryContract;
             return new ContractResponse
                    {
                        Address = contractOptions.Address,
@@ -65,6 +89,18 @@ namespace SmartValley.WebApi.Contracts
         public ContractResponse GetAdminRegistryContract()
         {
             var contractOptions = _nethereumOptions.AdminRegistryContract;
+            return new ContractResponse
+                   {
+                       Address = contractOptions.Address,
+                       Abi = contractOptions.Abi,
+                   };
+        }
+
+        [Route("scoringParametersProvider")]
+        [HttpGet]
+        public ContractResponse GetScoringParametersProviderContract()
+        {
+            var contractOptions = _nethereumOptions.ScoringParametersProviderContract;
             return new ContractResponse
                    {
                        Address = contractOptions.Address,

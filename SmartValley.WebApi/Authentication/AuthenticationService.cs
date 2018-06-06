@@ -77,18 +77,19 @@ namespace SmartValley.WebApi.Authentication
                     throw new AppErrorException(ErrorCode.AddressAlreadyExists);
 
                 user.Email = request.Email;
-                await _userRepository.UpdateWholeAsync(user);
             }
             else
             {
                 user = new User
                        {
                            Address = request.Address,
-                           Email = request.Email
+                           Email = request.Email,
+                           CanCreatePrivateProjects = request.CanCreatePrivateProjects
                        };
-                await _userRepository.AddAsync(user);
+                _userRepository.Add(user);
             }
 
+            await _userRepository.SaveChangesAsync();
             await _mailService.SendConfirmRegistrationAsync(user.Address, user.Email);
         }
 
@@ -122,7 +123,9 @@ namespace SmartValley.WebApi.Authentication
 
             user.IsEmailConfirmed = true;
             user.Email = email;
-            await _userRepository.UpdateWholeAsync(user);
+            user.RegistrationDate = DateTime.UtcNow;
+
+            await _userRepository.SaveChangesAsync();
         }
 
         public async Task ResendEmailAsync(Address address)
@@ -207,7 +210,7 @@ namespace SmartValley.WebApi.Authentication
                                        new SigningCredentials(AuthenticationOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256)) {Payload = {["TokenIssueDate"] = now}};
 
             var token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-            return new Identity(user.Id, user.Address, user.Email, true, token, roles.Select(r => r.Name).ToArray());
+            return new Identity(user.Id, user.Address, user.Email, true, token, roles.Select(r => r.Name).ToArray(), user.CanCreatePrivateProjects);
         }
 
         private bool IsSignedMessageValid(Address address, string signedText, string signature)

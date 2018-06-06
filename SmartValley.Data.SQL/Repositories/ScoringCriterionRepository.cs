@@ -9,19 +9,26 @@ using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
 {
-    public class ScoringCriterionRepository : EntityCrudRepository<ScoringCriterion>, IScoringCriterionRepository
+    public class ScoringCriterionRepository : IScoringCriterionRepository
     {
-        public ScoringCriterionRepository(IReadOnlyDataContext readContext, IEditableDataContext editContext)
-            : base(readContext, editContext)
+        private readonly IReadOnlyDataContext _readContext;
+
+        public ScoringCriterionRepository(IReadOnlyDataContext readContext)
         {
+            _readContext = readContext;
+        }
+
+        public async Task<IReadOnlyCollection<ScoringCriterion>> GetAsync()
+        {
+            return await _readContext.ScoringCriteria.ToArrayAsync();
         }
 
         public async Task<IList<ScoringCriterionPrompt>> GetScoringCriterionPromptsAsync(long scoringApplicationId, AreaType areaType)
         {
-            return await (from answer in ReadContext.ScoringApplicationAnswers
-                          join question in ReadContext.ScoringApplicationQuestions on answer.QuestionId equals question.Id
-                          join mapping in ReadContext.ScoringCriteriaMappings on question.Id equals mapping.ScoringApplicationQuestionId
-                          join criterion in ReadContext.ScoringCriteria on mapping.ScoringCriterionId equals criterion.Id
+            return await (from answer in _readContext.ScoringApplicationAnswers
+                          join question in _readContext.ScoringApplicationQuestions on answer.QuestionId equals question.Id
+                          join mapping in _readContext.ScoringCriteriaMappings on question.Id equals mapping.ScoringApplicationQuestionId
+                          join criterion in _readContext.ScoringCriteria on mapping.ScoringCriterionId equals criterion.Id
                           where answer.ScoringApplicationId == scoringApplicationId
                                 && criterion.AreaType == areaType
                           orderby question.Order

@@ -71,13 +71,25 @@
       </div>
       <div class="control-row">
         <p class="control-label">
+          <label for="bitcointalk">{{ 'RegisterExpert.BitcointalkLink' | translate }}</label>
+        </p>
+        <p class="notify">{{ 'RegisterExpert.Optional' | translate }}</p>
+        <input class="input input-wide" id="bitcointalk" formControlName="bitcointalk" placeholder="https://">
+      </div>
+      <div class="control-row">
+        <p class="control-label">
           <label>{{ 'RegisterExpert.CV' | translate }}</label>
         </p>
         <p class="notify">{{ 'RegisterExpert.CvNotify' | translate }}</p>
-        <p-fileUpload mode="advanced" auto="true" name="cv" [customUpload]="true" [showUploadButton]="false"
-                      [showCancelButton]="false" [maxFileSize]="5242880" accept=".doc,.docx,.pdf,.DOC,.DOCX,.PDF"
-                      (uploadHandler)="onCvUpload($event)" (onRemove)="onCvUpload(null)" #required>
-        </p-fileUpload>
+        <app-file-uploader
+                [usePreview]="false"
+                (onMimeTypeError)="onMimeTypeError('DocumentMimeTypeError', 'cv')"
+                class="input-component"
+                accept="application/msword, application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                maxFileSize="5242880"
+                formControlName="cv"
+                #required>
+        </app-file-uploader>
       </div>
     </form>
   </div>
@@ -121,29 +133,31 @@
           <label>{{ 'RegisterExpert.UploadDocumentLabel' | translate }}</label>
         </p>
         <p class="notify">{{ 'RegisterExpert.UploadNotify' | translate }}</p>
-        <app-image-uploader
+        <app-file-uploader
           class="input-component"
           name="document"
-          accept=".png,.jpg,.jpeg"
+          accept="image/gif, image/jpeg, image/pjpeg, image/png"
           maxFileSize="5242880"
           formControlName="document"
+          (onMimeTypeError)="onMimeTypeError('ImageMimeTypeError', 'notify')"
           (onMaxSizeError)="onDocumentSizeError()"
           #required>
-        </app-image-uploader>
+        </app-file-uploader>
       </div>
       <div class="control-row">
         <p class="control-label">
           <label>{{ 'RegisterExpert.UploadPhotoLabel' | translate }}</label>
         </p>
-        <app-image-uploader
+        <app-file-uploader
           class="input-component"
           name="photo"
-          accept=".png,.jpg,.jpeg"
+          accept="image/gif, image/jpeg, image/pjpeg, image/png"
           maxFileSize="5242880"
           formControlName="photo"
+          (onMimeTypeError)="onMimeTypeError('ImageMimeTypeError', 'photo')"
           (onMaxSizeError)="onPhotoSizeError()"
           #required>
-        </app-image-uploader>
+        </app-file-uploader>
       </div>
     </div>
     <input [disabled]="isSubmitting" class="main-btn submit-btn" type="submit" value="{{ 'RegisterExpert.Submit' | translate }}">

@@ -1,106 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
-using SmartValley.Domain;
-using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Data.SQL.Repositories
 {
-    public class ExpertApplicationRepository : EntityCrudRepository<ExpertApplication>, IExpertApplicationRepository
+    // ReSharper disable once ClassNeverInstantiated.Global
+    public class ExpertApplicationRepository : IExpertApplicationRepository
     {
+        private readonly IReadOnlyDataContext _readContext;
+        private readonly IEditableDataContext _editContext;
+
         public ExpertApplicationRepository(IReadOnlyDataContext readContext, IEditableDataContext editContext)
-            : base(readContext, editContext)
         {
+            _readContext = readContext;
+            _editContext = editContext;
         }
 
         public async Task<IReadOnlyCollection<ExpertApplication>> GetAllByStatusAsync(ExpertApplicationStatus status)
-        {
-            return await ReadContext.ExpertApplications.Where(e => e.Status == status).ToArrayAsync();
-        }
+            => await _readContext.ExpertApplications.Where(e => e.Status == status).ToArrayAsync();
 
-        public async Task<ExpertApplicationDetails> GetDetailsByIdAsync(long id)
-        {
-            var expertApplication = await ReadContext.ExpertApplications.FirstOrDefaultAsync(e => e.Id == id);
+        public Task<ExpertApplication> GetByIdAsync(long id)
+            => Entities().FirstOrDefaultAsync(e => e.Id == id);
 
-            var areas = await (from expertApplicationArea in ReadContext.ExpertApplicationAreas
-                               join expertiseArea in ReadContext.Areas on expertApplicationArea.AreaId equals expertiseArea.Id
-                               where expertApplicationArea.ExpertApplicationId == id
-                               select expertiseArea).ToArrayAsync();
+        public Task<ExpertApplication> GetByApplicantIdAsync(long userId)
+            => Entities()
+               .Where(e => e.ApplicantId == userId)
+               .OrderByDescending(e => e.ApplyDate)
+               .FirstOrDefaultAsync();
 
-            var applicant = await ReadContext.Users.FirstAsync(user => user.Id == expertApplication.ApplicantId);
+        public void Add(ExpertApplication expertApplication)
+            => _editContext.ExpertApplications.Add(expertApplication);
 
-            return new ExpertApplicationDetails(applicant.Address, applicant.Email, expertApplication, areas);
-        }
+        public Task SaveChangesAsync()
+            => _editContext.SaveAsync();
 
-        public Task<int> AddAsync(ExpertApplication expertApplication, IReadOnlyCollection<int> areas)
-        {
-            EditContext.ExpertApplications.Add(expertApplication);
-            EditContext.ExpertApplicationAreas.AddRange(areas.Select(area => new ExpertApplicationArea
-                                                                             {
-                                                                                 ExpertApplication = expertApplication,
-                                                                                 AreaId = (AreaType) area
-                                                                             }));
-
-            return EditContext.SaveAsync();
-        }
-
-        public Task SetAcceptedAsync(ExpertApplicationDetails applicationDetails, List<int> areas)
-        {
-            applicationDetails.ExpertApplication.Status = ExpertApplicationStatus.Accepted;
-
-            var applicationExpertAreas = applicationDetails.Areas.Select(s => new ExpertApplicationArea
-                                                                              {
-                                                                                  ExpertApplicationId = applicationDetails.ExpertApplication.Id,
-                                                                                  AreaId = s.Id
-                                                                              })
-                                                           .ToArray();
-
-            EditContext.ExpertApplicationAreas.AttachRange(applicationExpertAreas);
-
-            foreach (var applicationExpertArea in applicationExpertAreas)
-            {
-                applicationExpertArea.Status = ExpertApplicationStatus.Rejected;
-                if (areas.Contains((int) applicationExpertArea.AreaId))
-                    applicationExpertArea.Status = ExpertApplicationStatus.Accepted;
-            }
-
-            EditContext.ExpertApplications.Update(applicationDetails.ExpertApplication);
-            EditContext.ExpertApplicationAreas.UpdateRange(applicationExpertAreas);
-            return EditContext.SaveAsync();
-        }
-
-        public Task SetRejectedAsync(ExpertApplicationDetails applicationDetails)
-        {
-            applicationDetails.ExpertApplication.Status = ExpertApplicationStatus.Rejected;
-
-            var applicationExpertAreas = applicationDetails.Areas.Select(s => new ExpertApplicationArea
-                                                                              {
-                                                                                  ExpertApplicationId = applicationDetails.ExpertApplication.Id,
-                                                                                  AreaId = s.Id,
-                                                                                  Status = ExpertApplicationStatus.Rejected
-                                                                              })
-                                                           .ToList();
-
-            EditContext.ExpertApplicationAreas.AttachRange(applicationExpertAreas);
-            EditContext.ExpertApplications.Update(applicationDetails.ExpertApplication);
-            EditContext.ExpertApplicationAreas.UpdateRange(applicationExpertAreas);
-            return EditContext.SaveAsync();
-        }
-
-        public async Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(Address address)
-        {
-            var existExpertApplitacion = await (from explertApplication in ReadContext.ExpertApplications
-                                                join user in ReadContext.Users on explertApplication.ApplicantId equals user.Id
-                                                where user.Address == address
-                                                orderby explertApplication.ApplyDate descending
-                                                select explertApplication).FirstOrDefaultAsync();
-
-            return existExpertApplitacion?.Status ?? ExpertApplicationStatus.None;
-        }
+        private IQueryable<ExpertApplication> Entities()
+            => _editContext.ExpertApplications.Include(x => x.ExpertApplicationAreas);
     }
 }

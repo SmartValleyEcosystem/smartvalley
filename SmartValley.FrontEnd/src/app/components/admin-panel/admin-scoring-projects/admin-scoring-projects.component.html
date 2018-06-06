@@ -1,8 +1,4 @@
-<div>
-  <a class="main-btn button-link" (click)="showScoringCostDialog()">Scoring cost</a>
-</div>
-<div style="display: inline-block; margin-right: 2em; margin-bottom: 1em;"
-     *ngFor="let category of categories">
+<div class="statuses" *ngFor="let category of categories">
   <p-checkbox [(ngModel)]="selectedCategories" value="{{category.value}}" (onChange)="onCheckAsync()"></p-checkbox>
   <span style="display: inline-block; vertical-align: middle; margin-left: 1em;">{{category.label}}</span>
 </div>
@@ -32,13 +28,6 @@
       <div class="row">
         <div class="col-8">
           <span *ngIf="project.startDate !== ''" class="big-size medium_rate">{{ 'AdminScoringProject.StartDate' | translate }}: {{project.startDate}}</span>
-        </div>
-        <div class="col-4 text-right">
-          <a *ngIf="project.statusCode !== ScoringProjectStatus.InProgress"
-             class="main-btn button-link"
-             (click)="setExpertsAsync(project.projectExternalId)">
-            {{ 'AdminScoringProject.SetExperts' | translate }}
-          </a>
         </div>
       </div>
     </div>

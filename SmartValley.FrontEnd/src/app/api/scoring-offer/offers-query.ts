@@ -8,4 +8,7 @@ export interface OffersQuery {
   status?: OfferStatus;
   orderBy?: OffersOrderBy;
   sortDirection?: SortDirection;
+  expertId?: number;
+  scoringId?: number;
+  projectId?: number;
 }

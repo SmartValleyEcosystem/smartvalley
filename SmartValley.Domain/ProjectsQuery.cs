@@ -1,4 +1,5 @@
-﻿using SmartValley.Domain.Entities;
+﻿using System.Collections.Generic;
+using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain
 {
@@ -6,6 +7,7 @@ namespace SmartValley.Domain
     {
         public ProjectsQuery(int offset,
                              int count,
+                             bool? isPrivate,
                              bool onlyScored,
                              string searchString,
                              Stage? stage,
@@ -14,7 +16,8 @@ namespace SmartValley.Domain
                              int? minimumScore,
                              int? maximumScore,
                              ProjectsOrderBy? orderBy,
-                             SortDirection? direction)
+                             SortDirection? direction,
+                             IReadOnlyCollection<ScoringStatus> scoringStatuses)
         {
             Offset = offset;
             Count = count;
@@ -27,6 +30,8 @@ namespace SmartValley.Domain
             OrderBy = orderBy;
             Direction = direction;
             OnlyScored = onlyScored;
+            IsPrivate = isPrivate;
+            ScoringStatuses = scoringStatuses ?? new List<ScoringStatus>();
         }
 
         public int Offset { get; }
@@ -35,9 +40,13 @@ namespace SmartValley.Domain
 
         public bool OnlyScored { get; }
 
+        public bool? IsPrivate { get; }
+
         public string SearchString { get; }
 
         public Stage? Stage { get; }
+
+        public IReadOnlyCollection<ScoringStatus> ScoringStatuses { get; }
 
         public string CountryCode { get; }
 

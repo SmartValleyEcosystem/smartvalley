@@ -124,7 +124,8 @@ export class AuthenticationService {
         account: account,
         signature: signature,
         token: response.token,
-        roles: response.roles
+        roles: response.roles,
+        canCreatePrivateProjects: response.canCreatePrivateProjects
     };
   }
 
@@ -192,7 +193,7 @@ export class AuthenticationService {
     }
   }
 
-  public async registerAsync(email: string): Promise<void> {
+  public async registerAsync(email: string, canCreatePrivateProjects: boolean): Promise<void> {
     const account = await this.web3Service.getCurrentAccountAsync();
     const signature = await this.getSignatureAsync(account);
 
@@ -201,7 +202,8 @@ export class AuthenticationService {
         address: account,
         email: email,
         signedText: AuthenticationService.MESSAGE_TO_SIGN,
-        signature: signature
+        signature: signature,
+        canCreatePrivateProjects: canCreatePrivateProjects
       });
       await this.userContext.saveSignatureForAccount(account, signature);
       await this.router.navigate([Paths.ConfirmRegister]);

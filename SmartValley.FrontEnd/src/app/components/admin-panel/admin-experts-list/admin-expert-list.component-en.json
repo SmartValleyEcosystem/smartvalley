@@ -6,10 +6,12 @@
     "CreateNew": "Create new",
     "Address": "Address",
     "Email": "Email",
-    "FirstName": "First name",
-    "SecondName": "Second name",
+    "FullName": "Full name",
     "About": "About",
-    "Available": "Available",
-    "Categories": "Categories"
+    "BitcointalkLink": "Bitcointalk link",
+    "IsAvailable": "Is available",
+    "Categories": "Categories",
+    "PrivateScoring": "Private scoring",
+    "IsInHouse": "Is in-house"
   }
 }

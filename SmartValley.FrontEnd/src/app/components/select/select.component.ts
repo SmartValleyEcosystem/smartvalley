@@ -136,6 +136,4 @@ export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit 
   registerOnChange(fn) {
     this.propagateChange = fn;
   }
-
 }
-

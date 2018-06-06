@@ -12,7 +12,6 @@ export class ProjectAboutComponent implements OnInit {
 
   public projectInfo: ProjectAboutResponse;
   public haveSocials: boolean;
-
   public editorFormats = [
       'bold',
       'underline',

@@ -34,15 +34,15 @@ export class DictionariesService {
   }
 
   public async getCountriesAsync(): Promise<Country[]> {
-    const tranlatedCountries: Country[] = [];
+    const translatedCountries: Country[] = [];
     for (const countryCode in Countries) {
       const currentCountry = {
         name: await this.translateService.get('Countries.' + countryCode).toPromise(),
         code: countryCode
       };
-      tranlatedCountries.push(currentCountry);
+      translatedCountries.push(currentCountry);
     }
-    return tranlatedCountries;
+    return translatedCountries;
   }
 
   private getSocialMedias(): EnumItem<SocialMediaTypeEnum>[] {

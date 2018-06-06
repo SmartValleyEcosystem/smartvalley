@@ -212,6 +212,7 @@
                 (click)="addAdviser()">{{ 'EditScoringApplication.AddAdviser' | translate }}</span>
         </div>
       </div>
+      <div *ngIf="questionsReady">
       <div formGroupName="questionsGroup" *ngFor="let partition of partitions; let index = index;">
         <h2 in-view (inview)="onAppear($event, 'partition_' + partition.order)" class="partition-title" id="partition_{{partition.order}}">{{index + 4}}. {{ 'EditScoringApplication.' +  partition.name | translate}}</h2>
         <div class="partition-block">
@@ -269,6 +270,8 @@
           </div>
         </div>
       </div>
+      </div>
+
     </div>
     <div class="partitions-menu">
       <sticky [sticky-offset-top]="20">
@@ -298,7 +301,8 @@
         <div class="partition-menu__inputs">
           <input (click)="onSaveAsync()" type="button" [disabled]="disabled" class="main-btn"
                  value="{{ 'EditScoringApplication.SaveDraft' | translate }}">
-          <input type="submit" class="main-btn" value="{{ 'EditScoringApplication.SendForScore' | translate }}">
+          <input *ngIf="!isPrivateProject" type="submit" class="main-btn" value="{{ 'EditScoringApplication.SendForScore' | translate }}">
+          <input *ngIf="isPrivateProject" (click)="showAlertModal()" class="main-btn" value="{{ 'EditScoringApplication.SendForScore' | translate }}">
         </div>
         <span class="saved-text" *ngIf="savedTime">Saved: {{savedTime | date:'HH:mm'}}</span>
       </sticky>

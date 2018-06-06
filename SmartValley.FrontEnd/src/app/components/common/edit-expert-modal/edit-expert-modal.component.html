@@ -8,15 +8,13 @@
               {{ 'EditExpertModalComponent.Address' | translate }}
           </span>
         <span class="col-8 example-full-width">{{expertDetails.address}}</span>
-
       </div>
       <div class="row">
           <span class="col-4">
               {{ 'EditExpertModalComponent.Email' | translate }}
           </span>
         <mat-form-field class="col-8 example-full-width">
-          <input placeholder="{{ 'EditExpertModalComponent.Email' | translate }}" matInput formControlName="email"
-                 name="email" [(ngModel)]="expertDetails.email" [(value)]="expertDetails.email" #required>
+          <input placeholder="{{ 'EditExpertModalComponent.Email' | translate }}" matInput formControlName="email" name="email" #required>
         </mat-form-field>
       </div>
       <div class="row">
@@ -24,8 +22,7 @@
               {{ 'EditExpertModalComponent.FirstName' | translate }}
           </span>
         <mat-form-field class="col-8 example-full-width">
-          <input placeholder="{{ 'EditExpertModalComponent.FirstName' | translate }}" matInput formControlName="firstName"
-                 name="name" [(ngModel)]="expertDetails.firstName" [(value)]="expertDetails.firstName">
+          <input placeholder="{{ 'EditExpertModalComponent.FirstName' | translate }}" matInput formControlName="firstName" name="name">
         </mat-form-field>
       </div>
       <div class="row">
@@ -33,8 +30,7 @@
               {{ 'EditExpertModalComponent.SecondName' | translate }}
           </span>
         <mat-form-field class="col-8 example-full-width">
-          <input placeholder="{{ 'EditExpertModalComponent.SecondName' | translate }}" matInput formControlName="secondName"
-                 name="name" [(ngModel)]="expertDetails.secondName" [(value)]="expertDetails.secondName">
+          <input placeholder="{{ 'EditExpertModalComponent.SecondName' | translate }}" matInput formControlName="secondName" name="name">
         </mat-form-field>
       </div>
       <div class="row">
@@ -42,9 +38,23 @@
               {{ 'EditExpertModalComponent.About' | translate }}
           </span>
         <mat-form-field class="col-8 example-full-width">
-          <textarea matInput placeholder="{{ 'EditExpertModalComponent.About' | translate }}" formControlName="about"
-                    name="about" [(ngModel)]="expertDetails.about" [(value)]="expertDetails.about"></textarea>
+          <textarea matInput placeholder="{{ 'EditExpertModalComponent.About' | translate }}" formControlName="about" name="about"></textarea>
         </mat-form-field>
+      </div>
+      <div class="row">
+          <span class="col-4">
+              {{ 'EditExpertModalComponent.BitcointalkLink' | translate }}
+          </span>
+        <mat-form-field class="col-8 example-full-width">
+          <textarea matInput placeholder="https://" formControlName="bitcointalk" name="bitcointalk"></textarea>
+        </mat-form-field>
+      </div>
+      <div class="row">
+          <span class="col-4">
+              {{ 'EditExpertModalComponent.IsInHouse' | translate }}
+          </span>
+          <mat-checkbox class="col-8 example-full-width" formControlName="isInHouse">
+          </mat-checkbox>
       </div>
       <div class="row submit-row">
         <span class="offset-6 col-6">
@@ -56,16 +66,15 @@
           </mat-dialog-actions>
         </span>
       </div>
-    </form>
-    <h3 class="sub-header">{{'EditExpertModalComponent.Blockchain' | translate}}</h3>
-    <div class="row">
+      <h3 class="sub-header">{{'EditExpertModalComponent.Blockchain' | translate}}</h3>
+      <div class="row">
         <span class="col-6">
-          <mat-checkbox align="start" name="available" [(ngModel)]="isAvailable"
-                        [(value)]="isAvailable">
+          <mat-checkbox align="start" name="available" formControlName="isAvailable">
             {{ 'EditExpertModalComponent.AvailableForWork' | translate }}
           </mat-checkbox>
         </span>
-    </div>
+      </div>
+    </form>
     <div *ngFor="let area of areas" class="row">
       <span class="col-6">
         <mat-checkbox align="start" name="{{'area' + area.areaType}}"

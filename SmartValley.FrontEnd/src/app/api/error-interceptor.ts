@@ -13,7 +13,6 @@ import {NotificationsService} from 'angular2-notifications';
 import {TranslateService} from '@ngx-translate/core';
 import {UserContext} from '../services/authentication/user-context';
 
-
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(private notificationsService: NotificationsService,
@@ -29,10 +28,11 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (err.status === 401 || err.status === 403) {
           this.userContext.deleteCurrentUser();
         } else if (err.status === 500) {
-          this.notificationsService.error(this.translateService.instant('Common.ServerError'), this.translateService.instant('Common.TryAgain'));
+          this.notificationsService.error(
+            this.translateService.instant('Common.ServerError'),
+            this.translateService.instant('Common.TryAgain'));
         }
       }
     });
   }
 }
-

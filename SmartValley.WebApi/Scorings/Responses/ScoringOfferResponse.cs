@@ -10,6 +10,8 @@ namespace SmartValley.WebApi.Scorings.Responses
 
         public long ProjectId { get; set; }
 
+        public long ExpertId { get; set; }
+
         public long Area { get; set; }
 
         public string Name { get; set; }
@@ -26,9 +28,11 @@ namespace SmartValley.WebApi.Scorings.Responses
 
         public Guid ProjectExternalId { get; set; }
 
-        public DateTimeOffset? ExpirationTimestamp { get; set; }
+        public DateTimeOffset AcceptingDeadline { get; set; }
 
-        public DateTimeOffset? EstimatesDueDate { get; set; }
+        public DateTimeOffset ScoringDeadline { get; set; }
+
+        public bool IsPrivate { get; set; }
 
         public double? FinalScore { get; set; }
 
@@ -44,11 +48,13 @@ namespace SmartValley.WebApi.Scorings.Responses
                        CountryCode = scoringOffer.CountryCode,
                        ScoringId = scoringOffer.ScoringId,
                        ProjectExternalId = scoringOffer.ProjectExternalId,
-                       ExpirationTimestamp = scoringOffer.ExpirationTimestamp,
-                       EstimatesDueDate = scoringOffer.EstimatesDueDate,
-                       OfferStatus = scoringOffer.Status.ToApi(scoringOffer.ExpirationTimestamp, now),
+                       AcceptingDeadline = scoringOffer.AcceptingDeadline,
+                       ScoringDeadline = scoringOffer.ScoringDeadline,
+                       IsPrivate = scoringOffer.IsPrivate,
+                       OfferStatus = scoringOffer.Status.ToApi(scoringOffer.AcceptingDeadline, scoringOffer.ScoringDeadline, now),
                        ProjectId = scoringOffer.ProjectId,
-                       FinalScore = scoringOffer.FinalScore
+                       FinalScore = scoringOffer.FinalScore,
+                       ExpertId = scoringOffer.ExpertId
                    };
         }
     }

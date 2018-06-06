@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Application.AzureStorage;
 using SmartValley.Domain;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
@@ -11,83 +12,95 @@ using SmartValley.WebApi.Projects.Requests;
 
 namespace SmartValley.WebApi.Projects
 {
-    // ReSharper disable once ClassNeverInstantiated.Global
     public class ProjectService : IProjectService
     {
         private readonly IProjectRepository _projectRepository;
-        private readonly IScoringRepository _scoringRepository;
-        private readonly IProjectTeamMemberRepository _teamMemberRepository;
         private readonly ICountryRepository _countryRepository;
+        private readonly IScoringOffersRepository _scoringOffersRepository;
         private readonly ProjectTeamMembersStorageProvider _projectTeamMembersStorageProvider;
         private readonly ProjectStorageProvider _projectStorageProvider;
+        private readonly IClock _clock;
+        private readonly IUserRepository _userRepository;
 
         public ProjectService(
             IProjectRepository projectRepository,
-            IScoringRepository scoringRepository,
-            IProjectTeamMemberRepository teamMemberRepository,
+            IUserRepository userRepository,
             ICountryRepository countryRepository,
+            IScoringOffersRepository scoringOffersRepository,
             ProjectTeamMembersStorageProvider projectTeamMembersStorageProvider,
-            ProjectStorageProvider projectStorageProvider)
+            ProjectStorageProvider projectStorageProvider,
+            IClock clock)
         {
             _projectRepository = projectRepository;
-            _scoringRepository = scoringRepository;
-            _teamMemberRepository = teamMemberRepository;
             _countryRepository = countryRepository;
+            _scoringOffersRepository = scoringOffersRepository;
             _projectTeamMembersStorageProvider = projectTeamMembersStorageProvider;
             _projectStorageProvider = projectStorageProvider;
+            _clock = clock;
+            _userRepository = userRepository;
         }
 
-        public async Task<ProjectDetails> GetDetailsAsync(long projectId)
-        {
-            var project = await GetAsync(projectId);
-            var projectScoring = await _scoringRepository.GetByProjectIdAsync(projectId);
-            var teamMembers = await _teamMemberRepository.GetByProjectIdAsync(projectId);
-            var country = await _countryRepository.GetByIdAsync(project.CountryId);
-            var details = new ProjectDetails(project, projectScoring, country) {TeamMembers = teamMembers};
-            return details;
-        }
+        public Task<PagingCollection<Project>> GetAsync(ProjectsQuery query)
+            => _projectRepository.GetAsync(query);
 
-        public Task<IReadOnlyCollection<ProjectTeamMember>> GetTeamAsync(long projectId)
-            => _teamMemberRepository.GetByProjectIdAsync(projectId);
-
-        public Task<IReadOnlyCollection<ProjectDetails>> QueryAsync(ProjectsQuery projectsQuery)
-            => _projectRepository.QueryAsync(projectsQuery);
-
-        public Task<int> GetQueryTotalCountAsync(ProjectsQuery projectsQuery)
-            => _projectRepository.GetQueryTotalCountAsync(projectsQuery);
-
-        public Task<ProjectDetails> GetByAuthorIdAsync(long authorId)
+        public Task<Project> GetByAuthorIdAsync(long authorId)
             => _projectRepository.GetByAuthorIdAsync(authorId);
 
-        public async Task<bool> IsAuthorizedToEditProjectTeamMemberAsync(long userId, long projectTeamMemberId)
+        public async Task<bool> IsAuthorizedToEditProjectTeamMemberAsync(long userId, long projectId)
         {
-            var projectTeamMember = await _teamMemberRepository.GetByIdAsync(projectTeamMemberId);
-            var project = await GetAsync(projectTeamMember.ProjectId);
+            var project = await GetByIdAsync(projectId);
             return project.AuthorId == userId;
         }
 
         public async Task<bool> IsAuthorizedToEditProjectAsync(long projectId, long userId)
         {
-            var project = await GetAsync(projectId);
+            var project = await GetByIdAsync(projectId);
             return project.AuthorId == userId;
         }
 
-        public Task<IReadOnlyCollection<ProjectDetails>> GetProjectsByNameAsync(string projectName)
-            => _projectRepository.GetAllByNameAsync(projectName);
+        public async Task<bool> IsAuthorizedToSeeProjectAsync(long projectId, long? userId)
+        {
+            var project = await GetByIdAsync(projectId);
+            if (!project.IsPrivate)
+                return true;
+
+            if (!userId.HasValue)
+                return false;
+
+            if (project.AuthorId == userId.Value)
+                return true;
+
+            var user = await _userRepository.GetByIdAsync(userId.Value);
+            var isAdmin = await _userRepository.HasRoleAsync(user.Address, RoleType.Admin);
+            if (isAdmin)
+                return true;
+
+            if (project.Scoring == null)
+            {
+                return false;
+            }
+
+            var offersQuery = new OffersQuery {ExpertId = userId, ScoringId = project.Scoring.Id, Count = 1, Offset = 0};
+            var offers = await _scoringOffersRepository.GetAsync(offersQuery, _clock.UtcNow);
+
+            return offers.Any();
+        }
 
         public async Task<Project> CreateAsync(long userId, CreateProjectRequest request)
         {
             var project = await AddProjectAsync(userId, request);
 
             if (request.TeamMembers != null && request.TeamMembers.Any())
-                await AddTeamMembersAsync(request.TeamMembers, project.Id);
+                UpdateTeamMembers(request.TeamMembers, project);
+
+            await _projectRepository.SaveChangesAsync();
 
             return project;
         }
 
         public async Task<Project> UpdateAsync(long projectId, UpdateProjectRequest request)
         {
-            var project = await _projectRepository.GetAsync(projectId);
+            var project = await _projectRepository.GetByIdAsync(projectId);
             var country = await GetCountryAsync(request.CountryCode);
 
             project.Name = request.Name;
@@ -108,91 +121,80 @@ namespace SmartValley.WebApi.Projects
             project.Twitter = request.Twitter;
             project.Linkedin = request.Linkedin;
 
+            UpdateTeamMembers(request.TeamMembers, project);
             await _projectRepository.SaveChangesAsync();
-
-            await UpdateTeamMembersAsync(request.TeamMembers.Where(t => t.Id != 0).ToArray(), project.Id);
-            await AddTeamMembersAsync(request.TeamMembers.Where(t => t.Id == 0).ToArray(), project.Id);
 
             return project;
         }
 
         public async Task DeleteAsync(long projectId)
         {
-            var scoring = await _scoringRepository.GetByProjectIdAsync(projectId);
-            if (scoring != null)
+            var project = await _projectRepository.GetByIdAsync(projectId);
+            if (project.Scoring != null)
                 throw new AppErrorException(ErrorCode.ProjectCouldntBeRemoved);
 
-            var project = await _projectRepository.GetAsync(projectId);
-
-            _projectRepository.Delete(project);
+            _projectRepository.Remove(project);
 
             await _projectRepository.SaveChangesAsync();
         }
 
-        private async Task UpdateTeamMembersAsync(IReadOnlyCollection<ProjectTeamMemberRequest> teamMemberRequests, long projectId)
+        private void UpdateTeamMembers(IReadOnlyCollection<ProjectTeamMemberRequest> teamMemberRequests, Project project)
         {
-            var existingTeamMembers = await _teamMemberRepository.GetByProjectIdAsync(projectId);
-
-            foreach (var existingTeamMember in existingTeamMembers)
-            {
-                var requestTeamMember = teamMemberRequests.FirstOrDefault(t => t.Id == existingTeamMember.Id);
-                if (requestTeamMember == null)
-                {
-                    await _teamMemberRepository.RemoveAsync(existingTeamMember);
-                    return;
-                }
-
-                existingTeamMember.About = requestTeamMember.About;
-                existingTeamMember.FullName = requestTeamMember.FullName;
-                existingTeamMember.Role = requestTeamMember.Role;
-                existingTeamMember.Facebook = requestTeamMember.Facebook;
-                existingTeamMember.Linkedin = requestTeamMember.Linkedin;
-
-                await _teamMemberRepository.UpdateWholeAsync(existingTeamMember);
-            }
+            var teamMembers = teamMemberRequests.Select(m => new ProjectTeamMember(m.Id, m.FullName, m.Role, m.About, m.Facebook, m.Linkedin)).ToArray();
+            project.UpdateMembers(teamMembers);
         }
 
-        public async Task UpdateTeamMemberPhotoAsync(long projectTeamMemberId, AzureFile photo)
+        public async Task UpdateTeamMemberPhotoAsync(long projectId, long projectTeamMemberId, AzureFile photo)
         {
             var photoName = $"project-{projectTeamMemberId}/photo-{Guid.NewGuid()}{photo.Extension}";
             var link = await _projectTeamMembersStorageProvider.UploadAndGetUriAsync(photoName, photo);
-            await _teamMemberRepository.UpdatePhotoNameAsync(projectTeamMemberId, link);
+            var project = await GetByIdAsync(projectId);
+            project.UpdateTeamMemberPhotoLink(projectTeamMemberId, link);
+            await _projectRepository.SaveChangesAsync();
         }
 
-        public async Task DeleteTeamMemberPhotoAsync(long projectTeamMemberId)
+        public async Task DeleteTeamMemberPhotoAsync(long projectId, long projectTeamMemberId)
         {
-            var teamMember = await _teamMemberRepository.GetByIdAsync(projectTeamMemberId);
-            if (teamMember == null) throw new AppErrorException(ErrorCode.TeamMemberNotFound);
-            if (teamMember.PhotoUrl == null) return;
+            var project = await GetByIdAsync(projectId);
+            var teamMember = project.GetTeamMember(projectTeamMemberId);
+            if (teamMember == null)
+                throw new AppErrorException(ErrorCode.TeamMemberNotFound);
+            if (teamMember.PhotoUrl == null)
+                return;
             var photoName = teamMember.PhotoUrl.Split("project-team-members/")[1];
             await _projectTeamMembersStorageProvider.DeleteAsync(photoName);
-            await _teamMemberRepository.UpdatePhotoNameAsync(projectTeamMemberId, null);
+            project.UpdateTeamMemberPhotoLink(projectTeamMemberId, null);
+            await _projectRepository.SaveChangesAsync();
         }
 
         public async Task UpdateImageAsync(long projectId, AzureFile image)
         {
-            var project = await _projectRepository.GetAsync(projectId);
+            var project = await _projectRepository.GetByIdAsync(projectId);
             project.ImageUrl = await UploadImageAndGetUrlAsync(projectId, image);
             await _projectRepository.SaveChangesAsync();
         }
 
         public async Task DeleteProjectImageAsync(long projectId)
         {
-            var project = await _projectRepository.GetAsync(projectId);
-            if (project == null) throw new AppErrorException(ErrorCode.ProjectNotFound);
-            if (project.ImageUrl == null) return;
+            var project = await _projectRepository.GetByIdAsync(projectId);
+            if (project == null)
+                throw new AppErrorException(ErrorCode.ProjectNotFound);
+            if (project.ImageUrl == null)
+                return;
             var projectImageName = project.ImageUrl.Split("projects/")[1];
             project.ImageUrl = null;
             await _projectStorageProvider.DeleteAsync(projectImageName);
             await _projectRepository.SaveChangesAsync();
         }
 
-        public async Task<Project> GetAsync(long projectId)
-            => await _projectRepository.GetAsync(projectId) ?? throw new AppErrorException(ErrorCode.ProjectNotFound);
+        public async Task<Project> GetByIdAsync(long projectId)
+            => await _projectRepository.GetByIdAsync(projectId) ?? throw new AppErrorException(ErrorCode.ProjectNotFound);
 
         private async Task<Project> AddProjectAsync(long userId, CreateProjectRequest request)
         {
             var country = await GetCountryAsync(request.CountryCode);
+            var user = await _userRepository.GetByIdAsync(userId);
+
             var project = new Project
                           {
                               Name = request.Name,
@@ -213,10 +215,11 @@ namespace SmartValley.WebApi.Projects
                               Github = request.Github,
                               Medium = request.Medium,
                               Twitter = request.Twitter,
-                              Linkedin = request.Linkedin
+                              Linkedin = request.Linkedin,
+                              IsPrivate = user.CanCreatePrivateProjects
                           };
 
-            await _projectRepository.AddAsync(project);
+            _projectRepository.Add(project);
             return project;
         }
 
@@ -230,23 +233,6 @@ namespace SmartValley.WebApi.Projects
 
             var imageName = $"project-{projectId}/image-{Guid.NewGuid()}{image.Extension}";
             return _projectStorageProvider.UploadAndGetUriAsync(imageName, image);
-        }
-
-        private async Task<ProjectTeamMember[]> AddTeamMembersAsync(IReadOnlyCollection<ProjectTeamMemberRequest> teamMemberRequests, long projectId)
-        {
-            var teamMembers = teamMemberRequests.Select(m => new ProjectTeamMember
-                                                             {
-                                                                 ProjectId = projectId,
-                                                                 FullName = m.FullName,
-                                                                 About = m.About,
-                                                                 Role = m.Role,
-                                                                 Facebook = m.Facebook,
-                                                                 Linkedin = m.Linkedin
-                                                             })
-                                                .ToArray();
-
-            await _teamMemberRepository.AddRangeAsync(teamMembers);
-            return teamMembers;
         }
     }
 }

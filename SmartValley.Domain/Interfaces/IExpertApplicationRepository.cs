@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain.Interfaces
@@ -9,16 +8,12 @@ namespace SmartValley.Domain.Interfaces
     {
         Task<IReadOnlyCollection<ExpertApplication>> GetAllByStatusAsync(ExpertApplicationStatus status);
 
-        Task<ExpertApplicationDetails> GetDetailsByIdAsync(long id);
+        Task<ExpertApplication> GetByIdAsync(long id);
 
-        Task<int> AddAsync(ExpertApplication expertApplication, IReadOnlyCollection<int> areas);
+        Task<ExpertApplication> GetByApplicantIdAsync(long userId);
 
-        Task<int> UpdateWholeAsync(ExpertApplication expertApplication);
+        void Add(ExpertApplication expertApplication);
 
-        Task SetAcceptedAsync(ExpertApplicationDetails applicationDetails, List<int> areas);
-
-        Task SetRejectedAsync(ExpertApplicationDetails applicationDetails);
-
-        Task<ExpertApplicationStatus> GetExpertApplicationStatusAsync(Address address);
+        Task SaveChangesAsync();
     }
 }

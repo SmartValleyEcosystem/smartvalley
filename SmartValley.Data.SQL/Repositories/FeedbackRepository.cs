@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
 using SmartValley.Data.SQL.Core;
+using SmartValley.Data.SQL.Extensions;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 
@@ -24,16 +23,8 @@ namespace SmartValley.Data.SQL.Repositories
             _editContext.Feedbacks.Add(feedback);
         }
 
-        public async Task<IReadOnlyCollection<Feedback>> GetAsync(int offset, int count)
-        {
-            return await _readContext.Feedbacks
-                                     .Skip(offset)
-                                     .Take(count)
-                                     .ToArrayAsync();
-        }
-
-        public Task<int> GetTotalCountAsync()
-            => _readContext.Feedbacks.CountAsync();
+        public Task<PagingCollection<Feedback>> GetAsync(int offset, int count)
+            => _readContext.Feedbacks.GetPageAsync(offset, count);
 
         public Task SaveChangesAsync()
         {

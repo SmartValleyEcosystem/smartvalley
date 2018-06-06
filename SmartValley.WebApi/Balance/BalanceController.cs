@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SmartValley.Application;
 using SmartValley.Domain.Contracts;
 using SmartValley.Ethereum;
 using SmartValley.WebApi.Balance.Responses;
@@ -28,17 +27,17 @@ namespace SmartValley.WebApi.Balance
             var balance = await _ethereumClient.GetBalanceAsync(User.Identity.Name);
 
             return new BalanceResponse
-            {
-                WasEtherReceived = wasEtherReceived,
-                Balance = balance
-            };
+                   {
+                       WasEtherReceived = wasEtherReceived,
+                       Balance = balance
+                   };
         }
 
         [HttpPost]
         public async Task<ReceiveEtherResponse> ReceiveEtherAsync()
         {
             var transactionHash = await _etherManagerContractClient.SendEtherToAsync(User.Identity.Name);
-            return new ReceiveEtherResponse{TransactionHash = transactionHash};
+            return new ReceiveEtherResponse {TransactionHash = transactionHash};
         }
     }
 }

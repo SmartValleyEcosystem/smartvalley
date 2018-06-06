@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {ProjectApiClient} from '../../api/project/project-api-client';
-import {SearchProjectResponse} from '../../api/project/search-projects-response';
 import {Paths} from '../../paths';
 import {Router} from '@angular/router';
 import {Constants} from '../../constants';
@@ -8,6 +7,9 @@ import {FormControl} from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/throttleTime';
 import 'rxjs/add/observable/fromEvent';
+import {ProjectQuery} from '../../api/project/project-query';
+import {ProjectResponse} from '../../api/project/project-response';
+import {ColorHelper} from '../../utils/color-helper';
 @Component({
   selector: 'app-search-with-autocomplete',
   templateUrl: './search-with-autocomplete.component.html',
@@ -15,7 +17,7 @@ import 'rxjs/add/observable/fromEvent';
 })
 export class SearchWithAutocompleteComponent implements OnInit {
 
-  public projects: SearchProjectResponse[] = [];
+  public projects: ProjectResponse[] = [];
   public isAutocompleteHidden: boolean;
   public isProjectListHovered: boolean;
   public isSearchInputInFocus: boolean;
@@ -61,7 +63,12 @@ export class SearchWithAutocompleteComponent implements OnInit {
   }
 
   public async searchRequestAsync(search) {
-    const searchResult = await this.projectApiClient.getProjectsBySearchStringAsync(search);
+    const searchResult = await this.projectApiClient.getAsync(<ProjectQuery>{
+      offset: 0,
+      count: 10,
+      searchString: search,
+      onlyScored: false,
+    });
     this.projects = searchResult.items;
   }
 
@@ -70,47 +77,11 @@ export class SearchWithAutocompleteComponent implements OnInit {
   }
 
   public submit() {
-    this.router.navigate([Paths.ProjectList], {queryParams: {search: this.inputSearch.value}});
+    this.router.navigate([Paths.ProjectList + '/' + this.inputSearch.value]);
   }
 
-  private coloredText(text: string) {
-    if (this.inputSearch.value === '') {
-      return text;
-    }
-
-    const lowerText: string = text.toLowerCase();
-    const lowerSearch = this.inputSearch.value.toLowerCase();
-
-    let coloredString = '';
-    const words = lowerText.split(lowerSearch);
-    for (let i = 0; i < words.length; i++) {
-      let startIndex = 0;
-      if (words[i] !== '') {
-        startIndex = lowerText.indexOf(words[i]) + words[i].length;
-      } else {
-        if (words.length > 1 && i > 0) {
-          startIndex = lowerText.indexOf(words[i - 1]) + words[i - 1].length;
-        }
-      }
-      const lastIndex: number = startIndex + lowerSearch.length;
-      const word = text.substring(startIndex, lastIndex);
-
-      if (word === '') {
-        continue;
-      }
-
-      const replacedWord = '<span style=\"background-color: #ffd038; color: black;\">' + word + '</span>';
-      coloredString = text.replace(word, replacedWord);
-    }
-
-    if (words.every(i => i === '')) {
-      const word = text.substring(0, lowerSearch.length);
-
-      const replacedWord = '<span style=\"background-color: #ffd038; color: black;\">' + word + '</span>';
-      coloredString = text.replace(word, replacedWord);
-    }
-
-    return coloredString === '' ? text : coloredString;
+  public markedText(text: string) {
+    return ColorHelper.coloredText(text, this.inputSearch.value);
   }
 
 }

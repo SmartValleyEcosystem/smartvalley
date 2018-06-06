@@ -15,10 +15,11 @@ namespace SmartValley.WebApi.Authentication
 
         public string Token { get; set; }
 
+        public bool CanCreatePrivateProjects { get; set; }
+
         public IReadOnlyCollection<string> Roles { get; set; }
 
-
-        public Identity(long id, Address address, string email, bool isAuthenticated, string token, IReadOnlyCollection<string> roles)
+        public Identity(long id, Address address, string email, bool isAuthenticated, string token, IReadOnlyCollection<string> roles, bool canCreatePrivateProjects)
         {
             Id = id;
             Address = address;
@@ -26,6 +27,7 @@ namespace SmartValley.WebApi.Authentication
             IsAuthenticated = isAuthenticated;
             Token = token;
             Roles = roles;
+            CanCreatePrivateProjects = canCreatePrivateProjects;
         }
     }
 }

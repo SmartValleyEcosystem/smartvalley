@@ -3,10 +3,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SmartValley.Application;
 using SmartValley.Application.Extensions;
+using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
+using SmartValley.Domain.Interfaces;
 using SmartValley.Ethereum;
 using SmartValley.WebApi.Experts.Requests;
 using SmartValley.WebApi.Experts.Responses;
@@ -20,14 +21,20 @@ namespace SmartValley.WebApi.Experts
     {
         private readonly IExpertService _expertService;
         private readonly EthereumClient _ethereumClient;
+        private readonly ICountryRepository _countryRepository;
+        private readonly IUserRepository _userRepository;
 
         public ExpertsController(
             IExpertService expertService,
-            EthereumClient ethereumClient)
+            EthereumClient ethereumClient,
+            ICountryRepository countryRepository,
+            IUserRepository userRepository)
         {
             _ethereumClient = ethereumClient;
             _expertService = expertService;
             _ethereumClient = ethereumClient;
+            _countryRepository = countryRepository;
+            _userRepository = userRepository;
         }
 
         [HttpGet, Route("areas")]
@@ -40,11 +47,11 @@ namespace SmartValley.WebApi.Experts
                    };
         }
 
-        [HttpGet]
+        [HttpGet("{address}")]
         public async Task<ExpertResponse> GetExpertAsync(string address)
         {
-            var expertDetails = await _expertService.GetDetailsAsync(address);
-            return ExpertResponse.Create(expertDetails);
+            var expert = await _expertService.GetByAddressAsync(address);
+            return ExpertResponse.Create(expert);
         }
 
         [HttpGet, Route("{address}/status")]
@@ -69,8 +76,19 @@ namespace SmartValley.WebApi.Experts
         [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<ExpertApplicationResponse> GetApplicationByIdAsync(long id)
         {
-            var applicationDetails = await _expertService.GetApplicationByIdAsync(id);
-            return ExpertApplicationResponse.Create(applicationDetails);
+            var application = await _expertService.GetApplicationByIdAsync(id);
+            if (application == null)
+                throw new AppErrorException(ErrorCode.ApplicationNotFound);
+
+            var country = await _countryRepository.GetByIdAsync(application.CountryId);
+            if (country == null)
+                throw new AppErrorException(ErrorCode.CountryNotFound);
+
+            var applicant = await _userRepository.GetByIdAsync(application.ApplicantId);
+            if (applicant == null)
+                throw new AppErrorException(ErrorCode.UserNotFound);
+
+            return ExpertApplicationResponse.Create(application, applicant, country);
         }
 
         [HttpPost("applications/{id}/accept")]
@@ -107,14 +125,6 @@ namespace SmartValley.WebApi.Experts
             return NoContent();
         }
 
-        [HttpPut]
-        [Authorize(Roles = nameof(RoleType.Expert))]
-        public async Task<IActionResult> UpdateExpertAsync([FromBody] ExpertUpdateRequest request)
-        {
-            await _expertService.UpdateAsync(User.Identity.Name, request);
-            return NoContent();
-        }
-
         [HttpDelete]
         [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<IActionResult> DeleteExpertAsync([FromBody] ExpertDeleteRequest request)
@@ -124,21 +134,25 @@ namespace SmartValley.WebApi.Experts
             return NoContent();
         }
 
-        [HttpGet("all")]
+        [HttpGet]
         [Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<PartialCollectionResponse<ExpertResponse>> GetAllExperts(AllExpertsRequest request)
+        public async Task<PartialCollectionResponse<ExpertResponse>> GetAsync(QueryExpertsRequest request)
         {
-            var experts = await _expertService.GetAllExpertsDetailsAsync(request.Offset, request.Count);
-            var totalCount = await _expertService.GetTotalCountExpertsAsync();
-            return new PartialCollectionResponse<ExpertResponse>(
-                request.Offset, experts.Count, totalCount, experts.Select(ExpertResponse.Create).ToArray());
+            var query = new ExpertsQuery
+                        {
+                            IsInHouse = request.IsInHouse,
+                            Count = request.Count,
+                            Offset = request.Offset
+                        };
+            var experts = await _expertService.GetAsync(query);
+            return experts.ToPartialCollectionResponse(ExpertResponse.Create);
         }
 
         [HttpGet("availability")]
         [Authorize(Roles = nameof(RoleType.Expert))]
         public async Task<ExpertAvailabilityResponse> GetAvailabilityAsync()
         {
-            var expert = await _expertService.GetAsync(User.GetUserId());
+            var expert = await _expertService.GetByIdAsync(User.GetUserId());
             if (expert == null)
                 throw new AppErrorException(ErrorCode.ExpertNotFound);
 
@@ -163,7 +177,7 @@ namespace SmartValley.WebApi.Experts
         {
             if (!scan.IsImageValid()
                 || !photo.IsImageValid()
-                || !cv.IsCVValid())
+                || !cv.IsCvValid())
             {
                 throw new AppErrorException(ErrorCode.InvalidFileUploaded);
             }

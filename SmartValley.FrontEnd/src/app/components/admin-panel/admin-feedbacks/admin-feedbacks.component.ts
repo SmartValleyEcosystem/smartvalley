@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {LazyLoadEvent} from 'primeng/api';
 import {CollectionResponse} from '../../../api/collection-response';
 import {FeedbackResponse} from '../../../api/feedback/feedback-response';
@@ -10,10 +10,10 @@ import {AdminFeedbackItem} from './admin-feedback-item';
   templateUrl: './admin-feedbacks.component.html',
   styleUrls: ['./admin-feedbacks.component.css']
 })
-export class AdminFeedbacksComponent implements OnInit {
+export class AdminFeedbacksComponent {
 
   public totalRecords: number;
-  public loading: boolean;
+  public loading = true;
   public offset = 0;
   public pageSize = 10;
   public feedbacksResponses: CollectionResponse<FeedbackResponse>;
@@ -27,10 +27,6 @@ export class AdminFeedbacksComponent implements OnInit {
     await this.loadFeedbacksAsync();
   }
 
-  async ngOnInit() {
-    await this.loadFeedbacksAsync();
-  }
-
   public renderTableRows(expertResponseItems: FeedbackResponse[]) {
     this.feedbacks = expertResponseItems.map(feedback => <AdminFeedbackItem>{
       firstName: feedback.firstName,
@@ -41,11 +37,9 @@ export class AdminFeedbacksComponent implements OnInit {
   }
 
   private async loadFeedbacksAsync(): Promise<void> {
-    this.loading = true;
     this.feedbacksResponses = (await this.feedbackApiClient.getFeedbacksListAsync(this.offset, this.pageSize));
     this.totalRecords = this.feedbacksResponses.totalCount;
     this.renderTableRows(this.feedbacksResponses.items);
     this.loading = false;
   }
-
 }

@@ -3,11 +3,25 @@ using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
 {
-    public class ProjectTeamMember : IEntityWithId
+    public class ProjectTeamMember : Entity, IUpdateble<ProjectTeamMember>
     {
-        public long Id { get; set; }
+        // ReSharper disable once UnusedMember.Local
+        private ProjectTeamMember()
+        {
+            
+        }
 
-        public long ProjectId { get; set; }
+        public ProjectTeamMember(long id, string fullName, string role, string about, string facebook, string linkedin)
+        {
+            Id = id;
+            FullName = fullName;
+            Role = role;
+            About = about;
+            Facebook = facebook;
+            Linkedin = linkedin;
+        }
+
+        public long ProjectId { get; private set; }
 
         [Required]
         [MaxLength(200)]
@@ -29,6 +43,13 @@ namespace SmartValley.Domain.Entities
         [Url, MaxLength(200)]
         public string Linkedin { get; set; }
 
-        public Project Project { get; set; }
+        public void Update(ProjectTeamMember member)
+        {
+            About = member.About;
+            Facebook = member.Facebook;
+            FullName = member.FullName;
+            Linkedin = member.Linkedin;
+            Role = member.Role;
+        }
     }
 }

@@ -21,8 +21,9 @@ import {ScoringApiClient} from '../../api/scoring/scoring-api-client';
 import {TeamMemberResponse} from '../../api/project/team-member-response';
 import {MemberUploadPhotoComponent} from '../member-upload-photo/member-upload-photo.component';
 import {StringExtensions} from '../../utils/string-extensions';
-import {ImageUploaderComponent} from '../image-uploader/image-uploader.component';
+import {FileUploaderComponent} from '../file-uploader/file-uploader.component';
 import {FileUploaderHelper} from '../../utils/file-uploader-helper';
+import {UserContext} from '../../services/authentication/user-context';
 
 @Component({
   selector: 'app-create-project',
@@ -45,6 +46,7 @@ export class CreateProjectComponent implements OnInit {
 
   public isEditing = false;
   public canRemove = true;
+  public isPrivate = false;
   public editingData: MyProjectResponse;
   private projectId: number;
 
@@ -88,7 +90,7 @@ export class CreateProjectComponent implements OnInit {
   @ViewChild('description') public descriptionRow: ElementRef;
   @ViewChildren('required') public requiredFields: QueryList<any>;
   @ViewChildren('photo') photos: QueryList<MemberUploadPhotoComponent>;
-  @ViewChild('projectImage') projectImage: ImageUploaderComponent;
+  @ViewChild('projectImage') projectImage: FileUploaderComponent;
 
   constructor(private formBuilder: FormBuilder,
               private notificationsService: NotificationsService,
@@ -98,6 +100,7 @@ export class CreateProjectComponent implements OnInit {
               private dictionariesService: DictionariesService,
               private dialogService: DialogService,
               private scoringApiClient: ScoringApiClient,
+              private userContext: UserContext,
               private router: Router) {
 
     this.categories = this.dictionariesService.categories.map(i => <SelectItem>{
@@ -119,6 +122,8 @@ export class CreateProjectComponent implements OnInit {
       label: i.name,
       value: i.code
     });
+
+    this.isPrivate = this.userContext.getCurrentUser().canCreatePrivateProjects;
   }
 
   public async ngOnInit() {
@@ -236,7 +241,7 @@ export class CreateProjectComponent implements OnInit {
       description: ['', [Validators.required, Validators.maxLength(2000)]],
       website: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
       whitePaperLink: ['', [Validators.maxLength(200), Validators.pattern('https?://.+')]],
-      contactEmail: ['', Validators.maxLength(200)],
+      contactEmail: ['', [Validators.maxLength(200), Validators.pattern('\\w+@\\w+\\.\\w+')]],
       projectImage: [''],
       icoDate: [''],
       category: ['', [Validators.required]],
@@ -404,7 +409,7 @@ export class CreateProjectComponent implements OnInit {
 
     const response = await this.projectService.updateAsync(request);
 
-    await Promise.all([this.sendProjectImageAsync(response.projectId), this.sendPhotosAsync(response.teamMembers)]);
+    await Promise.all([this.sendProjectImageAsync(response.projectId), this.sendPhotosAsync(response.projectId, response.teamMembers)]);
 
     this.notificationsService.success(
       this.translateService.instant('Common.Success'),
@@ -420,7 +425,7 @@ export class CreateProjectComponent implements OnInit {
 
     const response = await this.projectService.createAsync(request);
 
-    await Promise.all([this.sendProjectImageAsync(response.projectId), this.sendPhotosAsync(response.teamMembers)]);
+    await Promise.all([this.sendProjectImageAsync(response.projectId), this.sendPhotosAsync(response.projectId, response.teamMembers)]);
 
     this.notificationsService.success(
       this.translateService.instant('Common.Success'),
@@ -448,11 +453,11 @@ export class CreateProjectComponent implements OnInit {
     }
   }
 
-  private async sendPhotosAsync(teamMembers: TeamMemberResponse[]): Promise<void> {
+  private async sendPhotosAsync(projectId: number, teamMembers: TeamMemberResponse[]): Promise<void> {
     for (let i = 0; i < teamMembers.length; i++) {
       const memberNumber = i + 1;
       const photo = this.photos.find(p => p.elementId === 'photo__' + memberNumber);
-      if (photo.imgUrl) {
+      if (photo && photo.imgUrl) {
         if (photo.value) {
           if (!FileUploaderHelper.checkImageExtensions(photo.value)) {
             this.notificationsService.warn(
@@ -461,10 +466,10 @@ export class CreateProjectComponent implements OnInit {
             );
             return;
           }
-          await this.projectService.uploadTeamMemberPhotoAsync(teamMembers[i].id.toString(), photo.value);
+          await this.projectService.uploadTeamMemberPhotoAsync(projectId, teamMembers[i].id, photo.value);
         }
       } else {
-        await this.projectApiClient.deleteTeamMemberPhotoAsync(teamMembers[i].id);
+        await this.projectApiClient.deleteTeamMemberPhotoAsync(projectId, teamMembers[i].id);
       }
     }
   }

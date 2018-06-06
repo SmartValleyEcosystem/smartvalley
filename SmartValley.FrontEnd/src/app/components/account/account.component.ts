@@ -8,7 +8,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UpdateUserRequest} from '../../api/user/update-user-request';
 import {User} from '../../services/authentication/user';
 import {ExpertApiClient} from '../../api/expert/expert-api-client';
-import {ExpertUpdateRequest} from '../../api/expert/expert-update-request';
 
 @Component({
   selector: 'app-account',
@@ -40,6 +39,7 @@ export class AccountComponent implements OnInit {
       firstName: ['', [Validators.maxLength(50)]],
       secondName: ['', [Validators.maxLength(50)]],
       email: ['', [Validators.email, Validators.maxLength(50)]],
+      bitcointalk: ['', [Validators.maxLength(400), Validators.pattern('https?://.+')]],
       about: ['', [Validators.maxLength(500)]]
     });
 
@@ -67,15 +67,17 @@ export class AccountComponent implements OnInit {
 
   private async updateUserDataAsync(): Promise<void> {
     if (this.currentUser.isExpert) {
-      await this.expertApiClient.updateAsync(<ExpertUpdateRequest>{
+      await this.userApiClient.updateAsync(<UpdateUserRequest>{
         firstName: this.userForm.value.firstName,
         secondName: this.userForm.value.secondName,
+        bitcointalk: this.userForm.value.bitcointalk,
         about: this.userForm.value.about
       });
     } else {
       await this.userApiClient.updateAsync(<UpdateUserRequest>{
         firstName: this.userForm.value.firstName,
-        secondName: this.userForm.value.secondName
+        secondName: this.userForm.value.secondName,
+        bitcointalk: this.userForm.value.bitcointalk
       });
     }
   }
@@ -113,9 +115,10 @@ export class AccountComponent implements OnInit {
     }
     this.userForm.setValue({
       firstName: userResponse.firstName,
-      secondName: userResponse.secondName,
+      secondName: userResponse.lastName,
       email: this.currentUser.email,
-      about: this.about
+      about: this.about,
+      bitcointalk: userResponse.bitcointalk
     });
   }
 }

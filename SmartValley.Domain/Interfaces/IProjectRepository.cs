@@ -1,28 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain.Interfaces
 {
     public interface IProjectRepository
     {
-        Task<IReadOnlyCollection<ProjectDetails>> QueryAsync(ProjectsQuery projectsQuery);
+        Task<PagingCollection<Project>> GetAsync(ProjectsQuery query);
 
-        Task<int> GetQueryTotalCountAsync(ProjectsQuery projectsQuery);
-
-        Task<int> AddAsync(Project project);
+        void Add(Project project);
 
         Task<Project> GetByExternalIdAsync(Guid externalId);
 
-        Task<IReadOnlyCollection<ProjectDetails>> GetAllByNameAsync(string projectName);
+        Task<Project> GetByAuthorIdAsync(long authorId);
 
-        Task<ProjectDetails> GetByAuthorIdAsync(long authorId);
+        void Remove(Project entity);
 
-        void Delete(Project project);
-
-        Task<Project> GetAsync(long projectId);
+        Task<Project> GetByIdAsync(long projectId);
 
         Task SaveChangesAsync();
     }

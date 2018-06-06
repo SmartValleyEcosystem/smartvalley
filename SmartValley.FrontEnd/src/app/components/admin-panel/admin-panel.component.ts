@@ -1,18 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {AdminApiClient} from '../../api/admin/admin-api-client';
-import {DialogService} from '../../services/dialog-service';
-import {AdminContractClient} from '../../services/contract-clients/admin-contract-client';
-import {ActivatedRoute} from '@angular/router';
-import {AdminResponse} from '../../api/admin/admin-response';
-import {NotificationsService} from 'angular2-notifications';
-import {UserApiClient} from '../../api/user/user-api-client';
-import {TranslateService} from '@ngx-translate/core';
-import {UserContext} from '../../services/authentication/user-context';
-import {isNullOrUndefined} from 'util';
-import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {Location} from '@angular/common';
 import {Paths} from '../../paths';
-import {MatTabChangeEvent} from '@angular/material';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-admin-panel',
@@ -21,90 +10,62 @@ import {MatTabChangeEvent} from '@angular/material';
 })
 export class AdminPanelComponent implements OnInit {
 
-  public admins: Array<AdminResponse> = [];
-
-  public mainTabItems: string[] = ['admins', 'experts', 'scoring', 'feedbacks', 'subscribers'];
-  public subTabItems: string[] = ['expertList', 'applications'];
+  public mainTabItems: string[] = ['users', 'scoring', 'requests'];
+  public usersTab: string[] = ['admins', 'experts', 'founders'];
+  public scoringTab: string[] = ['public-scoring', 'private-scoring', 'scoring-costs'];
+  public requestsTab: string[] = ['requests-for-expert', 'feedback', 'subscriptions'];
 
   public selectedMainTab = 0;
-  public selectedSubTab = this.subTabItems[0];
+  public selectedSubTab = 0;
 
-  constructor(private location: Location,
-              private route: ActivatedRoute,
-              private adminApiClient: AdminApiClient,
-              private adminContractClient: AdminContractClient,
-              private notificationsService: NotificationsService,
-              private userApiClient: UserApiClient,
-              private dialogService: DialogService,
-              private userContext: UserContext,
-              private translateService: TranslateService) {
+  constructor(private router: Router,
+              private route: ActivatedRoute) {
   }
 
-  async ngOnInit(): Promise<void> {
-    await this.updateAdminsAsync();
-  }
+  public ngOnInit() {
+    const mainTab = this.route.snapshot.paramMap.get('mainTab');
+    const subTab = this.route.snapshot.paramMap.get('subTab');
 
-  async createAsync() {
-    const address = await this.dialogService.showCreateAdminDialogAsync();
-    if (isNullOrUndefined(address)) {
-      return;
+    if (mainTab && this.mainTabItems.indexOf(mainTab) !== -1) {
+      this.selectedMainTab = this.mainTabItems.indexOf(mainTab);
     }
 
-    const isAddressIsAdmin = await this.adminContractClient.isAdminAsync(address);
-    if (isAddressIsAdmin) {
-      this.notificationsService.warn(
-        this.translateService.instant('Common.Error'),
-        this.translateService.instant('AdminPanel.AlreadyAdmin'));
-      return;
-    }
-
-    const user = await this.userApiClient.getByAddressAsync(address);
-    if (user.address == null) {
-      this.notificationsService.error(
-        this.translateService.instant('Common.Error'),
-        this.translateService.instant('Common.UserNotFound'));
-      return;
-    }
-    const transactionHash = await this.adminContractClient.addAsync(address);
-    await this.adminApiClient.addAsync(address, transactionHash);
-    await this.updateAdminsAsync();
-  }
-
-  async deleteAsync(address: string) {
-    const fromAddress = await this.userContext.getCurrentUser().account;
-    const transactionHash = await this.adminContractClient.deleteAsync(address, fromAddress);
-    await this.adminApiClient.deleteAsync(address, transactionHash);
-    await this.updateAdminsAsync();
-  }
-
-  public onMainTabChange($event: MatTabChangeEvent) {
-    if ($event.index === 1) {
-      this.location.replaceState(Paths.Admin + '/' + this.mainTabItems[$event.index] + '/' + this.subTabItems[0]);
-    } else {
-      this.location.replaceState(Paths.Admin + '/' + this.mainTabItems[$event.index]);
+    if (subTab && this.getSubTabIndex(this.selectedMainTab, subTab) !== -1) {
+      this.selectedSubTab = this.getSubTabIndex(this.selectedMainTab, subTab);
     }
   }
 
-  public onSubTabChange($event: NgbTabChangeEvent) {
-    this.location.replaceState(Paths.Admin + '/experts/' + $event.nextId);
+  public getSubTabLink(mainTabIndex: number, subItemIndex: number): string {
+    switch (mainTabIndex) {
+      case 0 :
+        return this.usersTab[subItemIndex];
+      case 1 :
+        return this.scoringTab[subItemIndex];
+      case 2 :
+        return this.requestsTab[subItemIndex];
+    }
   }
 
-  private async updateAdminsAsync() {
-    const response = await this.adminApiClient.getAllAsync();
-    this.admins = response.items;
-
-    const selectedMainTabName = this.route.snapshot.paramMap.get('mainTab');
-    if (isNullOrUndefined(selectedMainTabName)) {
-      this.location.replaceState(Paths.Admin + '/' + this.mainTabItems[0]);
-    } else {
-      if (this.mainTabItems.includes(selectedMainTabName)) {
-        this.selectedMainTab = this.mainTabItems.indexOf(selectedMainTabName);
-      }
+  public getSubTabIndex(mainTabIndex: number, subItemName: string): number {
+    switch (mainTabIndex) {
+      case 0 :
+        return this.usersTab.indexOf(subItemName);
+      case 1 :
+        return this.scoringTab.indexOf(subItemName);
+      case 2 :
+        return this.requestsTab.indexOf(subItemName);
     }
+  }
 
-    const selectedSubTabName = this.route.snapshot.paramMap.get('subTab');
-    if (!isNullOrUndefined(selectedSubTabName) && this.subTabItems.includes(selectedSubTabName)) {
-      this.selectedSubTab = selectedSubTabName;
-    }
+  public onMainTabChange($event) {
+    this.selectedMainTab = $event.index;
+    this.selectedSubTab = 0;
+    const path = `${Paths.Admin}/${this.mainTabItems[$event.index]}/${this.getSubTabLink(this.selectedMainTab, this.selectedSubTab)}`;
+    this.router.navigate([path]);
+  }
+
+  public onSubTabChange($event, tab: string[]) {
+    this.selectedSubTab = $event.index;
+    this.router.navigate([Paths.Admin + '/' + this.mainTabItems[this.selectedMainTab] + '/' + tab[$event.index]]);
   }
 }

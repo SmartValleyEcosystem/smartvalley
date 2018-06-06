@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 
@@ -9,6 +10,7 @@ namespace SmartValley.WebApi.Projects.Requests
         public QueryProjectsRequest()
         {
             Count = 100;
+            ScoringStatuses = new List<ScoringStatus>();
         }
 
         public int Offset { get; set; }
@@ -17,10 +19,14 @@ namespace SmartValley.WebApi.Projects.Requests
         public int Count { get; set; }
 
         public bool OnlyScored { get; set; }
-        
+
+        public bool? IsPrivate { get; set; }
+
         public string SearchString { get; set; }
 
         public Stage? Stage { get; set; }
+
+        public IReadOnlyCollection<ScoringStatus> ScoringStatuses { get; set; }
 
         public string CountryCode { get; set; }
 

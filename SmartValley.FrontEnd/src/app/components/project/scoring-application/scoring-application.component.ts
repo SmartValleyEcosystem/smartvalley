@@ -10,6 +10,7 @@ import {ProjectApiClient} from '../../../api/project/project-api-client';
 import {UserContext} from '../../../services/authentication/user-context';
 import {ProjectSummaryResponse} from '../../../api/project/project-summary-response';
 import {ProjectComponent} from '../project.component';
+import {ScoringStatus} from '../../../services/scoring-status.enum';
 
 @Component({
   selector: 'app-scoring-application',
@@ -19,6 +20,8 @@ import {ProjectComponent} from '../project.component';
 export class ScoringApplicationComponent implements OnInit {
 
   @Input() public project: ProjectSummaryResponse;
+  @Input() scoringStatus: ScoringStatus;
+
   public projectInfo: ProjectApplicationInfoResponse;
   public haveSocials: boolean;
   public articles: string[];
@@ -35,7 +38,6 @@ export class ScoringApplicationComponent implements OnInit {
   public doesScoringApplicationExists: boolean;
   public isAuthor: boolean;
   public isScoringPayed: boolean;
-
   public editorFormats = [
       'bold',
       'underline',
@@ -127,7 +129,7 @@ export class ScoringApplicationComponent implements OnInit {
     const element = this.htmlElement.nativeElement.querySelector('#partition_' + elementId);
     const containerOffset = element.offsetTop;
     const fieldOffset = element.offsetParent.offsetTop;
-    window.scrollTo({left: 0, top: containerOffset + fieldOffset + 500, behavior: 'smooth'});
+    window.scrollTo({left: 0, top: containerOffset + fieldOffset, behavior: 'smooth'});
   }
 
   public navigateToCreateForm() {
@@ -142,5 +144,10 @@ export class ScoringApplicationComponent implements OnInit {
       if (event.status) {
           this.activePartition = id;
       }
+  }
+
+  public isEditApplicationCommandAvailable(): boolean {
+    const editApplicationCommandAvailableStates = [ScoringStatus.FillingApplication, ScoringStatus.ReadyForPayment];
+    return this.isAuthor && editApplicationCommandAvailableStates.includes(this.scoringStatus);
   }
 }

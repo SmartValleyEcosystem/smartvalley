@@ -1,17 +1,19 @@
 <div class="admin-experts-list">
-  <p-table [value]="feedbacks" [lazy]="true" (onLazyLoad)="getFeedbacksList($event)" [paginator]="true"
+  <p-table class="admin-table" [value]="feedbacks" [lazy]="true" (onLazyLoad)="getFeedbacksList($event)" [paginator]="true"
            [rows]="10" [totalRecords]="totalRecords" [loading]="loading">
     <ng-template pTemplate="header" let-columns>
       <tr class="list-row list-row__header">
+        <th class="list-item">{{ 'AdminFeedbacks.FullName' | translate }}</th>
         <th class="list-item">{{ 'AdminFeedbacks.Email' | translate }}</th>
-        <th class="list-item">{{ 'AdminFeedbacks.FirstName' | translate }}</th>
-        <th class="list-item">{{ 'AdminFeedbacks.SecondName' | translate }}</th>
         <th class="list-item">{{ 'AdminFeedbacks.Text' | translate }}</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr class="list-row">
-        <td class="list-item" *ngFor="let col of ['email', 'firstName', 'secondName', 'text']">
+        <td class="list-item">
+          {{(rowData.firstName||'') + ' ' + (rowData.secondName||'')}}
+        </td>
+        <td class="list-item" *ngFor="let col of ['email', 'text']">
           {{rowData[col]}}
         </td>
       </tr>

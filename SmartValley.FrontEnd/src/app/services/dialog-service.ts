@@ -15,7 +15,6 @@ import {CreateNewExpertModalComponent} from '../components/common/create-new-exp
 import {EditExpertModalComponent} from '../components/common/edit-expert-modal/edit-expert-modal.component';
 import {SetExpertsModalComponent} from '../components/common/set-experts-modal/set-experts-modal.component';
 import {EditExpertModalData} from '../components/common/edit-expert-modal/edit-expert-modal-data';
-import {ScoringCostComponent} from '../components/common/scoring-cost-modal/scoring-cost.component';
 import {WelcomeModalComponent} from '../components/common/welcome-modal/welcome-modal.component';
 import {WelcomeModalData} from '../components/common/welcome-modal/welcome-modal-data';
 import {DeleteProjectModalComponent} from '../components/common/delete-project-modal/delete-project-modal.component';
@@ -25,6 +24,7 @@ import {SubscribeModalComponent} from '../components/common/subscribe-modal/subs
 import {SubscribeRequest} from '../components/common/subscribe-modal/subscribe-data';
 import {FeedbackModalComponent} from '../components/common/feedback-modal/feedback-modal.component';
 import {FeedbackRequest} from '../components/common/feedback-modal/feedback';
+import {PrivateScoringModalComponent} from '../components/common/private-scoring-modal/private-scoring-modal.component';
 
 @Injectable()
 export class DialogService {
@@ -50,12 +50,6 @@ export class DialogService {
     return this.openModal(AddAdminModalComponent, {})
       .afterClosed()
       .toPromise<string>();
-  }
-
-  public showScoringCostDialog(): Promise<void> {
-    return this.openModal(ScoringCostComponent, {})
-      .afterClosed()
-      .toPromise<void>();
   }
 
   public showMetamaskManualAlert(): MatDialogRef<MetamaskManualModalComponent> {
@@ -112,8 +106,12 @@ export class DialogService {
   public async changeStatusDialogAsync(activityStatus: boolean, address: string): Promise<boolean> {
     return this.openModalAsync(ChangeStatusModalComponent, {
       title: this.translateService.instant('Header.StatusChanging'),
-      message: activityStatus ? this.translateService.instant('Header.DialogDescriptionToActive') : this.translateService.instant('Header.DialogDescriptionToInactive'),
-      button: activityStatus ? this.translateService.instant('Header.ChangeToActive') : this.translateService.instant('Header.ChangeToInactive'),
+      message: activityStatus
+        ? this.translateService.instant('Header.DialogDescriptionToActive')
+        : this.translateService.instant('Header.DialogDescriptionToInactive'),
+      button: activityStatus
+        ? this.translateService.instant('Header.ChangeToActive')
+        : this.translateService.instant('Header.ChangeToInactive'),
       close: this.translateService.instant('Header.NoClose'),
       activity: activityStatus,
       expertAddress: address
@@ -131,6 +129,10 @@ export class DialogService {
       button: this.translateService.instant('ExpertScoring.ModalOk')
     };
     return this.openModal(AlertModalComponent, data);
+  }
+
+  public async showPrivateScoringApplicationDialog(): Promise<boolean> {
+    return this.openModalAsync(PrivateScoringModalComponent, {});
   }
 
   public async showSubscribeDialog(): Promise<SubscribeRequest> {

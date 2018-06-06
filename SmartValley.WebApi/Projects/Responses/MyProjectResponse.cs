@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using SmartValley.WebApi.Projects.Requests;
-using SmartValley.WebApi.WebApi;
 
 namespace SmartValley.WebApi.Projects.Responses
 {
