@@ -38,6 +38,7 @@ export class CreateNewExpertModalComponent implements OnInit {
     }
     async ngOnInit() {
         this.areas = this.areaService.areas;
+        this.selectedCategories = [];
         let formGroupInputs = {
             address: ['', [Validators.required, AddAdminModalComponent.validateWalletAddress]],
             available: [''],
@@ -68,7 +69,7 @@ export class CreateNewExpertModalComponent implements OnInit {
                 }
             }
         }
-        this.transactionHash = ( await this.expertsRegistryContractClient.addAsync(form.value.address, [1]) );
+        this.transactionHash = ( await this.expertsRegistryContractClient.addAsync(form.value.address, this.selectedCategories) );
         this.newExpertRequest = {
             transactionHash: this.transactionHash,
             address: form.value.address,

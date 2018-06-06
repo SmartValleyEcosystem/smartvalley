@@ -226,6 +226,14 @@ export class CreateProjectComponent implements OnInit {
     this.membersGroup.controls['photo__' + this.selectedMembers[this.selectedMembers.length - 1]].setValue(photoUrl);
   }
 
+  public onPhotoSizeError() {
+    this.notificationsService.error(this.translateService.instant('RegisterExpert.PhotoSizeError'));
+  }
+
+  public onMimeTypeError(errorlabel: string, uploadElement: string) {
+    this.notificationsService.error(this.translateService.instant('RegisterExpert.' + errorlabel));
+  }
+
   private getSocialNetworkLink(socialsArray: any, socialNetwork: string): string {
     const item = socialsArray.find(s => !isNullOrUndefined(s.network) && s.network.toLowerCase() === socialNetwork.toLowerCase());
     if (isNullOrUndefined(item)) {
