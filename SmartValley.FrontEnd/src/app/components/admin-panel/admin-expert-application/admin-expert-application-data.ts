@@ -11,6 +11,7 @@ export interface AdminExpertApplicationData {
   city: string;
   linkedInLink: string;
   facebookLink: string;
+  bitcointalkLink: string;
   description: string;
   why: string;
   documentType: string;

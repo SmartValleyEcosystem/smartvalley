@@ -59,6 +59,7 @@ export class AdminExpertApplicationComponent implements OnInit {
       city: response.city,
       linkedInLink: response.linkedInLink,
       facebookLink: response.facebookLink,
+      bitcointalkLink: response.bitcointalkLink,
       cvUrl: response.cvUrl,
       description: response.description,
       why: response.why,
