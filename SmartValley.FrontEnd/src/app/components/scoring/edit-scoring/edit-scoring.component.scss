@@ -1,3 +1,5 @@
+@import "../../../../styles/pallete";
+
 .action-btn {
   background-color: white;
   margin-right: 32px;
@@ -9,4 +11,16 @@
 
 .mat-checkbox-disabled {
   display: none;
+}
+
+.list-item.completed {
+  background-color: $accents-green !important;
+}
+
+.list-row:nth-child(odd):hover {
+  background: #f2f2f2 !important;
+}
+
+.list-row:nth-child(even):hover {
+  background: #ffffff !important;
 }

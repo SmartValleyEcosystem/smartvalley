@@ -22,6 +22,7 @@ import {ScoringOfferResponse} from '../../../api/scoring-offer/scoring-offer-res
 import {OfferStatus} from '../../../api/scoring-offer/offer-status.enum';
 import {PrivateScoringManagerContractClient} from '../../../services/contract-clients/private-scoring-manager-contract-client';
 import {DialogService} from '../../../services/dialog-service';
+import {isNullOrUndefined} from 'util';
 
 @Component({
   selector: 'app-edit-scoring',
@@ -30,8 +31,9 @@ import {DialogService} from '../../../services/dialog-service';
 })
 export class EditScoringComponent implements OnInit {
 
-  public AreaType = AreaType;
   public project: ProjectSummaryResponse;
+  public areaTypes: string[] = [];
+  public AreaType = AreaType;
 
   public allExpertsResponse: CollectionResponse<ExpertResponse>;
   public experts: ExpertResponse[] = [];
@@ -59,6 +61,7 @@ export class EditScoringComponent implements OnInit {
               private notificationsService: NotificationsService,
               private scoringExpertsManagerContractClient: ScoringOffersManagerContractClient,
               private privateScoringManagerContractClient: PrivateScoringManagerContractClient) {
+    this.areaTypes = Object.keys(AreaType).filter(area => +area);
   }
 
   async ngOnInit() {
@@ -104,6 +107,10 @@ export class EditScoringComponent implements OnInit {
     return false;
   }
 
+  public isCompleteArea(expertId: number, areaId: AreaType): boolean {
+    return this.offers.some(o => o.expertId === expertId && o.area === areaId && !isNullOrUndefined(o.finalScore));
+  }
+
   public areaInScoring(expertId: number, areaId: AreaType): boolean {
     return this.expertAreas.some(i => i.areaId === areaId && i.expertId === expertId);
   }
@@ -122,11 +129,9 @@ export class EditScoringComponent implements OnInit {
       }
     }
 
-    for (const area of Object.keys(this.AreaType)) {
-      if (+area) {
-        this.uniqueAreas.push(+area);
-        this.areaExpertCounts.push(this.expertCountsByArea(+area));
-      }
+    for (const area of this.areaTypes) {
+      this.uniqueAreas.push(+area);
+      this.areaExpertCounts.push(this.expertCountsByArea(+area));
     }
   }
 
