@@ -10,6 +10,7 @@ import 'rxjs/add/observable/fromEvent';
 import {ProjectQuery} from '../../api/project/project-query';
 import {ProjectResponse} from '../../api/project/project-response';
 import {ColorHelper} from '../../utils/color-helper';
+import {Category} from '../../services/common/category';
 @Component({
   selector: 'app-search-with-autocomplete',
   templateUrl: './search-with-autocomplete.component.html',
@@ -83,5 +84,9 @@ export class SearchWithAutocompleteComponent implements OnInit {
   public markedText(text: string) {
     return ColorHelper.coloredText(text, this.inputSearch.value);
   }
+
+  public getCategoryByIndex(id: number): string {
+    return Category[id];
+}
 
 }
