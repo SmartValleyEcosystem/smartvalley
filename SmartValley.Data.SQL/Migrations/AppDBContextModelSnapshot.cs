@@ -3,10 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Converters;
+using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SmartValley.Data.SQL.Core;
+using SmartValley.Domain;
 using SmartValley.Domain.Core;
+using SmartValley.Domain.Entities;
 
 namespace SmartValley.Data.SQL.Migrations
 {
@@ -124,8 +129,6 @@ namespace SmartValley.Data.SQL.Migrations
                 {
                     b.Property<long>("UserId");
 
-                    b.Property<string>("About");
-
                     b.Property<bool>("IsAvailable");
 
                     b.Property<bool>("IsInHouse");
@@ -146,13 +149,14 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<DateTime>("BirthDate");
 
+                    b.Property<string>("BitcointalkLink")
+                        .HasMaxLength(400);
+
                     b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasMaxLength(100);
+                    b.Property<long>("CountryId");
 
                     b.Property<string>("CvUrl")
                         .HasMaxLength(200);
@@ -196,6 +200,8 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicantId");
+
+                    b.HasIndex("CountryId");
 
                     b.ToTable("ExpertApplications");
                 });
@@ -555,29 +561,51 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("About");
+
                     b.Property<Address>("Address")
                         .HasConversion(new ValueConverter<Address, string>(v => default(string), v => default(Address)))
                         .HasMaxLength(42);
 
+                    b.Property<DateTime?>("BirthDate");
+
+                    b.Property<string>("BitcointalkLink")
+                        .HasMaxLength(400);
+
                     b.Property<bool>("CanCreatePrivateProjects");
+
+                    b.Property<string>("City")
+                        .HasMaxLength(100);
+
+                    b.Property<long?>("CountryId");
 
                     b.Property<string>("Email")
                         .IsRequired();
+
+                    b.Property<string>("FacebookLink")
+                        .HasMaxLength(400);
 
                     b.Property<string>("FirstName")
                         .HasMaxLength(50);
 
                     b.Property<bool>("IsEmailConfirmed");
 
+                    b.Property<string>("LinkedInLink")
+                        .HasMaxLength(400);
+
                     b.Property<DateTime?>("RegistrationDate");
 
                     b.Property<string>("SecondName")
                         .HasMaxLength(50);
 
+                    b.Property<int?>("Sex");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Address")
                         .IsUnique();
+
+                    b.HasIndex("CountryId");
 
                     b.HasIndex("Email")
                         .IsUnique();
@@ -762,6 +790,11 @@ namespace SmartValley.Data.SQL.Migrations
                         .WithMany()
                         .HasForeignKey("ApplicantId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SmartValley.Domain.Entities.Country")
+                        .WithMany("ExpertApplications")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.ExpertApplicationArea", b =>
@@ -772,7 +805,7 @@ namespace SmartValley.Data.SQL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SmartValley.Domain.Entities.ExpertApplication", "ExpertApplication")
-                        .WithMany()
+                        .WithMany("ExpertApplicationAreas")
                         .HasForeignKey("ExpertApplicationId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -852,7 +885,7 @@ namespace SmartValley.Data.SQL.Migrations
                         .HasForeignKey("ExpertId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SmartValley.Domain.Entities.Scoring", "Scoring")
+                    b.HasOne("SmartValley.Domain.Entities.Scoring")
                         .WithMany("ScoringOffers")
                         .HasForeignKey("ScoringId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -864,6 +897,14 @@ namespace SmartValley.Data.SQL.Migrations
                         .WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.Entities.User", b =>
+                {
+                    b.HasOne("SmartValley.Domain.Entities.Country", "Country")
+                        .WithMany("Users")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.UserRole", b =>
