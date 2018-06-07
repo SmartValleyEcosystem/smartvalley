@@ -11,7 +11,7 @@
               class="search-controls__project-item">
             <p class="project-name"><span [innerHtml]="markedText(project.name) | safeHtml"></span></p>
             <p class="project-info">{{ 'Countries.' + project.country | translate }}</p>
-            <p class="project-info">{{ getCategoryByIndex(project.category) }}</p>
+            <p class="project-info">{{ 'Categories.' + project.category | translate }}</p>
           </li>
         </ul>
         <input (focus)="searchInputFocusStatusSwitch(true); showProjectList();"

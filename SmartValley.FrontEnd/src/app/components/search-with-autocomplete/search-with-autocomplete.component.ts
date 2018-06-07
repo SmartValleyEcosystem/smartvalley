@@ -85,8 +85,4 @@ export class SearchWithAutocompleteComponent implements OnInit {
     return ColorHelper.coloredText(text, this.inputSearch.value);
   }
 
-  public getCategoryByIndex(id: number): string {
-    return Category[id];
-}
-
 }
