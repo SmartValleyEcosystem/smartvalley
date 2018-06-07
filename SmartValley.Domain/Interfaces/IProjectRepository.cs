@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
@@ -18,6 +19,8 @@ namespace SmartValley.Domain.Interfaces
         void Remove(Project entity);
 
         Task<Project> GetByIdAsync(long projectId);
+
+        Task<IReadOnlyCollection<Project>> GetByScoringIdsAsync(IReadOnlyCollection<long> scoringIds);
 
         Task SaveChangesAsync();
     }

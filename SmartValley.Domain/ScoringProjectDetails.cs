@@ -9,18 +9,18 @@ namespace SmartValley.Domain
             long projectId,
             Guid projectExternalId,
             long scoringId,
-            Address address,
+            Address contractAddress,
             string name,
             DateTimeOffset creationDate,
-            DateTimeOffset offersEndDate)
+            DateTimeOffset acceptingDeadline)
         {
             ProjectId = projectId;
             ProjectExternalId = projectExternalId;
             ScoringId = scoringId;
-            Address = address;
+            ContractAddress = contractAddress;
             Name = name;
             CreationDate = creationDate;
-            OffersEndDate = offersEndDate;
+            AcceptingDeadline = acceptingDeadline;
         }
 
         public long ProjectId { get; }
@@ -29,12 +29,12 @@ namespace SmartValley.Domain
 
         public long ScoringId { get; }
 
-        public Address Address { get; }
+        public Address ContractAddress { get; }
 
         public string Name { get; }
 
         public DateTimeOffset CreationDate { get; }
 
-        public DateTimeOffset OffersEndDate { get; }
+        public DateTimeOffset AcceptingDeadline { get; }
     }
 }

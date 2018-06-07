@@ -99,7 +99,7 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
 
     for (const group of this.areasCriterion) {
       for (const criteria of group.criteria) {
-          this.criterionInfo[criteria.id] = criterionPrompts.find((c) => c.scoringCriterionId === criteria.id).prompts;
+        this.criterionInfo[criteria.id] = criterionPrompts.find((c) => c.scoringCriterionId === criteria.id).prompts;
       }
     }
 
@@ -178,31 +178,25 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
     }
   }
 
-  private async submitEstimates(): Promise<string>
-  {
-    let transactionHash = '';
-
+  private submitEstimates(): Promise<string> {
     if (this.project.isPrivate) {
-      transactionHash = await this.privateScoringManagerContractClient.submitEstimatesAsync(
+      return this.privateScoringManagerContractClient.submitEstimatesAsync(
         this.projectExternalId,
         this.areaType,
         this.scoringForm.get('conclusion').value,
         this.getEstimate()
       );
     } else {
-      transactionHash = await this.scoringManagerContractClient.submitEstimatesAsync(
+      return this.scoringManagerContractClient.submitEstimatesAsync(
         this.projectExternalId,
         this.areaType,
         this.scoringForm.get('conclusion').value,
         this.getEstimate()
       );
     }
-
-    return transactionHash;
   }
 
-  private async submit()
-  {
+  private async submit() {
     const transactionHash = await this.submitEstimates();
 
     const transactionDialog = this.dialogService.showTransactionDialog(

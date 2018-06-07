@@ -27,12 +27,12 @@ namespace SmartValley.WebApi.Projects.Responses
         {
             return new ScoringProjectResponse
                    {
-                       Address = details.Address,
+                       Address = details.ContractAddress,
                        Name = details.Name,
                        ProjectId = details.ProjectId,
                        ProjectExternalId = details.ProjectExternalId.ToString(),
                        StartDate = details.CreationDate.Date,
-                       EndDate = details.OffersEndDate.Date,
+                       EndDate = details.AcceptingDeadline.Date,
                        Status = details.Status,
                        AreasExperts = details.AreaCounts.Select(AreaExpertResponse.Create).ToArray()
                    };

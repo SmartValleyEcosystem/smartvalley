@@ -10,15 +10,15 @@ namespace SmartValley.WebApi.Scorings
     {
         public ScoringProjectDetailsWithCounts(
             ScoringProjectStatus status,
-            IReadOnlyCollection<AreaCount> areaCounts,
+            IReadOnlyCollection<AreaExpertsCounters> areaCounts,
             long projectId,
             Guid projectExternalId,
             long scoringId,
-            Address address,
+            Address contractAddress,
             string name,
             DateTimeOffset creationDate,
-            DateTimeOffset offersEndDate)
-            : base(projectId, projectExternalId, scoringId, address, name, creationDate, offersEndDate)
+            DateTimeOffset acceptingDeadline)
+            : base(projectId, projectExternalId, scoringId, contractAddress, name, creationDate, acceptingDeadline)
         {
             Status = status;
             AreaCounts = areaCounts;
@@ -26,6 +26,6 @@ namespace SmartValley.WebApi.Scorings
 
         public ScoringProjectStatus Status { get; }
 
-        public IReadOnlyCollection<AreaCount> AreaCounts { get; }
+        public IReadOnlyCollection<AreaExpertsCounters> AreaCounts { get; }
     }
 }
