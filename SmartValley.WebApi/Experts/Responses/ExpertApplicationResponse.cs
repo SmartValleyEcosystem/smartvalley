@@ -27,6 +27,8 @@ namespace SmartValley.WebApi.Experts.Responses
 
         public string FacebookLink { get; set; }
 
+        public string BitcointalkLink { get; set; }
+
         public string Description { get; set; }
 
         public string Why { get; set; }
@@ -55,6 +57,7 @@ namespace SmartValley.WebApi.Experts.Responses
                        Why = application.Why,
                        LastName = application.LastName,
                        LinkedInLink = application.LinkedInLink,
+                       BitcointalkLink = application.BitcointalkLink,
                        City = application.City,
                        FirstName = application.FirstName,
                        DocumentNumber = application.DocumentNumber,
