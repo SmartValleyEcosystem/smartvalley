@@ -2,9 +2,9 @@
 
 namespace SmartValley.Domain
 {
-    public class AreaCount
+    public class AreaExpertsCounters
     {
-        public AreaCount(AreaType areaType, int acceptedCount, int requeiredCount)
+        public AreaExpertsCounters(AreaType areaType, int acceptedCount, int requeiredCount)
         {
             AreaType = areaType;
             AcceptedCount = acceptedCount;

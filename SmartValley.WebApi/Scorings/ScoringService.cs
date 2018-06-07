@@ -14,6 +14,7 @@ using AreaType = SmartValley.Domain.Entities.AreaType;
 
 namespace SmartValley.WebApi.Scorings
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ScoringService : IScoringService
     {
         private readonly IProjectRepository _projectRepository;
@@ -56,27 +57,26 @@ namespace SmartValley.WebApi.Scorings
 
         public async Task<IReadOnlyCollection<ScoringProjectDetailsWithCounts>> GetScoringProjectsAsync(IReadOnlyCollection<ScoringProjectStatus> statuses)
         {
-            var statistics = await _scoringRepository.GetIncompletedScoringAreaStatisticsAsync(_clock.UtcNow);
+            var now = _clock.UtcNow;
+            var statistics = await _scoringRepository.GetIncompletedScoringAreaStatisticsAsync(now);
 
             var result = new List<ScoringProjectDetailsWithCounts>();
             if (!statuses.Any() || statuses.Contains(ScoringProjectStatus.All) || statuses.Contains(ScoringProjectStatus.Rejected))
             {
-                var rejectedStatistics = statistics.Where(i => i.RequiredCount > i.AcceptedCount && !i.ScoringEndDate.HasValue && i.OffersEndDate < _clock.UtcNow);
+                var rejectedStatistics = statistics.Where(i => i.HasAcceptingPhaseTimedOut(now));
                 result.AddRange(await ConvertAreaStatisticsToProjectDetailsAsync(ScoringProjectStatus.Rejected, rejectedStatistics));
             }
 
             if (!statuses.Any() || statuses.Contains(ScoringProjectStatus.All) || statuses.Contains(ScoringProjectStatus.InProgress))
             {
-                var pendingStatistics = statistics.Where(i => i.RequiredCount > i.AcceptedCount && i.RequiredCount < i.AcceptedCount + i.PendingCount);
+                var pendingStatistics = statistics.Where(i => !i.HasAcceptingPhaseTimedOut(now) && !i.HasScoringPhaseTimedOut(now));
                 result.AddRange(await ConvertAreaStatisticsToProjectDetailsAsync(ScoringProjectStatus.InProgress, pendingStatistics));
             }
 
             if (!statuses.Any() || statuses.Contains(ScoringProjectStatus.All) || statuses.Contains(ScoringProjectStatus.AcceptedAndDoNotEstimate))
             {
-                var acceptedAndDoNotEstimateStatistics = statistics.Where(i => i.AcceptedCount > i.FinishedCount && i.ScoringEndDate?.Date < _clock.UtcNow);
+                var acceptedAndDoNotEstimateStatistics = statistics.Where(i => i.HasScoringPhaseTimedOut(now));
                 result.AddRange(await ConvertAreaStatisticsToProjectDetailsAsync(ScoringProjectStatus.AcceptedAndDoNotEstimate, acceptedAndDoNotEstimateStatistics));
-
-                return result;
             }
 
             return result;
@@ -135,7 +135,7 @@ namespace SmartValley.WebApi.Scorings
                                        .Where(o => !scoring.ScoringOffers.Any(e => e.AreaId == o.Area && e.ExpertId == expertsDictionary[o.ExpertAddress]))
                                        .Select(o => new ScoringOffer(expertsDictionary[o.ExpertAddress], o.Area, o.Status))
                                        .ToArray();
-            
+
             if (newOffers.Any())
             {
                 scoring.AddOffers(newOffers);
@@ -240,27 +240,27 @@ namespace SmartValley.WebApi.Scorings
         {
             var areasByScoringId = statistics.ToLookup(
                 o => o.ScoringId,
-                k => new AreaCount(k.AreaId, k.AcceptedCount, k.RequiredCount));
+                k => new AreaExpertsCounters(k.AreaId, k.AcceptedCount, k.RequiredCount));
 
-            var scoringDetails = await _scoringRepository.GetScoringProjectsDetailsByScoringIdsAsync(areasByScoringId.Select(o => o.Key).ToArray());
-            return scoringDetails.Select(d => CreateScoringProjectDetailsWithCounts(status, areasByScoringId[d.ScoringId].ToArray(), d));
+            var projects = await _projectRepository.GetByScoringIdsAsync(areasByScoringId.Select(o => o.Key).ToArray());
+            return projects.Select(d => CreateScoringProjectDetailsWithCounts(status, areasByScoringId[d.Scoring.Id].ToArray(), d));
         }
 
         private static ScoringProjectDetailsWithCounts CreateScoringProjectDetailsWithCounts(
             ScoringProjectStatus status,
-            IReadOnlyCollection<AreaCount> areaCounts,
-            ScoringProjectDetails details)
+            IReadOnlyCollection<AreaExpertsCounters> areaCounts,
+            Project project)
         {
             return new ScoringProjectDetailsWithCounts(
                 status,
                 areaCounts,
-                details.ProjectId,
-                details.ProjectExternalId,
-                details.ScoringId,
-                details.Address,
-                details.Name,
-                details.CreationDate,
-                details.OffersEndDate);
+                project.Id,
+                project.ExternalId,
+                project.Scoring.Id,
+                project.Scoring.ContractAddress,
+                project.Name,
+                project.Scoring.CreationDate,
+                project.Scoring.AcceptingDeadline);
         }
     }
 }

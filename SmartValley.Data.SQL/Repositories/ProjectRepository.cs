@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -67,9 +68,7 @@ namespace SmartValley.Data.SQL.Repositories
         }
 
         public void Add(Project project)
-        {
-            _editContext.Projects.Add(project);
-        }
+            => _editContext.Projects.Add(project);
 
         public Task<Project> GetByAuthorIdAsync(long authorId)
             => Entities().FirstOrDefaultAsync(p => p.AuthorId == authorId);
@@ -84,8 +83,13 @@ namespace SmartValley.Data.SQL.Repositories
             => Entities().FirstOrDefaultAsync(project => project.ExternalId == externalId);
 
         public void Remove(Project entity)
+            => _editContext.Projects.Remove(entity);
+
+        public async Task<IReadOnlyCollection<Project>> GetByScoringIdsAsync(IReadOnlyCollection<long> scoringIds)
         {
-            _editContext.Projects.Remove(entity);
+            return await Entities()
+                         .Where(p => scoringIds.Any(i => i.Equals(p.Scoring.Id)))
+                         .ToArrayAsync();
         }
 
         private IQueryable<Project> Entities() => _editContext.Projects

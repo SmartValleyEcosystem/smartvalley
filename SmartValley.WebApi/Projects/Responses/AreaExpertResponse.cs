@@ -11,7 +11,7 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public int RequiredCount { get; set; }
 
-        public static AreaExpertResponse Create(AreaCount area)
+        public static AreaExpertResponse Create(AreaExpertsCounters area)
         {
             return new AreaExpertResponse
                    {
