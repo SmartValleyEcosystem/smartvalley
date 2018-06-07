@@ -1,11 +1,11 @@
 {
   "EditScoring": {
     "ActivatePrivateExpert": "Activate private expert",
-    "Analyst": "Analyst",
-    "Marketer": "Marketer",
-    "Lawyer": "Lawyer",
-    "Tech": "Tech",
-    "HR": "HR",
+    "1": "HR",
+    "2": "Analyst",
+    "3": "Tech",
+    "4": "Lawyer",
+    "5": "Marketer",
     "StartScoring": "Start scoring private project",
     "ReOpen": "Reopen private scoring",
     "ErrorExpertsCountTitle": "Not enough experts",

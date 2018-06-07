@@ -3,16 +3,13 @@
     <h1 class="title">{{project.name}}</h1>
   </div>
 
-  <p-table class="admin-table" class="admin-table" [value]="experts" [lazy]="true" (onLazyLoad)="updateExperts($event)" [paginator]="false"
+  <p-table class="admin-table" class="admin-table" [value]="experts" [lazy]="true" (onLazyLoad)="updateExperts($event)"
+           [paginator]="false"
            [rows]="10" [totalRecords]="totalRecords" [loading]="loading">
     <ng-template pTemplate="header" let-columns>
       <tr class="list-row list-row__header">
         <th class="list-item">{{ 'EditScoring.ActivatePrivateExpert' | translate }}</th>
-        <th class="list-item">{{ 'EditScoring.Analyst' | translate }}</th>
-        <th class="list-item">{{ 'EditScoring.Marketer' | translate }}</th>
-        <th class="list-item">{{ 'EditScoring.Lawyer' | translate }}</th>
-        <th class="list-item">{{ 'EditScoring.Tech' | translate }}</th>
-        <th class="list-item">{{ 'EditScoring.HR' | translate }}</th>
+        <th class="list-item" *ngFor="let area of areaTypes">{{ 'EditScoring.' + area | translate }}</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-expert let-columns="columns">
@@ -23,48 +20,33 @@
           {{expert.firstName}}
           {{expert.secondName}}
         </td>
-        <td class="list-item">
-          <mat-checkbox (change)="onAreaChecked($event, expert.id, AreaType.Analyst)"
-                        [checked]="areaInScoring(expert.id, AreaType.Analyst)"
-                        [disabled]="!expertHaveNoArea(expert.id, AreaType.Analyst)"></mat-checkbox>
-        </td>
-        <td class="list-item">
-          <mat-checkbox (change)="onAreaChecked($event, expert.id, AreaType.Marketer)"
-                        [checked]="areaInScoring(expert.id, AreaType.Marketer)"
-                        [disabled]="!expertHaveNoArea(expert.id, AreaType.Marketer)"></mat-checkbox>
-        </td>
-        <td class="list-item">
-          <mat-checkbox (change)="onAreaChecked($event, expert.id, AreaType.Lawyer)"
-                        [checked]="areaInScoring(expert.id, AreaType.Lawyer)"
-                        [disabled]="!expertHaveNoArea(expert.id, AreaType.Lawyer)"></mat-checkbox>
-        </td>
-        <td class="list-item">
-          <mat-checkbox (change)="onAreaChecked($event, expert.id, AreaType.TechnicalExpert)"
-                        [checked]="areaInScoring(expert.id, AreaType.TechnicalExpert)"
-                        [disabled]="!expertHaveNoArea(expert.id, AreaType.TechnicalExpert)"></mat-checkbox>
-        </td>
-        <td class="list-item">
-          <mat-checkbox (change)="onAreaChecked($event, expert.id, AreaType.HR)"
-                        [checked]="areaInScoring(expert.id, AreaType.HR)"
-                        [disabled]="!expertHaveNoArea(expert.id, AreaType.HR)"></mat-checkbox>
+        <td class="list-item" [class.completed]="isCompleteArea(expert.id, +area)" *ngFor="let area of areaTypes">
+          <mat-checkbox (change)="onAreaChecked($event, expert.id, +area)"
+                        [checked]="areaInScoring(expert.id, +area)"
+                        [disabled]="!expertHaveNoArea(expert.id, +area)"></mat-checkbox>
         </td>
       </tr>
     </ng-template>
   </p-table>
 
-  <button mat-fab class="action-btn" *ngIf="canStart()" title="{{ 'EditScoring.StartScoring' | translate }}" (click)="startPrivateScoringAsync()">
+  <button mat-fab class="action-btn" *ngIf="canStart()" title="{{ 'EditScoring.StartScoring' | translate }}"
+          (click)="startPrivateScoringAsync()">
     <mat-icon>play_arrow</mat-icon>
   </button>
-  <button mat-fab class="action-btn" *ngIf="canEdit()" title="{{ 'EditScoring.UpdateExperts' | translate }}" (click)="setExpertsAsync()">
+  <button mat-fab class="action-btn" *ngIf="canEdit()" title="{{ 'EditScoring.UpdateExperts' | translate }}"
+          (click)="setExpertsAsync()">
     <mat-icon>save</mat-icon>
   </button>
-  <button mat-fab class="action-btn" *ngIf="canFinish()" title="{{ 'EditScoring.FinishScoring' | translate }}" (click)="finishPrivateScoringAsync()">
+  <button mat-fab class="action-btn" *ngIf="canFinish()" title="{{ 'EditScoring.FinishScoring' | translate }}"
+          (click)="finishPrivateScoringAsync()">
     <mat-icon>done</mat-icon>
   </button>
-  <button mat-fab class="action-btn" *ngIf="canReopen()" title="{{ 'EditScoring.ReOpen' | translate }}" (click)="reopenPrivateScoringAsync()">
+  <button mat-fab class="action-btn" *ngIf="canReopen()" title="{{ 'EditScoring.ReOpen' | translate }}"
+          (click)="reopenPrivateScoringAsync()">
     <mat-icon>play_arrow</mat-icon>
   </button>
-  <button mat-fab class="action-btn" title="{{ 'EditScoring.SeeProject' | translate }}" (click)="navigateToProjectReport()">
+  <button mat-fab class="action-btn" title="{{ 'EditScoring.SeeProject' | translate }}"
+          (click)="navigateToProjectReport()">
     <mat-icon>remove_red_eye</mat-icon>
   </button>
 </div>
