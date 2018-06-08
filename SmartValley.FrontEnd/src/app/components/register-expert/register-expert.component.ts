@@ -100,9 +100,7 @@ export class RegisterExpertComponent implements OnInit {
 
     const userResponse = await this.userApiClient.getByAddressAsync(this.userContext.getCurrentUser().account);
 
-    this.registryForm.controls['firstName'].setValue(userResponse.firstName);
-    this.registryForm.controls['secondName'].setValue(userResponse.lastName);
-    this.registryForm.controls['bitcointalk'].setValue(userResponse.bitcointalk);
+    this.registryForm.setValue({firstName: userResponse.firstName, secondName: userResponse.lastName});
   }
 
 
