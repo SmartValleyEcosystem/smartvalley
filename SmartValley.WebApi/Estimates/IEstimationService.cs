@@ -10,7 +10,7 @@ namespace SmartValley.WebApi.Estimates
     {
         Task SubmitEstimatesAsync(long expertId, SubmitEstimateRequest request);
 
-        Task<ScoringStatistics> GetScoringStatisticsAsync(long projectId);
+        Task<ScoringReport> GetScoringReportAsync(long projectId, bool showExperts = false);
 
         Task<IReadOnlyCollection<ScoringCriterionPrompt>> GetCriterionPromptsAsync(long projectId, AreaType areaType);
 

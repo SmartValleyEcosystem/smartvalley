@@ -1,4 +1,4 @@
-import {CriterionPrompt} from './criterion-prompt';
+import {CriterionPrompt} from '../criterion-prompt';
 
 export interface CriterionPromptResponse {
   scoringCriterionId: number;

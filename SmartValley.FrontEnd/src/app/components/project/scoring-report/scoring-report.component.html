@@ -145,7 +145,9 @@
             </tr>
             </thead>
             <tr *ngFor="let estimate of criteria.estimates; let estimateIndex = index;">
-              <td>{{ 'ScoringReport.Expert' | translate }} {{ estimateIndex + 1 }}</td>
+              <td *ngIf="!isAdmin">{{ 'ScoringReport.Expert' | translate }} {{ estimateIndex + 1 }}</td>
+              <td *ngIf="isAdmin">{{getExpertById(estimate.expertId).firstName}} {{getExpertById(estimate.expertId).secondName}}</td>
+
               <td class="score score_{{ estimate.score }}">{{ estimate.score }}</td>
               <td>{{ estimate.comment }}</td>
             </tr>
@@ -158,7 +160,8 @@
           </p>
           <table class="scoring-results">
             <tr *ngFor="let conclusion of scoringInfo.scoringInfo.conclusions; let coclusionIndex = index;">
-              <td class="conclusion-expert">{{ 'ScoringReport.Expert' | translate }} {{ coclusionIndex + 1 }}</td>
+              <td *ngIf="!isAdmin">{{ 'ScoringReport.Expert' | translate }} {{ estimateIndex + 1 }}</td>
+              <td *ngIf="isAdmin">{{getExpertById(conclusion.expertId).firstName}} {{getExpertById(conclusion.expertId).secondName}}</td>
               <td class="conclusion-description" colspan="2">{{ conclusion.conslusion }}</td>
             </tr>
           </table>

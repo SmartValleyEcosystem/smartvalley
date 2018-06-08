@@ -2,12 +2,12 @@ import {Injectable} from '@angular/core';
 import {AreaType} from '../../api/scoring/area-type.enum';
 import {EstimatesApiClient} from '../../api/estimates/estimates-api-client';
 import {TranslateService} from '@ngx-translate/core';
-import {ScoringCriterionResponse} from '../../api/estimates/scoring-criterion-response';
+import {ScoringCriterionResponse} from '../../api/estimates/responses/scoring-criterion-response';
 import {ScoringCriteriaGroup} from './scoring-criteria-group';
 import {ScoringCriterion} from './scoring-criterion';
 import {ScoringCriterionOption} from './scoring-criterion-option';
 import {Score} from '../score.enum';
-import {ScoringCriteriaGroupResponse} from '../../api/estimates/scoring-criteria-group-response';
+import {ScoringCriteriaGroupResponse} from '../../api/estimates/responses/scoring-criteria-group-response';
 
 @Injectable()
 export class ScoringCriterionService {

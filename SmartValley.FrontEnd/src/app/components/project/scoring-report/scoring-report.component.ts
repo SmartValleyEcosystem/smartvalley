@@ -9,11 +9,12 @@ import {Router} from '@angular/router';
 import {ScoringStatus} from '../../../services/scoring-status.enum';
 import {OfferStatus} from '../../../api/scoring-offer/offer-status.enum';
 import {AreaType} from '../../../api/scoring/area-type.enum';
-import {CriterionPromptResponse} from '../../../api/estimates/criterion-prompt-response';
+import {CriterionPromptResponse} from '../../../api/estimates/responses/criterion-prompt-response';
 import {CriterionPrompt} from '../../../api/estimates/criterion-prompt';
 import {QuestionControlType} from '../../../api/scoring-application/question-control-type.enum';
 import {ProjectComponent} from '../project.component';
 import {UserContext} from '../../../services/authentication/user-context';
+import {ExpertResponse} from '../../../api/expert/expert-response';
 
 @Component({
   selector: 'app-scoring-report',
@@ -30,6 +31,7 @@ export class ScoringReportComponent implements OnInit {
   public areaType: number;
   public criterionIsReady = false;
   public isAdmin = false;
+  public experts: ExpertResponse[] = [];
 
   public ScoringStatus = ScoringStatus;
 
@@ -49,11 +51,14 @@ export class ScoringReportComponent implements OnInit {
   public async ngOnInit() {
     const currentUser = this.userContext.getCurrentUser();
     if (currentUser) {
-        this.isAdmin = currentUser.isAdmin;
+      this.isAdmin = currentUser.isAdmin;
     }
     const estimates = await this.estimatesApiClient.getAsync(this.projectId);
-    for (const item of estimates.items) {
-      const estimatesForArea = estimates.items.find(e => e.areaType === item.areaType);
+    if (this.isAdmin) {
+      this.experts = estimates.experts;
+    }
+    for (const item of estimates.scoringStatistics) {
+      const estimatesForArea = estimates.scoringStatistics.find(e => e.areaType === item.areaType);
       this.areasScoringInfo.push({
         finishedExperts: estimatesForArea.offers.filter(o => o.status === OfferStatus.Finished).length,
         totalExperts: estimatesForArea.requiredExpertsCount,
@@ -75,6 +80,10 @@ export class ScoringReportComponent implements OnInit {
       return criterionPrompts.prompts;
     }
     return null;
+  }
+
+  public getExpertById(expertId: number) {
+    return this.experts.firstOrDefault(i => i.id === expertId);
   }
 
   public getMaxScoreByArea(areaType: AreaType): number {

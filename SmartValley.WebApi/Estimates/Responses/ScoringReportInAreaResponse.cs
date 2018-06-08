@@ -7,7 +7,7 @@ using SmartValley.WebApi.Scorings.Responses;
 
 namespace SmartValley.WebApi.Estimates.Responses
 {
-    public class ScoringStatisticsInAreaResponse
+    public class ScoringReportInAreaResponse
     {
         public double? Score { get; set; }
 
@@ -21,21 +21,21 @@ namespace SmartValley.WebApi.Estimates.Responses
 
         public AreaType AreaType { get; set; }
 
-        public static ScoringStatisticsInAreaResponse Create(ScoringStatisticsInArea scoringStatisticsInArea, DateTimeOffset acceptingDeadline, DateTimeOffset scoringDeadline, DateTimeOffset now)
+        public static ScoringReportInAreaResponse Create(ScoringReportInArea scoringReportInArea, DateTimeOffset acceptingDeadline, DateTimeOffset scoringDeadline, DateTimeOffset now)
         {
-            return new ScoringStatisticsInAreaResponse
+            return new ScoringReportInAreaResponse
                    {
-                       Score = scoringStatisticsInArea.Score,
-                       RequiredExpertsCount = scoringStatisticsInArea.RequiredExpertsCount,
-                       Conclusions = scoringStatisticsInArea.Scorings.Select(ScoringAreaConslusionResponse.FromDomain),
-                       Offers = scoringStatisticsInArea.Offers.Select(x => ScoringOfferAreaResponse.FromDomain(x, acceptingDeadline, scoringDeadline, now)).ToArray(),
-                       Criteria = scoringStatisticsInArea
+                       Score = scoringReportInArea.Score,
+                       RequiredExpertsCount = scoringReportInArea.RequiredExpertsCount,
+                       Conclusions = scoringReportInArea.Scorings.Select(ScoringAreaConslusionResponse.FromDomain),
+                       Offers = scoringReportInArea.Offers.Select(x => ScoringOfferAreaResponse.FromDomain(x, acceptingDeadline, scoringDeadline, now)).ToArray(),
+                       Criteria = scoringReportInArea
                                   .Scorings
                                   .SelectMany(x => x.Estimates)
                                   .GroupBy(e => e.ScoringCriterionId)
                                   .Select(q => CriterionWithEstimatesResponse.Create(q.Key, q.ToArray()))
                                   .ToArray(),
-                       AreaType = scoringStatisticsInArea.AreaType.FromDomain()
+                       AreaType = scoringReportInArea.AreaType.FromDomain()
                    };
         }
     }

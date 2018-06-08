@@ -33,6 +33,11 @@ namespace SmartValley.Data.SQL.Repositories
             return Entities().FirstOrDefaultAsync(e => e.UserId == expertId);
         }
 
+        public async Task<IReadOnlyCollection<Expert>> GetByIdsAsync(IReadOnlyCollection<long> expertIds)
+        {
+            return await Entities().Where(e => expertIds.Contains(e.UserId)).ToArrayAsync();
+        }
+
         public async Task<IReadOnlyCollection<Area>> GetAreasAsync()
             => await _readContext.Areas.ToArrayAsync();
 
@@ -54,8 +59,8 @@ namespace SmartValley.Data.SQL.Repositories
         public Task<PagingCollection<Expert>> GetAsync(ExpertsQuery query)
         {
             return Entities()
-                   .Where(x => !query.IsInHouse.HasValue || query.IsInHouse.Value == x.IsInHouse)
-                   .GetPageAsync(query.Offset, query.Count);
+                .Where(x => !query.IsInHouse.HasValue || query.IsInHouse.Value == x.IsInHouse)
+                .GetPageAsync(query.Offset, query.Count);
         }
 
         private IQueryable<Expert> Entities() => _editContext.Experts

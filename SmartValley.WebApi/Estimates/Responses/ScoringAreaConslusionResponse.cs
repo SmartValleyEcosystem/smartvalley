@@ -6,11 +6,14 @@ namespace SmartValley.WebApi.Estimates.Responses
     {
         public string Conslusion { get; set; }
 
+        public long ExpertId { get; set; }
+
         public static ScoringAreaConslusionResponse FromDomain(ExpertScoring conslusion)
         {
             return new ScoringAreaConslusionResponse
                    {
-                       Conslusion = conslusion.Conclusion
+                       Conslusion = conslusion.Conclusion,
+                       ExpertId = conslusion.ExpertId
                    };
         }
     }

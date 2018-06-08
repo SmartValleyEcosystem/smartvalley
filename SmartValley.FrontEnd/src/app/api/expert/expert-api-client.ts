@@ -69,7 +69,7 @@ export class ExpertApiClient extends BaseApiClient {
     }).toPromise();
   }
 
-  public getAsync(address: string): Promise<ExpertResponse> {
+  public getByAddressAsync(address: string): Promise<ExpertResponse> {
     return this.http.get<ExpertResponse>(`${this.baseApiUrl}/experts/${address}`).toPromise();
   }
 
