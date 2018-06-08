@@ -25,6 +25,7 @@ using SmartValley.Data.SQL.Core;
 using SmartValley.Data.SQL.Repositories;
 using SmartValley.Domain.Contracts;
 using SmartValley.Domain.Interfaces;
+using SmartValley.Domain.Services;
 using SmartValley.Ethereum;
 using SmartValley.Ethereum.Contracts.EtherManager;
 using SmartValley.Ethereum.Contracts.Scoring;
@@ -38,11 +39,13 @@ using SmartValley.WebApi.ExceptionHandler;
 using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Feedbacks;
 using SmartValley.WebApi.Projects;
-using SmartValley.WebApi.ScoringApplications;
-using SmartValley.WebApi.Scorings;
 using SmartValley.WebApi.Users;
 using Swashbuckle.AspNetCore.Swagger;
 using Headers = SmartValley.WebApi.WebApi.Headers;
+using IScoringApplicationService = SmartValley.WebApi.ScoringApplications.IScoringApplicationService;
+using IScoringService = SmartValley.WebApi.Scorings.IScoringService;
+using ScoringApplicationService = SmartValley.WebApi.ScoringApplications.ScoringApplicationService;
+using ScoringService = SmartValley.WebApi.Scorings.ScoringService;
 
 namespace SmartValley.WebApi
 {
@@ -148,6 +151,8 @@ namespace SmartValley.WebApi
             services.AddTransient<IScoringApplicationService, ScoringApplicationService>();
             services.AddTransient<IFeedbackRepository, FeedbackRepository>();
             services.AddTransient<IFeedbackService, FeedbackService>();
+            services.AddTransient<IAllotmentEventService, AllotmentEventService>();
+            services.AddTransient<IAllotmentEventRepository, AllotmentEventRepository>();
 
             var serviceProvider = services.BuildServiceProvider();
             var siteOptions = serviceProvider.GetService<SiteOptions>();
