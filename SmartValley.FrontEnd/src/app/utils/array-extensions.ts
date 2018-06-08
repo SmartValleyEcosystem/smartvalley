@@ -12,6 +12,8 @@ declare global {
   interface Array<T> {
     selectMany<U>(this: T[], selector: (x: T) => U[]): CustomArray<U>;
 
+    distinct<U>(this: T[], selector: (x: T) => U): CustomArray<T>;
+
     first(this: T[], selector?: (x: T) => boolean): T;
 
     last(this: T[], selector?: (x: T) => boolean): T;
@@ -27,6 +29,21 @@ if (!Array.prototype.firstOrDefault) {
     }
 
     return this.filter(selector)[0];
+  };
+}
+
+if (!Array.prototype.distinct) {
+  Array.prototype.distinct = function <T, U>(this: T[], selector: (x: T) => U) {
+    const result = [];
+    const resultIndex = [];
+    const selectedItems = this.map(selector);
+    selectedItems.forEach((el, index) => {
+      if (!resultIndex.includes(el)) {
+        resultIndex.push(el);
+        result.push(this[index]);
+      }
+    });
+    return result;
   };
 }
 

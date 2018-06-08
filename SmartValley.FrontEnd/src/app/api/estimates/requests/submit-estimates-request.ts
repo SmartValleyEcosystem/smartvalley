@@ -1,4 +1,4 @@
-import {AreaType} from '../scoring/area-type.enum';
+import {AreaType} from '../../scoring/area-type.enum';
 
 export interface SubmitEstimatesRequest {
   transactionHash: string;

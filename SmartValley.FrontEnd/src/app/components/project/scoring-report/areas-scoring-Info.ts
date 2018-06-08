@@ -1,4 +1,4 @@
-import {GetEstimatesResponse} from '../../../api/estimates/get-estimates-response';
+import {ScoringReportInAreaResponse} from '../../../api/estimates/responses/scoring-report-in-area-response';
 import {AreaType} from '../../../api/scoring/area-type.enum';
 
 export interface AreasScoringInfo {
@@ -6,5 +6,5 @@ export interface AreasScoringInfo {
   totalExperts: number;
   areaName: string;
   areaType: AreaType;
-  scoringInfo: GetEstimatesResponse;
+  scoringInfo: ScoringReportInAreaResponse;
 }

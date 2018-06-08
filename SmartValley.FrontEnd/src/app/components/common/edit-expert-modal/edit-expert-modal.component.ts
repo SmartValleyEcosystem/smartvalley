@@ -56,7 +56,7 @@ export class EditExpertModalComponent implements OnInit {
       isAvailable: [false]
     });
 
-    this.expertDetails = await this.expertApiClient.getAsync(this.data.address);
+    this.expertDetails = await this.expertApiClient.getByAddressAsync(this.data.address);
 
     this.backendForm.setValue({
       address: this.expertDetails.address,

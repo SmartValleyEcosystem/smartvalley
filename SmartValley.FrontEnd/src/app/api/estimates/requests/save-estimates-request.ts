@@ -1,5 +1,5 @@
 import {EstimateCommentRequest} from './estimate-comment-request';
-import {AreaType} from '../scoring/area-type.enum';
+import {AreaType} from '../../scoring/area-type.enum';
 
 export interface SaveEstimatesRequest {
   projectId: number;
