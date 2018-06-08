@@ -88,7 +88,7 @@ namespace SmartValley.Data.SQL.Repositories
         public async Task<IReadOnlyCollection<Project>> GetByScoringIdsAsync(IReadOnlyCollection<long> scoringIds)
         {
             return await Entities()
-                         .Where(p => scoringIds.Any(i => i.Equals(p.Scoring.Id)))
+                         .Where(p => scoringIds.Contains(p.Scoring.Id))
                          .ToArrayAsync();
         }
 
