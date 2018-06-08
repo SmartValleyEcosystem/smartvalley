@@ -62,6 +62,8 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<EthereumTransaction> IReadOnlyDataContext.EthereumTransactions => EthereumTransactions.AsNoTracking();
 
+        IQueryable<AllotmentEvent> IReadOnlyDataContext.AllotmentEvents => AllotmentEvents.AsNoTracking();
+
         public DbSet<Feedback> Feedbacks { get; set; }
 
         public DbSet<Subscription> Subscriptions { get; set; }
@@ -113,6 +115,8 @@ namespace SmartValley.Data.SQL.Core
         public DbSet<ScoringCriteriaMapping> ScoringCriteriaMappings { get; set; }
 
         public DbSet<EthereumTransaction> EthereumTransactions { get; set; }
+
+        public DbSet<AllotmentEvent> AllotmentEvents { get; set; }
 
         public IQueryable<T> GetAll<T>() where T : class
         {
@@ -401,6 +405,23 @@ namespace SmartValley.Data.SQL.Core
             modelBuilder.Entity<User>()
                         .Property(b => b.BitcointalkLink)
                         .HasMaxLength(400);
+
+            modelBuilder.Entity<Project>()
+                        .HasMany(x => x.AllotmentEvents);
+
+            modelBuilder.Entity<AllotmentEvent>()
+                        .Property(x => x.Name)
+                        .IsRequired()
+                        .HasMaxLength(40);
+
+            modelBuilder.Entity<AllotmentEvent>()
+                        .Property(x => x.TokenContractAddress)
+                        .IsRequired();
+
+            modelBuilder.Entity<AllotmentEvent>()
+                        .Property(x => x.TokenTicker)
+                        .IsRequired()
+                        .HasMaxLength(6);
         }
     }
 }
