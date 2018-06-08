@@ -147,6 +147,8 @@ import {PrivateScoringManagerContractClient} from './services/contract-clients/p
 import {ScoringParametersProviderContractClient} from './services/contract-clients/scoring-parameters-provider-contract-client';
 import {GlobalErrorHandler} from './utils/global-error-handler';
 import {LoggingApiClient} from './api/logging/logging-api-client';
+import {AdminAllotmentEventsComponent} from './components/admin-panel/admin-allotment-events/admin-allotment-events.component';
+import {AllotmentEventsApiClient} from './api/allotment-events/allotment-events-api-client';
 
 @NgModule({
   declarations: [
@@ -218,7 +220,8 @@ import {LoggingApiClient} from './api/logging/logging-api-client';
     AdminUsersListComponent,
     AdminProjectsListComponent,
     EditScoringComponent,
-    PrivateScoringModalComponent
+    PrivateScoringModalComponent,
+    AdminAllotmentEventsComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -322,6 +325,7 @@ import {LoggingApiClient} from './api/logging/logging-api-client';
     BalanceService,
     InitializationService,
     UserApiClient,
+    AllotmentEventsApiClient,
     InitializationGuard,
     ShouldHaveEthGuard,
     ShouldBeAuthenticatedGuard,

@@ -56,6 +56,7 @@ export function multiTranslateLoaderFactory() {
     'components/project/scoring-report/scoring-report.component',
     'components/common/subscribe-modal/subscribe-modal.component',
     'components/common/feedback-modal/feedback-modal.component',
-    'components/common/private-scoring-modal/private-scoring-modal.component'
+    'components/common/private-scoring-modal/private-scoring-modal.component',
+    'components/admin-panel/admin-allotment-events/admin-allotment-events.component'
   ]);
 }

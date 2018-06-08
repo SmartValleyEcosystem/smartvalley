@@ -23,7 +23,7 @@ import {Location} from '@angular/common';
 })
 export class ProjectComponent implements OnInit {
 
-  public tabItems: string[] = ['about', 'application', 'report'];
+  public tabItems: string[] = ['about', 'application', 'report', 'allotment-events'];
   public projectId: number;
   public project: ProjectSummaryResponse;
   public editProjectsLink = Paths.ProjectEdit;

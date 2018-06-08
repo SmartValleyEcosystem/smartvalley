@@ -1,0 +1,18 @@
+{
+  "AdminAllotmentEvents": {
+    "Status": "Status",
+    "Created": "Created",
+    "Finished": "Finished",
+    "InProgress": "In progress",
+    "AddNewAllotmentEvent": "Add new allotment event",
+    "ReturnAddress": "Return address",
+    "ID": "ID",
+    "ProjectName": "Project name",
+    "AllotmentEvent": "Allotment event",
+    "TokenContractAddress": "Token contract address",
+    "EventContractAddress": "Event contract address",
+    "EventFinishDate": "Event finish date",
+    "TotalTokens": "Total tokens",
+    "Actions": "Actions"
+  }
+}
