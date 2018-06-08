@@ -246,7 +246,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
       projectCategory: ['', [Validators.required]],
       icoDate: ['', [Validators.required]],
       website: ['', [Validators.required, Validators.maxLength(200), Validators.pattern('https?://.+')]],
-      description: ['', [Validators.required, Validators.required, Validators.maxLength(2000)]],
+      description: ['', [Validators.required, Validators.maxLength(2000)]],
       linkToWP: ['', [Validators.required, Validators.maxLength(200), Validators.pattern('https?://.+')]],
       email: ['', [Validators.required, Validators.maxLength(200), Validators.pattern('\\w+@\\w+\\.\\w+')]]
     };
@@ -477,6 +477,10 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
           elem = i.el.nativeElement.classList.contains('ng-invalid');
         }
 
+        if (i.elementRef) {
+          elem = i.elementRef.nativeElement.classList.contains('ng-invalid');
+        }
+
         if (i.nativeElement) {
           if (i.nativeElement.nativeElement) {
             return i.nativeElement.nativeElement.classList.contains('ng-invalid');
@@ -517,7 +521,12 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  private scrollToElement(element: ElementRef): void {
+  private scrollToElement(element): void {
+    if (element.elementRef) {
+      const offsetTop1 = element.elementRef.nativeElement.offsetTop;
+      window.scrollTo({left: 0, top: offsetTop1 - 40, behavior: 'smooth'});
+      return;
+    }
     if (element.nativeElement.nativeElement) {
       const offsetTop1 = element.nativeElement.nativeElement.offsetTop;
       window.scrollTo({left: 0, top: offsetTop1 - 40, behavior: 'smooth'});
@@ -529,7 +538,12 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
     }
   }
 
-  private setInvalid(element: ElementRef): void {
+  private setInvalid(element): void {
+    if (element.elementRef) {
+      element.elementRef.nativeElement.classList.add('ng-invalid');
+      element.elementRef.nativeElement.classList.add('ng-dirty');
+      return;
+    }
     if (element.nativeElement.nativeElement) {
       element.nativeElement.nativeElement.classList.add('ng-invalid');
       element.nativeElement.nativeElement.classList.add('ng-dirty');
