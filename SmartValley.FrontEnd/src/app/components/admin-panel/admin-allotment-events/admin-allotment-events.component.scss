@@ -1,0 +1,49 @@
+@import "./../../../../styles/pallete";
+
+td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+tr.status-0 {
+  border-left: 4px solid $accents-green;
+}
+tr.status-2 {
+  border-left: 4px solid $admin-text;
+}
+tr.status-1 {
+  border-left: 4px solid $main-light;
+}
+.delete-icon {
+  position: relative;
+  top: -10px;
+  margin: 0 12px;
+}
+.statuses {
+  display: flex;
+  clear: both;
+  padding: 0;
+  list-style: none;
+  color: $admin-text;
+  margin-bottom: 20px;
+  li {
+    margin-right: 30px;
+    &:first-child {
+      font-weight: bold;
+    }
+  }
+}
+.color-mark {
+  margin-right: 4px;
+  position: relative;
+  top: 2px;
+  display: inline-block;
+  width: 8px;
+  height: 16px;
+  background: $admin-text;
+}
+.color-mark__in-progress {
+  background: $main-light;
+}
+.color-mark__created {
+  background: $accents-green;
+}

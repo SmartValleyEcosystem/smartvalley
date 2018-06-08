@@ -10,10 +10,11 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class AdminPanelComponent implements OnInit {
 
-  public mainTabItems: string[] = ['users', 'scoring', 'requests'];
+  public mainTabItems: string[] = ['users', 'scoring', 'requests', 'allotment-events'];
   public usersTab: string[] = ['admins', 'experts', 'founders'];
   public scoringTab: string[] = ['public-scoring', 'private-scoring', 'scoring-costs'];
   public requestsTab: string[] = ['requests-for-expert', 'feedback', 'subscriptions'];
+  public allotmentTab: string[] = ['main'];
 
   public selectedMainTab = 0;
   public selectedSubTab = 0;
@@ -43,6 +44,8 @@ export class AdminPanelComponent implements OnInit {
         return this.scoringTab[subItemIndex];
       case 2 :
         return this.requestsTab[subItemIndex];
+      case 3 :
+        return this.allotmentTab[subItemIndex];
     }
   }
 
@@ -54,6 +57,8 @@ export class AdminPanelComponent implements OnInit {
         return this.scoringTab.indexOf(subItemName);
       case 2 :
         return this.requestsTab.indexOf(subItemName);
+      case 3 :
+        return this.allotmentTab.indexOf(subItemName);
     }
   }
 

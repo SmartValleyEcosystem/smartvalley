@@ -1,0 +1,50 @@
+<div class="allotment-events">
+  <ul class="statuses">
+    <li>{{ 'AdminAllotmentEvents.Status' | translate }}</li>
+    <li>
+      <span class="color-mark color-mark__created"></span>
+      {{ 'AdminAllotmentEvents.Created' | translate }}
+      <p-checkbox class="box-checkbox" (onChange)="sortByStatus($event, 0)"></p-checkbox>
+    </li>
+    <li>
+      <span class="color-mark"></span>
+      {{ 'AdminAllotmentEvents.Finished' | translate }}
+      <p-checkbox class="box-checkbox" (onChange)="sortByStatus($event, 2)"></p-checkbox>
+    </li>
+    <li>
+      <span class="color-mark color-mark__in-progress"></span>
+      {{ 'AdminAllotmentEvents.InProgress' | translate }}
+      <p-checkbox class="box-checkbox" (onChange)="sortByStatus($event, 1)"></p-checkbox>
+    </li>
+  </ul>
+  <button class="material-btn">{{ 'AdminAllotmentEvents.AddNewAllotmentEvent' | translate }}</button>
+  <p-table class="admin-table" [value]="allotmentEvents"
+           [lazy]="true" (onLazyLoad)="getAllotmentEvents($event)" [paginator]="true"
+           [rows]="10" [totalRecords]="totalRecords" [loading]="loading">
+    <ng-template pTemplate="header" let-columns>
+      <tr class="list-row list-row__header">
+        <th class="list-item">{{ 'AdminAllotmentEvents.ID' | translate }}</th>
+        <th class="list-item">{{ 'AdminAllotmentEvents.ProjectName' | translate }}</th>
+        <th class="list-item">{{ 'AdminAllotmentEvents.AllotmentEvent' | translate }}</th>
+        <th class="list-item">{{ 'AdminAllotmentEvents.TokenContractAddress' | translate }}</th>
+        <th class="list-item">{{ 'AdminAllotmentEvents.EventContractAddress' | translate }}</th>
+        <th class="list-item">{{ 'AdminAllotmentEvents.EventFinishDate' | translate }}</th>
+        <th class="list-item">{{ 'AdminAllotmentEvents.TotalTokens' | translate }}</th>
+        <th class="list-item">{{ 'AdminAllotmentEvents.Actions' | translate }}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr class="list-row" [class]="'status-' + rowData['status']">
+        <td class="list-item" *ngFor="let col of ['id', 'name', 'allotmentEventName', 'tokenContractAddress', 'eventContractAddress', 'finishDate', 'totalTokens']">
+          <span *ngIf="col !== 'totalTokens'">{{ rowData[col] }}</span>
+          <span *ngIf="col === 'totalTokens'">{{ rowData['totalTokens'] + ' ' + rowData['tokenTicker'] }}</span>
+        </td>
+        <td width="100">
+          <span class="edit-icon" title="{{ 'AdminExpertList.Edit' | translate }}"></span>
+          <img class="delete-icon" src="/assets/img/controls/delete.svg" alt="{{ 'AdminPanel.Delete' | translate }}">
+          <span class="play-icon" title="{{ 'AdminExpertList.Edit' | translate }}"></span>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

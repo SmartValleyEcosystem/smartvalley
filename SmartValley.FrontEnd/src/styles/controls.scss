@@ -1,7 +1,23 @@
 @import "./quill.scss";
 @import "fonts";
 
-.edit-icon {
+.material-btn {
+  min-width: 100px;
+  height: 36px;
+  background: #FFF;
+  border-radius: 4px;
+  padding: 8px 20px;
+  font-size: 16px;
+  color: #5D49F2;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+}
+
+.edit-icon, .play-icon {
   display: inline-block;
   width: 36px;
   height: 36px;
@@ -13,6 +29,10 @@
   background-size: 16px;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.play-icon {
+  background-image: url(/assets/img/controls/play.svg);
 }
 
 .main-btn {
@@ -486,11 +506,21 @@ body .ng-invalid .ui-chkbox .ui-chkbox-box {
   background-color: white !important;
 }
 
-/*.mat-checkbox-disabled .mat-checkbox-background {
-  background-color: #e9ecef !important;
-  border-color: #a4a2b02b !important;
-}*/
-
 .mat-checkbox-checkmark-path {
   stroke: rgba(0, 0, 0, .87) !important;
+}
+
+body .box-checkbox {
+  .ui-chkbox .ui-chkbox-box {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+  }
+  .ui-chkbox-box.ui-state-active {
+    padding: 0;
+  }
+  .ui-chkbox .ui-chkbox-icon {
+    position: relative;
+    top: -1px;
+  }
 }
