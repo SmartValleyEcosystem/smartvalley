@@ -67,7 +67,7 @@ namespace SmartValley.WebApi.Estimates
             return new ExpertEstimateResponse
                    {
                        Conclusion = expertConclusion.Conclusion,
-                       Estimates = expertConclusion.Estimates.Select(e => EstimateResponse.Create(e)).ToArray()
+                       Estimates = expertConclusion.Estimates.Select(EstimateResponse.Create).ToArray()
                    };
         }
 
@@ -79,8 +79,14 @@ namespace SmartValley.WebApi.Estimates
             var scoringStatistics = await _estimationService.GetScoringReportAsync(projectId, isAdmin);
             return new ScoringReportResponse
                    {
-                       ScoringReportsInArea = scoringStatistics.ScoringReportsInAreas.Select(x => ScoringReportInAreaResponse.Create(x, scoringStatistics.AcceptingDeadline, scoringStatistics.ScoringDeadline, _clock.UtcNow)).ToArray(),
-                       Experts = isAdmin ? scoringStatistics.Experts.Select(ExpertResponse.Create).ToArray() : null
+                       ScoringReportsInArea = scoringStatistics.ScoringReportsInAreas
+                                                               .Select(x => ScoringReportInAreaResponse.Create(
+                                                                           x,
+                                                                           scoringStatistics.AcceptingDeadline,
+                                                                           scoringStatistics.ScoringDeadline,
+                                                                           _clock.UtcNow))
+                                                               .ToArray(),
+                       Experts = isAdmin ? scoringStatistics.Experts?.Select(ExpertResponse.Create).ToArray() : null
                    };
         }
 

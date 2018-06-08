@@ -121,8 +121,6 @@ namespace SmartValley.WebApi.Estimates
                        };
             }
 
-            var scoringExperts = await _expertRepository.GetByIdsAsync(scoring.ExpertScorings.Select(i => i.ExpertId).ToArray());
-
             var result = new List<ScoringReportInArea>();
             foreach (var areaScoring in scoring.AreaScorings)
             {
@@ -130,16 +128,20 @@ namespace SmartValley.WebApi.Estimates
                 var offers = scoring.ScoringOffers.Where(s => s.AreaId == areaScoring.AreaId).ToArray();
 
                 var statistics = new ScoringReportInArea(areaScoring.Score,
-                                                             areaScoring.ExpertsCount,
-                                                             expertScorings,
-                                                             offers,
-                                                             areaScoring.AreaId);
+                                                         areaScoring.ExpertsCount,
+                                                         expertScorings,
+                                                         offers,
+                                                         areaScoring.AreaId);
                 result.Add(statistics);
             }
 
+            var scoringExperts = showExperts
+                                     ? await _expertRepository.GetByIdsAsync(scoring.ExpertScorings.Select(i => i.ExpertId).ToArray())
+                                     : null;
+
             return new ScoringReport
                    {
-                       Experts = showExperts ? scoringExperts : null,
+                       Experts = scoringExperts,
                        AcceptingDeadline = scoring.AcceptingDeadline,
                        ScoringDeadline = scoring.ScoringDeadline,
                        ScoringReportsInAreas = result
