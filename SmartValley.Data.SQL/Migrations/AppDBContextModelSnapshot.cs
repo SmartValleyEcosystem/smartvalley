@@ -3,15 +3,9 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Converters;
-using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SmartValley.Data.SQL.Core;
-using SmartValley.Domain;
 using SmartValley.Domain.Core;
-using SmartValley.Domain.Entities;
 
 namespace SmartValley.Data.SQL.Migrations
 {
@@ -24,6 +18,39 @@ namespace SmartValley.Data.SQL.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.0-preview1-28290")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("SmartValley.Domain.AllotmentEvent", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTimeOffset>("FinishDate");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(40);
+
+                    b.Property<long>("ProjectId");
+
+                    b.Property<DateTimeOffset?>("StartDate");
+
+                    b.Property<int>("Status");
+
+                    b.Property<string>("TokenContractAddress")
+                        .IsRequired();
+
+                    b.Property<string>("TokenTicker")
+                        .IsRequired()
+                        .HasMaxLength(6);
+
+                    b.Property<long>("TotalTokens");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("AllotmentEvents");
+                });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.Area", b =>
                 {
@@ -745,6 +772,14 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasIndex("ScoringApplicationId");
 
                     b.ToTable("ScoringApplicationTeamMembers");
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.AllotmentEvent", b =>
+                {
+                    b.HasOne("SmartValley.Domain.Entities.Project")
+                        .WithMany("AllotmentEvents")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.AreaScoring", b =>

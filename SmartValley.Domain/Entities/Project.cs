@@ -87,6 +87,8 @@ namespace SmartValley.Domain.Entities
 
         public ICollection<ProjectTeamMember> TeamMembers { get; }
 
+        public ICollection<AllotmentEvent> AllotmentEvents { get; set; }
+
         public void UpdateTeamMemberPhotoLink(long memberId, string link)
         {
             var member = TeamMembers.FirstOrDefault(i => i.Id == memberId);
