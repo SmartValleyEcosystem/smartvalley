@@ -2,13 +2,16 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 using SmartValley.Ethereum;
 using SmartValley.WebApi.Estimates.Requests;
 using SmartValley.WebApi.Estimates.Responses;
 using SmartValley.WebApi.Experts;
+using SmartValley.WebApi.Experts.Responses;
 using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.WebApi;
+using AreaType = SmartValley.WebApi.Experts.AreaType;
 
 namespace SmartValley.WebApi.Estimates
 {
@@ -64,18 +67,20 @@ namespace SmartValley.WebApi.Estimates
             return new ExpertEstimateResponse
                    {
                        Conclusion = expertConclusion.Conclusion,
-                       Estimates = expertConclusion.Estimates.Select(EstimateResponse.Create).ToArray()
+                       Estimates = expertConclusion.Estimates.Select(e => EstimateResponse.Create(e)).ToArray()
                    };
         }
 
         [HttpGet]
         [CanSeeProject("projectId")]
-        public async Task<CollectionResponse<ScoringStatisticsInAreaResponse>> GetEstimatesAsync(long projectId)
+        public async Task<ScoringReportResponse> GetEstimatesAsync(long projectId)
         {
-            var scoringStatistics = await _estimationService.GetScoringStatisticsAsync(projectId);
-            return new CollectionResponse<ScoringStatisticsInAreaResponse>
+            var isAdmin = User.IsInRole(nameof(RoleType.Admin));
+            var scoringStatistics = await _estimationService.GetScoringReportAsync(projectId, isAdmin);
+            return new ScoringReportResponse
                    {
-                       Items = scoringStatistics.ScoringStatisticsInArea.Select(x => ScoringStatisticsInAreaResponse.Create(x, scoringStatistics.AcceptingDeadline, scoringStatistics.ScoringDeadline, _clock.UtcNow)).ToArray()
+                       ScoringReportsInArea = scoringStatistics.ScoringReportsInAreas.Select(x => ScoringReportInAreaResponse.Create(x, scoringStatistics.AcceptingDeadline, scoringStatistics.ScoringDeadline, _clock.UtcNow)).ToArray(),
+                       Experts = isAdmin ? scoringStatistics.Experts.Select(ExpertResponse.Create).ToArray() : null
                    };
         }
 

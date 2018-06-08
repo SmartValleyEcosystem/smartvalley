@@ -110,7 +110,7 @@ export class AccountComponent implements OnInit {
     const userResponse = await this.userApiClient.getByAddressAsync(this.currentUser.account);
     this.about = '';
     if (this.currentUser.isExpert) {
-      const expertResponse = await this.expertApiClient.getAsync(this.currentUser.account);
+      const expertResponse = await this.expertApiClient.getByAddressAsync(this.currentUser.account);
       this.about = expertResponse.about;
     }
     this.userForm.setValue({

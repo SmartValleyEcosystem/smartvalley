@@ -19,6 +19,8 @@ namespace SmartValley.Domain.Interfaces
 
         Task<Expert> GetByIdAsync(long expertId);
 
+        Task<IReadOnlyCollection<Expert>> GetByIdsAsync(IReadOnlyCollection<long> expertIds);
+
         Task SaveChangesAsync();
     }
 }

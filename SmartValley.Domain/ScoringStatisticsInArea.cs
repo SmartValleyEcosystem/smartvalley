@@ -3,9 +3,9 @@ using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain
 {
-    public class ScoringStatisticsInArea
+    public class ScoringReportInArea
     {
-        public ScoringStatisticsInArea(double? score,
+        public ScoringReportInArea(double? score,
                                        long requiredExpertsCount,
                                        IReadOnlyCollection<ExpertScoring> scorings,
                                        IReadOnlyCollection<ScoringOffer> offers,

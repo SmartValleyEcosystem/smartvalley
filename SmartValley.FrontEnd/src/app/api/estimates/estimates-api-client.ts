@@ -1,12 +1,12 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BaseApiClient} from '../base-api-client';
-import {SubmitEstimatesRequest} from './submit-estimates-request';
+import {SubmitEstimatesRequest} from './requests/submit-estimates-request';
 import {CollectionResponse} from '../collection-response';
-import {GetEstimatesResponse} from './get-estimates-response';
-import {AreaScoringCriteriaResponse} from './area-scoring-criteria-response';
-import {SaveEstimatesRequest} from './save-estimates-request';
-import {CriterionPromptResponse} from './criterion-prompt-response';
+import {AreaScoringCriteriaResponse} from './responses/area-scoring-criteria-response';
+import {SaveEstimatesRequest} from './requests/save-estimates-request';
+import {CriterionPromptResponse} from './responses/criterion-prompt-response';
+import {ScoringReportResponse} from './responses/scoring-report-response';
 
 @Injectable()
 export class EstimatesApiClient extends BaseApiClient {
@@ -22,13 +22,13 @@ export class EstimatesApiClient extends BaseApiClient {
     await this.http.post(this.baseApiUrl + '/estimates/', request).toPromise();
   }
 
-  async getAsync(projectId: number): Promise<CollectionResponse<GetEstimatesResponse>> {
+  async getAsync(projectId: number): Promise<ScoringReportResponse> {
 
     const parameters = new HttpParams()
       .append('projectId', projectId.toString());
 
     return this.http
-      .get<CollectionResponse<GetEstimatesResponse>>(this.baseApiUrl + '/estimates', {params: parameters})
+      .get<ScoringReportResponse>(this.baseApiUrl + '/estimates', {params: parameters})
       .toPromise();
   }
 

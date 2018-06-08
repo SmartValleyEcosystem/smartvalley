@@ -21,6 +21,7 @@ namespace SmartValley.WebApi.Estimates
         private readonly IClock _clock;
         private readonly IScoringCriterionRepository _scoringCriterionRepository;
         private readonly IScoringApplicationRepository _scoringApplicationRepository;
+        private readonly IExpertRepository _expertRepository;
 
         private readonly IReadOnlyCollection<long> _criterionsWithTeamMemberPrompts = new List<long>
                                                                                       {
@@ -44,6 +45,7 @@ namespace SmartValley.WebApi.Estimates
             IScoringContractClient scoringContractClient,
             IScoringRepository scoringRepository,
             IProjectRepository projectRepository,
+            IExpertRepository expertRepository,
             IClock clock,
             IScoringCriterionRepository scoringCriterionRepository,
             IScoringApplicationRepository scoringApplicationRepository)
@@ -51,6 +53,7 @@ namespace SmartValley.WebApi.Estimates
             _scoringContractClient = scoringContractClient;
             _scoringRepository = scoringRepository;
             _projectRepository = projectRepository;
+            _expertRepository = expertRepository;
             _clock = clock;
             _scoringCriterionRepository = scoringCriterionRepository;
             _scoringApplicationRepository = scoringApplicationRepository;
@@ -107,23 +110,26 @@ namespace SmartValley.WebApi.Estimates
             await _scoringRepository.SaveChangesAsync();
         }
 
-        public async Task<ScoringStatistics> GetScoringStatisticsAsync(long projectId)
+        public async Task<ScoringReport> GetScoringReportAsync(long projectId, bool showExperts = false)
         {
             var scoring = await _scoringRepository.GetByProjectIdAsync(projectId);
             if (scoring == null)
             {
-                return new ScoringStatistics
+                return new ScoringReport
                        {
-                           ScoringStatisticsInArea = new ScoringStatisticsInArea[0]
+                           ScoringReportsInAreas = new ScoringReportInArea[0]
                        };
             }
 
-            var result = new List<ScoringStatisticsInArea>();
+            var scoringExperts = await _expertRepository.GetByIdsAsync(scoring.ExpertScorings.Select(i => i.ExpertId).ToArray());
+
+            var result = new List<ScoringReportInArea>();
             foreach (var areaScoring in scoring.AreaScorings)
             {
                 var expertScorings = scoring.ExpertScorings.Where(x => x.Area == areaScoring.AreaId).ToArray();
                 var offers = scoring.ScoringOffers.Where(s => s.AreaId == areaScoring.AreaId).ToArray();
-                var statistics = new ScoringStatisticsInArea(areaScoring.Score,
+
+                var statistics = new ScoringReportInArea(areaScoring.Score,
                                                              areaScoring.ExpertsCount,
                                                              expertScorings,
                                                              offers,
@@ -131,11 +137,12 @@ namespace SmartValley.WebApi.Estimates
                 result.Add(statistics);
             }
 
-            return new ScoringStatistics
+            return new ScoringReport
                    {
+                       Experts = showExperts ? scoringExperts : null,
                        AcceptingDeadline = scoring.AcceptingDeadline,
                        ScoringDeadline = scoring.ScoringDeadline,
-                       ScoringStatisticsInArea = result
+                       ScoringReportsInAreas = result
                    };
         }
 
