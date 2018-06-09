@@ -41,6 +41,10 @@ html, body {
   -webkit-mask-size: 24px;
 }
 
+.failed {
+  color: $accents-red !important;
+}
+
 .social-icon__facebook {
   -webkit-mask-image: url(../assets/img/social-icons/Fb.svg);
 }

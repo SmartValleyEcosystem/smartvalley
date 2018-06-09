@@ -24,7 +24,15 @@
       <td *ngIf="project.scoring == null" class="list-item">
         -
       </td>
-      <td *ngIf="project.scoring != null" class="list-item" [ngSwitch]="project.scoring.status">
+      <td *ngIf="project.scoring != null" class="list-item" [ngSwitch]="getScoringStatus(project)">
+        <a *ngSwitchCase="ScoringStatus.PaymentInProcess" target="_blank"
+           [href]="getScoringStartTransactionUrl(project)">
+          {{ 'MyProject.PaymentInProgress' | translate }}
+        </a>
+        <a *ngSwitchCase="ScoringStatus.PaymentFailed" target="_blank" [href]="getScoringStartTransactionUrl(project)"
+           class="failed">
+          {{ 'MyProject.PaymentFailed' | translate }}
+        </a>
         <span *ngSwitchCase="ScoringStatus.InProgress">{{ 'AdminProjects.InProgress' | translate }}</span>
         <span *ngSwitchCase="ScoringStatus.Finished">{{ 'AdminProjects.Finished' | translate }}</span>
       </td>
@@ -32,8 +40,10 @@
         {{ 'AdminProjects.New' | translate }}
       </td>
       <td class="list-item">
-        <span (click)="navigateToEditScoring(project.id)" class="edit-icon" title="{{ 'AdminProjects.Edit' | translate }}"></span>
-        <span (click)="navigateToProject(project.id)" class="view-project-icon" title="{{ 'AdminProjects.View' | translate }}">
+        <span (click)="navigateToEditScoring(project.id)" class="edit-icon"
+              title="{{ 'AdminProjects.Edit' | translate }}"></span>
+        <span (click)="navigateToProject(project.id)" class="view-project-icon"
+              title="{{ 'AdminProjects.View' | translate }}">
           <mat-icon>remove_red_eye</mat-icon>
         </span>
       </td>

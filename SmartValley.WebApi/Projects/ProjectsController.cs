@@ -62,8 +62,9 @@ namespace SmartValley.WebApi.Projects
             );
 
             var projects = await _projectService.GetAsync(projectsQuery);
+            var scoringsApplications = await _scoringApplicationRepository.GetByProjectIdsAsync(projects.Select(i => i.Id).ToArray());
 
-            return Ok(projects.ToPartialCollectionResponse(ProjectResponse.Create));
+            return Ok(projects.ToPartialCollectionResponse(p => ProjectResponse.Create(p, scoringsApplications.FirstOrDefault(s=>s.ProjectId == p.Id))));
         }
 
         [HttpPost]
