@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {Paths} from '../../paths';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -14,6 +14,7 @@ import {DialogService} from '../../services/dialog-service';
 import {NotificationsService} from 'angular2-notifications';
 import {SubscriptionApiClient} from '../../api/subscription/subscription-api-client';
 import {Location} from '@angular/common';
+import {Subscription} from 'rxjs/Subscription';
 import {ProjectService} from '../../services/project/project.service';
 
 @Component({
@@ -21,7 +22,7 @@ import {ProjectService} from '../../services/project/project.service';
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.scss']
 })
-export class ProjectComponent implements OnInit {
+export class ProjectComponent implements OnInit, OnDestroy {
 
   public tabItems: string[] = ['about', 'application', 'report', 'allotment-events'];
   public projectId: number;
@@ -29,6 +30,7 @@ export class ProjectComponent implements OnInit {
   public editProjectsLink = Paths.ProjectEdit;
   public selectedTab = 0;
   public isAdmin: boolean;
+  public routerSubscriber: Subscription;
 
   public ScoringStatus = ScoringStatus;
 
@@ -57,7 +59,7 @@ export class ProjectComponent implements OnInit {
               private dialogService: DialogService,
               private notificationService: NotificationsService) {
 
-    this.route.params.subscribe(async (params) => {
+    this.routerSubscriber = this.route.params.subscribe(async (params) => {
         await this.reloadProjectAsync();
     });
     this.userContext.userContextChanged.subscribe(async () => await this.reloadProjectAsync());
@@ -72,8 +74,8 @@ export class ProjectComponent implements OnInit {
   }
 
   private async reloadProjectAsync() {
-    const newProjectId = +this.route.snapshot.paramMap.get('id');
-    if (!isNullOrUndefined(this.projectId) && this.projectId === newProjectId) {
+      const newProjectId = +this.route.snapshot.paramMap.get('id');
+      if (!isNullOrUndefined(this.projectId) && this.projectId === newProjectId) {
       return;
     }
 
@@ -158,5 +160,9 @@ export class ProjectComponent implements OnInit {
     } else {
       return scoringStatus;
     }
+  }
+
+  public ngOnDestroy() {
+      this.routerSubscriber.unsubscribe();
   }
 }
