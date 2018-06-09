@@ -1,4 +1,5 @@
 @import "./pallete.scss";
+@import "./size-variables";
 @import "./fonts.scss";
 @import "../../node_modules/@angular/material/prebuilt-themes/purple-green.css";
 @import "../../node_modules/bootstrap/dist/css/bootstrap.css";
@@ -6,19 +7,28 @@
 html {
   width: 100vw;
   overflow-x: hidden;
+  height: 100%;
 }
 
 html, body {
   margin: 0;
   padding: 0;
+  height: 100%;
+}
+
+.app-wrapper {
+  position: relative;
+  min-height: 100%;
 }
 
 .content {
   width: 1180px;
+  padding-bottom: $footer-height;
   margin: 0 auto;
   @media screen and (min-width: 320px) and (max-width: 768px) {
     width: 100%;
     padding: 20px;
+    padding-bottom: $footer-height;
   }
   @media screen and (min-width: 769px) and (max-width: 1200px) {
     width: 1200px;

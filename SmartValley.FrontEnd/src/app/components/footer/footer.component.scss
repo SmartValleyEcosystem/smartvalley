@@ -1,10 +1,21 @@
 @import "~font-awesome/css/font-awesome.css";
+@import "./../../../styles/size-variables";
+
+$footer-height: 100px;
+
+.footer-wrapper {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: $footer-height + 20px;
+  width: 100%;
+}
 
 .sm-footer {
   border-top: #a4a2b0 1px solid;
   width: 1180px;
   color: #000;
-  height: 60px;
+  height: $footer-height;
   padding-top: 20px;
   padding-bottom: 45px;
   display: flex;
