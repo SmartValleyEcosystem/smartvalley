@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NServiceBus;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Services;
@@ -14,10 +15,12 @@ namespace SmartValley.WebApi.AllotmentEvents
     public class AllotmentEventsController : Controller
     {
         private readonly IAllotmentEventService _allotmentEventService;
+        private readonly IMessageSession _messageSession;
 
-        public AllotmentEventsController(IAllotmentEventService allotmentEventService)
+        public AllotmentEventsController(IAllotmentEventService allotmentEventService, IMessageSession messageSession)
         {
             _allotmentEventService = allotmentEventService;
+            _messageSession = messageSession;
         }
 
         [HttpGet]
@@ -28,5 +31,16 @@ namespace SmartValley.WebApi.AllotmentEvents
             var result = await _allotmentEventService.QueryAsync(query);
             return Ok(result.ToPartialCollectionResponse(AllotmentEventResponse.Create));
         }
+
+        public Task Publish(PublishAllotmentEventRequest publishRequest)
+        {
+            
+        }
+    }
+
+    public class PublishAllotmentEventRequest
+    {
+        public long AllotmentEventId { get; set; }
+        public string TransactionHash { get; set; }
     }
 }

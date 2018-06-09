@@ -7,7 +7,7 @@ namespace SmartValley.Domain
     {
         public string Name { get; set; }
 
-        public AllotmentEventStatus Status { get; set; }
+        public AllotmentEventStatus Status { get; private set; }
 
         public string TokenContractAddress { get; set; }
 
@@ -20,5 +20,10 @@ namespace SmartValley.Domain
         public string TokenTicker { get; set; }
 
         public long ProjectId { get; set; }
+
+        public void SetStatus(AllotmentEventStatus newStatus)
+        {
+
+        }
     }
 }
