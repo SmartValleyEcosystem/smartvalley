@@ -8,6 +8,9 @@ import {ErrorCode} from '../../shared/error-code.enum';
 import {TranslateService} from '@ngx-translate/core';
 import {ProjectAboutResponse} from '../../api/project/project-about-response';
 import {AddProjectImageRequest} from '../../api/project/add-project-image-request';
+import {ScoringStatus} from '../scoring-status.enum';
+import {ScoringStartTransactionStatus} from '../../api/project/scoring-start-transaction.status';
+import {environment} from '../../../environments/environment';
 
 @Injectable()
 export class ProjectService {
@@ -24,6 +27,30 @@ export class ProjectService {
     const response = await this.projectApiClient.createAsync(request);
     this.projectsCreated.emit();
     return response;
+  }
+
+  public getScoringStatus(status: ScoringStatus,
+                          scoringStartTransactionStatus: ScoringStartTransactionStatus,
+                          isApplicationSubmitted: boolean): ScoringStatus {
+    if (status !== ScoringStatus.FillingApplication) {
+      return status;
+    }
+    if (scoringStartTransactionStatus === ScoringStartTransactionStatus.NotSubmitted) {
+      return isApplicationSubmitted ? ScoringStatus.ReadyForPayment : ScoringStatus.FillingApplication;
+    }
+
+    if (scoringStartTransactionStatus === ScoringStartTransactionStatus.InProgress) {
+      return ScoringStatus.PaymentInProcess;
+    }
+
+    if (scoringStartTransactionStatus === ScoringStartTransactionStatus.Failed) {
+      return ScoringStatus.PaymentFailed;
+    }
+    return status;
+  }
+
+  public getTransactionUrl(transactionHash: string) {
+    return `${environment.etherscan_host}/tx/${transactionHash}`;
   }
 
   public async updateAsync(request: UpdateProjectRequest): Promise<ProjectAboutResponse> {

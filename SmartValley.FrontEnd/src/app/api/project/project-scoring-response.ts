@@ -13,5 +13,5 @@ export interface ProjectScoringResponse {
   scoringStartDate: string;
   scoringEndDate: string;
   estimatesDueDate: string;
-  scoringStatus: number;
+  status: number;
 }
