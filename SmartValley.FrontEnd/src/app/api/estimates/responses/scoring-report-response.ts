@@ -3,5 +3,5 @@ import {ScoringReportInAreaResponse} from './scoring-report-in-area-response';
 
 export interface ScoringReportResponse {
   experts: Array<ExpertResponse>;
-  scoringStatistics: Array<ScoringReportInAreaResponse>;
+  scoringReportsInArea: Array<ScoringReportInAreaResponse>;
 }

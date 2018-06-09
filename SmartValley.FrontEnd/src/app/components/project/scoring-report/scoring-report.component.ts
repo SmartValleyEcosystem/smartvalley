@@ -57,8 +57,8 @@ export class ScoringReportComponent implements OnInit {
     if (this.isAdmin) {
       this.experts = estimates.experts;
     }
-    for (const item of estimates.scoringStatistics) {
-      const estimatesForArea = estimates.scoringStatistics.find(e => e.areaType === item.areaType);
+    for (const item of estimates.scoringReportsInArea) {
+      const estimatesForArea = estimates.scoringReportsInArea.find(e => e.areaType === item.areaType);
       this.areasScoringInfo.push({
         finishedExperts: estimatesForArea.offers.filter(o => o.status === OfferStatus.Finished).length,
         totalExperts: estimatesForArea.requiredExpertsCount,

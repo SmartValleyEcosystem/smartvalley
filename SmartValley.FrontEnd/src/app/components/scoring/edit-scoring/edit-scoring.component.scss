@@ -24,3 +24,7 @@
 .list-row:nth-child(even):hover {
   background: #ffffff !important;
 }
+
+tr.list-row > td.list-item {
+  cursor: default !important;
+}
