@@ -9,12 +9,12 @@ import {ScoringStatus} from '../../services/scoring-status.enum';
 import {OfferStatus} from '../../api/scoring-offer/offer-status.enum';
 import {ScoringResponse} from '../../api/scoring/scoring-response';
 import {ErrorCode} from '../../shared/error-code.enum';
-import {ScoringStartTransactionStatus} from '../../api/project/scoring-start-transaction.status';
 import {environment} from '../../../environments/environment';
 import {DialogService} from '../../services/dialog-service';
 import {NotificationsService} from 'angular2-notifications';
 import {SubscriptionApiClient} from '../../api/subscription/subscription-api-client';
 import {Location} from '@angular/common';
+import {ProjectService} from '../../services/project/project.service';
 
 @Component({
   selector: 'app-project',
@@ -48,6 +48,7 @@ export class ProjectComponent implements OnInit {
   }
 
   constructor(private projectApiClient: ProjectApiClient,
+              private projectService: ProjectService,
               private router: Router,
               private location: Location,
               private route: ActivatedRoute,
@@ -86,7 +87,7 @@ export class ProjectComponent implements OnInit {
       }
 
       if (!isNullOrUndefined(this.project.scoringStartTransactionHash)) {
-        this.scoringStartTransactionUrl = `${environment.etherscan_host}/tx/${this.project.scoringStartTransactionHash}`;
+        this.scoringStartTransactionUrl = this.projectService.getTransactionUrl(this.project.scoringStartTransactionHash);
       }
 
       const currentUser = await this.userContext.getCurrentUser();
@@ -145,7 +146,7 @@ export class ProjectComponent implements OnInit {
   }
 
   public getScoringStatus(): ScoringStatus {
-    const scoringStatus = this.getOriginalScoringStatus();
+    const scoringStatus =  this.projectService.getScoringStatus(this.project.scoring.scoringStatus, this.project.scoringStartTransactionStatus, this.project.isApplicationSubmitted);
     const hiddenPrivateScoringStatuses = [
       ScoringStatus.ReadyForPayment,
       ScoringStatus.PaymentInProcess,
@@ -157,27 +158,5 @@ export class ProjectComponent implements OnInit {
     } else {
       return scoringStatus;
     }
-  }
-
-  private getOriginalScoringStatus(): ScoringStatus {
-    if (this.project.scoring.scoringStatus === ScoringStatus.FillingApplication) {
-      if (this.project.scoringStartTransactionStatus === ScoringStartTransactionStatus.NotSubmitted) {
-        if (this.project.isApplicationSubmitted) {
-          return ScoringStatus.ReadyForPayment;
-        } else {
-          return ScoringStatus.FillingApplication;
-        }
-      }
-
-      if (this.project.scoringStartTransactionStatus === ScoringStartTransactionStatus.InProgress) {
-        return ScoringStatus.PaymentInProcess;
-      }
-
-      if (this.project.scoringStartTransactionStatus === ScoringStartTransactionStatus.Failed) {
-        return ScoringStatus.PaymentFailed;
-      }
-    }
-
-    return this.project.scoring.scoringStatus;
   }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
@@ -19,6 +20,9 @@ namespace SmartValley.Data.SQL.Repositories
 
         public Task<ScoringApplication> GetByProjectIdAsync(long projectId)
             => Entities().FirstOrDefaultAsync(x => x.ProjectId == projectId);
+
+        public async Task<IReadOnlyCollection<ScoringApplication>> GetByProjectIdsAsync(IReadOnlyCollection<long> projectIds)
+            => await Entities().Where(x => projectIds.Contains(x.ProjectId)).ToArrayAsync();
 
         public Task<ScoringApplication> GetByIdAsync(long id)
             => Entities().FirstOrDefaultAsync(x => x.Id == id);
