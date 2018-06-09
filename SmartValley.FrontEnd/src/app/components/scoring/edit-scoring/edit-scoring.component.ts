@@ -83,10 +83,10 @@ export class EditScoringComponent implements OnInit {
       count: this.pageSize,
       scoringId: this.project.scoring.id
     });
-    this.expertAreas = offersResponse.items.map(i => <ExpertAreaItem> {expertId: i.expertId, areaId: i.area});
+    this.offers = offersResponse.items.filter(i => i.projectId === this.project.id);
+    this.expertAreas = this.offers.map(i => <ExpertAreaItem> {expertId: i.expertId, areaId: i.area});
     this.totalRecords = this.allExpertsResponse.totalCount;
     this.experts = this.allExpertsResponse.items;
-    this.offers = offersResponse.items;
     this.loading = false;
   }
 
@@ -108,7 +108,7 @@ export class EditScoringComponent implements OnInit {
   }
 
   public isCompleteArea(expertId: number, areaId: AreaType): boolean {
-    return this.offers.some(o => o.expertId === expertId && o.area === areaId && !isNullOrUndefined(o.finalScore));
+    return this.offers.some(o => o.expertId === expertId && o.area === areaId && o.offerStatus === OfferStatus.Finished);
   }
 
   public areaInScoring(expertId: number, areaId: AreaType): boolean {
