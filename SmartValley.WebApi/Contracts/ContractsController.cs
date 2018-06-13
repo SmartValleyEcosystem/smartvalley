@@ -14,6 +14,17 @@ namespace SmartValley.WebApi.Contracts
             _nethereumOptions = nethereumOptions;
         }
 
+        [HttpGet("allotmentEventsManager")]
+        public ContractResponse GetAllotmentEventsManagerContract()
+        {
+            var contractOptions = _nethereumOptions.AllotmentEventsManagerContract;
+            return new ContractResponse
+                   {
+                       Address = contractOptions.Address,
+                       Abi = contractOptions.Abi,
+                   };
+        }
+
         [HttpGet("scoringOffersManager")]
         public ContractResponse GetScoringOffersManagerContract()
         {

@@ -1,0 +1,53 @@
+.dialog {
+  width: auto;
+  background-color: #ffffff;
+  padding: 20px !important;
+  position: relative;
+}
+.dialog-content {
+  width: 338px;
+  height: 60px;
+  font-family: Roboto-Regular;
+  font-size: 14px;
+  line-height: 1.43;
+  text-align: left;
+  color: #000000;
+  margin: 0 0 20px 0;
+  padding: 0;
+}
+.control-label {
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+h2, .control-label label {
+  font-family: Roboto-Medium;
+}
+.control-label label {
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: normal;
+}
+.submit {
+  text-align: center;
+  margin-top: 40px;
+}
+input {
+  width: 320px;
+}
+.dialog-close {
+  cursor: pointer;
+  position: absolute;
+  background-image: url(/assets/img/controls/cross.svg);
+  width: 18px;
+  height: 18px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  top: 0;
+  right: 0;
+}
+.select-wrapper {
+  width: 320px;
+}

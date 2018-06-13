@@ -2,19 +2,13 @@
 @import "fonts";
 
 .material-btn {
-  min-width: 100px;
-  height: 36px;
-  background: #FFF;
-  border-radius: 4px;
-  padding: 8px 20px;
-  font-size: 16px;
+  border: none;
+  font-family: Roboto-Medium;
+  font-size: 24px;
   color: #5D49F2;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  text-transform: uppercase;
-  font-weight: bold;
-  border: 0;
-  outline: none;
+  background: #fff;
   cursor: pointer;
+  text-transform: uppercase;
 }
 
 .edit-icon, .play-icon {
@@ -510,6 +504,16 @@ body .ng-invalid .ui-chkbox .ui-chkbox-box {
   stroke: rgba(0, 0, 0, .87) !important;
 }
 
+.select-full-width {
+  .select-wrapper, .project-select-input,
+  .select-wrapper, .ui-inputtext.input-date,
+  .ui-calendar, .select-list {
+    width: 100% !important;
+  }
+  .ui-inputtext.input-date {
+    background-position: 96%;
+  }
+}
 body .box-checkbox {
   .ui-chkbox .ui-chkbox-box {
     width: 16px;

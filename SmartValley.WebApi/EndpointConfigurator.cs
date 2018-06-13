@@ -22,6 +22,7 @@ using SmartValley.Domain.Contracts;
 using SmartValley.Domain.Interfaces;
 using SmartValley.Domain.Services;
 using SmartValley.Ethereum;
+using SmartValley.Ethereum.Contracts.AllotmentEventsManager;
 using SmartValley.Ethereum.Contracts.ScoringOffersManager;
 using SmartValley.Ethereum.Contracts.ScoringsRegistry;
 using SmartValley.Ethereum.Contracts.SmartValley.Application.Contracts;
@@ -135,6 +136,7 @@ namespace SmartValley.WebApi
             containerBuilder.RegisterType<ScoringRepository>().As<IScoringRepository>();
             containerBuilder.RegisterType<ScoringOffersRepository>().As<IScoringOffersRepository>();
             containerBuilder.RegisterType<EthereumTransactionRepository>().As<IEthereumTransactionRepository>();
+            containerBuilder.RegisterType<AllotmentEventRepository>().As<IAllotmentEventRepository>();
 
             // Ethereum
             containerBuilder.Register(context => InitializeWeb3(context.Resolve<NethereumOptions>().RpcAddress)).AsSelf();
@@ -146,6 +148,11 @@ namespace SmartValley.WebApi
                                           context.Resolve<EthereumContractClient>(),
                                           context.Resolve<NethereumOptions>().ScoringOffersManagerContract))
                             .As<IScoringOffersManagerContractClient>();
+
+            containerBuilder.Register(context => new AllotmentEventsManagerContractClient(
+                                          context.Resolve<EthereumContractClient>(),
+                                          context.Resolve<NethereumOptions>().AllotmentEventsManagerContract))
+                            .As<IAllotmentEventsManagerContractClient>();
 
             containerBuilder.Register(context => new ScoringsRegistryContractClient(
                                           context.Resolve<EthereumContractClient>(),
@@ -162,6 +169,7 @@ namespace SmartValley.WebApi
             containerBuilder.RegisterType<ScoringService>().As<IScoringService>();
             containerBuilder.RegisterType<ScoringApplicationService>().As<IScoringApplicationService>();
             containerBuilder.RegisterType<EthereumTransactionService>().As<IEthereumTransactionService>();
+            containerBuilder.RegisterType<AllotmentEventService>().As<IAllotmentEventService>();
 
             var container = containerBuilder.Build();
 

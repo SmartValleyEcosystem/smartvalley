@@ -147,9 +147,12 @@ import {PrivateScoringManagerContractClient} from './services/contract-clients/p
 import {ScoringParametersProviderContractClient} from './services/contract-clients/scoring-parameters-provider-contract-client';
 import {GlobalErrorHandler} from './utils/global-error-handler';
 import {LoggingApiClient} from './api/logging/logging-api-client';
+import {NewAllotmentEventModalComponent} from './components/common/new-allotment-event-modal/new-allotment-event-modal.component';
 import {AdminAllotmentEventsComponent} from './components/admin-panel/admin-allotment-events/admin-allotment-events.component';
 import {AllotmentEventsApiClient} from './api/allotment-events/allotment-events-api-client';
 import {StartAllotmentEventModalComponent} from './components/common/start-allotment-event-modal/start-allotment-event-modal.component';
+import {AllotmentEventService} from './services/allotment-event/allotment-event.service';
+import {AllotmentEventsManagerContractClient} from './services/contract-clients/allotment-events-manager-contract-client';
 
 @NgModule({
   declarations: [
@@ -165,6 +168,7 @@ import {StartAllotmentEventModalComponent} from './components/common/start-allot
     ScoringCostComponent,
     NullableLinkComponent,
     AlertModalComponent,
+    NewAllotmentEventModalComponent,
     MetamaskManualModalComponent,
     InitializationComponent,
     RootComponent,
@@ -228,6 +232,7 @@ import {StartAllotmentEventModalComponent} from './components/common/start-allot
   entryComponents: [
     TransactionAwaitingModalComponent,
     AlertModalComponent,
+    NewAllotmentEventModalComponent,
     MetamaskManualModalComponent,
     ReceiveEtherModalComponent,
     AddAdminModalComponent,
@@ -318,6 +323,8 @@ import {StartAllotmentEventModalComponent} from './components/common/start-allot
     AuthenticationApiClient,
     AuthenticationService,
     UserContext,
+    AllotmentEventService,
+    AllotmentEventsManagerContractClient,
     ScoreColorsService,
     ScoringCriterionService,
     Web3Service,

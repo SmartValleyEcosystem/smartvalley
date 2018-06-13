@@ -66,7 +66,10 @@ export class AdminProjectsListComponent {
   }
 
   public getScoringStatus(project: ProjectResponse): ScoringStatus {
-    return this.projectService.getScoringStatus(project.scoring.status, project.scoringStartTransactionStatus, project.isApplicationSubmitted);
+    return this.projectService
+      .getScoringStatus(project.scoring == null ? ScoringStatus.FillingApplication : project.scoring.status,
+        project.scoringStartTransactionStatus,
+        project.isApplicationSubmitted);
   }
 
   public getScoringStartTransactionUrl(project: ProjectResponse): string {

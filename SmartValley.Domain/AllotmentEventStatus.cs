@@ -3,7 +3,9 @@
     public enum AllotmentEventStatus
     {
         Created = 0,
-        InProgress = 1,
-        Finished = 2
+        Publishing = 1,
+        Published = 2,
+        InProgress = 3,
+        Finished = 4
     }
 }

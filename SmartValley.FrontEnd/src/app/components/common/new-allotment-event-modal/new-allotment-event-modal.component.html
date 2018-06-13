@@ -1,0 +1,50 @@
+<div class="dialog">
+  <button class="dialog-close" mat-dialog-close></button>
+  <h2>{{ 'NewAllotmentEventModal.Title' | translate }}</h2>
+  <form [formGroup]="form" (ngSubmit)="submitFormAsync()">
+    <div class="control-row">
+      <p class="control-label">
+        <label for="project">{{ 'NewAllotmentEventModal.Title' | translate }}</label>
+      </p>
+      <app-select class="select-component input-component select-full-width"
+                  formControlName="project" [elementId]="'project'"
+                  [placeholder]="'NewAllotmentEventModal.ProjectNamePlaceholder' | translate"
+                  [items]="allowedProjects"
+                  #required>
+      </app-select>
+    </div>
+    <div class="control-row">
+      <p class="control-label">
+        <label for="event-name">{{ 'NewAllotmentEventModal.AllotmentEventName' | translate }}</label>
+      </p>
+      <input class="input" id="event-name" formControlName="eventName">
+    </div>
+    <div class="control-row">
+      <p class="control-label">
+        <label for="token-address">{{ 'NewAllotmentEventModal.TokenAddress' | translate }}</label>
+      </p>
+      <input (change)="checkToken()" class="input" id="token-address" formControlName="tokenAddress" placeholder="{{ 'NewAllotmentEventModal.TokenAddressPlaceholder' | translate }}">
+    </div>
+    <div class="control-row">
+      <p class="control-label">
+        <label for="ticker">{{ 'NewAllotmentEventModal.TokenTicker' | translate }}</label>
+      </p>
+      <input class="input" id="ticker" formControlName="ticker">
+    </div>
+    <div class="control-row">
+      <p class="control-label">
+        <label for="token-decimals">{{ 'NewAllotmentEventModal.TokenDecimals' | translate }}</label>
+      </p>
+      <input class="input" id="token-decimals" formControlName="tokenDecimals">
+    </div>
+    <div class="control-row">
+      <p class="control-label">
+        <label for="finish-date">{{ 'NewAllotmentEventModal.FinishDate' | translate }}</label>
+      </p>
+      <p-calendar class="input-component select-full-width" [inputId]="'finish-date'" formControlName="finishDate" [inputStyleClass]="'input input-date'" dateFormat="dd.mm.yy" [yearNavigator]="true" yearRange="1900:2018" #required></p-calendar>
+    </div>
+    <div class="control-row submit">
+      <input type="submit" value="{{ 'NewAllotmentEventModal.Create' | translate }}" class="material-btn">
+    </div>
+  </form>
+</div>

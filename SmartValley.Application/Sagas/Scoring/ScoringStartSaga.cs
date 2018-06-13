@@ -2,8 +2,6 @@
 using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Persistence.Sql;
-using SmartValley.Domain.Contracts;
-using SmartValley.Domain.Entities;
 using SmartValley.Domain.Services;
 using SmartValley.Messages.Commands;
 using SmartValley.Messages.Events;
