@@ -246,8 +246,8 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
   }
 
   public chageActiveQuestion(id) {
-    this.questionsActivity = this.questionsActivity.map((q, i) => i === id ? this.questionsActivity[id] : false);
-    this.questionsActivity[id] = !this.questionsActivity[id];
+    this.questionsActivity = this.questionsActivity.map(() => false);
+    this.questionsActivity[id] = true;
   }
 
   public async saveDraft() {
