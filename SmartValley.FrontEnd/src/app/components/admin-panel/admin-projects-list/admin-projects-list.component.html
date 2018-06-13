@@ -24,7 +24,8 @@
       <td *ngIf="project.scoring == null" class="list-item">
         -
       </td>
-      <td *ngIf="project.scoring != null" class="list-item" [ngSwitch]="getScoringStatus(project)">
+      <td class="list-item" [ngSwitch]="getScoringStatus(project)">
+        <span *ngSwitchCase="ScoringStatus.FillingApplication">{{ 'AdminProjects.New' | translate }}</span>
         <a *ngSwitchCase="ScoringStatus.PaymentInProcess" target="_blank"
            [href]="getScoringStartTransactionUrl(project)">
           {{ 'MyProject.PaymentInProgress' | translate }}
@@ -35,9 +36,6 @@
         </a>
         <span *ngSwitchCase="ScoringStatus.InProgress">{{ 'AdminProjects.InProgress' | translate }}</span>
         <span *ngSwitchCase="ScoringStatus.Finished">{{ 'AdminProjects.Finished' | translate }}</span>
-      </td>
-      <td *ngIf="project.scoring == null" class="list-item">
-        {{ 'AdminProjects.New' | translate }}
       </td>
       <td class="list-item">
         <span (click)="navigateToEditScoring(project.id)" class="edit-icon"
