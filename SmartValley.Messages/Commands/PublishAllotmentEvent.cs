@@ -1,8 +1,8 @@
 ﻿namespace SmartValley.Messages.Commands
 {
-    public class PublishAllotment
+    public class PublishAllotmentEvent
     {
-        public PublishAllotment(long allotmentEventId, long userId, string transactionHash)
+        public PublishAllotmentEvent(long allotmentEventId, long userId, string transactionHash)
         {
             AllotmentEventId = allotmentEventId;
             UserId = userId;

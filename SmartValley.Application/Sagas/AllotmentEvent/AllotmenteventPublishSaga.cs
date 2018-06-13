@@ -8,7 +8,7 @@ using SmartValley.Messages.Events;
 namespace SmartValley.Application.Sagas.AllotmentEvent
 {
     public class AllotmentEventPublishSaga : SqlSaga<AllotmentEventPublishSagaData>,
-        IAmStartedByMessages<PublishAllotment>,
+        IAmStartedByMessages<PublishAllotmentEvent>,
         IHandleMessages<TransactionCompleted>,
         IHandleMessages<TransactionFailed>
     {
@@ -19,17 +19,17 @@ namespace SmartValley.Application.Sagas.AllotmentEvent
             _allotmentEventService = allotmentEventService;
         }
 
-        protected override string CorrelationPropertyName => nameof(PublishAllotment.TransactionHash);
+        protected override string CorrelationPropertyName => nameof(PublishAllotmentEvent.TransactionHash);
 
         protected override void ConfigureMapping(IMessagePropertyMapper mapper)
         {
-            mapper.ConfigureMapping<PublishAllotment>(x => x.TransactionHash);
+            mapper.ConfigureMapping<PublishAllotmentEvent>(x => x.TransactionHash);
 
             mapper.ConfigureMapping<TransactionCompleted>(m => m.TransactionHash);
             mapper.ConfigureMapping<TransactionFailed>(m => m.TransactionHash);
         }
 
-        public async Task Handle(PublishAllotment command, IMessageHandlerContext context)
+        public async Task Handle(PublishAllotmentEvent command, IMessageHandlerContext context)
         {
             Data.AllotmentEventId = command.AllotmentEventId;
             Data.UserId = command.UserId;

@@ -51,7 +51,7 @@ namespace SmartValley.WebApi.AllotmentEvents
         [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<IActionResult> PublishAsync(long id, [FromBody] string transactionHash)
         {
-            var command = new PublishAllotment(id, User.GetUserId(), transactionHash);
+            var command = new PublishAllotmentEvent(id, User.GetUserId(), transactionHash);
 
             await _messageSession.SendLocal(command);
             return NoContent();
