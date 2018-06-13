@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AllotmentEventsApiClient} from '../../../api/allotment-events/allotment-events-api-client';
-import {AllotmentEvent} from '../../../api/allotment-events/allotment-event';
+import {AllotmentEventResponse} from '../../../api/allotment-events/responses/allotment-event-response';
 import {AllotmentEventStatus} from '../../../api/allotment-events/allotment-event-status';
 import {LazyLoadEvent} from 'primeng/api';
 
@@ -11,7 +11,7 @@ import {LazyLoadEvent} from 'primeng/api';
 })
 export class AdminAllotmentEventsComponent implements OnInit {
 
-  public allotmentEvents: AllotmentEvent[];
+  public allotmentEvents: AllotmentEventResponse[];
   public selectedStatuses: boolean[] = [];
   public loading = true;
   public totalRecords: number;

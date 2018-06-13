@@ -32,6 +32,7 @@
         TeamMemberNotFound,
         ScoringNotFound,
         OfferNotFoundInContract,
-        ApplicationNotFound
+        ApplicationNotFound,
+        AllotmentEventNotFound
     }
 }
