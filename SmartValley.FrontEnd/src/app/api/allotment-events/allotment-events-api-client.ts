@@ -51,6 +51,6 @@ export class AllotmentEventsApiClient extends BaseApiClient {
   }
 
   public publishAsync(eventId: number, transactionHash: string) {
-    return this.http.put(`${this.baseApiUrl}/allotmentEvents/${eventId}/publish/`, {transactionHash: transactionHash}).toPromise();
+    return this.http.put(`${this.baseApiUrl}/allotmentEvents/${eventId}/publish/`, transactionHash).toPromise();
   }
 }
