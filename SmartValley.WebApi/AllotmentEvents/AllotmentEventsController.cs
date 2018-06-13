@@ -53,7 +53,7 @@ namespace SmartValley.WebApi.AllotmentEvents
         {
             var command = new PublishAllotment(id, User.GetUserId(), transactionHash);
 
-            await _messageSession.Send(command);
+            await _messageSession.SendLocal(command);
             return NoContent();
         }
     }
