@@ -19,7 +19,7 @@ namespace SmartValley.Application.Sagas.AllotmentEvent
             _allotmentEventService = allotmentEventService;
         }
 
-        protected override string CorrelationPropertyName => nameof(PublishAllotmentEvent.TransactionHash);
+        protected override string CorrelationPropertyName => nameof(AllotmentEventPublishSagaData.TransactionHash);
 
         protected override void ConfigureMapping(IMessagePropertyMapper mapper)
         {
