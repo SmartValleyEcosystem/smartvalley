@@ -35,19 +35,19 @@ namespace SmartValley.Application.Sagas.AllotmentEvent
             Data.UserId = command.UserId;
             Data.TransactionHash = command.TransactionHash;
 
-            await _allotmentEventService.HandlePendingPublishingTransactionAsync(command.AllotmentEventId, command.UserId, command.TransactionHash);
+            await _allotmentEventService.StartPublishingAsync(command.AllotmentEventId, command.UserId, command.TransactionHash);
             await context.SendLocal(new WaitForTransaction {TransactionHash = command.TransactionHash});
         }
 
         public async Task Handle(TransactionCompleted message, IMessageHandlerContext context)
         {
-            await _allotmentEventService.HandleSuccessPublishingTransactionAsync(Data.AllotmentEventId);
+            await _allotmentEventService.FinishPublishingAsync(Data.AllotmentEventId);
             MarkAsComplete();
         }
 
         public async Task Handle(TransactionFailed message, IMessageHandlerContext context)
         {
-            await _allotmentEventService.HandleFailedPublishingTransactionAsync(Data.AllotmentEventId);
+            await _allotmentEventService.StopPublishingAsync(Data.AllotmentEventId);
 
             MarkAsComplete();
         }

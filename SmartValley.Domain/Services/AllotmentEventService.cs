@@ -25,7 +25,7 @@ namespace SmartValley.Domain.Services
             return await _allotmentEventRepository.QueryAsync(queryAllotmentEventsRequest);
         }
 
-        public async Task HandlePendingPublishingTransactionAsync(long id, long userId, string hash)
+        public async Task StartPublishingAsync(long id, long userId, string hash)
         {
             var allotmentEvent = await _allotmentEventRepository.GetByIdAsync(id);
             if (allotmentEvent.Status != AllotmentEventStatus.Created && allotmentEvent.Status != AllotmentEventStatus.Publishing)
@@ -39,7 +39,7 @@ namespace SmartValley.Domain.Services
             await _allotmentEventRepository.SaveChangesAsync();
         }
 
-        public async Task HandleSuccessPublishingTransactionAsync(long id)
+        public async Task FinishPublishingAsync(long id)
         {
             var allotmentEvent = await _allotmentEventRepository.GetByIdAsync(id);
 
@@ -50,7 +50,7 @@ namespace SmartValley.Domain.Services
             }
         }
 
-        public async Task HandleFailedPublishingTransactionAsync(long id)
+        public async Task StopPublishingAsync(long id)
         {
             var allotmentEvent = await _allotmentEventRepository.GetByIdAsync(id);
             var transactions = await _ethereumTransactionService.GetByAllotmentEventIdAsync(id);

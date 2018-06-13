@@ -8,11 +8,11 @@ namespace SmartValley.Domain.Services
     {
         Task<PagingCollection<AllotmentEvent>> QueryAsync(AllotmentEventsQuery queryAllotmentEventsRequest);
 
-        Task HandleSuccessPublishingTransactionAsync(long id);
+        Task FinishPublishingAsync(long id);
 
-        Task HandlePendingPublishingTransactionAsync(long id, long userId, string hash);
+        Task StartPublishingAsync(long id, long userId, string hash);
 
-        Task HandleFailedPublishingTransactionAsync(long id);
+        Task StopPublishingAsync(long id);
 
         Task<long> CreateAsync(string name, string tokenContractAddress, int totalDecimals, string tokenTicker, long projectId, DateTimeOffset? finishDate);
     }
