@@ -9,13 +9,15 @@ namespace SmartValley.Domain.Entities
             string hash,
             EthereumTransactionType type,
             EthereumTransactionStatus status,
-            DateTimeOffset created)
+            DateTimeOffset created,
+            long? allotmentEventId = null)
         {
             UserId = userId;
             Hash = hash;
             Type = type;
             Status = status;
             Created = created;
+            AllotmentEventId = allotmentEventId;
         }
 
         // ReSharper disable once UnusedMember.Local

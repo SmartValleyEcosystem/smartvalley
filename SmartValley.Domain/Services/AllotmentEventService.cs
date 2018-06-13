@@ -32,7 +32,7 @@ namespace SmartValley.Domain.Services
                 return;
             }
 
-            var transaction = new EthereumTransaction(userId, hash, EthereumTransactionType.PublishAllotmentEvent, EthereumTransactionStatus.InProgress, _clock.UtcNow);
+            var transaction = new EthereumTransaction(userId, hash, EthereumTransactionType.PublishAllotmentEvent, EthereumTransactionStatus.InProgress, _clock.UtcNow, id);
             await _ethereumTransactionService.AddAsync(transaction);
             allotmentEvent.Status = AllotmentEventStatus.Publishing;
             await _allotmentEventRepository.SaveChangesAsync();

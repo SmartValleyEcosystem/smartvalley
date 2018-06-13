@@ -30,7 +30,7 @@ namespace SmartValley.Data.SQL.Repositories
 
         public async Task<AllotmentEvent> GetByIdAsync(long id)
         {
-            return await _readOnlyDataContext.AllotmentEvents.FirstOrDefaultAsync(x => x.Id == id);
+            return await _editDataContext.AllotmentEvents.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task SaveChangesAsync()
