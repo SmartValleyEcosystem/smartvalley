@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using SmartValley.Domain.Core;
-using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain
 {
