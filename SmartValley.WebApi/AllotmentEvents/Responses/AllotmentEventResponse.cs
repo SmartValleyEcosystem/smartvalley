@@ -19,9 +19,9 @@ namespace SmartValley.WebApi.AllotmentEvents.Responses
 
         public DateTimeOffset? StartDate { get; set; }
 
-        public DateTimeOffset FinishDate { get; set; }
+        public DateTimeOffset? FinishDate { get; set; }
 
-        public long TotalTokens { get; set; }
+        public int TokenDecimals { get; set; }
 
         public string TokenTicker { get; set; }
 
@@ -35,7 +35,7 @@ namespace SmartValley.WebApi.AllotmentEvents.Responses
                        TokenContractAddress = allotmentEvent.TokenContractAddress,
                        StartDate = allotmentEvent.StartDate,
                        FinishDate = allotmentEvent.FinishDate,
-                       TotalTokens = allotmentEvent.TotalTokens,
+                       TokenDecimals = allotmentEvent.TokenDecimals,
                        TokenTicker = allotmentEvent.TokenTicker
                    };
         }

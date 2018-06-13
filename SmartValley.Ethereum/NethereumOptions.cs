@@ -20,6 +20,8 @@ namespace SmartValley.Ethereum
 
         public ContractOptions ScoringManagerContract { get; set; }
 
+        public ContractOptions AllotmentEventsManagerContract { get; set; }
+
         public ContractOptions PrivateScoringManagerContract { get; set; }
 
         public ContractOptions ScoringContract { get; set; }

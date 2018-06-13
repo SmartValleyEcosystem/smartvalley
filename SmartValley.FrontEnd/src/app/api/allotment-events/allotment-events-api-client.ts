@@ -1,13 +1,11 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {BaseApiClient} from '../base-api-client';
 import {Injectable} from '@angular/core';
-import {AllotmentEvent} from './allotment-event';
-import {AllotmentEventStatus} from './allotment-event-status';
-import {ExpertResponse} from '../expert/expert-response';
-import {AreaResponse} from '../expert/area-response';
+import {AllotmentEventResponse} from './responses/allotment-event-response';
 import {CollectionResponse} from '../collection-response';
-import {UserResponse} from '../user/user-response';
-import {GetAllotmentEventsRequest} from './get-allotment-events-request';
+import {GetAllotmentEventsRequest} from './request/get-allotment-events-request';
+import {CreateAllotmentEventRequest} from './request/create-allotment-event-request';
+import {CreateAllotmentEventResponse} from './responses/create-allotment-event-response';
 
 @Injectable()
 export class AllotmentEventsApiClient extends BaseApiClient {
@@ -15,7 +13,7 @@ export class AllotmentEventsApiClient extends BaseApiClient {
     super();
   }
 
-  public async getAllotmentEvents(params: GetAllotmentEventsRequest): Promise<CollectionResponse<AllotmentEvent>> {
+  public async getAllotmentEvents(params: GetAllotmentEventsRequest): Promise<CollectionResponse<AllotmentEventResponse>> {
     let statuses = '';
 
     if (params.status) {
@@ -29,10 +27,30 @@ export class AllotmentEventsApiClient extends BaseApiClient {
     }
 
     const parameters = new HttpParams()
-        .append('offset', params.offset.toString())
-        .append('count', params.count.toString());
-    return this.http.get<CollectionResponse<AllotmentEvent>>(`${this.baseApiUrl}/allotmentEvents/` + statuses, {
+      .append('offset', params.offset.toString())
+      .append('count', params.count.toString());
+    return this.http.get<CollectionResponse<AllotmentEventResponse>>(`${this.baseApiUrl}/allotmentEvents/` + statuses, {
       params: parameters
     }).toPromise();
+  }
+
+  public createAsync(name: string,
+                     tokenContractAddress: string,
+                     tokenDecimals: number,
+                     tokenTicker: string,
+                     projectId: number,
+                     finishDate?: Date): Promise<CreateAllotmentEventResponse> {
+    return this.http.post<CreateAllotmentEventResponse>(`${this.baseApiUrl}/allotmentEvents/`, <CreateAllotmentEventRequest>{
+      name: name,
+      tokenContractAddress: tokenContractAddress,
+      tokenDecimals: tokenDecimals,
+      tokenTicker: tokenTicker,
+      projectId: projectId,
+      finishDate: finishDate
+    }).toPromise();
+  }
+
+  public publishAsync(eventId: number, transactionHash: string) {
+    return this.http.put(`${this.baseApiUrl}/allotmentEvents/${eventId}/publish/`, {transactionHash: transactionHash}).toPromise();
   }
 }

@@ -149,6 +149,8 @@ import {GlobalErrorHandler} from './utils/global-error-handler';
 import {LoggingApiClient} from './api/logging/logging-api-client';
 import {AdminAllotmentEventsComponent} from './components/admin-panel/admin-allotment-events/admin-allotment-events.component';
 import {AllotmentEventsApiClient} from './api/allotment-events/allotment-events-api-client';
+import {AllotmentEventService} from './services/allotment-event/allotment-event.service';
+import {AllotmentEventsManagerContractClient} from './services/contract-clients/allotment-events-manager-contract-client';
 
 @NgModule({
   declarations: [
@@ -315,6 +317,8 @@ import {AllotmentEventsApiClient} from './api/allotment-events/allotment-events-
     AuthenticationApiClient,
     AuthenticationService,
     UserContext,
+    AllotmentEventService,
+    AllotmentEventsManagerContractClient,
     ScoreColorsService,
     ScoringCriterionService,
     Web3Service,

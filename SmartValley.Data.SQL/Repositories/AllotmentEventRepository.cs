@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
 using SmartValley.Data.SQL.Extensions;
 using SmartValley.Domain;
@@ -11,10 +12,12 @@ namespace SmartValley.Data.SQL.Repositories
     public class AllotmentEventRepository : IAllotmentEventRepository
     {
         private readonly IReadOnlyDataContext _readOnlyDataContext;
+        private readonly IEditableDataContext _editContext;
 
-        public AllotmentEventRepository(IReadOnlyDataContext readOnlyDataContext)
+        public AllotmentEventRepository(IReadOnlyDataContext readOnlyDataContext, IEditableDataContext editableDataContext)
         {
             _readOnlyDataContext = readOnlyDataContext;
+            _editContext = editableDataContext;
         }
 
         public Task<PagingCollection<AllotmentEvent>> QueryAsync(AllotmentEventsQuery query)
@@ -24,5 +27,14 @@ namespace SmartValley.Data.SQL.Repositories
 
             return queryable.GetPageAsync(query.Offset, query.Count);
         }
+
+        public void Add(AllotmentEvent allotmentEvent)
+            => _editContext.AllotmentEvents.Add(allotmentEvent);
+
+        public Task SaveChangesAsync()
+            => _editContext.SaveAsync();
+
+        public Task<AllotmentEvent> GetByIdAsync(long id)
+            => _editContext.AllotmentEvents.FirstOrDefaultAsync(i => i.Id == id);
     }
 }
