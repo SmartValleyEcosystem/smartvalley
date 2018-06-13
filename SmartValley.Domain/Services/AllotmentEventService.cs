@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
@@ -60,6 +61,23 @@ namespace SmartValley.Domain.Services
                 allotmentEvent.Status = AllotmentEventStatus.Created;
                 await _allotmentEventRepository.SaveChangesAsync();
             }
+        }
+
+        public async Task<long> CreateAsync(string name, string tokenContractAddress, int totalDecimals, string tokenTicker, long projectId, DateTimeOffset? finishDate)
+        {
+            var entity = new AllotmentEvent
+                         {
+                             Name = name,
+                             ProjectId = projectId,
+                             TokenContractAddress = tokenContractAddress,
+                             TokenTicker = tokenTicker,
+                             TokenDecimals = totalDecimals,
+                             Status = AllotmentEventStatus.Created,
+                             FinishDate = finishDate
+                         };
+            _allotmentEventRepository.Add(entity);
+            await _allotmentEventRepository.SaveChangesAsync();
+            return entity.Id;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Services
@@ -12,5 +13,7 @@ namespace SmartValley.Domain.Services
         Task HandlePendingPublishingTransactionAsync(long id, long userId, string hash);
 
         Task HandleFailedPublishingTransactionAsync(long id);
+
+        Task<long> CreateAsync(string name, string tokenContractAddress, int totalDecimals, string tokenTicker, long projectId, DateTimeOffset? finishDate);
     }
 }

@@ -13,9 +13,9 @@ namespace SmartValley.Domain
 
         public DateTimeOffset? StartDate { get; set; }
 
-        public DateTimeOffset FinishDate { get; set; }
+        public DateTimeOffset? FinishDate { get; set; }
 
-        public long TotalTokens { get; set; }
+        public int TokenDecimals { get; set; }
 
         public string TokenTicker { get; set; }
 

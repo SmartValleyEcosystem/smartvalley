@@ -7,8 +7,10 @@ namespace SmartValley.Domain.Interfaces
     {
         Task<PagingCollection<AllotmentEvent>> QueryAsync(AllotmentEventsQuery query);
 
-        Task<AllotmentEvent> GetByIdAsync(long id);
+        void Add(AllotmentEvent allotmentEvent);
 
         Task SaveChangesAsync();
+
+        Task<AllotmentEvent> GetByIdAsync(long id);
     }
 }

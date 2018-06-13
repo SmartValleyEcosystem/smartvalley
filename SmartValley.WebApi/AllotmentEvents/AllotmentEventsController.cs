@@ -26,19 +26,32 @@ namespace SmartValley.WebApi.AllotmentEvents
 
         [HttpGet]
         [Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<IActionResult> GetAsync([FromQuery]QueryAllotmentEventsRequest request)
+        public async Task<IActionResult> GetAsync([FromQuery] QueryAllotmentEventsRequest request)
         {
             var query = new AllotmentEventsQuery(request.AllotmentEventStatuses ?? new AllotmentEventStatus[0], request.Offset, request.Count);
             var result = await _allotmentEventService.QueryAsync(query);
             return Ok(result.ToPartialCollectionResponse(AllotmentEventResponse.Create));
         }
-
+        
         [HttpPost]
-        [Route("publish")]
         [Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<IActionResult> Publish([FromBody]PublishAllotmentEventRequest publishRequest)
+        public async Task<CreateAllotmentEventResponse> PostAsync([FromBody] CreateAllotmentEventRequest request)
         {
-            var command = new PublishAllotment(publishRequest.AllotmentEventId, User.GetUserId(), publishRequest.TransactionHash);
+            var eventId = await _allotmentEventService.CreateAsync(request.Name,
+                                                                   request.TokenContractAddress,
+                                                                   request.TokenDecimals,
+                                                                   request.TokenTicker,
+                                                                   request.ProjectId,
+                                                                   request.FinishDate);
+
+            return new CreateAllotmentEventResponse(eventId);
+        }
+
+        [HttpPut("{id}/publish")]
+        [Authorize(Roles = nameof(RoleType.Admin))]
+        public async Task<IActionResult> PublishAsync(long id, [FromBody] string transactionHash)
+        {
+            var command = new PublishAllotment(id, User.GetUserId(), transactionHash);
 
             await _messageSession.Send(command);
             return NoContent();

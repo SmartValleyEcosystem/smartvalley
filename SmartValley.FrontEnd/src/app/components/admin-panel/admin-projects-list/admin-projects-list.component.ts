@@ -9,6 +9,7 @@ import {Router} from '@angular/router';
 import {Paths} from '../../../paths';
 import {SortDirection} from '../../../api/sort-direction.enum';
 import {ProjectsOrderBy} from '../../../api/application/projects-order-by.enum';
+import {ProjectService} from '../../../services/project/project.service';
 
 @Component({
   selector: 'app-admin-projects-list',
@@ -30,6 +31,7 @@ export class AdminProjectsListComponent {
 
   constructor(private router: Router,
               private translateService: TranslateService,
+              private projectService: ProjectService,
               private projectApiClient: ProjectApiClient) {
 
     this.statuses = [
@@ -61,6 +63,14 @@ export class AdminProjectsListComponent {
   public async updateProjects(event: LazyLoadEvent) {
     this.offset = event.first;
     await this.renderingProjectsAsync();
+  }
+
+  public getScoringStatus(project: ProjectResponse): ScoringStatus {
+    return this.projectService.getScoringStatus(project.scoring.status, project.scoringStartTransactionStatus, project.isApplicationSubmitted);
+  }
+
+  public getScoringStartTransactionUrl(project: ProjectResponse): string {
+    return this.projectService.getTransactionUrl(project.scoringStartTransactionHash);
   }
 
   public async navigateToEditScoring(projectId: number) {

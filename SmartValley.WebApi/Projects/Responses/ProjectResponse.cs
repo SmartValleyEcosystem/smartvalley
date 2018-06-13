@@ -1,4 +1,5 @@
-﻿using SmartValley.Domain.Entities;
+﻿using SmartValley.Domain;
+using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Projects.Responses
 {
@@ -16,7 +17,13 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public string Description { get; set; }
 
-        public static ProjectResponse Create(Project project)
+        public bool IsApplicationSubmitted { get; set; }
+
+        public ScoringStartTransactionStatus ScoringStartTransactionStatus { get; set; }
+
+        public string ScoringStartTransactionHash { get; set; }
+
+        public static ProjectResponse Create(Project project, ScoringApplication scoringApplication)
         {
             return new ProjectResponse
                    {
@@ -25,6 +32,9 @@ namespace SmartValley.WebApi.Projects.Responses
                        Country = project.Country?.Code,
                        Category = project.Category,
                        Description = project.Description,
+                       IsApplicationSubmitted = scoringApplication?.IsSubmitted ?? false,
+                       ScoringStartTransactionStatus = scoringApplication?.GetTransactionStatus() ?? ScoringStartTransactionStatus.NotSubmitted,
+                       ScoringStartTransactionHash = scoringApplication?.ScoringStartTransaction?.Hash,
                        Scoring = project.Scoring == null ? null : ProjectScoringResponse.Create(project.Scoring)
                    };
         }

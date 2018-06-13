@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {Paths} from '../../paths';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -9,19 +9,20 @@ import {ScoringStatus} from '../../services/scoring-status.enum';
 import {OfferStatus} from '../../api/scoring-offer/offer-status.enum';
 import {ScoringResponse} from '../../api/scoring/scoring-response';
 import {ErrorCode} from '../../shared/error-code.enum';
-import {ScoringStartTransactionStatus} from '../../api/project/scoring-start-transaction.status';
 import {environment} from '../../../environments/environment';
 import {DialogService} from '../../services/dialog-service';
 import {NotificationsService} from 'angular2-notifications';
 import {SubscriptionApiClient} from '../../api/subscription/subscription-api-client';
 import {Location} from '@angular/common';
+import {Subscription} from 'rxjs/Subscription';
+import {ProjectService} from '../../services/project/project.service';
 
 @Component({
   selector: 'app-project',
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.scss']
 })
-export class ProjectComponent implements OnInit {
+export class ProjectComponent implements OnInit, OnDestroy {
 
   public tabItems: string[] = ['about', 'application', 'report', 'allotment-events'];
   public projectId: number;
@@ -29,6 +30,7 @@ export class ProjectComponent implements OnInit {
   public editProjectsLink = Paths.ProjectEdit;
   public selectedTab = 0;
   public isAdmin: boolean;
+  public routerSubscriber: Subscription;
 
   public ScoringStatus = ScoringStatus;
 
@@ -48,6 +50,7 @@ export class ProjectComponent implements OnInit {
   }
 
   constructor(private projectApiClient: ProjectApiClient,
+              private projectService: ProjectService,
               private router: Router,
               private location: Location,
               private route: ActivatedRoute,
@@ -56,7 +59,7 @@ export class ProjectComponent implements OnInit {
               private dialogService: DialogService,
               private notificationService: NotificationsService) {
 
-    this.route.params.subscribe(async (params) => {
+    this.routerSubscriber = this.route.params.subscribe(async (params) => {
         await this.reloadProjectAsync();
     });
     this.userContext.userContextChanged.subscribe(async () => await this.reloadProjectAsync());
@@ -71,8 +74,8 @@ export class ProjectComponent implements OnInit {
   }
 
   private async reloadProjectAsync() {
-    const newProjectId = +this.route.snapshot.paramMap.get('id');
-    if (!isNullOrUndefined(this.projectId) && this.projectId === newProjectId) {
+      const newProjectId = +this.route.snapshot.paramMap.get('id');
+      if (!isNullOrUndefined(this.projectId) && this.projectId === newProjectId) {
       return;
     }
 
@@ -86,7 +89,7 @@ export class ProjectComponent implements OnInit {
       }
 
       if (!isNullOrUndefined(this.project.scoringStartTransactionHash)) {
-        this.scoringStartTransactionUrl = `${environment.etherscan_host}/tx/${this.project.scoringStartTransactionHash}`;
+        this.scoringStartTransactionUrl = this.projectService.getTransactionUrl(this.project.scoringStartTransactionHash);
       }
 
       const currentUser = await this.userContext.getCurrentUser();
@@ -145,7 +148,7 @@ export class ProjectComponent implements OnInit {
   }
 
   public getScoringStatus(): ScoringStatus {
-    const scoringStatus = this.getOriginalScoringStatus();
+    const scoringStatus =  this.projectService.getScoringStatus(this.project.scoring.scoringStatus, this.project.scoringStartTransactionStatus, this.project.isApplicationSubmitted);
     const hiddenPrivateScoringStatuses = [
       ScoringStatus.ReadyForPayment,
       ScoringStatus.PaymentInProcess,
@@ -159,25 +162,7 @@ export class ProjectComponent implements OnInit {
     }
   }
 
-  private getOriginalScoringStatus(): ScoringStatus {
-    if (this.project.scoring.scoringStatus === ScoringStatus.FillingApplication) {
-      if (this.project.scoringStartTransactionStatus === ScoringStartTransactionStatus.NotSubmitted) {
-        if (this.project.isApplicationSubmitted) {
-          return ScoringStatus.ReadyForPayment;
-        } else {
-          return ScoringStatus.FillingApplication;
-        }
-      }
-
-      if (this.project.scoringStartTransactionStatus === ScoringStartTransactionStatus.InProgress) {
-        return ScoringStatus.PaymentInProcess;
-      }
-
-      if (this.project.scoringStartTransactionStatus === ScoringStartTransactionStatus.Failed) {
-        return ScoringStatus.PaymentFailed;
-      }
-    }
-
-    return this.project.scoring.scoringStatus;
+  public ngOnDestroy() {
+      this.routerSubscriber.unsubscribe();
   }
 }

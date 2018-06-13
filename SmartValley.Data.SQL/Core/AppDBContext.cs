@@ -423,6 +423,10 @@ namespace SmartValley.Data.SQL.Core
                         .IsRequired()
                         .HasMaxLength(6);
 
+            modelBuilder.Entity<AllotmentEvent>()
+                        .Property(x => x.TokenDecimals)
+                        .IsRequired();
+
             modelBuilder.Entity<EthereumTransaction>()
                         .HasOne(x => x.AllotmentEvent);
         }
