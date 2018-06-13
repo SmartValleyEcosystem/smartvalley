@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NServiceBus;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Services;
@@ -15,10 +16,12 @@ namespace SmartValley.WebApi.AllotmentEvents
     public class AllotmentEventsController : Controller
     {
         private readonly IAllotmentEventService _allotmentEventService;
+        private readonly IMessageSession _messageSession;
 
-        public AllotmentEventsController(IAllotmentEventService allotmentEventService)
+        public AllotmentEventsController(IAllotmentEventService allotmentEventService, IMessageSession messageSession)
         {
             _allotmentEventService = allotmentEventService;
+            _messageSession = messageSession;
         }
 
         [HttpGet]
@@ -48,8 +51,9 @@ namespace SmartValley.WebApi.AllotmentEvents
         [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<IActionResult> PublishAsync(long id, [FromBody] string transactionHash)
         {
-            await _allotmentEventService.PublishAsync(id, transactionHash);
+            var command = new PublishAllotmentEvent(id, User.GetUserId(), transactionHash);
 
+            await _messageSession.SendLocal(command);
             return NoContent();
         }
     }

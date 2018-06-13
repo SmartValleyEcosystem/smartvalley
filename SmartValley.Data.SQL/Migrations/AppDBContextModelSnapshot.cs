@@ -137,6 +137,8 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<long?>("AllotmentEventId");
+
                     b.Property<DateTimeOffset>("Created");
 
                     b.Property<string>("Hash")
@@ -149,6 +151,8 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AllotmentEventId");
 
                     b.HasIndex("Hash")
                         .IsUnique();
@@ -811,6 +815,10 @@ namespace SmartValley.Data.SQL.Migrations
 
             modelBuilder.Entity("SmartValley.Domain.Entities.EthereumTransaction", b =>
                 {
+                    b.HasOne("SmartValley.Domain.AllotmentEvent", "AllotmentEvent")
+                        .WithMany()
+                        .HasForeignKey("AllotmentEventId");
+
                     b.HasOne("SmartValley.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")

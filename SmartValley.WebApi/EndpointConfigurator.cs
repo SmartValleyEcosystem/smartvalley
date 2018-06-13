@@ -135,6 +135,7 @@ namespace SmartValley.WebApi
             containerBuilder.RegisterType<ScoringRepository>().As<IScoringRepository>();
             containerBuilder.RegisterType<ScoringOffersRepository>().As<IScoringOffersRepository>();
             containerBuilder.RegisterType<EthereumTransactionRepository>().As<IEthereumTransactionRepository>();
+            containerBuilder.RegisterType<AllotmentEventRepository>().As<IAllotmentEventRepository>();
 
             // Ethereum
             containerBuilder.Register(context => InitializeWeb3(context.Resolve<NethereumOptions>().RpcAddress)).AsSelf();
@@ -162,6 +163,7 @@ namespace SmartValley.WebApi
             containerBuilder.RegisterType<ScoringService>().As<IScoringService>();
             containerBuilder.RegisterType<ScoringApplicationService>().As<IScoringApplicationService>();
             containerBuilder.RegisterType<EthereumTransactionService>().As<IEthereumTransactionService>();
+            containerBuilder.RegisterType<AllotmentEventService>().As<IAllotmentEventService>();
 
             var container = containerBuilder.Build();
 

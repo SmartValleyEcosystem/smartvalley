@@ -153,6 +153,8 @@ namespace SmartValley.WebApi
             services.AddTransient<IFeedbackService, FeedbackService>();
             services.AddTransient<IAllotmentEventService, AllotmentEventService>();
             services.AddTransient<IAllotmentEventRepository, AllotmentEventRepository>();
+            services.AddTransient<IEthereumTransactionService, EthereumTransactionService>();
+            services.AddTransient<IEthereumTransactionRepository, EthereumTransactionRepository>();
 
             var serviceProvider = services.BuildServiceProvider();
             var siteOptions = serviceProvider.GetService<SiteOptions>();
