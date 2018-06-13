@@ -28,14 +28,10 @@ namespace SmartValley.Data.SQL.Repositories
             return queryable.GetPageAsync(query.Offset, query.Count);
         }
 
-        public async Task<AllotmentEvent> GetByIdAsync(long id)
-        {
-            return await _editDataContext.AllotmentEvents.FirstOrDefaultAsync(x => x.Id == id);
-        }
+        public async Task<AllotmentEvent> GetByIdAsync(long id) 
+            => await _editDataContext.AllotmentEvents.FirstOrDefaultAsync(x => x.Id == id);
 
-        public async Task SaveChangesAsync()
-        {
-            await _editDataContext.SaveAsync();
-        }
+        public async Task SaveChangesAsync() 
+            => await _editDataContext.SaveAsync();
     }
 }

@@ -25,16 +25,12 @@ namespace SmartValley.Data.SQL.Repositories
         public Task SaveChangesAsync()
             => _editContext.SaveAsync();
 
-        public void Add(EthereumTransaction ethereumTransaction)
-        {
-            _editContext.EthereumTransactions.Add(ethereumTransaction);
-        }
+        public void Add(EthereumTransaction ethereumTransaction) 
+            => _editContext.EthereumTransactions.Add(ethereumTransaction);
 
         public async Task<IReadOnlyCollection<EthereumTransaction>> GetByAllotmentEventIdAsync(long allotmentEventId)
-        {
-            return await _editContext.EthereumTransactions
-                                             .Where(x => x.AllotmentEventId == allotmentEventId)
-                                             .ToArrayAsync();
-        }
+            => await _editContext.EthereumTransactions
+                                 .Where(x => x.AllotmentEventId == allotmentEventId)
+                                 .ToArrayAsync();
     }
 }

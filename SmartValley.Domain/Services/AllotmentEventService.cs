@@ -12,11 +12,11 @@ namespace SmartValley.Domain.Services
         private readonly IClock _clock;
         private readonly IEthereumTransactionService _ethereumTransactionService;
 
-        public AllotmentEventService(IAllotmentEventRepository allotmentEventRepository, IClock clock, IEthereumTransactionService ethereumTransactionService)
+        public AllotmentEventService(IAllotmentEventRepository allotmentEventRepository, IEthereumTransactionService ethereumTransactionService, IClock clock)
         {
             _allotmentEventRepository = allotmentEventRepository;
-            _clock = clock;
             _ethereumTransactionService = ethereumTransactionService;
+            _clock = clock;
         }
 
         public async Task<PagingCollection<AllotmentEvent>> QueryAsync(AllotmentEventsQuery queryAllotmentEventsRequest)

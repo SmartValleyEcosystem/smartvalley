@@ -35,10 +35,10 @@ namespace SmartValley.WebApi.AllotmentEvents
 
         [HttpPost]
         [Route("publish")]
-        //[Authorize(Roles = nameof(RoleType.Admin))]
+        [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<IActionResult> Publish([FromBody]PublishAllotmentEventRequest publishRequest)
         {
-            var command = new PublishAllotment(publishRequest.AllotmentEventId, 1, publishRequest.TransactionHash);
+            var command = new PublishAllotment(publishRequest.AllotmentEventId, User.GetUserId(), publishRequest.TransactionHash);
 
             await _messageSession.Send(command);
             return NoContent();

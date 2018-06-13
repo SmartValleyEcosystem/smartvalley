@@ -40,9 +40,7 @@ namespace SmartValley.Domain.Services
             await _repository.SaveChangesAsync();
         }
 
-        public async Task<IReadOnlyCollection<EthereumTransaction>> GetByAllotmentEventIdAsync(long allotmentId)
-        {
-            return await _repository.GetByAllotmentEventIdAsync(allotmentId);
-        }
+        public async Task<IReadOnlyCollection<EthereumTransaction>> GetByAllotmentEventIdAsync(long allotmentId) 
+            => await _repository.GetByAllotmentEventIdAsync(allotmentId);
     }
 }
