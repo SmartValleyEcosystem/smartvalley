@@ -149,6 +149,7 @@ import {GlobalErrorHandler} from './utils/global-error-handler';
 import {LoggingApiClient} from './api/logging/logging-api-client';
 import {AdminAllotmentEventsComponent} from './components/admin-panel/admin-allotment-events/admin-allotment-events.component';
 import {AllotmentEventsApiClient} from './api/allotment-events/allotment-events-api-client';
+import {StartAllotmentEventModalComponent} from './components/common/start-allotment-event-modal/start-allotment-event-modal.component';
 
 @NgModule({
   declarations: [
@@ -221,7 +222,8 @@ import {AllotmentEventsApiClient} from './api/allotment-events/allotment-events-
     AdminProjectsListComponent,
     EditScoringComponent,
     PrivateScoringModalComponent,
-    AdminAllotmentEventsComponent
+    AdminAllotmentEventsComponent,
+    StartAllotmentEventModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -239,7 +241,8 @@ import {AllotmentEventsApiClient} from './api/allotment-events/allotment-events-
     ChangeStatusModalComponent,
     SubscribeModalComponent,
     FeedbackModalComponent,
-    PrivateScoringModalComponent
+    PrivateScoringModalComponent,
+    StartAllotmentEventModalComponent
   ],
   imports: [
     FileUploadModule,

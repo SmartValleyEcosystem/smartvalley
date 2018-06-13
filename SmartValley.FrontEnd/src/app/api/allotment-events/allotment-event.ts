@@ -9,4 +9,5 @@ export interface AllotmentEvent {
     finishDate: string;
     totalTokens: number;
     tokenTicker: string;
+    tokenDecimals?: string;
 }

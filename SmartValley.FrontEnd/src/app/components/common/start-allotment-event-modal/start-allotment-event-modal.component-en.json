@@ -1,0 +1,14 @@
+{
+  "StartAllotmentEventModalComponent": {
+    "Title": "Start Allotment event",
+    "SubTitle": "Total Tokens:",
+    "ProjectName": "Project name*",
+    "AllotmentEventName": "Allotment Event Name",
+    "TokenAddress": "Token address*",
+    "TokenTicker": "Token ticker",
+    "TokenDecimals": "Token decimals",
+    "FinishDate": "Finish date",
+    "FreezeTime": "Freeze Time, days",
+    "Start": "Start"
+  }
+}
