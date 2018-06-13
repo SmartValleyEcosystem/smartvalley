@@ -32,7 +32,7 @@ namespace SmartValley.WebApi.AllotmentEvents
             var result = await _allotmentEventService.QueryAsync(query);
             return Ok(result.ToPartialCollectionResponse(AllotmentEventResponse.Create));
         }
-        
+
         [HttpPost]
         [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<CreateAllotmentEventResponse> PostAsync([FromBody] CreateAllotmentEventRequest request)
