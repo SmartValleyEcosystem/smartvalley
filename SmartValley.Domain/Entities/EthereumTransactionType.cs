@@ -2,6 +2,7 @@
 {
     public enum EthereumTransactionType
     {
-        StartScoring = 0
+        StartScoring = 0,
+        PublishAllotmentEvent = 1
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
@@ -22,5 +24,17 @@ namespace SmartValley.Data.SQL.Repositories
 
         public Task SaveChangesAsync()
             => _editContext.SaveAsync();
+
+        public void Add(EthereumTransaction ethereumTransaction)
+        {
+            _editContext.EthereumTransactions.Add(ethereumTransaction);
+        }
+
+        public async Task<IReadOnlyCollection<EthereumTransaction>> GetByAllotmentEventIdAsync(long allotmentEventId)
+        {
+            return await _editContext.EthereumTransactions
+                                             .Where(x => x.AllotmentEventId == allotmentEventId)
+                                             .ToArrayAsync();
+        }
     }
 }

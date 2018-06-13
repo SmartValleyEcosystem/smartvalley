@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using SmartValley.Domain.Core;
+using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain
 {
@@ -7,7 +9,7 @@ namespace SmartValley.Domain
     {
         public string Name { get; set; }
 
-        public AllotmentEventStatus Status { get; private set; }
+        public AllotmentEventStatus Status { get; set; }
 
         public string TokenContractAddress { get; set; }
 
@@ -20,10 +22,5 @@ namespace SmartValley.Domain
         public string TokenTicker { get; set; }
 
         public long ProjectId { get; set; }
-
-        public void SetStatus(AllotmentEventStatus newStatus)
-        {
-
-        }
     }
 }

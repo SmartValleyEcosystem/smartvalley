@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 
 namespace SmartValley.Domain.Services
@@ -30,6 +32,17 @@ namespace SmartValley.Domain.Services
             transaction.Fail();
 
             await _repository.SaveChangesAsync();
+        }
+
+        public async Task AddAsync(EthereumTransaction ethereumTransaction)
+        {
+            _repository.Add(ethereumTransaction);
+            await _repository.SaveChangesAsync();
+        }
+
+        public async Task<IReadOnlyCollection<EthereumTransaction>> GetByAllotmentEventIdAsync(long allotmentId)
+        {
+            return await _repository.GetByAllotmentEventIdAsync(allotmentId);
         }
     }
 }

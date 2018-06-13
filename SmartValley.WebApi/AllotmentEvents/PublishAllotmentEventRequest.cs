@@ -1,6 +1,6 @@
-﻿namespace SmartValley.Messages.Commands
+﻿namespace SmartValley.WebApi.AllotmentEvents
 {
-    public class PublishAllotmentEventCommand
+    public class PublishAllotmentEventRequest
     {
         public long AllotmentEventId { get; set; }
         public string TransactionHash { get; set; }

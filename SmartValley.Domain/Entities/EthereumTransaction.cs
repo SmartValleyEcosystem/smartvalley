@@ -27,6 +27,8 @@ namespace SmartValley.Domain.Entities
 
         public long UserId { get; set; }
 
+        public long? AllotmentEventId { get; set; }
+
         public string Hash { get; set; }
 
         public EthereumTransactionType Type { get; set; }
@@ -36,6 +38,8 @@ namespace SmartValley.Domain.Entities
         public DateTimeOffset Created { get; set; }
 
         public User User { get; set; }
+
+        public AllotmentEvent AllotmentEvent { get; set; }
 
         public void Complete()
             => SetStatus(EthereumTransactionStatus.Completed);

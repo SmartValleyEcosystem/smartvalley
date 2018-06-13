@@ -12,5 +12,9 @@ namespace SmartValley.Application.Sagas.AllotmentEvent
         public string OriginalMessageId { get; set; }
 
         public long AllotmentEventId { get; set; }
+
+        public long UserId { get; set; }
+
+        public string TransactionHash { get; set; }
     }
 }

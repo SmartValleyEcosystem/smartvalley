@@ -422,6 +422,9 @@ namespace SmartValley.Data.SQL.Core
                         .Property(x => x.TokenTicker)
                         .IsRequired()
                         .HasMaxLength(6);
+
+            modelBuilder.Entity<EthereumTransaction>()
+                        .HasOne(x => x.AllotmentEvent);
         }
     }
 }

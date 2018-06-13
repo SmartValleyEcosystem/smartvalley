@@ -5,6 +5,7 @@ using NServiceBus;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Services;
+using SmartValley.Messages.Commands;
 using SmartValley.WebApi.AllotmentEvents.Requests;
 using SmartValley.WebApi.AllotmentEvents.Responses;
 using SmartValley.WebApi.Extensions;
@@ -32,15 +33,15 @@ namespace SmartValley.WebApi.AllotmentEvents
             return Ok(result.ToPartialCollectionResponse(AllotmentEventResponse.Create));
         }
 
-        public Task Publish(PublishAllotmentEventRequest publishRequest)
+        [HttpPost]
+        [Route("publish")]
+        //[Authorize(Roles = nameof(RoleType.Admin))]
+        public async Task<IActionResult> Publish([FromBody]PublishAllotmentEventRequest publishRequest)
         {
-            
-        }
-    }
+            var command = new PublishAllotment(publishRequest.AllotmentEventId, 1, publishRequest.TransactionHash);
 
-    public class PublishAllotmentEventRequest
-    {
-        public long AllotmentEventId { get; set; }
-        public string TransactionHash { get; set; }
+            await _messageSession.Send(command);
+            return NoContent();
+        }
     }
 }

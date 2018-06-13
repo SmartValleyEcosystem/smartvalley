@@ -7,6 +7,10 @@ namespace SmartValley.Domain.Services
     {
         Task<PagingCollection<AllotmentEvent>> QueryAsync(AllotmentEventsQuery queryAllotmentEventsRequest);
 
-        Task HandleSuccessPublishingTransaction(long id, AllotmentEventStatus status);
+        Task HandleSuccessPublishingTransactionAsync(long id);
+
+        Task HandlePendingPublishingTransactionAsync(long id, long userId, string hash);
+
+        Task HandleFailedPublishingTransactionAsync(long id);
     }
 }

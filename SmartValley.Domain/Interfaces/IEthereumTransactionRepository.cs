@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain.Interfaces
@@ -8,5 +9,9 @@ namespace SmartValley.Domain.Interfaces
         Task<EthereumTransaction> GetByHashAsync(string hash);
 
         Task SaveChangesAsync();
+
+        Task<IReadOnlyCollection<EthereumTransaction>> GetByAllotmentEventIdAsync(long allotmentEventId);
+
+        void Add(EthereumTransaction ethereumTransaction);
     }
 }
