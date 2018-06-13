@@ -17,7 +17,7 @@
       <p-checkbox class="box-checkbox" (onChange)="sortByStatus($event, 1)"></p-checkbox>
     </li>
   </ul>
-  <button class="material-btn">{{ 'AdminAllotmentEvents.AddNewAllotmentEvent' | translate }}</button>
+  <button (click)="showNewAllotmentEventModalAsync()" class="material-btn">{{ 'AdminAllotmentEvents.AddNewAllotmentEvent' | translate }}</button>
   <p-table class="admin-table" [value]="allotmentEvents"
            [lazy]="true" (onLazyLoad)="getAllotmentEvents($event)" [paginator]="true"
            [rows]="10" [totalRecords]="totalRecords" [loading]="loading">

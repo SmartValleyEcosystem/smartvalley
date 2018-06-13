@@ -25,6 +25,7 @@ import {SubscribeRequest} from '../components/common/subscribe-modal/subscribe-d
 import {FeedbackModalComponent} from '../components/common/feedback-modal/feedback-modal.component';
 import {FeedbackRequest} from '../components/common/feedback-modal/feedback';
 import {PrivateScoringModalComponent} from '../components/common/private-scoring-modal/private-scoring-modal.component';
+import {NewAllotmentEventModalComponent} from '../components/common/new-allotment-event-modal/new-allotment-event-modal.component';
 
 @Injectable()
 export class DialogService {
@@ -133,6 +134,10 @@ export class DialogService {
 
   public async showPrivateScoringApplicationDialog(): Promise<boolean> {
     return this.openModalAsync(PrivateScoringModalComponent, {});
+  }
+
+  public async showNewAllotmentEventDialog(): Promise<boolean> {
+      return this.openModalAsync(NewAllotmentEventModalComponent, {});
   }
 
   public async showSubscribeDialog(): Promise<SubscribeRequest> {

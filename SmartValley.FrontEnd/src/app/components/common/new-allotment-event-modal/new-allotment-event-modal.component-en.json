@@ -1,0 +1,14 @@
+{
+  "NewAllotmentEventModal": {
+    "Title": "New Allotment event",
+    "ProjectName": "Project name",
+    "AllotmentEventName": "Allotment Event Name",
+    "TokenAddress": "Token address",
+    "TokenTicker": "Token ticker",
+    "TokenDecimals": "Token decimals",
+    "FinishDate": "Finish date",
+    "ProjectNamePlaceholder": "My project",
+    "TokenAddressPlaceholder": "0x1111111111",
+    "Create": "Create"
+  }
+}

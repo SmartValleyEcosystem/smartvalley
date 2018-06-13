@@ -3,6 +3,8 @@ import {AllotmentEventsApiClient} from '../../../api/allotment-events/allotment-
 import {AllotmentEventResponse} from '../../../api/allotment-events/responses/allotment-event-response';
 import {AllotmentEventStatus} from '../../../api/allotment-events/allotment-event-status';
 import {LazyLoadEvent} from 'primeng/api';
+import {DialogService} from '../../../services/dialog-service';
+import {AllotmentEventService} from '../../../services/allotment-event/allotment-event.service';
 
 @Component({
   selector: 'app-admin-allotment-events',
@@ -18,7 +20,9 @@ export class AdminAllotmentEventsComponent implements OnInit {
   public offset = 0;
   public pageSize = 10;
 
-  constructor(private allotmentEventsApiClient: AllotmentEventsApiClient) { }
+  constructor(private allotmentEventsApiClient: AllotmentEventsApiClient,
+              private allotmentEventService: AllotmentEventService,
+              private dialogService: DialogService) { }
 
   async ngOnInit() {
     await this.loadAllotmentEventsAsync();
@@ -52,6 +56,13 @@ export class AdminAllotmentEventsComponent implements OnInit {
       const statusesCount = Object.keys(AllotmentEventStatus).length / 2;
       for (let i = 0; i < statusesCount; i++) {
         this.selectedStatuses[i] = false;
+      }
+  }
+
+  public async showNewAllotmentEventModalAsync() {
+      const allotmentEventCreated = await this.dialogService.showNewAllotmentEventDialog();
+      if (allotmentEventCreated) {
+          this.loadAllotmentEventsAsync();
       }
   }
 
