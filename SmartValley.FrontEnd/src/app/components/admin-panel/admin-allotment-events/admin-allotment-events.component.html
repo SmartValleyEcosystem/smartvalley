@@ -4,22 +4,22 @@
     <li>
       <span class="color-mark color-mark__created"></span>
       {{ 'AdminAllotmentEvents.Created' | translate }}
-      <p-checkbox class="box-checkbox" (onChange)="sortByStatus($event, 0)"></p-checkbox>
+      <p-checkbox class="box-checkbox" (onChange)="sortByStatusAsync($event, AllotmentEventStatus.Created)"></p-checkbox>
     </li>
     <li>
       <span class="color-mark"></span>
       {{ 'AdminAllotmentEvents.Finished' | translate }}
-      <p-checkbox class="box-checkbox" (onChange)="sortByStatus($event, 2)"></p-checkbox>
+      <p-checkbox class="box-checkbox" (onChange)="sortByStatusAsync($event, AllotmentEventStatus.Finished)"></p-checkbox>
     </li>
     <li>
       <span class="color-mark color-mark__in-progress"></span>
       {{ 'AdminAllotmentEvents.InProgress' | translate }}
-      <p-checkbox class="box-checkbox" (onChange)="sortByStatus($event, 1)"></p-checkbox>
+      <p-checkbox class="box-checkbox" (onChange)="sortByStatusAsync($event, AllotmentEventStatus.InProgress)"></p-checkbox>
     </li>
   </ul>
   <button (click)="showNewAllotmentEventModalAsync()" class="material-btn">{{ 'AdminAllotmentEvents.AddNewAllotmentEvent' | translate }}</button>
   <p-table class="admin-table" [value]="allotmentEvents"
-           [lazy]="true" (onLazyLoad)="getAllotmentEvents($event)" [paginator]="true"
+           [lazy]="true" (onLazyLoad)="getAllotmentEventsAsync($event)" [paginator]="true"
            [rows]="10" [totalRecords]="totalRecords" [loading]="loading">
     <ng-template pTemplate="header" let-columns>
       <tr class="list-row list-row__header">

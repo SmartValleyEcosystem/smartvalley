@@ -11,6 +11,8 @@ namespace SmartValley.Domain
 
         public string TokenContractAddress { get; set; }
 
+        public string EventContractAddress { get; set; }
+
         public DateTimeOffset? StartDate { get; set; }
 
         public DateTimeOffset? FinishDate { get; set; }

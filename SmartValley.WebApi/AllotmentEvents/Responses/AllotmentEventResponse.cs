@@ -19,6 +19,8 @@ namespace SmartValley.WebApi.AllotmentEvents.Responses
 
         public string TokenContractAddress { get; set; }
 
+        public string EventContractAddress { get; set; }
+
         public DateTimeOffset? StartDate { get; set; }
 
         public DateTimeOffset? FinishDate { get; set; }
@@ -36,6 +38,7 @@ namespace SmartValley.WebApi.AllotmentEvents.Responses
                        ProjectId = allotmentEvent.ProjectId,
                        Status = allotmentEvent.Status,
                        TokenContractAddress = allotmentEvent.TokenContractAddress,
+                       EventContractAddress = allotmentEvent.EventContractAddress,
                        StartDate = allotmentEvent.StartDate,
                        FinishDate = allotmentEvent.FinishDate,
                        TokenDecimals = allotmentEvent.TokenDecimals,
