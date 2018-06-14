@@ -28,7 +28,6 @@ export class ConfirmEmailComponent implements OnInit {
   public async ngOnInit() {
     const token = this.activatedRoute.snapshot.params.token;
     const isChangeEmail = this.activatedRoute.snapshot.queryParams.changeEmail;
-    console.log(isChangeEmail);
     try {
       await this.authenticationApiClient.confirmEmailAsync(<ConfirmEmailRequest>{
         token: token

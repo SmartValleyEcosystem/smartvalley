@@ -47,7 +47,7 @@
         <td class="list-item">
           <span class="edit-icon" title="{{ 'AdminExpertList.Edit' | translate }}"></span>
           <img class="delete-icon" src="/assets/img/controls/delete.svg" alt="{{ 'AdminPanel.Delete' | translate }}">
-          <span class="play-icon" title="{{ 'AdminExpertList.Edit' | translate }}"></span>
+          <span (click)="showStartAllotmentEventModal(rowData)" class="play-icon" title="{{ 'AdminExpertList.Edit' | translate }}"></span>
         </td>
       </tr>
     </ng-template>

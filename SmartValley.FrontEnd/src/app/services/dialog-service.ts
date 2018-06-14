@@ -25,7 +25,9 @@ import {SubscribeRequest} from '../components/common/subscribe-modal/subscribe-d
 import {FeedbackModalComponent} from '../components/common/feedback-modal/feedback-modal.component';
 import {FeedbackRequest} from '../components/common/feedback-modal/feedback';
 import {PrivateScoringModalComponent} from '../components/common/private-scoring-modal/private-scoring-modal.component';
+import {StartAllotmentEventModalComponent} from '../components/common/start-allotment-event-modal/start-allotment-event-modal.component';
 import {NewAllotmentEventModalComponent} from '../components/common/new-allotment-event-modal/new-allotment-event-modal.component';
+import {AllotmentEventResponse} from '../api/allotment-events/responses/allotment-event-response';
 
 @Injectable()
 export class DialogService {
@@ -142,6 +144,10 @@ export class DialogService {
 
   public async showSubscribeDialog(): Promise<SubscribeRequest> {
     return this.openModalAsync(SubscribeModalComponent, {});
+  }
+
+  public async showStartAllotmentEventDialog(allotmenEventData: AllotmentEventResponse): Promise<boolean> {
+    return this.openModalAsync(StartAllotmentEventModalComponent, allotmenEventData);
   }
 
   public async showFeedbackDialog(): Promise<FeedbackRequest> {
