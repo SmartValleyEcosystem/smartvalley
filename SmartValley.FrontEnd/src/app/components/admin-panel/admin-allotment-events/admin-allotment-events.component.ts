@@ -62,6 +62,10 @@ export class AdminAllotmentEventsComponent implements OnInit {
       }
   }
 
+  public showStartAllotmentEventModal(allotmenEventData: AllotmentEventResponse) {
+      this.dialogService.showStartAllotmentEventDialog(allotmenEventData);
+  }
+
   public async showNewAllotmentEventModalAsync() {
       const allotmentEventCreated = await this.dialogService.showNewAllotmentEventDialog();
       if (allotmentEventCreated) {

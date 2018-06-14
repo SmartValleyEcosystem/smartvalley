@@ -150,6 +150,7 @@ import {LoggingApiClient} from './api/logging/logging-api-client';
 import {NewAllotmentEventModalComponent} from './components/common/new-allotment-event-modal/new-allotment-event-modal.component';
 import {AdminAllotmentEventsComponent} from './components/admin-panel/admin-allotment-events/admin-allotment-events.component';
 import {AllotmentEventsApiClient} from './api/allotment-events/allotment-events-api-client';
+import {StartAllotmentEventModalComponent} from './components/common/start-allotment-event-modal/start-allotment-event-modal.component';
 import {AllotmentEventService} from './services/allotment-event/allotment-event.service';
 import {AllotmentEventsManagerContractClient} from './services/contract-clients/allotment-events-manager-contract-client';
 
@@ -225,7 +226,8 @@ import {AllotmentEventsManagerContractClient} from './services/contract-clients/
     AdminProjectsListComponent,
     EditScoringComponent,
     PrivateScoringModalComponent,
-    AdminAllotmentEventsComponent
+    AdminAllotmentEventsComponent,
+    StartAllotmentEventModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -244,7 +246,8 @@ import {AllotmentEventsManagerContractClient} from './services/contract-clients/
     ChangeStatusModalComponent,
     SubscribeModalComponent,
     FeedbackModalComponent,
-    PrivateScoringModalComponent
+    PrivateScoringModalComponent,
+    StartAllotmentEventModalComponent
   ],
   imports: [
     FileUploadModule,

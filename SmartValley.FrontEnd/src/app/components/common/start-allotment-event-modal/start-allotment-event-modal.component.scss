@@ -1,0 +1,36 @@
+.control-cols {
+  display: flex;
+}
+.control-label {
+  margin-bottom: 5px;
+}
+.control-row {
+  margin-bottom: 20px;
+}
+input:disabled {
+  width: 320px;
+  background: #EEEDF5;
+  border: 1px solid #EEEDF5;
+  box-sizing: border-box;
+  border-radius: 36px;
+}
+label, h2, h3 {
+  font-family: Roboto-Medium;
+  font-weight: 500;
+  font-size: 16px;
+}
+h2{
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+h3 {
+  font-size: 24px;
+  margin-bottom: 30px;
+  color: #828282;
+}
+.first-col {
+  margin-right: 40px;
+}
+.start-btn-wrapper {
+  text-align: center;
+}
