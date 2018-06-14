@@ -4,6 +4,9 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SelectItem} from 'primeng/api';
 import {ProjectApiClient} from '../../../api/project/project-api-client';
 import {AllotmentEventService} from '../../../services/allotment-event/allotment-event.service';
+import {ProjectQuery} from '../../../api/project/project-query';
+import {ProjectsOrderBy} from '../../../api/application/projects-order-by.enum';
+import {SortDirection} from '../../../api/sort-direction.enum';
 
 @Component({
     selector: 'app-new-allotment-event-modal',
@@ -13,6 +16,7 @@ import {AllotmentEventService} from '../../../services/allotment-event/allotment
 export class NewAllotmentEventModalComponent implements OnInit {
     public form: FormGroup;
     public allowedProjects: SelectItem[] = [];
+    public isFormSubmited = false;
 
     constructor(private formBuilder: FormBuilder,
                 private allotmentEventService: AllotmentEventService,
@@ -27,17 +31,28 @@ export class NewAllotmentEventModalComponent implements OnInit {
             tokenAddress: ['', [Validators.required]],
             ticker: ['', [Validators.required]],
             tokenDecimals: ['', [Validators.required]],
-            finishDate: ['', [Validators.required]],
+            finishDate: [''],
         });
 
-        const myProjectResponse = await this.projectApiClient.getMyProjectAsync();
-        this.allowedProjects.push({
-            label: myProjectResponse.name,
-            value: myProjectResponse.id
+        const projectResponse = await this.projectApiClient.getAsync(<ProjectQuery>{
+            offset: 0,
+            count: 100,
+            onlyScored: false,
+            orderBy: ProjectsOrderBy.CreationDate,
+            direction: SortDirection.Descending
         });
+
+        const projects = projectResponse.items;
+        for (let project of projects) {
+            this.allowedProjects.push({
+                label: project.name,
+                value: project.id
+            });
+        }
     }
 
     public async submitFormAsync() {
+        this.isFormSubmited = true;
         if (this.form.valid) {
             await this.allotmentEventService.createAsync(this.form.value['eventName'],
                 this.form.value['tokenAddress'],

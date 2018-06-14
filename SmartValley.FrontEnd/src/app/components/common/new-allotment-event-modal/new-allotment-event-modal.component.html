@@ -1,7 +1,7 @@
-<div class="dialog">
+<div class="dialog new-allotment-event">
   <button class="dialog-close" mat-dialog-close></button>
   <h2>{{ 'NewAllotmentEventModal.Title' | translate }}</h2>
-  <form [formGroup]="form" (ngSubmit)="submitFormAsync()">
+  <form [class.submitted]="isFormSubmited" [formGroup]="form" (ngSubmit)="submitFormAsync()">
     <div class="control-row">
       <p class="control-label">
         <label for="project">{{ 'NewAllotmentEventModal.Title' | translate }}</label>

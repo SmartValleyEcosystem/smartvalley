@@ -4,10 +4,12 @@
 .material-btn {
   border: none;
   font-family: Roboto-Medium;
+  font-weight: bold;
   font-size: 24px;
   color: #5D49F2;
   background: #fff;
   cursor: pointer;
+  padding: 9px 20px;
   text-transform: uppercase;
 }
 
@@ -230,6 +232,10 @@ input.ng-valid {
 .input-component.ng-dirty.ng-invalid .ui-inputtext.input-date,
 .input-component.ng-dirty.ng-invalid .input,
 quill-editor.ng-dirty.ng-invalid .ql-container{
+  border-color: red !important;
+}
+
+.new-allotment-event .submitted .input-component.ng-invalid input.input {
   border-color: red !important;
 }
 
