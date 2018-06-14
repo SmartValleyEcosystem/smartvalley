@@ -5,5 +5,7 @@
         public string TransactionHash { get; set; }
 
         public long ProjectId { get; set; }
+
+        public long UserId { get; set; }
     }
 }

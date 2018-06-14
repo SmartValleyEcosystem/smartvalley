@@ -5,6 +5,7 @@ using NServiceBus;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 using SmartValley.Messages.Commands;
+using SmartValley.WebApi.Extensions;
 using SmartValley.WebApi.Scorings.Requests;
 using SmartValley.WebApi.Scorings.Responses;
 using SmartValley.WebApi.WebApi;
@@ -41,7 +42,8 @@ namespace SmartValley.WebApi.Scorings
             var command = new StartScoring
                           {
                               ProjectId = request.ProjectId,
-                              TransactionHash = request.TransactionHash
+                              TransactionHash = request.TransactionHash,
+                              UserId = User.GetUserId()
                           };
 
             await _messageSession.SendLocal(command);

@@ -9,28 +9,23 @@ namespace SmartValley.Domain.Services
     public class ScoringApplicationService : IScoringApplicationService
     {
         private readonly IScoringApplicationRepository _scoringApplicationRepository;
-        private readonly IProjectRepository _projectRepository;
-        private readonly IClock _clock;
+        private readonly IEthereumTransactionService _ethereumTransactionService;
 
-        public ScoringApplicationService(IScoringApplicationRepository scoringApplicationRepository, IProjectRepository projectRepository, IClock clock)
+        public ScoringApplicationService(
+            IScoringApplicationRepository scoringApplicationRepository,
+            IEthereumTransactionService ethereumTransactionService)
         {
             _scoringApplicationRepository = scoringApplicationRepository;
-            _clock = clock;
-            _projectRepository = projectRepository;
+            _ethereumTransactionService = ethereumTransactionService;
         }
 
-        public async Task SetScoringTransactionAsync(long projectId, string transactionHash)
+        public async Task SetScoringTransactionAsync(long projectId, string transactionHash, long userId)
         {
             var application = await _scoringApplicationRepository.GetByProjectIdAsync(projectId) ?? throw new AppErrorException(ErrorCode.ScoringApplicationNotFound);
-            var project = await _projectRepository.GetByIdAsync(projectId);
-            var transaction = new EthereumTransaction(
-                project.AuthorId,
-                transactionHash,
-                EthereumTransactionType.StartScoring,
-                EthereumTransactionStatus.InProgress,
-                _clock.UtcNow);
+            var transactionId = await _ethereumTransactionService.StartAsync(transactionHash, userId, EthereumTransactionType.StartScoring);
 
-            application.SetScoringStartTransaction(transaction);
+            application.ScoringStartTransactionId = transactionId;
+
             await _scoringApplicationRepository.SaveChangesAsync();
         }
     }

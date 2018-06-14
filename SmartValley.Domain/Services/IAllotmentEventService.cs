@@ -6,7 +6,11 @@ namespace SmartValley.Domain.Services
 {
     public interface IAllotmentEventService
     {
-        Task<PagingCollection<AllotmentEvent>> QueryAsync(AllotmentEventsQuery queryAllotmentEventsRequest);
+        Task<PagingCollection<AllotmentEvent>> QueryAsync(AllotmentEventsQuery query);
+
+        Task<AllotmentEvent> GetByIdAsync(long id);
+
+        Task<long> CreateAsync(string name, string tokenContractAddress, int tokenDecimals, string tokenTicker, long projectId, DateTimeOffset? finishDate);
 
         Task FinishPublishingAsync(long id);
 
@@ -14,6 +18,6 @@ namespace SmartValley.Domain.Services
 
         Task StopPublishingAsync(long id);
 
-        Task<long> CreateAsync(string name, string tokenContractAddress, int totalDecimals, string tokenTicker, long projectId, DateTimeOffset? finishDate);
+        Task UpdateAsync(long id, string name, string tokenContractAddress, int tokenDecimals, string tokenTicker, DateTimeOffset? finishDate);
     }
 }
