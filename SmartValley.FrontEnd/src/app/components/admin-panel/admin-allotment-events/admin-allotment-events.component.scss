@@ -1,4 +1,5 @@
 @import "./../../../../styles/pallete";
+@import "./../../../../styles/fonts";
 
 td {
   overflow: hidden;
@@ -25,6 +26,7 @@ tr.status-1 {
   list-style: none;
   color: $admin-text;
   margin-bottom: 20px;
+  font-family: $font-pt;
   li {
     margin-right: 30px;
     &:first-child {

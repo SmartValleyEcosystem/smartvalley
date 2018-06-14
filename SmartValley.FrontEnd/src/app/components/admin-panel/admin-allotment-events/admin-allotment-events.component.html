@@ -23,11 +23,10 @@
            [rows]="10" [totalRecords]="totalRecords" [loading]="loading">
     <ng-template pTemplate="header" let-columns>
       <tr class="list-row list-row__header">
-        <th width="40px" class="list-item">{{ 'AdminAllotmentEvents.ID' | translate }}</th>
-        <th class="list-item">{{ 'AdminAllotmentEvents.ProjectId' | translate }}</th>
+        <th width="70px" class="list-item">{{ 'AdminAllotmentEvents.ID' | translate }}</th>
+        <th width="78px" class="list-item">{{ 'AdminAllotmentEvents.ProjectId' | translate }}</th>
         <th class="list-item">{{ 'AdminAllotmentEvents.AllotmentEvent' | translate }}</th>
         <th class="list-item">{{ 'AdminAllotmentEvents.TokenContractAddress' | translate }}</th>
-        <th class="list-item">{{ 'AdminAllotmentEvents.EventContractAddress' | translate }}</th>
         <th class="list-item">{{ 'AdminAllotmentEvents.EventStartDate' | translate }}</th>
         <th class="list-item">{{ 'AdminAllotmentEvents.EventFinishDate' | translate }}</th>
         <th class="list-item">{{ 'AdminAllotmentEvents.TotalTokens' | translate }}</th>
@@ -40,9 +39,8 @@
         <td class="list-item"><a class="link" [routerLink]="getProjectLink(rowData['projectId'])">{{rowData['projectId']}}</a></td>
         <td class="list-item">{{ rowData['name'] }}</td>
         <td class="list-item">{{ rowData['tokenContractAddress'] }}</td>
-        <td class="list-item">{{ rowData['eventContractAddress'] }}</td>
-        <td class="list-item">{{ rowData['startDate'] | date: 'yyyy-MM-dd' }}</td>
-        <td class="list-item">{{ rowData['finishDate'] | date: 'yyyy-MM-dd' }}</td>
+        <td class="list-item">{{ rowData['startDate'] | date: 'dd.MM.yy HH:mm' }}</td>
+        <td class="list-item">{{ rowData['finishDate'] | date: 'dd.MM.yy HH:mm' }}</td>
         <td class="list-item">{{(rowData['totalTokens'] |dashIfEmpty) + '&nbsp;' + rowData['tokenTicker'] }}</td>
         <td class="list-item">
           <span class="edit-icon" title="{{ 'AdminExpertList.Edit' | translate }}"></span>
