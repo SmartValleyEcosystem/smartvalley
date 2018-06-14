@@ -25,6 +25,7 @@ export class AdminAllotmentEventsComponent {
   public pageSize = 10;
 
   constructor(private allotmentEventsApiClient: AllotmentEventsApiClient,
+              private allotmentEventService: AllotmentEventService,
               private router: Router,
               private dialogService: DialogService) {
   }
@@ -71,6 +72,20 @@ export class AdminAllotmentEventsComponent {
     return decodeURIComponent(
       this.router.createUrlTree([Paths.Project + '/' + id]).toString()
     );
+  }
+
+  public async showEditAllotmentModal(allotmentEvent: AllotmentEventResponse) {
+      const editModal = await this.dialogService.showEditAllotmentEventDialog(allotmentEvent);
+      if (editModal) {
+          await this.allotmentEventService.editAsync(
+              allotmentEvent.name,
+              allotmentEvent.tokenContractAddress,
+              allotmentEvent.tokenDecimals,
+              allotmentEvent.tokenTicker,
+              allotmentEvent.id,
+              allotmentEvent.finishDate;
+          );
+      }
   }
 
 }
