@@ -153,6 +153,7 @@ import {AllotmentEventsApiClient} from './api/allotment-events/allotment-events-
 import {StartAllotmentEventModalComponent} from './components/common/start-allotment-event-modal/start-allotment-event-modal.component';
 import {AllotmentEventService} from './services/allotment-event/allotment-event.service';
 import {AllotmentEventsManagerContractClient} from './services/contract-clients/allotment-events-manager-contract-client';
+import {Erc223ContractClient} from './services/contract-clients/erc223-contract-client';
 
 @NgModule({
   declarations: [
@@ -341,6 +342,7 @@ import {AllotmentEventsManagerContractClient} from './services/contract-clients/
     ShouldBeAuthenticatedGuard,
     ShouldBeAdminGuard,
     GuardFactory,
+    Erc223ContractClient,
     CompositeGuard,
     ShouldNotBeExpertGuard,
     OfferStatusGuard,
