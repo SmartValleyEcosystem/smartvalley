@@ -8,6 +8,7 @@ import {ProjectQuery} from '../../../api/project/project-query';
 import {ProjectsOrderBy} from '../../../api/application/projects-order-by.enum';
 import {SortDirection} from '../../../api/sort-direction.enum';
 import {Erc223ContractClient} from '../../../services/contract-clients/erc223-contract-client';
+import {SVValidators} from '../../../utils/sv-validators';
 
 @Component({
   selector: 'app-new-allotment-event-modal',
@@ -29,11 +30,11 @@ export class NewAllotmentEventModalComponent implements OnInit {
   async ngOnInit() {
     this.form = this.formBuilder.group({
       project: ['', [Validators.required]],
-      eventName: ['', [Validators.required]],
+      eventName: ['', [Validators.required, Validators.maxLength(40)]],
       tokenAddress: ['', [Validators.required, Validators.maxLength(42)]],
-      ticker: ['', [Validators.required]],
-      tokenDecimals: ['', [Validators.required, Validators.maxLength(6)]],
-      finishDate: [''],
+      ticker: ['', [Validators.required, Validators.maxLength(6)]],
+      tokenDecimals: ['', [Validators.required, Validators.min(0), Validators.max(18)]],
+      finishDate: ['', [SVValidators.checkFutureDate]],
     });
 
     const projectResponse = await this.projectApiClient.getAsync(<ProjectQuery>{
