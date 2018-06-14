@@ -4,20 +4,25 @@
     <li>
       <span class="color-mark color-mark__created"></span>
       {{ 'AdminAllotmentEvents.Created' | translate }}
-      <p-checkbox class="box-checkbox" (onChange)="sortByStatusAsync($event, AllotmentEventStatus.Created)"></p-checkbox>
+      <p-checkbox class="box-checkbox"
+                  (onChange)="sortByStatusAsync($event, AllotmentEventStatus.Created)"></p-checkbox>
     </li>
     <li>
       <span class="color-mark"></span>
       {{ 'AdminAllotmentEvents.Finished' | translate }}
-      <p-checkbox class="box-checkbox" (onChange)="sortByStatusAsync($event, AllotmentEventStatus.Finished)"></p-checkbox>
+      <p-checkbox class="box-checkbox"
+                  (onChange)="sortByStatusAsync($event, AllotmentEventStatus.Finished)"></p-checkbox>
     </li>
     <li>
       <span class="color-mark color-mark__in-progress"></span>
       {{ 'AdminAllotmentEvents.InProgress' | translate }}
-      <p-checkbox class="box-checkbox" (onChange)="sortByStatusAsync($event, AllotmentEventStatus.InProgress)"></p-checkbox>
+      <p-checkbox class="box-checkbox"
+                  (onChange)="sortByStatusAsync($event, AllotmentEventStatus.InProgress)"></p-checkbox>
     </li>
   </ul>
-  <button (click)="showNewAllotmentEventModalAsync()" class="material-btn">{{ 'AdminAllotmentEvents.AddNewAllotmentEvent' | translate }}</button>
+  <button (click)="showNewAllotmentEventModalAsync()" class="material-btn">{{
+    'AdminAllotmentEvents.AddNewAllotmentEvent' | translate }}
+  </button>
   <p-table class="admin-table" [value]="allotmentEvents"
            [lazy]="true" (onLazyLoad)="getAllotmentEventsAsync($event)" [paginator]="true"
            [rows]="10" [totalRecords]="totalRecords" [loading]="loading">
@@ -36,16 +41,18 @@
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr class="list-row" [class]="'status-' + rowData['status']">
         <td class="list-item">{{ rowData['id'] }}</td>
-        <td class="list-item"><a class="link" [routerLink]="getProjectLink(rowData['projectId'])">{{rowData['projectId']}}</a></td>
+        <td class="list-item"><a class="link" [routerLink]="getProjectLink(rowData['projectId'])">{{rowData['projectId']}}</a>
+        </td>
         <td class="list-item">{{ rowData['name'] }}</td>
         <td class="list-item">{{ rowData['tokenContractAddress'] }}</td>
         <td class="list-item">{{ rowData['startDate'] | date: 'dd.MM.yy HH:mm' }}</td>
         <td class="list-item">{{ rowData['finishDate'] | date: 'dd.MM.yy HH:mm' }}</td>
-        <td class="list-item">{{(rowData['totalTokens'] |dashIfEmpty) + '&nbsp;' + rowData['tokenTicker'] }}</td>
+        <td class="list-item"> {{getTotalTokens(rowData['eventContractAddress'] |dashIfEmpty) }}</td>
         <td class="list-item">
           <span (click)="showEditAllotmentModal(rowData)" class="edit-icon" title="{{ 'AdminExpertList.Edit' | translate }}"></span>
           <img class="delete-icon" src="/assets/img/controls/delete.svg" alt="{{ 'AdminPanel.Delete' | translate }}">
-          <span (click)="showStartAllotmentEventModal(rowData)" class="play-icon" title="{{ 'AdminExpertList.Edit' | translate }}"></span>
+          <span (click)="showStartAllotmentEventModal(rowData)" class="play-icon"
+                title="{{ 'AdminExpertList.Edit' | translate }}"></span>
         </td>
       </tr>
     </ng-template>

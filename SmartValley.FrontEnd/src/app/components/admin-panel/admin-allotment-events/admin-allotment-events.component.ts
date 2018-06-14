@@ -8,6 +8,7 @@ import {AllotmentEventService} from '../../../services/allotment-event/allotment
 import {GetAllotmentEventsRequest} from '../../../api/allotment-events/request/get-allotment-events-request';
 import {Paths} from '../../../paths';
 import {Router} from '@angular/router';
+import {Erc223ContractClient} from '../../../services/contract-clients/erc223-contract-client';
 
 @Component({
   selector: 'app-admin-allotment-events',
@@ -24,10 +25,13 @@ export class AdminAllotmentEventsComponent {
   public offset = 0;
   public pageSize = 10;
 
+  public totalTokens: { key: string, value: number }[] = [];
+
   constructor(private allotmentEventsApiClient: AllotmentEventsApiClient,
               private allotmentEventService: AllotmentEventService,
               private router: Router,
-              private dialogService: DialogService) {
+              private dialogService: DialogService,
+              private erc223ContractClient: Erc223ContractClient) {
   }
 
   public async sortByStatusAsync(checked: boolean, status: AllotmentEventStatus): Promise<void> {
@@ -48,6 +52,13 @@ export class AdminAllotmentEventsComponent {
     };
     const allotmentEventsRequest = await this.allotmentEventsApiClient.getAllotmentEvents(getAllotmentEventsRequest);
     this.allotmentEvents = allotmentEventsRequest.items;
+    for (const event of this.allotmentEvents) {
+      if (event.eventContractAddress === null) {
+        continue;
+      }
+      const total = await this.erc223ContractClient.getTokenBalanceAsync(event.tokenContractAddress, event.eventContractAddress);
+      this.totalTokens.push({key: event.eventContractAddress, value: total});
+    }
     this.totalRecords = allotmentEventsRequest.totalCount;
     this.loading = false;
   }
@@ -64,8 +75,19 @@ export class AdminAllotmentEventsComponent {
     }
   }
 
+  public getTotalTokens(eventAddress: string): number | null {
+    if (this.totalTokens.length === 0) {
+      return null;
+    }
+    const total = this.totalTokens.firstOrDefault(i => i.key === eventAddress);
+    if (total === null) {
+      return null;
+    }
+    return total.value;
+  }
+
   public showStartAllotmentEventModal(allotmenEventData: AllotmentEventResponse) {
-      this.dialogService.showStartAllotmentEventDialog(allotmenEventData);
+    this.dialogService.showStartAllotmentEventDialog(allotmenEventData);
   }
 
   public getProjectLink(id) {
