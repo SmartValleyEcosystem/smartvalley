@@ -13,6 +13,8 @@ namespace SmartValley.WebApi.AllotmentEvents.Responses
 
         public string Name { get; set; }
 
+        public long ProjectId { get; set; }
+
         public AllotmentEventStatus Status { get; set; }
 
         public string TokenContractAddress { get; set; }
@@ -31,6 +33,7 @@ namespace SmartValley.WebApi.AllotmentEvents.Responses
                    {
                        Id = allotmentEvent.Id,
                        Name = allotmentEvent.Name,
+                       ProjectId = allotmentEvent.ProjectId,
                        Status = allotmentEvent.Status,
                        TokenContractAddress = allotmentEvent.TokenContractAddress,
                        StartDate = allotmentEvent.StartDate,
