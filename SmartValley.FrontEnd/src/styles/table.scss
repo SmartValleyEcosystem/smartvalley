@@ -48,13 +48,21 @@
 }
 
 .admin-table {
+  .link {
+    color: #5E478B;
+    text-decoration: none;
+  }
   .ui-table-wrapper table {
     background: $background-light;
+  }
+  .ui-table-wrapper table td {
+    padding: 18px 0 18px 20px !important;
   }
   .ui-table-wrapper table th {
     background: $background-light;
     font-size: 14px;
     color: $background-dark;
+    padding: 22px 0 16px 20px !important;
   }
   .ui-table-wrapper table tr {
     color: $background-dark;

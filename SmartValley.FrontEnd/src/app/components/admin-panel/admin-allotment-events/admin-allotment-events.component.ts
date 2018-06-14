@@ -5,6 +5,8 @@ import {AllotmentEventStatus} from '../../../api/allotment-events/allotment-even
 import {LazyLoadEvent} from 'primeng/api';
 import {DialogService} from '../../../services/dialog-service';
 import {AllotmentEventService} from '../../../services/allotment-event/allotment-event.service';
+import {Paths} from '../../../paths';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-admin-allotment-events',
@@ -22,7 +24,8 @@ export class AdminAllotmentEventsComponent implements OnInit {
 
   constructor(private allotmentEventsApiClient: AllotmentEventsApiClient,
               private allotmentEventService: AllotmentEventService,
-              private dialogService: DialogService) { }
+              private dialogService: DialogService,
+              private router: Router) { }
 
   async ngOnInit() {
     await this.loadAllotmentEventsAsync();
@@ -65,5 +68,11 @@ export class AdminAllotmentEventsComponent implements OnInit {
           this.loadAllotmentEventsAsync();
       }
   }
+
+    public getProjectLink(id) {
+        return decodeURIComponent(
+            this.router.createUrlTree([Paths.Project + '/' + id]).toString()
+        );
+    }
 
 }
