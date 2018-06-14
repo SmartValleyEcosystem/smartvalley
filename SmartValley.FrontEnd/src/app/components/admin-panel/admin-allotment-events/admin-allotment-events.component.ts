@@ -22,10 +22,10 @@ export class AdminAllotmentEventsComponent implements OnInit {
   public offset = 0;
   public pageSize = 10;
 
-  constructor(private allotmentEventsApiClient: AllotmentEventsApiClient,
+  constructor(private router: Router,
+              private allotmentEventsApiClient: AllotmentEventsApiClient,
               private allotmentEventService: AllotmentEventService,
-              private dialogService: DialogService,
-              private router: Router) { }
+              private dialogService: DialogService) { }
 
   async ngOnInit() {
     await this.loadAllotmentEventsAsync();
@@ -69,10 +69,9 @@ export class AdminAllotmentEventsComponent implements OnInit {
       }
   }
 
-    public getProjectLink(id) {
-        return decodeURIComponent(
-            this.router.createUrlTree([Paths.Project + '/' + id]).toString()
-        );
-    }
-
+  public getProjectLink(id) {
+    return decodeURIComponent(
+      this.router.createUrlTree([Paths.Project + '/' + id]).toString()
+    );
+  }
 }

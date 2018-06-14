@@ -50,7 +50,9 @@
 .admin-table {
   .link {
     color: #5E478B;
-    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
   }
   .ui-table-wrapper table {
     background: $background-light;
