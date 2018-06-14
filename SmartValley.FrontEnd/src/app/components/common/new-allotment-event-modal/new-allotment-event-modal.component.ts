@@ -30,9 +30,9 @@ export class NewAllotmentEventModalComponent implements OnInit {
     this.form = this.formBuilder.group({
       project: ['', [Validators.required]],
       eventName: ['', [Validators.required]],
-      tokenAddress: ['', [Validators.required]],
+      tokenAddress: ['', [Validators.required, Validators.maxLength(42)]],
       ticker: ['', [Validators.required]],
-      tokenDecimals: ['', [Validators.required]],
+      tokenDecimals: ['', [Validators.required, Validators.maxLength(6)]],
       finishDate: [''],
     });
 
