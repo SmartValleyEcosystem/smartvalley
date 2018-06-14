@@ -16,6 +16,7 @@ import {SortDirection} from '../../../api/sort-direction.enum';
 export class NewAllotmentEventModalComponent implements OnInit {
     public form: FormGroup;
     public allowedProjects: SelectItem[] = [];
+    public isFormSubmited = false;
 
     constructor(private formBuilder: FormBuilder,
                 private allotmentEventService: AllotmentEventService,
@@ -30,7 +31,7 @@ export class NewAllotmentEventModalComponent implements OnInit {
             tokenAddress: ['', [Validators.required]],
             ticker: ['', [Validators.required]],
             tokenDecimals: ['', [Validators.required]],
-            finishDate: ['', [Validators.required]],
+            finishDate: [''],
         });
 
         const projectResponse = await this.projectApiClient.getAsync(<ProjectQuery>{
@@ -51,6 +52,7 @@ export class NewAllotmentEventModalComponent implements OnInit {
     }
 
     public async submitFormAsync() {
+        this.isFormSubmited = true;
         if (this.form.valid) {
             await this.allotmentEventService.createAsync(this.form.value['eventName'],
                 this.form.value['tokenAddress'],

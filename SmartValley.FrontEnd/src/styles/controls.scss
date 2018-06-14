@@ -233,6 +233,10 @@ quill-editor.ng-dirty.ng-invalid .ql-container{
   border-color: red !important;
 }
 
+.new-allotment-event .submitted .input-component.ng-invalid input.input {
+  border-color: red !important;
+}
+
 .input-component.ng-pristine.ng-invalid.ng-untouched.ng-dirty .input-switch__on,
 .input-component.ng-pristine.ng-invalid.ng-untouched.ng-dirty .input-switch__off {
   border-color: red !important;
