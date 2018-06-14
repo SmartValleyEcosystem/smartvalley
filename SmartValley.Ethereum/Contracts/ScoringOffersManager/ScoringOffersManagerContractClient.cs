@@ -32,11 +32,9 @@ namespace SmartValley.Ethereum.Contracts.ScoringOffersManager
                                 projectExternalId.ToBigInteger());
 
             return new ScoringInfo(projectExternalId,
-                                   offersDto.Experts.Select((e, i) => new ScoringOfferInfo(
-                                                      e,
-                                                      (AreaType)offersDto.Areas[i],
-                                                      (ScoringOfferStatus)offersDto.States[i]
-                                                  )).ToArray(),
+                                   offersDto.Experts
+                                            .Select((e, i) => new ScoringOfferInfo(e, (AreaType) offersDto.Areas[i], (ScoringOfferStatus) offersDto.States[i]))
+                                            .ToArray(),
                                    ToDateTimeOffset(offersDto.AcceptingDeadline),
                                    ToDateTimeOffset(offersDto.ScoringDeadline)
             );

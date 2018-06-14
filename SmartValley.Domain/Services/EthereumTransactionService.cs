@@ -10,10 +10,23 @@ namespace SmartValley.Domain.Services
     public class EthereumTransactionService : IEthereumTransactionService
     {
         private readonly IEthereumTransactionRepository _repository;
+        private readonly IClock _clock;
 
-        public EthereumTransactionService(IEthereumTransactionRepository repository)
+        public EthereumTransactionService(IEthereumTransactionRepository repository, IClock clock)
         {
             _repository = repository;
+            _clock = clock;
+        }
+
+        public async Task<long> StartAsync(string hash, long userId, EthereumTransactionType type, long? allotmentEventId = null)
+        {
+            var transaction = new EthereumTransaction(userId, hash, type, _clock.UtcNow, allotmentEventId);
+
+            _repository.Add(transaction);
+
+            await _repository.SaveChangesAsync();
+
+            return transaction.Id;
         }
 
         public async Task CompleteAsync(string hash)
@@ -34,13 +47,7 @@ namespace SmartValley.Domain.Services
             await _repository.SaveChangesAsync();
         }
 
-        public async Task AddAsync(EthereumTransaction ethereumTransaction)
-        {
-            _repository.Add(ethereumTransaction);
-            await _repository.SaveChangesAsync();
-        }
-
-        public async Task<IReadOnlyCollection<EthereumTransaction>> GetByAllotmentEventIdAsync(long allotmentId) 
+        public async Task<IReadOnlyCollection<EthereumTransaction>> GetByAllotmentEventIdAsync(long allotmentId)
             => await _repository.GetByAllotmentEventIdAsync(allotmentId);
     }
 }
