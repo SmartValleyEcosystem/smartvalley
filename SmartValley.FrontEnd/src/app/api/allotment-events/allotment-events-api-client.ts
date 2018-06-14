@@ -14,22 +14,18 @@ export class AllotmentEventsApiClient extends BaseApiClient {
   }
 
   public async getAllotmentEvents(params: GetAllotmentEventsRequest): Promise<CollectionResponse<AllotmentEventResponse>> {
-    let statuses = '';
-    const parameters = new HttpParams()
+
+    let parameters = new HttpParams()
       .append('offset', params.offset.toString())
       .append('count', params.count.toString());
 
-    if (params.status) {
-      let statusRequest = '?';
-      for (let i = 0; i < params.status.length; i++) {
-        if (params.status[i]) {
-          statusRequest += 'allotmentEventStatuses=' + i + '&';
-        }
-      }
-      statuses = statusRequest;
+    if (params.statuses) {
+      params.statuses.forEach(status => {
+        parameters = parameters.append('allotmentEventStatuses', status.toString());
+      });
     }
 
-    return this.http.get<CollectionResponse<AllotmentEventResponse>>(`${this.baseApiUrl}/allotmentEvents/` + statuses, {
+    return this.http.get<CollectionResponse<AllotmentEventResponse>>(`${this.baseApiUrl}/allotmentEvents`, {
       params: parameters
     }).toPromise();
   }

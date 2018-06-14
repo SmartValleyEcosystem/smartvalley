@@ -53,7 +53,7 @@ namespace SmartValley.Domain.Services
                 return;
 
             allotmentEvent.Status = AllotmentEventStatus.Published;
-            allotmentEvent.TokenContractAddress = await _allotmentEventsManagerContractClient.GetAllotmentEventContractAddressAsync(id);
+            allotmentEvent.EventContractAddress = await _allotmentEventsManagerContractClient.GetAllotmentEventContractAddressAsync(id);
 
             await _allotmentEventRepository.SaveChangesAsync();
         }
