@@ -13,6 +13,13 @@
   text-transform: uppercase;
 }
 
+.material-btn__action {
+  min-width: 140px;
+  height: 70px;
+  background: #EEEDF5;
+  border-radius: 4px !important;
+}
+
 .edit-icon, .play-icon {
   display: inline-block;
   width: 36px;
