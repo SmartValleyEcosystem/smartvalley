@@ -1,8 +1,9 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {BaseApiClient} from '../base-api-client';
 import {Injectable} from '@angular/core';
-import {AllotmentEventResponse} from './responses/allotment-event-response';
 import {CollectionResponse} from '../collection-response';
+import {AllotmentEventCoin} from './allotment-event-coin';
+import {AllotmentEventResponse} from './responses/allotment-event-response';
 import {GetAllotmentEventsRequest} from './request/get-allotment-events-request';
 import {CreateAllotmentEventRequest} from './request/create-allotment-event-request';
 import {CreateAllotmentEventResponse} from './responses/create-allotment-event-response';
@@ -28,6 +29,14 @@ export class AllotmentEventsApiClient extends BaseApiClient {
     return this.http.get<CollectionResponse<AllotmentEventResponse>>(`${this.baseApiUrl}/allotmentEvents`, {
       params: parameters
     }).toPromise();
+  }
+
+  public async getAllotmentEventCoinInfoAsync(address: string): Promise<AllotmentEventCoin> {
+      const parameters = new HttpParams()
+          .append('address', address.toString());
+      return this.http.get<AllotmentEventCoin>(`${this.baseApiUrl}/allotmentEvents/coinInfo`, {
+          params: parameters
+      }).toPromise();
   }
 
   public createAsync(name: string,
