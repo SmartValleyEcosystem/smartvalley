@@ -5,7 +5,6 @@ import {AllotmentEventStatus} from '../../../api/allotment-events/allotment-even
 import {LazyLoadEvent} from 'primeng/api';
 import {DialogService} from '../../../services/dialog-service';
 import {AllotmentEventService} from '../../../services/allotment-event/allotment-event.service';
-import {AllotmentEvent} from '../../../api/allotment-events/allotment-event';
 import {Paths} from '../../../paths';
 import {Router} from '@angular/router';
 
@@ -63,7 +62,7 @@ export class AdminAllotmentEventsComponent implements OnInit {
       }
   }
 
-  public showStartAllotmentEventModal(allotmenEventData: AllotmentEvent) {
+  public showStartAllotmentEventModal(allotmenEventData: AllotmentEventResponse) {
       this.dialogService.showStartAllotmentEventDialog(allotmenEventData);
   }
 

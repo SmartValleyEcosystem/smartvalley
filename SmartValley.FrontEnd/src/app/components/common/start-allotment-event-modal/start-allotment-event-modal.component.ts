@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {AllotmentEvent} from '../../../api/allotment-events/allotment-event';
 import {AddAdminModalComponent} from '../add-admin-modal/add-admin-modal.component';
+import {AllotmentEventResponse} from '../../../api/allotment-events/responses/allotment-event-response';
 
 @Component({
   selector: 'app-start-allotment-event-modal',
@@ -10,7 +10,7 @@ import {AddAdminModalComponent} from '../add-admin-modal/add-admin-modal.compone
 })
 export class StartAllotmentEventModalComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: AllotmentEvent,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: AllotmentEventResponse,
               private dialogRef: MatDialogRef<AddAdminModalComponent>) {
   }
 
