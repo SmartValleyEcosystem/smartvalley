@@ -67,13 +67,6 @@ export class AdminAllotmentEventsComponent {
       this.dialogService.showStartAllotmentEventDialog(allotmenEventData);
   }
 
-  public async showNewAllotmentEventModalAsync() {
-      const allotmentEventCreated = await this.dialogService.showNewAllotmentEventDialog();
-      if (allotmentEventCreated) {
-          this.loadAllotmentEventsAsync();
-      }
-  }
-
   public getProjectLink(id) {
     return decodeURIComponent(
       this.router.createUrlTree([Paths.Project + '/' + id]).toString()
