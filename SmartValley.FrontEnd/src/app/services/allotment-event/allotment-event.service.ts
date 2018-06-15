@@ -26,7 +26,7 @@ export class AllotmentEventService {
                          tokenDecimals: number,
                          tokenTicker: string,
                          projectId: number,
-                         finishDate?: Date) {
+                         finishDate?: string) {
       return true;
   }
 }
