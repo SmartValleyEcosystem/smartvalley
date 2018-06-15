@@ -28,8 +28,6 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<AreaScoring> IReadOnlyDataContext.AreaScorings => AreaScorings.AsNoTracking();
 
-        IQueryable<ProjectTeamMember> IReadOnlyDataContext.ProjectTeamMembers => ProjectTeamMembers.AsNoTracking();
-
         IQueryable<ScoringCriterion> IReadOnlyDataContext.ScoringCriteria => ScoringCriteria.AsNoTracking();
 
         IQueryable<User> IReadOnlyDataContext.Users => Users.AsNoTracking();
@@ -40,27 +38,15 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<Area> IReadOnlyDataContext.Areas => Areas.AsNoTracking();
 
-        IQueryable<Expert> IReadOnlyDataContext.Experts => Experts.AsNoTracking();
-
-        IQueryable<ExpertArea> IReadOnlyDataContext.ExpertAreas => ExpertAreas.AsNoTracking();
-
         IQueryable<ExpertApplication> IReadOnlyDataContext.ExpertApplications => ExpertApplications.AsNoTracking();
 
         IQueryable<Country> IReadOnlyDataContext.Countries => Countries.AsNoTracking();
 
         IQueryable<ScoringApplicationQuestion> IReadOnlyDataContext.ScoringApplicationQuestions => ScoringApplicationQuestions.AsNoTracking();
 
-        IQueryable<ScoringApplication> IReadOnlyDataContext.ScoringApplications => ScoringApplications.AsNoTracking();
-
         IQueryable<ScoringApplicationAnswer> IReadOnlyDataContext.ScoringApplicationAnswers => ScoringApplicationAnswers.AsNoTracking();
 
-        IQueryable<ScoringApplicationTeamMember> IReadOnlyDataContext.ScoringApplicationTeamMembers => ScoringApplicationTeamMembers.AsNoTracking();
-
-        IQueryable<ScoringApplicationAdviser> IReadOnlyDataContext.ScoringApplicationAdvisers => ScoringApplicationAdvisers.AsNoTracking();
-
         IQueryable<ScoringCriteriaMapping> IReadOnlyDataContext.ScoringCriteriaMappings => ScoringCriteriaMappings.AsNoTracking();
-
-        IQueryable<EthereumTransaction> IReadOnlyDataContext.EthereumTransactions => EthereumTransactions.AsNoTracking();
 
         IQueryable<AllotmentEvent> IReadOnlyDataContext.AllotmentEvents => AllotmentEvents.AsNoTracking();
 
@@ -106,22 +92,17 @@ namespace SmartValley.Data.SQL.Core
 
         public DbSet<ScoringApplicationAnswer> ScoringApplicationAnswers { get; set; }
 
+        public DbSet<ExpertScoring> ExpertScorings { get; set; }
+
         public DbSet<ScoringApplicationTeamMember> ScoringApplicationTeamMembers { get; set; }
 
         public DbSet<ScoringApplicationAdviser> ScoringApplicationAdvisers { get; set; }
-
-        public DbSet<ExpertScoring> ExpertScorings { get; set; }
 
         public DbSet<ScoringCriteriaMapping> ScoringCriteriaMappings { get; set; }
 
         public DbSet<EthereumTransaction> EthereumTransactions { get; set; }
 
         public DbSet<AllotmentEvent> AllotmentEvents { get; set; }
-
-        public IQueryable<T> GetAll<T>() where T : class
-        {
-            return Set<T>().AsNoTracking();
-        }
 
         public Task<int> SaveAsync()
         {
