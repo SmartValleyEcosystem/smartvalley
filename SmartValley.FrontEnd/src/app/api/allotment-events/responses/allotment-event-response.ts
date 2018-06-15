@@ -6,6 +6,7 @@ export interface AllotmentEventResponse {
   status: AllotmentEventStatus;
   tokenContractAddress: string;
   eventContractAddress: string;
+  projectId: number;
   startDate: string | null;
   finishDate: string | null;
   tokenDecimals: number;
