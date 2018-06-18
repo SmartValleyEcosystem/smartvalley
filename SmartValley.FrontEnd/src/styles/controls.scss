@@ -259,7 +259,7 @@ quill-editor.ng-dirty.ng-invalid .ql-container{
 }
 
 textarea.ng-pristine.ng-invalid.ng-untouched.ng-dirty,
-.ng-invalid.ng-touched.ng-dirty .ng-invalid .ui-radiobutton-box.ui-widget {
+p-radiobutton.ng-dirty.ng-invalid .ui-radiobutton-box.ui-widget {
   border: 1px solid red !important;
 }
 

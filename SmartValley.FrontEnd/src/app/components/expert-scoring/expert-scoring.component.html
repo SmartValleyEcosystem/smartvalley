@@ -1,4 +1,5 @@
 <div class="content">
+  <form [formGroup]="scoringForm">
     <h1 class="title">{{ 'ExpertScoring.Title' | translate }} {{ projectName }}</h1>
     <div class="area-title-row">
       <span class="area-title">{{ 'ExpertScoring.YourScore' | translate }} {{areaTypeName}}</span>
@@ -25,12 +26,14 @@
             <div class="info-wrapper" *ngIf="info.answer">
               <p *ngIf="info.title" class="info-title">{{ ('EditScoringApplication.' + info.title) | translate }}</p>
               <p *ngIf="info.questionControlType !== questionTypeComboBox" class="info-description">
-                <quill-editor class="main-text tooltip-formatted-text" [modules]="editorOptions" placeholder="" [formats]="editorFormats"
+                <quill-editor class="main-text tooltip-formatted-text" [modules]="editorOptions" placeholder=""
+                              [formats]="editorFormats"
                               [readOnly]="true"
                               [ngModel]="info.answer | translateBinaryAnswer">
                 </quill-editor>
               </p>
-              <p *ngIf="info.questionControlType == questionTypeComboBox" class="info-description">{{ ('EditScoringApplication.' + info.answer) | translate }}</p>
+              <p *ngIf="info.questionControlType == questionTypeComboBox" class="info-description">{{
+                ('EditScoringApplication.' + info.answer) | translate }}</p>
             </div>
 
             <div *ngIf="info.projectAdvisers" class="advisers-wrapper">
@@ -99,15 +102,16 @@
           </div>
         </div>
         <div class="question">{{questionIndex + 1}}. {{criteria.name}}</div>
-        <ul [formGroup]="scoringForm" class="options-list">
+        <ul class="options-list">
           <li *ngFor="let option of criteria.options">
             <p-radioButton name="answer_{{criteria.id}}" formControlName="answer_{{criteria.id}}"
                            value="{{option.score}}"
-                           label="{{option.score}} &mdash; {{option.description}}">
+                           label="{{option.score}} &mdash; {{option.description}}"
+                           #required>
             </p-radioButton>
           </li>
         </ul>
-        <div class="control-row" [formGroup]="scoringForm">
+        <div class="control-row">
           <p class="control-label">
             <label for="comment{{criteria.id}}">{{ 'ExpertScoring.Comment' | translate }}</label>
           </p>
@@ -118,7 +122,7 @@
         </div>
       </div>
     </div>
-    <div class="group-wrapper" [formGroup]="scoringForm">
+    <div class="group-wrapper">
       <h2 class="settings-title">{{ 'ExpertScoring.Conclusion' | translate }}</h2>
       <div class="settings-block settings-block_last">
         <div class="control-row">
@@ -130,8 +134,11 @@
       </div>
     </div>
     <div class="submit-wrapper">
-      <button type="submit" (click)="submitFormAsync()" class="main-btn submit-btn">{{ 'ExpertScoring.Finish' | translate }}</button>
+      <button type="submit" (click)="submitFormAsync()" class="main-btn submit-btn">{{ 'ExpertScoring.Finish' |
+        translate }}
+      </button>
       <span class="ghost-btn label-btn" (click)="saveDraft()">{{ 'ExpertScoring.SaveDraft' | translate }}</span>
       <span class="save-label" [class.label-visible]="isSaved">Saved {{ saveTime }}</span>
     </div>
+  </form>
 </div>
