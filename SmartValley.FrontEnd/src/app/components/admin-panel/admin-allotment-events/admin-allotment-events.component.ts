@@ -9,6 +9,7 @@ import {GetAllotmentEventsRequest} from '../../../api/allotment-events/request/g
 import {Paths} from '../../../paths';
 import {Router} from '@angular/router';
 import {Erc223ContractClient} from '../../../services/contract-clients/erc223-contract-client';
+import {isNullOrUndefined} from 'util';
 
 @Component({
   selector: 'app-admin-allotment-events',
@@ -80,7 +81,7 @@ export class AdminAllotmentEventsComponent {
       return null;
     }
     const total = this.totalTokens.firstOrDefault(i => i.key === eventAddress);
-    if (total === null) {
+    if (isNullOrUndefined(total)) {
       return null;
     }
     return total.value;
