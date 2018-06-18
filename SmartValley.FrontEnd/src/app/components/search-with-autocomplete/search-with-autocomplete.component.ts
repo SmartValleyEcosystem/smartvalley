@@ -10,7 +10,6 @@ import 'rxjs/add/observable/fromEvent';
 import {ProjectQuery} from '../../api/project/project-query';
 import {ProjectResponse} from '../../api/project/project-response';
 import {ColorHelper} from '../../utils/color-helper';
-import {Category} from '../../services/common/category';
 @Component({
   selector: 'app-search-with-autocomplete',
   templateUrl: './search-with-autocomplete.component.html',

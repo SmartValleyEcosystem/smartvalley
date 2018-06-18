@@ -11,6 +11,8 @@ namespace SmartValley.WebApi.Projects.Responses
 
         public string Country { get; set; }
 
+        public string ImageUrl { get; set; }
+
         public Category Category { get; set; }
 
         public ProjectScoringResponse Scoring { get; set; }
@@ -32,6 +34,7 @@ namespace SmartValley.WebApi.Projects.Responses
                        Country = project.Country?.Code,
                        Category = project.Category,
                        Description = project.Description,
+                       ImageUrl = project.ImageUrl,
                        IsApplicationSubmitted = scoringApplication?.IsSubmitted ?? false,
                        ScoringStartTransactionStatus = scoringApplication?.GetTransactionStatus() ?? ScoringStartTransactionStatus.NotSubmitted,
                        ScoringStartTransactionHash = scoringApplication?.ScoringStartTransaction?.Hash,
