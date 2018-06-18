@@ -38,15 +38,15 @@
     </div>
     <div class="row">
       <span class="col-2">{{ 'RegisterExpert.LinkedinLink' | translate }}:</span>
-      <span class=" col-10">{{application.linkedInLink | dashIfEmpty}}</span>
+      <app-nullable-link href="{{application.linkedInLink}}" class="col-10"></app-nullable-link>
     </div>
     <div class="row">
       <span class="col-2">{{ 'RegisterExpert.FacebookLink' | translate }}:</span>
-      <span class=" col-10"> {{application.facebookLink| dashIfEmpty}}</span>
+      <app-nullable-link href="{{application.facebookLink}}" class="col-10"></app-nullable-link>
     </div>
     <div class="row">
       <span class="col-2">{{ 'RegisterExpert.BitcointalkLink' | translate }}:</span>
-      <span class=" col-10"> {{application.bitcointalkLink| dashIfEmpty}}</span>
+      <app-nullable-link href="{{application.bitcointalkLink}}" class="col-10"></app-nullable-link>
     </div>
     <div class="row">
       <span class="col-2">CV:</span>
