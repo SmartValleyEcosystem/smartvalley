@@ -1,0 +1,54 @@
+<div class="event-card">
+  <div class="event-card__title">{{event.name}}</div>
+  <div class="event-card__top-info">
+    <div class="project-avatar">
+      <img src="https://avatars.mds.yandex.net/get-pdb/27625/1c93a401-860b-4bbd-81dd-d9f93d4bee4b/s1200" alt="">
+      <span class="scoring">55 <span class="light-color ">/ 100</span></span>
+    </div>
+    <div class="project-info">
+      <div class="project-title"><a [routerLink]="getProjectLink(event.projectId)"> Energy Premier {{ event.projectId }}</a></div>
+      <div class="project-distribute">
+        <span class="light-label">{{ 'FreeTokenPlace.TokensToDistribute' | translate }}</span>
+        <div>885 000 000 999 BCD</div>
+      </div>
+      <div class="project-bets">
+        <span class="light-label">{{ 'FreeTokenPlace.TotalBet' | translate }}</span>
+        <div>1 000 000 / 1 745 999 SVT</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-card__timer">
+    <span class="light-label light-label_small">{{ 'FreeTokenPlace.MyPotentialShare' | translate }}</span>
+    <div>885 000 000 999 BCD (100,00%)</div>
+    <div class="timer" [class.timer_finished]="finished">
+      <div class="timer__info" *ngIf="!finished">{{ 'FreeTokenPlace.TheEventEndsIn' | translate }}</div>
+      <div class="timer__info" *ngIf="finished">{{ 'FreeTokenPlace.TheEventWasEnd' | translate }}</div>
+      <div *ngIf="finished" class="timer__numbers">
+        <div class="time-number time-number__finished">
+          {{ event.finishDate | date: 'dd.MM.yy' }}
+        </div>
+      </div>
+      <div *ngIf="!finished" class="timer__numbers">
+        <div class="time-number">
+          {{ event.timer.days }}
+          <div class="timer__labels">{{ 'FreeTokenPlace.Days' | translate }}</div>
+        </div>
+        <div class="time-number">
+          {{ event.timer.hours }}
+          <div class="timer__labels">{{ 'FreeTokenPlace.Hours' | translate }}</div>
+        </div>
+        <div class="time-number">
+          {{ event.timer.minutes }}
+          <div class="timer__labels">{{ 'FreeTokenPlace.Minutes' | translate }}</div>
+        </div>
+        <div class="time-number">
+          {{ event.timer.seconds }}
+          <div class="timer__labels">{{ 'FreeTokenPlace.Seconds' | translate }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="event-card__footer">
+    <span class="light-label light-label_small">Awaiting transaction</span>
+  </div>
+</div>

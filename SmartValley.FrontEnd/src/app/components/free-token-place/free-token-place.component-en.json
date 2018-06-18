@@ -1,0 +1,20 @@
+{
+  "FreeTokenPlace": {
+    "Title": "Free token place",
+    "ActiveAllotmentEvents": "Active Allotment Events",
+    "FinishedAllotmentEvents": "Finished Allotment Events",
+    "TokensToDistribute": "Tokens to distribute",
+    "TotalBet": "My bet / Total bet",
+    "MyPotentialShare": "My potential share",
+    "AwaitingTransaction": "Awaiting transaction",
+    "TheEventEndsIn": "The event ends in",
+    "Days": "days",
+    "Hours": "hours",
+    "Minutes": "minutes",
+    "Seconds": "seconds",
+    "TheEventWasEnd": "The event was end in",
+    "Receive": "Receive",
+    "Participate": "The event was end in",
+    "AddSVT": "Add svt"
+  }
+}

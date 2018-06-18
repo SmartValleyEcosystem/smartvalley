@@ -35,6 +35,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public accountLink: string;
   public scoringsLink: string;
   public adminPanelLink: string;
+  public freeTokenPlaceLink: string;
   public myProjectLink: string;
   public isExpert = false;
   public showExpertPanel = false;
@@ -69,6 +70,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.projectsLink = Paths.ProjectList;
     this.accountLink = Paths.Account;
     this.adminPanelLink = Paths.Admin;
+    this.freeTokenPlaceLink = Paths.FreeTokenPlace;
 
     const user = this.userContext.getCurrentUser();
     await this.updateAccountAsync(user);

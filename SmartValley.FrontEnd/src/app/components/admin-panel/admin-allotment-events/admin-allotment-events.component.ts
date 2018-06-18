@@ -83,7 +83,7 @@ export class AdminAllotmentEventsComponent {
               allotmentEvent.tokenDecimals,
               allotmentEvent.tokenTicker,
               allotmentEvent.id,
-              allotmentEvent.finishDate;
+              allotmentEvent.finishDate
           );
       }
   }
