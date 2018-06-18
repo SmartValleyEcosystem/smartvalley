@@ -26,8 +26,6 @@ namespace SmartValley.WebApi.Projects.Requests
 
         public Stage? Stage { get; set; }
 
-        public IReadOnlyCollection<ScoringStatus> ScoringStatuses { get; set; }
-
         public string CountryCode { get; set; }
 
         public Category? Category { get; set; }
@@ -39,5 +37,9 @@ namespace SmartValley.WebApi.Projects.Requests
         public ProjectsOrderBy? OrderBy { get; set; }
 
         public SortDirection? SortDirection { get; set; }
+
+        public IReadOnlyCollection<ScoringStatus> ScoringStatuses { get; set; }
+
+        public IReadOnlyCollection<long> ProjectIds { get; set; }
     }
 }

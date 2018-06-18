@@ -22,7 +22,6 @@ import {ScoringOfferResponse} from '../../../api/scoring-offer/scoring-offer-res
 import {OfferStatus} from '../../../api/scoring-offer/offer-status.enum';
 import {PrivateScoringManagerContractClient} from '../../../services/contract-clients/private-scoring-manager-contract-client';
 import {DialogService} from '../../../services/dialog-service';
-import {isNullOrUndefined} from 'util';
 
 @Component({
   selector: 'app-edit-scoring',

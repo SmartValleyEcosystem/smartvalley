@@ -47,7 +47,7 @@ namespace SmartValley.Domain
             string countryCode,
             Category category,
             string description,
-            AreaType areaType,
+            AreaType area,
             Guid projectExternalId,
             long projectId,
             bool isPrivate,
@@ -64,7 +64,7 @@ namespace SmartValley.Domain
             CountryCode = countryCode;
             Category = category;
             Description = description;
-            AreaType = areaType;
+            AreaType = area;
             ProjectExternalId = projectExternalId;
             ProjectId = projectId;
             FinalScore = finalScore;

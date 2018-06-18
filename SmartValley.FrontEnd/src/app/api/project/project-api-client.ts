@@ -85,6 +85,12 @@ export class ProjectApiClient extends BaseApiClient {
       });
     }
 
+    if (query.projectIds) {
+      query.projectIds.forEach(id => {
+        parameters = parameters.append('projectIds', id.toString());
+      });
+    }
+
     return this.http
       .get<CollectionResponse<ProjectResponse>>(this.baseApiUrl + '/projects', {params: parameters})
       .toPromise();
