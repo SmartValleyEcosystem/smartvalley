@@ -150,9 +150,11 @@ import {LoggingApiClient} from './api/logging/logging-api-client';
 import {NewAllotmentEventModalComponent} from './components/common/new-allotment-event-modal/new-allotment-event-modal.component';
 import {AdminAllotmentEventsComponent} from './components/admin-panel/admin-allotment-events/admin-allotment-events.component';
 import {AllotmentEventsApiClient} from './api/allotment-events/allotment-events-api-client';
+import {EditAllotmentEventModalComponent} from './components/common/edit-allotment-event-modal/edit-allotment-event-modal.component';
 import {StartAllotmentEventModalComponent} from './components/common/start-allotment-event-modal/start-allotment-event-modal.component';
 import {AllotmentEventService} from './services/allotment-event/allotment-event.service';
 import {AllotmentEventsManagerContractClient} from './services/contract-clients/allotment-events-manager-contract-client';
+import {Erc223ContractClient} from './services/contract-clients/erc223-contract-client';
 
 @NgModule({
   declarations: [
@@ -181,6 +183,7 @@ import {AllotmentEventsManagerContractClient} from './services/contract-clients/
     FormatDatePipe,
     AdminPanelComponent,
     AddAdminModalComponent,
+    EditAllotmentEventModalComponent,
     ExpertStatusComponent,
     RegisterExpertComponent,
     AdminExpertApplicationsListComponent,
@@ -236,6 +239,7 @@ import {AllotmentEventsManagerContractClient} from './services/contract-clients/
     MetamaskManualModalComponent,
     ReceiveEtherModalComponent,
     AddAdminModalComponent,
+    EditAllotmentEventModalComponent,
     CreateNewExpertModalComponent,
     EditExpertModalComponent,
     SetExpertsModalComponent,
@@ -341,6 +345,7 @@ import {AllotmentEventsManagerContractClient} from './services/contract-clients/
     ShouldBeAuthenticatedGuard,
     ShouldBeAdminGuard,
     GuardFactory,
+    Erc223ContractClient,
     CompositeGuard,
     ShouldNotBeExpertGuard,
     OfferStatusGuard,

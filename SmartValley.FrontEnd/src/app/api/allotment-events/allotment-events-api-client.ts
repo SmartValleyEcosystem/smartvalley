@@ -1,8 +1,9 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {BaseApiClient} from '../base-api-client';
 import {Injectable} from '@angular/core';
-import {AllotmentEventResponse} from './responses/allotment-event-response';
 import {CollectionResponse} from '../collection-response';
+import {AllotmentEventCoin} from './allotment-event-coin';
+import {AllotmentEventResponse} from './responses/allotment-event-response';
 import {GetAllotmentEventsRequest} from './request/get-allotment-events-request';
 import {CreateAllotmentEventRequest} from './request/create-allotment-event-request';
 import {CreateAllotmentEventResponse} from './responses/create-allotment-event-response';
@@ -14,24 +15,28 @@ export class AllotmentEventsApiClient extends BaseApiClient {
   }
 
   public async getAllotmentEvents(params: GetAllotmentEventsRequest): Promise<CollectionResponse<AllotmentEventResponse>> {
-    let statuses = '';
-    const parameters = new HttpParams()
+
+    let parameters = new HttpParams()
       .append('offset', params.offset.toString())
       .append('count', params.count.toString());
 
-    if (params.status) {
-      let statusRequest = '?';
-      for (let i = 0; i < params.status.length; i++) {
-        if (params.status[i]) {
-          statusRequest += 'allotmentEventStatuses=' + i + '&';
-        }
-      }
-      statuses = statusRequest;
+    if (params.statuses) {
+      params.statuses.forEach(status => {
+        parameters = parameters.append('allotmentEventStatuses', status.toString());
+      });
     }
 
-    return this.http.get<CollectionResponse<AllotmentEventResponse>>(`${this.baseApiUrl}/allotmentEvents/` + statuses, {
+    return this.http.get<CollectionResponse<AllotmentEventResponse>>(`${this.baseApiUrl}/allotmentEvents`, {
       params: parameters
     }).toPromise();
+  }
+
+  public async getAllotmentEventCoinInfoAsync(address: string): Promise<AllotmentEventCoin> {
+      const parameters = new HttpParams()
+          .append('address', address.toString());
+      return this.http.get<AllotmentEventCoin>(`${this.baseApiUrl}/allotmentEvents/coinInfo`, {
+          params: parameters
+      }).toPromise();
   }
 
   public createAsync(name: string,

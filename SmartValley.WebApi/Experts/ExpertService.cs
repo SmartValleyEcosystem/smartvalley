@@ -150,16 +150,6 @@ namespace SmartValley.WebApi.Experts
             await _expertRepository.SaveChangesAsync();
         }
 
-        public async Task UpdateAreasAsync(Address address, IReadOnlyCollection<int> areas)
-        {
-            var expert = await _expertRepository.GetByAddressAsync(address);
-            if (expert == null)
-                throw new AppErrorException(ErrorCode.ExpertNotFound);
-
-            expert.SetAreas(areas);
-            await _expertRepository.SaveChangesAsync();
-        }
-
         public async Task DeleteAsync(Address address)
         {
             var user = await _userRepository.GetByAddressAsync(address);

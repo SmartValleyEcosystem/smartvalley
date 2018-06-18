@@ -31,7 +31,7 @@ namespace SmartValley.Application.Sagas.Scoring
             Data.ProjectId = message.ProjectId;
             Data.TransactionHash = message.TransactionHash;
 
-            await _scoringApplicationService.SetScoringTransactionAsync(message.ProjectId, message.TransactionHash);
+            await _scoringApplicationService.SetScoringTransactionAsync(message.ProjectId, message.TransactionHash, message.UserId);
 
             await context.SendLocal(new WaitForTransaction {TransactionHash = message.TransactionHash});
         }

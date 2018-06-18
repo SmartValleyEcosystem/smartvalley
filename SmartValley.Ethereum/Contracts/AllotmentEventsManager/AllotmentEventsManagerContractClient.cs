@@ -4,7 +4,7 @@ using SmartValley.Ethereum.Contracts.SmartValley.Application.Contracts;
 
 namespace SmartValley.Ethereum.Contracts.AllotmentEventsManager
 {
-   public class AllotmentEventsManagerContractClient : IAllotmentEventsManagerContractClient
+    public class AllotmentEventsManagerContractClient : IAllotmentEventsManagerContractClient
     {
         private readonly EthereumContractClient _contractClient;
 
@@ -18,13 +18,13 @@ namespace SmartValley.Ethereum.Contracts.AllotmentEventsManager
             _contractAbi = contractOptions.Abi;
         }
 
-        public async Task<string> GetAllotmentEventContractAddressAsync(long eventId)
+        public Task<string> GetAllotmentEventContractAddressAsync(long eventId)
         {
-            return await _contractClient.CallFunctionAsync<string>(
-                                _contractAddress,
-                                _contractAbi,
-                                "getAllotmentEventContractAddress",
-                                eventId);
+            return _contractClient.CallFunctionAsync<string>(
+                _contractAddress,
+                _contractAbi,
+                "getAllotmentEventContractAddress",
+                eventId);
         }
     }
 }

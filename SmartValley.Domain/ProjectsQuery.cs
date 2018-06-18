@@ -17,7 +17,8 @@ namespace SmartValley.Domain
                              int? maximumScore,
                              ProjectsOrderBy? orderBy,
                              SortDirection? direction,
-                             IReadOnlyCollection<ScoringStatus> scoringStatuses)
+                             IReadOnlyCollection<ScoringStatus> scoringStatuses,
+                             IReadOnlyCollection<long> projectIds)
         {
             Offset = offset;
             Count = count;
@@ -31,7 +32,8 @@ namespace SmartValley.Domain
             Direction = direction;
             OnlyScored = onlyScored;
             IsPrivate = isPrivate;
-            ScoringStatuses = scoringStatuses ?? new List<ScoringStatus>();
+            ScoringStatuses = scoringStatuses;
+            ProjectIds = projectIds;
         }
 
         public int Offset { get; }
@@ -47,6 +49,8 @@ namespace SmartValley.Domain
         public Stage? Stage { get; }
 
         public IReadOnlyCollection<ScoringStatus> ScoringStatuses { get; }
+
+        public IReadOnlyCollection<long> ProjectIds { get; }
 
         public string CountryCode { get; }
 

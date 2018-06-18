@@ -8,14 +8,13 @@ namespace SmartValley.Domain.Entities
             long userId,
             string hash,
             EthereumTransactionType type,
-            EthereumTransactionStatus status,
             DateTimeOffset created,
             long? allotmentEventId = null)
         {
             UserId = userId;
             Hash = hash;
             Type = type;
-            Status = status;
+            Status = EthereumTransactionStatus.InProgress;
             Created = created;
             AllotmentEventId = allotmentEventId;
         }

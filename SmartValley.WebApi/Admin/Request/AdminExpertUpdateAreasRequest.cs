@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SmartValley.WebApi.Admin.Request
 {
@@ -7,8 +6,6 @@ namespace SmartValley.WebApi.Admin.Request
     {
         [Required]
         public string Address { get; set; }
-
-        public IReadOnlyCollection<int> Areas { get; set; }
 
         public string TransactionHash { get; set; }
     }

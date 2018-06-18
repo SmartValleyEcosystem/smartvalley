@@ -3,7 +3,7 @@
 
 .material-btn {
   border: none;
-  font-family: Roboto-Medium;
+  font-family: $font-pt !important;
   font-weight: bold;
   font-size: 24px;
   color: #5D49F2;
@@ -11,6 +11,13 @@
   cursor: pointer;
   padding: 9px 20px;
   text-transform: uppercase;
+}
+
+.material-btn__action {
+  min-width: 140px;
+  height: 70px;
+  background: #EEEDF5;
+  border-radius: 4px !important;
 }
 
 .edit-icon, .play-icon {
@@ -252,7 +259,7 @@ quill-editor.ng-dirty.ng-invalid .ql-container{
 }
 
 textarea.ng-pristine.ng-invalid.ng-untouched.ng-dirty,
-.ng-invalid.ng-touched.ng-dirty .ng-invalid .ui-radiobutton-box.ui-widget {
+p-radiobutton.ng-dirty.ng-invalid .ui-radiobutton-box.ui-widget {
   border: 1px solid red !important;
 }
 

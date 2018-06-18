@@ -15,7 +15,5 @@ namespace SmartValley.Application.Sagas.Scoring
         public long ProjectId { get; set; }
 
         public string TransactionHash { get; set; }
-
-        public List<AreaExpertsCount> ExpertCounts { get; set; }
     }
 }

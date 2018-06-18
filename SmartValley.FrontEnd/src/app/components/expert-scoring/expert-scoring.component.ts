@@ -138,15 +138,20 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
           }
           elem = i.nativeElement.classList.contains('ng-invalid');
         }
+        if (i.inputViewChild) {
+          elem = i.inputViewChild.nativeElement.parentElement.parentElement.parentElement.classList.contains('ng-invalid');
+        }
         return elem;
       });
 
     if (invalidElements.length > 0) {
       for (let a = 0; a < invalidElements.length; a++) {
-        const element = invalidElements[a].el !== undefined ? invalidElements[a].el : invalidElements[a];
+        let element = invalidElements[a].el !== undefined ? invalidElements[a].el : invalidElements[a];
+        element = invalidElements[a].inputViewChild !== undefined ? invalidElements[a].inputViewChild.nativeElement.parentElement.parentElement.parentElement : invalidElements[a];
         this.setInvalid(element);
       }
-      const firstElement = invalidElements[0].el !== undefined ? invalidElements[0].el : invalidElements[0];
+      let firstElement = invalidElements[0].el !== undefined ? invalidElements[0].el : invalidElements[0];
+      firstElement = invalidElements[0].inputViewChild !== undefined ? invalidElements[0].inputViewChild.nativeElement.parentElement.parentElement.parentElement : invalidElements[0];
       this.scrollToElement(firstElement);
       return false;
     }
@@ -154,27 +159,30 @@ export class ExpertScoringComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  private scrollToElement(element: ElementRef): void {
-    if (element.nativeElement.nativeElement) {
-      const offsetTop1 = element.nativeElement.nativeElement.offsetTop;
-      window.scrollTo({left: 0, top: offsetTop1 - 40, behavior: 'smooth'});
-      return;
-    }
+  private scrollToElement(element: ElementRef | any): void {
     if (element.nativeElement) {
-      const offsetTop1 = element.nativeElement.offsetTop;
-      window.scrollTo({left: 0, top: offsetTop1 - 40, behavior: 'smooth'});
+      if (element.nativeElement.nativeElement) {
+        window.scrollTo({left: 0, top: element.nativeElement.nativeElement.offsetTop - 40, behavior: 'smooth'});
+        return;
+      }
+      window.scrollTo({left: 0, top: element.nativeElement.offsetTop - 40, behavior: 'smooth'});
+    } else {
+      window.scrollTo({left: 0, top: element.parentElement.parentElement.parentElement.offsetTop - 40, behavior: 'smooth'});
     }
   }
 
-  private setInvalid(element: ElementRef): void {
-    if (element.nativeElement.nativeElement) {
-      element.nativeElement.nativeElement.classList.add('ng-invalid');
-      element.nativeElement.nativeElement.classList.add('ng-dirty');
-      return;
-    }
+  private setInvalid(element: ElementRef | any): void {
     if (element.nativeElement) {
+      if (element.nativeElement.nativeElement) {
+        element.nativeElement.nativeElement.classList.add('ng-invalid');
+        element.nativeElement.nativeElement.classList.add('ng-dirty');
+        return;
+      }
       element.nativeElement.classList.add('ng-invalid');
       element.nativeElement.classList.add('ng-dirty');
+    } else {
+      element.classList.add('ng-invalid');
+      element.classList.add('ng-dirty');
     }
   }
 

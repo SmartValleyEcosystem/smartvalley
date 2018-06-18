@@ -1,4 +1,4 @@
-﻿namespace SmartValley.WebApi.AllotmentEvents
+﻿namespace SmartValley.WebApi.AllotmentEvents.Requests
 {
     public class PublishAllotmentEventRequest
     {

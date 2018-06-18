@@ -24,6 +24,7 @@
               'sortable__active_desc' : isSortableDirection(DESC),
               'sortable__active_asc' : isSortableDirection(ASC)
              }" (click)="sortByName()">{{ 'ScoringList.Name' | translate }}</span></th>
+              <th>{{ 'ScoringList.Area' | translate }}</th>
               <th><span class="sortable" [ngClass]="{
                 'sortable__active' : isSortableField('Status') ,
                 'sortable__active_desc' : isSortableDirection(DESC),
@@ -49,6 +50,7 @@
                   </div>
                 </div>
               </td>
+              <td>{{ 'EditExpertModalComponent.Area' + project.area | translate }}</td>
               <td [ngSwitch]="project.offerStatus" style="position: relative;">
                 <i *ngIf="project.isPrivate" class="lock-icon material-icons">lock</i>
                 <div *ngSwitchCase="OfferStatus.Finished">

@@ -4,6 +4,6 @@ namespace SmartValley.Domain.Services
 {
     public interface IScoringApplicationService
     {
-        Task SetScoringTransactionAsync(long projectId, string transactionHash);
+        Task SetScoringTransactionAsync(long projectId, string transactionHash, long userId);
     }
 }

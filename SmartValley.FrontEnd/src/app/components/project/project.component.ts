@@ -9,7 +9,6 @@ import {ScoringStatus} from '../../services/scoring-status.enum';
 import {OfferStatus} from '../../api/scoring-offer/offer-status.enum';
 import {ScoringResponse} from '../../api/scoring/scoring-response';
 import {ErrorCode} from '../../shared/error-code.enum';
-import {environment} from '../../../environments/environment';
 import {DialogService} from '../../services/dialog-service';
 import {NotificationsService} from 'angular2-notifications';
 import {SubscriptionApiClient} from '../../api/subscription/subscription-api-client';
@@ -60,7 +59,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
               private notificationService: NotificationsService) {
 
     this.routerSubscriber = this.route.params.subscribe(async (params) => {
-        await this.reloadProjectAsync();
+      await this.reloadProjectAsync();
     });
     this.userContext.userContextChanged.subscribe(async () => await this.reloadProjectAsync());
   }
@@ -68,14 +67,14 @@ export class ProjectComponent implements OnInit, OnDestroy {
   public async ngOnInit() {
     const currentUser = this.userContext.getCurrentUser();
     if (currentUser) {
-        this.isAdmin = currentUser.isAdmin;
+      this.isAdmin = currentUser.isAdmin;
     }
     await this.reloadProjectAsync();
   }
 
   private async reloadProjectAsync() {
-      const newProjectId = +this.route.snapshot.paramMap.get('id');
-      if (!isNullOrUndefined(this.projectId) && this.projectId === newProjectId) {
+    const newProjectId = +this.route.snapshot.paramMap.get('id');
+    if (!isNullOrUndefined(this.projectId) && this.projectId === newProjectId) {
       return;
     }
 
@@ -98,11 +97,11 @@ export class ProjectComponent implements OnInit, OnDestroy {
       }
 
       if (!isNullOrUndefined(selectedTabName) && this.tabItems.includes(selectedTabName)) {
-          if (this.project.isPrivate && !this.isAdmin && selectedTabName === 'report') {
-            this.location.replaceState(Paths.Project + '/' + this.projectId + '/details/' + this.tabItems[0]);
-          } else {
-            this.selectedTab = this.tabItems.indexOf(selectedTabName);
-          }
+        if (this.project.isPrivate && !this.isAdmin && selectedTabName === 'report') {
+          this.location.replaceState(Paths.Project + '/' + this.projectId + '/details/' + this.tabItems[0]);
+        } else {
+          this.selectedTab = this.tabItems.indexOf(selectedTabName);
+        }
       }
 
     } catch (e) {
@@ -136,7 +135,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   public onChangeTab($event) {
-      this.location.replaceState(Paths.Project + '/' + this.projectId + '/details/' + this.tabItems[$event.index]);
+    this.location.replaceState(Paths.Project + '/' + this.projectId + '/details/' + this.tabItems[$event.index]);
   }
 
   public isReportTabAvailable(): boolean {
@@ -148,7 +147,10 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   public getScoringStatus(): ScoringStatus {
-    const scoringStatus =  this.projectService.getScoringStatus(this.project.scoring.scoringStatus, this.project.scoringStartTransactionStatus, this.project.isApplicationSubmitted);
+    const scoringStatus = this.projectService
+      .getScoringStatus(this.project.scoring == null ? ScoringStatus.FillingApplication : this.project.scoring.scoringStatus,
+        this.project.scoringStartTransactionStatus,
+        this.project.isApplicationSubmitted);
     const hiddenPrivateScoringStatuses = [
       ScoringStatus.ReadyForPayment,
       ScoringStatus.PaymentInProcess,
@@ -163,6 +165,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy() {
-      this.routerSubscriber.unsubscribe();
+    this.routerSubscriber.unsubscribe();
   }
 }
