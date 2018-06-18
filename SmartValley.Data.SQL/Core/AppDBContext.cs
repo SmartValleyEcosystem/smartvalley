@@ -407,9 +407,6 @@ namespace SmartValley.Data.SQL.Core
             modelBuilder.Entity<AllotmentEvent>()
                         .Property(x => x.TokenDecimals)
                         .IsRequired();
-
-            modelBuilder.Entity<EthereumTransaction>()
-                        .HasOne(x => x.AllotmentEvent);
         }
     }
 }

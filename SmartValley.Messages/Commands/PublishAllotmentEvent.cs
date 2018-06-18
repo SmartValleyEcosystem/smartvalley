@@ -10,7 +10,9 @@
         }
 
         public long AllotmentEventId { get; }
+
         public long UserId { get; }
+
         public string TransactionHash { get; }
     }
 }

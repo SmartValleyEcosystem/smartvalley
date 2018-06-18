@@ -5,6 +5,7 @@
         StartScoring = 0,
         PublishAllotmentEvent = 1,
         EditAllotmentEvent = 2,
-        UpdateExpertAreas = 3
+        StartAllotmentEvent = 3,
+        UpdateExpertAreas = 4
     }
 }

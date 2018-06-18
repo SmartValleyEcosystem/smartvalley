@@ -84,5 +84,15 @@ namespace SmartValley.WebApi.AllotmentEvents
             await _messageSession.SendLocal(command);
             return NoContent();
         }
+
+        [HttpPut("{id}/start")]
+        [Authorize(Roles = nameof(RoleType.Admin))]
+        public async Task<IActionResult> StartAsync(long id, [FromBody]StartAllotmentEventRequest request)
+        {
+            var command = new StartAllotmentEvent(id, User.GetUserId(), request.TransactionHash);
+
+            await _messageSession.SendLocal(command);
+            return NoContent();
+        }
     }
 }

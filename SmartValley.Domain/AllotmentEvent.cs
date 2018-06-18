@@ -21,6 +21,14 @@ namespace SmartValley.Domain
 
         public string TokenTicker { get; set; }
 
+        public bool IsUpdating { get; set; }
+
         public long ProjectId { get; set; }
+
+        public void SetState(AllotmentEventStatus newStatus)
+        {
+            Status = newStatus;
+            IsUpdating = false;
+        }
     }
 }

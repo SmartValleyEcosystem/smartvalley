@@ -8,15 +8,13 @@ namespace SmartValley.Domain.Entities
             long userId,
             string hash,
             EthereumTransactionType type,
-            DateTimeOffset created,
-            long? allotmentEventId = null)
+            DateTimeOffset created)
         {
             UserId = userId;
             Hash = hash;
             Type = type;
             Status = EthereumTransactionStatus.InProgress;
             Created = created;
-            AllotmentEventId = allotmentEventId;
         }
 
         // ReSharper disable once UnusedMember.Local
@@ -28,8 +26,6 @@ namespace SmartValley.Domain.Entities
 
         public long UserId { get; set; }
 
-        public long? AllotmentEventId { get; set; }
-
         public string Hash { get; set; }
 
         public EthereumTransactionType Type { get; set; }
@@ -39,8 +35,6 @@ namespace SmartValley.Domain.Entities
         public DateTimeOffset Created { get; set; }
 
         public User User { get; set; }
-
-        public AllotmentEvent AllotmentEvent { get; set; }
 
         public void Complete()
             => SetStatus(EthereumTransactionStatus.Completed);
