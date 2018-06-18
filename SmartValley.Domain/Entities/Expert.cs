@@ -27,9 +27,7 @@ namespace SmartValley.Domain.Entities
             ExpertAreas.Clear();
 
             foreach (var area in areas)
-            {
                 ExpertAreas.Add(new ExpertArea {AreaId = (AreaType) area});
-            }
         }
     }
 }

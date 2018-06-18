@@ -2,9 +2,11 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NServiceBus;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.Ethereum;
+using SmartValley.Messages.Commands;
 using SmartValley.WebApi.Admin.Request;
 using SmartValley.WebApi.Admin.Response;
 using SmartValley.WebApi.Authentication;
@@ -24,19 +26,22 @@ namespace SmartValley.WebApi.Admin
         private readonly EthereumClient _ethereumClient;
         private readonly IAuthenticationService _authenticationService;
         private readonly IUserService _userService;
+        private readonly IMessageSession _messageSession;
 
         public AdminController(
             IExpertService expertService,
             IAdminService adminService,
             EthereumClient ethereumClient,
             IAuthenticationService authenticationService,
-            IUserService userService)
+            IUserService userService,
+            IMessageSession messageSession)
         {
             _adminService = adminService;
             _ethereumClient = ethereumClient;
             _expertService = expertService;
             _authenticationService = authenticationService;
             _userService = userService;
+            _messageSession = messageSession;
         }
 
         [HttpPost]
@@ -88,8 +93,15 @@ namespace SmartValley.WebApi.Admin
         [HttpPut("experts/areas")]
         public async Task<IActionResult> UpdateExpertAreasAsync([FromBody] AdminExpertUpdateAreasRequest request)
         {
-            await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
-            await _expertService.UpdateAreasAsync(request.Address, request.Areas);
+            var message = new UpdateExpertAreas
+                          {
+                              ExpertAddress = request.Address,
+                              TransactionHash = request.TransactionHash,
+                              UserId = User.GetUserId()
+                          };
+
+            await _messageSession.SendLocal(message);
+
             return NoContent();
         }
 

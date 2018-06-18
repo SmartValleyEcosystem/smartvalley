@@ -29,6 +29,7 @@ using SmartValley.Domain.Services;
 using SmartValley.Ethereum;
 using SmartValley.Ethereum.Contracts.AllotmentEventsManager;
 using SmartValley.Ethereum.Contracts.EtherManager;
+using SmartValley.Ethereum.Contracts.ExpertsRegistry;
 using SmartValley.Ethereum.Contracts.Scoring;
 using SmartValley.Ethereum.Contracts.ScoringOffersManager;
 using SmartValley.Ethereum.Contracts.ScoringsRegistry;
@@ -108,6 +109,8 @@ namespace SmartValley.WebApi
             services.AddSingleton(InitializeProjectStorageProvider);
             services.AddSingleton<IScoringContractClient, ScoringContractClient>(
                 provider => new ScoringContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringContract));
+            services.AddSingleton<IExpertsRegistryContractClient, ExpertsRegistryContractClient>(
+                provider => new ExpertsRegistryContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ExpertsRegistryContract));
             services.AddSingleton<IEtherManagerContractClient, EtherManagerContractClient>(
                 provider => new EtherManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().EtherManagerContract));
             services.AddSingleton<IScoringsRegistryContractClient, ScoringsRegistryContractClient>(
@@ -145,7 +148,8 @@ namespace SmartValley.WebApi
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IExpertRepository, ExpertRepository>();
-            services.AddTransient<IExpertService, ExpertService>();
+            services.AddTransient<Domain.Services.IExpertService, Domain.Services.ExpertService>();
+            services.AddTransient<Experts.IExpertService, Experts.ExpertService>();
             services.AddTransient<IExpertApplicationRepository, ExpertApplicationRepository>();
             services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<IExpertApplicationRepository, ExpertApplicationRepository>();
@@ -231,16 +235,16 @@ namespace SmartValley.WebApi
         private void ConfigureCorsPolicy(IServiceCollection services, SiteOptions siteOptions)
         {
             var corsPolicy = new CorsPolicyBuilder()
-                .WithOrigins(_currentEnvironment.IsProduction() ? siteOptions.Root : "*")
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .WithExposedHeaders(Headers.XNewAuthToken,
-                                    Headers.XNewRoles,
-                                    Headers.XEthereumAddress,
-                                    Headers.XSignature,
-                                    Headers.XSignedText)
-                .AllowCredentials()
-                .Build();
+                             .WithOrigins(_currentEnvironment.IsProduction() ? siteOptions.Root : "*")
+                             .AllowAnyHeader()
+                             .AllowAnyMethod()
+                             .WithExposedHeaders(Headers.XNewAuthToken,
+                                                 Headers.XNewRoles,
+                                                 Headers.XEthereumAddress,
+                                                 Headers.XSignature,
+                                                 Headers.XSignedText)
+                             .AllowCredentials()
+                             .Build();
 
             services.AddCors(options => { options.AddPolicy(CorsPolicyName, corsPolicy); });
         }

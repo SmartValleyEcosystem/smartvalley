@@ -4,6 +4,7 @@
     {
         StartScoring = 0,
         PublishAllotmentEvent = 1,
-        EditAllotmentEvent = 2
+        EditAllotmentEvent = 2,
+        UpdateExpertAreas = 3
     }
 }

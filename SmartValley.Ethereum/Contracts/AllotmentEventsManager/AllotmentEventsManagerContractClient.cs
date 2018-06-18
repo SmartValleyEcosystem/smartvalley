@@ -18,13 +18,13 @@ namespace SmartValley.Ethereum.Contracts.AllotmentEventsManager
             _contractAbi = contractOptions.Abi;
         }
 
-        public async Task<string> GetAllotmentEventContractAddressAsync(long eventId)
+        public Task<string> GetAllotmentEventContractAddressAsync(long eventId)
         {
-            return await _contractClient.CallFunctionAsync<string>(
-                       _contractAddress,
-                       _contractAbi,
-                       "getAllotmentEventContractAddress",
-                       eventId);
+            return _contractClient.CallFunctionAsync<string>(
+                _contractAddress,
+                _contractAbi,
+                "getAllotmentEventContractAddress",
+                eventId);
         }
     }
 }
