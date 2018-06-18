@@ -22,8 +22,6 @@ namespace SmartValley.WebApi.Experts
 
         Task AddAsync(ExpertRequest request);
 
-        Task UpdateAreasAsync(Address address, IReadOnlyCollection<int> areas);
-
         Task DeleteAsync(Address address);
 
         Task<PagingCollection<Expert>> GetAsync(ExpertsQuery query);

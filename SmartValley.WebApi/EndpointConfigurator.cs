@@ -131,6 +131,7 @@ namespace SmartValley.WebApi
 
             // Repositories
             containerBuilder.RegisterType<UserRepository>().As<IUserRepository>();
+            containerBuilder.RegisterType<ExpertRepository>().As<IExpertRepository>();
             containerBuilder.RegisterType<ProjectRepository>().As<IProjectRepository>();
             containerBuilder.RegisterType<ScoringApplicationRepository>().As<IScoringApplicationRepository>();
             containerBuilder.RegisterType<ScoringRepository>().As<IScoringRepository>();
@@ -170,6 +171,7 @@ namespace SmartValley.WebApi
             containerBuilder.RegisterType<ScoringApplicationService>().As<IScoringApplicationService>();
             containerBuilder.RegisterType<EthereumTransactionService>().As<IEthereumTransactionService>();
             containerBuilder.RegisterType<AllotmentEventService>().As<IAllotmentEventService>();
+            containerBuilder.RegisterType<ExpertService>().As<IExpertService>();
 
             var container = containerBuilder.Build();
 

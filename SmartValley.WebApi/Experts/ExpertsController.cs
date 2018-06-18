@@ -170,17 +170,14 @@ namespace SmartValley.WebApi.Experts
         }
 
         [HttpPost, DisableRequestSizeLimit, Route("applications")]
-        public async Task<EmptyResponse> CreateExpertApplicationAsync([FromForm] CreateExpertApplicationRequest request,
-                                                                      IFormFile scan,
-                                                                      IFormFile photo,
-                                                                      IFormFile cv)
+        public async Task<EmptyResponse> CreateExpertApplicationAsync(
+            [FromForm] CreateExpertApplicationRequest request,
+            IFormFile scan,
+            IFormFile photo,
+            IFormFile cv)
         {
-            if (!scan.IsImageValid()
-                || !photo.IsImageValid()
-                || !cv.IsCvValid())
-            {
+            if (!scan.IsImageValid() || !photo.IsImageValid() || !cv.IsCvValid())
                 throw new AppErrorException(ErrorCode.InvalidFileUploaded);
-            }
 
             await _ethereumClient.WaitForConfirmationAsync(request.TransactionHash);
             await _expertService.CreateApplicationAsync(request, User.GetUserId(), cv.ToAzureFile(), scan.ToAzureFile(), photo.ToAzureFile());
