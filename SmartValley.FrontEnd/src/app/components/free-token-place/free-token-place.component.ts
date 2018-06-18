@@ -7,6 +7,11 @@ import {Paths} from '../../paths';
 import {Router} from '@angular/router';
 import {AllotmentEventCard} from './allotment-event-card';
 import {c} from '@angular/core/src/render3';
+import {ProjectQuery} from '../../api/project/project-query';
+import {ProjectsOrderBy} from '../../api/application/projects-order-by.enum';
+import {SortDirection} from '../../api/sort-direction.enum';
+import {ProjectApiClient} from '../../api/project/project-api-client';
+import {ProjectResponse} from '../../api/project/project-response';
 
 @Component({
     selector: 'app-free-token-place',
@@ -21,14 +26,16 @@ export class FreeTokenPlaceComponent implements OnInit, OnDestroy {
     public selectedStatuses: AllotmentEventStatus[] = [];
     public offset = 0;
     public pageSize = 10;
+    public projects: ProjectResponse[] = [];
     private timer: NodeJS.Timer;
 
-    constructor(private allotmentEventsApiClient: AllotmentEventsApiClient) {
+    constructor(private allotmentEventsApiClient: AllotmentEventsApiClient,
+                private projectApiClient: ProjectApiClient) {
     }
 
     async ngOnInit() {
         await this.loadAllotmentEventsAsync();
-        this.timer = <NodeJS.Timer>setInterval(async () => await this.getEventTimeLeft(), 1000);
+        this.timer = <NodeJS.Timer>setInterval(async () => await this.getAllotmentEventTimeLeft(), 1000);
     }
 
     ngOnDestroy(): void {
@@ -41,11 +48,30 @@ export class FreeTokenPlaceComponent implements OnInit, OnDestroy {
             count: this.pageSize,
             statuses: this.selectedStatuses
         };
+
         const allotmentEventsRequest = await this.allotmentEventsApiClient.getAllotmentEvents(getAllotmentEventsRequest);
+
         this.allotmentEvents = allotmentEventsRequest.items;
+
+        const projectIds: number[] = [];
+        for (let allotmentEvent of this.allotmentEvents) {
+            projectIds.push(allotmentEvent.projectId);
+        }
+
+        const projectResponse = await this.projectApiClient.getAsync(<ProjectQuery>{
+            offset: 0,
+            count: projectIds.length,
+            onlyScored: false,
+            orderBy: ProjectsOrderBy.CreationDate,
+            direction: SortDirection.Descending,
+            projectIds: projectIds
+        });
+
+        this.projects = projectResponse.items;
 
         for (let i = 0; this.allotmentEvents.length > i; i++) {
             const currentEvent = this.allotmentEvents[i];
+            currentEvent['project'] = this.projects.find((p) => p.id === currentEvent.projectId );
             currentEvent['timer'] = {
                 days: '00',
                 hours: '00',
@@ -58,13 +84,14 @@ export class FreeTokenPlaceComponent implements OnInit, OnDestroy {
                 this.activeEvents.push(currentEvent);
             }
         }
+
     }
 
     public pad(n) {
         return (n < 10 ? '0' : '') + n;
     }
 
-    public getEventTimeLeft() {
+    public getAllotmentEventTimeLeft() {
         for (let i = 0; this.activeEvents.length > i; i++) {
             const eventDate = new Date(this.activeEvents[i].finishDate);
             const currentDate = new Date().getTime();

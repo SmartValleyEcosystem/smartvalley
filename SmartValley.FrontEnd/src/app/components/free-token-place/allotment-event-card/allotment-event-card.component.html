@@ -2,11 +2,11 @@
   <div class="event-card__title">{{event.name}}</div>
   <div class="event-card__top-info">
     <div class="project-avatar">
-      <img src="https://avatars.mds.yandex.net/get-pdb/27625/1c93a401-860b-4bbd-81dd-d9f93d4bee4b/s1200" alt="">
-      <span class="scoring">55 <span class="light-color ">/ 100</span></span>
+      <img src="{{ imageUrl() }}" alt="">
+      <span class="scoring" *ngIf="event.project.scoring && event.project.scoring.score">55 <span class="light-color ">/ 100</span></span>
     </div>
     <div class="project-info">
-      <div class="project-title"><a [routerLink]="getProjectLink(event.projectId)"> Energy Premier {{ event.projectId }}</a></div>
+      <div class="project-title"><a [routerLink]="getProjectLink(event.projectId)">{{ event.project.name }}</a></div>
       <div class="project-distribute">
         <span class="light-label">{{ 'FreeTokenPlace.TokensToDistribute' | translate }}</span>
         <div>885 000 000 999 BCD</div>

@@ -6,7 +6,6 @@ export interface AllotmentEventCard {
     id?: number;
     name: string;
     status: AllotmentEventStatus;
-    project?: ProjectSummaryResponse;
     tokenContractAddress: string;
     eventContractAddress?: string;
     startDate?: string | null;
@@ -15,4 +14,5 @@ export interface AllotmentEventCard {
     projectId?: number;
     finishDate?: Date;
     timer?: AllotmentEventTimer;
+    project?: ProjectSummaryResponse;
 }

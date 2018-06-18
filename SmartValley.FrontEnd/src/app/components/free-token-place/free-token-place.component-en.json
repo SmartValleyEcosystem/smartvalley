@@ -15,6 +15,11 @@
     "TheEventWasEnd": "The event was end in",
     "Receive": "Receive",
     "Participate": "The event was end in",
-    "AddSVT": "Add svt"
+    "AddSVT": "Add svt",
+    "FreezedSVT": "Freezed SVT",
+    "SVT": "SVT",
+    "ShareMyProject": "Share my project",
+    "Subscribe": "Subscribe",
+    "AddETH": "Add ETH"
   }
 }
