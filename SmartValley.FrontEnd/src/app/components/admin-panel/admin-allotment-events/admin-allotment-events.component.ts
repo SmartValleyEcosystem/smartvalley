@@ -69,13 +69,6 @@ export class AdminAllotmentEventsComponent {
     await this.loadAllotmentEventsAsync();
   }
 
-  public async showNewAllotmentEventModalAsync(): Promise<void> {
-    const allotmentEventCreated = await this.dialogService.showNewAllotmentEventDialog();
-    if (allotmentEventCreated) {
-      this.loadAllotmentEventsAsync();
-    }
-  }
-
   public getTotalTokens(eventAddress: string): number | null {
     if (this.totalTokens.length === 0) {
       return null;
@@ -88,19 +81,16 @@ export class AdminAllotmentEventsComponent {
   }
 
   public showStartAllotmentEventModal(allotmenEventData: AllotmentEventResponse) {
-    this.dialogService.showStartAllotmentEventDialog(allotmenEventData);
-  }
-
-  public showStartAllotmentEventModal(allotmenEventData: AllotmentEventResponse) {
       this.dialogService.showStartAllotmentEventDialog(allotmenEventData);
   }
 
-  public async showNewAllotmentEventModalAsync() {
+  public async showNewAllotmentEventModalAsync(): Promise<void> {
       const allotmentEventCreated = await this.dialogService.showNewAllotmentEventDialog();
       if (allotmentEventCreated) {
           this.loadAllotmentEventsAsync();
       }
   }
+
   public getProjectLink(id) {
     return decodeURIComponent(
       this.router.createUrlTree([Paths.Project + '/' + id]).toString()
