@@ -29,9 +29,9 @@ export class AdminAllotmentEventsComponent {
   public totalTokens: { key: string, value: number }[] = [];
 
   constructor(private allotmentEventsApiClient: AllotmentEventsApiClient,
-              private allotmentEventService: AllotmentEventService,
               private router: Router,
               private dialogService: DialogService,
+              private allotmentEventService: AllotmentEventService,
               private erc223ContractClient: Erc223ContractClient) {
   }
 
@@ -80,8 +80,11 @@ export class AdminAllotmentEventsComponent {
     return total.value;
   }
 
-  public showStartAllotmentEventModal(allotmenEventData: AllotmentEventResponse) {
-      this.dialogService.showStartAllotmentEventDialog(allotmenEventData);
+  public async showStartAllotmentEventModal(allotmenEventData: AllotmentEventResponse) {
+      const start = await this.dialogService.showStartAllotmentEventDialog(allotmenEventData);
+      if (start) {
+          await this.allotmentEventService.startAsync(allotmenEventData.id);
+      }
   }
 
   public async showNewAllotmentEventModalAsync(): Promise<void> {

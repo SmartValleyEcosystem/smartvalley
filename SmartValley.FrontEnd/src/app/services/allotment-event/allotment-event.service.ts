@@ -21,6 +21,11 @@ export class AllotmentEventService {
     await this.allotmentEventsApiClient.publishAsync(response.allotmentEventId, transactionHash);
   }
 
+  public async startAsync(eventId: number) {
+      const transactionHash = await this.allotmentEventsManagerContractClient.startAsync(eventId);
+      await this.allotmentEventsApiClient.startAsync(eventId, transactionHash);
+  }
+
   public async editAsync(name: string,
                          tokenContractAddress: string,
                          tokenDecimals: number,

@@ -30,4 +30,10 @@ export class AllotmentEventsManagerContractClient implements ContractClient {
         from: fromAddress
       });
   }
+
+  public async startAsync(eventId: number): Promise<string> {
+      const contract = this.web3Service.getContract(this.abi, this.address);
+      console.log(eventId);
+      return await contract.start(eventId);
+  }
 }
