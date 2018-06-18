@@ -3,10 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Converters;
+using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SmartValley.Data.SQL.Core;
+using SmartValley.Domain;
 using SmartValley.Domain.Core;
+using SmartValley.Domain.Entities;
 
 namespace SmartValley.Data.SQL.Migrations
 {
@@ -28,6 +33,8 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<string>("EventContractAddress");
 
                     b.Property<DateTimeOffset?>("FinishDate");
+
+                    b.Property<bool>("IsUpdating");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -134,8 +141,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<long?>("AllotmentEventId");
-
                     b.Property<DateTimeOffset>("Created");
 
                     b.Property<string>("Hash")
@@ -148,8 +153,6 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("UserId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AllotmentEventId");
 
                     b.HasIndex("Hash")
                         .IsUnique();
@@ -812,10 +815,6 @@ namespace SmartValley.Data.SQL.Migrations
 
             modelBuilder.Entity("SmartValley.Domain.Entities.EthereumTransaction", b =>
                 {
-                    b.HasOne("SmartValley.Domain.AllotmentEvent", "AllotmentEvent")
-                        .WithMany()
-                        .HasForeignKey("AllotmentEventId");
-
                     b.HasOne("SmartValley.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
