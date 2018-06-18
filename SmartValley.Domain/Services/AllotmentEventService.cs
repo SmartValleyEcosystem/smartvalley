@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Domain.Contracts;
 using SmartValley.Domain.Core;
-using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
 
@@ -13,15 +11,12 @@ namespace SmartValley.Domain.Services
     public class AllotmentEventService : IAllotmentEventService
     {
         private readonly IAllotmentEventRepository _allotmentEventRepository;
-        private readonly IEthereumTransactionService _ethereumTransactionService;
         private readonly IAllotmentEventsManagerContractClient _allotmentEventsManagerContractClient;
 
         public AllotmentEventService(IAllotmentEventRepository allotmentEventRepository,
-                                     IEthereumTransactionService ethereumTransactionService,
                                      IAllotmentEventsManagerContractClient allotmentEventsManagerContractClient)
         {
             _allotmentEventRepository = allotmentEventRepository;
-            _ethereumTransactionService = ethereumTransactionService;
             _allotmentEventsManagerContractClient = allotmentEventsManagerContractClient;
         }
 
@@ -30,45 +25,6 @@ namespace SmartValley.Domain.Services
 
         public Task<AllotmentEvent> GetByIdAsync(long id)
             => _allotmentEventRepository.GetByIdAsync(id);
-
-        public async Task StartPublishingAsync(long id, long userId, string hash)
-        {
-            var allotmentEvent = await _allotmentEventRepository.GetByIdAsync(id);
-            if (allotmentEvent.Status != AllotmentEventStatus.Created && allotmentEvent.Status != AllotmentEventStatus.Publishing)
-                return;
-
-            await _ethereumTransactionService.StartAsync(hash, userId, EthereumTransactionType.PublishAllotmentEvent, id);
-
-            allotmentEvent.Status = AllotmentEventStatus.Publishing;
-
-            await _allotmentEventRepository.SaveChangesAsync();
-        }
-
-        public async Task FinishPublishingAsync(long id)
-        {
-            var allotmentEvent = await _allotmentEventRepository.GetByIdAsync(id);
-
-            if (allotmentEvent.Status != AllotmentEventStatus.Created && allotmentEvent.Status != AllotmentEventStatus.Publishing)
-                return;
-
-            allotmentEvent.Status = AllotmentEventStatus.Published;
-            allotmentEvent.EventContractAddress = await _allotmentEventsManagerContractClient.GetAllotmentEventContractAddressAsync(id);
-
-            await _allotmentEventRepository.SaveChangesAsync();
-        }
-
-        public async Task StopPublishingAsync(long id)
-        {
-            var allotmentEvent = await _allotmentEventRepository.GetByIdAsync(id);
-            var transactions = await _ethereumTransactionService.GetByAllotmentEventIdAsync(id);
-
-            if (allotmentEvent.Status != AllotmentEventStatus.Publishing || transactions.Any(x => x.Status == EthereumTransactionStatus.InProgress))
-                return;
-
-            allotmentEvent.Status = AllotmentEventStatus.Created;
-
-            await _allotmentEventRepository.SaveChangesAsync();
-        }
 
         public async Task<long> CreateAsync(
             string name,
@@ -110,6 +66,31 @@ namespace SmartValley.Domain.Services
             allotmentEvent.TokenDecimals = tokenDecimals;
             allotmentEvent.TokenTicker = tokenTicker;
             allotmentEvent.FinishDate = finishDate;
+
+            await _allotmentEventRepository.SaveChangesAsync();
+        }
+
+        public async Task PublishAsync(long allotmentEventId)
+        {
+            var allotmentEvent = await _allotmentEventRepository.GetByIdAsync(allotmentEventId);
+            allotmentEvent.SetState(AllotmentEventStatus.Published);
+            allotmentEvent.EventContractAddress = await _allotmentEventsManagerContractClient.GetAllotmentEventContractAddressAsync(allotmentEventId);
+
+            await _allotmentEventRepository.SaveChangesAsync();
+        }
+
+        public async Task StartAsync(long allotmentEventId)
+        {
+            var allotmentEvent = await _allotmentEventRepository.GetByIdAsync(allotmentEventId);
+            allotmentEvent.SetState(AllotmentEventStatus.InProgress);
+
+            await _allotmentEventRepository.SaveChangesAsync();
+        }
+
+        public async Task SetUpdatingStateAsync(long allotmentEventId, bool isUpdating)
+        {
+            var allotmentEvent = await _allotmentEventRepository.GetByIdAsync(allotmentEventId);
+            allotmentEvent.IsUpdating = isUpdating;
 
             await _allotmentEventRepository.SaveChangesAsync();
         }

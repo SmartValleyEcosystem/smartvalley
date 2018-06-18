@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Persistence.Sql;
 using SmartValley.Domain.Entities;
@@ -42,24 +41,30 @@ namespace SmartValley.Application.Sagas.AllotmentEvent
             if (string.IsNullOrWhiteSpace(Data.TransactionHash))
             {
                 await UpdateAsync();
+                MarkAsComplete();
                 return;
             }
 
+            await _allotmentEventService.SetUpdatingStateAsync(message.AllotmentEventId, true);
             await _transactionService.StartAsync(
                 message.TransactionHash,
                 message.UserId,
-                EthereumTransactionType.EditAllotmentEvent,
-                message.AllotmentEventId);
+                EthereumTransactionType.EditAllotmentEvent);
 
             await context.SendLocal(new WaitForTransaction {TransactionHash = message.TransactionHash});
         }
 
-        public Task Handle(TransactionCompleted message, IMessageHandlerContext context) => UpdateAsync();
-
-        public Task Handle(TransactionFailed message, IMessageHandlerContext context)
+        public async Task Handle(TransactionCompleted message, IMessageHandlerContext context)
         {
+            await _allotmentEventService.SetUpdatingStateAsync(Data.AllotmentEventId, false);
+            await UpdateAsync();
             MarkAsComplete();
-            return Task.CompletedTask;
+        }
+
+        public async Task Handle(TransactionFailed message, IMessageHandlerContext context)
+        {
+            await _allotmentEventService.SetUpdatingStateAsync(Data.AllotmentEventId, false);
+            MarkAsComplete();
         }
 
         protected override void ConfigureMapping(IMessagePropertyMapper mapper)
@@ -79,8 +84,6 @@ namespace SmartValley.Application.Sagas.AllotmentEvent
                 Data.TokenDecimals,
                 Data.TokenTicker,
                 Data.FinishDate);
-
-            MarkAsComplete();
         }
     }
 }
