@@ -58,13 +58,14 @@ namespace SmartValley.WebApi.Projects
                 request.MaximumScore,
                 request.OrderBy,
                 request.SortDirection,
-                request.ScoringStatuses
+                request.ScoringStatuses ?? new List<ScoringStatus>(),
+                request.ProjectIds ?? new List<long>()
             );
 
             var projects = await _projectService.GetAsync(projectsQuery);
             var scoringsApplications = await _scoringApplicationRepository.GetByProjectIdsAsync(projects.Select(i => i.Id).ToArray());
 
-            return Ok(projects.ToPartialCollectionResponse(p => ProjectResponse.Create(p, scoringsApplications.FirstOrDefault(s=>s.ProjectId == p.Id))));
+            return Ok(projects.ToPartialCollectionResponse(p => ProjectResponse.Create(p, scoringsApplications.FirstOrDefault(s => s.ProjectId == p.Id))));
         }
 
         [HttpPost]

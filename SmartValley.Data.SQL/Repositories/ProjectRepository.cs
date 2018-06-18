@@ -35,6 +35,7 @@ namespace SmartValley.Data.SQL.Repositories
                             where !query.MaximumScore.HasValue || (project.Scoring.Score.HasValue && project.Scoring.Score.Value <= query.MaximumScore)
                             where (!query.IsPrivate.HasValue && project.IsPrivate == false) || (query.IsPrivate.HasValue && project.IsPrivate == query.IsPrivate && scoringApplication.IsSubmitted)
                             where query.ScoringStatuses.Count == 0 || query.ScoringStatuses.Contains(project.Scoring.Status) || query.ScoringStatuses.Contains(ScoringStatus.Pending) && project.Scoring == null
+                            where query.ProjectIds.Count == 0 || query.ProjectIds.Contains(project.Id)
                             select project;
 
             if (query.OrderBy.HasValue)

@@ -16,4 +16,5 @@ export interface ProjectQuery {
   direction?: SortDirection;
   isPrivate?: boolean;
   scoringStatuses: Array<ScoringStatus>;
+  projectIds: Array<number>;
 }
