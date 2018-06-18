@@ -223,6 +223,10 @@ body .ui-paginator .ui-paginator-pages .ui-paginator-page {
   outline: none;
 }
 
+.dialog .ui-datepicker {
+  top: -246px !important;
+}
+
 /* validation input style */
 
 input.ng-dirty.ng-invalid,
