@@ -66,9 +66,9 @@ export class FreeTokenPlaceComponent implements OnInit {
     }
 
     public finishEvent(id: number) {
-        this.finishedEvents.push(   this.activeEvents.find((a) => a.id === id )   );
+        this.finishedEvents.push(this.activeEvents.find((a) => a.id === id ));
         this.activeEvents = this.activeEvents.filter( (a, i) => {
           return a.id !== id;
-        };
+        });
     }
 }
