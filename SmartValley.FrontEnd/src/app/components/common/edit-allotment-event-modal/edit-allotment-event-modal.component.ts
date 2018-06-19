@@ -27,10 +27,10 @@ export class EditAllotmentEventModalComponent implements OnInit {
   async ngOnInit() {
       this.form = this.formBuilder.group({
           eventName: [this.data.name, [Validators.required]],
-          tokenAddress: [this.data.tokenContractAddress, [Validators.minLength(42), Validators.maxLength(42)]],
-          ticker: [this.data.tokenTicker, [Validators.minLength(6)]],
+          tokenAddress: [this.data.tokenContractAddress, [Validators.pattern('0x[a-zA-Z0-9]{40}')]],
+          ticker: [this.data.tokenTicker, [Validators.maxLength(6)]],
           tokenDecimals: [this.data.tokenDecimals, [Validators.required, Validators.min(0), Validators.max(18)]],
-          finishDate: [new Date(this.data.finishDate), [SVValidators.checkFutureDate]],
+          finishDate: [this.data.finishDate === null ? '' : new Date(this.data.finishDate), [SVValidators.checkFutureDate]],
       });
 
       const myProjectResponse = await this.projectApiClient.getMyProjectAsync();

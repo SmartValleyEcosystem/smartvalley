@@ -31,7 +31,7 @@ export class NewAllotmentEventModalComponent implements OnInit {
     this.form = this.formBuilder.group({
       project: ['', [Validators.required]],
       eventName: ['', [Validators.required, Validators.maxLength(40)]],
-      tokenAddress: ['', [Validators.required, Validators.maxLength(42)]],
+      tokenAddress: ['', [Validators.required, Validators.pattern('0x[a-zA-Z0-9]{40}')]],
       ticker: ['', [Validators.required, Validators.maxLength(6)]],
       tokenDecimals: ['', [Validators.required, Validators.min(0), Validators.max(18)]],
       finishDate: ['', [SVValidators.checkFutureDate]],
@@ -62,7 +62,7 @@ export class NewAllotmentEventModalComponent implements OnInit {
         this.form.value['tokenDecimals'],
         this.form.value['ticker'],
         this.form.value['project'],
-        this.form.value['finishDate']);
+        this.form.value['finishDate'] === '' ? null : this.form.value['finishDate']);
       this.dialogRef.close(true);
     }
   }

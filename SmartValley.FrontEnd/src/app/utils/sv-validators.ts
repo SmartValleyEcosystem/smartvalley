@@ -3,7 +3,7 @@ import {isNullOrUndefined} from 'util';
 
 export class SVValidators extends Validators {
   static checkFutureDate(control: AbstractControl) {
-    if (isNullOrUndefined(control.value)) {
+    if (isNullOrUndefined(control.value) || control.value === '') {
       return null;
     }
     const currentDate = new Date(Date.now());
