@@ -118,6 +118,8 @@ namespace SmartValley.WebApi
                 provider => new ScoringOffersManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringOffersManagerContract));
             services.AddSingleton<IAllotmentEventsManagerContractClient, AllotmentEventsManagerContractClient>(
                 provider => new AllotmentEventsManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().AllotmentEventsManagerContract));
+            services.AddSingleton<IAllotmentEventContractClient, AllotmentEventContractClient>(
+                provider => new AllotmentEventContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().AllotmentEventContract.Abi));
 
             services.AddMemoryCache();
 
