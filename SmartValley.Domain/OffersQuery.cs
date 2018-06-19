@@ -1,4 +1,5 @@
-﻿using SmartValley.Domain.Entities;
+﻿using System.Collections.Generic;
+using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain
 {
@@ -14,7 +15,7 @@ namespace SmartValley.Domain
 
         public long? ProjectId { get; set; }
 
-        public ScoringOfferStatus? Status { get; set; }
+        public IReadOnlyCollection<ScoringOfferStatus> Statuses { get; set; }
 
         public ScoringOffersOrderBy? OrderBy { get; set; }
 

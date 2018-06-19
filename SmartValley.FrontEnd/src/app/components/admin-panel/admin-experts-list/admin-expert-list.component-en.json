@@ -12,6 +12,8 @@
     "IsAvailable": "Is available",
     "Categories": "Categories",
     "PrivateScoring": "Private scoring",
-    "IsInHouse": "Is in-house"
+    "IsInHouse": "Is in-house",
+    "DeleteExpertErrorTitle": "Expert delete error",
+    "DeleteExpertErrorMessage": "Expert have one or more accepted offers."
   }
 }

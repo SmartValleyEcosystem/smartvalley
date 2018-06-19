@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartValley.Domain;
@@ -75,7 +76,7 @@ namespace SmartValley.WebApi.Scorings
                             ExpertId = request.ExpertId,
                             OrderBy = request.OrderBy,
                             SortDirection = request.SortDirection,
-                            Status = request.Status?.ToDomain(),
+                            Statuses = request.Statuses ?? new List<ScoringOfferStatus>(),
                             Offset = request.Offset,
                             Count = request.Count,
                             ScoringId = request.ScoringId,

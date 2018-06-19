@@ -7,6 +7,12 @@ import {CollectionResponse} from '../../../api/collection-response';
 import {ExpertResponse} from '../../../api/expert/expert-response';
 import {ExpertsRegistryContractClient} from '../../../services/contract-clients/experts-registry-contract-client';
 import {EditExpertModalData} from '../../common/edit-expert-modal/edit-expert-modal-data';
+import {OffersApiClient} from '../../../api/scoring-offer/offers-api-client';
+import {OfferStatus} from '../../../api/scoring-offer/offer-status.enum';
+import {OffersQuery} from '../../../api/scoring-offer/offers-query';
+import {NotificationsService} from 'angular2-notifications';
+import {TranslateService} from '@ngx-translate/core';
+import {ExpertService} from '../../../services/expert/expert.service';
 
 @Component({
   selector: 'app-admin-experts-list',
@@ -21,9 +27,12 @@ export class AdminExpertsListComponent implements OnInit {
   public expertsResponse: CollectionResponse<ExpertResponse>;
   public experts: ExpertResponse[] = [];
   public transactionHash: string;
-  public deleteExpertRequest: ExpertDeleteRequest;
 
   constructor(private expertApiClient: ExpertApiClient,
+              private notificationsService: NotificationsService,
+              private translateService: TranslateService,
+              private offersApiClient: OffersApiClient,
+              private expertService: ExpertService,
               private expertsRegistryContractClient: ExpertsRegistryContractClient,
               private dialogService: DialogService) {
   }
@@ -53,13 +62,28 @@ export class AdminExpertsListComponent implements OnInit {
     this.loading = false;
   }
 
+  async checkCanDeleteExpertAsync(address: string): Promise<boolean> {
+    const expert = this.experts.firstOrDefault(i => i.address === address);
+    if (!expert) {
+      return false;
+    }
+    const offers = await this.offersApiClient.queryAsync(<OffersQuery>{
+      offset: 0,
+      count: 1,
+      expertId: expert.id
+    });
+    return offers.items.length === 0;
+  }
+
   public async deleteExpertAsync(address) {
-    this.transactionHash = (await this.expertsRegistryContractClient.removeAsync(address));
-    this.deleteExpertRequest = {
-      transactionHash: this.transactionHash,
-      address: address
-    };
-    await this.expertApiClient.deleteAsync(this.deleteExpertRequest);
+    if (await this.checkCanDeleteExpertAsync(address)) {
+      await this.expertService.deleteAsync(address);
+    } else {
+      this.notificationsService.error(
+        this.translateService.instant('AdminExpertList.DeleteExpertErrorTitle'),
+        this.translateService.instant('AdminExpertList.DeleteExpertErrorMessage')
+      );
+    }
   }
 
   public async showExpertEditDialog(rowData: any) {

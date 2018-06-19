@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using SmartValley.Domain;
+using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.Scorings.Requests
 {
@@ -8,6 +10,7 @@ namespace SmartValley.WebApi.Scorings.Requests
         public QueryScoringOffersRequest()
         {
             Count = 100;
+            Statuses = new List<ScoringOfferStatus>();
         }
 
         [Range(0, int.MaxValue)]
@@ -16,7 +19,7 @@ namespace SmartValley.WebApi.Scorings.Requests
         [Range(1, 100)]
         public int Count { get; set; }
 
-        public ScoringOfferStatus? Status { get; set; }
+        public IReadOnlyCollection<ScoringOfferStatus> Statuses { get; set; }
 
         public ScoringOffersOrderBy? OrderBy { get; set; }
 

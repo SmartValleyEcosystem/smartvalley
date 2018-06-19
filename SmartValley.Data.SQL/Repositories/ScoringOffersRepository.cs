@@ -31,12 +31,12 @@ namespace SmartValley.Data.SQL.Repositories
                             where !query.ExpertId.HasValue || user.Id == query.ExpertId.Value
                             where !query.ScoringId.HasValue || scoring.Id == query.ScoringId.Value
                             where !query.ProjectId.HasValue || project.Id == query.ProjectId.Value
-                            where !query.Status.HasValue || (query.Status == ScoringOfferStatus.Expired && (scoringOffer.Status == ScoringOfferStatus.Expired
-                                                                                                            || scoring.AcceptingDeadline < now && scoringOffer.Status == ScoringOfferStatus.Pending
-                                                                                                            || scoring.ScoringDeadline < now && scoringOffer.Status == ScoringOfferStatus.Accepted)
-                                                             || (query.Status == scoringOffer.Status
-                                                                 && !(scoring.AcceptingDeadline < now && scoringOffer.Status == ScoringOfferStatus.Pending)
-                                                                 && !(scoring.ScoringDeadline < now && scoringOffer.Status == ScoringOfferStatus.Accepted)))
+                            where query.Statuses.Count == 0
+                                  || query.Statuses.Contains(ScoringOfferStatus.Expired) && (scoring.AcceptingDeadline < now && scoringOffer.Status == ScoringOfferStatus.Pending
+                                                                                             || scoring.ScoringDeadline < now && scoringOffer.Status == ScoringOfferStatus.Accepted)
+                                  || query.Statuses.Contains(scoringOffer.Status)
+                                  && !(scoring.AcceptingDeadline < now && scoringOffer.Status == ScoringOfferStatus.Pending)
+                                  && !(scoring.ScoringDeadline < now && scoringOffer.Status == ScoringOfferStatus.Accepted)
                             select new ScoringOfferDetails(scoringOffer.Status,
                                                            scoring.AcceptingDeadline,
                                                            scoring.ScoringDeadline,

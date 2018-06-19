@@ -56,7 +56,6 @@ export class ScoringListComponent implements OnInit {
     this.sortDirection = this.ASC;
     this.sortedBy = OffersOrderBy.Status;
     this.user = this.userContext.getCurrentUser();
-    await this.updateOffersAsync(0);
   }
 
   public async selectedStatusAsync(statusId: OfferStatus): Promise<void> {
@@ -74,14 +73,17 @@ export class ScoringListComponent implements OnInit {
   }
 
   public async updateOffersAsync(page: number) {
-    const offersResponse = await this.offersApiClient.queryAsync(<OffersQuery>{
+    const query = <OffersQuery>{
       offset: page * this.offersOnPageCount,
       count: this.offersOnPageCount,
-      status: this.selectedOfferStatus,
       orderBy: this.sortedBy,
       sortDirection: this.sortDirection,
       expertId: this.user.id
-    });
+    };
+    if (!isNullOrUndefined(this.selectedOfferStatus)) {
+      query.statuses = [this.selectedOfferStatus];
+    }
+    const offersResponse = await this.offersApiClient.queryAsync(query);
     this.offers = offersResponse.items;
     this.totalOffers = offersResponse.totalCount;
     this.checkOffers = true;

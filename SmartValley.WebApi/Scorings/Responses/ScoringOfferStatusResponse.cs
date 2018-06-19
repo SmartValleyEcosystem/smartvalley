@@ -1,4 +1,6 @@
-﻿namespace SmartValley.WebApi.Scorings.Responses
+﻿using SmartValley.Domain.Entities;
+
+namespace SmartValley.WebApi.Scorings.Responses
 {
     public class ScoringOfferStatusResponse
     {

@@ -157,6 +157,7 @@ import {AllotmentEventsManagerContractClient} from './services/contract-clients/
 import {Erc223ContractClient} from './services/contract-clients/erc223-contract-client';
 import {FreeTokenPlaceComponent} from './components/free-token-place/free-token-place.component';
 import {AllotmentEventCardComponent} from './components/free-token-place/allotment-event-card/allotment-event-card.component';
+import {ExpertService} from './services/expert/expert.service';
 
 @NgModule({
   declarations: [
@@ -337,6 +338,7 @@ import {AllotmentEventCardComponent} from './components/free-token-place/allotme
     ScoringCriterionService,
     Web3Service,
     DialogService,
+    ExpertService,
     ScoringManagerContractClient,
     PrivateScoringManagerContractClient,
     BlockiesService,

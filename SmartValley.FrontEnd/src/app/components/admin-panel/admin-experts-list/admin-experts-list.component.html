@@ -30,13 +30,16 @@
           </div>
         </td>
         <td>
-          <span (click)="showExpertEditDialog(rowData)" class="edit-icon" title="{{ 'AdminExpertList.Edit' | translate }}"></span>
+          <span (click)="showExpertEditDialog(rowData)" class="edit-icon"
+                title="{{ 'AdminExpertList.Edit' | translate }}"></span>
+          <img (click)="deleteExpertAsync(rowData.address)" src="/assets/img/controls/delete.svg" alt="{{ 'AdminExpertList.Delete' | translate }}">
         </td>
       </tr>
     </ng-template>
     <ng-template pTemplate="summary" let-rowData>
       <div style="float: left;">
-        <button class="main-btn" type="button" (click)="showDialogToCreateNewExpert()">{{ 'AdminExpertList.CreateNew' | translate }}</button>
+        <button class="main-btn" type="button" (click)="showDialogToCreateNewExpert()">{{ 'AdminExpertList.CreateNew' | translate }}
+        </button>
       </div>
     </ng-template>
   </p-table>
