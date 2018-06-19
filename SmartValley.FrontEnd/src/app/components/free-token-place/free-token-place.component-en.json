@@ -18,8 +18,12 @@
     "AddSVT": "Add svt",
     "FreezedSVT": "Freezed SVT",
     "SVT": "SVT",
+    "ETH": "ETH",
     "ShareMyProject": "Share my project",
     "Subscribe": "Subscribe",
-    "AddETH": "Add ETH"
+    "Balance": "Balance",
+    "AddETH": "Add ETH",
+    "CantTransferFreezed": "You can’t transfer your freezed tokens:",
+    "Until": "untill"
   }
 }

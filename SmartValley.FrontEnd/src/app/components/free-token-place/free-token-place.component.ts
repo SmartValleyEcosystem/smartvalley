@@ -8,6 +8,8 @@ import {ProjectsOrderBy} from '../../api/application/projects-order-by.enum';
 import {SortDirection} from '../../api/sort-direction.enum';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ProjectResponse} from '../../api/project/project-response';
+import {BalanceService} from '../../services/balance/balance.service';
+import {FrozenBalance} from '../../services/balance/frozen-balance';
 
 @Component({
     selector: 'app-free-token-place',
@@ -23,13 +25,22 @@ export class FreeTokenPlaceComponent implements OnInit {
     public offset = 0;
     public pageSize = 10;
     public projects: ProjectResponse[] = [];
+    public showFrozenTooltip = false;
+    public balanceETH = 0;
+    public balanceSVT = 0;
+    public frozenSVT: FrozenBalance[];
 
     constructor(private allotmentEventsApiClient: AllotmentEventsApiClient,
+                private balanceService: BalanceService,
                 private projectApiClient: ProjectApiClient) {
     }
 
     async ngOnInit() {
         await this.loadAllotmentEventsAsync();
+        const tokenBalance = await this.balanceService.getTokenBalance();
+        this.balanceETH = tokenBalance.eth;
+        this.balanceSVT = tokenBalance.svt;
+        this.frozenSVT = tokenBalance.frozenSVT;
     }
 
     private async loadAllotmentEventsAsync(): Promise<void> {
