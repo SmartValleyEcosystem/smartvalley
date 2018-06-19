@@ -52,15 +52,20 @@ export class OffersApiClient extends BaseApiClient {
   public async queryAsync(query: OffersQuery): Promise<CollectionResponse<ScoringOfferResponse>> {
     const checkParam = (param) => isNullOrUndefined(param) ? '' : param.toString();
 
-    const parameters = new HttpParams()
+    let parameters = new HttpParams()
       .append('offset', query.offset.toString())
       .append('count', query.count.toString())
-      .append('status', checkParam(query.status))
       .append('orderBy', checkParam(query.orderBy))
       .append('sortDirection', checkParam(query.sortDirection))
       .append('expertId', checkParam(query.expertId))
       .append('projectId', checkParam(query.projectId))
       .append('scoringId', checkParam(query.scoringId));
+
+    if (query.statuses) {
+      query.statuses.forEach(id => {
+        parameters = parameters.append('statuses', id.toString());
+      });
+    }
 
     return this.http.get<CollectionResponse<ScoringOfferResponse>>(
       `${this.baseApiUrl}/scoring/offers`,

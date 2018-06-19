@@ -11,6 +11,9 @@ import {AreaService} from '../../../services/expert/area.service';
 import {ExpertsRegistryContractClient} from '../../../services/contract-clients/experts-registry-contract-client';
 import {AdminSetAvailabilityRequest} from '../../../api/admin/admin-set-availability-request';
 import {AdminExpertUpdateAreasRequest} from '../../../api/admin/admin-expert-update-areas-request';
+import {OffersApiClient} from '../../../api/scoring-offer/offers-api-client';
+import {OffersQuery} from '../../../api/scoring-offer/offers-query';
+import {ScoringOfferResponse} from '../../../api/scoring-offer/scoring-offer-response';
 
 @Component({
   selector: 'app-edit-expert-modal',
@@ -21,8 +24,10 @@ export class EditExpertModalComponent implements OnInit {
 
   public selectedCategories = [];
   public startedCategories = [];
+  public disabledCategories = [];
   public backendForm: FormGroup;
   public areas: Area[] = this.areaService.areas;
+  public offers: ScoringOfferResponse[] = [];
   public expertDetails: ExpertResponse = <ExpertResponse> {
     about: '',
     bitcointalk: '',
@@ -39,6 +44,7 @@ export class EditExpertModalComponent implements OnInit {
               private expertApiClient: ExpertApiClient,
               private expertsRegistryContractClient: ExpertsRegistryContractClient,
               private areaService: AreaService,
+              private offersApiClient: OffersApiClient,
               @Inject(MAT_DIALOG_DATA) public data: EditExpertModalData,
               private formBuilder: FormBuilder,
               private dialogCreateExpert: MatDialogRef<EditExpertModalComponent>) {
@@ -72,6 +78,16 @@ export class EditExpertModalComponent implements OnInit {
     this.expertDetails.areas.map(a => {
       this.selectedCategories[a.id] = true;
       this.startedCategories[a.id] = true;
+    });
+
+    const response = await this.offersApiClient.queryAsync(<OffersQuery>{
+      offset: 0,
+      count: 100,
+      expertId: this.expertDetails.id
+    });
+    this.offers = response.items;
+    this.offers.map(i => {
+      this.disabledCategories[i.area] = true;
     });
   }
 

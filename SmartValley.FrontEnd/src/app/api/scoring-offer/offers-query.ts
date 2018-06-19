@@ -5,7 +5,7 @@ import {OffersOrderBy} from './offers-order-by';
 export interface OffersQuery {
   offset: number;
   count: number;
-  status?: OfferStatus;
+  statuses: Array<OfferStatus>;
   orderBy?: OffersOrderBy;
   sortDirection?: SortDirection;
   expertId?: number;
