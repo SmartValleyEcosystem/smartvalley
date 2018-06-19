@@ -27,6 +27,7 @@ using SmartValley.Domain.Contracts;
 using SmartValley.Domain.Interfaces;
 using SmartValley.Domain.Services;
 using SmartValley.Ethereum;
+using SmartValley.Ethereum.Contracts.AllotmentEvent;
 using SmartValley.Ethereum.Contracts.AllotmentEventsManager;
 using SmartValley.Ethereum.Contracts.EtherManager;
 using SmartValley.Ethereum.Contracts.ExpertsRegistry;
@@ -109,8 +110,6 @@ namespace SmartValley.WebApi
             services.AddSingleton(InitializeProjectStorageProvider);
             services.AddSingleton<IScoringContractClient, ScoringContractClient>(
                 provider => new ScoringContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ScoringContract));
-            services.AddSingleton<IExpertsRegistryContractClient, ExpertsRegistryContractClient>(
-                provider => new ExpertsRegistryContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().ExpertsRegistryContract));
             services.AddSingleton<IEtherManagerContractClient, EtherManagerContractClient>(
                 provider => new EtherManagerContractClient(provider.GetService<EthereumContractClient>(), provider.GetService<NethereumOptions>().EtherManagerContract));
             services.AddSingleton<IScoringsRegistryContractClient, ScoringsRegistryContractClient>(

@@ -24,6 +24,7 @@
     <nav class="header-nav">
       <a class="header-nav__link" [routerLinkActiveOptions]="{ exact: true }" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + projectsLink">{{'Header.Projects' | translate }}</a>
       <a *ngIf="isAdmin" class="header-nav__link" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + adminPanelLink">{{'Header.Admin' | translate }}</a>
+      <a class="header-nav__link" [routerLinkActive]="'header-nav__link_selected'" [routerLink]="'/' + freeTokenPlaceLink">{{'Header.FreeTokenPlace' | translate }}</a>
     </nav>
     <button *ngIf="!haveProject" class="main-btn get-score-btn" (click)="navigateToProjectApplication()">{{ 'Header.GetScoreForMyProject' | translate }}</button>
     <button *ngIf="!isExpert" class="main-btn" (click)="navigateToExpertApplication()">{{ 'Header.BecomeAnExpert' | translate }}</button>

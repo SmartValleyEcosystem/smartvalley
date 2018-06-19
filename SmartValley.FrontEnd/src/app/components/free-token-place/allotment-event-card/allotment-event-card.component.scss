@@ -1,0 +1,103 @@
+@import "../../../../styles/fonts";
+
+.event-card__top-info {
+  display: flex;
+  justify-content: space-between;
+}
+.event-card {
+  margin: 0 24px 24px 0;
+  padding: 24px;
+  width: 336px;
+  height: 500px;
+  background: #fff;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+}
+.project-avatar {
+  img {
+    display: block;
+    width: 112px;
+    height: 112px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+}
+.light-color {
+  font-size: 24px;
+  color: #A4A2B0;
+}
+.light-label {
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  color: #A4A2B0;
+}
+.light-label_small {
+  font-size: 12px;
+}
+.project-info {
+  text-align: right;
+}
+.event-card__title {
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  margin-bottom: 24px;
+}
+.scoring {
+  font-size: 24px;
+  text-align: center;
+}
+.event-card__timer {
+  margin: 24px 0;
+  text-align: center;
+}
+.timer {
+  width: 288px;
+  height: 98px;
+  border: 1px solid #EEEDF5;
+  box-sizing: border-box;
+  border-radius: 8px;
+  margin: 24px 0;
+  padding: 12px 0 8px 0;
+}
+.event-card__footer {
+  text-align: center;
+}
+.timer__info, .timer__labels {
+  font-weight: normal;
+  font-family: $font-pt;
+  font-size: 12px;
+  text-align: center;
+  letter-spacing: 0.04em;
+  color: #000;
+}
+.timer__numbers {
+  .time-number {
+    &:last-child {
+      margin-right: 0;
+    }
+    margin-right: 12px;
+    line-height: 1;
+  }
+  display: flex;
+  font-weight: bold;
+  font-size: 36px;
+  text-align: center;
+  letter-spacing: 0.04em;
+  color: #000;
+  justify-content: center;
+}
+.project-title, .project-title a {
+  font-family: Roboto-Bold;
+  font-size: 18px;
+  color: #5D49F2;
+  margin-bottom: 12px;
+}
+.project-distribute {
+  margin-bottom: 12px;
+}
+.timer_finished {
+  background: #EEEDF5;
+}
+.time-number__finished {
+  margin-top: 12px;
+}

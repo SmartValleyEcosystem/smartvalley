@@ -8,8 +8,8 @@ export interface AllotmentEventResponse {
   tokenContractAddress: string;
   eventContractAddress: string;
   projectId: number;
-  startDate: string | null;
-  finishDate: string | null;
+  startDate?: Date;
+  finishDate?: Date;
   tokenDecimals: number;
   tokenTicker: string;
 }

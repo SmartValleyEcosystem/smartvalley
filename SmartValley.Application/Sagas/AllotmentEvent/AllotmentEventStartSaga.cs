@@ -8,6 +8,7 @@ using SmartValley.Messages.Commands;
 
 namespace SmartValley.Application.Sagas.AllotmentEvent
 {
+    // ReSharper disable once UnusedMember.Global
     public class AllotmentEventStartSaga : SqlSaga<AllotmentEventStartSagaData>,
         IAmStartedByMessages<StartAllotmentEvent>,
         IHandleMessages<TransactionCompleted>,
@@ -35,15 +36,16 @@ namespace SmartValley.Application.Sagas.AllotmentEvent
         public async Task Handle(StartAllotmentEvent command, IMessageHandlerContext context)
         {
             Data.AllotmentEventId = command.AllotmentEventId;
+            Data.TransactionHash = command.TransactionHash;
 
             await _allotmentEventService.SetUpdatingStateAsync(command.AllotmentEventId, true);
-            await _ethereumTransactionService.StartAsync(command.TransactionHash, command.UserId, EthereumTransactionType.PublishAllotmentEvent);
-            await context.SendLocal(new WaitForTransaction { TransactionHash = command.TransactionHash });
+            await _ethereumTransactionService.StartAsync(command.TransactionHash, command.UserId, EthereumTransactionType.StartAllotmentEvent);
+            await context.SendLocal(new WaitForTransaction {TransactionHash = command.TransactionHash});
         }
 
         public async Task Handle(TransactionCompleted message, IMessageHandlerContext context)
         {
-            await _allotmentEventService.StartAsync(Data.AllotmentEventId);
+            await _allotmentEventService.UpdateAsync(Data.AllotmentEventId);
             MarkAsComplete();
         }
 

@@ -155,6 +155,8 @@ import {StartAllotmentEventModalComponent} from './components/common/start-allot
 import {AllotmentEventService} from './services/allotment-event/allotment-event.service';
 import {AllotmentEventsManagerContractClient} from './services/contract-clients/allotment-events-manager-contract-client';
 import {Erc223ContractClient} from './services/contract-clients/erc223-contract-client';
+import {FreeTokenPlaceComponent} from './components/free-token-place/free-token-place.component';
+import {AllotmentEventCardComponent} from './components/free-token-place/allotment-event-card/allotment-event-card.component';
 
 @NgModule({
   declarations: [
@@ -230,7 +232,9 @@ import {Erc223ContractClient} from './services/contract-clients/erc223-contract-
     EditScoringComponent,
     PrivateScoringModalComponent,
     AdminAllotmentEventsComponent,
-    StartAllotmentEventModalComponent
+    StartAllotmentEventModalComponent,
+    FreeTokenPlaceComponent,
+    AllotmentEventCardComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,

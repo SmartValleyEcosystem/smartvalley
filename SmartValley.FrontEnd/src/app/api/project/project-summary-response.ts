@@ -1,6 +1,5 @@
 import {ScoringResponse} from '../scoring/scoring-response';
 import {ScoringStartTransactionStatus} from './scoring-start-transaction.status';
-import {ScoringStatus} from '../../services/scoring-status.enum';
 
 export interface ProjectSummaryResponse {
   id: number;

@@ -3,6 +3,7 @@ import {Web3Service} from '../web3-service';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {ContractClient} from './contract-client';
 import {UserContext} from '../authentication/user-context';
+import {isNullOrUndefined} from 'util';
 
 @Injectable()
 export class AllotmentEventsManagerContractClient implements ContractClient {
@@ -21,14 +22,40 @@ export class AllotmentEventsManagerContractClient implements ContractClient {
     this.address = contract.address;
   }
 
-  public async createAsync(eventId: number): Promise<string> {
+  public async createAsync(eventId: number,
+                           name: string,
+                           tokenDecimals: number,
+                           tokenTicker: string,
+                           tokenContractAddress: string,
+                           finishDate?: Date): Promise<string> {
     const contract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.userContext.getCurrentUser().account;
     return await contract.create(
       eventId,
-      {
-        from: fromAddress
-      });
+      name,
+      tokenDecimals,
+      tokenTicker,
+      tokenContractAddress,
+      isNullOrUndefined(finishDate) ? 0 : Math.floor(+finishDate / 1000),
+      {from: fromAddress});
+  }
+
+  public async editAsync(eventId: number,
+                         name: string,
+                         tokenDecimals: number,
+                         tokenTicker: string,
+                         tokenContractAddress: string,
+                         finishDate?: Date): Promise<string> {
+    const contract = this.web3Service.getContract(this.abi, this.address);
+    const fromAddress = this.userContext.getCurrentUser().account;
+    return await contract.edit(
+      eventId,
+      name,
+      tokenDecimals,
+      tokenTicker,
+      tokenContractAddress,
+      isNullOrUndefined(finishDate) ? 0 : Math.floor(+finishDate / 1000),
+      {from: fromAddress});
   }
 
   public async startAsync(eventId: number): Promise<string> {

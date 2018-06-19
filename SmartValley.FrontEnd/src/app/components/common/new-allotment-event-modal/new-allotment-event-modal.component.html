@@ -4,14 +4,15 @@
   <form [class.submitted]="isFormSubmited" [formGroup]="form" (ngSubmit)="submitFormAsync()" autocomplete="off">
     <div class="control-row">
       <p class="control-label">
-        <label for="project">{{ 'NewAllotmentEventModal.Title' | translate }}</label>
+        <label for="project">{{ 'NewAllotmentEventModal.ProjectName' | translate }}</label>
       </p>
-      <app-select class="select-component input-component select-full-width"
-                  formControlName="project" [elementId]="'project'"
-                  [placeholder]="'NewAllotmentEventModal.ProjectNamePlaceholder' | translate"
-                  [items]="allowedProjects"
-                  #required>
-      </app-select>
+      <app-autocomplete class="input-component select-full-width" [isNeedToTranslate]="false"
+                        [elementClass]="'wide-autocomplete'" [elementId]="'project'" formControlName="project"
+                        [placeholder]="'NewAllotmentEventModal.ProjectNamePlaceholder' | translate"
+                        [allItems]="allowedProjects"
+                        #required>
+
+      </app-autocomplete>
     </div>
     <div class="control-row">
       <p class="control-label">
@@ -41,10 +42,10 @@
       <p class="control-label">
         <label for="finish-date">{{ 'NewAllotmentEventModal.FinishDate' | translate }}</label>
       </p>
-      <p-calendar class="input-component select-full-width" [inputId]="'finish-date'" formControlName="finishDate" [inputStyleClass]="'input input-date'" dateFormat="dd.mm.yy" [yearNavigator]="true" yearRange="1900:2018" #required></p-calendar>
+      <p-calendar class="input-component select-full-width" placeholder="dd.mm.yyyy" [inputId]="'finish-date'" formControlName="finishDate" [inputStyleClass]="'input input-date'" dateFormat="dd.mm.yy" [yearNavigator]="true" yearRange="2018:2050" #required></p-calendar>
     </div>
     <div class="control-row submit">
-      <input type="submit" value="{{ 'NewAllotmentEventModal.Create' | translate }}" class="material-btn">
+      <input type="submit" value="{{ 'NewAllotmentEventModal.Create' | translate }}" [disabled]="isFormSubmited" class="material-btn">
     </div>
   </form>
 </div>
