@@ -33,6 +33,7 @@
         ScoringNotFound,
         OfferNotFoundInContract,
         ApplicationNotFound,
-        AllotmentEventNotFound
+        AllotmentEventNotFound,
+        CantUpdateNotPublishedAllotmentEvent
     }
 }

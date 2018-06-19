@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SmartValley.Messages.Commands
+﻿namespace SmartValley.Messages.Commands
 {
     public class UpdateAllotmentEvent
     {
@@ -9,15 +7,5 @@ namespace SmartValley.Messages.Commands
         public long AllotmentEventId { get; set; }
 
         public long UserId { get; set; }
-
-        public string Name { get; set; }
-
-        public string TokenContractAddress { get; set; }
-
-        public int TokenDecimals { get; set; }
-
-        public string TokenTicker { get; set; }
-
-        public DateTimeOffset? FinishDate { get; set; }
     }
 }

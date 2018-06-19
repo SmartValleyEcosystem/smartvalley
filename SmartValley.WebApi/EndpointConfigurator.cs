@@ -22,7 +22,9 @@ using SmartValley.Domain.Contracts;
 using SmartValley.Domain.Interfaces;
 using SmartValley.Domain.Services;
 using SmartValley.Ethereum;
+using SmartValley.Ethereum.Contracts.AllotmentEvent;
 using SmartValley.Ethereum.Contracts.AllotmentEventsManager;
+using SmartValley.Ethereum.Contracts.ExpertsRegistry;
 using SmartValley.Ethereum.Contracts.ScoringOffersManager;
 using SmartValley.Ethereum.Contracts.ScoringsRegistry;
 using SmartValley.Ethereum.Contracts.SmartValley.Application.Contracts;
@@ -159,6 +161,16 @@ namespace SmartValley.WebApi
                                           context.Resolve<EthereumContractClient>(),
                                           context.Resolve<NethereumOptions>().ScoringsRegistryContract))
                             .As<IScoringsRegistryContractClient>();
+
+            containerBuilder.Register(context => new AllotmentEventContractClient(
+                                          context.Resolve<EthereumContractClient>(),
+                                          context.Resolve<NethereumOptions>().AllotmentEventContract.Abi))
+                            .As<IAllotmentEventContractClient>();
+
+            containerBuilder.Register(context => new ExpertsRegistryContractClient(
+                                          context.Resolve<EthereumContractClient>(),
+                                          context.Resolve<NethereumOptions>().ExpertsRegistryContract))
+                            .As<IExpertsRegistryContractClient>();
 
             // Services
             containerBuilder.RegisterType<UtcClock>().As<IClock>();

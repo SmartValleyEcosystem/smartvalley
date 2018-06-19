@@ -35,32 +35,6 @@ namespace SmartValley.WebApi.AllotmentEvents
             return result.ToPartialCollectionResponse(AllotmentEventResponse.Create);
         }
 
-        [HttpPut]
-        [Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<IActionResult> UpdateAsync([FromBody] UpdateAllotmentEventRequest request)
-        {
-            var allotmentEvent = await _allotmentEventService.GetByIdAsync(request.AllotmentEventId);
-
-            if (string.IsNullOrWhiteSpace(request.TransactionHash) && allotmentEvent.Status == AllotmentEventStatus.InProgress)
-                return BadRequest();
-
-            var command = new UpdateAllotmentEvent
-                          {
-                              AllotmentEventId = request.AllotmentEventId,
-                              TransactionHash = request.TransactionHash,
-                              UserId = User.GetUserId(),
-                              Name = request.Name,
-                              TokenContractAddress = request.TokenContractAddress,
-                              TokenDecimals = request.TokenDecimals,
-                              TokenTicker = request.TokenTicker,
-                              FinishDate = request.FinishDate
-                          };
-
-            await _messageSession.SendLocal(command);
-
-            return NoContent();
-        }
-
         [HttpPost]
         [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<CreateAllotmentEventResponse> PostAsync([FromBody] CreateAllotmentEventRequest request)
@@ -75,6 +49,22 @@ namespace SmartValley.WebApi.AllotmentEvents
             return new CreateAllotmentEventResponse(eventId);
         }
 
+        [HttpPut("{id}")]
+        [Authorize(Roles = nameof(RoleType.Admin))]
+        public async Task<IActionResult> UpdateAsync(long id, [FromBody] UpdateAllotmentEventRequest request)
+        {
+            var command = new UpdateAllotmentEvent
+                          {
+                              AllotmentEventId = id,
+                              TransactionHash = request.TransactionHash,
+                              UserId = User.GetUserId(),
+                          };
+
+            await _messageSession.SendLocal(command);
+
+            return NoContent();
+        }
+
         [HttpPut("{id}/publish")]
         [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<IActionResult> PublishAsync(long id, [FromBody] PublishAllotmentEventRequest request)
@@ -87,7 +77,7 @@ namespace SmartValley.WebApi.AllotmentEvents
 
         [HttpPut("{id}/start")]
         [Authorize(Roles = nameof(RoleType.Admin))]
-        public async Task<IActionResult> StartAsync(long id, [FromBody]StartAllotmentEventRequest request)
+        public async Task<IActionResult> StartAsync(long id, [FromBody] StartAllotmentEventRequest request)
         {
             var command = new StartAllotmentEvent(id, User.GetUserId(), request.TransactionHash);
 
