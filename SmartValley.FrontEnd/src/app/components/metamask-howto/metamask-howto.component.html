@@ -16,7 +16,7 @@
       <div *ngIf="browser === 'chrome'; else firefoxManual">
         <h3 class="bold-text">{{'MetamaskHowTo.Step' | translate }} 1</h3>
         <p>{{'MetamaskHowTo.GoToWebStore' | translate }}</p>
-        <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn" class="main-btn">{{'MetamaskHowTo.GetMetamaskButtonText'
+        <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn" target="_blank" class="main-btn">{{'MetamaskHowTo.GetMetamaskButtonText'
           | translate }}</a>
 
         <h3 class="bold-text">{{'MetamaskHowTo.Step' | translate }} 2</h3>
@@ -30,7 +30,7 @@
       <ng-template #firefoxManual>
         <h3 class="bold-text">{{'MetamaskHowTo.Step' | translate }} 1</h3>
         <p>{{'MetamaskHowTo.GoToWebStore' | translate }}</p>
-        <a href="https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/" class="main-btn">{{'MetamaskHowTo.GetMetamaskButtonText'
+        <a href="https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/" target="_blank" class="main-btn">{{'MetamaskHowTo.GetMetamaskButtonText'
           | translate }}</a>
 
         <h3 class="bold-text">{{'MetamaskHowTo.Step' | translate }} 2</h3>

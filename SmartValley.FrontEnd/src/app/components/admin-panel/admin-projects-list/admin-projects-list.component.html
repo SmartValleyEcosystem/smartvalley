@@ -25,7 +25,7 @@
         -
       </td>
       <td class="list-item" [ngSwitch]="getScoringStatus(project)">
-        <span *ngSwitchCase="ScoringStatus.FillingApplication">{{ 'AdminProjects.New' | translate }}</span>
+        <span *ngSwitchCase="ScoringStatus.FillingApplication || ScoringStatus.ReadyForPayment">{{ 'AdminProjects.New' | translate }}</span>
         <a *ngSwitchCase="ScoringStatus.PaymentInProcess" target="_blank"
            [href]="getScoringStartTransactionUrl(project)">
           {{ 'MyProject.PaymentInProgress' | translate }}
