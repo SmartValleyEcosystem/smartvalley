@@ -46,23 +46,24 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
     }
 
     public pad(n) {
-        return (n < 10 ? '0' : '') + n;
+        return (n < 10 ? '0' : '') + Math.floor(parseInt(n));
     }
 
     public getAllotmentEventTimeLeft() {
         const eventDate = new Date(this.event.finishDate);
         const currentDate = new Date().getTime();
 
-        let secondsLeft = (eventDate - currentDate) / 1000;
+        const eventDateNumber: number = eventDate.getTime();
+        let secondsLeft = (eventDateNumber - currentDate) / 1000;
 
-        const days = this.pad(parseInt(secondsLeft / 86400));
+        const days = this.pad(secondsLeft / 86400);
         secondsLeft = secondsLeft % 86400;
 
-        const hours = this.pad(parseInt(secondsLeft / 3600));
+        const hours = this.pad((secondsLeft / 3600));
         secondsLeft = secondsLeft % 3600;
 
-        const minutes = this.pad(parseInt(secondsLeft / 60));
-        const seconds = this.pad(parseInt(secondsLeft % 60));
+        const minutes = this.pad(secondsLeft / 60);
+        const seconds = this.pad(secondsLeft % 60);
 
         if (new Date() < eventDate) {
             this.event.timer.days = days;

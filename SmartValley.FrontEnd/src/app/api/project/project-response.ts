@@ -4,6 +4,7 @@ import {ScoringStartTransactionStatus} from './scoring-start-transaction.status'
 
 export interface ProjectResponse {
   id: number;
+  imageUrl: string;
   name: string;
   country: string;
   category: Category;
@@ -12,4 +13,5 @@ export interface ProjectResponse {
   isApplicationSubmitted: boolean;
   scoringStartTransactionStatus: ScoringStartTransactionStatus;
   scoringStartTransactionHash: string;
+  authorAddress?: string;
 }

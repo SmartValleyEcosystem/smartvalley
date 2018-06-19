@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AllotmentEventsApiClient} from '../../api/allotment-events/allotment-events-api-client';
 import {GetAllotmentEventsRequest} from '../../api/allotment-events/request/get-allotment-events-request';
 import {AllotmentEventStatus} from '../../api/allotment-events/allotment-event-status';
