@@ -41,11 +41,7 @@ export class FreeTokenPlaceComponent implements OnInit {
 
         this.allotmentEvents = allotmentEvents.items;
 
-        const projectIds: number[] = [];
-
-        this.allotmentEvents.map((a) => {
-            projectIds.push(a.projectId);
-        });
+        const projectIds = this.allotmentEvents.map(a => a.projectId);
 
         const projectResponse = await this.projectApiClient.getAsync(<ProjectQuery>{
             offset: 0,
