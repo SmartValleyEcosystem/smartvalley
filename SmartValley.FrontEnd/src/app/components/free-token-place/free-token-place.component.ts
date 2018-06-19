@@ -39,20 +39,19 @@ export class FreeTokenPlaceComponent implements OnInit, OnDestroy {
     }
 
     private async loadAllotmentEventsAsync(): Promise<void> {
-        const getAllotmentEventsRequest = <GetAllotmentEventsRequest>{
+        const allotmentEvents = await this.allotmentEventsApiClient.getAllotmentEvents(<GetAllotmentEventsRequest>{
             offset: this.offset,
             count: this.pageSize,
             statuses: this.selectedStatuses
-        };
-
-        const allotmentEvents = await this.allotmentEventsApiClient.getAllotmentEvents(getAllotmentEventsRequest);
+        });
 
         this.allotmentEvents = allotmentEvents.items;
 
         const projectIds: number[] = [];
-        for (let allotmentEvent of this.allotmentEvents) {
-            projectIds.push(allotmentEvent.projectId);
-        }
+
+        this.allotmentEvents.map((a) => {
+            projectIds.push(a.projectId);
+        });
 
         const projectResponse = await this.projectApiClient.getAsync(<ProjectQuery>{
             offset: 0,
