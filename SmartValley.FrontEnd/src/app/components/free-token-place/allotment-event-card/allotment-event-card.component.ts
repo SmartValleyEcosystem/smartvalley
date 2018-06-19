@@ -23,6 +23,12 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.timer = <NodeJS.Timer>setInterval(async () => await this.getAllotmentEventTimeLeft(), 1000);
+        this.event.timer = {
+            days: '00',
+            hours: '00',
+            minutes: '00',
+            seconds: '00'
+        };
     }
 
     ngOnDestroy(): void {
