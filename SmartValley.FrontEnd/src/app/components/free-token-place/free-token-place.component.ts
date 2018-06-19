@@ -2,11 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AllotmentEventsApiClient} from '../../api/allotment-events/allotment-events-api-client';
 import {GetAllotmentEventsRequest} from '../../api/allotment-events/request/get-allotment-events-request';
 import {AllotmentEventStatus} from '../../api/allotment-events/allotment-event-status';
-import {AllotmentEventResponse} from '../../api/allotment-events/responses/allotment-event-response';
-import {Paths} from '../../paths';
-import {Router} from '@angular/router';
 import {AllotmentEventCard} from './allotment-event-card';
-import {c} from '@angular/core/src/render3';
 import {ProjectQuery} from '../../api/project/project-query';
 import {ProjectsOrderBy} from '../../api/application/projects-order-by.enum';
 import {SortDirection} from '../../api/sort-direction.enum';
@@ -49,9 +45,9 @@ export class FreeTokenPlaceComponent implements OnInit, OnDestroy {
             statuses: this.selectedStatuses
         };
 
-        const allotmentEventsRequest = await this.allotmentEventsApiClient.getAllotmentEvents(getAllotmentEventsRequest);
+        const allotmentEvents = await this.allotmentEventsApiClient.getAllotmentEvents(getAllotmentEventsRequest);
 
-        this.allotmentEvents = allotmentEventsRequest.items;
+        this.allotmentEvents = allotmentEvents.items;
 
         const projectIds: number[] = [];
         for (let allotmentEvent of this.allotmentEvents) {
@@ -61,7 +57,6 @@ export class FreeTokenPlaceComponent implements OnInit, OnDestroy {
         const projectResponse = await this.projectApiClient.getAsync(<ProjectQuery>{
             offset: 0,
             count: projectIds.length,
-            onlyScored: false,
             orderBy: ProjectsOrderBy.CreationDate,
             direction: SortDirection.Descending,
             projectIds: projectIds
