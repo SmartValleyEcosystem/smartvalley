@@ -57,4 +57,10 @@ export class AllotmentEventsManagerContractClient implements ContractClient {
       isNullOrUndefined(finishDate) ? 0 : Math.floor(+finishDate / 1000),
       {from: fromAddress});
   }
+
+  public async startAsync(eventId: number): Promise<string> {
+      const contract = this.web3Service.getContract(this.abi, this.address);
+      console.log(eventId);
+      return await contract.start(eventId);
+  }
 }

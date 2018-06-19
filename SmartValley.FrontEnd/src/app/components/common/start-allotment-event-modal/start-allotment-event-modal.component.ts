@@ -27,7 +27,7 @@ export class StartAllotmentEventModalComponent implements OnInit {
     this.project = await this.projectApiClient.getProjectSummaryAsync(this.data.projectId);
   }
 
-  public submit(result) {
+  public submit(result: boolean) {
     this.dialogRef.close(result);
   }
 }
