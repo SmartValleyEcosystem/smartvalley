@@ -72,7 +72,7 @@ export class AdminAllotmentEventsComponent {
   public async showNewAllotmentEventModalAsync(): Promise<void> {
     const allotmentEventCreated = await this.dialogService.showNewAllotmentEventDialog();
     if (allotmentEventCreated) {
-      this.loadAllotmentEventsAsync();
+      await this.loadAllotmentEventsAsync();
     }
   }
 
@@ -87,8 +87,8 @@ export class AdminAllotmentEventsComponent {
     return total.value;
   }
 
-  public showStartAllotmentEventModal(allotmenEventData: AllotmentEventResponse) {
-    this.dialogService.showStartAllotmentEventDialog(allotmenEventData);
+  public async showStartAllotmentEventModal(allotmentEventData: AllotmentEventResponse) {
+    await this.dialogService.showStartAllotmentEventDialog(allotmentEventData);
   }
 
   public getProjectLink(id) {
@@ -98,17 +98,16 @@ export class AdminAllotmentEventsComponent {
   }
 
   public async showEditAllotmentModal(allotmentEvent: AllotmentEventResponse) {
-      const editModal = await this.dialogService.showEditAllotmentEventDialog(allotmentEvent);
-      if (editModal) {
-          await this.allotmentEventService.editAsync(
-              allotmentEvent.name,
-              allotmentEvent.tokenContractAddress,
-              allotmentEvent.tokenDecimals,
-              allotmentEvent.tokenTicker,
-              allotmentEvent.id,
-              allotmentEvent.finishDate
-          );
-      }
+    const editModal = await this.dialogService.showEditAllotmentEventDialog(allotmentEvent);
+    if (editModal) {
+      await this.allotmentEventService.editAsync(
+        allotmentEvent.id,
+        allotmentEvent.name,
+        allotmentEvent.tokenContractAddress,
+        allotmentEvent.tokenDecimals,
+        allotmentEvent.tokenTicker,
+        allotmentEvent.id,
+        allotmentEvent.finishDate);
+    }
   }
-
 }

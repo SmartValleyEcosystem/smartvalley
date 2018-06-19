@@ -67,12 +67,8 @@ namespace SmartValley.WebApi.Scorings
         public async Task<IActionResult> QueryAsync([FromQuery] QueryScoringOffersRequest request)
         {
             var isAdmin = User.IsInRole(nameof(RoleType.Admin));
-
-            if (request.ExpertId.HasValue && request.ExpertId.Value != User.GetUserId() && !isAdmin
-                || !request.ExpertId.HasValue && !isAdmin)
-            {
+            if (request.ExpertId.HasValue && request.ExpertId.Value != User.GetUserId() && !isAdmin || !request.ExpertId.HasValue && !isAdmin)
                 return Unauthorized();
-            }
 
             var query = new OffersQuery
                         {

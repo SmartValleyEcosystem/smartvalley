@@ -32,24 +32,9 @@ namespace SmartValley.Application.Sagas.AllotmentEvent
         {
             Data.AllotmentEventId = message.AllotmentEventId;
             Data.TransactionHash = message.TransactionHash;
-            Data.Name = message.Name;
-            Data.TokenContractAddress = message.TokenContractAddress;
-            Data.TokenTicker = message.TokenTicker;
-            Data.TokenDecimals = message.TokenDecimals;
-            Data.FinishDate = message.FinishDate;
-
-            if (string.IsNullOrWhiteSpace(Data.TransactionHash))
-            {
-                await UpdateAsync();
-                MarkAsComplete();
-                return;
-            }
 
             await _allotmentEventService.SetUpdatingStateAsync(message.AllotmentEventId, true);
-            await _transactionService.StartAsync(
-                message.TransactionHash,
-                message.UserId,
-                EthereumTransactionType.EditAllotmentEvent);
+            await _transactionService.StartAsync(message.TransactionHash, message.UserId, EthereumTransactionType.EditAllotmentEvent);
 
             await context.SendLocal(new WaitForTransaction {TransactionHash = message.TransactionHash});
         }
@@ -57,7 +42,7 @@ namespace SmartValley.Application.Sagas.AllotmentEvent
         public async Task Handle(TransactionCompleted message, IMessageHandlerContext context)
         {
             await _allotmentEventService.SetUpdatingStateAsync(Data.AllotmentEventId, false);
-            await UpdateAsync();
+            await _allotmentEventService.UpdateAsync(Data.AllotmentEventId);
             MarkAsComplete();
         }
 
@@ -73,17 +58,6 @@ namespace SmartValley.Application.Sagas.AllotmentEvent
 
             mapper.ConfigureMapping<TransactionCompleted>(m => m.TransactionHash);
             mapper.ConfigureMapping<TransactionFailed>(m => m.TransactionHash);
-        }
-
-        private async Task UpdateAsync()
-        {
-            await _allotmentEventService.UpdateAsync(
-                Data.AllotmentEventId,
-                Data.Name,
-                Data.TokenContractAddress,
-                Data.TokenDecimals,
-                Data.TokenTicker,
-                Data.FinishDate);
         }
     }
 }

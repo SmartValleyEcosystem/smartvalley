@@ -12,19 +12,19 @@ namespace SmartValley.Domain.Services
     {
         private readonly IAllotmentEventRepository _allotmentEventRepository;
         private readonly IAllotmentEventsManagerContractClient _allotmentEventsManagerContractClient;
+        private readonly IAllotmentEventContractClient _allotmentEventContractClient;
 
         public AllotmentEventService(IAllotmentEventRepository allotmentEventRepository,
-                                     IAllotmentEventsManagerContractClient allotmentEventsManagerContractClient)
+                                     IAllotmentEventsManagerContractClient allotmentEventsManagerContractClient,
+                                     IAllotmentEventContractClient allotmentEventContractClient)
         {
             _allotmentEventRepository = allotmentEventRepository;
             _allotmentEventsManagerContractClient = allotmentEventsManagerContractClient;
+            _allotmentEventContractClient = allotmentEventContractClient;
         }
 
         public Task<PagingCollection<AllotmentEvent>> QueryAsync(AllotmentEventsQuery query)
             => _allotmentEventRepository.QueryAsync(query);
-
-        public Task<AllotmentEvent> GetByIdAsync(long id)
-            => _allotmentEventRepository.GetByIdAsync(id);
 
         public async Task<long> CreateAsync(
             string name,
@@ -51,21 +51,21 @@ namespace SmartValley.Domain.Services
             return entity.Id;
         }
 
-        public async Task UpdateAsync(
-            long id,
-            string name,
-            string tokenContractAddress,
-            int tokenDecimals,
-            string tokenTicker,
-            DateTimeOffset? finishDate)
+        public async Task UpdateAsync(long id)
         {
             var allotmentEvent = await _allotmentEventRepository.GetByIdAsync(id) ?? throw new AppErrorException(ErrorCode.AllotmentEventNotFound);
+            if (allotmentEvent.Status == AllotmentEventStatus.Created)
+                throw new AppErrorException(ErrorCode.CantUpdateNotPublishedAllotmentEvent);
 
-            allotmentEvent.Name = name;
-            allotmentEvent.TokenContractAddress = tokenContractAddress;
-            allotmentEvent.TokenDecimals = tokenDecimals;
-            allotmentEvent.TokenTicker = tokenTicker;
-            allotmentEvent.FinishDate = finishDate;
+            var allotmentEventInfo = await _allotmentEventContractClient.GetInfoAsync(allotmentEvent.EventContractAddress);
+
+            allotmentEvent.Name = allotmentEventInfo.Name;
+            allotmentEvent.TokenContractAddress = allotmentEventInfo.TokenContractAddress;
+            allotmentEvent.TokenDecimals = allotmentEventInfo.TokenDecimals;
+            allotmentEvent.TokenTicker = allotmentEventInfo.TokenTicker;
+            allotmentEvent.FinishDate = allotmentEventInfo.FinishDate;
+            allotmentEvent.StartDate = allotmentEventInfo.StartDate;
+            allotmentEvent.Status = allotmentEventInfo.Status;
 
             await _allotmentEventRepository.SaveChangesAsync();
         }
@@ -75,14 +75,6 @@ namespace SmartValley.Domain.Services
             var allotmentEvent = await _allotmentEventRepository.GetByIdAsync(allotmentEventId);
             allotmentEvent.SetState(AllotmentEventStatus.Published);
             allotmentEvent.EventContractAddress = await _allotmentEventsManagerContractClient.GetAllotmentEventContractAddressAsync(allotmentEventId);
-
-            await _allotmentEventRepository.SaveChangesAsync();
-        }
-
-        public async Task StartAsync(long allotmentEventId)
-        {
-            var allotmentEvent = await _allotmentEventRepository.GetByIdAsync(allotmentEventId);
-            allotmentEvent.SetState(AllotmentEventStatus.InProgress);
 
             await _allotmentEventRepository.SaveChangesAsync();
         }
