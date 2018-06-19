@@ -8,7 +8,7 @@ export class FormatDatePipe implements PipeTransform {
 
   transform(value: any, args?: any): any {
     if (value instanceof Date || typeof value === 'string') {
-      return moment(value).format('MMMM D, Y');
+      return moment(value).format('D MMMM Y');
     }
     return value;
   }

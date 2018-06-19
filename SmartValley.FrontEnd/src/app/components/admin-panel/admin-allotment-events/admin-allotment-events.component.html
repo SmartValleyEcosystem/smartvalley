@@ -49,7 +49,7 @@
         <td class="list-item">{{ rowData['eventContractAddress'] | dashIfEmpty }}</td>
         <td class="list-item">{{ rowData['startDate'] | date: 'dd.MM.yy HH:mm' | dashIfEmpty }}</td>
         <td class="list-item">{{ rowData['finishDate'] | date: 'dd.MM.yy HH:mm' | dashIfEmpty }}</td>
-        <td class="list-item"> {{ getTotalTokens(rowData['eventContractAddress']) | dashIfEmpty }}</td>
+        <td class="list-item"> {{ getTotalTokens(rowData['eventContractAddress']) }} {{ rowData['tokenTicker'] }}</td>
         <td class="list-item">
           <span (click)="showEditAllotmentModal(rowData)" class="edit-icon" title="{{ 'AdminExpertList.Edit' | translate }}"></span>
           <img class="delete-icon" src="/assets/img/controls/delete.svg" alt="{{ 'AdminPanel.Delete' | translate }}">
