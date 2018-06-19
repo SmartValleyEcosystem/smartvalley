@@ -35,6 +35,9 @@ export class RegisterComponent {
   }
 
   async submitAsync() {
+
+    await this.authenticationService.authenticateAsync();
+
     if (this.form.invalid) {
       return;
     }
