@@ -69,13 +69,6 @@ export class AdminAllotmentEventsComponent {
     await this.loadAllotmentEventsAsync();
   }
 
-  public async showNewAllotmentEventModalAsync(): Promise<void> {
-    const allotmentEventCreated = await this.dialogService.showNewAllotmentEventDialog();
-    if (allotmentEventCreated) {
-      await this.loadAllotmentEventsAsync();
-    }
-  }
-
   public getTotalTokens(eventAddress: string): number | null {
     if (this.totalTokens.length === 0) {
       return null;
@@ -99,10 +92,6 @@ export class AdminAllotmentEventsComponent {
       if (allotmentEventCreated) {
           this.loadAllotmentEventsAsync();
       }
-  }
-
-  public async showStartAllotmentEventModal(allotmentEventData: AllotmentEventResponse) {
-    await this.dialogService.showStartAllotmentEventDialog(allotmentEventData);
   }
 
   public getProjectLink(id) {
