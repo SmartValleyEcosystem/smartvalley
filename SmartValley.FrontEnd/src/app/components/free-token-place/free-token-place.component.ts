@@ -64,22 +64,21 @@ export class FreeTokenPlaceComponent implements OnInit, OnDestroy {
 
         this.projects = projectResponse.items;
 
-        for (let i = 0; this.allotmentEvents.length > i; i++) {
+        this.allotmentEvents.map( (a, i) => {
             const currentEvent = this.allotmentEvents[i];
-            currentEvent['project'] = this.projects.find((p) => p.id === currentEvent.projectId );
-            currentEvent['timer'] = {
+            a['project'] = this.projects.find((p) => p.id === currentEvent.projectId );
+            a['timer'] = {
                 days: '00',
                 hours: '00',
                 minutes: '00',
                 seconds: '00'
             };
-            if ( currentEvent.status === AllotmentEventStatus.Finished ) {
+            if ( a.status === AllotmentEventStatus.Finished ) {
                 this.finishedEvents.push(currentEvent);
             }else {
                 this.activeEvents.push(currentEvent);
             }
-        }
-
+        });
     }
 
     public pad(n) {
