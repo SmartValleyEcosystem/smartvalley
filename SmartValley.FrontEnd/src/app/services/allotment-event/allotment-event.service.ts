@@ -9,12 +9,12 @@ export class AllotmentEventService {
               private allotmentEventsManagerContractClient: AllotmentEventsManagerContractClient) {
   }
 
-  public async createAsync(name: string,
-                           tokenContractAddress: string,
-                           tokenDecimals: number,
-                           tokenTicker: string,
-                           projectId: number,
-                           finishDate?: Date) {
+  public async createAndPublishAsync(name: string,
+                                     tokenContractAddress: string,
+                                     tokenDecimals: number,
+                                     tokenTicker: string,
+                                     projectId: number,
+                                     finishDate?: Date) {
     const response = await this.allotmentEventsApiClient.createAsync(
       name,
       tokenContractAddress,
@@ -23,15 +23,29 @@ export class AllotmentEventService {
       projectId,
       finishDate);
 
+    await this.publishAsync(response.allotmentEventId,
+      name,
+      tokenContractAddress,
+      tokenDecimals,
+      tokenTicker,
+      finishDate);
+  }
+
+  public async publishAsync(allotmentEventId: number,
+                            name: string,
+                            tokenContractAddress: string,
+                            tokenDecimals: number,
+                            tokenTicker: string,
+                            finishDate?: Date) {
     const transactionHash = await this.allotmentEventsManagerContractClient.createAsync(
-      response.allotmentEventId,
+      allotmentEventId,
       name,
       tokenDecimals,
       tokenTicker,
       tokenContractAddress,
       finishDate);
 
-    await this.allotmentEventsApiClient.publishAsync(response.allotmentEventId, transactionHash);
+    await this.allotmentEventsApiClient.publishAsync(allotmentEventId, transactionHash);
   }
 
   public async startAsync(eventId: number) {
