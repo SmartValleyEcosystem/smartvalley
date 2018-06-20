@@ -7,7 +7,6 @@ import {Web3Service} from '../web3-service';
 import {NotificationsService} from 'angular2-notifications';
 import {TranslateService} from '@ngx-translate/core';
 import {UserContext} from '../authentication/user-context';
-import {TokenBalance} from './token-balance';
 
 @Injectable()
 export class BalanceService {
@@ -55,9 +54,9 @@ export class BalanceService {
     return await this.showTransactionDialogAndGetResultAsync(transactionHash);
   }
 
-  public async getTokenBalanceAsync(): Promise<TokenBalance> {
-    return await <TokenBalance>{
-      eth: 10,
+  public async getTokenBalanceAsync(): Promise<Balance> {
+    return await <Balance>{
+      ethBalance: 10,
       svt: 12,
       frozenSVT: [
           {

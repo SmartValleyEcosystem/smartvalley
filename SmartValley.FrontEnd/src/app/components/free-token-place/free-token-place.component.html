@@ -1,8 +1,8 @@
 <div class="free-token-place-panel">
   <div class="content">
-    <ul class="free-token-place-panel__balance">
+    <ul *ngIf="balance" class="free-token-place-panel__balance">
       <li class="balance-label">{{ 'FreeTokenPlace.Balance' | translate }}</li>
-      <li>{{ balance.eth }} {{ 'FreeTokenPlace.ETH' | translate }}</li>
+      <li>{{ balance.ethBalance }} {{ 'FreeTokenPlace.ETH' | translate }}</li>
       <li>{{ balance.svt }} {{ 'FreeTokenPlace.SVT' | translate }}</li>
       <li>
         30 {{ 'FreeTokenPlace.FreezedSVT' | translate }}

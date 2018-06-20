@@ -9,8 +9,7 @@ import {SortDirection} from '../../api/sort-direction.enum';
 import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ProjectResponse} from '../../api/project/project-response';
 import {BalanceService} from '../../services/balance/balance.service';
-import {FrozenBalance} from '../../services/balance/frozen-balance';
-import {TokenBalance} from '../../services/balance/token-balance';
+import {Balance} from '../../services/balance/balance';
 
 @Component({
     selector: 'app-free-token-place',
@@ -27,7 +26,7 @@ export class FreeTokenPlaceComponent implements OnInit {
     public pageSize = 10;
     public projects: ProjectResponse[] = [];
     public showFrozenTooltip = false;
-    public balance: TokenBalance;
+    public balance: Balance;
 
     constructor(private allotmentEventsApiClient: AllotmentEventsApiClient,
                 private balanceService: BalanceService,
