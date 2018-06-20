@@ -120,7 +120,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.isAdmin = user.isAdmin;
       this.scoringsLink = Paths.ScoringList;
       this.accountImgUrl = this.blockiesService.getImageForAddress(user.account);
-      this.showExpertPanel = user.isExpert && this.router.url !== '/';
+      this.showExpertPanel = user.isExpert && this.router.url !== '/' && this.router.url !== '/' + Paths.FreeTokenPlace;
     } else {
       this.showExpertPanel = false;
       this.isAuthenticated = false;
