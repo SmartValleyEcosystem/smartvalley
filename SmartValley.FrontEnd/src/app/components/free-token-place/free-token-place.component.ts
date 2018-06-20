@@ -45,31 +45,26 @@ export class FreeTokenPlaceComponent implements OnInit {
             statuses: [AllotmentEventStatus.InProgress, AllotmentEventStatus.Finished]
         });
 
-        this.allotmentEvents = allotmentEvents.items;
+        if (allotmentEvents.totalCount) {
+            this.allotmentEvents = allotmentEvents.items;
 
-        const projectIds = this.allotmentEvents.map(a => a.projectId);
+            const projectIds = this.allotmentEvents.map(a => a.projectId);
 
-        const projectResponse = await this.projectApiClient.getAsync(<ProjectQuery>{
-            offset: 0,
-            count: projectIds.length,
-            onlyScored: false,
-            orderBy: ProjectsOrderBy.CreationDate,
-            direction: SortDirection.Descending,
-            projectIds: projectIds
-        });
+            const projectResponse = await this.projectApiClient.getAsync(<ProjectQuery>{
+                offset: 0,
+                count: projectIds.length,
+                onlyScored: false,
+                orderBy: ProjectsOrderBy.CreationDate,
+                direction: SortDirection.Descending,
+                projectIds: projectIds
+            });
 
-        this.projects = projectResponse.items;
+            this.projects = projectResponse.items;
 
-        this.allotmentEvents.map( (a, i) => {
-            const currentEvent = this.allotmentEvents[i];
-            a.project = this.projects.find((p) => p.id === currentEvent.projectId );
-            if (a.status === AllotmentEventStatus.Finished) {
-                this.finishedEvents.push(currentEvent);
-            }
-            if (a.status === AllotmentEventStatus.InProgress) {
-                this.activeEvents.push(currentEvent);
-            }
-        });
+            this.allotmentEvents.map( a => a.project = this.projects.find((p) => p.id === a.projectId ));
+            this.activeEvents = this.allotmentEvents.filter( a => a.status === AllotmentEventStatus.InProgress );
+            this.finishedEvents = this.allotmentEvents.filter( a => a.status === AllotmentEventStatus.Finished );
+        }
     }
 
     public finishEvent(id: number) {

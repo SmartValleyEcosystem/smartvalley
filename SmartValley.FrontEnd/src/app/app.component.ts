@@ -14,6 +14,7 @@ export class AppComponent {
   notifyOptions: Options = {
     position: ['top', 'left'],
     timeOut: 3000,
+    theClass: 'notification',
     animate: 'fromLeft',
     showProgressBar: false
   };
