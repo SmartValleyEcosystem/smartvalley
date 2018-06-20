@@ -29,19 +29,19 @@
         </div>
       </div>
       <div *ngIf="!finished" class="timer__numbers">
-        <div class="time-number">
+        <div *ngIf="event.timer.days > 0" class="time-number">
           {{ event.timer.days }}
           <div class="timer__labels">{{ 'FreeTokenPlace.Days' | translate }}</div>
         </div>
-        <div class="time-number">
+        <div *ngIf="event.timer.days > 0 || event.timer.hours > 0" class="time-number">
           {{ event.timer.hours }}
           <div class="timer__labels">{{ 'FreeTokenPlace.Hours' | translate }}</div>
         </div>
-        <div class="time-number">
+        <div *ngIf="event.timer.days == 0" class="time-number">
           {{ event.timer.minutes }}
           <div class="timer__labels">{{ 'FreeTokenPlace.Minutes' | translate }}</div>
         </div>
-        <div class="time-number">
+        <div *ngIf="event.timer.days == 0 && event.timer.hours == 0" class="time-number">
           {{ event.timer.seconds }}
           <div class="timer__labels">{{ 'FreeTokenPlace.Seconds' | translate }}</div>
         </div>
