@@ -42,7 +42,7 @@
       <p class="control-label">
         <label for="finish-date">{{ 'NewAllotmentEventModal.FinishDate' | translate }}</label>
       </p>
-      <p-calendar class="input-component c" placeholder="dd.mm.yyyy" [inputId]="'finish-date'" formControlName="finishDate" [inputStyleClass]="'input input-date'" dateFormat="dd.mm.yy" [yearNavigator]="true" yearRange="2018:2050"></p-calendar>
+      <p-calendar class="input-component select-full-width" placeholder="dd.mm.yyyy" [inputId]="'finish-date'" formControlName="finishDate" [inputStyleClass]="'input input-date'" dateFormat="dd.mm.yy" [yearNavigator]="true" yearRange="2018:2050"></p-calendar>
     </div>
     <div class="control-row submit">
       <input type="submit" value="{{ 'NewAllotmentEventModal.Create' | translate }}" [disabled]="isFormSubmited" class="material-btn">

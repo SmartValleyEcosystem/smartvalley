@@ -522,6 +522,8 @@ body .ng-invalid .ui-chkbox .ui-chkbox-box {
 }
 
 .select-full-width {
+  .autocomplete-wrapper, .filter-autocomplete,
+  .autocomplete-list,
   .select-wrapper, .project-select-input,
   .select-wrapper, .ui-inputtext.input-date,
   .ui-calendar, .select-list {

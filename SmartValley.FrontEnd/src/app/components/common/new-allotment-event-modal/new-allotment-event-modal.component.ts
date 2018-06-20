@@ -55,8 +55,8 @@ export class NewAllotmentEventModalComponent implements OnInit {
   }
 
   public async submitFormAsync() {
+    this.isFormSubmited = true;
     if (this.form.valid) {
-      this.isFormSubmited = true;
       await this.allotmentEventService.createAsync(this.form.value['eventName'],
         this.form.value['tokenAddress'],
         this.form.value['tokenDecimals'],
