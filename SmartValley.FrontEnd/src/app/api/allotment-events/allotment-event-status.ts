@@ -1,6 +1,6 @@
 export enum AllotmentEventStatus {
-  Created = 0,
-  Published = 1,
-  InProgress = 2,
-  Finished = 3
+  Published = 0,
+  InProgress = 1,
+  Finished = 2,
+  Created = 3
 }
