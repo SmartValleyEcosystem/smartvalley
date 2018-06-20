@@ -7,19 +7,19 @@ td {
 }
 
 tr.status-0 {
-  border-left: 4px solid $accents-green;
-}
-
-tr.status-1 {
   border-left: 4px solid $accents-orange;
 }
 
-tr.status-2 {
+tr.status-1 {
   border-left: 4px solid $main-light;
 }
 
-tr.status-3 {
+tr.status-2 {
   border-left: 4px solid $admin-text;
+}
+
+tr.status-3 {
+  border-left: 4px solid $accents-green;
 }
 
 .delete-icon {
@@ -64,6 +64,10 @@ tr.status-3 {
 
 .color-mark__in-progress {
   background: $main-light;
+}
+
+.color-mark__in-finished {
+  background: $admin-text;
 }
 
 .list-item {
