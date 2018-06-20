@@ -101,11 +101,11 @@ export class AdminAllotmentEventsComponent {
   }
 
   public async publishAsync(event: AllotmentEventResponse) {
-    await this.allotmentEventService.createAsync(event.name,
+    await this.allotmentEventService.publishAsync(event.id,
+      event.name,
       event.tokenContractAddress,
       event.tokenDecimals,
       event.tokenTicker,
-      event.projectId,
       event.finishDate);
   }
 
