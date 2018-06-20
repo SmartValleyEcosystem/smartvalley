@@ -45,6 +45,7 @@ namespace SmartValley.Application.Sagas.AllotmentEvent
 
         public async Task Handle(TransactionCompleted message, IMessageHandlerContext context)
         {
+            await _allotmentEventService.SetUpdatingStateAsync(Data.AllotmentEventId, false);
             await _allotmentEventService.UpdateAsync(Data.AllotmentEventId);
             MarkAsComplete();
         }
