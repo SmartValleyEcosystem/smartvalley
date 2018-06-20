@@ -10,6 +10,7 @@ import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ProjectResponse} from '../../api/project/project-response';
 import {BalanceService} from '../../services/balance/balance.service';
 import {FrozenBalance} from '../../services/balance/frozen-balance';
+import {TokenBalance} from '../../services/balance/token-balance';
 
 @Component({
     selector: 'app-free-token-place',
@@ -26,9 +27,7 @@ export class FreeTokenPlaceComponent implements OnInit {
     public pageSize = 10;
     public projects: ProjectResponse[] = [];
     public showFrozenTooltip = false;
-    public balanceETH = 0;
-    public balanceSVT = 0;
-    public frozenSVT: FrozenBalance[];
+    public balance: TokenBalance;
 
     constructor(private allotmentEventsApiClient: AllotmentEventsApiClient,
                 private balanceService: BalanceService,
@@ -37,10 +36,8 @@ export class FreeTokenPlaceComponent implements OnInit {
 
     async ngOnInit() {
         await this.loadAllotmentEventsAsync();
-        const tokenBalance = await this.balanceService.getTokenBalance();
-        this.balanceETH = tokenBalance.eth;
-        this.balanceSVT = tokenBalance.svt;
-        this.frozenSVT = tokenBalance.frozenSVT;
+        const tokenBalance = await this.balanceService.getTokenBalanceAsync();
+        this.balance = tokenBalance;
     }
 
     private async loadAllotmentEventsAsync(): Promise<void> {

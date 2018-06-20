@@ -55,7 +55,7 @@ export class BalanceService {
     return await this.showTransactionDialogAndGetResultAsync(transactionHash);
   }
 
-  public async getTokenBalance(): Promise<TokenBalance> {
+  public async getTokenBalanceAsync(): Promise<TokenBalance> {
     return await <TokenBalance>{
       eth: 10,
       svt: 12,
