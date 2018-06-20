@@ -54,6 +54,23 @@ export class BalanceService {
     return await this.showTransactionDialogAndGetResultAsync(transactionHash);
   }
 
+  public async getTokenBalanceAsync(): Promise<Balance> {
+    return await <Balance>{
+      ethBalance: 10,
+      svt: 12,
+      frozenSVT: [
+          {
+              date: new Date(),
+              sum: 12
+          },
+          {
+              date: new Date(),
+              sum: 10
+          }
+      ]
+    };
+  }
+
   private async showTransactionDialogAndGetResultAsync(transactionHash: string): Promise<boolean> {
     const transactionDialog = this.dialogService.showTransactionDialog(
       this.translateService.instant('Balance.TransactionDialog'),
