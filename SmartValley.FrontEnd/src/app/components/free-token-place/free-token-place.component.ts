@@ -19,7 +19,6 @@ export class FreeTokenPlaceComponent implements OnInit {
     public allotmentEvents: AllotmentEventCard[];
     public activeEvents: AllotmentEventCard[] = [];
     public finishedEvents: AllotmentEventCard[] = [];
-    public selectedStatuses: AllotmentEventStatus[] = [];
     public offset = 0;
     public pageSize = 10;
     public projects: ProjectResponse[] = [];
@@ -36,7 +35,7 @@ export class FreeTokenPlaceComponent implements OnInit {
         const allotmentEvents = await this.allotmentEventsApiClient.getAllotmentEvents(<GetAllotmentEventsRequest>{
             offset: this.offset,
             count: this.pageSize,
-            statuses: this.selectedStatuses
+            statuses: [AllotmentEventStatus.InProgress, AllotmentEventStatus.Finished]
         });
 
         this.allotmentEvents = allotmentEvents.items;
