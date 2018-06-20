@@ -81,23 +81,32 @@ export class AdminAllotmentEventsComponent {
   }
 
   public async showStartAllotmentEventModal(allotmenEventData: AllotmentEventResponse) {
-      const start = await this.dialogService.showStartAllotmentEventDialog(allotmenEventData);
-      if (start) {
-          await this.allotmentEventService.startAsync(allotmenEventData.id);
-      }
+    const start = await this.dialogService.showStartAllotmentEventDialog(allotmenEventData);
+    if (start) {
+      await this.allotmentEventService.startAsync(allotmenEventData.id);
+    }
   }
 
   public async showNewAllotmentEventModalAsync(): Promise<void> {
-      const allotmentEventCreated = await this.dialogService.showNewAllotmentEventDialog();
-      if (allotmentEventCreated) {
-          this.loadAllotmentEventsAsync();
-      }
+    const allotmentEventCreated = await this.dialogService.showNewAllotmentEventDialog();
+    if (allotmentEventCreated) {
+      this.loadAllotmentEventsAsync();
+    }
   }
 
   public getProjectLink(id) {
     return decodeURIComponent(
       this.router.createUrlTree([Paths.Project + '/' + id]).toString()
     );
+  }
+
+  public async publishAsync(event: AllotmentEventResponse) {
+    await this.allotmentEventService.createAsync(event.name,
+      event.tokenContractAddress,
+      event.tokenDecimals,
+      event.tokenTicker,
+      event.projectId,
+      event.finishDate);
   }
 
   public async showEditAllotmentModal(allotmentEvent: AllotmentEventResponse) {

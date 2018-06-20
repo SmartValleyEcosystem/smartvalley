@@ -8,16 +8,22 @@
                   (onChange)="sortByStatusAsync($event, AllotmentEventStatus.Created)"></p-checkbox>
     </li>
     <li>
-      <span class="color-mark"></span>
-      {{ 'AdminAllotmentEvents.Finished' | translate }}
+      <span class="color-mark color-mark__published"></span>
+      {{ 'AdminAllotmentEvents.Published' | translate }}
       <p-checkbox class="box-checkbox"
-                  (onChange)="sortByStatusAsync($event, AllotmentEventStatus.Finished)"></p-checkbox>
+                  (onChange)="sortByStatusAsync($event, AllotmentEventStatus.Published)"></p-checkbox>
     </li>
     <li>
       <span class="color-mark color-mark__in-progress"></span>
       {{ 'AdminAllotmentEvents.InProgress' | translate }}
       <p-checkbox class="box-checkbox"
                   (onChange)="sortByStatusAsync($event, AllotmentEventStatus.InProgress)"></p-checkbox>
+    </li>
+    <li>
+      <span class="color-mark"></span>
+      {{ 'AdminAllotmentEvents.Finished' | translate }}
+      <p-checkbox class="box-checkbox"
+                  (onChange)="sortByStatusAsync($event, AllotmentEventStatus.Finished)"></p-checkbox>
     </li>
   </ul>
   <button (click)="showNewAllotmentEventModalAsync()" class="material-btn">{{
@@ -51,11 +57,22 @@
         <td class="list-item">{{ rowData['finishDate'] | date: 'dd.MM.yy HH:mm' | dashIfEmpty }}</td>
         <td class="list-item"> {{ getTotalTokens(rowData['eventContractAddress']) }} {{ rowData['tokenTicker'] }}</td>
         <td *ngIf="!rowData.isUpdating" class="list-item">
-          <span *ngIf="rowData.status === AllotmentEventStatus.Published" (click)="showStartAllotmentEventModal(rowData)" class="play-icon"
-                title="{{ 'AdminExpertList.Edit' | translate }}"></span>
-          <span *ngIf="rowData.status !== AllotmentEventStatus.Finished" (click)="showEditAllotmentModal(rowData)" class="edit-icon"
-                title="{{ 'AdminExpertList.Edit' | translate }}"></span>
-          <img *ngIf="rowData.status !== AllotmentEventStatus.Finished" class="delete-icon" src="/assets/img/controls/delete.svg" alt="{{ 'AdminPanel.Delete' | translate }}">
+          <button class="btn-icon" *ngIf="rowData.status === AllotmentEventStatus.Created"
+                  (click)="publishAsync(rowData)">
+            <i class="material-icons">publish</i>
+          </button>
+          <button class="btn-icon" *ngIf="rowData.status === AllotmentEventStatus.Published"
+                  (click)="showStartAllotmentEventModal(rowData)">
+            <i class="material-icons">play_arrow</i>
+          </button>
+          <button class="btn-icon" *ngIf="rowData.status !== AllotmentEventStatus.Finished"
+                  (click)="showEditAllotmentModal(rowData)">
+            <i class="material-icons">create</i>
+          </button>
+          <button class="btn-icon" *ngIf="rowData.status !== AllotmentEventStatus.Finished"
+                  (click)="showEditAllotmentModal(rowData)">
+            <i class="material-icons">clear</i>
+          </button>
           <span *ngIf="rowData.status === AllotmentEventStatus.Finished">{{ 'AdminAllotmentEvents.Finished' | translate }}</span>
         </td>
         <td *ngIf="rowData.isUpdating" class="list-item">
