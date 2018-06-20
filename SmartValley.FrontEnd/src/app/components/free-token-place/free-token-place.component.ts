@@ -57,9 +57,10 @@ export class FreeTokenPlaceComponent implements OnInit {
         this.allotmentEvents.map( (a, i) => {
             const currentEvent = this.allotmentEvents[i];
             a.project = this.projects.find((p) => p.id === currentEvent.projectId );
-            if ( a.status === AllotmentEventStatus.Finished ) {
+            if (a.status === AllotmentEventStatus.Finished) {
                 this.finishedEvents.push(currentEvent);
-            }else {
+            }
+            if (a.status === AllotmentEventStatus.InProgress) {
                 this.activeEvents.push(currentEvent);
             }
         });
