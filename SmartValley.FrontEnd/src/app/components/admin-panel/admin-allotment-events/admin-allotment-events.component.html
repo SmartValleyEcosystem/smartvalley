@@ -50,11 +50,16 @@
         <td class="list-item">{{ rowData['startDate'] | date: 'dd.MM.yy HH:mm' | dashIfEmpty }}</td>
         <td class="list-item">{{ rowData['finishDate'] | date: 'dd.MM.yy HH:mm' | dashIfEmpty }}</td>
         <td class="list-item"> {{ getTotalTokens(rowData['eventContractAddress']) }} {{ rowData['tokenTicker'] }}</td>
-        <td class="list-item">
-          <span (click)="showEditAllotmentModal(rowData)" class="edit-icon" title="{{ 'AdminExpertList.Edit' | translate }}"></span>
-          <img class="delete-icon" src="/assets/img/controls/delete.svg" alt="{{ 'AdminPanel.Delete' | translate }}">
-          <span (click)="showStartAllotmentEventModal(rowData)" class="play-icon"
+        <td *ngIf="!rowData.isUpdating" class="list-item">
+          <span *ngIf="rowData.status === AllotmentEventStatus.Published" (click)="showStartAllotmentEventModal(rowData)" class="play-icon"
                 title="{{ 'AdminExpertList.Edit' | translate }}"></span>
+          <span *ngIf="rowData.status !== AllotmentEventStatus.Finished" (click)="showEditAllotmentModal(rowData)" class="edit-icon"
+                title="{{ 'AdminExpertList.Edit' | translate }}"></span>
+          <img *ngIf="rowData.status !== AllotmentEventStatus.Finished" class="delete-icon" src="/assets/img/controls/delete.svg" alt="{{ 'AdminPanel.Delete' | translate }}">
+          <span *ngIf="rowData.status === AllotmentEventStatus.Finished">{{ 'AdminAllotmentEvents.Finished' | translate }}</span>
+        </td>
+        <td *ngIf="rowData.isUpdating" class="list-item">
+          Awaiting transaction
         </td>
       </tr>
     </ng-template>
