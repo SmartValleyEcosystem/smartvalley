@@ -5,6 +5,8 @@ import {AllotmentEventResponse} from '../../../api/allotment-events/responses/al
 import {Erc223ContractClient} from '../../../services/contract-clients/erc223-contract-client';
 import {ProjectApiClient} from '../../../api/project/project-api-client';
 import {ProjectSummaryResponse} from '../../../api/project/project-summary-response';
+import {NotificationsService} from 'angular2-notifications';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-start-allotment-event-modal',
@@ -18,6 +20,8 @@ export class StartAllotmentEventModalComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: AllotmentEventResponse,
               private dialogRef: MatDialogRef<AddAdminModalComponent>,
+              private notificationService: NotificationsService,
+              private translateService: TranslateService,
               private projectApiClient: ProjectApiClient,
               private erc223ContractClient: Erc223ContractClient) {
   }
@@ -28,6 +32,20 @@ export class StartAllotmentEventModalComponent implements OnInit {
   }
 
   public submit(result: boolean) {
+    if (!this.tokenBalance) {
+        this.notificationService.error(
+            this.translateService.instant('StartAllotmentEventModalComponent.EmptyBalance')
+        );
+      this.dialogRef.close(false);
+      return;
+    }
+    if ( !this.data.finishDate || (new Date(this.data.finishDate).getTime() < Date.now()) ) {
+        this.notificationService.error(
+            this.translateService.instant('StartAllotmentEventModalComponent.BadDate'),
+        );
+        this.dialogRef.close(false);
+        return;
+    }
     this.dialogRef.close(result);
   }
 }

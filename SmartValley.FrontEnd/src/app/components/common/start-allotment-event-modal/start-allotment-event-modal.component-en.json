@@ -9,6 +9,8 @@
     "TokenDecimals": "Token decimals",
     "FinishDate": "Finish date",
     "FreezeTime": "Freeze Time, days",
-    "Start": "Start"
+    "Start": "Start",
+    "EmptyBalance": "It's impossible to start the Allotment event, there are no project tokens on the balance",
+    "BadDate": "It is impossible to start the Allotment event, because the start date of the event plus the freeze time is less than the end date of the event"
   }
 }
