@@ -3,6 +3,7 @@ import {Paths} from '../../../paths';
 import {Router} from '@angular/router';
 import {BlockiesService} from '../../../services/blockies-service';
 import {AllotmentEventCard} from '../allotment-event-card';
+import {Erc223ContractClient} from '../../../services/contract-clients/erc223-contract-client';
 
 @Component({
     selector: 'app-allotment-event-card',
@@ -12,7 +13,8 @@ import {AllotmentEventCard} from '../allotment-event-card';
 export class AllotmentEventCardComponent implements OnInit, OnDestroy {
 
     constructor(private router: Router,
-                private blockiesService: BlockiesService) {
+                private blockiesService: BlockiesService,
+                private erc223ContractClient: Erc223ContractClient) {
     }
 
     private timer: NodeJS.Timer;
@@ -20,8 +22,9 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
     @Input() public event: AllotmentEventCard;
     @Input() public finished = false;
     @Output() finishEvent: EventEmitter<number> = new EventEmitter<number>();
+    public tokenBalance: number;
 
-    ngOnInit() {
+    async ngOnInit() {
         this.timer = <NodeJS.Timer>setInterval(async () => await this.getAllotmentEventTimeLeft(), 1000);
         this.event.timer = {
             days: '00',
@@ -29,6 +32,8 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
             minutes: '00',
             seconds: '00'
         };
+        this.tokenBalance = await this.erc223ContractClient
+          .getTokenBalanceAsync(this.event.tokenContractAddress, this.event.eventContractAddress);
     }
 
     ngOnDestroy(): void {

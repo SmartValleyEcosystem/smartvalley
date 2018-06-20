@@ -14,7 +14,7 @@
     "Seconds": "seconds",
     "TheEventWasEnd": "The event was end in",
     "Receive": "Receive",
-    "Participate": "The event was end in",
+    "EventEnd": "The event was end in",
     "AddSVT": "Add svt",
     "FreezedSVT": "Freezed SVT",
     "SVT": "SVT",
@@ -25,7 +25,7 @@
     "AddETH": "Add ETH",
     "CantTransferFreezed": "You can’t transfer your freezed tokens:",
     "Until": "until",
-    "AddETH": "Add ETH",
-    "ComingSoon": "Coming soon..."
+    "ComingSoon": "Coming soon...",
+    "Participate": "Participate"
   }
 }
