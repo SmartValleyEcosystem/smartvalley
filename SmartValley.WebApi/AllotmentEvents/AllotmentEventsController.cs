@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using NServiceBus;
 using SmartValley.Domain;
 using SmartValley.Domain.Entities;
+using SmartValley.Domain.Interfaces;
 using SmartValley.Domain.Services;
 using SmartValley.Messages.Commands;
 using SmartValley.WebApi.AllotmentEvents.Requests;
@@ -18,11 +19,13 @@ namespace SmartValley.WebApi.AllotmentEvents
     {
         private readonly IAllotmentEventService _allotmentEventService;
         private readonly IMessageSession _messageSession;
+        private readonly IClock _clock;
 
-        public AllotmentEventsController(IAllotmentEventService allotmentEventService, IMessageSession messageSession)
+        public AllotmentEventsController(IAllotmentEventService allotmentEventService, IMessageSession messageSession, IClock clock)
         {
             _allotmentEventService = allotmentEventService;
             _messageSession = messageSession;
+            _clock = clock;
         }
 
         [HttpGet]
@@ -31,7 +34,7 @@ namespace SmartValley.WebApi.AllotmentEvents
             var query = new AllotmentEventsQuery(request.AllotmentEventStatuses ?? new AllotmentEventStatus[0], request.Offset, request.Count);
             var result = await _allotmentEventService.QueryAsync(query);
 
-            return result.ToPartialCollectionResponse(AllotmentEventResponse.Create);
+            return result.ToPartialCollectionResponse(x => AllotmentEventResponse.Create(x, _clock.UtcNow));
         }
 
         [HttpPost]

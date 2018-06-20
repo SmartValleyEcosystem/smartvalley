@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SmartValley.Data.SQL.Core;
@@ -20,10 +21,12 @@ namespace SmartValley.Data.SQL.Repositories
             _editContext = editableDataContext;
         }
 
-        public Task<PagingCollection<AllotmentEvent>> QueryAsync(AllotmentEventsQuery query)
+        public Task<PagingCollection<AllotmentEvent>> QueryAsync(AllotmentEventsQuery query, DateTimeOffset now)
         {
             var queryable = _readOnlyDataContext.AllotmentEvents
-                                                .Where(e => query.AllotmentEventStatuses.Count == 0 || query.AllotmentEventStatuses.Contains(e.Status));
+                                                .Where(e => query.AllotmentEventStatuses.Count == 0 
+                                                            || query.AllotmentEventStatuses.Contains(e.Status) && !(e.Status == AllotmentEventStatus.InProgress && e.FinishDate <= now)
+                                                            || query.AllotmentEventStatuses.Contains(AllotmentEventStatus.Finished) && e.Status == AllotmentEventStatus.InProgress && e.FinishDate <= now);
 
             return queryable.GetPageAsync(query.Offset, query.Count);
         }

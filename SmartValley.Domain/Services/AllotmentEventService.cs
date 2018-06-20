@@ -13,18 +13,21 @@ namespace SmartValley.Domain.Services
         private readonly IAllotmentEventRepository _allotmentEventRepository;
         private readonly IAllotmentEventsManagerContractClient _allotmentEventsManagerContractClient;
         private readonly IAllotmentEventContractClient _allotmentEventContractClient;
+        private readonly IClock _clock;
 
         public AllotmentEventService(IAllotmentEventRepository allotmentEventRepository,
                                      IAllotmentEventsManagerContractClient allotmentEventsManagerContractClient,
-                                     IAllotmentEventContractClient allotmentEventContractClient)
+                                     IAllotmentEventContractClient allotmentEventContractClient,
+                                     IClock clock)
         {
             _allotmentEventRepository = allotmentEventRepository;
             _allotmentEventsManagerContractClient = allotmentEventsManagerContractClient;
             _allotmentEventContractClient = allotmentEventContractClient;
+            _clock = clock;
         }
 
         public Task<PagingCollection<AllotmentEvent>> QueryAsync(AllotmentEventsQuery query)
-            => _allotmentEventRepository.QueryAsync(query);
+            => _allotmentEventRepository.QueryAsync(query, _clock.UtcNow);
 
         public async Task<long> CreateAsync(
             string name,
@@ -54,7 +57,7 @@ namespace SmartValley.Domain.Services
         public async Task UpdateAsync(long id)
         {
             var allotmentEvent = await _allotmentEventRepository.GetByIdAsync(id) ?? throw new AppErrorException(ErrorCode.AllotmentEventNotFound);
-            if (allotmentEvent.Status == AllotmentEventStatus.Created)
+            if (allotmentEvent.GetActualStatus(_clock.UtcNow) == AllotmentEventStatus.Created)
                 throw new AppErrorException(ErrorCode.CantUpdateNotPublishedAllotmentEvent);
 
             var allotmentEventInfo = await _allotmentEventContractClient.GetInfoAsync(allotmentEvent.EventContractAddress);
