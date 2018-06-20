@@ -24,6 +24,8 @@
     "Balance": "Balance",
     "AddETH": "Add ETH",
     "CantTransferFreezed": "You can’t transfer your freezed tokens:",
-    "Until": "untill"
+    "Until": "until",
+    "AddETH": "Add ETH",
+    "ComingSoon": "Coming soon..."
   }
 }

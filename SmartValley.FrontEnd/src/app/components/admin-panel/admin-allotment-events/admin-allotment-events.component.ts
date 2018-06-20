@@ -69,13 +69,13 @@ export class AdminAllotmentEventsComponent {
     await this.loadAllotmentEventsAsync();
   }
 
-  public getTotalTokens(eventAddress: string): number | null {
+  public getTotalTokens(eventAddress: string): number {
     if (this.totalTokens.length === 0) {
-      return null;
+      return 0;
     }
     const total = this.totalTokens.firstOrDefault(i => i.key === eventAddress);
     if (isNullOrUndefined(total)) {
-      return null;
+      return 0;
     }
     return total.value;
   }

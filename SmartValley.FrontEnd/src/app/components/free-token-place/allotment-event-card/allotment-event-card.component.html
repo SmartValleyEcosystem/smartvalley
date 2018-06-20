@@ -2,7 +2,7 @@
   <div class="event-card__title">{{event.name}}</div>
   <div class="event-card__top-info">
     <div class="project-avatar">
-      <img src="{{ imageUrl() }}" alt="">
+      <img *ngIf="event.project.imageUrl" src="{{ imageUrl() }}" alt="">
       <span class="scoring" *ngIf="event.project.scoring && event.project.scoring.score">55 <span class="light-color ">/ 100</span></span>
     </div>
     <div class="project-info">
