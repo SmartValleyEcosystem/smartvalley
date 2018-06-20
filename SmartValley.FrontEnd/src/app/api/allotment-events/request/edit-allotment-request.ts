@@ -1,8 +1,8 @@
 export interface EditAllotmentRequest {
-    id: number;
-    name: string;
-    tokenAddress: string;
-    tokenTicker: string;
-    tokenDecimals: string;
-    finishDate: string;
+  id: number;
+  eventName: string;
+  tokenAddress: string;
+  ticker: string;
+  tokenDecimals: number;
+  finishDate?: Date;
 }

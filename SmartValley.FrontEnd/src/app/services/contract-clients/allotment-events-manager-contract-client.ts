@@ -4,6 +4,7 @@ import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {ContractClient} from './contract-client';
 import {UserContext} from '../authentication/user-context';
 import {isNullOrUndefined} from 'util';
+import * as moment from 'moment';
 
 @Injectable()
 export class AllotmentEventsManagerContractClient implements ContractClient {
@@ -33,10 +34,10 @@ export class AllotmentEventsManagerContractClient implements ContractClient {
     return await contract.create(
       eventId,
       name,
-      tokenDecimals,
+      isNullOrUndefined(tokenDecimals) ? 0 : tokenDecimals,
       tokenTicker,
       tokenContractAddress,
-      isNullOrUndefined(finishDate) ? 0 : Math.floor(+finishDate / 1000),
+      this.isDateEmpty(finishDate) ? 0 : Math.floor(moment(finishDate).valueOf() / 1000),
       {from: fromAddress});
   }
 
@@ -51,16 +52,20 @@ export class AllotmentEventsManagerContractClient implements ContractClient {
     return await contract.edit(
       eventId,
       name,
-      tokenDecimals,
+      isNullOrUndefined(tokenDecimals) ? 0 : tokenDecimals,
       tokenTicker,
       tokenContractAddress,
-      isNullOrUndefined(finishDate) ? 0 : Math.floor(+finishDate / 1000),
+      this.isDateEmpty(finishDate) ? 0 : Math.floor(moment(finishDate).valueOf() / 1000),
       {from: fromAddress});
   }
 
   public async startAsync(eventId: number): Promise<string> {
-      const contract = this.web3Service.getContract(this.abi, this.address);
-      const fromAddress = this.userContext.getCurrentUser().account;
-      return await contract.start(eventId, {from: fromAddress});
+    const contract = this.web3Service.getContract(this.abi, this.address);
+    const fromAddress = this.userContext.getCurrentUser().account;
+    return await contract.start(eventId, {from: fromAddress});
+  }
+
+  private isDateEmpty(date?: Date): boolean {
+    return isNullOrUndefined(date) || date.toString().length === 0;
   }
 }
