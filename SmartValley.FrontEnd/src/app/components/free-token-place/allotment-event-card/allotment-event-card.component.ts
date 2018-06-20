@@ -42,7 +42,7 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
     }
 
     public imageUrl(): string {
-        return this.event.project.imageUrl || this.blockiesService.getImageForAddress(this.event.project.authorAddress);
+        return this.event.project.imageUrl || this.blockiesService.getImageForAddress(this.event.eventContractAddress);
     }
 
     public pad(n) {
