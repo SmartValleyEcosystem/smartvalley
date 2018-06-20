@@ -26,7 +26,6 @@ namespace SmartValley.WebApi.AllotmentEvents
         }
 
         [HttpGet]
-        [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<PartialCollectionResponse<AllotmentEventResponse>> GetAsync([FromQuery] QueryAllotmentEventsRequest request)
         {
             var query = new AllotmentEventsQuery(request.AllotmentEventStatuses ?? new AllotmentEventStatus[0], request.Offset, request.Count);
