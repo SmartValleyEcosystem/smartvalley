@@ -73,7 +73,7 @@ namespace SmartValley.Domain.Services
         public async Task PublishAsync(long allotmentEventId)
         {
             var allotmentEvent = await _allotmentEventRepository.GetByIdAsync(allotmentEventId);
-            allotmentEvent.SetState(AllotmentEventStatus.Published);
+            allotmentEvent.Status = AllotmentEventStatus.Published;
             allotmentEvent.EventContractAddress = await _allotmentEventsManagerContractClient.GetAllotmentEventContractAddressAsync(allotmentEventId);
 
             await _allotmentEventRepository.SaveChangesAsync();
