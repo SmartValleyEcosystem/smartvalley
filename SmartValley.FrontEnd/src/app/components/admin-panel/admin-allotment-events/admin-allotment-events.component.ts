@@ -105,12 +105,12 @@ export class AdminAllotmentEventsComponent {
     if (editModal) {
       await this.allotmentEventService.editAsync(
         allotmentEvent.id,
-        allotmentEvent.name,
-        allotmentEvent.tokenContractAddress,
-        allotmentEvent.tokenDecimals,
-        allotmentEvent.tokenTicker,
-        allotmentEvent.id,
-        allotmentEvent.finishDate);
+        editModal.eventName,
+        editModal.tokenAddress,
+        editModal.tokenDecimals,
+        editModal.ticker,
+        allotmentEvent.projectId,
+        editModal.finishDate);
     }
   }
 }
