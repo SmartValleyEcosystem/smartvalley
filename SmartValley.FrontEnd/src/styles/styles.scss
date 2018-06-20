@@ -35,6 +35,16 @@ html, body {
   }
 }
 
+.btn-icon {
+  border-radius: 50%;
+  border: 0;
+  line-height: 0;
+  padding: 10px;
+  background: #5d49f2;
+  color: #fff;
+  cursor: pointer;
+}
+
 .mat-tab-header-pagination-controls-enabled .mat-tab-header-pagination {
   display: none !important;
 }
