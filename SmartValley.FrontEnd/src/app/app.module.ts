@@ -158,6 +158,7 @@ import {Erc223ContractClient} from './services/contract-clients/erc223-contract-
 import {FreeTokenPlaceComponent} from './components/free-token-place/free-token-place.component';
 import {AllotmentEventCardComponent} from './components/free-token-place/allotment-event-card/allotment-event-card.component';
 import {ExpertService} from './services/expert/expert.service';
+import {FormatNumberPipe} from './utils/format-number.pipe';
 
 @NgModule({
   declarations: [
@@ -235,7 +236,8 @@ import {ExpertService} from './services/expert/expert.service';
     AdminAllotmentEventsComponent,
     StartAllotmentEventModalComponent,
     FreeTokenPlaceComponent,
-    AllotmentEventCardComponent
+    AllotmentEventCardComponent,
+    FormatNumberPipe
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
