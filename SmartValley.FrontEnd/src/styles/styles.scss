@@ -39,9 +39,10 @@ html, body {
   border-radius: 50%;
   border: 0;
   line-height: 0;
-  padding: 10px;
-  background: #5d49f2;
-  color: #fff;
+  height: 36px;
+  width: 36px;
+  background: #E0E0E0;
+  color: #333333;
   cursor: pointer;
 }
 
@@ -640,6 +641,7 @@ a, button, span {
   font-family: "Roboto-Thin";
   src: url("../assets/fonts/Roboto/Roboto-Thin.ttf") format("opentype");
 }
+
 .notification {
   padding-right: 60px !important;
 }

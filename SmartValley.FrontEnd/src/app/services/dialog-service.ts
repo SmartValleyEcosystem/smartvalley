@@ -30,6 +30,7 @@ import {StartAllotmentEventModalComponent} from '../components/common/start-allo
 import {NewAllotmentEventModalComponent} from '../components/common/new-allotment-event-modal/new-allotment-event-modal.component';
 import {AllotmentEventResponse} from '../api/allotment-events/responses/allotment-event-response';
 import {EditAllotmentRequest} from '../api/allotment-events/request/edit-allotment-request';
+import {SetFreezeTimeModalComponent} from '../components/common/set-freeze-time-modal/set-freeze-time-modal.component';
 
 @Injectable()
 export class DialogService {
@@ -44,6 +45,12 @@ export class DialogService {
     return this.openModal(SetExpertsModalComponent, {areas: areas}, false, '600px')
       .afterClosed()
       .toPromise<any>();
+  }
+
+  public showSetFreezeTimeDialogAsync(days: number): Promise<number> {
+    return this.openModal(SetFreezeTimeModalComponent, {days: days}, false, '440px')
+      .afterClosed()
+      .toPromise<number>();
   }
 
   public showTransactionDialog(message: string, transactionHash: string): MatDialogRef<TransactionAwaitingModalComponent> {

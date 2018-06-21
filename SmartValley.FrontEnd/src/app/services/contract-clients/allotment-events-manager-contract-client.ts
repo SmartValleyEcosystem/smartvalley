@@ -5,6 +5,7 @@ import {ContractClient} from './contract-client';
 import {UserContext} from '../authentication/user-context';
 import {isNullOrUndefined} from 'util';
 import * as moment from 'moment';
+import {ConverterHelper} from '../converter-helper';
 
 @Injectable()
 export class AllotmentEventsManagerContractClient implements ContractClient {
@@ -63,6 +64,17 @@ export class AllotmentEventsManagerContractClient implements ContractClient {
     const contract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.userContext.getCurrentUser().account;
     return await contract.start(eventId, {from: fromAddress});
+  }
+
+  public async setFreezingDurationAsync(duration: number): Promise<string> {
+    const contract = this.web3Service.getContract(this.abi, this.address);
+    const fromAddress = this.userContext.getCurrentUser().account;
+    return await contract.setFreezingDuration(duration, {from: fromAddress});
+  }
+
+  public async getFreezingDurationAsync(): Promise<number> {
+    const contract = this.web3Service.getContract(this.abi, this.address);
+    return ConverterHelper.extractNumberValue(await contract.freezingDuration());
   }
 
   private isDateEmpty(date?: Date): boolean {
