@@ -60,6 +60,7 @@ export function multiTranslateLoaderFactory() {
     'components/admin-panel/admin-allotment-events/admin-allotment-events.component',
     'components/common/edit-allotment-event-modal/edit-allotment-event-modal.component',
     'components/common/start-allotment-event-modal/start-allotment-event-modal.component',
+    'components/common/set-freeze-time-modal/set-freeze-time-modal.component',
     'components/common/new-allotment-event-modal/new-allotment-event-modal.component',
     'components/admin-panel/admin-allotment-events/admin-allotment-events.component',
     'components/free-token-place/free-token-place.component'

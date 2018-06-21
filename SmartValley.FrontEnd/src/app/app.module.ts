@@ -159,6 +159,7 @@ import {FreeTokenPlaceComponent} from './components/free-token-place/free-token-
 import {AllotmentEventCardComponent} from './components/free-token-place/allotment-event-card/allotment-event-card.component';
 import {ExpertService} from './services/expert/expert.service';
 import {FormatNumberPipe} from './utils/format-number.pipe';
+import {SetFreezeTimeModalComponent} from './components/common/set-freeze-time-modal/set-freeze-time-modal.component';
 
 @NgModule({
   declarations: [
@@ -237,10 +238,12 @@ import {FormatNumberPipe} from './utils/format-number.pipe';
     StartAllotmentEventModalComponent,
     FreeTokenPlaceComponent,
     AllotmentEventCardComponent,
-    FormatNumberPipe
+    FormatNumberPipe,
+    SetFreezeTimeModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
+    SetFreezeTimeModalComponent,
     AlertModalComponent,
     NewAllotmentEventModalComponent,
     MetamaskManualModalComponent,
@@ -317,8 +320,8 @@ import {FormatNumberPipe} from './utils/format-number.pipe';
       multi: true
     },
     {
-        provide: ErrorHandler,
-        useClass: GlobalErrorHandler
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler
     },
     DictionariesService,
     BalanceApiClient,

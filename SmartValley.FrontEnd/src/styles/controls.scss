@@ -5,8 +5,9 @@
   border: none;
   font-family: $font-pt !important;
   font-weight: bold;
-  font-size: 24px;
+  font-size: 16px !important;
   color: #5D49F2;
+  line-height: 18px;
   background: #fff;
   cursor: pointer;
   padding: 9px 20px;
@@ -32,6 +33,19 @@
   background-size: 16px;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.freeze-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  border: none;
+  background-color: #FFFFFF;
+  background-image: url(/assets/img/controls/freeze.svg);
+  background-size: 24px;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
 }
 
 .play-icon {
@@ -242,7 +256,7 @@ input.ng-valid {
 
 .input-component.ng-dirty.ng-invalid .ui-inputtext.input-date,
 .input-component.ng-dirty.ng-invalid .input,
-quill-editor.ng-dirty.ng-invalid .ql-container{
+quill-editor.ng-dirty.ng-invalid .ql-container {
   border-color: red !important;
 }
 
@@ -509,7 +523,7 @@ body .ng-invalid .ui-chkbox .ui-chkbox-box {
 
 .mat-checkbox-frame {
   border-width: 1px !important;
-  border-color: #ced4da  !important;
+  border-color: #ced4da !important;
   z-index: 1;
 }
 
@@ -533,6 +547,7 @@ body .ng-invalid .ui-chkbox .ui-chkbox-box {
     background-position: 96%;
   }
 }
+
 body .box-checkbox {
   .ui-chkbox .ui-chkbox-box {
     width: 16px;

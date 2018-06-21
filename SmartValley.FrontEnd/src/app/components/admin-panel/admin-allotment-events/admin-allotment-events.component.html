@@ -29,6 +29,9 @@
   <button (click)="showNewAllotmentEventModalAsync()" class="material-btn">{{
     'AdminAllotmentEvents.AddNewAllotmentEvent' | translate }}
   </button>
+  <div class="event-actions">
+    <button (click)="showFreezeTimeModalAsync()" class="freeze-icon"></button>
+  </div>
   <p-table class="admin-table" [value]="allotmentEvents"
            [lazy]="true" (onLazyLoad)="getAllotmentEventsAsync($event)" [paginator]="true"
            [rows]="10" [totalRecords]="totalRecords" [loading]="loading">

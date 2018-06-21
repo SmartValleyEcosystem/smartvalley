@@ -1,0 +1,7 @@
+{
+  "SetFreezeTimeModal": {
+    "Title": "SVT Freeze Time",
+    "SaveBtn": "Save",
+    "InputTitle": "Input number of days"
+  }
+}

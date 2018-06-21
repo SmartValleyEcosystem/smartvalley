@@ -10,6 +10,7 @@ import {Paths} from '../../../paths';
 import {Router} from '@angular/router';
 import {Erc223ContractClient} from '../../../services/contract-clients/erc223-contract-client';
 import {isNullOrUndefined} from 'util';
+import {AllotmentEventsManagerContractClient} from '../../../services/contract-clients/allotment-events-manager-contract-client';
 
 @Component({
   selector: 'app-admin-allotment-events',
@@ -29,6 +30,7 @@ export class AdminAllotmentEventsComponent {
   public totalTokens: { key: string, value: number }[] = [];
 
   constructor(private allotmentEventsApiClient: AllotmentEventsApiClient,
+              private allotmentEventsManagerContractClient: AllotmentEventsManagerContractClient,
               private router: Router,
               private dialogService: DialogService,
               private allotmentEventService: AllotmentEventService,
@@ -121,5 +123,14 @@ export class AdminAllotmentEventsComponent {
         allotmentEvent.projectId,
         editModal.finishDate);
     }
+  }
+
+  public async showFreezeTimeModalAsync() {
+    const freezeTime = await this.allotmentEventsManagerContractClient.getFreezingDurationAsync();
+    const newFreezeTime = await this.dialogService.showSetFreezeTimeDialogAsync(freezeTime);
+    if (isNullOrUndefined(newFreezeTime)) {
+      return;
+    }
+    await this.allotmentEventsManagerContractClient.setFreezingDurationAsync(newFreezeTime);
   }
 }
