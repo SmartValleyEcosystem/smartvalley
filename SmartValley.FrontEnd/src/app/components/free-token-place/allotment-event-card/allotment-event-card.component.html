@@ -12,17 +12,17 @@
       <div class="project-title"><a [routerLink]="getProjectLink(event.projectId)">{{ event.project.name }}</a></div>
       <div class="project-distribute">
         <span class="light-label">{{ 'FreeTokenPlace.TokensToDistribute' | translate }}</span>
-        <div>{{ tokenBalance | formatNumberToString }} {{ event.tokenTicker }}</div>
+        <div>{{ tokenBalance | formatNumber }} {{ event.tokenTicker }}</div>
       </div>
       <div class="project-bets">
         <span class="light-label">{{ 'FreeTokenPlace.TotalBet' | translate }}</span>
-        <div> {{ 0 | formatNumberToString }} / {{ 1745999 | formatNumberToString }} SVT</div>
+        <div> {{ 0 | formatNumber }} / {{ 1745999 | formatNumber }} SVT</div>
       </div>
     </div>
   </div>
   <div class="event-card__timer">
     <span class="light-label light-label_small">{{ 'FreeTokenPlace.MyPotentialShare' | translate }}</span>
-    <div>{{ tokenBalance | formatNumberToString }} {{ event.tokenTicker }} (100,00%)</div>
+    <div>{{ tokenBalance | formatNumber }} {{ event.tokenTicker }} (100,00%)</div>
     <div class="timer" [class.timer_finished]="finished">
       <div class="timer__info" *ngIf="!finished">{{ 'FreeTokenPlace.TheEventEndsIn' | translate }}</div>
       <div class="timer__info" *ngIf="finished">{{ 'FreeTokenPlace.TheEventWasEnd' | translate }}</div>

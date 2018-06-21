@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'formatNumberToString'
+  name: 'formatNumber'
 })
-export class FormatNumberToStringPipe implements PipeTransform {
+export class FormatNumberPipe implements PipeTransform {
 
     transform(val: number, locale = 'fr'): string {
         if (val !== undefined && val !== null) {
