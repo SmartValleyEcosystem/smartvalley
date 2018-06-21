@@ -65,12 +65,12 @@
                   (click)="showStartAllotmentEventModal(rowData)">
             <i class="material-icons">play_arrow</i>
           </button>
-          <button class="btn-icon" *ngIf="rowData.status !== AllotmentEventStatus.Finished"
+          <button class="btn-icon" *ngIf="rowData.status !== AllotmentEventStatus.Finished && rowData.status !== AllotmentEventStatus.Created"
                   (click)="showEditAllotmentModal(rowData)">
             <i class="material-icons">create</i>
           </button>
           <button class="btn-icon" *ngIf="rowData.status !== AllotmentEventStatus.Finished"
-                  (click)="showEditAllotmentModal(rowData)">
+                  >
             <i class="material-icons">clear</i>
           </button>
           <span *ngIf="rowData.status === AllotmentEventStatus.Finished">{{ 'AdminAllotmentEvents.Finished' | translate }}</span>
