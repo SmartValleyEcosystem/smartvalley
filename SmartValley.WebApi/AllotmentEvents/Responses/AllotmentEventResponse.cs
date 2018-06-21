@@ -31,7 +31,7 @@ namespace SmartValley.WebApi.AllotmentEvents.Responses
 
         public string TokenTicker { get; set; }
 
-        public static AllotmentEventResponse Create(AllotmentEvent allotmentEvent)
+        public static AllotmentEventResponse Create(AllotmentEvent allotmentEvent, DateTimeOffset now)
         {
             return new AllotmentEventResponse
                    {
@@ -39,7 +39,7 @@ namespace SmartValley.WebApi.AllotmentEvents.Responses
                        Name = allotmentEvent.Name,
                        IsUpdating = allotmentEvent.IsUpdating,
                        ProjectId = allotmentEvent.ProjectId,
-                       Status = allotmentEvent.Status,
+                       Status = allotmentEvent.GetActualStatus(now),
                        TokenContractAddress = allotmentEvent.TokenContractAddress,
                        EventContractAddress = allotmentEvent.EventContractAddress,
                        StartDate = allotmentEvent.StartDate,

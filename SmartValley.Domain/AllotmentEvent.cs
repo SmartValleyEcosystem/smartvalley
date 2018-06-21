@@ -24,5 +24,15 @@ namespace SmartValley.Domain
         public bool IsUpdating { get; set; }
 
         public long ProjectId { get; set; }
+
+        public AllotmentEventStatus GetActualStatus(DateTimeOffset now)
+        {
+            if (Status == AllotmentEventStatus.InProgress && now >= FinishDate)
+            {
+                return AllotmentEventStatus.Finished;
+            }
+
+            return Status;
+        }
     }
 }
