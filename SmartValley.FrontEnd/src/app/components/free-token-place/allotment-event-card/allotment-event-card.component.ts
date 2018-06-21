@@ -25,7 +25,6 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
     public tokenBalance: number;
     public myBet: number;
     public totalBet: number;
-    public potentialShare: number;
 
     async ngOnInit() {
         this.timer = <NodeJS.Timer>setInterval(async () => await this.getAllotmentEventTimeLeft(), 1000);
