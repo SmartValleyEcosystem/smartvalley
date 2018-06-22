@@ -53,7 +53,7 @@ export class AdminAllotmentEventsComponent {
       count: this.pageSize,
       statuses: this.selectedStatuses
     };
-    const allotmentEventsRequest = await this.allotmentEventsApiClient.getAllotmentEvents(getAllotmentEventsRequest);
+    const allotmentEventsRequest = await this.allotmentEventsApiClient.getAllotmentEventsAsync(getAllotmentEventsRequest);
     this.allotmentEvents = allotmentEventsRequest.items;
     for (const event of this.allotmentEvents) {
       if (event.eventContractAddress === null) {

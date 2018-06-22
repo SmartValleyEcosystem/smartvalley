@@ -13,7 +13,7 @@ export class AllotmentEventsApiClient extends BaseApiClient {
     super();
   }
 
-  public async getAllotmentEvents(params: GetAllotmentEventsRequest): Promise<CollectionResponse<AllotmentEventResponse>> {
+  public async getAllotmentEventsAsync(params: GetAllotmentEventsRequest): Promise<CollectionResponse<AllotmentEventResponse>> {
     let parameters = new HttpParams()
       .append('offset', params.offset.toString())
       .append('count', params.count.toString());

@@ -80,7 +80,7 @@ export class AllotmentEventsManagerContractClient implements ContractClient {
 
   public async getFreezingDurationAsync(): Promise<number> {
     const contract = this.web3Service.getContract(this.abi, this.address);
-    return ConverterHelper.extractNumberValue(await contract.freezingDuration());
+    return ConverterHelper.extractNumberValue(await contract.getFreezingDurationDays());
   }
 
   public async getReturnAddressAsync(): Promise<string> {

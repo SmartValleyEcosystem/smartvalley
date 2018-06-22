@@ -39,7 +39,7 @@ export class FreeTokenPlaceComponent implements OnInit {
     }
 
     private async loadAllotmentEventsAsync(): Promise<void> {
-        const allotmentEvents = await this.allotmentEventsApiClient.getAllotmentEvents(<GetAllotmentEventsRequest>{
+        const allotmentEvents = await this.allotmentEventsApiClient.getAllotmentEventsAsync(<GetAllotmentEventsRequest>{
             offset: this.offset,
             count: this.pageSize,
             statuses: [AllotmentEventStatus.InProgress, AllotmentEventStatus.Finished]
