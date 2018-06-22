@@ -4,6 +4,13 @@ import {Router} from '@angular/router';
 import {BlockiesService} from '../../../services/blockies-service';
 import {AllotmentEventCard} from '../allotment-event-card';
 import {Erc223ContractClient} from '../../../services/contract-clients/erc223-contract-client';
+import {DialogService} from '../../../services/dialog-service';
+import {Balance} from '../../../services/balance/balance';
+import {AllotmentEventService} from '../../../services/allotment-event/allotment-event.service';
+import {AuthenticationService} from '../../../services/authentication/authentication-service';
+import {AllotmentEventsApiClient} from '../../../api/allotment-events/allotment-events-api-client';
+import {AllotmentEventsManagerContractClient} from '../../../services/contract-clients/allotment-events-manager-contract-client';
+import {AllotmentEventParticipateDialogData} from '../../common/allotment-event-participate-modal/allotment-event-participate-dialog-data';
 
 @Component({
     selector: 'app-allotment-event-card',
@@ -14,22 +21,29 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
 
     constructor(private router: Router,
                 private blockiesService: BlockiesService,
+                private allotmentEventsApiClient: AllotmentEventsApiClient,
+                private allotmentEventsManagerContractClient: AllotmentEventsManagerContractClient,
+                private dialogService: DialogService,
+                private allotmentEventService: AllotmentEventService,
+                private authenticationService: AuthenticationService,
                 private erc223ContractClient: Erc223ContractClient) {
     }
 
     private timer: NodeJS.Timer;
-
-    @Input() public event: AllotmentEventCard;
-    @Input() public finished = false;
-    @Output() finishEvent: EventEmitter<number> = new EventEmitter<number>();
     public tokenBalance: number;
     public myBet: number;
     public totalBet: number;
 
+    @Input() public event: AllotmentEventCard;
+    @Input() public finished = false;
+    @Input() public balance: Balance;
+
+    @Output() finishEvent: EventEmitter<number> = new EventEmitter<number>();
+
     async ngOnInit() {
         this.timer = <NodeJS.Timer>setInterval(async () => await this.getAllotmentEventTimeLeft(), 1000);
-        this.myBet = 0;
-        this.totalBet = 1745999;
+        this.myBet = 60000;
+        this.totalBet = 174599;
         this.event.timer = {
             days: '00',
             hours: '00',
@@ -48,6 +62,25 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
         return decodeURIComponent(
             this.router.createUrlTree([Paths.Project + '/' + id]).toString()
         );
+    }
+
+    public getPercentShare() {
+        return (this.myBet * 100) / this.totalBet;
+    }
+
+    public async showParticipateDialogAsync(balance: Balance, event: AllotmentEventCard) {
+        if (await this.authenticationService.authenticateAsync()) {
+            const participateResult = await this.dialogService.showParticipateDialog(<AllotmentEventParticipateDialogData>{
+                balance: balance,
+                totalBet: this.totalBet,
+                myBet: this.myBet,
+                tokenBalance: this.tokenBalance
+            });
+            if (participateResult) {
+                const transactionHash = await this.allotmentEventsManagerContractClient.freezeAsync(participateResult);
+                await this.allotmentEventsApiClient.participateAsync(event.id, transactionHash);
+            }
+        }
     }
 
     public imageUrl(): string {

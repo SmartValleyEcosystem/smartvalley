@@ -1,4 +1,4 @@
-<div class="event-card">
+<div *ngIf="event.project" class="event-card">
   <div class="event-card__title">{{event.name}}</div>
   <div class="event-card__top-info">
     <div class="project-avatar">
@@ -21,8 +21,10 @@
     </div>
   </div>
   <div class="event-card__timer">
-    <span class="light-label light-label_small">{{ 'FreeTokenPlace.MyPotentialShare' | translate }}</span>
-    <div>{{ tokenBalance | formatNumber }} {{ event.tokenTicker }} (100,00%)</div>
+    <span *ngIf="!myBet" class="light-label light-label_small">{{ 'FreeTokenPlace.MyPotentialShare' | translate }}</span>
+    <div *ngIf="!myBet">{{ balance.svt/(balance.svt + totalBet) | formatNumber }} {{ event.tokenTicker }} ( {{ getPercentShare() | formatNumber }} %)</div>
+    <span *ngIf="myBet" class="light-label light-label_small">{{ 'FreeTokenPlace.ActualShare' | translate }}</span>
+    <div *ngIf="myBet">{{ myBet/(totalBet) | formatNumber }} {{ event.tokenTicker }} ({{ getPercentShare() | formatNumber }}%)</div>
     <div class="timer" [class.timer_finished]="finished">
       <div class="timer__info" *ngIf="!finished">{{ 'FreeTokenPlace.TheEventEndsIn' | translate }}</div>
       <div class="timer__info" *ngIf="finished">{{ 'FreeTokenPlace.TheEventWasEnd' | translate }}</div>
@@ -54,7 +56,8 @@
   <div class="event-card__footer">
     <span hidden="hidden" class="light-label light-label_small">Awaiting transaction</span>
     <div *ngIf="!finished" class="start-btn-wrapper">
-      <button class="material-btn">{{ 'FreeTokenPlace.Participate' | translate }}</button>
+      <button *ngIf="!myBet" (click)="showParticipateDialogAsync(balance, event)" class="material-btn">{{ 'FreeTokenPlace.Participate' | translate }}</button>
+      <button *ngIf="myBet" (click)="showParticipateDialogAsync(balance, event)" class="material-btn material-btn__action">{{ 'FreeTokenPlace.AddSVT' | translate }}</button>
     </div>
   </div>
 </div>

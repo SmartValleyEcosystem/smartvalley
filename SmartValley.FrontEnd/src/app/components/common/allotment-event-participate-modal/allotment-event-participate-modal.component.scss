@@ -1,0 +1,62 @@
+@import "../../../../styles/fonts";
+
+.dialog {
+  width: 460px;
+  padding: 20px !important;
+  position: relative;
+}
+h2 {
+  font-family: $font-pt-narrow;
+  font-size: 32px;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+}
+p, input {
+  font-family: $font-pt;
+}
+input {
+  width: 360px;
+}
+.strong {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.button-wrapper {
+  width: auto;
+  text-align: center;
+  margin: 20px 0 0;
+}
+h3 {
+  font-family: Roboto-Regular;
+  font-weight: bold;
+  font-size: 24px;
+  letter-spacing: 0.04em;
+  color: #828282;
+  margin-bottom: 20px;
+}
+.description {
+  font-style: italic;
+}
+.about-frozen {
+  color: #828282;
+}
+.description, .about-frozen {
+  margin: 20px 0 0;
+  letter-spacing: 0.04em;
+}
+
+.dialog-close {
+  cursor: pointer;
+  position: absolute;
+  background-image: url(/assets/img/controls/cross.svg);
+  width: 18px;
+  height: 18px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  top: 0;
+  right: 0;
+}

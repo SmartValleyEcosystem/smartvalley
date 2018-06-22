@@ -30,6 +30,8 @@ import {StartAllotmentEventModalComponent} from '../components/common/start-allo
 import {NewAllotmentEventModalComponent} from '../components/common/new-allotment-event-modal/new-allotment-event-modal.component';
 import {AllotmentEventResponse} from '../api/allotment-events/responses/allotment-event-response';
 import {EditAllotmentRequest} from '../api/allotment-events/request/edit-allotment-request';
+import {AllotmentEventParticipateModalComponent} from '../components/common/allotment-event-participate-modal/allotment-event-participate-modal.component';
+import {AllotmentEventParticipateDialogData} from '../components/common/allotment-event-participate-modal/allotment-event-participate-dialog-data';
 import {SetFreezeTimeModalComponent} from '../components/common/set-freeze-time-modal/set-freeze-time-modal.component';
 import {ReturnAddressModalComponent} from '../components/common/return-address-modal/return-address-modal.component';
 import {SetFreezeTimeModalData} from '../components/common/set-freeze-time-modal/set-freeze-time-modal-data';
@@ -168,6 +170,10 @@ export class DialogService {
 
   public async showFeedbackDialog(): Promise<FeedbackRequest> {
     return this.openModalAsync(FeedbackModalComponent, {});
+  }
+
+  public async showParticipateDialog(participateDialogData: AllotmentEventParticipateDialogData): Promise<number> {
+      return this.openModalAsync(AllotmentEventParticipateModalComponent, participateDialogData);
   }
 
   private openModal<TComponent, TData>(componentType: ComponentType<TComponent>,
