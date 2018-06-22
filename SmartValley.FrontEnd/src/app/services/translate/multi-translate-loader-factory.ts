@@ -64,6 +64,7 @@ export function multiTranslateLoaderFactory() {
     'components/common/return-address-modal/return-address-modal.component',
     'components/common/new-allotment-event-modal/new-allotment-event-modal.component',
     'components/admin-panel/admin-allotment-events/admin-allotment-events.component',
-    'components/free-token-place/free-token-place.component'
+    'components/free-token-place/free-token-place.component',
+    'components/common/allotment-event-participate-modal/allotment-event-participate-modal.component'
   ]);
 }

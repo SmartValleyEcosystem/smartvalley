@@ -91,4 +91,10 @@ export class AllotmentEventsManagerContractClient implements ContractClient {
   private isDateEmpty(date?: Date): boolean {
     return isNullOrUndefined(date) || date.toString().length === 0;
   }
+
+  public async freezeAsync(amount: number): Promise<string> {
+      const contract = this.web3Service.getContract(this.abi, this.address);
+      const fromAddress = this.userContext.getCurrentUser().account;
+      return await contract.freeze(amount, {from: fromAddress});
+  }
 }

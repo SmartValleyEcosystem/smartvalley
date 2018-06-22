@@ -1,0 +1,15 @@
+{
+  "ParticipateModal": {
+    "Title": "Participate in Allotment event",
+    "HowMuchSVTBet": "How much SVT (SmartValley Token) do you want to bet?*",
+    "Participate": "Participate",
+    "MAX": "MAX",
+    "SVT": "SVT",
+    "YouReceive": "As of now, at the end of the Allotment Event you will receive",
+    "AboutReceive": "(it depends on Total bet)",
+    "Your": "Your",
+    "WillBeFreezed": "will be freezed until",
+    "AddSVT": "ADD SVT",
+    "CurrentBet": "Your current bet:"
+  }
+}

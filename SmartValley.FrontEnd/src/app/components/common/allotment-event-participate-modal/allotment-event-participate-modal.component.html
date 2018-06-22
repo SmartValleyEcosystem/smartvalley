@@ -1,0 +1,20 @@
+<div class="dialog">
+  <button class="dialog-close" mat-dialog-close></button>
+  <h2>{{ 'ParticipateModal.Title' | translate }}</h2>
+  <h3 *ngIf="data.myBet">{{ 'ParticipateModal.CurrentBet' | translate }} {{ data.myBet | formatNumber }} {{ 'ParticipateModal.SVT' | translate }}</h3>
+  <p class="strong">{{ 'ParticipateModal.HowMuchSVTBet' | translate }}</p>
+  <input [(ngModel)]="newBet" placeholder="{{ 'ParticipateModal.MAX' | translate }} {{ data.balance.svt }} {{ 'ParticipateModal.SVT' | translate }}" class="input" type="text">
+  <p class="description">
+    {{ 'ParticipateModal.YouReceive' | translate }}
+    {{ getComputedShare() | formatNumber }}
+    {{ 'ParticipateModal.SVT' | translate }} {{ 'ParticipateModal.AboutReceive' | translate }}
+  </p>
+  <p class="about-frozen" *ngIf="(+data.myBet) + (+newBet)">
+    {{ 'ParticipateModal.Your' | translate }} {{ +newBet }} {{ 'ParticipateModal.SVT' | translate }}
+    {{ 'ParticipateModal.WillBeFreezed' | translate }} {{ frozenTime | date: 'HH:mm dd.MM.yyyy' }}
+  </p>
+  <p class="button-wrapper">
+    <button (click)="submit(true)" *ngIf="!data.myBet" class="material-btn">{{ 'ParticipateModal.Participate' | translate }}</button>
+    <button (click)="submit(true)" *ngIf="data.myBet > 0" class="material-btn material-btn__action">{{ 'ParticipateModal.AddSVT' | translate }}</button>
+  </p>
+</div>

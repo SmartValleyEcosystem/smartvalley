@@ -159,6 +159,7 @@ import {FreeTokenPlaceComponent} from './components/free-token-place/free-token-
 import {AllotmentEventCardComponent} from './components/free-token-place/allotment-event-card/allotment-event-card.component';
 import {ExpertService} from './services/expert/expert.service';
 import {FormatNumberPipe} from './utils/format-number.pipe';
+import {AllotmentEventParticipateModalComponent} from './components/common/allotment-event-participate-modal/allotment-event-participate-modal.component';
 import {SetFreezeTimeModalComponent} from './components/common/set-freeze-time-modal/set-freeze-time-modal.component';
 import {ReturnAddressModalComponent} from './components/common/return-address-modal/return-address-modal.component';
 
@@ -240,6 +241,7 @@ import {ReturnAddressModalComponent} from './components/common/return-address-mo
     FreeTokenPlaceComponent,
     AllotmentEventCardComponent,
     FormatNumberPipe,
+    AllotmentEventParticipateModalComponent,
     SetFreezeTimeModalComponent,
     ReturnAddressModalComponent
   ],
@@ -264,6 +266,7 @@ import {ReturnAddressModalComponent} from './components/common/return-address-mo
     FeedbackModalComponent,
     PrivateScoringModalComponent,
     StartAllotmentEventModalComponent,
+    AllotmentEventParticipateModalComponent,
     ReturnAddressModalComponent
   ],
   imports: [
