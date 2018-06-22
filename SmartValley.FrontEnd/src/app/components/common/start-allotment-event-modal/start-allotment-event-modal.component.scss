@@ -1,3 +1,6 @@
+.start-allotment-event {
+  position: relative;
+}
 .control-cols {
   display: flex;
 }
@@ -33,4 +36,18 @@ h3 {
 }
 .start-btn-wrapper {
   text-align: center;
+}
+.dialog-close {
+  cursor: pointer;
+  position: absolute;
+  background-image: url(/assets/img/controls/cross.svg);
+  width: 18px;
+  height: 18px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  top: 0;
+  right: 0;
 }
