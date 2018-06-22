@@ -31,6 +31,9 @@ import {NewAllotmentEventModalComponent} from '../components/common/new-allotmen
 import {AllotmentEventResponse} from '../api/allotment-events/responses/allotment-event-response';
 import {EditAllotmentRequest} from '../api/allotment-events/request/edit-allotment-request';
 import {SetFreezeTimeModalComponent} from '../components/common/set-freeze-time-modal/set-freeze-time-modal.component';
+import {ReturnAddressModalComponent} from '../components/common/return-address-modal/return-address-modal.component';
+import {SetFreezeTimeModalData} from '../components/common/set-freeze-time-modal/set-freeze-time-modal-data';
+import {ReturnAddressModalData} from '../components/common/return-address-modal/return-address-modal-data';
 
 @Injectable()
 export class DialogService {
@@ -41,16 +44,16 @@ export class DialogService {
     return this.openModalAsync(ReceiveEtherModalComponent, {canReceive: !alreadyReceived});
   }
 
-  public showSetExpertsDialogAsync(areas: Array<Area>): Promise<any> {
-    return this.openModal(SetExpertsModalComponent, {areas: areas}, false, '600px')
-      .afterClosed()
-      .toPromise<any>();
-  }
-
-  public showSetFreezeTimeDialogAsync(days: number): Promise<number> {
-    return this.openModal(SetFreezeTimeModalComponent, {days: days}, false, '440px')
+  public showSetFreezeTimeDialogAsync(freezeTime: number): Promise<number> {
+    return this.openModal(SetFreezeTimeModalComponent, <SetFreezeTimeModalData>{freezeTime: freezeTime}, false, '440px')
       .afterClosed()
       .toPromise<number>();
+  }
+
+  public showReturnAddressDialogAsync(returnAddress: string): Promise<string> {
+    return this.openModal(ReturnAddressModalComponent, <ReturnAddressModalData>{returnAddress: returnAddress}, false, '440px')
+      .afterClosed()
+      .toPromise<string>();
   }
 
   public showTransactionDialog(message: string, transactionHash: string): MatDialogRef<TransactionAwaitingModalComponent> {
@@ -148,7 +151,7 @@ export class DialogService {
   }
 
   public async showNewAllotmentEventDialog(): Promise<boolean> {
-      return this.openModalAsync(NewAllotmentEventModalComponent, {});
+    return this.openModalAsync(NewAllotmentEventModalComponent, {});
   }
 
   public async showSubscribeDialog(): Promise<SubscribeRequest> {
@@ -156,7 +159,7 @@ export class DialogService {
   }
 
   public async showEditAllotmentEventDialog(editData: AllotmentEventResponse): Promise<EditAllotmentRequest> {
-      return this.openModalAsync(EditAllotmentEventModalComponent, editData);
+    return this.openModalAsync(EditAllotmentEventModalComponent, editData);
   }
 
   public async showStartAllotmentEventDialog(allotmenEventData: AllotmentEventResponse): Promise<boolean> {
@@ -164,7 +167,7 @@ export class DialogService {
   }
 
   public async showFeedbackDialog(): Promise<FeedbackRequest> {
-      return this.openModalAsync(FeedbackModalComponent, {});
+    return this.openModalAsync(FeedbackModalComponent, {});
   }
 
   private openModal<TComponent, TData>(componentType: ComponentType<TComponent>,
