@@ -48,8 +48,6 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<ScoringCriteriaMapping> IReadOnlyDataContext.ScoringCriteriaMappings => ScoringCriteriaMappings.AsNoTracking();
 
-        IQueryable<AllotmentEvent> IReadOnlyDataContext.AllotmentEvents => AllotmentEvents.AsNoTracking();
-
         public DbSet<Feedback> Feedbacks { get; set; }
 
         public DbSet<Subscription> Subscriptions { get; set; }
@@ -103,6 +101,8 @@ namespace SmartValley.Data.SQL.Core
         public DbSet<EthereumTransaction> EthereumTransactions { get; set; }
 
         public DbSet<AllotmentEvent> AllotmentEvents { get; set; }
+
+        public DbSet<AllotmentEventParticipant> AllotmentEventParticipants { get; set; }
 
         public Task<int> SaveAsync()
         {

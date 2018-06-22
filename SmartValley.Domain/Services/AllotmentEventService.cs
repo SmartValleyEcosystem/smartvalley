@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Domain.Contracts;
 using SmartValley.Domain.Core;
+using SmartValley.Domain.Entities;
 using SmartValley.Domain.Exceptions;
 using SmartValley.Domain.Interfaces;
 
@@ -13,16 +15,19 @@ namespace SmartValley.Domain.Services
         private readonly IAllotmentEventRepository _allotmentEventRepository;
         private readonly IAllotmentEventsManagerContractClient _allotmentEventsManagerContractClient;
         private readonly IAllotmentEventContractClient _allotmentEventContractClient;
+        private readonly IUserRepository _userRepository;
         private readonly IClock _clock;
 
         public AllotmentEventService(IAllotmentEventRepository allotmentEventRepository,
                                      IAllotmentEventsManagerContractClient allotmentEventsManagerContractClient,
                                      IAllotmentEventContractClient allotmentEventContractClient,
+                                     IUserRepository userRepository,
                                      IClock clock)
         {
             _allotmentEventRepository = allotmentEventRepository;
             _allotmentEventsManagerContractClient = allotmentEventsManagerContractClient;
             _allotmentEventContractClient = allotmentEventContractClient;
+            _userRepository = userRepository;
             _clock = clock;
         }
 
@@ -69,6 +74,10 @@ namespace SmartValley.Domain.Services
             allotmentEvent.FinishDate = allotmentEventInfo.FinishDate;
             allotmentEvent.StartDate = allotmentEventInfo.StartDate;
             allotmentEvent.Status = allotmentEventInfo.Status;
+
+            var users = await _userRepository.GetByAddressesAsync(allotmentEventInfo.Participants.Select(x => x.Address).ToArray());
+            var participants = allotmentEventInfo.Participants.Select(x => new AllotmentEventParticipant(x.Bid, x.Share, users.First(u => u.Address == x.Address).Id)).ToArray();
+            allotmentEvent.SetParticipants(participants);
 
             await _allotmentEventRepository.SaveChangesAsync();
         }

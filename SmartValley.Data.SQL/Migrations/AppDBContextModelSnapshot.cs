@@ -25,7 +25,7 @@ namespace SmartValley.Data.SQL.Migrations
                 .HasAnnotation("ProductVersion", "2.1.0-preview1-28290")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("SmartValley.Domain.AllotmentEvent", b =>
+            modelBuilder.Entity("SmartValley.Domain.Entities.AllotmentEvent", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
@@ -60,6 +60,26 @@ namespace SmartValley.Data.SQL.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("AllotmentEvents");
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.Entities.AllotmentEventParticipant", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<long>("AllotmentEventId");
+
+                    b.Property<long>("Bid");
+
+                    b.Property<long>("Share");
+
+                    b.Property<long>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AllotmentEventId");
+
+                    b.ToTable("AllotmentEventParticipants");
                 });
 
             modelBuilder.Entity("SmartValley.Domain.Entities.Area", b =>
@@ -784,11 +804,19 @@ namespace SmartValley.Data.SQL.Migrations
                     b.ToTable("ScoringApplicationTeamMembers");
                 });
 
-            modelBuilder.Entity("SmartValley.Domain.AllotmentEvent", b =>
+            modelBuilder.Entity("SmartValley.Domain.Entities.AllotmentEvent", b =>
                 {
                     b.HasOne("SmartValley.Domain.Entities.Project")
                         .WithMany("AllotmentEvents")
                         .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SmartValley.Domain.Entities.AllotmentEventParticipant", b =>
+                {
+                    b.HasOne("SmartValley.Domain.Entities.AllotmentEvent")
+                        .WithMany("Participants")
+                        .HasForeignKey("AllotmentEventId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

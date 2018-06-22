@@ -31,7 +31,8 @@ namespace SmartValley.WebApi.AllotmentEvents
         [HttpGet]
         public async Task<PartialCollectionResponse<AllotmentEventResponse>> GetAsync([FromQuery] QueryAllotmentEventsRequest request)
         {
-            var query = new AllotmentEventsQuery(request.AllotmentEventStatuses ?? new AllotmentEventStatus[0], request.Offset, request.Count);
+            var filterStatuses = request.AllotmentEventStatuses ?? new AllotmentEventStatus[0];
+            var query = new AllotmentEventsQuery(filterStatuses, request.Offset, request.Count);
             var result = await _allotmentEventService.QueryAsync(query);
 
             return result.ToPartialCollectionResponse(x => AllotmentEventResponse.Create(x, _clock.UtcNow));
@@ -82,6 +83,16 @@ namespace SmartValley.WebApi.AllotmentEvents
         public async Task<IActionResult> StartAsync(long id, [FromBody] StartAllotmentEventRequest request)
         {
             var command = new StartAllotmentEvent(id, User.GetUserId(), request.TransactionHash);
+
+            await _messageSession.SendLocal(command);
+            return NoContent();
+        }
+
+        [HttpPut("{id}/participate")]
+        [Authorize]
+        public async Task<IActionResult> PlaceBidAsync(long id, [FromBody] PlaceAllotmentEventBidRequest request)
+        {
+            var command = new PlaceAllotmentEventBid(id, User.GetUserId(), request.TransactionHash);
 
             await _messageSession.SendLocal(command);
             return NoContent();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SmartValley.Domain;
 using SmartValley.Domain.Contracts;
@@ -21,6 +22,20 @@ namespace SmartValley.Ethereum.Contracts.AllotmentEvent
         public async Task<AllotmentEventInfo> GetInfoAsync(string contractAddress)
         {
             var dto = await _contractClient.CallFunctionDeserializingToObjectAsync<AllotmentEventInfoDto>(contractAddress, _contractAbi, "getInfo");
+            var eventResult = await _contractClient.CallFunctionDeserializingToObjectAsync<AllotmentEventResultInfoDto>(contractAddress, _contractAbi, "getResults");
+
+            var participants = new List<AllotmentEventParticipantInfo>();
+            for (int i = 0; i < eventResult.Participants.Count; i++)
+            {
+                var participant = new AllotmentEventParticipantInfo
+                                  {
+                                      Address = eventResult.Participants[i],
+                                      Bid = eventResult.ParticipantBids[i],
+                                      Share = eventResult.ParticipantShares[i]
+                                  };
+                participants.Add(participant);
+            }
+
             return new AllotmentEventInfo(
                 dto.Name,
                 (AllotmentEventStatus) dto.Status,
@@ -28,7 +43,8 @@ namespace SmartValley.Ethereum.Contracts.AllotmentEvent
                 ToDateTimeOffset(dto.StartTimestamp),
                 ToDateTimeOffset(dto.FinishTimestamp),
                 dto.TokenDecimals,
-                dto.TokenTicker);
+                dto.TokenTicker,
+                participants);
         }
 
         private static DateTimeOffset? ToDateTimeOffset(long unixTimeSeconds)

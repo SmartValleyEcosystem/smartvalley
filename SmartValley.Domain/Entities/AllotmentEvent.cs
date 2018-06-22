@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using SmartValley.Domain.Core;
 
-namespace SmartValley.Domain
+namespace SmartValley.Domain.Entities
 {
     public class AllotmentEvent : Entity
     {
+        public AllotmentEvent()
+        {
+            Participants = new List<AllotmentEventParticipant>();
+        }
+
         public string Name { get; set; }
 
         public AllotmentEventStatus Status { get; set; }
@@ -25,6 +31,8 @@ namespace SmartValley.Domain
 
         public long ProjectId { get; set; }
 
+        public ICollection<AllotmentEventParticipant> Participants { get; set; }
+
         public AllotmentEventStatus GetActualStatus(DateTimeOffset now)
         {
             if (Status == AllotmentEventStatus.InProgress && now >= FinishDate)
@@ -33,6 +41,14 @@ namespace SmartValley.Domain
             }
 
             return Status;
+        }
+
+        public void SetParticipants(IReadOnlyCollection<AllotmentEventParticipant> participants)
+        {
+            Participants.Clear();
+
+            foreach (var participant in participants)
+                Participants.Add(participant);
         }
     }
 }

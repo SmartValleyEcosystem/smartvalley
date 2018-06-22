@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Contracts
 {

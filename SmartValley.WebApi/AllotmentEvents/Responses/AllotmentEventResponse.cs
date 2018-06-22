@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using SmartValley.Domain;
+using SmartValley.Domain.Entities;
 
 namespace SmartValley.WebApi.AllotmentEvents.Responses
 {
@@ -31,6 +33,8 @@ namespace SmartValley.WebApi.AllotmentEvents.Responses
 
         public string TokenTicker { get; set; }
 
+        public AllotmentEventParticipantResponse[] Participants { get; set; }
+        
         public static AllotmentEventResponse Create(AllotmentEvent allotmentEvent, DateTimeOffset now)
         {
             return new AllotmentEventResponse
@@ -45,7 +49,8 @@ namespace SmartValley.WebApi.AllotmentEvents.Responses
                        StartDate = allotmentEvent.StartDate,
                        FinishDate = allotmentEvent.FinishDate,
                        TokenDecimals = allotmentEvent.TokenDecimals,
-                       TokenTicker = allotmentEvent.TokenTicker
+                       TokenTicker = allotmentEvent.TokenTicker,
+                       Participants = allotmentEvent.Participants.Select(x => new AllotmentEventParticipantResponse(x.Bid, x.Share, x.UserId)).ToArray()
                    };
         }
     }
