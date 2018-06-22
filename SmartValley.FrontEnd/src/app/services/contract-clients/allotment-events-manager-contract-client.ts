@@ -72,9 +72,20 @@ export class AllotmentEventsManagerContractClient implements ContractClient {
     return await contract.setFreezingDuration(duration, {from: fromAddress});
   }
 
+  public async setReturnAddressAsync(address: string): Promise<string> {
+    const contract = this.web3Service.getContract(this.abi, this.address);
+    const fromAddress = this.userContext.getCurrentUser().account;
+    return await contract.setReturnAddress(address, {from: fromAddress});
+  }
+
   public async getFreezingDurationAsync(): Promise<number> {
     const contract = this.web3Service.getContract(this.abi, this.address);
     return ConverterHelper.extractNumberValue(await contract.freezingDuration());
+  }
+
+  public async getReturnAddressAsync(): Promise<string> {
+    const contract = this.web3Service.getContract(this.abi, this.address);
+    return ConverterHelper.extractStringValue(await contract.returnAddress());
   }
 
   private isDateEmpty(date?: Date): boolean {

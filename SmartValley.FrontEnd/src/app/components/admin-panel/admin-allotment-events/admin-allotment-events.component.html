@@ -31,6 +31,7 @@
   </button>
   <div class="event-actions">
     <button (click)="showFreezeTimeModalAsync()" class="freeze-icon"></button>
+    <button (click)="showReturnAddressModalAsync()" class="return-address-icon"></button>
   </div>
   <p-table class="admin-table" [value]="allotmentEvents"
            [lazy]="true" (onLazyLoad)="getAllotmentEventsAsync($event)" [paginator]="true"

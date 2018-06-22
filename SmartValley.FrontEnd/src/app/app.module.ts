@@ -160,6 +160,7 @@ import {AllotmentEventCardComponent} from './components/free-token-place/allotme
 import {ExpertService} from './services/expert/expert.service';
 import {FormatNumberPipe} from './utils/format-number.pipe';
 import {SetFreezeTimeModalComponent} from './components/common/set-freeze-time-modal/set-freeze-time-modal.component';
+import {ReturnAddressModalComponent} from './components/common/return-address-modal/return-address-modal.component';
 
 @NgModule({
   declarations: [
@@ -239,7 +240,8 @@ import {SetFreezeTimeModalComponent} from './components/common/set-freeze-time-m
     FreeTokenPlaceComponent,
     AllotmentEventCardComponent,
     FormatNumberPipe,
-    SetFreezeTimeModalComponent
+    SetFreezeTimeModalComponent,
+    ReturnAddressModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -261,7 +263,8 @@ import {SetFreezeTimeModalComponent} from './components/common/set-freeze-time-m
     SubscribeModalComponent,
     FeedbackModalComponent,
     PrivateScoringModalComponent,
-    StartAllotmentEventModalComponent
+    StartAllotmentEventModalComponent,
+    ReturnAddressModalComponent
   ],
   imports: [
     FileUploadModule,

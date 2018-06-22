@@ -125,10 +125,19 @@ export class AdminAllotmentEventsComponent {
     }
   }
 
+  public async showReturnAddressModalAsync() {
+    const address = await this.allotmentEventsManagerContractClient.getReturnAddressAsync();
+    const newAddress = await this.dialogService.showReturnAddressDialogAsync(address);
+    if (isNullOrUndefined(newAddress) || address === newAddress) {
+      return;
+    }
+    await this.allotmentEventsManagerContractClient.setReturnAddressAsync(newFreezeTime);
+  }
+
   public async showFreezeTimeModalAsync() {
     const freezeTime = await this.allotmentEventsManagerContractClient.getFreezingDurationAsync();
     const newFreezeTime = await this.dialogService.showSetFreezeTimeDialogAsync(freezeTime);
-    if (isNullOrUndefined(newFreezeTime)) {
+    if (isNullOrUndefined(newFreezeTime) || freezeTime === newFreezeTime) {
       return;
     }
     await this.allotmentEventsManagerContractClient.setFreezingDurationAsync(newFreezeTime);
