@@ -131,7 +131,7 @@ export class AdminAllotmentEventsComponent {
     if (isNullOrUndefined(newAddress) || address === newAddress) {
       return;
     }
-    await this.allotmentEventsManagerContractClient.setReturnAddressAsync(newFreezeTime);
+    await this.allotmentEventsManagerContractClient.setReturnAddressAsync(newAddress);
   }
 
   public async showFreezeTimeModalAsync() {
