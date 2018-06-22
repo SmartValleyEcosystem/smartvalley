@@ -1,4 +1,5 @@
 import {AllotmentEventStatus} from '../allotment-event-status';
+import {AllotmentEventParticipantResponse} from './allotment-event-participant-response';
 
 export interface AllotmentEventResponse {
   id: number;
@@ -12,4 +13,5 @@ export interface AllotmentEventResponse {
   finishDate?: Date;
   tokenDecimals: number;
   tokenTicker: string;
+  participants: Array<AllotmentEventParticipantResponse>;
 }

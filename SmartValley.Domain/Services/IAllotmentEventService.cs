@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using SmartValley.Domain.Core;
+using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain.Services
 {

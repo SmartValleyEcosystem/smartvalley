@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SmartValley.Domain.Contracts
 {
@@ -11,7 +12,8 @@ namespace SmartValley.Domain.Contracts
             DateTimeOffset? startDate,
             DateTimeOffset? finishDate,
             int tokenDecimals,
-            string tokenTicker)
+            string tokenTicker,
+            IReadOnlyCollection<AllotmentEventParticipantInfo> participants)
         {
             Name = name;
             Status = status;
@@ -20,6 +22,7 @@ namespace SmartValley.Domain.Contracts
             FinishDate = finishDate;
             TokenDecimals = tokenDecimals;
             TokenTicker = tokenTicker;
+            Participants = participants;
         }
 
         public string Name { get; }
@@ -35,5 +38,7 @@ namespace SmartValley.Domain.Contracts
         public int TokenDecimals { get; }
 
         public string TokenTicker { get; }
+
+        public IReadOnlyCollection<AllotmentEventParticipantInfo> Participants { get; }
     }
 }
