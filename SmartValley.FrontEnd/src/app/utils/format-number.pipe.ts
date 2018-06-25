@@ -5,9 +5,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FormatNumberPipe implements PipeTransform {
 
-    transform(val: number, locale = 'fr'): string {
+    transform(val: number, decimal = 3, floor = false, locale = 'fr'): string {
         if (val !== undefined && val !== null) {
-            return val.toLocaleString(locale);
+            val = val / Math.pow(10, decimal);
+            return floor ? Math.floor(val).toLocaleString(locale) : val.toLocaleString(locale);
         }
         return '';
     }

@@ -5,4 +5,5 @@ export interface AllotmentEventParticipateDialogData {
     myBet: number;
     totalBet: number;
     tokenBalance: number;
+    decimals: number;
 }
