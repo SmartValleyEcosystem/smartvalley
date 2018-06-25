@@ -72,6 +72,11 @@ export class AllotmentEventService {
     await this.allotmentEventsApiClient.updateAsync(eventId, transactionHash);
   }
 
+  public async removeAsync(eventId: number) {
+    const transactionHash = await this.allotmentEventsManagerContractClient.removeAsync(eventId);
+    await this.allotmentEventsApiClient.removeAsync(eventId, transactionHash);
+  }
+
   public async participateAsync(eventId: number, amount: number) {
     const transactionHash = await this.allotmentEventsManagerContractClient.freezeAsync(amount);
     await this.allotmentEventsApiClient.participateAsync(eventId, transactionHash);

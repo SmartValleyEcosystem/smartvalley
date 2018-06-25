@@ -1,0 +1,7 @@
+{
+  "DeleteAllotmentEventModal": {
+    "Title": "Delete Allotment event",
+    "Description": "Delete this event without a restore?",
+    "Delete": "Delete"
+  }
+}

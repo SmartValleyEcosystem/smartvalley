@@ -38,6 +38,7 @@ import {SetFreezeTimeModalData} from '../components/common/set-freeze-time-modal
 import {ReturnAddressModalData} from '../components/common/return-address-modal/return-address-modal-data';
 import {ReceiveTokensModalComponent} from '../components/common/receive-tokens-modal/receive-tokens-modal.component';
 import {ReceiveTokensModalData} from '../components/common/receive-tokens-modal/receive-tokens-modal-data';
+import {DeleteAllotmentEventModalComponent} from '../components/common/delete-allotment-event-modal/delete-allotment-event-modal.component';
 
 @Injectable()
 export class DialogService {
@@ -132,6 +133,10 @@ export class DialogService {
 
   public async showDeleteProjectModalAsync(): Promise<boolean> {
     return this.openModalAsync(DeleteProjectModalComponent, {});
+  }
+
+  public async showDeleteAllotmentEventModalAsync(): Promise<boolean> {
+    return this.openModalAsync(DeleteAllotmentEventModalComponent, {});
   }
 
   public async changeStatusDialogAsync(activityStatus: boolean, address: string): Promise<boolean> {

@@ -124,6 +124,13 @@ export class AdminAllotmentEventsComponent {
     }
   }
 
+  public async showDeleteAllotmentModalAsync(allotmentEvent: AllotmentEventResponse) {
+    const modal = await this.dialogService.showDeleteAllotmentEventModalAsync(allotmentEvent);
+    if (modal) {
+      await this.allotmentEventService.removeAsync(allotmentEvent.id);
+    }
+  }
+
   public async showReturnAddressModalAsync() {
     const address = await this.allotmentEventsManagerContractClient.getReturnAddressAsync();
     const newAddress = await this.dialogService.showReturnAddressDialogAsync(address);
