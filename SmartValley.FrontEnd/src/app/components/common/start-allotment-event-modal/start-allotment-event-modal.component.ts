@@ -18,6 +18,7 @@ export class StartAllotmentEventModalComponent implements OnInit {
 
   public tokenBalance: number;
   public project: ProjectSummaryResponse;
+  public freezeTime: number;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: AllotmentEventResponse,
               private dialogRef: MatDialogRef<AddAdminModalComponent>,
@@ -31,13 +32,12 @@ export class StartAllotmentEventModalComponent implements OnInit {
   async ngOnInit() {
     this.tokenBalance = await this.erc223ContractClient.getTokenBalanceAsync(this.data.tokenContractAddress, this.data.eventContractAddress);
     this.project = await this.projectApiClient.getProjectSummaryAsync(this.data.projectId);
+    this.freezeTime = await this.allotmentEventsManagerContractClient.getFreezingDurationAsync();
   }
 
   public async submit(result: boolean) {
-
     const finishDate = new Date(this.data.finishDate);
-    const freezingDuration = await this.allotmentEventsManagerContractClient.getFreezingDurationAsync();
-    const finishDateWithFreezing = finishDate.setDate(finishDate.getDate() + freezingDuration);
+    const finishDateWithFreezing = finishDate.setDate(finishDate.getDate() + this.freezeTime);
 
     if (!this.tokenBalance) {
         this.notificationService.error(
