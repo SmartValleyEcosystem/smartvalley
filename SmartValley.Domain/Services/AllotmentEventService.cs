@@ -62,6 +62,14 @@ namespace SmartValley.Domain.Services
         public async Task UpdateAsync(long id)
         {
             var allotmentEvent = await _allotmentEventRepository.GetByIdAsync(id) ?? throw new AppErrorException(ErrorCode.AllotmentEventNotFound);
+            
+            if (await _allotmentEventsManagerContractClient.IsDeletedAsync(id))
+            {
+                _allotmentEventRepository.Remove(allotmentEvent);
+                await _allotmentEventRepository.SaveChangesAsync();
+                return;
+            }
+            
             if (allotmentEvent.GetActualStatus(_clock.UtcNow) == AllotmentEventStatus.Created)
                 throw new AppErrorException(ErrorCode.CantUpdateNotPublishedAllotmentEvent);
 

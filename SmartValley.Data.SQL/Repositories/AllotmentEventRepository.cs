@@ -36,6 +36,9 @@ namespace SmartValley.Data.SQL.Repositories
         public Task SaveChangesAsync()
             => _editContext.SaveAsync();
 
+        public void Remove(AllotmentEvent entity)
+            => _editContext.AllotmentEvents.Remove(entity);
+
         public Task<AllotmentEvent> GetByIdAsync(long id)
             => Entities().FirstOrDefaultAsync(i => i.Id == id);
 
