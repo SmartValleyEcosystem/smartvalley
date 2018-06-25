@@ -10,6 +10,8 @@ import {ProjectApiClient} from '../../api/project/project-api-client';
 import {ProjectResponse} from '../../api/project/project-response';
 import {BalanceService} from '../../services/balance/balance.service';
 import {Balance} from '../../services/balance/balance';
+import {User} from '../../services/authentication/user';
+import {UserContext} from '../../services/authentication/user-context';
 
 @Component({
     selector: 'app-free-token-place',
@@ -26,9 +28,11 @@ export class FreeTokenPlaceComponent implements OnInit {
     public projects: ProjectResponse[] = [];
     public showFrozenTooltip = false;
     public balance: Balance;
+    public user: User;
 
     constructor(private allotmentEventsApiClient: AllotmentEventsApiClient,
                 private balanceService: BalanceService,
+                private userContext: UserContext,
                 private projectApiClient: ProjectApiClient) {
     }
 
@@ -36,6 +40,8 @@ export class FreeTokenPlaceComponent implements OnInit {
         await this.loadAllotmentEventsAsync();
         const tokenBalance = await this.balanceService.getTokenBalanceAsync();
         this.balance = tokenBalance;
+        this.user = this.userContext.getCurrentUser();
+        this.userContext.userContextChanged.subscribe( (user) => this.user = user);
     }
 
     private async loadAllotmentEventsAsync(): Promise<void> {
@@ -69,7 +75,7 @@ export class FreeTokenPlaceComponent implements OnInit {
 
     public finishEvent(id: number) {
         this.finishedEvents.push(this.activeEvents.find((a) => a.id === id ));
-        this.activeEvents = this.activeEvents.filter( (a, i) => {
+        this.activeEvents = this.activeEvents.filter( (a) => {
           return a.id !== id;
         });
     }
