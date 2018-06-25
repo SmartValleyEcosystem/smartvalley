@@ -59,5 +59,8 @@
       <button *ngIf="!myBet" (click)="showParticipateDialogAsync(balance, event)" class="material-btn">{{ 'FreeTokenPlace.Participate' | translate }}</button>
       <button *ngIf="myBet" (click)="showParticipateDialogAsync(balance, event)" class="material-btn material-btn__action">{{ 'FreeTokenPlace.AddSVT' | translate }}</button>
     </div>
+    <div *ngIf="canRecieveTokens" class="start-btn-wrapper">
+      <button (click)="showReceiveTokensModalAsync()" class="material-btn">{{ 'FreeTokenPlace.Receive' | translate }} {{event.tokenTicker}}</button>
+    </div>
   </div>
 </div>

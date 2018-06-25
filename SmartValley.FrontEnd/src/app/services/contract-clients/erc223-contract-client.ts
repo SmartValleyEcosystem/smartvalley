@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {Web3Service} from '../web3-service';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {ConverterHelper} from '../converter-helper';
-import {UserContext} from '../authentication/user-context';
 
 @Injectable()
 export class Erc223ContractClient {
@@ -10,8 +9,7 @@ export class Erc223ContractClient {
   public abi: string;
 
   constructor(private web3Service: Web3Service,
-              private contractClient: ContractApiClient,
-              private userContext: UserContext) {
+              private contractClient: ContractApiClient) {
   }
 
   public async getSymbolAsync(tokenAddress: string): Promise<string> {

@@ -33,6 +33,10 @@ export class ContractApiClient extends BaseApiClient {
     return this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/erc223').toPromise();
   }
 
+  public getAllotmentEventContractAsync(): Promise<ContractResponse> {
+    return this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/allotmentEvents').toPromise();
+  }
+
   public getAllotmentEventsManagerContract(): Promise<ContractResponse> {
     return this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/allotmentEventsManager').toPromise();
   }

@@ -1,5 +1,5 @@
 .save-btn {
-  width: 144px;
+  width: 272px;
   background: #EEEDF5;
   height: 70px;
   font-size: 24px;
@@ -19,8 +19,29 @@
 
 .fix-container {
   padding: 16px;
+  h2 {
+    margin-bottom: 20px;
+  }
 }
 
 .input {
   width: 100% !important;
+}
+
+.value {
+  float: right;
+  margin-right: 95px;
+}
+
+.your-tokens {
+  margin-top: 20px;
+  span {
+    color: #828282;
+    line-height: 31px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .value {
+    margin-right: 0 !important;
+  }
 }

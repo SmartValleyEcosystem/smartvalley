@@ -1,0 +1,26 @@
+<div class="fix-container">
+  <h2>{{ 'ReceiveTokensModal.Title' | translate }}</h2>
+
+  <form (ngSubmit)="submit()">
+    <div>
+      <span>{{ 'ReceiveTokensModal.TotalTokens' | translate }}</span>
+      <span class="value">{{data.totalTokens}} {{data.tokenTicker}}</span>
+    </div>
+    <div>
+      <span>{{ 'ReceiveTokensModal.TotalBet' | translate }}</span>
+      <span class="value">{{data.totalBet}} SVT</span>
+    </div>
+    <div>
+      <span>{{ 'ReceiveTokensModal.YourBet' | translate }}</span>
+      <span class="value">{{data.userBet}} SVT</span>
+    </div>
+    <div class="your-tokens">
+      <span>{{ 'ReceiveTokensModal.YourTokens' | translate }}</span>
+      <span class="value">{{data.userTokens}} {{data.tokenTicker}}</span>
+    </div>
+    <div class="actions-container">
+      <button (click)="submit()" class="save-btn">{{ 'ReceiveTokensModal.ReceiveBtn' | translate }}
+      </button>
+    </div>
+  </form>
+</div>
