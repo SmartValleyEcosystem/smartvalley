@@ -18,7 +18,7 @@ export class SetFreezeTimeModalComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      freezeTime: [this.data.freezeTime, [Validators.required]]
+      freezeTime: [this.data.freezeTime, [Validators.required, Validators.pattern('\\d*')]]
     });
   }
 

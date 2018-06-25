@@ -19,7 +19,7 @@ export class ReturnAddressModalComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      returnAddress: [this.data.returnAddress, [Validators.required]]
+      returnAddress: [this.data.returnAddress, [Validators.required, Validators.pattern('0x[a-zA-Z0-9]{40}')]]
     });
   }
 
