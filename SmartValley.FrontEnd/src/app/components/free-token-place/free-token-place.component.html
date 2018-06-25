@@ -1,4 +1,4 @@
-<div class="free-token-place-panel">
+<div *ngIf="user" class="free-token-place-panel">
   <div class="content">
     <ul *ngIf="balance" class="free-token-place-panel__balance">
       <li class="balance-label">{{ 'FreeTokenPlace.Balance' | translate }}</li>
