@@ -1,0 +1,45 @@
+.dialog-close {
+  cursor: pointer;
+  position: absolute;
+  background-image: url(/assets/img/controls/cross.svg);
+  width: 18px;
+  height: 18px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  top: 0;
+  right: 0;
+}
+
+.dialog {
+  width: auto;
+  background-color: #ffffff;
+  padding: 20px !important;
+  position: relative;
+}
+
+h2 {
+  font-family: Roboto-Regular;
+}
+
+.submit {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.delete-btn {
+  padding: 20px 35px;
+  background: #EEEDF5;
+  height: 70px;
+  font-size: 24px;
+  font-family: Roboto-Regular;
+  font-weight: bold;
+  line-height: 28px;
+  border: none;
+  color: #5D49F2;
+  margin-top: 40px;
+  cursor: pointer;
+  display: block;
+}

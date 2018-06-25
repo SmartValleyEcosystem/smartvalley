@@ -1,0 +1,10 @@
+<div class="dialog">
+  <button class="dialog-close" mat-dialog-close></button>
+  <h2>{{ 'DeleteAllotmentEventModal.Title' | translate }}</h2>
+  <p>
+    {{ 'DeleteAllotmentEventModal.Description' | translate }}
+  </p>
+  <div class="control-row submit">
+    <input (click)="submit()" type="button" value="{{ 'DeleteAllotmentEventModal.Delete' | translate }}" class="material-btn material-btn__action">
+  </div>
+</div>

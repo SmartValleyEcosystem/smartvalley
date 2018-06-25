@@ -60,6 +60,12 @@ export class AllotmentEventsManagerContractClient implements ContractClient {
       {from: fromAddress});
   }
 
+  public async removeAsync(eventId: number): Promise<string> {
+    const contract = this.web3Service.getContract(this.abi, this.address);
+    const fromAddress = this.userContext.getCurrentUser().account;
+    return await contract.remove(eventId, {from: fromAddress});
+  }
+
   public async startAsync(eventId: number): Promise<string> {
     const contract = this.web3Service.getContract(this.abi, this.address);
     const fromAddress = this.userContext.getCurrentUser().account;
@@ -93,8 +99,8 @@ export class AllotmentEventsManagerContractClient implements ContractClient {
   }
 
   public async freezeAsync(amount: number): Promise<string> {
-      const contract = this.web3Service.getContract(this.abi, this.address);
-      const fromAddress = this.userContext.getCurrentUser().account;
-      return await contract.freeze(amount, {from: fromAddress});
+    const contract = this.web3Service.getContract(this.abi, this.address);
+    const fromAddress = this.userContext.getCurrentUser().account;
+    return await contract.freeze(amount, {from: fromAddress});
   }
 }

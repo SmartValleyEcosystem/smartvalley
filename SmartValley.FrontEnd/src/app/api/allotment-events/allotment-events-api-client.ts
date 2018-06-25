@@ -46,29 +46,34 @@ export class AllotmentEventsApiClient extends BaseApiClient {
     }).toPromise();
   }
 
-  public publishAsync(eventId: number, transactionHash: string) {
+  public publishAsync(eventId: number, transactionHash: string): Promise<void> {
     return this.http.put(
       `${this.baseApiUrl}/allotmentEvents/${eventId}/publish/`,
       {transactionHash: transactionHash})
       .toPromise();
   }
 
-  public updateAsync(eventId: number, transactionHash: string) {
+  public updateAsync(eventId: number, transactionHash: string): Promise<void> {
     return this.http.put(
       `${this.baseApiUrl}/allotmentEvents/${eventId}`,
       {transactionHash: transactionHash})
       .toPromise();
   }
 
-  public startAsync(eventId: number, transactionHash: string) {
+  public removeAsync(eventId: number, transactionHash: string): Promise<void> {
+    const queryString = '?eventId=' + eventId + '&transactionHash=' + transactionHash;
+    return this.http.delete(this.baseApiUrl + '/allotmentEvents' + queryString).toPromise();
+  }
+
+  public startAsync(eventId: number, transactionHash: string): Promise<void> {
     return this.http.put(`${this.baseApiUrl}/allotmentEvents/${eventId}/start/`, {transactionHash: transactionHash}).toPromise();
   }
 
-  public participateAsync(eventId: number, transactionHash: string) {
+  public participateAsync(eventId: number, transactionHash: string): Promise<void> {
     return this.http.put(`${this.baseApiUrl}/allotmentEvents/${eventId}/participate/`, {transactionHash: transactionHash}).toPromise();
   }
 
-  public receiveTokensAsync(eventId: number, transactionHash: string) {
+  public receiveTokensAsync(eventId: number, transactionHash: string): Promise<void> {
     return this.http.put(`${this.baseApiUrl}/allotmentEvents/${eventId}/receiveTokens/`, {transactionHash: transactionHash}).toPromise();
   }
 }

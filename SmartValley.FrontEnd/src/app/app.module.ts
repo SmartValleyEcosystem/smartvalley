@@ -164,6 +164,7 @@ import {SetFreezeTimeModalComponent} from './components/common/set-freeze-time-m
 import {ReturnAddressModalComponent} from './components/common/return-address-modal/return-address-modal.component';
 import {ReceiveTokensModalComponent} from './components/common/receive-tokens-modal/receive-tokens-modal.component';
 import {AllotmentEventsContractClient} from './services/contract-clients/allotment-events-contract-client';
+import { DeleteAllotmentEventModalComponent } from './components/common/delete-allotment-event-modal/delete-allotment-event-modal.component';
 
 @NgModule({
   declarations: [
@@ -246,7 +247,8 @@ import {AllotmentEventsContractClient} from './services/contract-clients/allotme
     AllotmentEventParticipateModalComponent,
     SetFreezeTimeModalComponent,
     ReturnAddressModalComponent,
-    ReceiveTokensModalComponent
+    ReceiveTokensModalComponent,
+    DeleteAllotmentEventModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -271,6 +273,7 @@ import {AllotmentEventsContractClient} from './services/contract-clients/allotme
     StartAllotmentEventModalComponent,
     AllotmentEventParticipateModalComponent,
     ReturnAddressModalComponent,
+    DeleteAllotmentEventModalComponent,
     ReceiveTokensModalComponent
   ],
   imports: [
