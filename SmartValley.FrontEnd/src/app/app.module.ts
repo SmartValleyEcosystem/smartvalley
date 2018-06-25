@@ -162,6 +162,8 @@ import {FormatNumberPipe} from './utils/format-number.pipe';
 import {AllotmentEventParticipateModalComponent} from './components/common/allotment-event-participate-modal/allotment-event-participate-modal.component';
 import {SetFreezeTimeModalComponent} from './components/common/set-freeze-time-modal/set-freeze-time-modal.component';
 import {ReturnAddressModalComponent} from './components/common/return-address-modal/return-address-modal.component';
+import {ReceiveTokensModalComponent} from './components/common/receive-tokens-modal/receive-tokens-modal.component';
+import {AllotmentEventsContractClient} from './services/contract-clients/allotment-events-contract-client';
 
 @NgModule({
   declarations: [
@@ -243,7 +245,8 @@ import {ReturnAddressModalComponent} from './components/common/return-address-mo
     FormatNumberPipe,
     AllotmentEventParticipateModalComponent,
     SetFreezeTimeModalComponent,
-    ReturnAddressModalComponent
+    ReturnAddressModalComponent,
+    ReceiveTokensModalComponent
   ],
   entryComponents: [
     TransactionAwaitingModalComponent,
@@ -267,7 +270,8 @@ import {ReturnAddressModalComponent} from './components/common/return-address-mo
     PrivateScoringModalComponent,
     StartAllotmentEventModalComponent,
     AllotmentEventParticipateModalComponent,
-    ReturnAddressModalComponent
+    ReturnAddressModalComponent,
+    ReceiveTokensModalComponent
   ],
   imports: [
     FileUploadModule,
@@ -363,6 +367,7 @@ import {ReturnAddressModalComponent} from './components/common/return-address-mo
     ShouldBeAdminGuard,
     GuardFactory,
     Erc223ContractClient,
+    AllotmentEventsContractClient,
     CompositeGuard,
     ShouldNotBeExpertGuard,
     OfferStatusGuard,

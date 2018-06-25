@@ -1,62 +1,65 @@
-<div>
-  <h2 mat-mat-title>{{'EditExpertModalComponent.Title' | translate}}</h2>
-  <mat-dialog-content>
-    <h3 class="sub-header">{{'EditExpertModalComponent.Backend' | translate}}</h3>
-    <form [formGroup]="backendForm">
-      <div class="row">
+<h2 mat-mat-title>{{'EditExpertModalComponent.Title' | translate}}</h2>
+<mat-dialog-content>
+  <h3 class="sub-header">{{'EditExpertModalComponent.Backend' | translate}}</h3>
+  <form [formGroup]="backendForm">
+    <div class="row">
           <span class="col-4">
               {{ 'EditExpertModalComponent.Address' | translate }}
           </span>
-        <span class="col-8 example-full-width">{{expertDetails.address}}</span>
-      </div>
-      <div class="row">
+      <span class="col-8 example-full-width">{{expertDetails.address}}</span>
+    </div>
+    <div class="row">
           <span class="col-4">
               {{ 'EditExpertModalComponent.Email' | translate }}
           </span>
-        <mat-form-field class="col-8 example-full-width">
-          <input placeholder="{{ 'EditExpertModalComponent.Email' | translate }}" matInput formControlName="email" name="email" #required>
-        </mat-form-field>
-      </div>
-      <div class="row">
+      <mat-form-field class="col-8 example-full-width">
+        <input placeholder="{{ 'EditExpertModalComponent.Email' | translate }}" matInput formControlName="email"
+               name="email" #required>
+      </mat-form-field>
+    </div>
+    <div class="row">
           <span class="col-4">
               {{ 'EditExpertModalComponent.FirstName' | translate }}
           </span>
-        <mat-form-field class="col-8 example-full-width">
-          <input placeholder="{{ 'EditExpertModalComponent.FirstName' | translate }}" matInput formControlName="firstName" name="name">
-        </mat-form-field>
-      </div>
-      <div class="row">
+      <mat-form-field class="col-8 example-full-width">
+        <input placeholder="{{ 'EditExpertModalComponent.FirstName' | translate }}" matInput formControlName="firstName"
+               name="name">
+      </mat-form-field>
+    </div>
+    <div class="row">
           <span class="col-4">
               {{ 'EditExpertModalComponent.SecondName' | translate }}
           </span>
-        <mat-form-field class="col-8 example-full-width">
-          <input placeholder="{{ 'EditExpertModalComponent.SecondName' | translate }}" matInput formControlName="secondName" name="name">
-        </mat-form-field>
-      </div>
-      <div class="row">
+      <mat-form-field class="col-8 example-full-width">
+        <input placeholder="{{ 'EditExpertModalComponent.SecondName' | translate }}" matInput
+               formControlName="secondName" name="name">
+      </mat-form-field>
+    </div>
+    <div class="row">
           <span class="col-4">
               {{ 'EditExpertModalComponent.About' | translate }}
           </span>
-        <mat-form-field class="col-8 example-full-width">
-          <textarea matInput placeholder="{{ 'EditExpertModalComponent.About' | translate }}" formControlName="about" name="about"></textarea>
-        </mat-form-field>
-      </div>
-      <div class="row">
+      <mat-form-field class="col-8 example-full-width">
+        <textarea matInput placeholder="{{ 'EditExpertModalComponent.About' | translate }}" formControlName="about"
+                  name="about"></textarea>
+      </mat-form-field>
+    </div>
+    <div class="row">
           <span class="col-4">
               {{ 'EditExpertModalComponent.BitcointalkLink' | translate }}
           </span>
-        <mat-form-field class="col-8 example-full-width">
-          <textarea matInput placeholder="https://" formControlName="bitcointalk" name="bitcointalk"></textarea>
-        </mat-form-field>
-      </div>
-      <div class="row">
+      <mat-form-field class="col-8 example-full-width">
+        <textarea matInput placeholder="https://" formControlName="bitcointalk" name="bitcointalk"></textarea>
+      </mat-form-field>
+    </div>
+    <div class="row">
           <span class="col-4">
               {{ 'EditExpertModalComponent.IsInHouse' | translate }}
           </span>
-          <mat-checkbox class="col-8 example-full-width" formControlName="isInHouse">
-          </mat-checkbox>
-      </div>
-      <div class="row submit-row">
+      <mat-checkbox class="col-8 example-full-width" formControlName="isInHouse">
+      </mat-checkbox>
+    </div>
+    <div class="row submit-row">
         <span class="offset-6 col-6">
           <mat-dialog-actions class="d-flex justify-content-center">
             <button mat-raised-button (click)="submitPersonalSettingsAsync()" [disabled]="backendForm.invalid"
@@ -65,17 +68,17 @@
             </button>
           </mat-dialog-actions>
         </span>
-      </div>
-      <h3 class="sub-header">{{'EditExpertModalComponent.Blockchain' | translate}}</h3>
-      <div class="row">
+    </div>
+    <h3 class="sub-header">{{'EditExpertModalComponent.Blockchain' | translate}}</h3>
+    <div class="row">
         <span class="col-6">
           <mat-checkbox align="start" name="available" formControlName="isAvailable">
             {{ 'EditExpertModalComponent.AvailableForWork' | translate }}
           </mat-checkbox>
         </span>
-      </div>
-    </form>
-    <div *ngFor="let area of areas" class="row">
+    </div>
+  </form>
+  <div *ngFor="let area of areas" class="row">
       <span class="col-6">
         <mat-checkbox align="start" name="{{'area' + area.areaType}}"
                       [disabled]="disabledCategories[area.areaType]"
@@ -83,15 +86,13 @@
           {{ area.name }}
         </mat-checkbox>
       </span>
-    </div>
-    <div class="row submit-row">
+  </div>
+  <div class="row submit-row">
         <span class="offset-6 col-6">
           <button mat-raised-button (click)="submitExpertSettingsAsync()"
                   class="sv-default-btn btn-space">
               {{'EditExpertModalComponent.SaveExpert' | translate}}
             </button>
         </span>
-    </div>
-
-  </mat-dialog-content>
-</div>
+  </div>
+</mat-dialog-content>

@@ -1,0 +1,10 @@
+{
+  "ReceiveTokensModal": {
+    "Title": "Receive tokens",
+    "ReceiveBtn": "Receive tokens",
+    "TotalTokens": "Total tokens",
+    "TotalBet": "Total bet",
+    "YourBet": "Your bet",
+    "YourTokens": "Your tokens"
+  }
+}

@@ -36,6 +36,8 @@ import {SetFreezeTimeModalComponent} from '../components/common/set-freeze-time-
 import {ReturnAddressModalComponent} from '../components/common/return-address-modal/return-address-modal.component';
 import {SetFreezeTimeModalData} from '../components/common/set-freeze-time-modal/set-freeze-time-modal-data';
 import {ReturnAddressModalData} from '../components/common/return-address-modal/return-address-modal-data';
+import {ReceiveTokensModalComponent} from '../components/common/receive-tokens-modal/receive-tokens-modal.component';
+import {ReceiveTokensModalData} from '../components/common/receive-tokens-modal/receive-tokens-modal-data';
 
 @Injectable()
 export class DialogService {
@@ -56,6 +58,18 @@ export class DialogService {
     return this.openModal(ReturnAddressModalComponent, <ReturnAddressModalData>{returnAddress: returnAddress}, false, '440px')
       .afterClosed()
       .toPromise<string>();
+  }
+
+  public async showReceiveTokensModalAsync(totalTokens: number, totalBet: number, userBet: number, userTokens: number, tokenTicker: string): Promise<boolean> {
+    return this.openModal(ReceiveTokensModalComponent, <ReceiveTokensModalData> {
+      totalTokens: totalTokens,
+      totalBet: totalBet,
+      userBet: userBet,
+      userTokens: userTokens,
+      tokenTicker: tokenTicker
+    }, false, '460px')
+      .afterClosed()
+      .toPromise<boolean>();
   }
 
   public showTransactionDialog(message: string, transactionHash: string): MatDialogRef<TransactionAwaitingModalComponent> {

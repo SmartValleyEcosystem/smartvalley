@@ -49,8 +49,8 @@ export class AllotmentEventService {
   }
 
   public async startAsync(eventId: number) {
-      const transactionHash = await this.allotmentEventsManagerContractClient.startAsync(eventId);
-      await this.allotmentEventsApiClient.startAsync(eventId, transactionHash);
+    const transactionHash = await this.allotmentEventsManagerContractClient.startAsync(eventId);
+    await this.allotmentEventsApiClient.startAsync(eventId, transactionHash);
   }
 
   public async editAsync(eventId: number,
@@ -69,5 +69,10 @@ export class AllotmentEventService {
       finishDate);
 
     await this.allotmentEventsApiClient.updateAsync(eventId, transactionHash);
+  }
+
+  public async participateAsync(eventId: number, amount: number) {
+    const transactionHash = await this.allotmentEventsManagerContractClient.freezeAsync(amount);
+    await this.allotmentEventsApiClient.participateAsync(eventId, transactionHash);
   }
 }
