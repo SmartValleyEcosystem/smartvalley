@@ -120,7 +120,6 @@ export class AdminAllotmentEventsComponent {
         editModal.tokenAddress,
         editModal.tokenDecimals,
         editModal.ticker,
-        allotmentEvent.projectId,
         editModal.finishDate);
     }
   }

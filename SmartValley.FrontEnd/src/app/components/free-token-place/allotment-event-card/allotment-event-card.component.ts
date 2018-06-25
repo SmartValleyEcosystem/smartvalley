@@ -5,10 +5,7 @@ import {Erc223ContractClient} from '../../../services/contract-clients/erc223-co
 import {DialogService} from '../../../services/dialog-service';
 import {Balance} from '../../../services/balance/balance';
 import {AuthenticationService} from '../../../services/authentication/authentication-service';
-import {AllotmentEventsApiClient} from '../../../api/allotment-events/allotment-events-api-client';
-import {AllotmentEventsManagerContractClient} from '../../../services/contract-clients/allotment-events-manager-contract-client';
 import {AllotmentEventParticipateDialogData} from '../../common/allotment-event-participate-modal/allotment-event-participate-dialog-data';
-import {AllotmentEventsContractClient} from '../../../services/contract-clients/allotment-events-contract-client';
 import {UserContext} from '../../../services/authentication/user-context';
 import {isNullOrUndefined} from 'util';
 import {Router} from '@angular/router';
@@ -24,10 +21,7 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router,
               private blockiesService: BlockiesService,
-              private allotmentEventsApiClient: AllotmentEventsApiClient,
               private allotmentEventService: AllotmentEventService,
-              private allotmentEventsManagerContractClient: AllotmentEventsManagerContractClient,
-              private allotmentEventsContractClient: AllotmentEventsContractClient,
               private dialogService: DialogService,
               private userContext: UserContext,
               private authenticationService: AuthenticationService,
@@ -70,16 +64,16 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
     return (this.myBet * 100) / this.totalBet;
   }
 
-  public async showParticipateDialogAsync(balance: Balance, event: AllotmentEventCard) {
+  public async showParticipateDialogAsync() {
     if (await this.authenticationService.authenticateAsync()) {
       const participateResult = await this.dialogService.showParticipateDialog(<AllotmentEventParticipateDialogData>{
-        balance: balance,
+        balance: this.balance,
         totalBet: this.totalBet,
         myBet: this.myBet,
         tokenBalance: this.tokenBalance
       });
       if (participateResult) {
-        await this.allotmentEventService.participateAsync(event.id, participateResult);
+        await this.allotmentEventService.participateAsync(this.event.id, participateResult);
       }
     }
   }
@@ -96,7 +90,7 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
     const myTokens = this.tokenBalance / this.totalBet * this.myBet;
     const result = await this.dialogService.showReceiveTokensModalAsync(this.tokenBalance, this.totalBet, this.myBet, myTokens, this.event.tokenTicker);
     if (result) {
-      await this.allotmentEventsContractClient.receiveTokensAsync(this.event.eventContractAddress);
+      await this.allotmentEventService.receiveTokensAsync(this.event.id, this.event.eventContractAddress);
       this.canRecieveTokens = false;
     }
   }

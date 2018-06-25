@@ -9,5 +9,7 @@ namespace SmartValley.Domain.Contracts
         public long Share { get; set; }
 
         public Address Address { get; set; }
+
+        public bool IsCollected { get; set; }
     }
 }

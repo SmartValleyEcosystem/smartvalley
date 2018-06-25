@@ -20,5 +20,8 @@ namespace SmartValley.Ethereum.Contracts.AllotmentEvent.Dto
 
         [Parameter("uint256[]", "_participantShares", 5)]
         public List<long> ParticipantShares { get; set; }
+
+        [Parameter("bool[]", "_collectedShares", 6)]
+        public List<bool> CollectedShares { get; set; }
     }
 }

@@ -56,8 +56,8 @@
   <div class="event-card__footer">
     <span hidden="hidden" class="light-label light-label_small">Awaiting transaction</span>
     <div *ngIf="!finished" class="start-btn-wrapper">
-      <button *ngIf="!myBet" (click)="showParticipateDialogAsync(balance, event)" class="material-btn">{{ 'FreeTokenPlace.Participate' | translate }}</button>
-      <button *ngIf="myBet" (click)="showParticipateDialogAsync(balance, event)" class="material-btn material-btn__action">{{ 'FreeTokenPlace.AddSVT' | translate }}</button>
+      <button *ngIf="!myBet" (click)="showParticipateDialogAsync()" class="material-btn">{{ 'FreeTokenPlace.Participate' | translate }}</button>
+      <button *ngIf="myBet" (click)="showParticipateDialogAsync()" class="material-btn material-btn__action">{{ 'FreeTokenPlace.AddSVT' | translate }}</button>
     </div>
     <div *ngIf="canRecieveTokens" class="start-btn-wrapper">
       <button (click)="showReceiveTokensModalAsync()" class="material-btn">{{ 'FreeTokenPlace.Receive' | translate }} {{event.tokenTicker}}</button>

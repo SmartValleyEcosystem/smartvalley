@@ -7,6 +7,7 @@
         EditAllotmentEvent = 2,
         StartAllotmentEvent = 3,
         UpdateExpertAreas = 4,
-        PlaceAllotmentEventBid = 5
+        PlaceAllotmentEventBid = 5,
+        AllotmentEventReceiveShare = 6
     }
 }
