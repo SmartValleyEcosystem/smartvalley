@@ -7,6 +7,7 @@ import {ProjectApiClient} from '../../../api/project/project-api-client';
 import {ProjectSummaryResponse} from '../../../api/project/project-summary-response';
 import {NotificationsService} from 'angular2-notifications';
 import {TranslateService} from '@ngx-translate/core';
+import {AllotmentEventsManagerContractClient} from '../../../services/contract-clients/allotment-events-manager-contract-client';
 
 @Component({
   selector: 'app-start-allotment-event-modal',
@@ -20,6 +21,7 @@ export class StartAllotmentEventModalComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: AllotmentEventResponse,
               private dialogRef: MatDialogRef<AddAdminModalComponent>,
+              private allotmentEventsManagerContractClient: AllotmentEventsManagerContractClient,
               private notificationService: NotificationsService,
               private translateService: TranslateService,
               private projectApiClient: ProjectApiClient,
@@ -31,7 +33,12 @@ export class StartAllotmentEventModalComponent implements OnInit {
     this.project = await this.projectApiClient.getProjectSummaryAsync(this.data.projectId);
   }
 
-  public submit(result: boolean) {
+  public async submit(result: boolean) {
+
+    const finishDate = new Date(this.data.finishDate);
+    const freezingDuration = await this.allotmentEventsManagerContractClient.getFreezingDurationAsync();
+    const finishDateWithFreezing = finishDate.setDate(finishDate.getDate() + freezingDuration);
+
     if (!this.tokenBalance) {
         this.notificationService.error(
             this.translateService.instant('StartAllotmentEventModalComponent.EmptyBalance')
@@ -39,7 +46,7 @@ export class StartAllotmentEventModalComponent implements OnInit {
       this.dialogRef.close(false);
       return;
     }
-    if ( !this.data.finishDate || (new Date(this.data.finishDate).getTime() < Date.now()) ) {
+    if ( !this.data.finishDate || (finishDateWithFreezing < Date.now()) ) {
         this.notificationService.error(
             this.translateService.instant('StartAllotmentEventModalComponent.BadDate'),
         );
