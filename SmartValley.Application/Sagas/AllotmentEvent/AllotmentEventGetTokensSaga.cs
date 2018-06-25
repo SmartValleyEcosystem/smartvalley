@@ -8,7 +8,7 @@ using SmartValley.Messages.Events;
 
 namespace SmartValley.Application.Sagas.AllotmentEvent
 {
-    public class AllotmentEventReceiveTokensSaga : SqlSaga<AllotmentEventReceiveTokensSagaData>,
+    public class AllotmentEventGetTokensSaga : SqlSaga<AllotmentEventGetTokensSagaData>,
         IAmStartedByMessages<ReceiveTokens>,
         IHandleMessages<TransactionCompleted>,
         IHandleMessages<TransactionFailed>
@@ -16,13 +16,13 @@ namespace SmartValley.Application.Sagas.AllotmentEvent
         private readonly IAllotmentEventService _allotmentEventService;
         private readonly IEthereumTransactionService _ethereumTransactionService;
 
-        public AllotmentEventReceiveTokensSaga(IAllotmentEventService allotmentEventService, IEthereumTransactionService ethereumTransactionService)
+        public AllotmentEventGetTokensSaga(IAllotmentEventService allotmentEventService, IEthereumTransactionService ethereumTransactionService)
         {
             _allotmentEventService = allotmentEventService;
             _ethereumTransactionService = ethereumTransactionService;
         }
 
-        protected override string CorrelationPropertyName => nameof(AllotmentEventReceiveTokensSagaData.TransactionHash);
+        protected override string CorrelationPropertyName => nameof(AllotmentEventGetTokensSagaData.TransactionHash);
 
         protected override void ConfigureMapping(IMessagePropertyMapper mapper)
         {

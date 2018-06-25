@@ -3,7 +3,7 @@ using NServiceBus;
 
 namespace SmartValley.Application.Sagas.AllotmentEvent
 {
-    public class AllotmentEventReceiveTokensSagaData : IContainSagaData
+    public class AllotmentEventGetTokensSagaData : IContainSagaData
     {
         public Guid Id { get; set; }
 
