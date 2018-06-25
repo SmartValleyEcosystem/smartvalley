@@ -23,9 +23,10 @@ namespace SmartValley.Data.SQL.Repositories
         public Task<PagingCollection<AllotmentEvent>> QueryAsync(AllotmentEventsQuery query, DateTimeOffset now)
         {
             var queryable = Entities()
-                .Where(e => query.AllotmentEventStatuses.Count == 0
-                            || query.AllotmentEventStatuses.Contains(e.Status) && !(e.Status == AllotmentEventStatus.InProgress && e.FinishDate <= now)
-                            || query.AllotmentEventStatuses.Contains(AllotmentEventStatus.Finished) && e.Status == AllotmentEventStatus.InProgress && e.FinishDate <= now);
+                            .Where(e => query.AllotmentEventStatuses.Count == 0
+                                        || query.AllotmentEventStatuses.Contains(e.Status) && !(e.Status == AllotmentEventStatus.InProgress && e.FinishDate <= now)
+                                        || query.AllotmentEventStatuses.Contains(AllotmentEventStatus.Finished) && e.Status == AllotmentEventStatus.InProgress && e.FinishDate <= now)
+                            .OrderByDescending(i => i.CreatedDate);
 
             return queryable.GetPageAsync(query.Offset, query.Count);
         }

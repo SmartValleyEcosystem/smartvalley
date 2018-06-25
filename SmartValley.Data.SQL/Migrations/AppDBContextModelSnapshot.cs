@@ -30,6 +30,8 @@ namespace SmartValley.Data.SQL.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTimeOffset>("CreatedDate");
+
                     b.Property<string>("EventContractAddress");
 
                     b.Property<DateTimeOffset?>("FinishDate");

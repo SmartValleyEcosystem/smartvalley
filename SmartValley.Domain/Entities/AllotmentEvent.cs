@@ -18,6 +18,8 @@ namespace SmartValley.Domain.Entities
         public string TokenContractAddress { get; set; }
 
         public string EventContractAddress { get; set; }
+        
+        public DateTimeOffset CreatedDate { get; set; }
 
         public DateTimeOffset? StartDate { get; set; }
 
