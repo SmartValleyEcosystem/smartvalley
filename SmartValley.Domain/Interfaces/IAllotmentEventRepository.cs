@@ -14,5 +14,7 @@ namespace SmartValley.Domain.Interfaces
         Task SaveChangesAsync();
 
         Task<AllotmentEvent> GetByIdAsync(long id);
+
+        void Remove(AllotmentEvent entity);
     }
 }

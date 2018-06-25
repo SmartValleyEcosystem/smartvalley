@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using SmartValley.Domain.Contracts;
+using SmartValley.Domain.Core;
 using SmartValley.Ethereum.Contracts.SmartValley.Application.Contracts;
 
 namespace SmartValley.Ethereum.Contracts.AllotmentEventsManager
@@ -18,9 +19,15 @@ namespace SmartValley.Ethereum.Contracts.AllotmentEventsManager
             _contractAbi = contractOptions.Abi;
         }
 
-        public Task<string> GetAllotmentEventContractAddressAsync(long eventId)
+        public async Task<bool> IsDeletedAsync(long eventId)
         {
-            return _contractClient.CallFunctionAsync<string>(
+            var address = await GetAllotmentEventContractAddressAsync(eventId);
+            return address.IsEmpty();
+        }
+
+        public async Task<Address> GetAllotmentEventContractAddressAsync(long eventId)
+        {
+            return await _contractClient.CallFunctionAsync<string>(
                 _contractAddress,
                 _contractAbi,
                 "getAllotmentEventContractAddress",

@@ -60,11 +60,19 @@ namespace SmartValley.WebApi.AllotmentEvents
                           {
                               AllotmentEventId = id,
                               TransactionHash = request.TransactionHash,
-                              UserId = User.GetUserId(),
+                              UserId = User.GetUserId()
                           };
 
             await _messageSession.SendLocal(command);
 
+            return NoContent();
+        }
+
+        [HttpDelete]
+        [Authorize(Roles = nameof(RoleType.Admin))]
+        public async Task<IActionResult> Delete(long eventId, string transactionHash)
+        {
+            await _messageSession.SendLocal(new DeleteAllotmentEvent(User.GetUserId(), eventId, transactionHash ));
             return NoContent();
         }
 

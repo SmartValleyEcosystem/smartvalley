@@ -1,9 +1,12 @@
 ﻿using System.Threading.Tasks;
+using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Contracts
 {
     public interface IAllotmentEventsManagerContractClient
     {
-        Task<string> GetAllotmentEventContractAddressAsync(long eventId);
+        Task<Address> GetAllotmentEventContractAddressAsync(long eventId);
+
+        Task<bool> IsDeletedAsync(long eventId);
     }
 }
