@@ -1,3 +1,10 @@
+.dialog {
+  padding: 20px !important;
+  position: relative;
+}
+h2 {
+  margin-bottom: 20px;
+}
 .save-btn {
   width: 144px;
   background: #EEEDF5;
@@ -12,15 +19,24 @@
   margin-top: 40px;
   cursor: pointer;
 }
-
 .actions-container {
   text-align: center;
 }
 
-.fix-container {
-  padding: 16px;
-}
-
 .input {
   width: 100% !important;
+}
+.dialog-close {
+  cursor: pointer;
+  position: absolute;
+  background-image: url(/assets/img/controls/cross.svg);
+  width: 18px;
+  height: 18px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  top: 0;
+  right: 0;
 }
