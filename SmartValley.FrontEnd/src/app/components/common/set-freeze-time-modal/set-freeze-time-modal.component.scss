@@ -1,9 +1,11 @@
+@import "./../../../../styles/fonts";
+
 .save-btn {
   width: 144px;
   background: #EEEDF5;
   height: 70px;
   font-size: 24px;
-  font-family: Roboto-Regular;
+  font-family: $font-pt;
   font-weight: bold;
   line-height: 28px;
   border: none;
@@ -18,9 +20,25 @@
 }
 
 .fix-container {
-  padding: 16px;
+  padding: 20px;
+  position: relative;
 }
 
 .input {
   width: 100% !important;
+}
+
+.dialog-close {
+  cursor: pointer;
+  position: absolute;
+  background-image: url(/assets/img/controls/cross.svg);
+  width: 18px;
+  height: 18px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  top: 0;
+  right: 0;
 }
