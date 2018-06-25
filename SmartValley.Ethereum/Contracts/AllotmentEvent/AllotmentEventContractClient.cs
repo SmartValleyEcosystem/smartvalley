@@ -31,7 +31,8 @@ namespace SmartValley.Ethereum.Contracts.AllotmentEvent
                                   {
                                       Address = eventResult.Participants[i],
                                       Bid = eventResult.ParticipantBids[i],
-                                      Share = eventResult.ParticipantShares[i]
+                                      Share = eventResult.ParticipantShares[i],
+                                      IsCollected = eventResult.CollectedShares[i]
                                   };
                 participants.Add(participant);
             }

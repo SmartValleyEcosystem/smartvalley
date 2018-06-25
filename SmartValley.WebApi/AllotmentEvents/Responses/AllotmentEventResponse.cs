@@ -50,7 +50,7 @@ namespace SmartValley.WebApi.AllotmentEvents.Responses
                        FinishDate = allotmentEvent.FinishDate,
                        TokenDecimals = allotmentEvent.TokenDecimals,
                        TokenTicker = allotmentEvent.TokenTicker,
-                       Participants = allotmentEvent.Participants.Select(x => new AllotmentEventParticipantResponse(x.Bid, x.Share, x.UserId)).ToArray()
+                       Participants = allotmentEvent.Participants.Select(x => new AllotmentEventParticipantResponse(x.Bid, x.Share, x.UserId, x.IsCollected)).ToArray()
                    };
         }
     }

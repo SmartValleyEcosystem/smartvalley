@@ -76,7 +76,7 @@ namespace SmartValley.Domain.Services
             allotmentEvent.Status = allotmentEventInfo.Status;
 
             var users = await _userRepository.GetByAddressesAsync(allotmentEventInfo.Participants.Select(x => x.Address).ToArray());
-            var participants = allotmentEventInfo.Participants.Select(x => new AllotmentEventParticipant(x.Bid, x.Share, users.First(u => u.Address == x.Address).Id)).ToArray();
+            var participants = allotmentEventInfo.Participants.Select(x => new AllotmentEventParticipant(x.Bid, x.Share, users.First(u => u.Address == x.Address).Id, x.IsCollected)).ToArray();
             allotmentEvent.SetParticipants(participants);
 
             await _allotmentEventRepository.SaveChangesAsync();

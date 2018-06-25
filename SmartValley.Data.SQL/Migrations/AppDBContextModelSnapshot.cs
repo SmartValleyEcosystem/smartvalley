@@ -71,6 +71,8 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<long>("Bid");
 
+                    b.Property<bool>("IsCollected");
+
                     b.Property<long>("Share");
 
                     b.Property<long>("UserId");

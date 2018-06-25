@@ -97,5 +97,15 @@ namespace SmartValley.WebApi.AllotmentEvents
             await _messageSession.SendLocal(command);
             return NoContent();
         }
+
+        [HttpPut("{id}/receiveTokens")]
+        [Authorize]
+        public async Task<IActionResult> ReceiveTokensAsync(long id, [FromBody] ReceiveTokensRequest request)
+        {
+            var command = new ReceiveTokens(id, User.GetUserId(), request.TransactionHash);
+
+            await _messageSession.SendLocal(command);
+            return NoContent();
+        }
     }
 }

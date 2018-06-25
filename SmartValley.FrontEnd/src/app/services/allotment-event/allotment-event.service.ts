@@ -1,11 +1,13 @@
 import {Injectable} from '@angular/core';
 import {AllotmentEventsApiClient} from '../../api/allotment-events/allotment-events-api-client';
 import {AllotmentEventsManagerContractClient} from '../contract-clients/allotment-events-manager-contract-client';
+import {AllotmentEventsContractClient} from '../contract-clients/allotment-events-contract-client';
 
 @Injectable()
 export class AllotmentEventService {
 
   constructor(private allotmentEventsApiClient: AllotmentEventsApiClient,
+              private allotmentEventsContractClient: AllotmentEventsContractClient,
               private allotmentEventsManagerContractClient: AllotmentEventsManagerContractClient) {
   }
 
@@ -58,7 +60,6 @@ export class AllotmentEventService {
                          tokenContractAddress: string,
                          tokenDecimals: number,
                          tokenTicker: string,
-                         projectId: number,
                          finishDate?: Date) {
     const transactionHash = await this.allotmentEventsManagerContractClient.editAsync(
       eventId,
@@ -74,5 +75,10 @@ export class AllotmentEventService {
   public async participateAsync(eventId: number, amount: number) {
     const transactionHash = await this.allotmentEventsManagerContractClient.freezeAsync(amount);
     await this.allotmentEventsApiClient.participateAsync(eventId, transactionHash);
+  }
+
+  public async receiveTokensAsync(eventId: number, eventAddress: string) {
+    const transactionHash = await this.allotmentEventsContractClient.receiveTokensAsync(eventAddress);
+    await this.allotmentEventsApiClient.receiveTokensAsync(eventId, transactionHash);
   }
 }
