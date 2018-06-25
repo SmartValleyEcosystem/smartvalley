@@ -50,7 +50,8 @@ namespace SmartValley.Domain.Services
                              TokenTicker = tokenTicker,
                              TokenDecimals = tokenDecimals,
                              Status = AllotmentEventStatus.Created,
-                             FinishDate = finishDate
+                             FinishDate = finishDate,
+                             CreatedDate = _clock.UtcNow
                          };
             _allotmentEventRepository.Add(entity);
 
