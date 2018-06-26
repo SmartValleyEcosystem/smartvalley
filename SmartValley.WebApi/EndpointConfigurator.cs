@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
-using Nethereum.JsonRpc.IpcClient;
 using Nethereum.Web3;
 using NServiceBus;
 using NServiceBus.Persistence.Sql;
@@ -199,8 +198,6 @@ namespace SmartValley.WebApi
         }
 
         private static Web3 InitializeWeb3(string rpcAddress)
-            => !string.IsNullOrEmpty(rpcAddress)
-                   ? new Web3(rpcAddress)
-                   : new Web3(new IpcClient("./geth.ipc"));
+            => !string.IsNullOrEmpty(rpcAddress) ? new Web3(rpcAddress) : throw new InvalidOperationException("RPC address is not specified.");
     }
 }

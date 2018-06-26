@@ -56,12 +56,11 @@ namespace SmartValley.WebApi.AllotmentEvents
         [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<IActionResult> UpdateAsync(long id, [FromBody] UpdateAllotmentEventRequest request)
         {
-            var command = new UpdateAllotmentEvent
-                          {
-                              AllotmentEventId = id,
-                              TransactionHash = request.TransactionHash,
-                              UserId = User.GetUserId()
-                          };
+            var command = new UpdateAllotmentEvent(
+                id,
+                request.TransactionHash,
+                AllotmentEventOperation.Delete,
+                User.GetUserId());
 
             await _messageSession.SendLocal(command);
 
@@ -72,7 +71,13 @@ namespace SmartValley.WebApi.AllotmentEvents
         [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<IActionResult> Delete(long eventId, string transactionHash)
         {
-            await _messageSession.SendLocal(new DeleteAllotmentEvent(User.GetUserId(), eventId, transactionHash ));
+            var command = new UpdateAllotmentEvent(
+                eventId,
+                transactionHash,
+                AllotmentEventOperation.Delete,
+                User.GetUserId());
+
+            await _messageSession.SendLocal(command);
             return NoContent();
         }
 
@@ -90,7 +95,11 @@ namespace SmartValley.WebApi.AllotmentEvents
         [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<IActionResult> StartAsync(long id, [FromBody] StartAllotmentEventRequest request)
         {
-            var command = new StartAllotmentEvent(id, User.GetUserId(), request.TransactionHash);
+            var command = new UpdateAllotmentEvent(
+                id,
+                request.TransactionHash,
+                AllotmentEventOperation.Start,
+                User.GetUserId());
 
             await _messageSession.SendLocal(command);
             return NoContent();
@@ -100,7 +109,11 @@ namespace SmartValley.WebApi.AllotmentEvents
         [Authorize]
         public async Task<IActionResult> PlaceBidAsync(long id, [FromBody] PlaceAllotmentEventBidRequest request)
         {
-            var command = new PlaceAllotmentEventBid(id, User.GetUserId(), request.TransactionHash);
+            var command = new UpdateAllotmentEvent(
+                id,
+                request.TransactionHash,
+                AllotmentEventOperation.PlaceBid,
+                User.GetUserId());
 
             await _messageSession.SendLocal(command);
             return NoContent();
@@ -108,9 +121,13 @@ namespace SmartValley.WebApi.AllotmentEvents
 
         [HttpPut("{id}/receiveTokens")]
         [Authorize]
-        public async Task<IActionResult> ReceiveTokensAsync(long id, [FromBody] ReceiveTokensRequest request)
+        public async Task<IActionResult> ReceiveShareAsync(long id, [FromBody] ReceiveShareRequest request)
         {
-            var command = new ReceiveTokens(id, User.GetUserId(), request.TransactionHash);
+            var command = new UpdateAllotmentEvent(
+                id,
+                request.TransactionHash,
+                AllotmentEventOperation.ReceiveShare,
+                User.GetUserId());
 
             await _messageSession.SendLocal(command);
             return NoContent();
