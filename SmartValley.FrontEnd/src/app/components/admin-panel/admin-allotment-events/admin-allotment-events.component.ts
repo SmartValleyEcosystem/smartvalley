@@ -125,7 +125,7 @@ export class AdminAllotmentEventsComponent {
   }
 
   public async showDeleteAllotmentModalAsync(allotmentEvent: AllotmentEventResponse) {
-    const modal = await this.dialogService.showDeleteAllotmentEventModalAsync(allotmentEvent);
+    const modal = await this.dialogService.showDeleteAllotmentEventModalAsync();
     if (modal) {
       await this.allotmentEventService.removeAsync(allotmentEvent.id);
     }
@@ -143,7 +143,7 @@ export class AdminAllotmentEventsComponent {
   public async showFreezeTimeModalAsync() {
     const freezeTime = await this.allotmentEventsManagerContractClient.getFreezingDurationAsync();
     const newFreezeTime = await this.dialogService.showSetFreezeTimeDialogAsync(freezeTime);
-    if (isNullOrUndefined(newFreezeTime) || newFreezeTime === '' || freezeTime === newFreezeTime) {
+    if (isNullOrUndefined(newFreezeTime) || freezeTime === newFreezeTime) {
       return;
     }
     await this.allotmentEventsManagerContractClient.setFreezingDurationAsync(newFreezeTime);
