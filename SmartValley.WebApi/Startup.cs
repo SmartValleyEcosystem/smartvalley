@@ -12,7 +12,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Nethereum.JsonRpc.IpcClient;
 using Nethereum.Signer;
 using Nethereum.Web3;
 using NServiceBus;
@@ -30,7 +29,6 @@ using SmartValley.Ethereum;
 using SmartValley.Ethereum.Contracts.AllotmentEvent;
 using SmartValley.Ethereum.Contracts.AllotmentEventsManager;
 using SmartValley.Ethereum.Contracts.EtherManager;
-using SmartValley.Ethereum.Contracts.ExpertsRegistry;
 using SmartValley.Ethereum.Contracts.Scoring;
 using SmartValley.Ethereum.Contracts.ScoringOffersManager;
 using SmartValley.Ethereum.Contracts.ScoringsRegistry;
@@ -39,7 +37,6 @@ using SmartValley.WebApi.Admin;
 using SmartValley.WebApi.Authentication;
 using SmartValley.WebApi.Estimates;
 using SmartValley.WebApi.ExceptionHandler;
-using SmartValley.WebApi.Experts;
 using SmartValley.WebApi.Feedbacks;
 using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.Users;
@@ -149,7 +146,7 @@ namespace SmartValley.WebApi
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IExpertRepository, ExpertRepository>();
-            services.AddTransient<Domain.Services.IExpertService, Domain.Services.ExpertService>();
+            services.AddTransient<IExpertService, ExpertService>();
             services.AddTransient<Experts.IExpertService, Experts.ExpertService>();
             services.AddTransient<IExpertApplicationRepository, ExpertApplicationRepository>();
             services.AddTransient<ICountryRepository, CountryRepository>();
@@ -251,12 +248,6 @@ namespace SmartValley.WebApi
         }
 
         private static Web3 InitializeWeb3(string rpcAddress)
-        {
-            if (!string.IsNullOrEmpty(rpcAddress))
-                return new Web3(rpcAddress);
-
-            var ipcClient = new IpcClient("./geth.ipc");
-            return new Web3(ipcClient);
-        }
+            => !string.IsNullOrEmpty(rpcAddress) ? new Web3(rpcAddress) : throw new InvalidOperationException("RPC address is not specified.");
     }
 }

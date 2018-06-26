@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Persistence.Sql;
 using SmartValley.Domain.Entities;
@@ -34,7 +35,9 @@ namespace SmartValley.Application.Sagas.AllotmentEvent
             Data.TransactionHash = message.TransactionHash;
 
             await _allotmentEventService.SetUpdatingStateAsync(message.AllotmentEventId, true);
-            await _transactionService.StartAsync(message.TransactionHash, message.UserId, EthereumTransactionType.EditAllotmentEvent);
+
+            var ethereumTransactionType = GetTransactionType(message.Operation);
+            await _transactionService.StartAsync(message.TransactionHash, message.UserId, ethereumTransactionType);
 
             await context.SendLocal(new WaitForTransaction {TransactionHash = message.TransactionHash});
         }
@@ -58,6 +61,25 @@ namespace SmartValley.Application.Sagas.AllotmentEvent
 
             mapper.ConfigureMapping<TransactionCompleted>(m => m.TransactionHash);
             mapper.ConfigureMapping<TransactionFailed>(m => m.TransactionHash);
+        }
+
+        private static EthereumTransactionType GetTransactionType(AllotmentEventOperation operation)
+        {
+            switch (operation)
+            {
+                case AllotmentEventOperation.Start:
+                    return EthereumTransactionType.StartAllotmentEvent;
+                case AllotmentEventOperation.PlaceBid:
+                    return EthereumTransactionType.PlaceAllotmentEventBid;
+                case AllotmentEventOperation.ReceiveShare:
+                    return EthereumTransactionType.ReceiveAllotmentEventShare;
+                case AllotmentEventOperation.Edit:
+                    return EthereumTransactionType.EditAllotmentEvent;
+                case AllotmentEventOperation.Delete:
+                    return EthereumTransactionType.DeleteAllotmentEvent;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(operation), operation, null);
+            }
         }
     }
 }
