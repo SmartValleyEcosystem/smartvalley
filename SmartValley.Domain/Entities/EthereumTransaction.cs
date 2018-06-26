@@ -4,17 +4,20 @@ namespace SmartValley.Domain.Entities
 {
     public class EthereumTransaction
     {
-        public EthereumTransaction(
-            long userId,
-            string hash,
-            EthereumTransactionType type,
-            DateTimeOffset created)
+        public EthereumTransaction(long userId,
+                                   string hash,
+                                   DateTimeOffset created,
+                                   EthereumTransactionEntityType entityType,
+                                   long entityId,
+                                   EthereumTransactionType transactionType)
         {
             UserId = userId;
             Hash = hash;
-            Type = type;
+            TransactionType = transactionType;
             Status = EthereumTransactionStatus.InProgress;
             Created = created;
+            EntityType = entityType;
+            EntityId = entityId;
         }
 
         // ReSharper disable once UnusedMember.Local
@@ -28,7 +31,11 @@ namespace SmartValley.Domain.Entities
 
         public string Hash { get; set; }
 
-        public EthereumTransactionType Type { get; set; }
+        public long EntityId { get; set; }
+
+        public EthereumTransactionEntityType EntityType { get; set; }
+
+        public EthereumTransactionType TransactionType { get; set; }
 
         public EthereumTransactionStatus Status { get; set; }
 

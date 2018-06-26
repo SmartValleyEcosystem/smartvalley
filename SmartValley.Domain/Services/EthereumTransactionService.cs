@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 
@@ -17,9 +18,9 @@ namespace SmartValley.Domain.Services
             _clock = clock;
         }
 
-        public async Task<long> StartAsync(string hash, long userId, EthereumTransactionType type)
+        public async Task<long> StartAsync(string hash, long userId, EthereumTransactionEntityType entityType, long entityId, EthereumTransactionType transactionType)
         {
-            var transaction = new EthereumTransaction(userId, hash, type, _clock.UtcNow);
+            var transaction = new EthereumTransaction(userId, hash, _clock.UtcNow, entityType, entityId, transactionType);
 
             _repository.Add(transaction);
 
@@ -45,5 +46,8 @@ namespace SmartValley.Domain.Services
 
             await _repository.SaveChangesAsync();
         }
+
+        public Task<PagingCollection<EthereumTransaction>> GetAsync(EtheriumTransactionsQuery query) 
+            => _repository.GetAsync(query);
     }
 }

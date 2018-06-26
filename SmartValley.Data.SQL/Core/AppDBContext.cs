@@ -48,6 +48,8 @@ namespace SmartValley.Data.SQL.Core
 
         IQueryable<ScoringCriteriaMapping> IReadOnlyDataContext.ScoringCriteriaMappings => ScoringCriteriaMappings.AsNoTracking();
 
+        IQueryable<EthereumTransaction> IReadOnlyDataContext.EthereumTransactions => EthereumTransactions.AsNoTracking();
+
         public DbSet<Feedback> Feedbacks { get; set; }
 
         public DbSet<Subscription> Subscriptions { get; set; }

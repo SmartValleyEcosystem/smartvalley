@@ -39,7 +39,7 @@ namespace SmartValley.Application.Sagas.AllotmentEvent
             Data.TransactionHash = command.TransactionHash;
 
             await _allotmentEventService.SetUpdatingStateAsync(command.AllotmentEventId, true);
-            await _ethereumTransactionService.StartAsync(command.TransactionHash, command.UserId, EthereumTransactionType.PublishAllotmentEvent);
+            await _ethereumTransactionService.StartAsync(command.TransactionHash, command.UserId, EthereumTransactionEntityType.AllotmentEvent, command.AllotmentEventId, EthereumTransactionType.PublishAllotmentEvent);
             await context.SendLocal(new WaitForTransaction {TransactionHash = command.TransactionHash});
         }
 
