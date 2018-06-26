@@ -166,6 +166,7 @@ import {ReceiveTokensModalComponent} from './components/common/receive-tokens-mo
 import {AllotmentEventsContractClient} from './services/contract-clients/allotment-events-contract-client';
 import {DeleteAllotmentEventModalComponent} from './components/common/delete-allotment-event-modal/delete-allotment-event-modal.component';
 import {OnlyNumbersByDecimalDirective} from './utils/only-numbers.directive';
+import {SmartValleyTokenContractClient} from './services/contract-clients/smart-valley-token-contract-client.service';
 
 @NgModule({
   declarations: [
@@ -390,6 +391,7 @@ import {OnlyNumbersByDecimalDirective} from './utils/only-numbers.directive';
     SubmittedScoringApplicationGuard,
     ScoringShouldNotExistGuard,
     ScoringParametersProviderContractClient,
+    SmartValleyTokenContractClient,
     LoggingApiClient
   ],
   bootstrap: [AppComponent]

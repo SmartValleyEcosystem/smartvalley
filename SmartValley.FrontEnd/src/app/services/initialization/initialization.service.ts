@@ -11,6 +11,7 @@ import {DictionariesService} from '../common/dictionaries.service';
 import {PrivateScoringManagerContractClient} from '../contract-clients/private-scoring-manager-contract-client';
 import {ScoringParametersProviderContractClient} from '../contract-clients/scoring-parameters-provider-contract-client';
 import {AllotmentEventsManagerContractClient} from '../contract-clients/allotment-events-manager-contract-client';
+import {SmartValleyTokenContractClient} from '../contract-clients/smart-valley-token-contract-client.service';
 
 @Injectable()
 export class InitializationService {
@@ -26,6 +27,7 @@ export class InitializationService {
               private scoringParametersProviderContractClient: ScoringParametersProviderContractClient,
               private authenticationService: AuthenticationService,
               private allotmentEventsManagerContractClient: AllotmentEventsManagerContractClient,
+              private smartValleyTokenContractClient: SmartValleyTokenContractClient,
               private areaService: AreaService,
               private dictionariesService: DictionariesService) {
   }
@@ -50,6 +52,7 @@ export class InitializationService {
       this.privateScoringManagerContractClient.initializeAsync(),
       this.scoringOffersManagerContractClient.initializeAsync(),
       this.expertContractClient.initializeAsync(),
+      this.smartValleyTokenContractClient.initializeAsync(),
       this.areaService.initializeAsync(),
       this.dictionariesService.initializeAsync()
     ]);
