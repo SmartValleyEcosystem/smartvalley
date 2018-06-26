@@ -1,14 +1,17 @@
 ﻿using System.Threading.Tasks;
+using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 
 namespace SmartValley.Domain.Interfaces
 {
     public interface IEthereumTransactionRepository
     {
+        Task<PagingCollection<EthereumTransaction>> GetAsync(EtheriumTransactionsQuery query);
+
         Task<EthereumTransaction> GetByHashAsync(string hash);
 
-        Task SaveChangesAsync();
-
         void Add(EthereumTransaction ethereumTransaction);
+
+        Task SaveChangesAsync();
     }
 }

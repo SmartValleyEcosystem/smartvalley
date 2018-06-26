@@ -33,7 +33,7 @@ namespace SmartValley.Application.Sagas.Expert
             var expert = await _expertService.GetByAddressAsync(message.ExpertAddress);
             Data.ExpertId = expert.UserId;
 
-            await _transactionService.StartAsync(message.TransactionHash, message.UserId, EthereumTransactionType.UpdateExpertAreas);
+            await _transactionService.StartAsync(message.TransactionHash, message.UserId, EthereumTransactionEntityType.Expert, expert.UserId, EthereumTransactionType.UpdateExpertAreas);
 
             await context.SendLocal(new WaitForTransaction {TransactionHash = message.TransactionHash});
         }

@@ -167,12 +167,16 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<DateTimeOffset>("Created");
 
+                    b.Property<long>("EntityId");
+
+                    b.Property<int>("EntityType");
+
                     b.Property<string>("Hash")
                         .IsRequired();
 
                     b.Property<int>("Status");
 
-                    b.Property<int>("Type");
+                    b.Property<int>("TransactionType");
 
                     b.Property<long>("UserId");
 
