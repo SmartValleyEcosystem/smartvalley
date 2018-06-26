@@ -44,4 +44,8 @@ export class ContractApiClient extends BaseApiClient {
   public getScoringParametersProviderContractAsync(): Promise<ContractResponse> {
     return this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/scoringParametersProvider').toPromise();
   }
+
+  public getSmartValleyTokenContractAsync(): Promise<ContractResponse> {
+    return this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/smartValleyToken').toPromise();
+  }
 }
