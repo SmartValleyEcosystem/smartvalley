@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using SmartValley.Domain;
 using SmartValley.Domain.Contracts;
@@ -30,8 +31,8 @@ namespace SmartValley.Ethereum.Contracts.AllotmentEvent
                 var participant = new AllotmentEventParticipantInfo
                                   {
                                       Address = eventResult.Participants[i],
-                                      Bid = eventResult.ParticipantBids[i],
-                                      Share = eventResult.ParticipantShares[i],
+                                      Bid = eventResult.ParticipantBids[i].ToString(CultureInfo.InvariantCulture),
+                                      Share = eventResult.ParticipantShares[i].ToString(CultureInfo.InvariantCulture),
                                       IsCollected = eventResult.CollectedShares[i]
                                   };
                 participants.Add(participant);

@@ -2,7 +2,7 @@
 {
     public class AllotmentEventParticipantResponse
     {
-        public AllotmentEventParticipantResponse(long bid, decimal share, long userId, bool isCollected)
+        public AllotmentEventParticipantResponse(string bid, string share, long userId, bool isCollected)
         {
             Bid = bid;
             Share = share;
@@ -10,9 +10,9 @@
             IsCollected = isCollected;
         }
 
-        public long Bid { get; }
+        public string Bid { get; }
 
-        public decimal Share { get; }
+        public string Share { get; }
 
         public long UserId { get; }
 
