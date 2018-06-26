@@ -16,6 +16,8 @@ namespace SmartValley.Ethereum
 
         public ContractOptions ERC223Contract { get; set; }
 
+        public ContractOptions SmartValleyTokenContract { get; set; }
+
         public ContractOptions AdminRegistryContract { get; set; }
 
         public ContractOptions ScoringsRegistryContract { get; set; }
