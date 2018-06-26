@@ -35,6 +35,17 @@ namespace SmartValley.WebApi.Contracts
                    };
         }
 
+        [HttpGet("smartValleyToken")]
+        public ContractResponse GetSmartValleyTokenContract()
+        {
+            var contractOptions = _nethereumOptions.SmartValleyTokenContract;
+            return new ContractResponse
+                   {
+                       Address = contractOptions.Address,
+                       Abi = contractOptions.Abi
+                   };
+        }
+
         [HttpGet("scoringOffersManager")]
         public ContractResponse GetScoringOffersManagerContract()
         {
