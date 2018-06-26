@@ -8,12 +8,12 @@
   <ItemGroup>
     <PackageReference Include="Elasticsearch.Net" Version="6.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Nethereum.Hex" Version="2.4.0" />
-    <PackageReference Include="Nethereum.JsonRpc.Client" Version="2.4.0" />
-    <PackageReference Include="Nethereum.JsonRpc.IpcClient" Version="2.4.0" />
-    <PackageReference Include="Nethereum.JsonRpc.RpcClient" Version="2.4.0" />
-    <PackageReference Include="Nethereum.Signer" Version="2.4.0" />
-    <PackageReference Include="Nethereum.Web3" Version="2.4.0" />
+    <PackageReference Include="Nethereum.Hex" Version="2.5.1" />
+    <PackageReference Include="Nethereum.JsonRpc.Client" Version="2.5.1" />
+    <PackageReference Include="Nethereum.JsonRpc.IpcClient" Version="2.5.1" />
+    <PackageReference Include="Nethereum.JsonRpc.RpcClient" Version="2.5.1" />
+    <PackageReference Include="Nethereum.Signer" Version="2.5.1" />
+    <PackageReference Include="Nethereum.Web3" Version="2.5.1" />
     <PackageReference Include="NServiceBus" Version="7.0.0-rc0002" />
     <PackageReference Include="NServiceBus.Autofac" Version="7.0.0-rc0001" />
     <PackageReference Include="NServiceBus.Newtonsoft.Json" Version="2.0.0-rc0001" />

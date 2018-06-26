@@ -71,11 +71,11 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<long>("AllotmentEventId");
 
-                    b.Property<long>("Bid");
+                    b.Property<string>("Bid");
 
                     b.Property<bool>("IsCollected");
 
-                    b.Property<long>("Share");
+                    b.Property<string>("Share");
 
                     b.Property<long>("UserId");
 

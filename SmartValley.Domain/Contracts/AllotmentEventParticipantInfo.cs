@@ -4,9 +4,9 @@ namespace SmartValley.Domain.Contracts
 {
     public class AllotmentEventParticipantInfo
     {
-        public long Bid { get; set; }
+        public string Bid { get; set; }
 
-        public long Share { get; set; }
+        public string Share { get; set; }
 
         public Address Address { get; set; }
 
