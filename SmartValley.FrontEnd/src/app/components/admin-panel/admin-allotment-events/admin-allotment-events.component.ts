@@ -78,7 +78,8 @@ export class AdminAllotmentEventsComponent {
         });
       }
     }
-    this.allotmentEvents = await this.allotmentEventService.getAllotmentEventsAsync(this.offset, this.pageSize, this.selectedStatuses);
+    const newAllotmentEvents = await this.allotmentEventService.getAllotmentEventsAsync(this.offset, this.pageSize, this.selectedStatuses);
+    this.allotmentEvents = newAllotmentEvents.items;
     this.loading = false;
   }
 

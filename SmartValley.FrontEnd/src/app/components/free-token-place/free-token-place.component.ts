@@ -45,7 +45,7 @@ export class FreeTokenPlaceComponent implements OnInit {
 
   private async loadAllotmentEventsAsync(): Promise<void> {
     const events = await this.allotmentEventsService.getAllotmentEventsAsync(this.offset, this.pageSize, [AllotmentEventStatus.InProgress, AllotmentEventStatus.Finished]);
-    this.allotmentEvents = events.map(i => new AllotmentEventCard(i));
+    this.allotmentEvents = events.items.map(i => new AllotmentEventCard(i));
     const projectIds = this.allotmentEvents.map(a => a.event.projectId);
 
     const projectResponse = await this.projectApiClient.getAsync(<ProjectQuery>{

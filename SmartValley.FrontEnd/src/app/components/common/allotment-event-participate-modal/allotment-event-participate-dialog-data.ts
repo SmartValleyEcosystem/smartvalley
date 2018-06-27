@@ -7,4 +7,5 @@ export interface AllotmentEventParticipateDialogData {
     totalBet: BigNumber;
     tokenBalance: BigNumber;
     decimals: number;
+    ticker: string;
 }

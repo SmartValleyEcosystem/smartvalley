@@ -6,8 +6,8 @@
   <input appOnlyNumbersByDecimal [decimal]="data.decimals" [(ngModel)]="newBet" placeholder="{{ 'ParticipateModal.MAX' | translate }} {{ data.balance.svt }} {{ 'ParticipateModal.SVT' | translate }}" class="input" type="text">
   <p class="description" *ngIf="getComputedShare() > 0">
     {{ 'ParticipateModal.YouReceive' | translate }}
-    {{ getComputedShare() | formatNumber }}
-    {{ 'ParticipateModal.SVT' | translate }} {{ 'ParticipateModal.AboutReceive' | translate }}
+    <strong>{{ getComputedShare() | formatNumber }} {{ data.ticker }}</strong>
+    {{ 'ParticipateModal.AboutReceive' | translate }}
   </p>
   <p class="about-frozen" *ngIf="data.myBet.greaterThan(0)">
     {{ 'ParticipateModal.Your' | translate }} {{ newBet }} {{ 'ParticipateModal.SVT' | translate }}
