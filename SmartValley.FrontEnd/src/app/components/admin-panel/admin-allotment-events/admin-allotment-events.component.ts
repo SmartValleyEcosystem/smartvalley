@@ -53,8 +53,9 @@ export class AdminAllotmentEventsComponent {
 
   private async loadAllotmentEventsAsync(): Promise<void> {
     this.loading = true;
-    this.allotmentEvents = await this.allotmentEventService.getAllotmentEventsAsync(this.offset, this.pageSize, this.selectedStatuses);
-    this.totalRecords = this.allotmentEvents.length;
+    const allotmentEvents = await this.allotmentEventService.getAllotmentEventsAsync(this.offset, this.pageSize, this.selectedStatuses);
+    this.allotmentEvents = allotmentEvents.items;
+    this.totalRecords = allotmentEvents.totalCount;
     for (let i = 0; i < this.allotmentEvents.length; i++) {
       if (this.allotmentEvents[i].eventContractAddress === null) {
         continue;

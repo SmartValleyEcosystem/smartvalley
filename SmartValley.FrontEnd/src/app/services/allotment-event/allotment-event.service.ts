@@ -8,6 +8,7 @@ import {GetAllotmentEventsRequest} from '../../api/allotment-events/request/get-
 import {Erc223ContractClient} from '../contract-clients/erc223-contract-client';
 import {SmartValleyTokenContractClient} from '../contract-clients/smart-valley-token-contract-client.service';
 import BigNumber from 'bignumber.js';
+import {CollectionResponse} from '../../api/collection-response';
 
 @Injectable()
 export class AllotmentEventService {
@@ -19,17 +20,22 @@ export class AllotmentEventService {
               private smartValleyTokenContractClient: SmartValleyTokenContractClient) {
   }
 
-  public async getAllotmentEventsAsync(offset: number, count: number, statuses: AllotmentEventStatus[]): Promise<Array<AllotmentEvent>> {
+  public async getAllotmentEventsAsync(offset: number, count: number, statuses: AllotmentEventStatus[]): Promise<CollectionResponse<AllotmentEvent>> {
     const getAllotmentEventsRequest = <GetAllotmentEventsRequest>{
       offset: offset,
       count: count,
       statuses: statuses
     };
     const allotmentEventsResponse = await this.allotmentEventsApiClient.getAllotmentEventsAsync(getAllotmentEventsRequest);
-    const allotmentEvents = allotmentEventsResponse.items.map(i => AllotmentEvent.create(i)).filter(i => i.eventContractAddress)
-    for (const event of allotmentEvents) {
+    const allotmentEvents = {
+      items: [],
+      totalCount: 0
+    };
+    allotmentEvents.items = allotmentEventsResponse.items.map(i => AllotmentEvent.create(i)).filter(i => i.eventContractAddress)
+    for (const event of allotmentEvents.items) {
       event.totalTokens = await this.erc223ContractClient.getTokenBalanceAsync(event.tokenContractAddress, event.eventContractAddress);
     }
+    allotmentEvents.totalCount = allotmentEventsResponse.totalCount;
     return allotmentEvents;
   }
 
