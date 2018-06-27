@@ -4,7 +4,6 @@ import {AllotmentEventParticipantResponse} from './allotment-event-participant-r
 export interface AllotmentEventResponse {
   id: number;
   name: string;
-  isUpdating?: boolean;
   status: AllotmentEventStatus;
   tokenContractAddress: string;
   eventContractAddress: string;

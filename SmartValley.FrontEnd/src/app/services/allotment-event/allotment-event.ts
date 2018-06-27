@@ -9,7 +9,6 @@ export class AllotmentEvent {
 
   public id: number;
   public name: string;
-  public isUpdating?: boolean;
   public status: AllotmentEventStatus;
   public tokenContractAddress: string;
   public eventContractAddress: string;
@@ -23,7 +22,6 @@ export class AllotmentEvent {
 
   constructor(id: number,
               name: string,
-              isUpdating: boolean | null,
               status: AllotmentEventStatus,
               tokenContractAddress: string,
               eventContractAddress: string,
@@ -35,7 +33,6 @@ export class AllotmentEvent {
               participants: Array<AllotmentEventParticipantResponse>) {
     this.id = id;
     this.name = name;
-    this.isUpdating = isUpdating;
     this.status = status;
     this.tokenContractAddress = tokenContractAddress;
     this.eventContractAddress = eventContractAddress;
@@ -51,7 +48,6 @@ export class AllotmentEvent {
     return new AllotmentEvent(
       response.id,
       response.name,
-      response.isUpdating,
       response.status,
       response.tokenContractAddress,
       response.eventContractAddress,
@@ -116,6 +112,6 @@ export class AllotmentEvent {
   }
 
   public isCollected(userId: number): boolean {
-    return !this.participants.some(i => i.userId === userId && i.isCollected)
+    return !this.participants.some(i => i.userId === userId && i.isCollected);
   }
 }

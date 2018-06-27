@@ -38,22 +38,20 @@ namespace SmartValley.Application.Sagas.AllotmentEvent
             Data.UserId = command.UserId;
             Data.TransactionHash = command.TransactionHash;
 
-            await _allotmentEventService.SetUpdatingStateAsync(command.AllotmentEventId, true);
             await _ethereumTransactionService.StartAsync(command.TransactionHash, command.UserId, EthereumTransactionEntityType.AllotmentEvent, command.AllotmentEventId, EthereumTransactionType.PublishAllotmentEvent);
             await context.SendLocal(new WaitForTransaction {TransactionHash = command.TransactionHash});
         }
 
         public async Task Handle(TransactionCompleted message, IMessageHandlerContext context)
         {
-            await _allotmentEventService.SetUpdatingStateAsync(Data.AllotmentEventId, false);
             await _allotmentEventService.PublishAsync(Data.AllotmentEventId);
             MarkAsComplete();
         }
 
-        public async Task Handle(TransactionFailed message, IMessageHandlerContext context)
+        public Task Handle(TransactionFailed message, IMessageHandlerContext context)
         {
-            await _allotmentEventService.SetUpdatingStateAsync(Data.AllotmentEventId, false);
             MarkAsComplete();
+            return Task.CompletedTask;
         }
     }
 }

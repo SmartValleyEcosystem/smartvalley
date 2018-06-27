@@ -1,4 +1,4 @@
 export interface TransactionInfo {
-  eventid: number;
+  eventId: number;
   transaction: string;
 }
