@@ -36,6 +36,10 @@ export class AllotmentEventParticipateModalComponent implements OnInit {
   }
 
   public submit() {
-      this.participateModalComponent.close(this.newBet);
+    this.participateModalComponent.close(this.newBet);
+  }
+
+  public isMyBetNotNull() {
+    this.data.myBet.plus(this.newBet);
   }
 }
