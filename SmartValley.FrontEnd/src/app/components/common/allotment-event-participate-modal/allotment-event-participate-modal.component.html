@@ -4,7 +4,7 @@
   <h3 *ngIf="data.myBet">{{ 'ParticipateModal.CurrentBet' | translate }} {{ data.myBet | formatNumber }} {{ 'ParticipateModal.SVT' | translate }}</h3>
   <p class="strong">{{ 'ParticipateModal.HowMuchSVTBet' | translate }}</p>
   <input appOnlyNumbersByDecimal [decimal]="data.decimals" [(ngModel)]="newBet" placeholder="{{ 'ParticipateModal.MAX' | translate }} {{ data.balance.svt }} {{ 'ParticipateModal.SVT' | translate }}" class="input" type="text">
-  <p class="description">
+  <p class="description" *ngIf="getComputedShare() > 0">
     {{ 'ParticipateModal.YouReceive' | translate }}
     {{ getComputedShare() | formatNumber }}
     {{ 'ParticipateModal.SVT' | translate }} {{ 'ParticipateModal.AboutReceive' | translate }}
