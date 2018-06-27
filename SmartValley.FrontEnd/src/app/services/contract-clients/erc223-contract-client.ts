@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Web3Service} from '../web3-service';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
 import {ConverterHelper} from '../converter-helper';
+import BigNumber from 'bignumber.js';
 
 @Injectable()
 export class Erc223ContractClient {
@@ -24,9 +25,9 @@ export class Erc223ContractClient {
     return ConverterHelper.extractNumberValue(await contract.decimals());
   }
 
-  public async getTokenBalanceAsync(tokenAddress: string, holderAddress: string): Promise<number> {
+  public async getTokenBalanceAsync(tokenAddress: string, holderAddress: string): Promise<BigNumber> {
     const tokenContract = await this.contractClient.getERC223ContractAsync();
     const contract = this.web3Service.getContract(tokenContract.abi, tokenAddress);
-    return ConverterHelper.extractNumberValue(await contract.balanceOf(holderAddress));
+    return ConverterHelper.extractBigNumber(await contract.balanceOf(holderAddress));
   }
 }

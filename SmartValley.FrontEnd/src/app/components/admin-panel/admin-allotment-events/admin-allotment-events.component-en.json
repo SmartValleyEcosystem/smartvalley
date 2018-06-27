@@ -16,6 +16,7 @@
     "TotalTokens": "Total tokens",
     "Actions": "Actions",
     "Finished": "Finished",
-    "Published": "Published"
+    "Published": "Published",
+    "Awaiting": "Awaiting transaction"
   }
 }

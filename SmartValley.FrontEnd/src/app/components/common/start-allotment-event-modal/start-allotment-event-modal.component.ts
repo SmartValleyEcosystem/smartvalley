@@ -8,6 +8,7 @@ import {ProjectSummaryResponse} from '../../../api/project/project-summary-respo
 import {NotificationsService} from 'angular2-notifications';
 import {TranslateService} from '@ngx-translate/core';
 import {AllotmentEventsManagerContractClient} from '../../../services/contract-clients/allotment-events-manager-contract-client';
+import BigNumber from 'bignumber.js';
 
 @Component({
   selector: 'app-start-allotment-event-modal',
@@ -16,7 +17,7 @@ import {AllotmentEventsManagerContractClient} from '../../../services/contract-c
 })
 export class StartAllotmentEventModalComponent implements OnInit {
 
-  public tokenBalance: number;
+  public tokenBalance: BigNumber;
   public project: ProjectSummaryResponse;
   public freezeTime: number;
 

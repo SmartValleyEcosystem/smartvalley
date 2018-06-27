@@ -22,9 +22,9 @@
   </div>
   <div class="event-card__timer">
     <span *ngIf="!myBid" class="light-label light-label_small">{{ 'FreeTokenPlace.MyPotentialShare' | translate }}</span>
-    <div *ngIf="!myBid">{{ balance.svt/(balance.svt + totalBid) | formatNumber }} {{ event.tokenTicker }} ( {{ getPercentShare() | formatNumber }} %)</div>
+    <div *ngIf="!myBid">{{ getPotentialShare() | formatNumber }} {{ event.tokenTicker }} ( {{ getPercentShare() | formatNumber }} %)</div>
     <span *ngIf="myBid" class="light-label light-label_small">{{ 'FreeTokenPlace.ActualShare' | translate }}</span>
-    <div *ngIf="myBid">{{ myBid/(totalBid) | formatNumber }} {{ event.tokenTicker }} ({{ getPercentShare() | formatNumber }}%)</div>
+    <div *ngIf="myBid">{{ getActualShare() | formatNumber }} {{ event.tokenTicker }} ({{ getPercentShare() | formatNumber }}%)</div>
     <div class="timer" [class.timer_finished]="finished">
       <div class="timer__info" *ngIf="!finished">{{ 'FreeTokenPlace.TheEventEndsIn' | translate }}</div>
       <div class="timer__info" *ngIf="finished">{{ 'FreeTokenPlace.TheEventWasEnd' | translate }}</div>

@@ -39,6 +39,7 @@ import {ReturnAddressModalData} from '../components/common/return-address-modal/
 import {ReceiveTokensModalComponent} from '../components/common/receive-tokens-modal/receive-tokens-modal.component';
 import {ReceiveTokensModalData} from '../components/common/receive-tokens-modal/receive-tokens-modal-data';
 import {DeleteAllotmentEventModalComponent} from '../components/common/delete-allotment-event-modal/delete-allotment-event-modal.component';
+import BigNumber from 'bignumber.js';
 
 @Injectable()
 export class DialogService {
@@ -61,7 +62,7 @@ export class DialogService {
       .toPromise<string>();
   }
 
-  public async showReceiveTokensModalAsync(totalTokens: number, totalBet: number, userBet: number, userTokens: number, tokenTicker: string): Promise<boolean> {
+  public async showReceiveTokensModalAsync(totalTokens: BigNumber, totalBet: BigNumber, userBet: BigNumber, userTokens: number, tokenTicker: string): Promise<boolean> {
     return this.openModal(ReceiveTokensModalComponent, <ReceiveTokensModalData> {
       totalTokens: totalTokens,
       totalBet: totalBet,

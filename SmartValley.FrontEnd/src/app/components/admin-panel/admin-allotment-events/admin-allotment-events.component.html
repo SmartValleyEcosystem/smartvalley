@@ -81,7 +81,7 @@
           <span *ngIf="rowData.status === AllotmentEventStatus.Finished">{{ 'AdminAllotmentEvents.Finished' | translate }}</span>
         </td>
         <td *ngIf="rowData.isUpdating" class="list-item">
-          Awaiting transaction
+          {{ 'AdminAllotmentEvents.Awaiting' | translate }}
         </td>
       </tr>
     </ng-template>
