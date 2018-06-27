@@ -42,7 +42,7 @@ export class StartAllotmentEventModalComponent implements OnInit {
     const finishDate = new Date(this.data.finishDate);
     const finishDateWithFreezing = new Date(finishDate).getTime() + this.freezeTime * 24 * 3600 * 1000;
 
-    if (!this.tokenBalance[0]) {
+    if (this.tokenBalance.isZero()) {
         this.notificationService.error(
             this.translateService.instant('StartAllotmentEventModalComponent.EmptyBalance')
         );
