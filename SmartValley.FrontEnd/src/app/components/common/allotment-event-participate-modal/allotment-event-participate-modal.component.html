@@ -14,7 +14,7 @@
     {{ 'ParticipateModal.WillBeFreezed' | translate }} {{ frozenTime | date: 'HH:mm dd.MM.yyyy' }}
   </p>
   <p class="button-wrapper">
-    <button (click)="submit(true)" *ngIf="!data.myBet" class="material-btn">{{ 'ParticipateModal.Participate' | translate }}</button>
-    <button (click)="submit(true)" *ngIf="data.myBet > 0" class="material-btn material-btn__action">{{ 'ParticipateModal.AddSVT' | translate }}</button>
+    <button (click)="submit(true)" *ngIf="data.myBet.isZero()" class="material-btn">{{ 'ParticipateModal.Participate' | translate }}</button>
+    <button (click)="submit(true)" *ngIf="data.myBet.greaterThan(0)" class="material-btn material-btn__action">{{ 'ParticipateModal.AddSVT' | translate }}</button>
   </p>
 </div>
