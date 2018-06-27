@@ -6,4 +6,6 @@ export interface Balance {
   wasEtherReceived: boolean;
   svt?: BigNumber;
   frozenSVT?: FrozenBalance[];
+  totalFrozenSVT?: BigNumber;
+  svtDecimals?: number;
 }
