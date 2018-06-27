@@ -3,6 +3,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {AllotmentEventParticipateDialogData} from './allotment-event-participate-dialog-data';
 import {AllotmentEventsManagerContractClient} from '../../../services/contract-clients/allotment-events-manager-contract-client';
 import BigNumber from 'bignumber.js';
+import {Subject} from 'rxjs/Subject';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-allotment-event-participate-modal',
@@ -17,8 +19,16 @@ export class AllotmentEventParticipateModalComponent implements OnInit {
 
   public newBet: BigNumber;
   public frozenTime: Date;
+  public changeParticipate = new Subject<string>();
+  public isDescriptionShow = false;
+  public computedShare: BigNumber;
 
   async ngOnInit() {
+
+    this.changeParticipate
+      .map(event => event.target.value)
+      .debounceTime(500)
+      .subscribe(val => this.getComputedShare());
     const today = new Date();
     const freezingDuration = await this.allotmentEventsManagerContractClient.getFreezingDurationAsync();
     const nextMonth = today.setDate(today.getDate() + freezingDuration);
@@ -26,23 +36,27 @@ export class AllotmentEventParticipateModalComponent implements OnInit {
     this.data.myBet = new BigNumber(this.data.myBet) || new BigNumber(0);
   }
 
-  public getComputedShare(): BigNumber {
+  public getComputedShare() {
       let myBid: BigNumber =  this.data.myBet;
+      this.isDescriptionShow = false;
+      this.newBet = this.newBet ? new BigNumber(this.newBet) : new BigNumber(0);
+
       if (this.newBet) {
           myBid = myBid.plus(this.newBet);
       }
 
-      const computedShare = myBid.dividedBy(this.data.totalBet).mul(this.data.tokenBalance);
+      let computedShare = myBid.dividedBy(this.data.totalBet).mul(this.data.tokenBalance);
 
       if (computedShare.isNaN()) {
-        return new BigNumber(0);
+        computedShare = new BigNumber(0);
       }
 
+      this.isDescriptionShow = true;
       if (!computedShare.isFinite()) {
-        return new BigNumber(this.data.tokenBalance);
+        computedShare = new BigNumber(this.data.tokenBalance);
       }
 
-      return computedShare;
+      this.computedShare = computedShare;
   }
 
   public submit() {

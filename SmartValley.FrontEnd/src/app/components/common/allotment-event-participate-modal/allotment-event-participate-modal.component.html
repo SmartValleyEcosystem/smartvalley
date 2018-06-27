@@ -3,10 +3,10 @@
   <h2>{{ 'ParticipateModal.Title' | translate }}</h2>
   <h3 *ngIf="data.myBet">{{ 'ParticipateModal.CurrentBet' | translate }} {{ data.myBet | formatNumber }} {{ 'ParticipateModal.SVT' | translate }}</h3>
   <p class="strong">{{ 'ParticipateModal.HowMuchSVTBet' | translate }}</p>
-  <input appOnlyNumbersByDecimal [decimal]="data.decimals" [(ngModel)]="newBet" placeholder="{{ 'ParticipateModal.MAX' | translate }} {{ data.balance.svt }} {{ 'ParticipateModal.SVT' | translate }}" class="input" type="text">
-  <p class="description" *ngIf="getComputedShare() > 0">
+  <input appOnlyNumbersByDecimal [decimal]="data.decimals" [(ngModel)]="newBet" (keydown)='changeParticipate.next($event)' placeholder="{{ 'ParticipateModal.MAX' | translate }} {{ data.balance.svt }} {{ 'ParticipateModal.SVT' | translate }}" class="input" type="text">
+  <p class="description" *ngIf="isDescriptionShow">
     {{ 'ParticipateModal.YouReceive' | translate }}
-    <strong>{{ getComputedShare() | formatNumber }} {{ data.ticker }}</strong>
+    <strong>{{ computedShare | formatNumber }} {{ data.ticker }}</strong>
     {{ 'ParticipateModal.AboutReceive' | translate }}
   </p>
   <p class="about-frozen" *ngIf="data.myBet.greaterThan(0)">
