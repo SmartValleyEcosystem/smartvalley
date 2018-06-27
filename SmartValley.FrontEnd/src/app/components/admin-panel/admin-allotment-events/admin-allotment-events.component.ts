@@ -188,7 +188,7 @@ export class AdminAllotmentEventsComponent {
   public async showFreezeTimeModalAsync() {
     const freezeTime = await this.allotmentEventsManagerContractClient.getFreezingDurationAsync();
     const newFreezeTime = await this.dialogService.showSetFreezeTimeDialogAsync(freezeTime);
-    if (isNullOrUndefined(newFreezeTime) || freezeTime === newFreezeTime) {
+    if (!newFreezeTime || freezeTime === newFreezeTime) {
       return;
     }
     await this.allotmentEventsManagerContractClient.setFreezingDurationAsync(newFreezeTime);
