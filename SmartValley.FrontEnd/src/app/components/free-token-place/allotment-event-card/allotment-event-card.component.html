@@ -12,7 +12,7 @@
       <div class="project-title"><a [routerLink]="getProjectLink(model.event.projectId)">{{ model.project.name }}</a></div>
       <div class="project-distribute">
         <span class="light-label">{{ 'FreeTokenPlace.TokensToDistribute' | translate }}</span>
-        <div>{{ tokenBalance | formatNumber: model.event.tokenDecimals: true }} {{ model.event.tokenTicker }}</div>
+        <div>{{ model.event.totalTokens | formatNumber: model.event.tokenDecimals: true }} {{ model.event.tokenTicker }}</div>
       </div>
       <div class="project-bets">
         <span class="light-label">{{ 'FreeTokenPlace.TotalBet' | translate }}</span>

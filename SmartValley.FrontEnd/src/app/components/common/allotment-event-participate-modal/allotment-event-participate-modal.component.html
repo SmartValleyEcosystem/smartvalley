@@ -9,7 +9,7 @@
     {{ getComputedShare() | formatNumber }}
     {{ 'ParticipateModal.SVT' | translate }} {{ 'ParticipateModal.AboutReceive' | translate }}
   </p>
-  <p class="about-frozen" *ngIf="isMyBetNotNull()">
+  <p class="about-frozen" *ngIf="data.myBet.greaterThan(0)">
     {{ 'ParticipateModal.Your' | translate }} {{ newBet }} {{ 'ParticipateModal.SVT' | translate }}
     {{ 'ParticipateModal.WillBeFreezed' | translate }} {{ frozenTime | date: 'HH:mm dd.MM.yyyy' }}
   </p>

@@ -33,7 +33,6 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
   }
 
   private timer: NodeJS.Timer;
-  public tokenBalance: BigNumber;
   public user: User;
   public userBid: BigNumber = new BigNumber(0);
   public userHasBid: boolean;
@@ -77,7 +76,7 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
         balance: this.balance,
         totalBet: this.model.event.totalBid,
         myBet: this.userBid,
-        tokenBalance: this.tokenBalance,
+        tokenBalance: this.model.event.totalTokens,
         decimals: this.model.event.tokenDecimals
       });
       if (participateResult) {
@@ -96,10 +95,10 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
 
   public async showReceiveTokensModalAsync() {
     const result = await this.dialogService.showReceiveTokensModalAsync(
-      this.tokenBalance,
+      this.model.event.totalTokens,
       this.totalBid,
       this.userBid,
-      this.model.event.getUserTokens(this.user.id, this.tokenBalance).toNumber(),
+      this.model.event.getUserTokens(this.user.id, this.model.event.totalTokens).toNumber(),
       this.model.event.tokenTicker);
     if (result) {
       await this.allotmentEventService.receiveTokensAsync(this.model.event.id, this.model.event.eventContractAddress);
