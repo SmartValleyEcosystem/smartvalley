@@ -12,6 +12,7 @@ import {PrivateScoringManagerContractClient} from '../contract-clients/private-s
 import {ScoringParametersProviderContractClient} from '../contract-clients/scoring-parameters-provider-contract-client';
 import {AllotmentEventsManagerContractClient} from '../contract-clients/allotment-events-manager-contract-client';
 import {SmartValleyTokenContractClient} from '../contract-clients/smart-valley-token-contract-client.service';
+import BigNumber from 'bignumber.js';
 
 @Injectable()
 export class InitializationService {
@@ -36,7 +37,7 @@ export class InitializationService {
     if (this.isAppInitialized) {
       return;
     }
-
+    BigNumber.config({ DECIMAL_PLACES: 100});
     await Promise.all([this.initializeAppInternalAsync(), this.waitAsync()]);
     this.isAppInitialized = true;
   }

@@ -1,6 +1,8 @@
+import BigNumber from 'bignumber.js';
+
 export interface AllotmentEventParticipantResponse {
-  bid: number;
-  share: number;
+  bid: BigNumber;
+  share: BigNumber;
   userId: number;
   isCollected: boolean;
 }

@@ -7,6 +7,7 @@ import {Web3Service} from '../web3-service';
 import {NotificationsService} from 'angular2-notifications';
 import {TranslateService} from '@ngx-translate/core';
 import {UserContext} from '../authentication/user-context';
+import BigNumber from 'bignumber.js';
 
 @Injectable()
 export class BalanceService {
@@ -57,7 +58,7 @@ export class BalanceService {
   public async getTokenBalanceAsync(): Promise<Balance> {
     return await <Balance>{
       ethBalance: 10,
-      svt: 12,
+      svt: new BigNumber(1200000),
       frozenSVT: [
           {
               date: new Date(),

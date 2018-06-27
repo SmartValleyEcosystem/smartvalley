@@ -1,9 +1,10 @@
 import {Balance} from '../../../services/balance/balance';
+import BigNumber from 'bignumber.js';
 
 export interface AllotmentEventParticipateDialogData {
     balance: Balance;
-    myBet: number;
-    totalBet: number;
-    tokenBalance: number;
+    myBet: BigNumber;
+    totalBet: BigNumber;
+    tokenBalance: BigNumber;
     decimals: number;
 }

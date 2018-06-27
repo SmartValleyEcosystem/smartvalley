@@ -12,6 +12,7 @@ import {isNullOrUndefined} from 'util';
 import {Router} from '@angular/router';
 import {Paths} from '../../../paths';
 import {AllotmentEventService} from '../../../services/allotment-event/allotment-event.service';
+import BigNumber from 'bignumber.js';
 
 @Component({
   selector: 'app-allotment-event-card',
@@ -30,10 +31,10 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
   }
 
   private timer: NodeJS.Timer;
-  public tokenBalance: number;
+  public tokenBalance: BigNumber;
   public user: User;
-  public myBid = 0;
-  public totalBid: number;
+  public myBid: BigNumber = new BigNumber(0);
+  public totalBid: BigNumber;
   public canRecieveTokens: boolean;
 
   @Input() public event: AllotmentEventCard;
@@ -47,10 +48,10 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
     this.timer = <NodeJS.Timer>setInterval(async () => await this.getAllotmentEventTimeLeft(), 1000);
     if (this.user) {
         const myBid = this.event.participants.find((a) => a.userId === this.user.id);
-        this.myBid = myBid ? myBid.bid : 0;
+        this.myBid = myBid ? new BigNumber(myBid.bid) : new BigNumber(0);
     }
 
-    this.totalBid = this.event.participants.reduce((sum, c) => sum + c.bid, 0);
+    this.totalBid = this.event.participants.reduce((sum, c) => new BigNumber(c.bid).plus(sum), new BigNumber(0));
     this.event.timer = {
         days: '00',
         hours: '00',
@@ -68,8 +69,29 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
     clearInterval(this.timer);
   }
 
+  public getActualShare() {
+    const share = this.myBid.dividedBy(this.totalBid);
+    if (share.isNaN()) {
+      return new BigNumber(0);
+    }
+    return share;
+  }
+
+  public getPotentialShare() {
+    const balanceSVT = new BigNumber(this.balance.svt);
+    const share = balanceSVT.dividedBy( balanceSVT.plus(this.totalBid) );
+    if (share.isNaN()) {
+      return new BigNumber(0);
+    }
+    return share;
+  }
+
   public getPercentShare() {
-    return (this.myBid * 100) / this.totalBid;
+    const share = this.myBid.mul(100).dividedBy(this.totalBid);
+    if (share.isNaN()) {
+        return new BigNumber(0);
+    }
+    return share;
   }
 
   public async showParticipateDialogAsync() {
@@ -96,7 +118,7 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
   }
 
   public async showReceiveTokensModalAsync() {
-    const myTokens = this.tokenBalance / this.totalBid * this.myBid;
+    const myTokens = this.tokenBalance.dividedBy(this.totalBid).mul(this.myBid).toNumber();
     const result = await this.dialogService.showReceiveTokensModalAsync(this.tokenBalance, this.totalBid, this.myBid, myTokens, this.event.tokenTicker);
     if (result) {
       await this.allotmentEventService.receiveTokensAsync(this.event.id, this.event.eventContractAddress);

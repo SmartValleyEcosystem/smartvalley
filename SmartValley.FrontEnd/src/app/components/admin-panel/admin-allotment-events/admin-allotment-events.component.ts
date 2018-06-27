@@ -11,6 +11,7 @@ import {Router} from '@angular/router';
 import {Erc223ContractClient} from '../../../services/contract-clients/erc223-contract-client';
 import {isNullOrUndefined} from 'util';
 import {AllotmentEventsManagerContractClient} from '../../../services/contract-clients/allotment-events-manager-contract-client';
+import BigNumber from 'bignumber.js';
 
 @Component({
   selector: 'app-admin-allotment-events',
@@ -27,7 +28,7 @@ export class AdminAllotmentEventsComponent {
   public offset = 0;
   public pageSize = 10;
 
-  public totalTokens: { key: string, value: number }[] = [];
+  public totalTokens: { key: string, value: BigNumber }[] = [];
 
   constructor(private allotmentEventsApiClient: AllotmentEventsApiClient,
               private allotmentEventsManagerContractClient: AllotmentEventsManagerContractClient,
@@ -72,13 +73,13 @@ export class AdminAllotmentEventsComponent {
     await this.loadAllotmentEventsAsync();
   }
 
-  public getTotalTokens(eventAddress: string): number {
+  public getTotalTokens(eventAddress: string): BigNumber {
     if (this.totalTokens.length === 0) {
-      return 0;
+      return new BigNumber(0);
     }
     const total = this.totalTokens.firstOrDefault(i => i.key === eventAddress);
     if (isNullOrUndefined(total)) {
-      return 0;
+      return new BigNumber(0);
     }
     return total.value;
   }
