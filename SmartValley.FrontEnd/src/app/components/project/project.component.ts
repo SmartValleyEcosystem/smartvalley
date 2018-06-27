@@ -127,7 +127,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   public async showSubscribeDialog() {
-    const subscribe = await this.dialogService.showSubscribeDialog();
+    const subscribe = await this.dialogService.showSubscribeDialogAsync();
     if (subscribe) {
       await this.subscriptionApiClient.subscribeAsync(subscribe, this.projectId);
       this.notificationService.success('Success', 'Subscribe request is sent');

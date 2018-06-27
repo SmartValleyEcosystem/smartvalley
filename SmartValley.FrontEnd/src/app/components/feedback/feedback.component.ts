@@ -20,7 +20,7 @@ export class FeedbackComponent {
   }
 
   public async openFeedbackDialog() {
-    const feedBackData = await this.dialogService.showFeedbackDialog();
+    const feedBackData = await this.dialogService.showFeedbackDialogAsync();
     if (feedBackData) {
       await this.feedbackApiClient.sendFeedbackAsync(feedBackData);
       this.notificationService.success(

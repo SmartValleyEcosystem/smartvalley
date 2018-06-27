@@ -9,11 +9,9 @@ import {MetamaskManualModalComponent} from '../components/common/metamask-manual
 import {TranslateService} from '@ngx-translate/core';
 import {AlertModalComponent} from '../components/common/alert-modal/alert-modal.component';
 import {AlertModalData} from '../components/common/alert-modal/alert-modal-data';
-import {Area} from './expert/area';
 import {AddAdminModalComponent} from '../components/common/add-admin-modal/add-admin-modal.component';
 import {CreateNewExpertModalComponent} from '../components/common/create-new-expert-modal/create-new-expert-modal.component';
 import {EditExpertModalComponent} from '../components/common/edit-expert-modal/edit-expert-modal.component';
-import {SetExpertsModalComponent} from '../components/common/set-experts-modal/set-experts-modal.component';
 import {EditExpertModalData} from '../components/common/edit-expert-modal/edit-expert-modal-data';
 import {WelcomeModalComponent} from '../components/common/welcome-modal/welcome-modal.component';
 import {WelcomeModalData} from '../components/common/welcome-modal/welcome-modal-data';
@@ -62,7 +60,12 @@ export class DialogService {
       .toPromise<string>();
   }
 
-  public async showReceiveTokensModalAsync(totalTokens: BigNumber, totalBet: BigNumber, userBet: BigNumber, userTokens: number, tokenTicker: string): Promise<boolean> {
+  public async showReceiveTokensModalAsync(
+    totalTokens: BigNumber,
+    totalBet: BigNumber,
+    userBet: BigNumber,
+    userTokens: number,
+    tokenTicker: string): Promise<boolean> {
     return this.openModal(ReceiveTokensModalComponent, <ReceiveTokensModalData> {
       totalTokens: totalTokens,
       totalBet: totalBet,
@@ -128,7 +131,7 @@ export class DialogService {
     return this.openModal(CreateNewExpertModalComponent, {});
   }
 
-  public showEditExpertModal(expertData: EditExpertModalData): Promise<boolean> {
+  public showEditExpertModalAsync(expertData: EditExpertModalData): Promise<boolean> {
     return this.openModalAsync(EditExpertModalComponent, expertData);
   }
 
@@ -168,32 +171,32 @@ export class DialogService {
     return this.openModal(AlertModalComponent, data);
   }
 
-  public async showPrivateScoringApplicationDialog(): Promise<boolean> {
+  public async showPrivateScoringApplicationDialogAsync(): Promise<boolean> {
     return this.openModalAsync(PrivateScoringModalComponent, {});
   }
 
-  public async showNewAllotmentEventDialog(): Promise<boolean> {
+  public async showNewAllotmentEventDialogAsync(): Promise<boolean> {
     return this.openModalAsync(NewAllotmentEventModalComponent, {});
   }
 
-  public async showSubscribeDialog(): Promise<SubscribeRequest> {
+  public async showSubscribeDialogAsync(): Promise<SubscribeRequest> {
     return this.openModalAsync(SubscribeModalComponent, {});
   }
 
-  public async showEditAllotmentEventDialog(editData: AllotmentEventResponse): Promise<EditAllotmentRequest> {
+  public async showEditAllotmentEventDialogAsync(editData: AllotmentEventResponse): Promise<EditAllotmentRequest> {
     return this.openModalAsync(EditAllotmentEventModalComponent, editData);
   }
 
-  public async showStartAllotmentEventDialog(allotmenEventData: AllotmentEventResponse): Promise<boolean> {
-    return this.openModalAsync(StartAllotmentEventModalComponent, allotmenEventData);
+  public async showStartAllotmentEventDialogAsync(allotmentEventData: AllotmentEventResponse): Promise<boolean> {
+    return this.openModalAsync(StartAllotmentEventModalComponent, allotmentEventData);
   }
 
-  public async showFeedbackDialog(): Promise<FeedbackRequest> {
+  public async showFeedbackDialogAsync(): Promise<FeedbackRequest> {
     return this.openModalAsync(FeedbackModalComponent, {});
   }
 
-  public async showParticipateDialog(participateDialogData: AllotmentEventParticipateDialogData): Promise<number> {
-      return this.openModalAsync(AllotmentEventParticipateModalComponent, participateDialogData);
+  public async showParticipateDialogAsync(participateDialogData: AllotmentEventParticipateDialogData): Promise<BigNumber> {
+    return this.openModalAsync(AllotmentEventParticipateModalComponent, participateDialogData);
   }
 
   private openModal<TComponent, TData>(componentType: ComponentType<TComponent>,

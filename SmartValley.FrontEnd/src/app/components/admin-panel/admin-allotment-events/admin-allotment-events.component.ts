@@ -127,15 +127,15 @@ export class AdminAllotmentEventsComponent {
     return total.value;
   }
 
-  public async showStartAllotmentEventModal(allotmenEventData: AllotmentEventResponse) {
-    const start = await this.dialogService.showStartAllotmentEventDialog(allotmenEventData);
+  public async showStartAllotmentEventModal(allotmentEventData: AllotmentEventResponse) {
+    const start = await this.dialogService.showStartAllotmentEventDialogAsync(allotmentEventData);
     if (start) {
-      await this.allotmentEventService.startAsync(allotmenEventData.id);
+      await this.allotmentEventService.startAsync(allotmentEventData.id);
     }
   }
 
   public async showNewAllotmentEventModalAsync(): Promise<void> {
-    const allotmentEventCreated = await this.dialogService.showNewAllotmentEventDialog();
+    const allotmentEventCreated = await this.dialogService.showNewAllotmentEventDialogAsync();
     if (allotmentEventCreated) {
       this.loadAllotmentEventsAsync();
     }
@@ -157,7 +157,7 @@ export class AdminAllotmentEventsComponent {
   }
 
   public async showEditAllotmentModal(allotmentEvent: AllotmentEventResponse) {
-    const editModal = await this.dialogService.showEditAllotmentEventDialog(allotmentEvent);
+    const editModal = await this.dialogService.showEditAllotmentEventDialogAsync(allotmentEvent);
     if (editModal) {
       await this.allotmentEventService.editAsync(
         allotmentEvent.id,
