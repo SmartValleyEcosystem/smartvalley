@@ -34,6 +34,7 @@
     <button (click)="showReturnAddressModalAsync()" class="return-address-icon"></button>
   </div>
   <p-table class="admin-table" [value]="allotmentEvents"
+           [first]="offset"
            [lazy]="true" (onLazyLoad)="getAllotmentEventsAsync($event)" [paginator]="true"
            [rows]="10" [totalRecords]="totalRecords" [loading]="loading">
     <ng-template pTemplate="header" let-columns>

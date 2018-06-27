@@ -43,6 +43,7 @@ export class AdminAllotmentEventsComponent {
     } else {
       this.selectedStatuses = this.selectedStatuses.filter(s => s !== status);
     }
+    this.offset = 0;
     await this.loadAllotmentEventsAsync();
   }
 
