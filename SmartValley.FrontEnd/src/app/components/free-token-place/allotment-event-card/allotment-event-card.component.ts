@@ -62,7 +62,9 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
       minutes: '00',
       seconds: '00'
     };
-    this.canReceiveTokens = !this.model.event.isCollected(this.userContext.getCurrentUser().id) && this.finished;
+    if (this.userContext.getCurrentUser()) {
+      this.canReceiveTokens = !this.model.event.isCollected(this.userContext.getCurrentUser().id) && this.finished;
+    }
     this.getTransactionAsync();
   }
 

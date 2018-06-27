@@ -64,6 +64,9 @@ export class AllotmentEvent {
   }
 
   public getPercentShare(userId: number) {
+    if (!userId) {
+        return new BigNumber(0);
+    }
     const share = this.getUserBid(userId).mul(100).dividedBy(this.totalBid);
     if (share.isNaN()) {
       return new BigNumber(0);
@@ -80,6 +83,9 @@ export class AllotmentEvent {
   }
 
   public getActualShare(userId: number) {
+    if (!userId) {
+      return new BigNumber(0);
+    }
     const share = this.getUserBid(userId).dividedBy(this.totalBid);
     if (share.isNaN()) {
       return new BigNumber(0);
