@@ -26,13 +26,23 @@ export class AllotmentEventParticipateModalComponent implements OnInit {
     this.data.myBet = new BigNumber(this.data.myBet) || new BigNumber(0);
   }
 
-  public getComputedShare() {
+  public getComputedShare(): BigNumber {
       let myBid: BigNumber =  this.data.myBet;
       if (this.newBet) {
           myBid = myBid.plus(this.newBet);
       }
 
-      return myBid.dividedBy(this.data.totalBet).mul(this.data.tokenBalance);
+      const computedShare = myBid.dividedBy(this.data.totalBet).mul(this.data.tokenBalance);
+
+      if (computedShare.isNaN()) {
+        return new BigNumber(0);
+      }
+
+      if (!computedShare.isFinite()) {
+        return new BigNumber(this.data.tokenBalance);
+      }
+
+      return computedShare;
   }
 
   public submit() {
