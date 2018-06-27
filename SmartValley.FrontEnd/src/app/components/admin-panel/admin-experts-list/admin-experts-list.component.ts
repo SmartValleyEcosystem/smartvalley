@@ -87,7 +87,7 @@ export class AdminExpertsListComponent implements OnInit {
   }
 
   public async showExpertEditDialog(rowData: any) {
-    await this.dialogService.showEditExpertModal(<EditExpertModalData> {
+    await this.dialogService.showEditExpertModalAsync(<EditExpertModalData> {
       address: rowData.address
     });
     await this.loadExpertsAsync();

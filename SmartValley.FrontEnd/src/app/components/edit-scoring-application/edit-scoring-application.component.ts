@@ -604,7 +604,7 @@ export class EditScoringApplicationComponent implements OnInit, OnDestroy {
   }
 
   public async showAlertModal() {
-      const submit = await this.dialogService.showPrivateScoringApplicationDialog();
+      const submit = await this.dialogService.showPrivateScoringApplicationDialogAsync();
       if (submit) {
           await this.onSubmitAsync();
       }

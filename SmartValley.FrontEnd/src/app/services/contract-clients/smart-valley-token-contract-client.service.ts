@@ -3,6 +3,7 @@ import {ContractClient} from './contract-client';
 import {Web3Service} from '../web3-service';
 import {UserContext} from '../authentication/user-context';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
+import BigNumber from 'bignumber.js';
 
 @Injectable()
 export class SmartValleyTokenContractClient implements ContractClient {
@@ -19,5 +20,11 @@ export class SmartValleyTokenContractClient implements ContractClient {
     const contract = await this.contractClient.getSmartValleyTokenContractAsync();
     this.abi = contract.abi;
     this.address = contract.address;
+  }
+
+  public async freezeAsync(tokensAmount: BigNumber, eventContractAddress: string): Promise<string> {
+    const fromAddress = this.userContext.getCurrentUser().account;
+    const contract = this.web3Service.getContract(this.abi, this.address);
+    return await contract.freeze(tokensAmount, eventContractAddress, {from: fromAddress});
   }
 }

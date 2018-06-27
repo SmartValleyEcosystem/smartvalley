@@ -2,13 +2,16 @@ import {Injectable} from '@angular/core';
 import {AllotmentEventsApiClient} from '../../api/allotment-events/allotment-events-api-client';
 import {AllotmentEventsManagerContractClient} from '../contract-clients/allotment-events-manager-contract-client';
 import {AllotmentEventsContractClient} from '../contract-clients/allotment-events-contract-client';
+import {SmartValleyTokenContractClient} from '../contract-clients/smart-valley-token-contract-client.service';
+import BigNumber from 'bignumber.js';
 
 @Injectable()
 export class AllotmentEventService {
 
   constructor(private allotmentEventsApiClient: AllotmentEventsApiClient,
               private allotmentEventsContractClient: AllotmentEventsContractClient,
-              private allotmentEventsManagerContractClient: AllotmentEventsManagerContractClient) {
+              private allotmentEventsManagerContractClient: AllotmentEventsManagerContractClient,
+              private smartValleyTokenContractClient: SmartValleyTokenContractClient) {
   }
 
   public async createAndPublishAsync(name: string,
@@ -77,8 +80,8 @@ export class AllotmentEventService {
     await this.allotmentEventsApiClient.removeAsync(eventId, transactionHash);
   }
 
-  public async participateAsync(eventId: number, amount: number) {
-    const transactionHash = await this.allotmentEventsManagerContractClient.freezeAsync(amount);
+  public async participateAsync(eventId: number, eventContractAddress: string, amount: BigNumber) {
+    const transactionHash = await this.smartValleyTokenContractClient.freezeAsync(amount, eventContractAddress);
     await this.allotmentEventsApiClient.participateAsync(eventId, transactionHash);
   }
 
