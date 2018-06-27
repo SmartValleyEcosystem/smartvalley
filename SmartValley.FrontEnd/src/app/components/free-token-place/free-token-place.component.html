@@ -22,7 +22,7 @@
 
 <div class="content">
   <h1 class="title">{{ 'FreeTokenPlace.Title' | translate }}</h1>
-  <h2 *ngIf="!activeEvents.length && !finishedEvents.length">{{ 'FreeTokenPlace.ComingSoon' | translate }}</h2>
+  <h2 *ngIf="!activeEvents.length && !finishedEvents.length && isAllotmentEventsLoaded">{{ 'FreeTokenPlace.ComingSoon' | translate }}</h2>
   <h2 *ngIf="activeEvents.length">{{ 'FreeTokenPlace.ActiveAllotmentEvents' | translate }}</h2>
   <div class="allotment-events">
     <app-allotment-event-card (finishEvent)="finishEvent($event)" *ngFor="let event of activeEvents"
