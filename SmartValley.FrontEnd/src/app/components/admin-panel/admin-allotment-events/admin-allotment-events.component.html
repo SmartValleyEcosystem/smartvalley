@@ -80,8 +80,8 @@
           </button>
           <span *ngIf="rowData.status === AllotmentEventStatus.Finished">{{ 'AdminAllotmentEvents.Finished' | translate }}</span>
         </td>
-        <td *ngIf="rowData.isUpdating" class="list-item">
-          {{ 'AdminAllotmentEvents.Awaiting' | translate }}
+        <td *ngIf="getTransaction(rowData['id'])" class="list-item">
+          <a target="_blank" href="{{ getEtherscanLink(rowData['id']) }}">{{ 'AdminAllotmentEvents.Awaiting' | translate }}</a>
         </td>
       </tr>
     </ng-template>
