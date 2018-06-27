@@ -1,14 +1,11 @@
 import {Component} from '@angular/core';
-import {AllotmentEventsApiClient} from '../../../api/allotment-events/allotment-events-api-client';
 import {AllotmentEventResponse} from '../../../api/allotment-events/responses/allotment-event-response';
 import {AllotmentEventStatus} from '../../../api/allotment-events/allotment-event-status';
 import {LazyLoadEvent} from 'primeng/api';
 import {DialogService} from '../../../services/dialog-service';
 import {AllotmentEventService} from '../../../services/allotment-event/allotment-event.service';
-import {GetAllotmentEventsRequest} from '../../../api/allotment-events/request/get-allotment-events-request';
 import {Paths} from '../../../paths';
 import {Router} from '@angular/router';
-import {Erc223ContractClient} from '../../../services/contract-clients/erc223-contract-client';
 import {isNullOrUndefined} from 'util';
 import {AllotmentEventsManagerContractClient} from '../../../services/contract-clients/allotment-events-manager-contract-client';
 import {TransactionApiClient} from '../../../api/transaction/transaction-api-client';
@@ -16,7 +13,7 @@ import {TransactionRequest} from '../../../api/transaction/requests/transaction-
 import {EthereumTransactionTypeEnum} from '../../../api/transaction/ethereum-transaction-type.enum';
 import {EthereumTransactionEntityTypeEnum} from '../../../api/transaction/ethereum-transaction-entity-type.enum';
 import {EthereumTransactionStatusEnum} from '../../../api/transaction/ethereum-transaction-status.enum';
-import BigNumber from 'bignumber.js';
+import {AllotmentEvent} from '../../../services/allotment-event/allotment-event';
 import {LinkHelper} from '../../../utils/link-helper';
 import {TransactionInfo} from './transaction-info';
 
@@ -27,25 +24,20 @@ import {TransactionInfo} from './transaction-info';
 })
 export class AdminAllotmentEventsComponent {
 
-  public allotmentEvents: AllotmentEventResponse[];
+  public allotmentEvents: AllotmentEvent[];
   public selectedStatuses: AllotmentEventStatus[] = [];
   public AllotmentEventStatus = AllotmentEventStatus;
   public loading = true;
-  public totalRecords: number;
   public offset = 0;
   public pageSize = 10;
   public transactionsInfo: TransactionInfo[] = [];
 
-  public totalTokens: { key: string, value: BigNumber }[] = [];
-
-  constructor(private allotmentEventsApiClient: AllotmentEventsApiClient,
-              private allotmentEventsManagerContractClient: AllotmentEventsManagerContractClient,
+  constructor(private allotmentEventsManagerContractClient: AllotmentEventsManagerContractClient,
               private transactionApiClient: TransactionApiClient,
               private router: Router,
               private linkHelper: LinkHelper,
               private dialogService: DialogService,
-              private allotmentEventService: AllotmentEventService,
-              private erc223ContractClient: Erc223ContractClient) {
+              private allotmentEventService: AllotmentEventService) {
   }
 
   public async sortByStatusAsync(checked: boolean, status: AllotmentEventStatus): Promise<void> {
@@ -60,13 +52,7 @@ export class AdminAllotmentEventsComponent {
 
   private async loadAllotmentEventsAsync(): Promise<void> {
     this.loading = true;
-    const getAllotmentEventsRequest = <GetAllotmentEventsRequest>{
-      offset: this.offset,
-      count: this.pageSize,
-      statuses: this.selectedStatuses
-    };
-    const allotmentEventsRequest = await this.allotmentEventsApiClient.getAllotmentEventsAsync(getAllotmentEventsRequest);
-    this.allotmentEvents = allotmentEventsRequest.items;
+    this.allotmentEvents = await this.allotmentEventService.getAllotmentEventsAsync(this.offset, this.pageSize, this.selectedStatuses);
     for (let i = 0; i < this.allotmentEvents.length; i++) {
       if (this.allotmentEvents[i].eventContractAddress === null) {
         continue;
@@ -76,28 +62,25 @@ export class AdminAllotmentEventsComponent {
         entityIds: [this.allotmentEvents[i].id],
         entityTypes: [EthereumTransactionEntityTypeEnum.AllotmentEvent],
         transactionTypes: [EthereumTransactionTypeEnum.DeleteAllotmentEvent,
-            EthereumTransactionTypeEnum.EditAllotmentEvent,
-            EthereumTransactionTypeEnum.PublishAllotmentEvent,
-            EthereumTransactionTypeEnum.StartAllotmentEvent],
+          EthereumTransactionTypeEnum.EditAllotmentEvent,
+          EthereumTransactionTypeEnum.PublishAllotmentEvent,
+          EthereumTransactionTypeEnum.StartAllotmentEvent],
         statuses: [EthereumTransactionStatusEnum.InProgress]
       });
       this.allotmentEvents[i].isUpdating = !!transactionInfo.items.length;
       if (transactionInfo.items[transactionInfo.items.length]) {
-          this.transactionsInfo.push({
-            eventid: this.allotmentEvents[i].id,
-            transaction: transactionInfo.items[transactionInfo.items.length].hash
-          });
+        this.transactionsInfo.push({
+          eventid: this.allotmentEvents[i].id,
+          transaction: transactionInfo.items[transactionInfo.items.length].hash
+        });
       }
-
-      const total = await this.erc223ContractClient.getTokenBalanceAsync(this.allotmentEvents[i].tokenContractAddress, this.allotmentEvents[i].eventContractAddress);
-      this.totalTokens.push({key: this.allotmentEvents[i].eventContractAddress, value: total});
     }
-    this.totalRecords = allotmentEventsRequest.totalCount;
+    this.allotmentEvents = await this.allotmentEventService.getAllotmentEventsAsync(this.offset, this.pageSize, this.selectedStatuses);
     this.loading = false;
   }
 
   public getTransaction(eventId: number): string {
-    const transactionInfo = this.transactionsInfo.find( t => t.eventid === eventId);
+    const transactionInfo = this.transactionsInfo.find(t => t.eventid === eventId);
     if (transactionInfo) {
       return transactionInfo.transaction;
     }
@@ -111,22 +94,11 @@ export class AdminAllotmentEventsComponent {
     }
     return '';
   }
+
   public async getAllotmentEventsAsync(event: LazyLoadEvent): Promise<void> {
     this.offset = event.first;
     await this.loadAllotmentEventsAsync();
   }
-
-  public getTotalTokens(eventAddress: string): BigNumber {
-    if (this.totalTokens.length === 0) {
-      return new BigNumber(0);
-    }
-    const total = this.totalTokens.firstOrDefault(i => i.key === eventAddress);
-    if (isNullOrUndefined(total)) {
-      return new BigNumber(0);
-    }
-    return total.value;
-  }
-
   public async showStartAllotmentEventModal(allotmentEventData: AllotmentEventResponse) {
     const start = await this.dialogService.showStartAllotmentEventDialogAsync(allotmentEventData);
     if (start) {
@@ -137,7 +109,7 @@ export class AdminAllotmentEventsComponent {
   public async showNewAllotmentEventModalAsync(): Promise<void> {
     const allotmentEventCreated = await this.dialogService.showNewAllotmentEventDialogAsync();
     if (allotmentEventCreated) {
-      this.loadAllotmentEventsAsync();
+      await this.loadAllotmentEventsAsync();
     }
   }
 
