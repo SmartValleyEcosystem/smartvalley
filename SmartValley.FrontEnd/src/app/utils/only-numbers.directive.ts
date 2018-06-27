@@ -6,7 +6,7 @@ import {Directive, ElementRef, HostListener, Input} from '@angular/core';
 export class OnlyNumbersByDecimalDirective {
     private regex: RegExp = new RegExp(/^-?[0-9]+(\.[0-9]*){0,1}$/g);
     private decimalRegex: RegExp = new RegExp(/\.(.*)/);
-    private specialKeys: Array<string> = [ 'Backspace', 'Tab', 'End', 'Home', '.' ];
+    private specialKeys: Array<string> = [ 'Backspace', 'Tab', 'End', 'Home', '.', 'ArrowLeft', 'ArrowRight'];
 
     @Input() decimal: number;
 
