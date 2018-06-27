@@ -26,14 +26,14 @@
   <h2 *ngIf="activeEvents.length">{{ 'FreeTokenPlace.ActiveAllotmentEvents' | translate }}</h2>
   <div class="allotment-events">
     <app-allotment-event-card (finishEvent)="finishEvent($event)" *ngFor="let event of activeEvents"
-                              [event]="event"
+                              [model]="event"
                               [balance]="balance">
     </app-allotment-event-card>
   </div>
   <h2 *ngIf="finishedEvents.length">{{ 'FreeTokenPlace.FinishedAllotmentEvents' | translate }}</h2>
   <div class="allotment-events">
     <app-allotment-event-card *ngFor="let event of finishedEvents" [finished]="true"
-                              [event]="event"
+                              [model]="event"
                               [balance]="balance">
     </app-allotment-event-card>
   </div>

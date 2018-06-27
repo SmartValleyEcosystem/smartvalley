@@ -1,14 +1,12 @@
 import {Component, OnInit, Input, OnDestroy, EventEmitter, Output} from '@angular/core';
 import {BlockiesService} from '../../../services/blockies-service';
 import {AllotmentEventCard} from '../allotment-event-card';
-import {Erc223ContractClient} from '../../../services/contract-clients/erc223-contract-client';
 import {DialogService} from '../../../services/dialog-service';
 import {Balance} from '../../../services/balance/balance';
 import {AuthenticationService} from '../../../services/authentication/authentication-service';
 import {AllotmentEventParticipateDialogData} from '../../common/allotment-event-participate-modal/allotment-event-participate-dialog-data';
 import {User} from '../../../services/authentication/user';
 import {UserContext} from '../../../services/authentication/user-context';
-import {isNullOrUndefined} from 'util';
 import {Router} from '@angular/router';
 import {Paths} from '../../../paths';
 import {AllotmentEventService} from '../../../services/allotment-event/allotment-event.service';
@@ -31,8 +29,7 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
               private dialogService: DialogService,
               private userContext: UserContext,
               private authenticationService: AuthenticationService,
-              private transactionApiClient: TransactionApiClient,
-              private erc223ContractClient: Erc223ContractClient) {
+              private transactionApiClient: TransactionApiClient) {
   }
 
   private timer: NodeJS.Timer;
@@ -43,7 +40,7 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
   public totalBid: BigNumber;
   public canReceiveTokens: boolean;
 
-  @Input() public event: AllotmentEventCard;
+  @Input() public model: AllotmentEventCard;
   @Input() public finished = false;
   @Input() public balance: Balance;
 
@@ -53,77 +50,44 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
     this.user = this.userContext.getCurrentUser();
     this.timer = <NodeJS.Timer>setInterval(async () => await this.getAllotmentEventTimeLeft(), 1000);
     if (this.user) {
-      this.userHasBid = this.event.participants.some((a) => a.userId === this.user.id);
+      this.userHasBid = this.model.event.userHasBid(this.user.id);
 
       if (this.userHasBid) {
-        this.userBid = new BigNumber(this.event.participants.find((a) => a.userId === this.user.id).bid);
+        this.userBid = this.model.event.getUserBid(this.user.id);
       }
     }
 
-    this.totalBid = this.event.participants.reduce((sum, c) => new BigNumber(c.bid).plus(sum), new BigNumber(0));
-    this.event.timer = {
+    this.model.timer = {
       days: '00',
       hours: '00',
       minutes: '00',
       seconds: '00'
     };
-
-    this.tokenBalance = await this.erc223ContractClient.getTokenBalanceAsync(
-      this.event.tokenContractAddress,
-      this.event.eventContractAddress);
-
-    this.canReceiveTokens = !isNullOrUndefined(this.event.participants) && this.finished
-      || !this.event.participants.some(i => i.userId === this.userContext.getCurrentUser().id && i.isCollected) && this.finished;
-
-    await this.getTransactionAsync();
+    this.canReceiveTokens = !this.model.event.isCollected(this.userContext.getCurrentUser().id) && this.finished;
+    this.getTransactionAsync();
   }
 
   ngOnDestroy(): void {
     clearInterval(this.timer);
   }
 
-  public getActualShare() {
-    const share = this.userBid.dividedBy(this.totalBid);
-    if (share.isNaN()) {
-      return new BigNumber(0);
-    }
-    return share;
-  }
-
-  public getPotentialShare() {
-    const balanceSVT = new BigNumber(this.balance.svt);
-    const share = balanceSVT.dividedBy(balanceSVT.plus(this.totalBid));
-    if (share.isNaN()) {
-      return new BigNumber(0);
-    }
-    return share;
-  }
-
-  public getPercentShare() {
-    const share = this.userBid.mul(100).dividedBy(this.totalBid);
-    if (share.isNaN()) {
-      return new BigNumber(0);
-    }
-    return share;
-  }
-
   public async showParticipateDialogAsync() {
     if (await this.authenticationService.authenticateAsync()) {
       const participateResult = await this.dialogService.showParticipateDialogAsync(<AllotmentEventParticipateDialogData>{
         balance: this.balance,
-        totalBet: this.totalBid,
+        totalBet: this.model.event.totalBid,
         myBet: this.userBid,
         tokenBalance: this.tokenBalance,
-        decimals: this.event.tokenDecimals
+        decimals: this.model.event.tokenDecimals
       });
       if (participateResult) {
-        await this.allotmentEventService.participateAsync(this.event.id, this.event.eventContractAddress, participateResult);
+        await this.allotmentEventService.participateAsync(this.model.event.id, this.model.event.eventContractAddress, participateResult);
       }
     }
   }
 
   public imageUrl(): string {
-    return this.event.project.imageUrl || this.blockiesService.getImageForAddress(this.event.eventContractAddress);
+    return this.model.project.imageUrl || this.blockiesService.getImageForAddress(this.model.event.eventContractAddress);
   }
 
   private pad(n: number) {
@@ -131,16 +95,14 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
   }
 
   public async showReceiveTokensModalAsync() {
-    const myTokens = this.tokenBalance.dividedBy(this.totalBid).mul(this.userBid).toNumber();
     const result = await this.dialogService.showReceiveTokensModalAsync(
       this.tokenBalance,
       this.totalBid,
       this.userBid,
-      myTokens,
-      this.event.tokenTicker);
-
+      this.model.event.getUserTokens(this.user.id, this.tokenBalance).toNumber(),
+      this.model.event.tokenTicker);
     if (result) {
-      await this.allotmentEventService.receiveTokensAsync(this.event.id, this.event.eventContractAddress);
+      await this.allotmentEventService.receiveTokensAsync(this.model.event.id, this.model.event.eventContractAddress);
       this.canReceiveTokens = false;
     }
   }
@@ -158,19 +120,19 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
     const transactionInfo = await this.transactionApiClient.getEthereumTransactionAsync(<TransactionRequest>{
       count: 1,
       userIds: [this.user.id],
-      entityIds: [this.event.id],
+      entityIds: [this.model.event.id],
       entityTypes: [EthereumTransactionEntityTypeEnum.AllotmentEvent],
       statuses: [EthereumTransactionStatusEnum.InProgress]
     });
     if (transactionInfo.items[transactionInfo.items.length]) {
-      this.event.transaction = transactionInfo.items[transactionInfo.items.length].hash;
+      this.model.transaction = transactionInfo.items[transactionInfo.items.length].hash;
       return;
     }
-    this.event.transaction = '';
+    this.model.transaction = '';
   }
 
   public getAllotmentEventTimeLeft() {
-    const eventDate = new Date(this.event.finishDate);
+    const eventDate = new Date(this.model.event.finishDate);
     const currentDate = new Date().getTime();
 
     const eventDateNumber: number = eventDate.getTime();
@@ -186,12 +148,12 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
     const seconds = this.pad(secondsLeft % 60);
 
     if (new Date() < eventDate) {
-      this.event.timer.days = days;
-      this.event.timer.hours = hours;
-      this.event.timer.minutes = minutes;
-      this.event.timer.seconds = seconds;
+      this.model.timer.days = days;
+      this.model.timer.hours = hours;
+      this.model.timer.minutes = minutes;
+      this.model.timer.seconds = seconds;
     } else {
-      this.finishEvent.emit(this.event.id);
+      this.finishEvent.emit(this.model.event.id);
     }
   }
 }

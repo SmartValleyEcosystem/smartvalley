@@ -2,6 +2,10 @@ import {Injectable} from '@angular/core';
 import {AllotmentEventsApiClient} from '../../api/allotment-events/allotment-events-api-client';
 import {AllotmentEventsManagerContractClient} from '../contract-clients/allotment-events-manager-contract-client';
 import {AllotmentEventsContractClient} from '../contract-clients/allotment-events-contract-client';
+import {AllotmentEvent} from './allotment-event';
+import {AllotmentEventStatus} from '../../api/allotment-events/allotment-event-status';
+import {GetAllotmentEventsRequest} from '../../api/allotment-events/request/get-allotment-events-request';
+import {Erc223ContractClient} from '../contract-clients/erc223-contract-client';
 import {SmartValleyTokenContractClient} from '../contract-clients/smart-valley-token-contract-client.service';
 import BigNumber from 'bignumber.js';
 
@@ -11,7 +15,22 @@ export class AllotmentEventService {
   constructor(private allotmentEventsApiClient: AllotmentEventsApiClient,
               private allotmentEventsContractClient: AllotmentEventsContractClient,
               private allotmentEventsManagerContractClient: AllotmentEventsManagerContractClient,
+              private erc223ContractClient: Erc223ContractClient,
               private smartValleyTokenContractClient: SmartValleyTokenContractClient) {
+  }
+
+  public async getAllotmentEventsAsync(offset: number, count: number, statuses: AllotmentEventStatus[]): Promise<Array<AllotmentEvent>> {
+    const getAllotmentEventsRequest = <GetAllotmentEventsRequest>{
+      offset: offset,
+      count: count,
+      statuses: statuses
+    };
+    const allotmentEventsResponse = await this.allotmentEventsApiClient.getAllotmentEventsAsync(getAllotmentEventsRequest);
+    const allotmentEvents = allotmentEventsResponse.items.map(i => AllotmentEvent.create(i)).filter(i => i.eventContractAddress)
+    for (const event of allotmentEvents) {
+      event.totalTokens = await this.erc223ContractClient.getTokenBalanceAsync(event.tokenContractAddress, event.eventContractAddress);
+    }
+    return allotmentEvents;
   }
 
   public async createAndPublishAsync(name: string,

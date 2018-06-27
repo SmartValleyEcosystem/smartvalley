@@ -1,61 +1,61 @@
-<div *ngIf="event.project" class="event-card">
-  <div class="event-card__title">{{event.name}}</div>
+<div *ngIf="model.project" class="event-card">
+  <div class="event-card__title">{{model.event.name}}</div>
   <div class="event-card__top-info">
     <div class="project-avatar">
       <img src="{{ imageUrl() }}" alt="">
       <span class="scoring">
-        <span *ngIf="event.project.scoring">{{ event.project.scoring.score | dashIfEmpty }}</span>
-        <span *ngIf="!event.project.scoring">&mdash;</span>
+        <span *ngIf="model.project.scoring">{{ model.project.scoring.score | dashIfEmpty }}</span>
+        <span *ngIf="!model.project.scoring">&mdash;</span>
         <span class="light-color ">/ 100</span></span>
     </div>
     <div class="project-info">
-      <div class="project-title"><a [routerLink]="getProjectLink(event.projectId)">{{ event.project.name }}</a></div>
+      <div class="project-title"><a [routerLink]="getProjectLink(model.event.projectId)">{{ model.project.name }}</a></div>
       <div class="project-distribute">
         <span class="light-label">{{ 'FreeTokenPlace.TokensToDistribute' | translate }}</span>
-        <div>{{ tokenBalance | formatNumber: event.tokenDecimals: true }} {{ event.tokenTicker }}</div>
+        <div>{{ tokenBalance | formatNumber: model.event.tokenDecimals: true }} {{ model.event.tokenTicker }}</div>
       </div>
       <div class="project-bets">
         <span class="light-label">{{ 'FreeTokenPlace.TotalBet' | translate }}</span>
-        <div> {{ userBid | formatNumber }} / {{ totalBid | formatNumber }} SVT</div>
+        <div> {{ userBid | formatNumber }} / {{ model.event.totalBid | formatNumber }} SVT</div>
       </div>
     </div>
   </div>
   <div class="event-card__timer">
     <span *ngIf="!userBid" class="light-label light-label_small">{{ 'FreeTokenPlace.MyPotentialShare' | translate }}</span>
-    <div *ngIf="!userBid">{{ getPotentialShare() | formatNumber }} {{ event.tokenTicker }} ( {{ getPercentShare() | formatNumber }} %)</div>
+    <div *ngIf="!userBid">{{ model.event.getPotentialShare(balance.svt) | formatNumber }} {{ model.event.tokenTicker }} ( {{ model.event.getPercentShare(user.id) | formatNumber }} %)</div>
     <span *ngIf="userBid" class="light-label light-label_small">{{ 'FreeTokenPlace.ActualShare' | translate }}</span>
-    <div *ngIf="userBid">{{ getActualShare() | formatNumber }} {{ event.tokenTicker }} ({{ getPercentShare() | formatNumber }}%)</div>
+    <div *ngIf="userBid">{{ model.event.getActualShare(user.id) | formatNumber }} {{ model.event.tokenTicker }} ({{ model.event.getPercentShare(user.id) | formatNumber }}%)</div>
     <div class="timer" [class.timer_finished]="finished">
       <div class="timer__info" *ngIf="!finished">{{ 'FreeTokenPlace.TheEventEndsIn' | translate }}</div>
       <div class="timer__info" *ngIf="finished">{{ 'FreeTokenPlace.TheEventWasEnd' | translate }}</div>
       <div *ngIf="finished" class="timer__numbers">
         <div class="time-number time-number__finished">
-          {{ event.finishDate | date: 'dd.MM.yy' }}
+          {{ model.event.finishDate | date: 'dd.MM.yy' }}
         </div>
       </div>
       <div *ngIf="!finished" class="timer__numbers">
-        <div *ngIf="event.timer.days > 0" class="time-number">
-          {{ event.timer.days }}
+        <div *ngIf="model.timer.days > 0" class="time-number">
+          {{ model.timer.days }}
           <div class="timer__labels">{{ 'FreeTokenPlace.Days' | translate }}</div>
         </div>
-        <div *ngIf="event.timer.days > 0 || event.timer.hours > 0" class="time-number">
-          {{ event.timer.hours }}
+        <div *ngIf="model.timer.days > 0 || model.timer.hours > 0" class="time-number">
+          {{ model.timer.hours }}
           <div class="timer__labels">{{ 'FreeTokenPlace.Hours' | translate }}</div>
         </div>
-        <div *ngIf="event.timer.days == 0" class="time-number">
-          {{ event.timer.minutes }}
+        <div *ngIf="model.timer.days == 0" class="time-number">
+          {{ model.timer.minutes }}
           <div class="timer__labels">{{ 'FreeTokenPlace.Minutes' | translate }}</div>
         </div>
-        <div *ngIf="event.timer.days == 0 && event.timer.hours == 0" class="time-number">
-          {{ event.timer.seconds }}
+        <div *ngIf="model.timer.days == 0 && model.timer.hours == 0" class="time-number">
+          {{ model.timer.seconds }}
           <div class="timer__labels">{{ 'FreeTokenPlace.Seconds' | translate }}</div>
         </div>
       </div>
     </div>
   </div>
   <div class="event-card__footer">
-    <span *ngIf="event.transaction" class="light-label light-label_small">
-      <a target="_blank" href="https://rinkeby.etherscan.io/tx/{{ event.transaction }}">{{ 'FreeTokenPlace.Awaiting' | translate }}</a>
+    <span *ngIf="model.transaction" class="light-label light-label_small">
+      <a target="_blank" href="https://rinkeby.etherscan.io/tx/{{ model.transaction }}">{{ 'FreeTokenPlace.Awaiting' | translate }}</a>
     </span>
     <div *ngIf="!finished" class="start-btn-wrapper">
       <button *ngIf="!userHasBid" (click)="showParticipateDialogAsync()" class="material-btn">{{ 'FreeTokenPlace.Participate' | translate }}</button>
