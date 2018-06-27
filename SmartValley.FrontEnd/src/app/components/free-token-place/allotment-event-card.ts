@@ -17,4 +17,5 @@ export interface AllotmentEventCard {
     timer?: AllotmentEventTimer;
     project?: ProjectResponse;
     participants: Array<AllotmentEventParticipantResponse>;
+    transaction?: string;
 }

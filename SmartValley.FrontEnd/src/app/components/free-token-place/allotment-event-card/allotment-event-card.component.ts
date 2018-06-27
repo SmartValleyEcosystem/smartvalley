@@ -12,6 +12,11 @@ import {isNullOrUndefined} from 'util';
 import {Router} from '@angular/router';
 import {Paths} from '../../../paths';
 import {AllotmentEventService} from '../../../services/allotment-event/allotment-event.service';
+import {EthereumTransactionEntityTypeEnum} from '../../../api/transaction/ethereum-transaction-entity-type.enum';
+import {TransactionRequest} from '../../../api/transaction/requests/transaction-request';
+import {EthereumTransactionStatusEnum} from '../../../api/transaction/ethereum-transaction-status.enum';
+import {EthereumTransactionTypeEnum} from '../../../api/transaction/ethereum-transaction-type.enum';
+import {TransactionApiClient} from '../../../api/transaction/transaction-api-client';
 import BigNumber from 'bignumber.js';
 
 @Component({
@@ -27,6 +32,7 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
               private dialogService: DialogService,
               private userContext: UserContext,
               private authenticationService: AuthenticationService,
+              private transactionApiClient: TransactionApiClient,
               private erc223ContractClient: Erc223ContractClient) {
   }
 
@@ -63,6 +69,7 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
 
     this.canRecieveTokens = !isNullOrUndefined(this.event.participants) && this.finished
         || !this.event.participants.some(i => i.userId === this.userContext.getCurrentUser().id && i.isCollected) && this.finished;
+    this.getTransactionAsync();
   }
 
   ngOnDestroy(): void {
@@ -130,6 +137,24 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
     return decodeURIComponent(
       this.router.createUrlTree([Paths.Project + '/' + id]).toString()
     );
+  }
+
+  public async getTransactionAsync() {
+    if (!this.user) {
+      return '';
+    }
+    const transactionInfo = await this.transactionApiClient.getEthereumTransactionAsync(<TransactionRequest>{
+      count: 1,
+      userIds: [this.user.id],
+      entityIds: [this.event.id],
+      entityTypes: [EthereumTransactionEntityTypeEnum.AllotmentEvent],
+      statuses: [EthereumTransactionStatusEnum.InProgress]
+    });
+    if (transactionInfo.items[transactionInfo.items.length]) {
+      this.event.transaction = transactionInfo.items[transactionInfo.items.length].hash;
+      return;
+    }
+    this.event.transaction = '';
   }
 
   public getAllotmentEventTimeLeft() {
