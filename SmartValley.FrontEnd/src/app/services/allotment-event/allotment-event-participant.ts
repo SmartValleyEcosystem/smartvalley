@@ -21,8 +21,8 @@ export class AllotmentEventParticipant {
 
   static create(response: AllotmentEventParticipantResponse): AllotmentEventParticipant {
     return new AllotmentEventParticipant(
-      response.bid,
-      response.share,
+      response.bid.toString(),
+      response.share.toString(),
       response.userId,
       response.isCollected
     );
