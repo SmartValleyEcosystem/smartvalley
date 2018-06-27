@@ -30,6 +30,7 @@ export class AdminAllotmentEventsComponent {
   public loading = true;
   public offset = 0;
   public pageSize = 10;
+  public totalRecords: number;
   public transactionsInfo: TransactionInfo[] = [];
 
   constructor(private allotmentEventsManagerContractClient: AllotmentEventsManagerContractClient,
@@ -53,6 +54,7 @@ export class AdminAllotmentEventsComponent {
   private async loadAllotmentEventsAsync(): Promise<void> {
     this.loading = true;
     this.allotmentEvents = await this.allotmentEventService.getAllotmentEventsAsync(this.offset, this.pageSize, this.selectedStatuses);
+    this.totalRecords = this.allotmentEvents.length;
     for (let i = 0; i < this.allotmentEvents.length; i++) {
       if (this.allotmentEvents[i].eventContractAddress === null) {
         continue;
