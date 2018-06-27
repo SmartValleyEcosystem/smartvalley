@@ -38,7 +38,7 @@ export class StartAllotmentEventModalComponent implements OnInit {
 
   public async submit(result: boolean) {
     const finishDate = new Date(this.data.finishDate);
-    const finishDateWithFreezing = finishDate.setDate(finishDate.getDate() + this.freezeTime);
+    const finishDateWithFreezing = new Date(finishDate).getTime() + this.freezeTime * 24 * 3600 * 1000;
 
     if (!this.tokenBalance) {
         this.notificationService.error(
