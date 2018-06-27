@@ -25,6 +25,7 @@ export class FreeTokenPlaceComponent implements OnInit {
   public pageSize = 10;
   public showFrozenTooltip = false;
   public balance: Balance;
+  public isAllotmentEventsLoaded = false;
   public user: User;
 
   constructor(private allotmentEventsService: AllotmentEventService,
@@ -35,6 +36,7 @@ export class FreeTokenPlaceComponent implements OnInit {
 
   async ngOnInit() {
     await this.loadAllotmentEventsAsync();
+    this.isAllotmentEventsLoaded = true;
     const tokenBalance = await this.balanceService.getTokenBalanceAsync();
     this.balance = tokenBalance;
     this.user = this.userContext.getCurrentUser();
