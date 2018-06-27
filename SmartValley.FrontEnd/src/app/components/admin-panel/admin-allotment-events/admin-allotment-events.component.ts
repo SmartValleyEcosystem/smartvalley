@@ -102,7 +102,7 @@ export class AdminAllotmentEventsComponent {
   public async showStartAllotmentEventModal(allotmentEventData: AllotmentEventResponse) {
     const start = await this.dialogService.showStartAllotmentEventDialogAsync(allotmentEventData);
     if (start) {
-      await this.allotmentEventService.startAsync(allotmentEventData.id);
+      await this.loadAllotmentEventsAsync();
     }
   }
 

@@ -9,6 +9,7 @@ import {NotificationsService} from 'angular2-notifications';
 import {TranslateService} from '@ngx-translate/core';
 import {AllotmentEventsManagerContractClient} from '../../../services/contract-clients/allotment-events-manager-contract-client';
 import BigNumber from 'bignumber.js';
+import {AllotmentEventService} from '../../../services/allotment-event/allotment-event.service';
 
 @Component({
   selector: 'app-start-allotment-event-modal',
@@ -27,7 +28,8 @@ export class StartAllotmentEventModalComponent implements OnInit {
               private notificationService: NotificationsService,
               private translateService: TranslateService,
               private projectApiClient: ProjectApiClient,
-              private erc223ContractClient: Erc223ContractClient) {
+              private erc223ContractClient: Erc223ContractClient,
+              private allotmentEventService: AllotmentEventService) {
   }
 
   async ngOnInit() {
@@ -36,11 +38,11 @@ export class StartAllotmentEventModalComponent implements OnInit {
     this.freezeTime = await this.allotmentEventsManagerContractClient.getFreezingDurationAsync();
   }
 
-  public async submit(result: boolean) {
+  public async submitAsync() {
     const finishDate = new Date(this.data.finishDate);
     const finishDateWithFreezing = new Date(finishDate).getTime() + this.freezeTime * 24 * 3600 * 1000;
 
-    if (!this.tokenBalance) {
+    if (!this.tokenBalance[0]) {
         this.notificationService.error(
             this.translateService.instant('StartAllotmentEventModalComponent.EmptyBalance')
         );
@@ -54,6 +56,7 @@ export class StartAllotmentEventModalComponent implements OnInit {
         this.dialogRef.close(false);
         return;
     }
-    this.dialogRef.close(result);
+    await this.allotmentEventService.startAsync(this.data.id);
+    this.dialogRef.close(true);
   }
 }
