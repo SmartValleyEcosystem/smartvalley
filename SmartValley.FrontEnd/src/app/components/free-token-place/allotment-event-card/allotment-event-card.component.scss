@@ -6,7 +6,7 @@
 }
 .event-card {
   margin: 0 24px 24px 0;
-  height: 572px;
+  height: 524px;
   padding: 24px;
   width: 336px;
   background: #fff;
@@ -43,7 +43,7 @@
   letter-spacing: 0.04em;
   margin-bottom: 24px;
 }
-.scoring {
+.scoring, .scoring span {
   font-size: 24px;
   text-align: center;
 }
@@ -101,4 +101,14 @@
 }
 .time-number__finished {
   margin-top: 12px;
+}
+.tokens-label {
+  font-size: 14px;
+}
+.material-btn {
+  height: 48px !important;
+  font-size: 24px;
+}
+.material-btn__action {
+  width: 100%;
 }

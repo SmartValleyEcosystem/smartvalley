@@ -12,11 +12,11 @@
       <div class="project-title"><a [routerLink]="getProjectLink(model.event.projectId)">{{ model.project.name }}</a></div>
       <div class="project-distribute">
         <span class="light-label">{{ 'FreeTokenPlace.TokensToDistribute' | translate }}</span>
-        <div>{{ model.event.totalTokens | formatNumber: model.event.tokenDecimals: true }} {{ model.event.tokenTicker }}</div>
+        <div class="tokens-label">{{ model.event.totalTokens | formatNumber: model.event.tokenDecimals: true }} {{ model.event.tokenTicker }}</div>
       </div>
       <div class="project-bets">
         <span class="light-label">{{ 'FreeTokenPlace.TotalBet' | translate }}</span>
-        <div> {{ userBid | formatNumber }} / {{ model.event.totalBid | formatNumber }} SVT</div>
+        <div class="tokens-label"> {{ userBid | formatNumber }} / {{ model.event.totalBid | formatNumber }} SVT</div>
       </div>
     </div>
   </div>
@@ -62,7 +62,7 @@
       <button *ngIf="userHasBid" (click)="showParticipateDialogAsync()" class="material-btn material-btn__action">{{ 'FreeTokenPlace.AddSVT' | translate }}</button>
     </div>
     <div *ngIf="canReceiveTokens" class="start-btn-wrapper">
-      <button (click)="showReceiveTokensModalAsync()" class="material-btn">{{ 'FreeTokenPlace.Receive' | translate }} {{event.tokenTicker}}</button>
+      <button (click)="showReceiveTokensModalAsync()" class="material-btn">{{ 'FreeTokenPlace.Receive' | translate }} {{model.event.tokenTicker}}</button>
     </div>
   </div>
 </div>
