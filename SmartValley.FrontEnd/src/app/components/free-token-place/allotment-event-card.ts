@@ -2,6 +2,7 @@ import {AllotmentEventTimer} from './allotment-event-timer';
 import {ProjectResponse} from '../../api/project/project-response';
 import {AllotmentEvent} from '../../services/allotment-event/allotment-event';
 import {Balance} from '../../services/balance/balance';
+import BigNumber from 'bignumber.js';
 
 export class AllotmentEventCard {
 
@@ -10,6 +11,7 @@ export class AllotmentEventCard {
   public event: AllotmentEvent;
   public transaction?: string;
   public balance?: Balance;
+  public svtDecimal?: number;
 
   constructor(event: AllotmentEvent) {
     this.event = event;
