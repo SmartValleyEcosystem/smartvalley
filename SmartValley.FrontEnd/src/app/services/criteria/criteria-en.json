@@ -178,7 +178,7 @@
     "36.0": "if outsourcing is not justified",
     "36.1": "if outsourced competences are not critical but should ideally be part of the team",
     "36.2": "if the project does not use outsourcing or if its use is justified",
-    "37.0": "if the time and money spent are too high",
+    "37.0": "if the time and money spent are too high or MVP does not exist",
     "37.2": "if the time and money spent correspond to the quality of the existing/future MVP",
     "38.0": "if value is absent or very low",
     "38.1": "if the value is not well formulated but the product has potential",
