@@ -4,6 +4,7 @@ using NServiceBus;
 using NServiceBus.Persistence.Sql;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Services;
+using SmartValley.Messages;
 using SmartValley.Messages.Commands;
 using SmartValley.Messages.Events;
 

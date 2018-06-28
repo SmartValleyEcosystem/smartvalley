@@ -1,4 +1,4 @@
-﻿namespace SmartValley.Messages.Commands
+﻿namespace SmartValley.Messages
 {
     public enum AllotmentEventOperation
     {

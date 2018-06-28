@@ -6,6 +6,7 @@ using SmartValley.Domain;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 using SmartValley.Domain.Services;
+using SmartValley.Messages;
 using SmartValley.Messages.Commands;
 using SmartValley.WebApi.AllotmentEvents.Requests;
 using SmartValley.WebApi.AllotmentEvents.Responses;
