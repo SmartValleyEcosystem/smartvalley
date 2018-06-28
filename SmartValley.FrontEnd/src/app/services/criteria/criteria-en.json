@@ -237,7 +237,7 @@
     "57.0": "if the TA is not interested in the product",
     "57.1": "if it is impossible to evaluate the TA's interest",
     "57.2": "if the target audience has shown demand for the product and proof is provided (studies/market research)",
-    "58.0": "if the project has fewer users than stated (write how many)",
+    "58.0": "if the project has fewer users than stated",
     "58.1": "if it is impossible to verify",
     "58.2": "if the project really has the stated number of real users or more",
     "59.0": "if competitors are not listed, or if those listed are not the major ones, or if those listed are not competitors at all",
