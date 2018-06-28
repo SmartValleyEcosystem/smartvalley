@@ -20,6 +20,10 @@ export class OnlyNumbersByDecimalDirective {
         this.decimal = 1;
       }
 
+      if (this.specialKeys.indexOf(event.key) !== -1) {
+        return;
+      }
+
       let current: string = this.el.nativeElement.value;
       let next: string = current.concat(event.key);
 
