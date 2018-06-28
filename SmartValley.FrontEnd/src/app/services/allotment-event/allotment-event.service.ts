@@ -31,9 +31,11 @@ export class AllotmentEventService {
       items: [],
       totalCount: 0
     };
-    allotmentEvents.items = allotmentEventsResponse.items.map(i => AllotmentEvent.create(i)).filter(i => i.eventContractAddress)
+    allotmentEvents.items = allotmentEventsResponse.items.map(i => AllotmentEvent.create(i));
     for (const event of allotmentEvents.items) {
-      event.totalTokens = await this.erc223ContractClient.getTokenBalanceAsync(event.tokenContractAddress, event.eventContractAddress);
+      if (event.eventContractAddress) {
+        event.totalTokens = await this.erc223ContractClient.getTokenBalanceAsync(event.tokenContractAddress, event.eventContractAddress);
+      }
     }
     allotmentEvents.totalCount = allotmentEventsResponse.totalCount;
     return allotmentEvents;
