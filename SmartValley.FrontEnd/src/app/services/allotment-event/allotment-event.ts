@@ -116,6 +116,6 @@ export class AllotmentEvent {
   }
 
   public isCollected(userId: number): boolean {
-    return !this.participants.some(i => i.userId === userId && i.isCollected);
+    return this.participants.some(i => i.userId === userId && i.isCollected);
   }
 }
