@@ -7,9 +7,12 @@ import {isNullOrUndefined} from 'util';
 })
 export class FormatNumberPipe implements PipeTransform {
 
-  transform(val: BigNumber): string {
+  transform(val: BigNumber | number): string {
+    if (typeof val === 'number') {
+        val = new BigNumber(val);
+    }
     if (!isNullOrUndefined(val)) {
-      return val.toFormat();
+      return val.toFormat(3, 3);
     }
     return '';
   }
