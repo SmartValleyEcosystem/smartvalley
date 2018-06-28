@@ -19,7 +19,7 @@ export class AllotmentEventParticipateModalComponent implements OnInit {
 
   public newBet: BigNumber;
   public frozenTime: Date;
-  public changeParticipate = new Subject<string>();
+  public changeParticipate = new Subject<any>();
   public isDescriptionShow = false;
   public computedShare: BigNumber;
 
