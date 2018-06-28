@@ -4,7 +4,7 @@
       <li class="balance-label">{{ 'FreeTokenPlace.Balance' | translate }}</li>
       <li>{{ balance.ethBalance | formatNumber  }} {{ 'FreeTokenPlace.ETH' | translate }}</li>
       <li>{{ balance.svt | formatNumber  }} {{ 'FreeTokenPlace.SVT' | translate }}</li>
-      <li>
+      <li *ngIf="balance.totalFrozenSVT > 0">
         {{ balance.totalFrozenSVT | formatNumber  }} {{ 'FreeTokenPlace.FreezedSVT' | translate }}
         <span class="question-icon" (mouseenter)="showFrozenTooltip = true" (mouseleave)="showFrozenTooltip = false">?</span>
         <div *ngIf="showFrozenTooltip" class="frozen-balance-info-tooltip">
