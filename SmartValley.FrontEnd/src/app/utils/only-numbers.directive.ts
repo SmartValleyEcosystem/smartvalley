@@ -6,7 +6,7 @@ import {Directive, ElementRef, HostListener, Input} from '@angular/core';
 export class OnlyNumbersByDecimalDirective {
     private regex: RegExp = new RegExp(/^-?[0-9]+(\.[0-9]*){0,1}$/g);
     private decimalRegex: RegExp = new RegExp(/\.(.*)/);
-    private specialKeys: Array<string> = [ 'Backspace', 'Tab', 'End', 'Home', '.', 'ArrowLeft', 'ArrowRight'];
+    private specialKeys: Array<string> = [ 'Backspace', 'Tab', 'End', 'Home', '.', 'ArrowLeft', 'ArrowRight', 'Delete'];
 
     @Input() decimal: number;
 
@@ -18,10 +18,6 @@ export class OnlyNumbersByDecimalDirective {
     onKeyDown(event: KeyboardEvent) {
       if (!this.decimal) {
         this.decimal = 1;
-      }
-
-      if (this.specialKeys.indexOf(event.key) !== -1) {
-        return;
       }
 
       let current: string = this.el.nativeElement.value;
