@@ -128,7 +128,7 @@
     "19.1": "if partly verifiable",
     "19.2": "if verifiable",
     "20.0": "if at least one of them did",
-    "20.2": "if they did not",
+    "20.2": "if they did not or you can't find information",
     "21.0": "if experience is insufficient",
     "21.1": "if doubts are present",
     "21.2": "if they  have enough experience",
