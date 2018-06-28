@@ -29,7 +29,7 @@
     "25": "Is the blockchain chosen correctly, is it performant enough for the needs of the project? If not, which blockchain would fit better?",
     "26": "Does the MVP source code on GitHub correspond to the current version of the system?",
     "27": "Is there a technical description of the algorithm or future system as a whole? If yes, assess how this info corresponds to the project's stated goal.<br/>E.g.:<br/>- if the project is developed on Ethereum and the token source code is present, do the code and token functions correspond to the model described in the WP?<br/>- if a description of the algorithms is provided, is it relevant and do the algorithms correspond to the project's state objectives?",
-    "28": "Does the team  have sufficient technical experience to realize the task?",
+    "28": "Does the team have sufficient technical experience to realize the task?",
 
     "29": "Is the problem really pressing and relevant?",
     "30": "Is blockchain really needed to solve the issue efficiently?",
@@ -150,8 +150,8 @@
     "27.0": "if there isn't or it does not correspond to the stated functionality (explain how and why)",
     "27.1": "if there is but some features are missing (write which ones and why)",
     "27.2": "if there is and it corresponds to the stated features",
-    "28.0": "if experience is insufficient (write why)",
-    "28.1": "if yes, but only if additional professionals are added to the team (write which and how many)",
+    "28.0": "if experience is insufficient",
+    "28.1": "if yes, but only if additional professionals are added to the team",
     "28.2": "if yes - the project has a strong team with relevant experience",
 
     "29.0": "if the issue is not relevant (doesn't exist) or is already solved",
