@@ -37,7 +37,17 @@ export class InitializationService {
     if (this.isAppInitialized) {
       return;
     }
-    BigNumber.config({ DECIMAL_PLACES: 100});
+    BigNumber.config({
+      DECIMAL_PLACES: 100,
+      FORMAT: {
+        decimalSeparator: '.',
+        groupSeparator: ' ',
+        groupSize: 3,
+        secondaryGroupSize: 3,
+        fractionGroupSeparator: ' ',
+        fractionGroupSize: 3
+      }
+    });
     await Promise.all([this.initializeAppInternalAsync(), this.waitAsync()]);
     this.isAppInitialized = true;
   }

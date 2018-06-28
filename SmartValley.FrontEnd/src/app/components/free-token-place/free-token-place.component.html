@@ -2,16 +2,16 @@
   <div class="content">
     <ul *ngIf="balance" class="free-token-place-panel__balance">
       <li class="balance-label">{{ 'FreeTokenPlace.Balance' | translate }}</li>
-      <li>{{ balance.ethBalance }} {{ 'FreeTokenPlace.ETH' | translate }}</li>
-      <li>{{ balance.svt | formatNumber: balance.svtDecimals: true }} {{ 'FreeTokenPlace.SVT' | translate }}</li>
+      <li>{{ balance.ethBalance | formatNumber  }} {{ 'FreeTokenPlace.ETH' | translate }}</li>
+      <li>{{ balance.svt | formatNumber  }} {{ 'FreeTokenPlace.SVT' | translate }}</li>
       <li>
-        {{ balance.totalFrozenSVT | formatNumber: balance.svtDecimals: true }} {{ 'FreeTokenPlace.FreezedSVT' | translate }}
+        {{ balance.totalFrozenSVT | formatNumber  }} {{ 'FreeTokenPlace.FreezedSVT' | translate }}
         <span class="question-icon" (mouseenter)="showFrozenTooltip = true" (mouseleave)="showFrozenTooltip = false">?</span>
         <div *ngIf="showFrozenTooltip" class="frozen-balance-info-tooltip">
           <span class="tooltip-title">{{ 'FreeTokenPlace.CantTransferFreezed' | translate }}</span>
           <ul class="frozen-balance-items">
             <li *ngFor="let frozen of balance.frozenSVT">
-              {{ frozen.sum | formatNumber: balance.svtDecimals: true }} {{ 'FreeTokenPlace.SVT' | translate }} {{ 'FreeTokenPlace.Until' | translate }} {{ frozen.date | date:'dd.MM.yyyy' }}
+              {{ frozen.sum | formatNumber  }} {{ 'FreeTokenPlace.SVT' | translate }} {{ 'FreeTokenPlace.Until' | translate }} {{ frozen.date | date:'dd.MM.yyyy' }}
             </li>
           </ul>
         </div>
@@ -26,15 +26,13 @@
   <h2 *ngIf="activeEvents.length">{{ 'FreeTokenPlace.ActiveAllotmentEvents' | translate }}</h2>
   <div class="allotment-events">
     <app-allotment-event-card (finishEvent)="finishEvent($event)" *ngFor="let event of activeEvents"
-                              [model]="event"
-                              [balance]="balance">
+                              [model]="event">
     </app-allotment-event-card>
   </div>
   <h2 *ngIf="finishedEvents.length">{{ 'FreeTokenPlace.FinishedAllotmentEvents' | translate }}</h2>
   <div class="allotment-events">
     <app-allotment-event-card *ngFor="let event of finishedEvents" [finished]="true"
-                              [model]="event"
-                              [balance]="balance">
+                              [model]="event">
     </app-allotment-event-card>
   </div>
 </div>
