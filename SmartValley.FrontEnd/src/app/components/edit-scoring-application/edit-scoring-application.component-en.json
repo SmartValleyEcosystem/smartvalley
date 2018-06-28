@@ -89,7 +89,7 @@
     "LinksToFinancialModelResearchQuestion": "Provide links to studies and research on which your financial model is based",
     "CurrentlyAvailableResources": "Which financial resources are currently availalble to your project?",
     "UsedBlockchainTypeQuestion": "Which blockchain do you plan to use and why?",
-    "DoYouHaveAlgorithmsSourceCodeQuestion": "Do you have the source code for the tokens or other algorithms?",
+    "DoYouHaveAlgorithmsSourceCodeQuestion": "Do you have the source code for the token?",
     "AlgorithmsSourceCodeLinkQuestion": "Link to source codes",
     "DoYouHaveFuturePlatformTechnicalDescriptionQuestion": "Do you have a technical description of the future platform or its algorithms?",
     "FuturePlatformTechnicalDescriptionLinkQuestion": "Link to technical description",
