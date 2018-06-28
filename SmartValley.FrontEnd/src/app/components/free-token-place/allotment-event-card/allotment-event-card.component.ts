@@ -80,7 +80,7 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
         ticker: this.model.event.tokenTicker
       });
       if (participateResult) {
-        await this.allotmentEventService.participateAsync(this.model.event.id, this.model.event.eventContractAddress, participateResult);
+        await this.allotmentEventService.participateAsync(this.model.event.id, this.model.event.eventContractAddress, participateResult * Math.pow(10, this.model.event.tokenDecimals));
       }
     }
   }
