@@ -108,7 +108,7 @@
     "MVPSourceCodesLinkQuestion": "Link to the source codes for the MVP/prototype",
     "CollectingFundsPlanQuestion": "How do you plan to collect funds? (e.g., via a smart contract, ESCROW, etc.)",
     "MinimumIcoRaiseAmountQuestion": "What is the minimum amount you plan to raise at the ICO?",
-    "MaximumIcoRaiseAmountQuestion": "What is the maxiumum amount you plan to raise at the ICO?",
+    "MaximumIcoRaiseAmountQuestion": "What is the maximum amount you plan to raise at the ICO?",
     "IcoRaisedFundsSpendPurposeQuestion": "How will you spend the funds raised at the ICO?",
     "TokenDistributionPlanQuestion": "How will tokens be distributed among holders and on which terms? (e.g., 70% of tokens sold at the ICO, 30% reserved for the team with a 2-year vesting period)",
     "CrowdsaleDescriptionQuestion": "Describe the crowdsale terms, bonuses, and discounts",
