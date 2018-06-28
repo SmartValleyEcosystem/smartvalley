@@ -10,6 +10,7 @@ import {Balance} from '../../services/balance/balance';
 import {User} from '../../services/authentication/user';
 import {UserContext} from '../../services/authentication/user-context';
 import {AllotmentEventService} from '../../services/allotment-event/allotment-event.service';
+import {SmartValleyTokenContractClient} from '../../services/contract-clients/smart-valley-token-contract-client.service';
 
 @Component({
   selector: 'app-free-token-place',
@@ -27,14 +28,17 @@ export class FreeTokenPlaceComponent implements OnInit {
   public balance: Balance;
   public isAllotmentEventsLoaded = false;
   public user: User;
+  public svtDecimal: number;
 
   constructor(private allotmentEventsService: AllotmentEventService,
+              private smartValleyTokenContractClient: SmartValleyTokenContractClient,
               private balanceService: BalanceService,
               private userContext: UserContext,
               private projectApiClient: ProjectApiClient) {
   }
 
   async ngOnInit() {
+    this.svtDecimal = await this.smartValleyTokenContractClient.getDecimalsAsync();
     await this.loadAllotmentEventsAsync();
     this.isAllotmentEventsLoaded = true;
     this.user = this.userContext.getCurrentUser();
@@ -60,6 +64,7 @@ export class FreeTokenPlaceComponent implements OnInit {
 
     this.allotmentEvents.map(a => {
       a.balance = this.balance;
+      a.svtDecimal = this.svtDecimal;
       a.project = projectResponse.items.find((p) => p.id === a.event.projectId);
     });
     this.activeEvents = this.allotmentEvents.filter(a => a.event.status === AllotmentEventStatus.InProgress);
