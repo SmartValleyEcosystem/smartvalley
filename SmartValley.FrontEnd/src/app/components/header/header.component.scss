@@ -89,7 +89,7 @@ button:focus {
 
 .header-nav__authenticated {
   text-align: right;
-  margin: 0 !important;
+  margin: 0 0 0 16px !important;
   @media screen and (min-width: 320px) and (max-width: 768px) {
     display: none;
   }
@@ -123,10 +123,13 @@ button:focus {
 }
 
 .header-nav__link {
+  &:first-child{
+    margin-left: 0;
+  }
   color: #a4a2b0;
   text-decoration: none;
   display: inline-block;
-  margin-left: 47px;
+  margin-left: 36px;
   cursor: pointer;
 }
 
