@@ -38,34 +38,31 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
   public userHasBid: boolean;
   public totalBid: BigNumber;
   public canReceiveTokens: boolean;
+  public potentialShare: BigNumber;
+  public actualShare: BigNumber;
+  public percentShare: BigNumber;
 
   @Input() public model: AllotmentEventCard;
   @Input() public finished = false;
-  @Input() public balance: Balance;
 
   @Output() finishEvent: EventEmitter<number> = new EventEmitter<number>();
 
   async ngOnInit() {
     this.user = this.userContext.getCurrentUser();
+
+    this.potentialShare = this.model.event.getPotentialShare(this.model.balance.svt);
+
     this.timer = <NodeJS.Timer>setInterval(async () => await this.getAllotmentEventTimeLeft(), 1000);
     if (this.user) {
       this.userHasBid = this.model.event.userHasBid(this.user.id);
-
-      if (this.userHasBid) {
-        this.userBid = this.model.event.getUserBid(this.user.id);
-      }
+      this.userBid = this.model.event.getUserBid(this.user.id);
+      this.actualShare = this.model.event.getActualShare(this.user.id);
+      this.percentShare = this.model.event.getPercentShare(this.user.id);
     }
-
-    this.model.timer = {
-      days: '00',
-      hours: '00',
-      minutes: '00',
-      seconds: '00'
-    };
     if (this.userContext.getCurrentUser()) {
       this.canReceiveTokens = !this.model.event.isCollected(this.userContext.getCurrentUser().id) && this.finished;
     }
-    this.getTransactionAsync();
+    await this.getTransactionAsync();
   }
 
   ngOnDestroy(): void {
@@ -75,7 +72,7 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
   public async showParticipateDialogAsync() {
     if (await this.authenticationService.authenticateAsync()) {
       const participateResult = await this.dialogService.showParticipateDialogAsync(<AllotmentEventParticipateDialogData>{
-        balance: this.balance,
+        balance: this.model.balance,
         totalBet: this.model.event.totalBid,
         myBet: this.userBid,
         tokenBalance: this.model.event.totalTokens,

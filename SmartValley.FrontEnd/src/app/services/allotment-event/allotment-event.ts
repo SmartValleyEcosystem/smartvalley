@@ -20,6 +20,8 @@ export class AllotmentEvent {
   public participants: Array<AllotmentEventParticipant>;
   public totalTokens?: BigNumber;
 
+  public totalBid = new BigNumber(0);
+
   constructor(id: number,
               name: string,
               status: AllotmentEventStatus,
@@ -42,6 +44,8 @@ export class AllotmentEvent {
     this.tokenDecimals = tokenDecimals;
     this.tokenTicker = tokenTicker;
     this.participants = participants.map(i => AllotmentEventParticipant.create(i));
+
+    this.participants.map(i => this.totalBid = this.totalBid.plus(i.bid));
   }
 
   static create(response: AllotmentEventResponse): AllotmentEvent {
@@ -61,7 +65,10 @@ export class AllotmentEvent {
 
   public getPercentShare(userId: number) {
     if (!userId) {
-        return new BigNumber(0);
+      return new BigNumber(0);
+    }
+    if (this.totalBid.isZero()) {
+      return new BigNumber(0);
     }
     const share = this.getUserBid(userId).mul(100).dividedBy(this.totalBid);
     if (share.isNaN()) {
@@ -71,8 +78,11 @@ export class AllotmentEvent {
   }
 
   public getPotentialShare(svtBalance: BigNumber) {
+    if (svtBalance.isZero()) {
+      return new BigNumber(0);
+    }
     const share = svtBalance.dividedBy(svtBalance.plus(this.totalBid));
-    if (share.isNaN()) {
+    if (share.isNaN() || !share.isFinite()) {
       return new BigNumber(0);
     }
     return share;
@@ -83,16 +93,10 @@ export class AllotmentEvent {
       return new BigNumber(0);
     }
     const share = this.getUserBid(userId).dividedBy(this.totalBid);
-    if (share.isNaN()) {
+    if (share.isNaN() || !share.isFinite()) {
       return new BigNumber(0);
     }
-    return share;
-  }
-
-  get totalBid(): BigNumber {
-    const total = new BigNumber(0);
-    this.participants.map(i => total.plus(i.bid));
-    return total;
+    return this.totalTokens.mul(share);
   }
 
   public getUserTokens(userId: number, tokenBalance: BigNumber): BigNumber {

@@ -1,9 +1,13 @@
 <div class="dialog">
   <button class="dialog-close" mat-dialog-close></button>
   <h2>{{ 'ParticipateModal.Title' | translate }}</h2>
-  <h3 *ngIf="data.myBet">{{ 'ParticipateModal.CurrentBet' | translate }} {{ data.myBet | formatNumber }} {{ 'ParticipateModal.SVT' | translate }}</h3>
+  <h3 *ngIf="data.myBet">{{ 'ParticipateModal.CurrentBet' | translate }} {{ data.myBet | formatNumber }} {{
+    'ParticipateModal.SVT' | translate }}</h3>
   <p class="strong">{{ 'ParticipateModal.HowMuchSVTBet' | translate }}</p>
-  <input appOnlyNumbersByDecimal [decimal]="data.decimals" [(ngModel)]="newBet" (keydown)='changeParticipate.next($event)' placeholder="{{ 'ParticipateModal.MAX' | translate }} {{ data.balance.svt }} {{ 'ParticipateModal.SVT' | translate }}" class="input" type="text">
+  <input appOnlyNumbersByDecimal [decimal]="data.decimals" [(ngModel)]="newBet"
+         (keydown)='changeParticipate.next($event)'
+         placeholder="{{ 'ParticipateModal.MAX' | translate }} {{ userSVT }} {{ 'ParticipateModal.SVT' | translate }}"
+         class="input" type="text">
   <p class="description" *ngIf="isDescriptionShow">
     {{ 'ParticipateModal.YouReceive' | translate }}
     <strong>{{ computedShare | formatNumber }} {{ data.ticker }}</strong>
@@ -14,7 +18,10 @@
     {{ 'ParticipateModal.WillBeFreezed' | translate }} {{ frozenTime | date: 'HH:mm dd.MM.yyyy' }}
   </p>
   <p class="button-wrapper">
-    <button (click)="submit(true)" *ngIf="data.myBet.isZero()" class="material-btn">{{ 'ParticipateModal.Participate' | translate }}</button>
-    <button (click)="submit(true)" *ngIf="data.myBet.greaterThan(0)" class="material-btn material-btn__action">{{ 'ParticipateModal.AddSVT' | translate }}</button>
+    <button (click)="submit(true)" *ngIf="data.myBet.isZero()" class="material-btn">{{ 'ParticipateModal.Participate' | translate }}
+    </button>
+    <button (click)="submit(true)" *ngIf="data.myBet.greaterThan(0)" class="material-btn material-btn__action">
+      {{ 'ParticipateModal.AddSVT' | translate }}
+    </button>
   </p>
 </div>

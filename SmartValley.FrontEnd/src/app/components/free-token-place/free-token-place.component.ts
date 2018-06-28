@@ -37,8 +37,6 @@ export class FreeTokenPlaceComponent implements OnInit {
   async ngOnInit() {
     await this.loadAllotmentEventsAsync();
     this.isAllotmentEventsLoaded = true;
-    const tokenBalance = await this.balanceService.getTokenBalanceAsync();
-    this.balance = tokenBalance;
     this.user = this.userContext.getCurrentUser();
     this.userContext.userContextChanged.subscribe((user) => this.user = user);
   }
@@ -57,7 +55,13 @@ export class FreeTokenPlaceComponent implements OnInit {
       projectIds: projectIds
     });
 
-    this.allotmentEvents.map(a => a.project = projectResponse.items.find((p) => p.id === a.event.projectId));
+    const tokenBalance = await this.balanceService.getTokenBalanceAsync();
+    this.balance = tokenBalance;
+
+    this.allotmentEvents.map(a => {
+      a.balance = this.balance;
+      a.project = projectResponse.items.find((p) => p.id === a.event.projectId);
+    });
     this.activeEvents = this.allotmentEvents.filter(a => a.event.status === AllotmentEventStatus.InProgress);
     this.finishedEvents = this.allotmentEvents.filter(a => a.event.status === AllotmentEventStatus.Finished);
   }
