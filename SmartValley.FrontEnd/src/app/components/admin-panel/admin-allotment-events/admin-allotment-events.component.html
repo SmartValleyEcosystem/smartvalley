@@ -61,7 +61,7 @@
         <td class="list-item">{{ rowData['startDate'] | date: 'dd.MM.yy HH:mm' | dashIfEmpty }}</td>
         <td class="list-item">{{ rowData['finishDate'] | date: 'dd.MM.yy HH:mm' | dashIfEmpty }}</td>
         <td class="list-item"> {{rowData['totalTokens'] | formatNumber: rowData['tokenDecimals']: true }} {{ rowData['tokenTicker'] }}</td>
-        <td *ngIf="!rowData.isUpdating" class="list-item">
+        <td *ngIf="!getTransaction(rowData['id'])" class="list-item">
           <button class="btn-icon" *ngIf="rowData.status === AllotmentEventStatus.Created"
                   (click)="publishAsync(rowData)">
             <i class="material-icons">publish</i>

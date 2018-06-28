@@ -34,8 +34,6 @@ namespace SmartValley.Application.Sagas.AllotmentEvent
             Data.AllotmentEventId = message.AllotmentEventId;
             Data.TransactionHash = message.TransactionHash;
 
-            await _allotmentEventService.SetUpdatingStateAsync(message.AllotmentEventId, true);
-
             var ethereumTransactionType = GetTransactionType(message.Operation);
             await _transactionService.StartAsync(message.TransactionHash, message.UserId, EthereumTransactionEntityType.AllotmentEvent, message.AllotmentEventId, ethereumTransactionType);
 
@@ -44,15 +42,14 @@ namespace SmartValley.Application.Sagas.AllotmentEvent
 
         public async Task Handle(TransactionCompleted message, IMessageHandlerContext context)
         {
-            await _allotmentEventService.SetUpdatingStateAsync(Data.AllotmentEventId, false);
             await _allotmentEventService.UpdateAsync(Data.AllotmentEventId);
             MarkAsComplete();
         }
 
-        public async Task Handle(TransactionFailed message, IMessageHandlerContext context)
+        public Task Handle(TransactionFailed message, IMessageHandlerContext context)
         {
-            await _allotmentEventService.SetUpdatingStateAsync(Data.AllotmentEventId, false);
             MarkAsComplete();
+            return Task.CompletedTask;
         }
 
         protected override void ConfigureMapping(IMessagePropertyMapper mapper)

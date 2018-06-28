@@ -36,8 +36,6 @@ namespace SmartValley.Data.SQL.Migrations
 
                     b.Property<DateTimeOffset?>("FinishDate");
 
-                    b.Property<bool>("IsUpdating");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(40);

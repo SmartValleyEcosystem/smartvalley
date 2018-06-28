@@ -14,7 +14,5 @@ namespace SmartValley.Domain.Services
         Task PublishAsync(long allotmentEventId);
 
         Task UpdateAsync(long id);
-
-        Task SetUpdatingStateAsync(long allotmentEventId, bool isUpdating);
     }
 }

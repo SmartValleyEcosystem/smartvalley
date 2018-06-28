@@ -57,10 +57,7 @@ export class AdminAllotmentEventsComponent {
     this.allotmentEvents = allotmentEvents.items;
     this.totalRecords = allotmentEvents.totalCount;
     for (let i = 0; i < this.allotmentEvents.length; i++) {
-      if (this.allotmentEvents[i].eventContractAddress === null) {
-        continue;
-      }
-      const transactionInfo = await this.transactionApiClient.getEthereumTransactionAsync(<TransactionRequest>{
+      const transactionInfo = await this.transactionApiClient.getEthereumTransactionsAsync(<TransactionRequest>{
         count: 1,
         entityIds: [this.allotmentEvents[i].id],
         entityTypes: [EthereumTransactionEntityTypeEnum.AllotmentEvent],
@@ -70,11 +67,11 @@ export class AdminAllotmentEventsComponent {
           EthereumTransactionTypeEnum.StartAllotmentEvent],
         statuses: [EthereumTransactionStatusEnum.InProgress]
       });
-      this.allotmentEvents[i].isUpdating = !!transactionInfo.items.length;
-      if (transactionInfo.items[transactionInfo.items.length]) {
+
+      if (transactionInfo.items.length > 0) {
         this.transactionsInfo.push({
-          eventid: this.allotmentEvents[i].id,
-          transaction: transactionInfo.items[transactionInfo.items.length].hash
+          eventId: this.allotmentEvents[i].id,
+          transaction: transactionInfo.items[0].hash
         });
       }
     }
@@ -84,7 +81,7 @@ export class AdminAllotmentEventsComponent {
   }
 
   public getTransaction(eventId: number): string {
-    const transactionInfo = this.transactionsInfo.find(t => t.eventid === eventId);
+    const transactionInfo = this.transactionsInfo.find(t => t.eventId === eventId);
     if (transactionInfo) {
       return transactionInfo.transaction;
     }
@@ -103,6 +100,7 @@ export class AdminAllotmentEventsComponent {
     this.offset = event.first;
     await this.loadAllotmentEventsAsync();
   }
+
   public async showStartAllotmentEventModal(allotmentEventData: AllotmentEventResponse) {
     const start = await this.dialogService.showStartAllotmentEventDialogAsync(allotmentEventData);
     if (start) {

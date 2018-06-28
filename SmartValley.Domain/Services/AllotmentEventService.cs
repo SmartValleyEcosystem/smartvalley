@@ -99,13 +99,5 @@ namespace SmartValley.Domain.Services
 
             await _allotmentEventRepository.SaveChangesAsync();
         }
-
-        public async Task SetUpdatingStateAsync(long allotmentEventId, bool isUpdating)
-        {
-            var allotmentEvent = await _allotmentEventRepository.GetByIdAsync(allotmentEventId);
-            allotmentEvent.IsUpdating = isUpdating;
-
-            await _allotmentEventRepository.SaveChangesAsync();
-        }
     }
 }

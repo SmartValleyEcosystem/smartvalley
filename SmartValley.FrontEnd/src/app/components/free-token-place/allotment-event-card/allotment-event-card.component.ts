@@ -119,7 +119,7 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
     if (!this.user) {
       return '';
     }
-    const transactionInfo = await this.transactionApiClient.getEthereumTransactionAsync(<TransactionRequest>{
+    const transactionInfo = await this.transactionApiClient.getEthereumTransactionsAsync(<TransactionRequest>{
       count: 1,
       userIds: [this.user.id],
       entityIds: [this.model.event.id],

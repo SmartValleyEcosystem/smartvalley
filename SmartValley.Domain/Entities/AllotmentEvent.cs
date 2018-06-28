@@ -29,8 +29,6 @@ namespace SmartValley.Domain.Entities
 
         public string TokenTicker { get; set; }
 
-        public bool IsUpdating { get; set; }
-
         public long ProjectId { get; set; }
 
         public ICollection<AllotmentEventParticipant> Participants { get; set; }
