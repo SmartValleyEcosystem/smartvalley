@@ -16,6 +16,8 @@ using Nethereum.Signer;
 using Nethereum.Web3;
 using NServiceBus;
 using Serilog;
+using Serilog.Core;
+using Serilog.Sinks.Elasticsearch;
 using SmartValley.Application;
 using SmartValley.Application.AzureStorage;
 using SmartValley.Application.Email;
@@ -42,6 +44,7 @@ using SmartValley.WebApi.Projects;
 using SmartValley.WebApi.Users;
 using Swashbuckle.AspNetCore.Swagger;
 using Headers = SmartValley.WebApi.WebApi.Headers;
+using ILogger = Serilog.ILogger;
 using IScoringApplicationService = SmartValley.WebApi.ScoringApplications.IScoringApplicationService;
 using IScoringService = SmartValley.WebApi.Scorings.IScoringService;
 using ScoringApplicationService = SmartValley.WebApi.ScoringApplications.ScoringApplicationService;
@@ -86,11 +89,6 @@ namespace SmartValley.WebApi
                                                                               ValidateIssuerSigningKey = true
                                                                           };
                                   });
-
-            Log.Logger = new LoggerConfiguration()
-                         .MinimumLevel.Error()
-                         .WriteTo.MSSqlServer(Configuration.GetConnectionString("DefaultConnection"), "Logs")
-                         .CreateLogger();
 
             services.AddSingleton(provider => InitializeWeb3(provider.GetService<NethereumOptions>().RpcAddress));
             services.AddSingleton<IClock, UtcClock>();
@@ -161,13 +159,29 @@ namespace SmartValley.WebApi
             services.AddTransient<IEthereumTransactionService, EthereumTransactionService>();
             services.AddTransient<IEthereumTransactionRepository, EthereumTransactionRepository>();
 
+            var logger = CreateLogger();
+            Log.Logger = logger;
+
+            services.AddSingleton<ILogger>(logger);
+
             var serviceProvider = services.BuildServiceProvider();
             var siteOptions = serviceProvider.GetService<SiteOptions>();
 
             ConfigureCorsPolicy(services, siteOptions);
 
             var dataProtectionProvider = serviceProvider.GetService<IDataProtectionProvider>();
-            services.AddSingleton<IMessageSession>(provider => EndpointConfigurator.StartAsync(Configuration, _currentEnvironment.ContentRootPath, dataProtectionProvider).GetAwaiter().GetResult());
+            services.AddSingleton<IMessageSession>(
+                provider => EndpointConfigurator
+                            .StartAsync(Configuration, _currentEnvironment.ContentRootPath, dataProtectionProvider, logger)
+                            .GetAwaiter()
+                            .GetResult());
+        }
+
+        private Logger CreateLogger()
+        {
+            return new LoggerConfiguration()
+                   .ReadFrom.Configuration(Configuration)
+                   .CreateLogger();
         }
 
         private static ApplicationTeamMembersStorageProvider InitializeApplicationTeamMembersStorageProvider(IServiceProvider serviceProvider)

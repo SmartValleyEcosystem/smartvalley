@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Persistence.Sql;
+using Serilog;
 using SmartValley.Domain.Services;
 using SmartValley.Ethereum;
 using SmartValley.Messages.Commands;
@@ -19,13 +20,18 @@ namespace SmartValley.Application.Sagas.TransactionHandling
 
         private readonly EthereumClient _ethereumClient;
         private readonly IEthereumTransactionService _ethereumTransactionService;
+        private readonly ILogger _logger;
 
         protected override string CorrelationPropertyName => nameof(TransactionHandlingSagaData.TransactionHash);
 
-        public TransactionHandlingSaga(EthereumClient ethereumClient, IEthereumTransactionService ethereumTransactionService)
+        public TransactionHandlingSaga(
+            EthereumClient ethereumClient,
+            IEthereumTransactionService ethereumTransactionService,
+            ILogger logger)
         {
             _ethereumClient = ethereumClient;
             _ethereumTransactionService = ethereumTransactionService;
+            _logger = logger;
         }
 
         public Task Handle(WaitForTransaction message, IMessageHandlerContext context)
@@ -40,16 +46,19 @@ namespace SmartValley.Application.Sagas.TransactionHandling
 
         private async Task CheckTransactionStatusAsync(IMessageHandlerContext context)
         {
-            switch (await _ethereumClient.GetTransactionStatusAsync(Data.TransactionHash))
+            var transactionInfo = await _ethereumClient.GetTransactionInfoAsync(Data.TransactionHash);
+            switch (transactionInfo.Status)
             {
                 case TransactionStatus.NotMined:
                 case TransactionStatus.NotConfirmed:
                     await RequestTimeout<PollingTimeout>(context, TimeSpan.FromSeconds(ReceiptPollingIntervalInSeconds));
                     return;
                 case TransactionStatus.Completed:
+                    _logger.Information("Transaction {TransactionHash} completed. Gas used: {GasUsed}.", Data.TransactionHash, transactionInfo.GasUsed);
                     await CompleteAsync(context);
                     return;
                 case TransactionStatus.Failed:
+                    _logger.Error("Transaction {TransactionHash} failed. Gas used: {GasUsed}.", Data.TransactionHash, transactionInfo.GasUsed);
                     await FailAsync(context);
                     return;
                 default:
