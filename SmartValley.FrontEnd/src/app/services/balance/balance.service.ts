@@ -34,7 +34,7 @@ export class BalanceService {
     }
     const balanceResponse = await this.balanceApiClient.getBalanceAsync();
     this.balance = {
-      ethBalance: +balanceResponse.balance.toFixed(3),
+      ethBalance: new BigNumber(balanceResponse.balance),
       wasEtherReceived: balanceResponse.wasEtherReceived,
     };
     this.balanceChanged.emit(this.balance);
@@ -64,7 +64,7 @@ export class BalanceService {
     const decimals = await this.smartValleyTokenContractClient.getDecimalsAsync();
     const totalFrozenSVT = frozenBalances.map(b => b.sum).reduce((b1, b2) => b1.add(b2), new BigNumber(0));
     return await <Balance>{
-      ethBalance: eth.balance,
+      ethBalance: new BigNumber(eth.balance.toString()),
       svt: svt,
       frozenSVT: frozenBalances,
       totalFrozenSVT: totalFrozenSVT,

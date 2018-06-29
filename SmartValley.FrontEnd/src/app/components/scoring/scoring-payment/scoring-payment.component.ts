@@ -11,6 +11,7 @@ import {Paths} from '../../../paths';
 import {ProjectSummaryResponse} from '../../../api/project/project-summary-response';
 import {TranslateService} from '@ngx-translate/core';
 import {NotificationsService} from 'angular2-notifications';
+import BigNumber from 'bignumber.js';
 
 @Component({
   selector: 'app-scoring-payment',
@@ -22,7 +23,7 @@ export class ScoringPaymentComponent implements OnInit {
   public areas: Area[];
   public totalExperts = 0;
   public expertsInArea: { [id: number]: number } = {};
-  public currentBalance: number;
+  public currentBalance: BigNumber;
   public areaCosts: { [id: number]: number } = {};
   public externalId: string;
   public totalSum = 0;
