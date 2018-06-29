@@ -11,7 +11,6 @@ export class AllotmentEventCard {
   public event: AllotmentEvent;
   public transaction?: string;
   public balance?: Balance;
-  public svtDecimal?: number;
 
   constructor(event: AllotmentEvent) {
     this.event = event;

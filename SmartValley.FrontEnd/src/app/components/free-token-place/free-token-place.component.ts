@@ -10,7 +10,6 @@ import {Balance} from '../../services/balance/balance';
 import {User} from '../../services/authentication/user';
 import {UserContext} from '../../services/authentication/user-context';
 import {AllotmentEventService} from '../../services/allotment-event/allotment-event.service';
-import {SmartValleyTokenContractClient} from '../../services/contract-clients/smart-valley-token-contract-client.service';
 import {ProjectResponse} from '../../api/project/project-response';
 
 @Component({
@@ -29,17 +28,15 @@ export class FreeTokenPlaceComponent implements OnInit {
   public balance: Balance;
   public isAllotmentEventsLoaded = false;
   public user: User;
-  public svtDecimal: number;
 
   constructor(private allotmentEventsService: AllotmentEventService,
-              private smartValleyTokenContractClient: SmartValleyTokenContractClient,
               private balanceService: BalanceService,
               private userContext: UserContext,
               private projectApiClient: ProjectApiClient) {
   }
 
   async ngOnInit() {
-    this.svtDecimal = await this.smartValleyTokenContractClient.getDecimalsAsync();
+    this.balance = await this.balanceService.getTokenBalanceAsync();
     await this.loadAllotmentEventsAsync();
     this.isAllotmentEventsLoaded = true;
     this.user = this.userContext.getCurrentUser();
@@ -61,22 +58,20 @@ export class FreeTokenPlaceComponent implements OnInit {
       [AllotmentEventStatus.InProgress, AllotmentEventStatus.Finished]);
 
     this.allotmentEvents = events.items.map(i => new AllotmentEventCard(i));
-    let projects: Array<ProjectResponse> = [];
-
-    if (this.allotmentEvents.length !== 0) {
-      projects = await this.loadProjectsAsync();
-    }
+    const projectResponse = await this.loadProjectsAsync();
 
     this.allotmentEvents.map(a => {
       a.balance = this.balance;
-      a.svtDecimal = this.svtDecimal;
-      a.project = projects.find((p) => p.id === a.event.projectId);
+      a.project = projectResponse.find((p) => p.id === a.event.projectId);
     });
     this.activeEvents = this.allotmentEvents.filter(a => a.event.status === AllotmentEventStatus.InProgress);
     this.finishedEvents = this.allotmentEvents.filter(a => a.event.status === AllotmentEventStatus.Finished);
   }
 
   private async loadProjectsAsync() {
+    if (this.allotmentEvents.length === 0) {
+      return [];
+    }
     const projectIds = this.allotmentEvents.map(a => a.event.projectId);
     const projectsResponse = await this.projectApiClient.getAsync(<ProjectQuery>{
       offset: 0,
