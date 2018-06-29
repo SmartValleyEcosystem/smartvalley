@@ -6,4 +6,6 @@ export interface ReceiveTokensModalData {
   userBet: BigNumber;
   userTokens: number;
   tokenTicker: string;
+  tokenDecimals: number;
+  svtDecimals: number;
 }

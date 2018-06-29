@@ -74,11 +74,11 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
         totalBet: this.model.event.totalBid,
         myBet: this.userBid,
         tokenBalance: this.model.event.totalTokens,
-        decimals: this.model.svtDecimal,
+        decimals: this.model.balance.svtDecimals,
         ticker: this.model.event.tokenTicker
       });
       if (participateResult) {
-        await this.allotmentEventService.participateAsync(this.model.event.id, this.model.event.eventContractAddress, participateResult.mul(Math.pow(10, this.model.svtDecimal)));
+        await this.allotmentEventService.participateAsync(this.model.event.id, this.model.event.eventContractAddress, participateResult.mul(Math.pow(10, this.model.balance.svtDecimals)));
       }
     }
   }
@@ -94,10 +94,12 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
   public async showReceiveTokensModalAsync() {
     const result = await this.dialogService.showReceiveTokensModalAsync(
       this.model.event.totalTokens,
-      this.totalBid,
+      this.totalBid || new BigNumber(0),
       this.userBid,
       this.model.event.getUserTokens(this.user.id, this.model.event.totalTokens).toNumber(),
-      this.model.event.tokenTicker
+      this.model.event.tokenTicker,
+      this.model.event.tokenDecimals,
+      this.model.balance.svtDecimals
     );
     if (result) {
       await this.allotmentEventService.receiveTokensAsync(this.model.event.id, this.model.event.eventContractAddress);

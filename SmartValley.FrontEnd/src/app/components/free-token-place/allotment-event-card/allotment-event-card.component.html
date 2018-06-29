@@ -12,19 +12,19 @@
       <div class="project-title"><a [routerLink]="getProjectLink(model.event.projectId)">{{ model.project.name }}</a></div>
       <div class="project-distribute">
         <span class="light-label">{{ 'FreeTokenPlace.TokensToDistribute' | translate }}</span>
-        <div class="tokens-label">{{ model.event.totalTokens| formatNumber }} {{ model.event.tokenTicker }}</div>
+        <div class="tokens-label">{{ model.event.totalTokens| formatNumber:  0: model.event.tokenDecimals }} {{ model.event.tokenTicker }}</div>
       </div>
       <div class="project-bets">
         <span class="light-label">{{ 'FreeTokenPlace.TotalBet' | translate }}</span>
-        <div class="tokens-label"> {{ userBid | formatNumber }} / {{ model.event.totalBid | formatNumber }} SVT</div>
+        <div class="tokens-label"> {{ userBid | formatNumber:  3: model.balance.svtDecimals }} / {{ model.event.totalBid | formatNumber: 3: model.balance.svtDecimals }} SVT</div>
       </div>
     </div>
   </div>
   <div class="event-card__timer">
     <span *ngIf="!userBid" class="light-label light-label_small">{{ 'FreeTokenPlace.MyPotentialShare' | translate }}</span>
-    <div *ngIf="!userBid">{{ potentialShare | formatNumber }} {{ model.event.tokenTicker }} ( {{ percentShare | formatNumber }} %)</div>
+    <div *ngIf="!userBid">{{ potentialShare | formatNumber:  0: model.event.tokenDecimals }} {{ model.event.tokenTicker }} ( {{ percentShare | formatNumber }} %)</div>
     <span *ngIf="userBid" class="light-label light-label_small">{{ 'FreeTokenPlace.ActualShare' | translate }}</span>
-    <div *ngIf="userBid">{{ actualShare | formatNumber }} {{ model.event.tokenTicker }} ({{ percentShare | formatNumber }}%)</div>
+    <div *ngIf="userBid">{{ actualShare | formatNumber: 0: model.event.tokenDecimals }} {{ model.event.tokenTicker }} ({{ percentShare | formatNumber }}%)</div>
     <div class="timer" [class.timer_finished]="finished">
       <div class="timer__info" *ngIf="!finished">{{ 'FreeTokenPlace.TheEventEndsIn' | translate }}</div>
       <div class="timer__info" *ngIf="finished">{{ 'FreeTokenPlace.TheEventWasEnd' | translate }}</div>
