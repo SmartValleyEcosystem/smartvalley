@@ -96,7 +96,7 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
       this.model.event.totalTokens,
       this.totalBid || new BigNumber(0),
       this.userBid,
-      this.model.event.getUserTokens(this.user.id, this.model.event.totalTokens).toNumber(),
+      this.model.event.getUserTokens(this.user.id, this.model.event.totalTokens),
       this.model.event.tokenTicker,
       this.model.event.tokenDecimals,
       this.model.balance.svtDecimals

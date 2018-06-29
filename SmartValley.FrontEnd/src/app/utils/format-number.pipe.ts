@@ -9,9 +9,6 @@ export class FormatNumberPipe implements PipeTransform {
 
   transform(val: BigNumber, decimalPlaces: number, subUnitPalces: number): string {
     if (!isNullOrUndefined(val)) {
-      if (typeof val === 'number') {
-        val = new BigNumber(val);
-      }
       if (!isNullOrUndefined(subUnitPalces)) {
         val = val.shift(-subUnitPalces);
       }
