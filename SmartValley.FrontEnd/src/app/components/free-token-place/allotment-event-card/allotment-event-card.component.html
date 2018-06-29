@@ -4,7 +4,7 @@
     <div class="project-avatar">
       <img src="{{ imageUrl() }}" alt="">
       <span class="scoring">
-        <span *ngIf="model.project.scoring">{{ model.project.scoring.score | dashIfEmpty }}</span>
+        <span *ngIf="model.project.scoring">{{( model.project.scoring.score | roundNumberPipe ) | dashIfEmpty }}</span>
         <span *ngIf="!model.project.scoring">&mdash;</span>
         <span class="light-color ">/ 100</span></span>
     </div>

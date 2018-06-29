@@ -17,6 +17,6 @@ export class AllotmentEventsContractClient {
     const eventContract = await this.contractClient.getAllotmentEventContractAsync();
     const contract = this.web3Service.getContract(eventContract.abi, eventAddress);
     const fromAddress = this.userContext.getCurrentUser().account;
-    return await contract.collect({from: fromAddress});
+    return await contract.collectTokens({from: fromAddress});
   }
 }

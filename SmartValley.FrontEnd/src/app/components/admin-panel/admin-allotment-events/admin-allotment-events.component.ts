@@ -128,6 +128,7 @@ export class AdminAllotmentEventsComponent {
       event.tokenDecimals,
       event.tokenTicker,
       event.finishDate);
+    await this.loadAllotmentEventsAsync();
   }
 
   public async showEditAllotmentModal(allotmentEvent: AllotmentEventResponse) {
@@ -140,6 +141,7 @@ export class AdminAllotmentEventsComponent {
         editModal.tokenDecimals,
         editModal.ticker,
         editModal.finishDate);
+      await this.loadAllotmentEventsAsync();
     }
   }
 
@@ -147,6 +149,7 @@ export class AdminAllotmentEventsComponent {
     const modal = await this.dialogService.showDeleteAllotmentEventModalAsync();
     if (modal) {
       await this.allotmentEventService.removeAsync(allotmentEvent.id);
+      await this.loadAllotmentEventsAsync();
     }
   }
 
