@@ -99,7 +99,8 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
       this.totalBid,
       this.userBid,
       this.model.event.getUserTokens(this.user.id, this.model.event.totalTokens).toNumber(),
-      this.model.event.tokenTicker);
+      this.model.event.tokenTicker
+    );
     if (result) {
       await this.allotmentEventService.receiveTokensAsync(this.model.event.id, this.model.event.eventContractAddress);
       this.canReceiveTokens = false;

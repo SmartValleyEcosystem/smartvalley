@@ -103,6 +103,9 @@ export class AllotmentEvent {
     if (isNullOrUndefined(tokenBalance)) {
       return new BigNumber(0);
     }
+    if (this.getUserBid(userId) <= new BigNumber(0)) {
+      return tokenBalance;
+    }
     return tokenBalance.dividedBy(this.totalBid).mul(this.getUserBid(userId));
   }
 
