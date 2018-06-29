@@ -16,6 +16,7 @@ import {User} from '../../services/authentication/user';
 import {ExpertsRegistryContractClient} from '../../services/contract-clients/experts-registry-contract-client';
 import {TranslateService} from '@ngx-translate/core';
 import {Subscription} from 'rxjs/Subscription';
+import BigNumber from 'bignumber.js';
 
 @Component({
   selector: 'app-header',
@@ -24,7 +25,7 @@ import {Subscription} from 'rxjs/Subscription';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
-  public currentBalance: number;
+  public currentBalance: BigNumber;
   public showReceiveEtherButton: boolean;
   public isAuthenticated: boolean;
   public isAdmin: boolean;

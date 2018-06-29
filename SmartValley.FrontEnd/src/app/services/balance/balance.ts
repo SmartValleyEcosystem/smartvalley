@@ -2,7 +2,7 @@ import {FrozenBalance} from './frozen-balance';
 import BigNumber from 'bignumber.js';
 
 export interface Balance {
-  ethBalance: number;
+  ethBalance: BigNumber;
   wasEtherReceived: boolean;
   svt?: BigNumber;
   frozenSVT?: FrozenBalance[];
