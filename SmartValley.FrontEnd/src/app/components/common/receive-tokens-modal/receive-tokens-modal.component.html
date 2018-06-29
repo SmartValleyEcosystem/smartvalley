@@ -1,25 +1,26 @@
 <div class="fix-container">
+  <button class="dialog-close" mat-dialog-close><i class="material-icons">close</i></button>
   <h2>{{ 'ReceiveTokensModal.Title' | translate }}</h2>
 
   <form (ngSubmit)="submit()">
     <div>
       <span>{{ 'ReceiveTokensModal.TotalTokens' | translate }}</span>
-      <span class="value">{{data.totalTokens}} {{data.tokenTicker}}</span>
+      <span class="value">{{ data.totalTokens | formatNumber: 3: data.tokenDecimals }} {{data.tokenTicker}}</span>
     </div>
     <div>
       <span>{{ 'ReceiveTokensModal.TotalBet' | translate }}</span>
-      <span class="value">{{data.totalBet}} SVT</span>
+      <span class="value">{{ data.totalBet | formatNumber: 3: data.svtDecimals }} SVT</span>
     </div>
     <div>
       <span>{{ 'ReceiveTokensModal.YourBet' | translate }}</span>
-      <span class="value">{{data.userBet}} SVT</span>
+      <span class="value">{{ data.userBet | formatNumber: 3: data.svtDecimals }} SVT</span>
     </div>
     <div class="your-tokens">
       <span>{{ 'ReceiveTokensModal.YourTokens' | translate }}</span>
-      <span class="value">{{data.userTokens}} {{data.tokenTicker}}</span>
+      <span class="value">{{ data.userTokens | formatNumber: 3: data.tokenDecimals }} {{ data.tokenTicker }}</span>
     </div>
     <div class="actions-container">
-      <button (click)="submit()" class="save-btn">{{ 'ReceiveTokensModal.ReceiveBtn' | translate }}
+      <button (click)="submit()" class="material-btn material-btn__action save-btn">{{ 'ReceiveTokensModal.ReceiveBtn' | translate }}
       </button>
     </div>
   </form>

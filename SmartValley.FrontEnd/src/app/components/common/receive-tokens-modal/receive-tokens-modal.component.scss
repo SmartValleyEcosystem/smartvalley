@@ -1,3 +1,5 @@
+@import "../../../../styles/fonts";
+
 .save-btn {
   width: 272px;
   background: #EEEDF5;
@@ -18,10 +20,30 @@
 }
 
 .fix-container {
+  position: relative;
   padding: 16px;
   h2 {
+    font-family: $font-pt-narrow;
+    font-size: 32px;
+    font-weight: bold;
+    letter-spacing: 0.04em;
     margin-bottom: 20px;
   }
+}
+
+.dialog-close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 36px;
+  height: 36px;
+  background-color: rgba(216, 216, 216, 0);
+  font-size: 37px;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  padding: 0;
+  outline: none;
 }
 
 .input {

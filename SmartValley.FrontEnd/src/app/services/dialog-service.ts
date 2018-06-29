@@ -64,14 +64,19 @@ export class DialogService {
     totalTokens: BigNumber,
     totalBet: BigNumber,
     userBet: BigNumber,
-    userTokens: number,
-    tokenTicker: string): Promise<boolean> {
+    userTokens: BigNumber,
+    tokenTicker: string,
+    tokenDecimals: number,
+    svtDecimals: number
+  ): Promise<boolean> {
     return this.openModal(ReceiveTokensModalComponent, <ReceiveTokensModalData> {
       totalTokens: totalTokens,
       totalBet: totalBet,
       userBet: userBet,
       userTokens: userTokens,
-      tokenTicker: tokenTicker
+      tokenTicker: tokenTicker,
+      tokenDecimals: tokenDecimals,
+      svtDecimals: svtDecimals
     }, false, '460px')
       .afterClosed()
       .toPromise<boolean>();

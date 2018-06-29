@@ -94,10 +94,13 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
   public async showReceiveTokensModalAsync() {
     const result = await this.dialogService.showReceiveTokensModalAsync(
       this.model.event.totalTokens,
-      this.totalBid,
+      this.totalBid || new BigNumber(0),
       this.userBid,
-      this.model.event.getUserTokens(this.user.id, this.model.event.totalTokens).toNumber(),
-      this.model.event.tokenTicker);
+      this.model.event.getUserTokens(this.user.id, this.model.event.totalTokens),
+      this.model.event.tokenTicker,
+      this.model.event.tokenDecimals,
+      this.model.balance.svtDecimals
+    );
     if (result) {
       await this.allotmentEventService.receiveTokensAsync(this.model.event.id, this.model.event.eventContractAddress);
       this.canReceiveTokens = false;

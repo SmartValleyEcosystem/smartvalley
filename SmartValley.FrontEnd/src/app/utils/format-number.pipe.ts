@@ -12,6 +12,9 @@ export class FormatNumberPipe implements PipeTransform {
       if (!isNullOrUndefined(subUnitPalces)) {
         val = val.shift(-subUnitPalces);
       }
+      if (val.decimalPlaces() === 0) {
+        return val.toFormat(0, 0);
+      }
       if (!isNullOrUndefined(decimalPlaces)) {
         return val.toFormat(decimalPlaces, 3);
       }
