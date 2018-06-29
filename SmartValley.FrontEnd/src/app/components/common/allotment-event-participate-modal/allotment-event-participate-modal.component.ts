@@ -20,7 +20,6 @@ export class AllotmentEventParticipateModalComponent implements OnInit {
       .debounceTime(500)
       .subscribe(val => this.getComputedShare());
     this.data.myBet = new BigNumber(this.data.myBet) || new BigNumber(0);
-    this.userSVT = this.data.balance.svt.toFormat();
   }
 
   public newBet: BigNumber;
@@ -28,7 +27,6 @@ export class AllotmentEventParticipateModalComponent implements OnInit {
   public changeParticipate = new Subject<any>();
   public isDescriptionShow = false;
   public computedShare: BigNumber;
-  public userSVT: string;
 
   async ngOnInit() {
     const today = new Date();

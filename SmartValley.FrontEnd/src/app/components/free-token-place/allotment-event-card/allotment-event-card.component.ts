@@ -74,11 +74,11 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
         totalBet: this.model.event.totalBid,
         myBet: this.userBid,
         tokenBalance: this.model.event.totalTokens,
-        decimals: this.model.svtDecimal,
+        decimals: this.model.balance.svtDecimals,
         ticker: this.model.event.tokenTicker
       });
       if (participateResult) {
-        await this.allotmentEventService.participateAsync(this.model.event.id, this.model.event.eventContractAddress, participateResult.mul(Math.pow(10, this.model.svtDecimal)));
+        await this.allotmentEventService.participateAsync(this.model.event.id, this.model.event.eventContractAddress, participateResult.mul(Math.pow(10, this.model.balance.svtDecimals)));
       }
     }
   }
