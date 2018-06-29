@@ -11,6 +11,7 @@ import {User} from '../../services/authentication/user';
 import {UserContext} from '../../services/authentication/user-context';
 import {AllotmentEventService} from '../../services/allotment-event/allotment-event.service';
 import {SmartValleyTokenContractClient} from '../../services/contract-clients/smart-valley-token-contract-client.service';
+import {ProjectResponse} from '../../api/project/project-response';
 
 @Component({
   selector: 'app-free-token-place',
@@ -45,12 +46,39 @@ export class FreeTokenPlaceComponent implements OnInit {
     this.userContext.userContextChanged.subscribe((user) => this.user = user);
   }
 
-  private async loadAllotmentEventsAsync(): Promise<void> {
-    const events = await this.allotmentEventsService.getAllotmentEventsAsync(this.offset, this.pageSize, [AllotmentEventStatus.InProgress, AllotmentEventStatus.Finished]);
-    this.allotmentEvents = events.items.map(i => new AllotmentEventCard(i));
-    const projectIds = this.allotmentEvents.map(a => a.event.projectId);
+  public finishEvent(id: number) {
+    this.finishedEvents.push(this.activeEvents.find((a) => a.event.id === id));
+    this.activeEvents = this.activeEvents.filter((a) => {
+      return a.event.id !== id;
+    });
+  }
 
-    const projectResponse = await this.projectApiClient.getAsync(<ProjectQuery>{
+  private async loadAllotmentEventsAsync(): Promise<void> {
+    this.balance = await this.balanceService.getTokenBalanceAsync();
+
+    const events = await this.allotmentEventsService.getAllotmentEventsAsync(this.offset,
+      this.pageSize,
+      [AllotmentEventStatus.InProgress, AllotmentEventStatus.Finished]);
+
+    this.allotmentEvents = events.items.map(i => new AllotmentEventCard(i));
+    let projects: Array<ProjectResponse> = [];
+
+    if (this.allotmentEvents.length !== 0) {
+      projects = await this.loadProjectsAsync();
+    }
+
+    this.allotmentEvents.map(a => {
+      a.balance = this.balance;
+      a.svtDecimal = this.svtDecimal;
+      a.project = projects.find((p) => p.id === a.event.projectId);
+    });
+    this.activeEvents = this.allotmentEvents.filter(a => a.event.status === AllotmentEventStatus.InProgress);
+    this.finishedEvents = this.allotmentEvents.filter(a => a.event.status === AllotmentEventStatus.Finished);
+  }
+
+  private async loadProjectsAsync() {
+    const projectIds = this.allotmentEvents.map(a => a.event.projectId);
+    const projectsResponse = await this.projectApiClient.getAsync(<ProjectQuery>{
       offset: 0,
       count: projectIds.length,
       onlyScored: false,
@@ -58,23 +86,6 @@ export class FreeTokenPlaceComponent implements OnInit {
       direction: SortDirection.Descending,
       projectIds: projectIds
     });
-
-    const tokenBalance = await this.balanceService.getTokenBalanceAsync();
-    this.balance = tokenBalance;
-
-    this.allotmentEvents.map(a => {
-      a.balance = this.balance;
-      a.svtDecimal = this.svtDecimal;
-      a.project = projectResponse.items.find((p) => p.id === a.event.projectId);
-    });
-    this.activeEvents = this.allotmentEvents.filter(a => a.event.status === AllotmentEventStatus.InProgress);
-    this.finishedEvents = this.allotmentEvents.filter(a => a.event.status === AllotmentEventStatus.Finished);
-  }
-
-  public finishEvent(id: number) {
-    this.finishedEvents.push(this.activeEvents.find((a) => a.event.id === id));
-    this.activeEvents = this.activeEvents.filter((a) => {
-      return a.event.id !== id;
-    });
+    return projectsResponse.items;
   }
 }
