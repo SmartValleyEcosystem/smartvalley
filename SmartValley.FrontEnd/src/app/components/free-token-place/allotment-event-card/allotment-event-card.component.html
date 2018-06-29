@@ -55,9 +55,9 @@
   </div>
   <div class="event-card__footer">
     <span *ngIf="model.transaction" class="light-label light-label_small">
-      <a target="_blank" href="https://rinkeby.etherscan.io/tx/{{ model.transaction }}">{{ 'FreeTokenPlace.Awaiting' | translate }}</a>
+      <a class="awaiting-link" target="_blank" href="https://rinkeby.etherscan.io/tx/{{ model.transaction }}">{{ 'FreeTokenPlace.Awaiting' | translate }}</a>
     </span>
-    <div *ngIf="!finished" class="start-btn-wrapper">
+    <div *ngIf="!finished && !model.transaction" class="start-btn-wrapper">
       <button *ngIf="!userHasBid" (click)="showParticipateDialogAsync()" class="material-btn">{{ 'FreeTokenPlace.Participate' | translate }}</button>
       <button *ngIf="userHasBid" (click)="showParticipateDialogAsync()" class="material-btn material-btn__action">{{ 'FreeTokenPlace.AddSVT' | translate }}</button>
     </div>
