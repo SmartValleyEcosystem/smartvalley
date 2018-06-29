@@ -58,11 +58,9 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
       this.userBid = this.model.event.getUserBid(this.user.id);
       this.actualShare = this.model.event.getActualShare(this.user.id);
       this.percentShare = this.model.event.getPercentShare(this.user.id);
+      this.canReceiveTokens = this.finished && this.userHasBid && !this.model.event.isCollected(this.user.id);
+      await this.loadUserTransactionsAsync();
     }
-    if (this.userContext.getCurrentUser()) {
-      this.canReceiveTokens = !this.model.event.isCollected(this.userContext.getCurrentUser().id) && this.finished;
-    }
-    await this.getTransactionAsync();
   }
 
   ngOnDestroy(): void {
@@ -112,10 +110,7 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
     );
   }
 
-  public async getTransactionAsync() {
-    if (!this.user) {
-      return '';
-    }
+  public async loadUserTransactionsAsync() {
     const transactionInfo = await this.transactionApiClient.getEthereumTransactionsAsync(<TransactionRequest>{
       count: 1,
       userIds: [this.user.id],
