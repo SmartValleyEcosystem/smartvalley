@@ -10,8 +10,11 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Nethereum.Web3;
 using NServiceBus;
+using NServiceBus.Logging;
 using NServiceBus.Persistence.Sql;
+using NServiceBus.Serilog;
 using NServiceBus.Transport.SQLServer;
+using Serilog;
 using SmartValley.Application;
 using SmartValley.Application.Email;
 using SmartValley.Application.Templates;
@@ -35,10 +38,16 @@ namespace SmartValley.WebApi
     {
         private const string EndpointName = "SmartValley.Api";
 
-        public static Task<IEndpointInstance> StartAsync(IConfiguration configuration, string contentRootPath, IDataProtectionProvider dataProtectionProvider)
+        public static Task<IEndpointInstance> StartAsync(
+            IConfiguration configuration,
+            string contentRootPath,
+            IDataProtectionProvider dataProtectionProvider,
+            ILogger logger)
         {
             var endpointConfiguration = new EndpointConfiguration(EndpointName);
             SetLicense(configuration, endpointConfiguration);
+
+            LogManager.Use<SerilogFactory>();
 
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             ConfigureTransport(endpointConfiguration, connectionString);
@@ -52,7 +61,13 @@ namespace SmartValley.WebApi
 
             endpointConfiguration.UseSerialization<NewtonsoftSerializer>();
 
-            ConfigureContainer(endpointConfiguration, connectionString, configuration, contentRootPath, dataProtectionProvider);
+            ConfigureContainer(
+                endpointConfiguration,
+                connectionString,
+                configuration,
+                contentRootPath,
+                dataProtectionProvider,
+                logger);
 
             endpointConfiguration
                 .Recoverability()
@@ -111,7 +126,8 @@ namespace SmartValley.WebApi
                                                string connectionString,
                                                IConfiguration configuration,
                                                string contentRootPath,
-                                               IDataProtectionProvider dataProtectionProvider)
+                                               IDataProtectionProvider dataProtectionProvider,
+                                               ILogger logger)
         {
             var containerBuilder = new ContainerBuilder();
 
@@ -183,6 +199,8 @@ namespace SmartValley.WebApi
             containerBuilder.RegisterType<EthereumTransactionService>().As<IEthereumTransactionService>();
             containerBuilder.RegisterType<AllotmentEventService>().As<IAllotmentEventService>();
             containerBuilder.RegisterType<ExpertService>().As<IExpertService>();
+
+            containerBuilder.RegisterInstance(logger).As<ILogger>();
 
             var container = containerBuilder.Build();
 
