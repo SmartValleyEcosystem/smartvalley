@@ -31,20 +31,21 @@ namespace SmartValley.Ethereum
                 await Task.Delay(TransactionReceiptPollingIntervalMilliseconds);
         }
 
-        public async Task<TransactionStatus> GetTransactionStatusAsync(string transactionHash)
+        public async Task<TransactionInfo> GetTransactionInfoAsync(string transactionHash)
         {
             var receipt = await _web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync(transactionHash);
             if (receipt?.Status == null)
-                return TransactionStatus.NotMined;
+                return TransactionInfo.NotMined();
 
+            var gasUsed = (long) receipt.CumulativeGasUsed.Value;
             if (receipt.Status.Value != 1)
-                return TransactionStatus.Failed;
+                return TransactionInfo.Failed(gasUsed);
 
             var currentBlockNumber = await _web3.Eth.Blocks.GetBlockNumber.SendRequestAsync();
             var confirmationsCount = currentBlockNumber.Value - receipt.BlockNumber;
             return confirmationsCount >= _expectedConfirmationsCount
-                       ? TransactionStatus.Completed
-                       : TransactionStatus.NotConfirmed;
+                       ? TransactionInfo.Completed(gasUsed)
+                       : TransactionInfo.NotConfirmed();
         }
 
         private async Task<bool> IsConfirmedAsync(string transactionHash)

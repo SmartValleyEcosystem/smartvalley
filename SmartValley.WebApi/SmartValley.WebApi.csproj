@@ -9,18 +9,20 @@
     <PackageReference Include="Elasticsearch.Net" Version="6.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Nethereum.Web3" Version="2.5.1" />
-    <PackageReference Include="NServiceBus" Version="7.0.0-rc0002" />
-    <PackageReference Include="NServiceBus.Autofac" Version="7.0.0-rc0001" />
-    <PackageReference Include="NServiceBus.Newtonsoft.Json" Version="2.0.0-rc0001" />
-    <PackageReference Include="NServiceBus.Persistence.Sql" Version="4.0.0-rc0004" />
-    <PackageReference Include="NServiceBus.Persistence.Sql.MsBuild" Version="4.0.0-rc0004" />
-    <PackageReference Include="NServiceBus.SqlServer" Version="4.0.0-rc0003" />
+    <PackageReference Include="NServiceBus" Version="7.0.1" />
+    <PackageReference Include="NServiceBus.Autofac" Version="7.0.0" />
+    <PackageReference Include="NServiceBus.Newtonsoft.Json" Version="2.1.0" />
+    <PackageReference Include="NServiceBus.Persistence.Sql" Version="4.1.1" />
+    <PackageReference Include="NServiceBus.Persistence.Sql.MsBuild" Version="4.1.1" />
+    <PackageReference Include="NServiceBus.Serilog" Version="4.0.1" />
+    <PackageReference Include="NServiceBus.SqlServer" Version="4.1.0" />
     <PackageReference Include="OctoPack">
       <Version>3.6.3</Version>
     </PackageReference>
     <PackageReference Include="Serilog" Version="2.7.1" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.2" />
-    <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="5.1.2" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="2.6.1" />
+    <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
