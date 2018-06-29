@@ -25,6 +25,17 @@ namespace SmartValley.WebApi.Contracts
                    };
         }
 
+        [HttpGet("allotmentEvents")]
+        public ContractResponse GetAllotmentEventsContract()
+        {
+            var contractOptions = _nethereumOptions.AllotmentEventContract;
+            return new ContractResponse
+                   {
+                       Address = contractOptions.Address,
+                       Abi = contractOptions.Abi,
+                   };
+        }
+
         [HttpGet("erc223")]
         public ContractResponse GetERC223Contract()
         {
