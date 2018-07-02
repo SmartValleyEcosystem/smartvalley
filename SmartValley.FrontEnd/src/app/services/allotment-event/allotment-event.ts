@@ -77,15 +77,20 @@ export class AllotmentEvent {
     return share;
   }
 
-  public getPotentialShare(svtBalance: BigNumber) {
+  public getPotentialPercentShare(svtBalance: BigNumber) {
     if (svtBalance.isZero()) {
       return new BigNumber(0);
     }
-    const share = svtBalance.dividedBy(svtBalance.plus(this.totalBid));
-    if (share.isNaN() || !share.isFinite()) {
+    const percent = svtBalance.mul(100).dividedBy(svtBalance.plus(this.totalBid));
+    if (percent.isNaN() || !percent.isFinite()) {
       return new BigNumber(0);
     }
-    return share;
+    return percent;
+  }
+
+  public getPotentialShare(svtBalance: BigNumber) {
+    const percent = this.getPotentialPercentShare(svtBalance);
+    return percent.dividedBy(100).mul(this.totalTokens);
   }
 
   public getActualShare(userId: number) {

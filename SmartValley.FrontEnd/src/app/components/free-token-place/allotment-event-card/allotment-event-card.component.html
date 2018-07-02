@@ -21,10 +21,10 @@
     </div>
   </div>
   <div class="event-card__timer">
-    <span *ngIf="!userBid" class="light-label light-label_small">{{ 'FreeTokenPlace.MyPotentialShare' | translate }}</span>
-    <div *ngIf="!userBid">{{ potentialShare | formatNumber:  0: model.event.tokenDecimals }} {{ model.event.tokenTicker }} ( {{ percentShare | formatNumber }} %)</div>
-    <span *ngIf="userBid" class="light-label light-label_small">{{ 'FreeTokenPlace.ActualShare' | translate }}</span>
-    <div *ngIf="userBid">{{ actualShare | formatNumber: 0: model.event.tokenDecimals }} {{ model.event.tokenTicker }} ({{ percentShare | formatNumber }}%)</div>
+    <span *ngIf="userBid.isZero()" class="light-label light-label_small">{{ 'FreeTokenPlace.MyPotentialShare' | translate }}</span>
+    <div *ngIf="userBid.isZero()">{{ potentialShare | formatNumber:  0: model.event.tokenDecimals }} {{ model.event.tokenTicker }} ( {{ potentialPercentShare | formatNumber }} %)</div>
+    <span *ngIf="userBid.greaterThan(0)" class="light-label light-label_small">{{ 'FreeTokenPlace.ActualShare' | translate }}</span>
+    <div *ngIf="userBid.greaterThan(0)">{{ actualShare | formatNumber: 0: model.event.tokenDecimals }} {{ model.event.tokenTicker }} ({{ percentShare | formatNumber }}%)</div>
     <div class="timer" [class.timer_finished]="finished">
       <div class="timer__info" *ngIf="!finished">{{ 'FreeTokenPlace.TheEventEndsIn' | translate }}</div>
       <div class="timer__info" *ngIf="finished">{{ 'FreeTokenPlace.TheEventWasEnd' | translate }}</div>

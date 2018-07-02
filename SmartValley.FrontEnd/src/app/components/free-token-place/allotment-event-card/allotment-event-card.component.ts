@@ -39,6 +39,7 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
   public totalBid: BigNumber;
   public canReceiveTokens: boolean;
   public potentialShare: BigNumber;
+  public potentialPercentShare: BigNumber;
   public actualShare: BigNumber;
   public percentShare: BigNumber;
 
@@ -51,6 +52,7 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
     this.user = this.userContext.getCurrentUser();
 
     this.potentialShare = this.model.event.getPotentialShare(this.model.balance.svt);
+    this.potentialPercentShare = this.model.event.getPotentialPercentShare(this.model.balance.svt);
 
     this.timer = <NodeJS.Timer>setInterval(async () => await this.getAllotmentEventTimeLeft(), 1000);
     if (this.user) {
