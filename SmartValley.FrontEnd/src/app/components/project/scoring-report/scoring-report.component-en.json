@@ -11,6 +11,14 @@
     "ProjectOwnerAnswer": "Project owner answer",
     "SocialNetworks": "Social networks",
     "NoInformation": "No information",
-    "Conclusion": "Conclusion"
+    "Conclusion": "Conclusion",
+    "IfProjectChosen": "If the project has chosen a utility token:",
+    "Project2Points": "- 2 points if the token is 100% utility",
+    "Project1Points": "- 1 point if the token has characteristics of a security",
+    "Project0Points": "- 0 points if it's a security token.",
+    "IfSecurityChosen": "If a security token is chosen:",
+    "Security2Points": "- 2 points if the token is actually a utility or if all licenses required for a security token are present",
+    "Security1Points": "- 1 point if the token is a security but some licenses are missing",
+    "Security0Points": "- 0 points if the token a security and all main licenses are missing"
   }
 }
