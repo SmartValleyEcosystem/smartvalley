@@ -16,139 +16,54 @@ namespace SmartValley.WebApi.Contracts
 
         [HttpGet("allotmentEventsManager")]
         public ContractResponse GetAllotmentEventsManagerContract()
-        {
-            var contractOptions = _nethereumOptions.AllotmentEventsManagerContract;
-            return new ContractResponse
-                   {
-                       Address = contractOptions.Address,
-                       Abi = contractOptions.Abi,
-                   };
-        }
+            => ContractResponse.FromOptions(_nethereumOptions.AllotmentEventsManagerContract);
 
         [HttpGet("allotmentEvents")]
         public ContractResponse GetAllotmentEventsContract()
-        {
-            var contractOptions = _nethereumOptions.AllotmentEventContract;
-            return new ContractResponse
-                   {
-                       Address = contractOptions.Address,
-                       Abi = contractOptions.Abi,
-                   };
-        }
+            => ContractResponse.FromOptions(_nethereumOptions.AllotmentEventContract);
 
         [HttpGet("erc223")]
         public ContractResponse GetERC223Contract()
-        {
-            var contractOptions = _nethereumOptions.ERC223Contract;
-            return new ContractResponse
-                   {
-                       Abi = contractOptions.Abi
-                   };
-        }
+            => ContractResponse.FromOptions(_nethereumOptions.ERC223Contract);
 
         [HttpGet("smartValleyToken")]
         public ContractResponse GetSmartValleyTokenContract()
-        {
-            var contractOptions = _nethereumOptions.SmartValleyTokenContract;
-            return new ContractResponse
-                   {
-                       Address = contractOptions.Address,
-                       Abi = contractOptions.Abi
-                   };
-        }
+            => ContractResponse.FromOptions(_nethereumOptions.SmartValleyTokenContract);
 
         [HttpGet("scoringOffersManager")]
         public ContractResponse GetScoringOffersManagerContract()
-        {
-            var contractOptions = _nethereumOptions.ScoringOffersManagerContract;
-            return new ContractResponse
-                   {
-                       Address = contractOptions.Address,
-                       Abi = contractOptions.Abi,
-                   };
-        }
+            => ContractResponse.FromOptions(_nethereumOptions.ScoringOffersManagerContract);
 
-        [Route("scoringManager")]
-        [HttpGet]
+        [HttpGet("scoringManager")]
         public ContractResponse GetScoringManagerContract()
-        {
-            var contractOptions = _nethereumOptions.ScoringManagerContract;
-            return new ContractResponse
-                   {
-                       Address = contractOptions.Address,
-                       Abi = contractOptions.Abi,
-                   };
-        }
+            => ContractResponse.FromOptions(_nethereumOptions.ScoringManagerContract);
 
-        [Route("privateScoringManager")]
-        [HttpGet]
+        [HttpGet("privateScoringManager")]
         public ContractResponse GetPrivateScoringManagerContract()
-        {
-            var contractOptions = _nethereumOptions.PrivateScoringManagerContract;
-            return new ContractResponse
-                   {
-                       Address = contractOptions.Address,
-                       Abi = contractOptions.Abi,
-                   };
-        }
+            => ContractResponse.FromOptions(_nethereumOptions.PrivateScoringManagerContract);
 
-        [Route("scoringsRegistry")]
-        [HttpGet]
+        [HttpGet("scoringsRegistry")]
         public ContractResponse GetScoringsRegistryContract()
-        {
-            var contractOptions = _nethereumOptions.ScoringsRegistryContract;
-            return new ContractResponse
-                   {
-                       Address = contractOptions.Address,
-                       Abi = contractOptions.Abi,
-                   };
-        }
+            => ContractResponse.FromOptions(_nethereumOptions.ScoringsRegistryContract);
 
-        [Route("scoring")]
-        [HttpGet]
+        [HttpGet("scoring")]
         public ContractResponse GetScoringContract()
-        {
-            var contractOptions = _nethereumOptions.ScoringContract;
-            return new ContractResponse
-                   {
-                       Abi = contractOptions.Abi
-                   };
-        }
+            => ContractResponse.FromOptions(_nethereumOptions.ScoringContract);
 
-        [Route("expertsRegistry")]
-        [HttpGet]
+        [HttpGet("expertsRegistry")]
         public ContractResponse GetExpertsRegistryContract()
-        {
-            var contractOptions = _nethereumOptions.ExpertsRegistryContract;
-            return new ContractResponse
-                   {
-                       Address = contractOptions.Address,
-                       Abi = contractOptions.Abi,
-                   };
-        }
+            => ContractResponse.FromOptions(_nethereumOptions.ExpertsRegistryContract);
 
-        [Route("adminRegistry")]
-        [HttpGet]
+        [HttpGet("adminRegistry")]
         public ContractResponse GetAdminRegistryContract()
-        {
-            var contractOptions = _nethereumOptions.AdminRegistryContract;
-            return new ContractResponse
-                   {
-                       Address = contractOptions.Address,
-                       Abi = contractOptions.Abi,
-                   };
-        }
+            => ContractResponse.FromOptions(_nethereumOptions.AdminRegistryContract);
 
-        [Route("scoringParametersProvider")]
-        [HttpGet]
+        [HttpGet("scoringParametersProvider")]
         public ContractResponse GetScoringParametersProviderContract()
-        {
-            var contractOptions = _nethereumOptions.ScoringParametersProviderContract;
-            return new ContractResponse
-                   {
-                       Address = contractOptions.Address,
-                       Abi = contractOptions.Abi,
-                   };
-        }
+            => ContractResponse.FromOptions(_nethereumOptions.ScoringParametersProviderContract);
+
+        [HttpGet("minter")]
+        public ContractResponse GetMinterContract()
+            => ContractResponse.FromOptions(_nethereumOptions.MinterContract);
     }
 }
