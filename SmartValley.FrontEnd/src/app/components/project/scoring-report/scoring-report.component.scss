@@ -259,12 +259,57 @@
     text-decoration: none;
   }
 }
-
 .conclusion-expert {
   width: 15%;
   min-width: 100px;
 }
-
 .conclusion-description {
   width: 80%;
+}
+.question-hint__tooltip {
+  display: none;
+  width: 556px;
+  ul {
+    list-style: none;
+    padding: 0;
+    font-size: 12px;
+    color: #fff;
+    font-family: Roboto-Regular;
+    font-weight: normal;
+    .list-title {
+      font-weight: bold;
+    }
+  }
+  .question-hint__tooltip-arrow {
+    display: block;
+    position: absolute;
+    top: -8px;
+    left: 32px;
+    width: 0 !important;
+    height: 0;
+    border-style: solid;
+    border-width: 0 14px 14px 14px;
+    border-color: transparent transparent #222034 transparent;
+  }
+}
+.question-hint__icon {
+  position: relative;
+  background-color: #222034;
+  display: inline-block;
+  color: #fff;
+  width: 24px;
+  padding: 2px 9px;
+  height: 24px;
+  border-radius: 100px;
+  margin-left: 7px;
+  &:hover {
+    .question-hint__tooltip {
+      display: block;
+      position: absolute;
+      padding: 24px;
+      top: 36px;
+      left: -36px;
+      background-color: #222034;
+    }
+  }
 }
