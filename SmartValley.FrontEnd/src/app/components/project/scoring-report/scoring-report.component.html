@@ -136,22 +136,18 @@
           </div>
           <p *ngIf="criterionIsReady" class="question">{{ index + 1 }}. {{ getQuestionById(criteria.scoringCriterionId)
             }}</p>
-          <table class="scoring-results">
-            <thead>
-            <tr>
-              <td>{{ 'ScoringReport.Expert' | translate }}</td>
-              <td>{{ 'ScoringReport.Score' | translate }}</td>
-              <td>{{ 'ScoringReport.Comments' | translate }}</td>
-            </tr>
-            </thead>
-            <tr *ngFor="let estimate of criteria.estimates; let estimateIndex = index;">
-              <td *ngIf="!isAdmin">{{ 'ScoringReport.Expert' | translate }} {{ estimateIndex + 1 }}</td>
-              <td *ngIf="isAdmin">{{getExpertById(estimate.expertId).firstName}} {{getExpertById(estimate.expertId).secondName}}</td>
+          <div class="expert-scoring-question__header">
+            <div>{{ 'ScoringReport.Expert' | translate }}</div>
+            <div>{{ 'ScoringReport.Score' | translate }}</div>
+            <div>{{ 'ScoringReport.Comments' | translate }}</div>
+          </div>
+            <div class="expert-scoring-question" *ngFor="let estimate of criteria.estimates; let estimateIndex = index;">
+              <div *ngIf="!isAdmin">{{ 'ScoringReport.Expert' | translate }} {{ estimateIndex + 1 }}</div>
+              <div *ngIf="isAdmin">{{getExpertById(estimate.expertId).firstName}} {{getExpertById(estimate.expertId).secondName}}</div>
 
-              <td class="score score_{{ estimate.score }}">{{ estimate.score }}</td>
-              <td>{{ estimate.comment }}</td>
-            </tr>
-          </table>
+              <div class="score score_{{ estimate.score }}">{{ estimate.score }}</div>
+              <div>{{ estimate.comment }}</div>
+            </div>
         </div>
 
         <div class="settings-block" *ngIf="scoringInfo.scoringInfo.conclusions.length">

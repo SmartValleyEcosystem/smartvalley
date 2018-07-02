@@ -41,7 +41,7 @@
 .question {
   font-family: Roboto-Bold;
   font-size: 14px;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 
 .scoring-question {
@@ -71,33 +71,30 @@
 .scoring-results {
   text-align: left;
   font-size: 14px;
-  tr {
-    line-height: 25px;
-  }
-  thead {
-    td {
-      width: 150px;
-    }
-    td:last-child {
-      width: 600px;
-    }
-    font-family: Roboto-Bold;
-    color: #a4a2b0;
-  }
+}
 
-  tbody {
-    .score {
-      @media screen and (min-width: 320px) and (max-width: 768px) {
-        text-align: center;
-      }
-    }
-    td {
-      @media screen and (min-width: 320px) and (max-width: 768px) {
-        vertical-align: top;
-        font-size: 12px;
-        padding-top: 15px;
-      }
-    }
+.expert-scoring-question__header {
+  display: flex;
+  font-family: Roboto-Bold;
+  font-size: 14px;
+  color: #a4a2b0;
+  margin-bottom: 12px;
+  div {
+    width: 150px;
+  }
+  div:last-child {
+    width: 600px;
+  }
+}
+.expert-scoring-question {
+  display: flex;
+  font-size: 14px;
+  margin-bottom: 12px;
+  div {
+    width: 150px;
+  }
+  div:last-child {
+    width: 600px;
   }
 }
 
