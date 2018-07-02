@@ -40,7 +40,7 @@ export class StartAllotmentEventModalComponent implements OnInit {
 
   public async submitAsync() {
     const finishDate = new Date(this.data.finishDate).getTime();
-    const startDateWithFreezing = new Date(new Date).getTime() + this.freezeTime * 24 * 3600 * 1000;
+    const startDateWithFreezing = Date.now() + this.freezeTime * 24 * 3600 * 1000;
 
     if (this.tokenBalance.isZero()) {
         this.notificationService.error(
@@ -49,7 +49,8 @@ export class StartAllotmentEventModalComponent implements OnInit {
       this.dialogRef.close(false);
       return;
     }
-    if ( !this.data.finishDate || (finishDate > startDateWithFreezing) ) {
+
+    if ( !this.data.finishDate || (finishDate > startDateWithFreezing) || finishDate < Date.now() ) {
         this.notificationService.error(
             this.translateService.instant('StartAllotmentEventModalComponent.BadDate'),
         );
