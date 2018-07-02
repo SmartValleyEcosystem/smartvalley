@@ -107,13 +107,15 @@ export class AllotmentEventService {
     await this.allotmentEventsApiClient.removeAsync(eventId, transactionHash);
   }
 
-  public async participateAsync(eventId: number, eventContractAddress: string, amount: BigNumber) {
+  public async participateAsync(eventId: number, eventContractAddress: string, amount: BigNumber): Promise<string> {
     const transactionHash = await this.smartValleyTokenContractClient.freezeAsync(amount, eventContractAddress);
     await this.allotmentEventsApiClient.participateAsync(eventId, transactionHash);
+    return transactionHash;
   }
 
-  public async receiveTokensAsync(eventId: number, eventAddress: string) {
+  public async receiveTokensAsync(eventId: number, eventAddress: string): Promise<string> {
     const transactionHash = await this.allotmentEventsContractClient.receiveTokensAsync(eventAddress);
     await this.allotmentEventsApiClient.receiveTokensAsync(eventId, transactionHash);
+    return transactionHash;
   }
 }

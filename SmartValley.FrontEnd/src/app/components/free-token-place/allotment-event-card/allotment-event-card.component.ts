@@ -74,11 +74,14 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
         totalBet: this.model.event.totalBid,
         myBet: this.userBid,
         tokenBalance: this.model.event.totalTokens,
-        decimals: this.model.balance.svtDecimals,
-        ticker: this.model.event.tokenTicker
+        decimals: this.model.event.tokenDecimals,
+        ticker: this.model.event.tokenTicker,
+        svtDecimals: this.model.balance.svtDecimals
       });
       if (participateResult) {
-        await this.allotmentEventService.participateAsync(this.model.event.id, this.model.event.eventContractAddress, participateResult.mul(Math.pow(10, this.model.balance.svtDecimals)));
+        this.model.transaction = await this.allotmentEventService.participateAsync(this.model.event.id,
+          this.model.event.eventContractAddress,
+          participateResult.mul(Math.pow(10, this.model.balance.svtDecimals)));
       }
     }
   }
@@ -102,7 +105,8 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
       this.model.balance.svtDecimals
     );
     if (result) {
-      await this.allotmentEventService.receiveTokensAsync(this.model.event.id, this.model.event.eventContractAddress);
+      this.model.transaction =
+        await this.allotmentEventService.receiveTokensAsync(this.model.event.id, this.model.event.eventContractAddress);
       this.canReceiveTokens = false;
     }
   }
@@ -121,8 +125,8 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
       entityTypes: [EthereumTransactionEntityTypeEnum.AllotmentEvent],
       statuses: [EthereumTransactionStatusEnum.InProgress]
     });
-    if (transactionInfo.items[transactionInfo.items.length]) {
-      this.model.transaction = transactionInfo.items[transactionInfo.items.length].hash;
+    if (transactionInfo.items[transactionInfo.items.length - 1]) {
+      this.model.transaction = transactionInfo.items[transactionInfo.items.length - 1].hash;
       return;
     }
     this.model.transaction = '';
