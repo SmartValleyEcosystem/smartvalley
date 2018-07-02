@@ -2,7 +2,6 @@ import {Component, OnInit, Input, OnDestroy, EventEmitter, Output} from '@angula
 import {BlockiesService} from '../../../services/blockies-service';
 import {AllotmentEventCard} from '../allotment-event-card';
 import {DialogService} from '../../../services/dialog-service';
-import {Balance} from '../../../services/balance/balance';
 import {AuthenticationService} from '../../../services/authentication/authentication-service';
 import {AllotmentEventParticipateDialogData} from '../../common/allotment-event-participate-modal/allotment-event-participate-dialog-data';
 import {User} from '../../../services/authentication/user';
@@ -72,18 +71,17 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
   public async showParticipateDialogAsync() {
     if (await this.authenticationService.authenticateAsync()) {
       const participateResult = await this.dialogService.showParticipateDialogAsync(<AllotmentEventParticipateDialogData>{
-        balance: this.model.balance,
-        totalBet: this.model.event.totalBid,
-        myBet: this.userBid,
+        userSvtBalance: this.model.balance.svt,
+        allotmentEventTotalBid: this.model.event.totalBid,
+        existingUserBid: this.userBid,
         tokenBalance: this.model.event.totalTokens,
-        decimals: this.model.event.tokenDecimals,
-        ticker: this.model.event.tokenTicker,
-        svtDecimals: this.model.balance.svtDecimals
+        tokenDecimals: this.model.event.tokenDecimals,
+        svtDecimals: this.model.balance.svtDecimals,
+        tokenTicker: this.model.event.tokenTicker
       });
       if (participateResult) {
         this.model.transaction = await this.allotmentEventService.participateAsync(this.model.event.id,
-          this.model.event.eventContractAddress,
-          participateResult.mul(Math.pow(10, this.model.balance.svtDecimals)));
+          this.model.event.eventContractAddress, participateResult);
       }
     }
   }

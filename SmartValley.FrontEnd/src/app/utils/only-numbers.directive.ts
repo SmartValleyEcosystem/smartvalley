@@ -1,4 +1,5 @@
 import {Directive, ElementRef, HostListener, Input} from '@angular/core';
+import {BigNumber} from 'bignumber.js';
 
 @Directive({
     selector: '[appOnlyNumbersByDecimal]'
@@ -9,6 +10,7 @@ export class OnlyNumbersByDecimalDirective {
     private specialKeys: Array<string> = [ 'Backspace', 'Tab', 'End', 'Home', '.', 'ArrowLeft', 'ArrowRight', 'Delete'];
 
     @Input() decimal: number;
+    @Input() maxValue: BigNumber;
 
     constructor(private el: ElementRef) {
     }
@@ -16,10 +18,6 @@ export class OnlyNumbersByDecimalDirective {
     @HostListener('keydown', [ '$event' ])
 
     onKeyDown(event: KeyboardEvent) {
-      if (!this.decimal) {
-        this.decimal = 1;
-      }
-
       if (this.specialKeys.indexOf(event.key) !== -1) {
         return;
       }
@@ -35,6 +33,13 @@ export class OnlyNumbersByDecimalDirective {
 
       if (next && !String(next).match(this.regex)) {
           event.preventDefault();
+      }
+
+      if (this.maxValue) {
+        const currentValue = new BigNumber(next);
+        if (currentValue.greaterThan(this.maxValue)) {
+          event.preventDefault();
+        }
       }
     }
 }

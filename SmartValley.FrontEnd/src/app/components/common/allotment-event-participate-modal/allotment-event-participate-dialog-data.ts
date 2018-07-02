@@ -1,12 +1,11 @@
-import {Balance} from '../../../services/balance/balance';
 import BigNumber from 'bignumber.js';
 
 export interface AllotmentEventParticipateDialogData {
-    balance: Balance;
-    myBet: BigNumber;
-    totalBet: BigNumber;
+    userSvtBalance?: BigNumber;
+    existingUserBid: BigNumber;
+    allotmentEventTotalBid: BigNumber;
     tokenBalance: BigNumber;
-    decimals: number;
-    ticker: string;
+    tokenDecimals: number;
     svtDecimals: number;
+    tokenTicker: string;
 }

@@ -7,10 +7,10 @@ import {isNullOrUndefined} from 'util';
 })
 export class FormatNumberPipe implements PipeTransform {
 
-  transform(val: BigNumber, decimalPlaces: number, subUnitPalces: number): string {
+  transform(val: BigNumber, decimalPlaces: number, subUnitPlaces: number): string {
     if (!isNullOrUndefined(val)) {
-      if (!isNullOrUndefined(subUnitPalces)) {
-        val = val.shift(-subUnitPalces);
+      if (!isNullOrUndefined(subUnitPlaces)) {
+        val = val.shift(-subUnitPlaces);
       }
       if (val.decimalPlaces() === 0) {
         return val.toFormat(0, 0);

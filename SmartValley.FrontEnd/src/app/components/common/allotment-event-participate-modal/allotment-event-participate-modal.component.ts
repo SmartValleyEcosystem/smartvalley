@@ -19,10 +19,10 @@ export class AllotmentEventParticipateModalComponent implements OnInit {
       .map(event => event.target.value)
       .debounceTime(500)
       .subscribe(val => this.getComputedShare());
-    this.data.myBet = new BigNumber(this.data.myBet) || new BigNumber(0);
   }
 
-  public newBet: BigNumber;
+  public inputString: string;
+  public newBid: BigNumber;
   public frozenTime: Date;
   public changeParticipate = new Subject<any>();
   public isDescriptionShow = false;
@@ -36,29 +36,24 @@ export class AllotmentEventParticipateModalComponent implements OnInit {
   }
 
   public getComputedShare() {
-    let myBid: BigNumber = this.data.myBet;
+    if (this.inputString) {
+      this.newBid = new BigNumber(this.inputString, 10).shift(this.data.svtDecimals);
+    } else {
+      this.newBid = new BigNumber(0, 10);
+    }
+
     this.isDescriptionShow = false;
-    this.newBet = this.newBet ? new BigNumber(this.newBet) : new BigNumber(0);
 
-    if (this.newBet) {
-      myBid = myBid.plus(this.newBet);
-    }
-
-    let computedShare = myBid.dividedBy(this.data.totalBet).mul(this.data.tokenBalance);
-
-    if (computedShare.isNaN()) {
-      computedShare = new BigNumber(0);
-    }
+    let userTotalBid = this.data.existingUserBid.plus(this.newBid);
+    let allotmentEventTotalBid = this.data.allotmentEventTotalBid.plus(this.newBid);
+    let computedShare = userTotalBid.mul(this.data.tokenBalance).div(allotmentEventTotalBid);
 
     this.isDescriptionShow = true;
-    if (!computedShare.isFinite()) {
-      computedShare = new BigNumber(this.data.tokenBalance);
-    }
 
     this.computedShare = computedShare;
   }
 
   public submit() {
-    this.participateModalComponent.close(this.newBet);
+    this.participateModalComponent.close(this.newBid);
   }
 }

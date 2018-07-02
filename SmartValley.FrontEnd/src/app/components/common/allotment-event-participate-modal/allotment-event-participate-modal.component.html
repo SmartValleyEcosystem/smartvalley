@@ -1,26 +1,26 @@
 <div class="dialog">
   <button class="dialog-close" mat-dialog-close></button>
   <h2>{{ 'ParticipateModal.Title' | translate }}</h2>
-  <h3 *ngIf="data.myBet.greaterThan(0)">{{ 'ParticipateModal.CurrentBet' | translate }} {{ data.myBet | formatNumber: 3: data.svtDecimals }} {{
-    'ParticipateModal.SVT' | translate }}</h3>
+  <h3 *ngIf="data.existingUserBid.greaterThan(0)">{{ 'ParticipateModal.CurrentBet' | translate }} {{ data.existingUserBid | formatNumber : 3 : data.svtDecimals  }} {{ 'ParticipateModal.SVT' | translate }}</h3>
   <p class="strong">{{ 'ParticipateModal.HowMuchSVTBet' | translate }}</p>
-  <input appOnlyNumbersByDecimal [decimal]="data.decimals" [(ngModel)]="newBet"
+  <input appOnlyNumbersByDecimal [decimal]="data.svtDecimals" [maxValue]="data.userSvtBalance.shift(-data.svtDecimals)" [(ngModel)]="inputString"
          (keydown)='changeParticipate.next($event)'
-         placeholder="{{ 'ParticipateModal.MAX' | translate }} {{ data.balance.svt | formatNumber: 3: data.svtDecimals }} {{ 'ParticipateModal.SVT' | translate }}"
+         placeholder="{{ 'ParticipateModal.MAX' | translate }} {{ data.userSvtBalance | formatNumber : 3 : data.svtDecimals }} {{ 'ParticipateModal.SVT' | translate }}"
          class="input" type="text">
-  <p class="description" *ngIf="isDescriptionShow">
+  <p class="description" *ngIf="isDescriptionShow && newBid.greaterThan(0)">
     {{ 'ParticipateModal.YouReceive' | translate }}
-    <strong>{{ computedShare | formatNumber: 0: data.decimals }} {{ data.ticker }}</strong>
+    <strong>{{ computedShare | formatNumber : 0 : data.tokenDecimals }} {{ data.tokenTicker }}</strong>
     {{ 'ParticipateModal.AboutReceive' | translate }}
   </p>
-  <p class="about-frozen" *ngIf="isDescriptionShow">
-    {{ 'ParticipateModal.Your' | translate }} {{ this.newBet | formatNumber: 3 }} {{ 'ParticipateModal.SVT' | translate }}
+  <p class="about-frozen" *ngIf="newBid && newBid.greaterThan(0)">
+    {{ 'ParticipateModal.Your' | translate }} {{ newBid | formatNumber : 3 : data.svtDecimals }} {{
+    'ParticipateModal.SVT' | translate }}
     {{ 'ParticipateModal.WillBeFreezed' | translate }} {{ frozenTime | date: 'HH:mm dd.MM.yyyy' }}
   </p>
   <p class="button-wrapper">
-    <button (click)="submit(true)" *ngIf="data.myBet.isZero()" class="material-btn">{{ 'ParticipateModal.Participate' | translate }}
+    <button (click)="submit(true)" *ngIf="data.existingUserBid.isZero()" class="material-btn">{{ 'ParticipateModal.Participate' | translate }}
     </button>
-    <button (click)="submit(true)" *ngIf="data.myBet.greaterThan(0)" class="material-btn material-btn__action">
+    <button (click)="submit(true)" *ngIf="data.existingUserBid.greaterThan(0)" class="material-btn material-btn__action">
       {{ 'ParticipateModal.AddSVT' | translate }}
     </button>
   </p>
