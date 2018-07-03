@@ -56,7 +56,11 @@ export class AllotmentEventParticipateModalComponent implements OnInit {
   }
 
   public submit() {
-    if (this.newBid.greaterThan(this.data.userSvtBalance.shift(-this.data.svtDecimals))) {
+    if (!this.newBid && !this.inputString) {
+      this.participateModalComponent.close();
+      return;
+    }
+    if (this.newBid && this.newBid.greaterThan(this.data.userSvtBalance.shift(-this.data.svtDecimals))) {
       this.isNewBidGreatherThanBalance = true;
       return;
     }
