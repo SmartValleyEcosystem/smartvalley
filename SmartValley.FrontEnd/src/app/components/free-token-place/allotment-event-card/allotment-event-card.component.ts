@@ -35,7 +35,6 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
   public user: User;
   public userBid: BigNumber = new BigNumber(0);
   public userHasBid: boolean;
-  public totalBid: BigNumber;
   public canReceiveTokens: boolean;
   public potentialShare: BigNumber;
   public potentialPercentShare: BigNumber;
@@ -97,7 +96,7 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
   public async showReceiveTokensModalAsync() {
     const result = await this.dialogService.showReceiveTokensModalAsync(
       this.model.event.totalTokens,
-      this.totalBid || new BigNumber(0),
+      this.model.event.totalBid,
       this.userBid,
       this.model.event.getUserTokens(this.user.id, this.model.event.totalTokens),
       this.model.event.tokenTicker,

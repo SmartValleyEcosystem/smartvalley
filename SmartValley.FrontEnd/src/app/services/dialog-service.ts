@@ -62,8 +62,8 @@ export class DialogService {
 
   public async showReceiveTokensModalAsync(
     totalTokens: BigNumber,
-    totalBet: BigNumber,
-    userBet: BigNumber,
+    totalBid: BigNumber,
+    userBid: BigNumber,
     userTokens: BigNumber,
     tokenTicker: string,
     tokenDecimals: number,
@@ -71,8 +71,8 @@ export class DialogService {
   ): Promise<boolean> {
     return this.openModal(ReceiveTokensModalComponent, <ReceiveTokensModalData> {
       totalTokens: totalTokens,
-      totalBet: totalBet,
-      userBet: userBet,
+      totalBid: totalBid,
+      userBid: userBid,
       userTokens: userTokens,
       tokenTicker: tokenTicker,
       tokenDecimals: tokenDecimals,

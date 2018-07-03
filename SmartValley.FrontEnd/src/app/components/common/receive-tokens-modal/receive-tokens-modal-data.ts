@@ -2,8 +2,8 @@ import BigNumber from 'bignumber.js';
 
 export interface ReceiveTokensModalData {
   totalTokens: BigNumber;
-  totalBet: BigNumber;
-  userBet: BigNumber;
+  totalBid: BigNumber;
+  userBid: BigNumber;
   userTokens: BigNumber;
   tokenTicker: string;
   tokenDecimals: number;

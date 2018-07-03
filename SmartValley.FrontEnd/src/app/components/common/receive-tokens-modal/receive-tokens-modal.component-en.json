@@ -3,8 +3,8 @@
     "Title": "Receive tokens",
     "ReceiveBtn": "Receive tokens",
     "TotalTokens": "Total tokens",
-    "TotalBet": "Total bet",
-    "YourBet": "Your bet",
+    "TotalBid": "Total bet",
+    "YourBid": "Your bet",
     "YourTokens": "Your tokens"
   }
 }
