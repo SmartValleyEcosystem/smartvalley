@@ -3,10 +3,11 @@
   <h2>{{ 'ParticipateModal.Title' | translate }}</h2>
   <h3 *ngIf="data.existingUserBid.greaterThan(0)">{{ 'ParticipateModal.CurrentBet' | translate }} {{ data.existingUserBid | formatNumber : 3 : data.svtDecimals  }} {{ 'ParticipateModal.SVT' | translate }}</h3>
   <p class="strong">{{ 'ParticipateModal.HowMuchSVTBet' | translate }}</p>
-  <input appOnlyNumbersByDecimal [decimal]="data.svtDecimals" [maxValue]="data.userSvtBalance.shift(-data.svtDecimals)" [(ngModel)]="inputString"
+  <input appOnlyNumbersByDecimal [decimal]="data.svtDecimals" [(ngModel)]="inputString"
          (keydown)='changeParticipate.next($event)'
          placeholder="{{ 'ParticipateModal.MAX' | translate }} {{ data.userSvtBalance | formatNumber : 3 : data.svtDecimals }} {{ 'ParticipateModal.SVT' | translate }}"
          class="input" type="text">
+  <p class="description error" *ngIf="isNewBidGreatherThanBalance">{{ 'ParticipateModal.NotEnoughBalance' | translate }}</p>
   <p class="description" *ngIf="isDescriptionShow && newBid.greaterThan(0)">
     {{ 'ParticipateModal.YouReceive' | translate }}
     <strong>{{ computedShare | formatNumber : 0 : data.tokenDecimals }} {{ data.tokenTicker }}</strong>

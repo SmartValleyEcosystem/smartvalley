@@ -27,6 +27,7 @@ export class AllotmentEventParticipateModalComponent implements OnInit {
   public changeParticipate = new Subject<any>();
   public isDescriptionShow = false;
   public computedShare: BigNumber;
+  public isNewBidGreatherThanBalance = false;
 
   async ngOnInit() {
     const today = new Date();
@@ -36,6 +37,7 @@ export class AllotmentEventParticipateModalComponent implements OnInit {
   }
 
   public getComputedShare() {
+    this.isNewBidGreatherThanBalance = false;
     if (this.inputString) {
       this.newBid = new BigNumber(this.inputString, 10).shift(this.data.svtDecimals);
     } else {
@@ -54,6 +56,16 @@ export class AllotmentEventParticipateModalComponent implements OnInit {
   }
 
   public submit() {
-    this.participateModalComponent.close(this.newBid);
+    if (!this.newBid && !this.inputString) {
+      this.participateModalComponent.close();
+      return;
+    }
+    if (this.newBid && this.newBid.greaterThan(this.data.userSvtBalance.shift(-this.data.svtDecimals))) {
+      this.isNewBidGreatherThanBalance = true;
+      return;
+    }
+    if (this.newBid) {
+      this.participateModalComponent.close(this.newBid);
+    }
   }
 }
