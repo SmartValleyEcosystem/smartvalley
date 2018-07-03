@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using Nethereum.Web3;
 
@@ -19,10 +20,10 @@ namespace SmartValley.Ethereum
             _expectedConfirmationsCount = nethereumOptions.TransactionConfirmationsCount ?? DefaultTransactionConfirmationsCount;
         }
 
-        public async Task<double> GetBalanceAsync(string address)
+        public async Task<string> GetBalanceAsync(string address)
         {
             var balance = await _web3.Eth.GetBalance.SendRequestAsync(address);
-            return (double) Web3.Convert.FromWei(balance.Value);
+            return balance.Value.ToString(CultureInfo.InvariantCulture);
         }
 
         public async Task WaitForConfirmationAsync(string transactionHash)

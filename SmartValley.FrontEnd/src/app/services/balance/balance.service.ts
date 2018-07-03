@@ -14,6 +14,8 @@ import {MinterContractClient} from '../contract-clients/minter-contract-client.s
 @Injectable()
 export class BalanceService {
 
+  private readonly balanceThreshold: BigNumber;
+
   public balanceChanged: EventEmitter<Balance> = new EventEmitter<Balance>();
   public balance: Balance;
 
@@ -27,6 +29,7 @@ export class BalanceService {
               private smartValleyTokenContractClient: SmartValleyTokenContractClient,
               private minterContractClient: MinterContractClient) {
     this.userContext.userContextChanged.subscribe(async () => await this.updateBalanceAsync());
+    this.balanceThreshold = new BigNumber(5e16);
   }
 
   public async updateBalanceAsync(): Promise<void> {
@@ -44,7 +47,7 @@ export class BalanceService {
 
   public async checkEthAsync(): Promise<boolean> {
     const balanceResponse = await this.balanceApiClient.getBalanceAsync();
-    if (balanceResponse.balance > 0.05) {
+    if (new BigNumber(balanceResponse.balance) > this.balanceThreshold) {
       return true;
     }
     if (!await this.dialogService.showGetEtherDialogAsync(balanceResponse.wasEtherReceived)) {
@@ -70,12 +73,12 @@ export class BalanceService {
 
   public async getTokenBalanceAsync(): Promise<Balance> {
     const svt = await this.smartValleyTokenContractClient.getBalanceAsync();
-    const eth = await this.balanceApiClient.getBalanceAsync();
+    const balanceResponse = await this.balanceApiClient.getBalanceAsync();
     const frozenBalances = await this.smartValleyTokenContractClient.getFreezingDetailsAsync();
     const decimals = await this.smartValleyTokenContractClient.getDecimalsAsync();
     const totalFrozenSVT = frozenBalances.map(b => b.sum).reduce((b1, b2) => b1.add(b2), new BigNumber(0));
     return await <Balance>{
-      ethBalance: new BigNumber(eth.balance.toString()),
+      ethBalance: new BigNumber(balanceResponse.balance),
       svt: svt,
       frozenSVT: frozenBalances,
       totalFrozenSVT: totalFrozenSVT,

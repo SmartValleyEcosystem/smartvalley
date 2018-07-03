@@ -7,7 +7,7 @@
         </button>
       </li>
       <li class="balance-label">{{ 'FreeTokenPlace.Balance' | translate }}</li>
-      <li>{{ balance.ethBalance | formatNumber }} {{ 'FreeTokenPlace.ETH' | translate }}</li>
+      <li>{{ balance.ethBalance | formatNumber: 3: 18  }} {{ 'FreeTokenPlace.ETH' | translate }}</li>
       <li>{{ balance.svt | formatNumber: 3: balance.svtDecimals }} {{ 'FreeTokenPlace.SVT' | translate }}</li>
       <li *ngIf="balance.totalFrozenSVT > 0">
         {{ balance.totalFrozenSVT | formatNumber: 3: balance.svtDecimals }} {{ 'FreeTokenPlace.FreezedSVT' | translate }}
