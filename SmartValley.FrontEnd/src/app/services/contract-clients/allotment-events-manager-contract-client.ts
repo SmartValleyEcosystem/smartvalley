@@ -1,17 +1,17 @@
 import {Injectable} from '@angular/core';
 import {Web3Service} from '../web3-service';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
-import {ContractClient} from './contract-client';
 import {UserContext} from '../authentication/user-context';
 import {isNullOrUndefined} from 'util';
 import * as moment from 'moment';
 import {ConverterHelper} from '../converter-helper';
+import {Initializable} from '../initializable';
 
 @Injectable()
-export class AllotmentEventsManagerContractClient implements ContractClient {
+export class AllotmentEventsManagerContractClient implements Initializable {
 
-  public abi: string;
-  public address: string;
+  private abi: string;
+  private address: string;
 
   constructor(private web3Service: Web3Service,
               private userContext: UserContext,

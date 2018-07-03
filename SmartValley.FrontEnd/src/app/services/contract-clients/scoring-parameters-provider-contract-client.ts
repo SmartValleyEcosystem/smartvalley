@@ -1,16 +1,16 @@
 import {Injectable} from '@angular/core';
 import {Web3Service} from '../web3-service';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
-import {ContractClient} from './contract-client';
 import {UserContext} from '../authentication/user-context';
 import {BigNumber} from 'bignumber.js';
 import {AreaType} from '../../api/scoring/area-type.enum';
+import {Initializable} from '../initializable';
 
 @Injectable()
-export class ScoringParametersProviderContractClient implements ContractClient {
+export class ScoringParametersProviderContractClient implements Initializable {
 
-  public abi: string;
-  public address: string;
+  private abi: string;
+  private address: string;
 
   constructor(private userContext: UserContext,
               private web3Service: Web3Service,
@@ -18,9 +18,9 @@ export class ScoringParametersProviderContractClient implements ContractClient {
   }
 
   public async initializeAsync(): Promise<void> {
-    const contract = await this.contractClient.getScoringParametersProviderContractAsync();
-    this.abi = contract.abi;
-    this.address = contract.address;
+    const contractResponse = await this.contractClient.getScoringParametersProviderContractAsync();
+    this.abi = contractResponse.abi;
+    this.address = contractResponse.address;
   }
 
   public async getAreaRewardAsync(areaType: AreaType): Promise<BigNumber> {

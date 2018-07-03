@@ -1,17 +1,17 @@
 import {Injectable} from '@angular/core';
-import {ContractClient} from './contract-client';
 import {Web3Service} from '../web3-service';
 import {UserContext} from '../authentication/user-context';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
 import BigNumber from 'bignumber.js';
 import {ConverterHelper} from '../converter-helper';
 import {FrozenBalance} from '../balance/frozen-balance';
+import {Initializable} from '../initializable';
 
 @Injectable()
-export class SmartValleyTokenContractClient implements ContractClient {
+export class SmartValleyTokenContractClient implements Initializable {
 
-  public abi: string;
-  public address: string;
+  private abi: string;
+  private address: string;
 
   constructor(private userContext: UserContext,
               private web3Service: Web3Service,
@@ -19,9 +19,9 @@ export class SmartValleyTokenContractClient implements ContractClient {
   }
 
   public async initializeAsync(): Promise<void> {
-    const contract = await this.contractClient.getSmartValleyTokenContractAsync();
-    this.abi = contract.abi;
-    this.address = contract.address;
+    const contractResponse = await this.contractClient.getSmartValleyTokenContractAsync();
+    this.abi = contractResponse.abi;
+    this.address = contractResponse.address;
   }
 
   public async getBalanceAsync(): Promise<BigNumber> {

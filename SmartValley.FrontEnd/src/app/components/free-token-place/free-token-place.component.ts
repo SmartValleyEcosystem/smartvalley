@@ -10,7 +10,6 @@ import {Balance} from '../../services/balance/balance';
 import {User} from '../../services/authentication/user';
 import {UserContext} from '../../services/authentication/user-context';
 import {AllotmentEventService} from '../../services/allotment-event/allotment-event.service';
-import {ProjectResponse} from '../../api/project/project-response';
 
 @Component({
   selector: 'app-free-token-place',
@@ -28,6 +27,7 @@ export class FreeTokenPlaceComponent implements OnInit {
   public balance: Balance;
   public isAllotmentEventsLoaded = false;
   public user: User;
+  public showReceiveTokensButton = false;
 
   constructor(private allotmentEventsService: AllotmentEventService,
               private balanceService: BalanceService,
@@ -41,6 +41,7 @@ export class FreeTokenPlaceComponent implements OnInit {
     this.isAllotmentEventsLoaded = true;
     this.user = this.userContext.getCurrentUser();
     this.userContext.userContextChanged.subscribe((user) => this.user = user);
+    this.showReceiveTokensButton = await this.balanceService.canReceiveTokensAsync();
   }
 
   public finishEvent(id: number) {
@@ -82,5 +83,9 @@ export class FreeTokenPlaceComponent implements OnInit {
       projectIds: projectIds
     });
     return projectsResponse.items;
+  }
+
+  public async receiveTokensAsync(): Promise<void> {
+    await this.balanceService.receiveTokensAsync();
   }
 }

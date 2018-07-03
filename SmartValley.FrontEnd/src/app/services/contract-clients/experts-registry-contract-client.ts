@@ -1,15 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Web3Service} from '../web3-service';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
-import {ContractClient} from './contract-client';
 import {UserContext} from '../authentication/user-context';
 import {AreaType} from '../../api/scoring/area-type.enum';
+import {Initializable} from '../initializable';
 
 @Injectable()
-export class ExpertsRegistryContractClient implements ContractClient {
+export class ExpertsRegistryContractClient implements Initializable {
 
-  public abi: string;
-  public address: string;
+  private abi: string;
+  private address: string;
 
   constructor(private web3Service: Web3Service,
               private contractClient: ContractApiClient,
@@ -17,9 +17,9 @@ export class ExpertsRegistryContractClient implements ContractClient {
   }
 
   public async initializeAsync(): Promise<void> {
-    const tokenContract = await this.contractClient.getExpertRegistryContractAsync();
-    this.abi = tokenContract.abi;
-    this.address = tokenContract.address;
+    const contractResponse = await this.contractClient.getExpertRegistryContractAsync();
+    this.abi = contractResponse.abi;
+    this.address = contractResponse.address;
   }
 
   public applyAsync(areas: Array<AreaType>, applicationHash: string): Promise<string> {

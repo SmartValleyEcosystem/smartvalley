@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {AllotmentEventsApiClient} from '../../api/allotment-events/allotment-events-api-client';
 import {AllotmentEventsManagerContractClient} from '../contract-clients/allotment-events-manager-contract-client';
-import {AllotmentEventsContractClient} from '../contract-clients/allotment-events-contract-client';
+import {AllotmentEventContractClient} from '../contract-clients/allotment-event-contract-client.service';
 import {AllotmentEvent} from './allotment-event';
 import {AllotmentEventStatus} from '../../api/allotment-events/allotment-event-status';
 import {GetAllotmentEventsRequest} from '../../api/allotment-events/request/get-allotment-events-request';
@@ -14,7 +14,7 @@ import {CollectionResponse} from '../../api/collection-response';
 export class AllotmentEventService {
 
   constructor(private allotmentEventsApiClient: AllotmentEventsApiClient,
-              private allotmentEventsContractClient: AllotmentEventsContractClient,
+              private allotmentEventContractClient: AllotmentEventContractClient,
               private allotmentEventsManagerContractClient: AllotmentEventsManagerContractClient,
               private erc223ContractClient: Erc223ContractClient,
               private smartValleyTokenContractClient: SmartValleyTokenContractClient) {
@@ -114,7 +114,7 @@ export class AllotmentEventService {
   }
 
   public async receiveTokensAsync(eventId: number, eventAddress: string): Promise<string> {
-    const transactionHash = await this.allotmentEventsContractClient.receiveTokensAsync(eventAddress);
+    const transactionHash = await this.allotmentEventContractClient.receiveTokensAsync(eventAddress);
     await this.allotmentEventsApiClient.receiveTokensAsync(eventId, transactionHash);
     return transactionHash;
   }

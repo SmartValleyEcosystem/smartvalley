@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Web3Service} from '../web3-service';
 import {ContractApiClient} from '../../api/contract/contract-api-client';
-import {ContractClient} from './contract-client';
 import {UserContext} from '../authentication/user-context';
+import {Initializable} from '../initializable';
 
 @Injectable()
-export class ScoringOffersManagerContractClient implements ContractClient {
+export class ScoringOffersManagerContractClient implements Initializable {
 
-  public abi: string;
-  public address: string;
+  private abi: string;
+  private address: string;
 
   constructor(private userContext: UserContext,
               private web3Service: Web3Service,
@@ -16,9 +16,9 @@ export class ScoringOffersManagerContractClient implements ContractClient {
   }
 
   public async initializeAsync(): Promise<void> {
-    const scoringOffersManagerContract = await this.contractClient.getScoringOffersManagerContractAsync();
-    this.abi = scoringOffersManagerContract.abi;
-    this.address = scoringOffersManagerContract.address;
+    const contractResponse = await this.contractClient.getScoringOffersManagerContractAsync();
+    this.abi = contractResponse.abi;
+    this.address = contractResponse.address;
   }
 
   public async regenerateOffersAsync(projectId: string): Promise<string> {

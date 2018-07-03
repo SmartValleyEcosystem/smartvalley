@@ -7,9 +7,6 @@ import {ScoringManagerContractClientBase} from './scoring-manager-contract-clien
 @Injectable()
 export class PrivateScoringManagerContractClient extends ScoringManagerContractClientBase {
 
-  public abi: string;
-  public address: string;
-
   constructor(userContext: UserContext,
               web3Service: Web3Service,
               private contractClient: ContractApiClient) {
@@ -17,9 +14,9 @@ export class PrivateScoringManagerContractClient extends ScoringManagerContractC
   }
 
   public async initializeAsync(): Promise<void> {
-    const contract = await this.contractClient.getPrivateScoringManagerContractAsync();
-    this.abi = contract.abi;
-    this.address = contract.address;
+    const contractResponse = await this.contractClient.getPrivateScoringManagerContractAsync();
+    this.abi = contractResponse.abi;
+    this.address = contractResponse.address;
   }
 
   public async startAsync(projectExternalId: string,

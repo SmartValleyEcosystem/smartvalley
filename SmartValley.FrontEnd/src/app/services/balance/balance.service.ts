@@ -9,6 +9,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {UserContext} from '../authentication/user-context';
 import BigNumber from 'bignumber.js';
 import {SmartValleyTokenContractClient} from '../contract-clients/smart-valley-token-contract-client.service';
+import {MinterContractClient} from '../contract-clients/minter-contract-client.service';
 
 @Injectable()
 export class BalanceService {
@@ -23,7 +24,8 @@ export class BalanceService {
               private notificationsService: NotificationsService,
               private web3Service: Web3Service,
               private translateService: TranslateService,
-              private smartValleyTokenContractClient: SmartValleyTokenContractClient) {
+              private smartValleyTokenContractClient: SmartValleyTokenContractClient,
+              private minterContractClient: MinterContractClient) {
     this.userContext.userContextChanged.subscribe(async () => await this.updateBalanceAsync());
   }
 
@@ -55,6 +57,15 @@ export class BalanceService {
     const receiveEtherResponse = await this.balanceApiClient.receiveEtherAsync();
     const transactionHash = receiveEtherResponse.transactionHash;
     return await this.showTransactionDialogAndGetResultAsync(transactionHash);
+  }
+
+  public async receiveTokensAsync(): Promise<boolean> {
+    const transactionHash = await this.minterContractClient.getTokensAsync();
+    return await this.showTransactionDialogAndGetResultAsync(transactionHash);
+  }
+
+  public canReceiveTokensAsync(): Promise<boolean> {
+    return this.minterContractClient.canGetTokensAsync();
   }
 
   public async getTokenBalanceAsync(): Promise<Balance> {
