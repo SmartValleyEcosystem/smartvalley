@@ -48,4 +48,8 @@ export class ContractApiClient extends BaseApiClient {
   public getSmartValleyTokenContractAsync(): Promise<ContractResponse> {
     return this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/smartValleyToken').toPromise();
   }
+
+  public getMinterContractAsync(): Promise<ContractResponse> {
+    return this.http.get<ContractResponse>(this.baseApiUrl + '/contracts/minter').toPromise();
+  }
 }

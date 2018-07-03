@@ -13,6 +13,9 @@ import {ScoringParametersProviderContractClient} from '../contract-clients/scori
 import {AllotmentEventsManagerContractClient} from '../contract-clients/allotment-events-manager-contract-client';
 import {SmartValleyTokenContractClient} from '../contract-clients/smart-valley-token-contract-client.service';
 import BigNumber from 'bignumber.js';
+import {MinterContractClient} from '../contract-clients/minter-contract-client.service';
+import {Erc223ContractClient} from '../contract-clients/erc223-contract-client';
+import {AllotmentEventContractClient} from '../contract-clients/allotment-event-contract-client.service';
 
 @Injectable()
 export class InitializationService {
@@ -21,7 +24,8 @@ export class InitializationService {
 
   constructor(private scoringCriterionService: ScoringCriterionService,
               private adminContractClient: AdminContractClient,
-              private expertContractClient: ExpertsRegistryContractClient,
+              private expertsRegistryContractClient: ExpertsRegistryContractClient,
+              private minterContractClient: MinterContractClient,
               private scoringManagerContractClient: ScoringManagerContractClient,
               private privateScoringManagerContractClient: PrivateScoringManagerContractClient,
               private scoringOffersManagerContractClient: ScoringOffersManagerContractClient,
@@ -29,6 +33,8 @@ export class InitializationService {
               private authenticationService: AuthenticationService,
               private allotmentEventsManagerContractClient: AllotmentEventsManagerContractClient,
               private smartValleyTokenContractClient: SmartValleyTokenContractClient,
+              private erc223ContractClient: Erc223ContractClient,
+              private allotmentEventContractClient: AllotmentEventContractClient,
               private areaService: AreaService,
               private dictionariesService: DictionariesService) {
   }
@@ -62,10 +68,13 @@ export class InitializationService {
       this.scoringManagerContractClient.initializeAsync(),
       this.privateScoringManagerContractClient.initializeAsync(),
       this.scoringOffersManagerContractClient.initializeAsync(),
-      this.expertContractClient.initializeAsync(),
+      this.expertsRegistryContractClient.initializeAsync(),
       this.smartValleyTokenContractClient.initializeAsync(),
+      this.minterContractClient.initializeAsync(),
+      this.allotmentEventContractClient.initializeAsync(),
       this.areaService.initializeAsync(),
-      this.dictionariesService.initializeAsync()
+      this.dictionariesService.initializeAsync(),
+      this.erc223ContractClient.initializeAsync()
     ]);
   }
 

@@ -1,16 +1,16 @@
 import {Injectable} from '@angular/core';
 import {Web3Service} from '../web3-service';
-import {ContractClient} from './contract-client';
 import {AreaType} from '../../api/scoring/area-type.enum';
 import {Estimate} from '../estimate';
 import {Md5} from 'ts-md5';
 import {UserContext} from '../authentication/user-context';
+import {Initializable} from '../initializable';
 
 @Injectable()
-export abstract class ScoringManagerContractClientBase implements ContractClient {
+export abstract class ScoringManagerContractClientBase implements Initializable {
 
-  public abi: string;
-  public address: string;
+  protected abi: string;
+  protected address: string;
 
   protected constructor(protected userContext: UserContext,
                         protected web3Service: Web3Service) {

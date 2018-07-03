@@ -163,12 +163,13 @@ import {AllotmentEventParticipateModalComponent} from './components/common/allot
 import {SetFreezeTimeModalComponent} from './components/common/set-freeze-time-modal/set-freeze-time-modal.component';
 import {ReturnAddressModalComponent} from './components/common/return-address-modal/return-address-modal.component';
 import {ReceiveTokensModalComponent} from './components/common/receive-tokens-modal/receive-tokens-modal.component';
-import {AllotmentEventsContractClient} from './services/contract-clients/allotment-events-contract-client';
+import {AllotmentEventContractClient} from './services/contract-clients/allotment-event-contract-client.service';
 import {DeleteAllotmentEventModalComponent} from './components/common/delete-allotment-event-modal/delete-allotment-event-modal.component';
 import {OnlyNumbersByDecimalDirective} from './utils/only-numbers.directive';
 import {TransactionApiClient} from './api/transaction/transaction-api-client';
 import {SmartValleyTokenContractClient} from './services/contract-clients/smart-valley-token-contract-client.service';
 import {LinkHelper} from './utils/link-helper';
+import {MinterContractClient} from './services/contract-clients/minter-contract-client.service';
 
 @NgModule({
   declarations: [
@@ -375,7 +376,7 @@ import {LinkHelper} from './utils/link-helper';
     ShouldBeAdminGuard,
     GuardFactory,
     Erc223ContractClient,
-    AllotmentEventsContractClient,
+    AllotmentEventContractClient,
     CompositeGuard,
     ShouldNotBeExpertGuard,
     OfferStatusGuard,
@@ -396,6 +397,7 @@ import {LinkHelper} from './utils/link-helper';
     LoggingApiClient,
     TransactionApiClient,
     SmartValleyTokenContractClient,
+    MinterContractClient,
     LinkHelper
   ],
   bootstrap: [AppComponent]
