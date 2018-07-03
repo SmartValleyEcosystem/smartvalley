@@ -10,6 +10,7 @@
     "Your": "* Your",
     "WillBeFreezed": "will be freezed until",
     "AddSVT": "ADD SVT",
-    "CurrentBet": "Your current bet:"
+    "CurrentBet": "Your current bet:",
+    "NotEnoughBalance": "You have not enough balance!"
   }
 }
