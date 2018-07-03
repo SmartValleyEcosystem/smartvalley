@@ -85,6 +85,10 @@ export class FreeTokenPlaceComponent implements OnInit {
   }
 
   public async receiveTokensAsync(): Promise<void> {
-    await this.balanceService.receiveTokensAsync();
+    const reciveTokens = await this.balanceService.receiveTokensAsync();
+    if (reciveTokens) {
+        this.showReceiveTokensButton = false;
+        this.balance = await this.balanceService.getTokenBalanceAsync();
+    }
   }
 }
