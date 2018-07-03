@@ -16,7 +16,11 @@ p, input {
   font-family: $font-pt;
 }
 input {
+  font-weight: bold;
   width: 360px;
+}
+input::placeholder {
+  font-weight: normal;
 }
 .strong {
   font-weight: bold;
