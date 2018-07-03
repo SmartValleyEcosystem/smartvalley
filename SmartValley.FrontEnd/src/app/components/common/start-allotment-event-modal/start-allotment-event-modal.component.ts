@@ -28,12 +28,11 @@ export class StartAllotmentEventModalComponent implements OnInit {
               private notificationService: NotificationsService,
               private translateService: TranslateService,
               private projectApiClient: ProjectApiClient,
-              private erc223ContractClient: Erc223ContractClient,
               private allotmentEventService: AllotmentEventService) {
   }
 
   async ngOnInit() {
-    this.tokenBalance = await this.erc223ContractClient.getTokenBalanceAsync(this.data.tokenContractAddress, this.data.eventContractAddress);
+    this.tokenBalance = (await this.allotmentEventService.getTokensBalancesAsync([this.data.id])).first().balance;
     this.project = await this.projectApiClient.getProjectSummaryAsync(this.data.projectId);
     this.freezeTime = await this.allotmentEventsManagerContractClient.getFreezingDurationAsync();
   }
@@ -43,19 +42,19 @@ export class StartAllotmentEventModalComponent implements OnInit {
     const startDateWithFreezing = Date.now() + this.freezeTime * 24 * 3600 * 1000;
 
     if (this.tokenBalance.isZero()) {
-        this.notificationService.error(
-            this.translateService.instant('StartAllotmentEventModalComponent.EmptyBalance')
-        );
+      this.notificationService.error(
+        this.translateService.instant('StartAllotmentEventModalComponent.EmptyBalance')
+      );
       this.dialogRef.close(false);
       return;
     }
 
-    if ( !this.data.finishDate || (finishDate > startDateWithFreezing) || finishDate < Date.now() ) {
-        this.notificationService.error(
-            this.translateService.instant('StartAllotmentEventModalComponent.BadDate'),
-        );
-        this.dialogRef.close(false);
-        return;
+    if (!this.data.finishDate || (finishDate > startDateWithFreezing) || finishDate < Date.now()) {
+      this.notificationService.error(
+        this.translateService.instant('StartAllotmentEventModalComponent.BadDate'),
+      );
+      this.dialogRef.close(false);
+      return;
     }
     await this.allotmentEventService.startAsync(this.data.id);
     this.dialogRef.close(true);

@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NServiceBus;
 using SmartValley.Domain;
+using SmartValley.Domain.Contracts;
 using SmartValley.Domain.Entities;
 using SmartValley.Domain.Interfaces;
 using SmartValley.Domain.Services;
@@ -33,10 +36,20 @@ namespace SmartValley.WebApi.AllotmentEvents
         public async Task<PartialCollectionResponse<AllotmentEventResponse>> GetAsync([FromQuery] QueryAllotmentEventsRequest request)
         {
             var filterStatuses = request.AllotmentEventStatuses ?? new AllotmentEventStatus[0];
-            var query = new AllotmentEventsQuery(filterStatuses, request.Offset, request.Count);
+            var query = new AllotmentEventsQuery(filterStatuses, new long[0], request.Offset, request.Count);
             var result = await _allotmentEventService.QueryAsync(query);
 
             return result.ToPartialCollectionResponse(x => AllotmentEventResponse.Create(x, _clock.UtcNow));
+        }
+
+        [HttpGet("tokensBalances")]
+        public async Task<CollectionResponse<TokenBalanceResponse>> GetTokenBalanceAsync([FromQuery] GetTokenBalancesRequest request)
+        {
+            var tokenBalances = await _allotmentEventService.GetTokensBalancesAsync(request.EventsIds);
+            return new CollectionResponse<TokenBalanceResponse>
+                   {
+                       Items = tokenBalances.Select(TokenBalanceResponse.Create).ToArray()
+                   };
         }
 
         [HttpPost]

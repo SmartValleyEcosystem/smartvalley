@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using SmartValley.Domain.Contracts;
 using SmartValley.Domain.Core;
 using SmartValley.Domain.Entities;
 
@@ -14,5 +16,7 @@ namespace SmartValley.Domain.Services
         Task PublishAsync(long allotmentEventId);
 
         Task UpdateAsync(long id);
+
+        Task<IReadOnlyCollection<TokenBalance>> GetTokensBalancesAsync(IReadOnlyCollection<long> eventIds);
     }
 }

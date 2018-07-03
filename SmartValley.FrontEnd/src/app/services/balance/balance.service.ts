@@ -72,13 +72,20 @@ export class BalanceService {
   }
 
   public async getTokenBalanceAsync(): Promise<Balance> {
-    const svt = await this.smartValleyTokenContractClient.getBalanceAsync();
-    const balanceResponse = await this.balanceApiClient.getBalanceAsync();
-    const frozenBalances = await this.smartValleyTokenContractClient.getFreezingDetailsAsync();
     const decimals = await this.smartValleyTokenContractClient.getDecimalsAsync();
-    const totalFrozenSVT = frozenBalances.map(b => b.sum).reduce((b1, b2) => b1.add(b2), new BigNumber(0));
-    return await <Balance>{
-      ethBalance: new BigNumber(balanceResponse.balance),
+    let svt = null;
+    let eth = null;
+    let frozenBalances = null;
+    let totalFrozenSVT = null;
+    if (this.authenticationService.isAuthenticated()) {
+      svt = await this.smartValleyTokenContractClient.getBalanceAsync();
+      eth = await this.balanceApiClient.getBalanceAsync();
+      eth = new BigNumber(eth.balance.toString());
+      frozenBalances = await this.smartValleyTokenContractClient.getFreezingDetailsAsync();
+      totalFrozenSVT = frozenBalances.map(b => b.sum).reduce((b1, b2) => b1.add(b2), new BigNumber(0));
+    }
+    return <Balance>{
+      ethBalance: eth,
       svt: svt,
       frozenSVT: frozenBalances,
       totalFrozenSVT: totalFrozenSVT,

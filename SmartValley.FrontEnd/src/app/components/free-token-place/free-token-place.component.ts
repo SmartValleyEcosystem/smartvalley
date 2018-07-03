@@ -39,8 +39,7 @@ export class FreeTokenPlaceComponent implements OnInit {
     this.balance = await this.balanceService.getTokenBalanceAsync();
     await this.loadAllotmentEventsAsync();
     this.isAllotmentEventsLoaded = true;
-    this.user = this.userContext.getCurrentUser();
-    this.userContext.userContextChanged.subscribe((user) => this.user = user);
+    this.userContext.userContextChanged.subscribe(async () => await this.loadAllotmentEventsAsync());
     this.showReceiveTokensButton = await this.balanceService.canReceiveTokensAsync();
   }
 
@@ -65,6 +64,8 @@ export class FreeTokenPlaceComponent implements OnInit {
     });
     this.activeEvents = this.allotmentEvents.filter(a => a.event.status === AllotmentEventStatus.InProgress);
     this.finishedEvents = this.allotmentEvents.filter(a => a.event.status === AllotmentEventStatus.Finished);
+
+    this.user = this.userContext.getCurrentUser();
   }
 
   private async loadProjectsAsync() {
