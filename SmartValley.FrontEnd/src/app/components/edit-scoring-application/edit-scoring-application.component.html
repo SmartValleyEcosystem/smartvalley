@@ -301,7 +301,7 @@
         <div class="partition-menu__inputs">
           <input (click)="onSaveAsync()" type="button" [disabled]="disabled" class="main-btn"
                  value="{{ 'EditScoringApplication.SaveDraft' | translate }}">
-          <input *ngIf="!isPrivateProject" type="submit" class="main-btn" value="{{ 'EditScoringApplication.SendForScore' | translate }}">
+          <input *ngIf="!isPrivateProject" type="submit" class="main-btn" value="{{ 'EditScoringApplication.SendForScore' | translate }}" disabled="disabled">
           <input *ngIf="isPrivateProject" (click)="showAlertModal()" class="main-btn" value="{{ 'EditScoringApplication.SendForScore' | translate }}">
         </div>
         <span class="saved-text" *ngIf="savedTime">Saved: {{savedTime | date:'HH:mm'}}</span>
