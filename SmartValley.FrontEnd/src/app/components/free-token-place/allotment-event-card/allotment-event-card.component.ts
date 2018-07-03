@@ -34,10 +34,10 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
   private timer: NodeJS.Timer;
   public user: User;
   public userBid: BigNumber = new BigNumber(0);
-  public userHasBid: boolean;
+  public userHasBid = false;
   public canReceiveTokens: boolean;
-  public potentialShare: BigNumber;
-  public potentialPercentShare: BigNumber;
+  public potentialShare: BigNumber = new BigNumber(0);
+  public potentialPercentShare: BigNumber = new BigNumber(100);
   public actualShare: BigNumber;
   public percentShare: BigNumber;
 
@@ -47,17 +47,17 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
   @Output() finishEvent: EventEmitter<number> = new EventEmitter<number>();
 
   async ngOnInit() {
-    this.user = this.userContext.getCurrentUser();
-
-    this.potentialShare = this.model.event.getPotentialShare(this.model.balance.svt);
-    this.potentialPercentShare = this.model.event.getPotentialPercentShare(this.model.balance.svt);
+    this.potentialShare = this.model.event.totalTokens;
 
     this.timer = <NodeJS.Timer>setInterval(async () => await this.getAllotmentEventTimeLeft(), 1000);
-    if (this.user) {
+    if (this.authenticationService.isAuthenticated()) {
+      this.user = this.userContext.getCurrentUser();
       this.userHasBid = this.model.event.userHasBid(this.user.id);
       this.userBid = this.model.event.getUserBid(this.user.id);
       this.actualShare = this.model.event.getActualShare(this.user.id);
       this.percentShare = this.model.event.getPercentShare(this.user.id);
+      this.potentialShare = this.model.event.getPotentialShare(this.model.balance.svt);
+      this.potentialPercentShare = this.model.event.getPotentialPercentShare(this.model.balance.svt);
       this.canReceiveTokens = this.finished && this.userHasBid && !this.model.event.isCollected(this.user.id);
       await this.loadUserTransactionsAsync();
     }

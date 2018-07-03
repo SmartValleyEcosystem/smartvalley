@@ -5,12 +5,15 @@ namespace SmartValley.Domain
 {
     public class AllotmentEventsQuery : CollectionQuery
     {
-        public AllotmentEventsQuery(IReadOnlyCollection<AllotmentEventStatus> allotmentEventStatuses, int offset, int count)
+        public AllotmentEventsQuery(IReadOnlyCollection<AllotmentEventStatus> allotmentEventStatuses, IReadOnlyCollection<long> ids, int offset, int count)
             : base(offset, count)
         {
-            AllotmentEventStatuses = allotmentEventStatuses ?? throw new ArgumentNullException(nameof(allotmentEventStatuses));
+            AllotmentEventStatuses = allotmentEventStatuses;
+            Ids = ids;
         }
 
         public IReadOnlyCollection<AllotmentEventStatus> AllotmentEventStatuses { get; }
+
+        public IReadOnlyCollection<long> Ids { get; }
     }
 }

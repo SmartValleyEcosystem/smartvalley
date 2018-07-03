@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Domain.Contracts;
@@ -17,10 +18,12 @@ namespace SmartValley.Domain.Services
         private readonly IAllotmentEventContractClient _allotmentEventContractClient;
         private readonly IUserRepository _userRepository;
         private readonly IClock _clock;
+        private readonly IERC223ContractClient _erc223ContractClient;
 
         public AllotmentEventService(IAllotmentEventRepository allotmentEventRepository,
                                      IAllotmentEventsManagerContractClient allotmentEventsManagerContractClient,
                                      IAllotmentEventContractClient allotmentEventContractClient,
+                                     IERC223ContractClient erc223ContractClient,
                                      IUserRepository userRepository,
                                      IClock clock)
         {
@@ -29,6 +32,7 @@ namespace SmartValley.Domain.Services
             _allotmentEventContractClient = allotmentEventContractClient;
             _userRepository = userRepository;
             _clock = clock;
+            _erc223ContractClient = erc223ContractClient;
         }
 
         public Task<PagingCollection<AllotmentEvent>> QueryAsync(AllotmentEventsQuery query)
@@ -63,14 +67,14 @@ namespace SmartValley.Domain.Services
         public async Task UpdateAsync(long id)
         {
             var allotmentEvent = await _allotmentEventRepository.GetByIdAsync(id) ?? throw new AppErrorException(ErrorCode.AllotmentEventNotFound);
-            
+
             if (await _allotmentEventsManagerContractClient.IsDeletedAsync(id))
             {
                 _allotmentEventRepository.Remove(allotmentEvent);
                 await _allotmentEventRepository.SaveChangesAsync();
                 return;
             }
-            
+
             if (allotmentEvent.GetActualStatus(_clock.UtcNow) == AllotmentEventStatus.Created)
                 throw new AppErrorException(ErrorCode.CantUpdateNotPublishedAllotmentEvent);
 
@@ -98,6 +102,13 @@ namespace SmartValley.Domain.Services
             allotmentEvent.EventContractAddress = await _allotmentEventsManagerContractClient.GetAllotmentEventContractAddressAsync(allotmentEventId);
 
             await _allotmentEventRepository.SaveChangesAsync();
+        }
+
+        public async Task<IReadOnlyCollection<TokenBalance>> GetTokensBalancesAsync(IReadOnlyCollection<long> eventIds)
+        {
+            var events = await _allotmentEventRepository.QueryAsync(new AllotmentEventsQuery(new AllotmentEventStatus[0], eventIds, 0, eventIds.Count), _clock.UtcNow);
+            var eventsWithEventAddresses = events.Where(i => i.EventContractAddress != null && i.TokenContractAddress != null).ToArray();
+            return await _erc223ContractClient.GetTokensBalancesAsync(eventsWithEventAddresses.Select(i => new TokenHolder(i.TokenContractAddress, i.EventContractAddress)).ToArray());
         }
     }
 }

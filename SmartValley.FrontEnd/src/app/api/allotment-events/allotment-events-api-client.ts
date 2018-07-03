@@ -6,6 +6,7 @@ import {AllotmentEventResponse} from './responses/allotment-event-response';
 import {GetAllotmentEventsRequest} from './request/get-allotment-events-request';
 import {CreateAllotmentEventRequest} from './request/create-allotment-event-request';
 import {CreateAllotmentEventResponse} from './responses/create-allotment-event-response';
+import {TokenBalanceResponse} from './responses/token-balance-response';
 
 @Injectable()
 export class AllotmentEventsApiClient extends BaseApiClient {
@@ -43,6 +44,17 @@ export class AllotmentEventsApiClient extends BaseApiClient {
       tokenTicker: tokenTicker,
       projectId: projectId,
       finishDate: finishDate
+    }).toPromise();
+  }
+
+  public async getTokensBalancesAsync(eventsIds: Array<number>): Promise<CollectionResponse<TokenBalanceResponse>> {
+    let parameters = new HttpParams();
+
+    eventsIds.forEach(eventId => {
+      parameters = parameters.append('eventsIds', eventId.toString());
+    });
+    return this.http.get<CollectionResponse<TokenBalanceResponse>>(`${this.baseApiUrl}/allotmentEvents/tokensBalances`, {
+      params: parameters
     }).toPromise();
   }
 
