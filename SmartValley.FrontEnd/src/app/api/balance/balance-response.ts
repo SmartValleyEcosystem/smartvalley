@@ -1,4 +1,4 @@
 export interface BalanceResponse {
-  balance: number;
+  balance: string;
   wasEtherReceived: boolean;
 }

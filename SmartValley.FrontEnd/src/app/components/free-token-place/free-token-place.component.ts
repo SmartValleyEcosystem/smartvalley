@@ -52,8 +52,6 @@ export class FreeTokenPlaceComponent implements OnInit {
   }
 
   private async loadAllotmentEventsAsync(): Promise<void> {
-    this.balance = await this.balanceService.getTokenBalanceAsync();
-
     const events = await this.allotmentEventsService.getAllotmentEventsAsync(this.offset,
       this.pageSize,
       [AllotmentEventStatus.InProgress, AllotmentEventStatus.Finished]);

@@ -4,6 +4,6 @@
     {
         public bool WasEtherReceived { get; set; }
 
-        public double Balance { get; set; }
+        public string Balance { get; set; }
     }
 }
