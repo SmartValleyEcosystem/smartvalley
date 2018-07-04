@@ -10,6 +10,7 @@ import {Balance} from '../../services/balance/balance';
 import {User} from '../../services/authentication/user';
 import {UserContext} from '../../services/authentication/user-context';
 import {AllotmentEventService} from '../../services/allotment-event/allotment-event.service';
+import {AuthenticationService} from '../../services/authentication/authentication-service';
 
 @Component({
   selector: 'app-free-token-place',
@@ -32,6 +33,7 @@ export class FreeTokenPlaceComponent implements OnInit {
   constructor(private allotmentEventsService: AllotmentEventService,
               private balanceService: BalanceService,
               private userContext: UserContext,
+              private authenticationService: AuthenticationService,
               private projectApiClient: ProjectApiClient) {
   }
 
@@ -40,7 +42,6 @@ export class FreeTokenPlaceComponent implements OnInit {
     await this.loadAllotmentEventsAsync();
     this.isAllotmentEventsLoaded = true;
     this.userContext.userContextChanged.subscribe(async () => await this.loadAllotmentEventsAsync());
-    this.showReceiveTokensButton = await this.balanceService.canReceiveTokensAsync();
   }
 
   public finishEvent(id: number) {
@@ -65,7 +66,10 @@ export class FreeTokenPlaceComponent implements OnInit {
     this.activeEvents = this.allotmentEvents.filter(a => a.event.status === AllotmentEventStatus.InProgress);
     this.finishedEvents = this.allotmentEvents.filter(a => a.event.status === AllotmentEventStatus.Finished);
 
-    this.user = this.userContext.getCurrentUser();
+    if (this.authenticationService.isAuthenticated()) {
+      this.user = this.userContext.getCurrentUser();
+      this.showReceiveTokensButton = await this.balanceService.canReceiveTokensAsync();
+    }
   }
 
   private async loadProjectsAsync() {
@@ -87,8 +91,8 @@ export class FreeTokenPlaceComponent implements OnInit {
   public async receiveTokensAsync(): Promise<void> {
     const reciveTokens = await this.balanceService.receiveTokensAsync();
     if (reciveTokens) {
-        this.showReceiveTokensButton = false;
-        this.balance = await this.balanceService.getTokenBalanceAsync();
+      this.showReceiveTokensButton = false;
+      this.balance = await this.balanceService.getTokenBalanceAsync();
     }
   }
 }
