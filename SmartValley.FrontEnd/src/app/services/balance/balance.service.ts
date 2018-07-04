@@ -72,7 +72,7 @@ export class BalanceService {
   }
 
   public async getTokenBalanceAsync(): Promise<Balance> {
-    const decimals = await this.smartValleyTokenContractClient.getDecimalsAsync();
+    const decimals = this.smartValleyTokenContractClient.getDecimals();
     let svt = null;
     let eth = null;
     let frozenBalances = null;

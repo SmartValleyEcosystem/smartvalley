@@ -6,6 +6,7 @@ import BigNumber from 'bignumber.js';
 import {ConverterHelper} from '../converter-helper';
 import {FrozenBalance} from '../balance/frozen-balance';
 import {Initializable} from '../initializable';
+import {Constants} from '../../constants';
 
 @Injectable()
 export class SmartValleyTokenContractClient implements Initializable {
@@ -30,9 +31,8 @@ export class SmartValleyTokenContractClient implements Initializable {
     return ConverterHelper.extractBigNumber(await contract.balanceOf(account));
   }
 
-  public async getDecimalsAsync(): Promise<number> {
-    const contract = this.web3Service.getContract(this.abi, this.address);
-    return ConverterHelper.extractNumberValue(await contract.decimals());
+  public getDecimals(): number {
+    return Constants.SVDecimals;
   }
 
   public async getFreezingDetailsAsync(): Promise<FrozenBalance[]> {

@@ -10,4 +10,5 @@ export class Constants {
   static TabQueryParam = 'tab';
   static Chrome = 'chrome';
   static Firefox = 'firefox';
+  static SVDecimals = 18;
 }
