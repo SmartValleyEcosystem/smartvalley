@@ -55,6 +55,8 @@ namespace SmartValley.Data.SQL.Migrations
                         .IsRequired()
                         .HasMaxLength(6);
 
+                    b.Property<string>("TotalTokensToDistribute");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProjectId");

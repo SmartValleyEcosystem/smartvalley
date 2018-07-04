@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using SmartValley.Domain.Contracts;
@@ -35,8 +35,22 @@ namespace SmartValley.Domain.Services
             _erc223ContractClient = erc223ContractClient;
         }
 
-        public Task<PagingCollection<AllotmentEvent>> QueryAsync(AllotmentEventsQuery query)
-            => _allotmentEventRepository.QueryAsync(query, _clock.UtcNow);
+        public async Task<PagingCollection<AllotmentEvent>> QueryAsync(AllotmentEventsQuery query)
+        {
+            var events = await _allotmentEventRepository.QueryAsync(query, _clock.UtcNow);
+            var eventsWithEventAddresses = events.Where(i => i.EventContractAddress != null && i.TokenContractAddress != null).ToArray();
+            var balances = await _erc223ContractClient.GetTokensBalancesAsync(eventsWithEventAddresses.Select(i => new TokenHolder(i.TokenContractAddress, i.EventContractAddress)).ToArray());
+            foreach (var allotmentEvent in events)
+            {
+                if (allotmentEvent.GetActualStatus(_clock.UtcNow) != AllotmentEventStatus.Finished)
+                {
+                    var balance = balances.FirstOrDefault(i => i.TokenHolder.HolderAddress == allotmentEvent.EventContractAddress && i.TokenHolder.TokenAddress == allotmentEvent.TokenContractAddress);
+                    allotmentEvent.TotalTokensToDistribute = balance?.Balance.ToString();
+                }
+            }
+
+            return events;
+        }
 
         public async Task<long> CreateAsync(
             string name,
@@ -87,6 +101,7 @@ namespace SmartValley.Domain.Services
             allotmentEvent.FinishDate = allotmentEventInfo.FinishDate;
             allotmentEvent.StartDate = allotmentEventInfo.StartDate;
             allotmentEvent.Status = allotmentEventInfo.Status;
+            allotmentEvent.TotalTokensToDistribute = allotmentEventInfo.TotalTokensToDistribute.ToString(CultureInfo.InvariantCulture);
 
             var users = await _userRepository.GetByAddressesAsync(allotmentEventInfo.Participants.Select(x => x.Address).ToArray());
             var participants = allotmentEventInfo.Participants.Select(x => new AllotmentEventParticipant(x.Bid, x.Share, users.First(u => u.Address == x.Address).Id, x.IsCollected)).ToArray();
@@ -102,13 +117,6 @@ namespace SmartValley.Domain.Services
             allotmentEvent.EventContractAddress = await _allotmentEventsManagerContractClient.GetAllotmentEventContractAddressAsync(allotmentEventId);
 
             await _allotmentEventRepository.SaveChangesAsync();
-        }
-
-        public async Task<IReadOnlyCollection<TokenBalance>> GetTokensBalancesAsync(IReadOnlyCollection<long> eventIds)
-        {
-            var events = await _allotmentEventRepository.QueryAsync(new AllotmentEventsQuery(new AllotmentEventStatus[0], eventIds, 0, eventIds.Count), _clock.UtcNow);
-            var eventsWithEventAddresses = events.Where(i => i.EventContractAddress != null && i.TokenContractAddress != null).ToArray();
-            return await _erc223ContractClient.GetTokensBalancesAsync(eventsWithEventAddresses.Select(i => new TokenHolder(i.TokenContractAddress, i.EventContractAddress)).ToArray());
         }
     }
 }

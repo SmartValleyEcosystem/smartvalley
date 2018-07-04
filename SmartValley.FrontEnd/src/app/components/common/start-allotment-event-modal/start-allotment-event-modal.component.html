@@ -2,7 +2,7 @@
   <button class="dialog-close" mat-dialog-close></button>
   <h2>{{ 'StartAllotmentEventModalComponent.Title' | translate }}</h2>
 
-  <h3>{{ 'StartAllotmentEventModalComponent.SubTitle' | translate }} {{tokenBalance | formatNumber: 0: data.tokenDecimals }} {{data.tokenTicker}}</h3>
+  <h3>{{ 'StartAllotmentEventModalComponent.SubTitle' | translate }} {{ data.totalTokens | formatNumber: 0: data.tokenDecimals }} {{data.tokenTicker}}</h3>
   <div class="control-cols">
     <div class="first-col">
       <div class="control-row">

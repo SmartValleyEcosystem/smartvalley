@@ -8,7 +8,6 @@ import {GetAllotmentEventsRequest} from '../../api/allotment-events/request/get-
 import {SmartValleyTokenContractClient} from '../contract-clients/smart-valley-token-contract-client.service';
 import BigNumber from 'bignumber.js';
 import {CollectionResponse} from '../../api/collection-response';
-import {TokenBalance} from './token-balance';
 
 @Injectable()
 export class AllotmentEventService {
@@ -31,10 +30,6 @@ export class AllotmentEventService {
       totalCount: 0
     };
     allotmentEvents.items = allotmentEventsResponse.items.map(i => AllotmentEvent.create(i)).filter(i => i.eventContractAddress);
-    const balances = await this.getTokensBalancesAsync(allotmentEvents.items.map(i => i.id));
-    allotmentEvents.items.map(event => {
-      event.totalTokens = balances.firstOrDefault(i => i.holderAddress === event.eventContractAddress).balance;
-    });
     allotmentEvents.totalCount = allotmentEventsResponse.totalCount;
     return allotmentEvents;
   }
@@ -98,11 +93,6 @@ export class AllotmentEventService {
       finishDate);
 
     await this.allotmentEventsApiClient.updateAsync(eventId, transactionHash);
-  }
-
-  public async getTokensBalancesAsync(eventsIds: Array<number>): Promise<Array<TokenBalance>> {
-    const response = await this.allotmentEventsApiClient.getTokensBalancesAsync(eventsIds);
-    return response.items.map(i => TokenBalance.create(i));
   }
 
   public async removeAsync(eventId: number) {

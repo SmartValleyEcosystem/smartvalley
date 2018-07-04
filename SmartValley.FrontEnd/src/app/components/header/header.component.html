@@ -58,7 +58,7 @@
         </span>
       </div>
       <div class="balance">
-        {{ 'Header.Balance' | translate }}: <span class="current-balance">{{ currentBalance }}&nbsp;{{ 'Header.ETH' | translate }}</span>
+        {{ 'Header.Balance' | translate }}: <span class="current-balance">{{ currentBalance | formatNumber: 3: 18 }}&nbsp;{{ 'Header.ETH' | translate }}</span>
       </div>
     </div>
   </div>

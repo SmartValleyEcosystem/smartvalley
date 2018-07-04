@@ -38,6 +38,7 @@ import {ReceiveTokensModalComponent} from '../components/common/receive-tokens-m
 import {ReceiveTokensModalData} from '../components/common/receive-tokens-modal/receive-tokens-modal-data';
 import {DeleteAllotmentEventModalComponent} from '../components/common/delete-allotment-event-modal/delete-allotment-event-modal.component';
 import BigNumber from 'bignumber.js';
+import {AllotmentEvent} from './allotment-event/allotment-event';
 
 @Injectable()
 export class DialogService {
@@ -192,7 +193,7 @@ export class DialogService {
     return this.openModalAsync(EditAllotmentEventModalComponent, editData);
   }
 
-  public async showStartAllotmentEventDialogAsync(allotmentEventData: AllotmentEventResponse): Promise<boolean> {
+  public async showStartAllotmentEventDialogAsync(allotmentEventData: AllotmentEvent): Promise<boolean> {
     return this.openModalAsync(StartAllotmentEventModalComponent, allotmentEventData);
   }
 

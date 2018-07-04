@@ -42,16 +42,6 @@ namespace SmartValley.WebApi.AllotmentEvents
             return result.ToPartialCollectionResponse(x => AllotmentEventResponse.Create(x, _clock.UtcNow));
         }
 
-        [HttpGet("tokensBalances")]
-        public async Task<CollectionResponse<TokenBalanceResponse>> GetTokenBalanceAsync([FromQuery] GetTokenBalancesRequest request)
-        {
-            var tokenBalances = await _allotmentEventService.GetTokensBalancesAsync(request.EventsIds);
-            return new CollectionResponse<TokenBalanceResponse>
-                   {
-                       Items = tokenBalances.Select(TokenBalanceResponse.Create).ToArray()
-                   };
-        }
-
         [HttpPost]
         [Authorize(Roles = nameof(RoleType.Admin))]
         public async Task<CreateAllotmentEventResponse> PostAsync([FromBody] CreateAllotmentEventRequest request)

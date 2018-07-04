@@ -1,15 +1,13 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {AddAdminModalComponent} from '../add-admin-modal/add-admin-modal.component';
-import {AllotmentEventResponse} from '../../../api/allotment-events/responses/allotment-event-response';
-import {Erc223ContractClient} from '../../../services/contract-clients/erc223-contract-client';
 import {ProjectApiClient} from '../../../api/project/project-api-client';
 import {ProjectSummaryResponse} from '../../../api/project/project-summary-response';
 import {NotificationsService} from 'angular2-notifications';
 import {TranslateService} from '@ngx-translate/core';
 import {AllotmentEventsManagerContractClient} from '../../../services/contract-clients/allotment-events-manager-contract-client';
-import BigNumber from 'bignumber.js';
 import {AllotmentEventService} from '../../../services/allotment-event/allotment-event.service';
+import {AllotmentEvent} from '../../../services/allotment-event/allotment-event';
 
 @Component({
   selector: 'app-start-allotment-event-modal',
@@ -18,11 +16,10 @@ import {AllotmentEventService} from '../../../services/allotment-event/allotment
 })
 export class StartAllotmentEventModalComponent implements OnInit {
 
-  public tokenBalance: BigNumber;
   public project: ProjectSummaryResponse;
   public freezeTime: number;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: AllotmentEventResponse,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: AllotmentEvent,
               private dialogRef: MatDialogRef<AddAdminModalComponent>,
               private allotmentEventsManagerContractClient: AllotmentEventsManagerContractClient,
               private notificationService: NotificationsService,
@@ -32,7 +29,6 @@ export class StartAllotmentEventModalComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.tokenBalance = (await this.allotmentEventService.getTokensBalancesAsync([this.data.id])).first().balance;
     this.project = await this.projectApiClient.getProjectSummaryAsync(this.data.projectId);
     this.freezeTime = await this.allotmentEventsManagerContractClient.getFreezingDurationAsync();
   }
@@ -41,7 +37,7 @@ export class StartAllotmentEventModalComponent implements OnInit {
     const finishDate = new Date(this.data.finishDate).getTime();
     const startDateWithFreezing = Date.now() + this.freezeTime * 24 * 3600 * 1000;
 
-    if (this.tokenBalance.isZero()) {
+    if (this.data.totalTokens.isZero()) {
       this.notificationService.error(
         this.translateService.instant('StartAllotmentEventModalComponent.EmptyBalance')
       );

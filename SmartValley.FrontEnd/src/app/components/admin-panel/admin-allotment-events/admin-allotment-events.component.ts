@@ -101,7 +101,7 @@ export class AdminAllotmentEventsComponent {
     await this.loadAllotmentEventsAsync();
   }
 
-  public async showStartAllotmentEventModal(allotmentEventData: AllotmentEventResponse) {
+  public async showStartAllotmentEventModal(allotmentEventData: AllotmentEvent) {
     const start = await this.dialogService.showStartAllotmentEventDialogAsync(allotmentEventData);
     if (start) {
       await this.loadAllotmentEventsAsync();

@@ -31,6 +31,8 @@ namespace SmartValley.WebApi.AllotmentEvents.Responses
 
         public string TokenTicker { get; set; }
 
+        public string TotalTokens { get; set; }
+
         public AllotmentEventParticipantResponse[] Participants { get; set; }
         
         public static AllotmentEventResponse Create(AllotmentEvent allotmentEvent, DateTimeOffset now)
@@ -43,6 +45,7 @@ namespace SmartValley.WebApi.AllotmentEvents.Responses
                        Status = allotmentEvent.GetActualStatus(now),
                        TokenContractAddress = allotmentEvent.TokenContractAddress,
                        EventContractAddress = allotmentEvent.EventContractAddress,
+                       TotalTokens = string.IsNullOrWhiteSpace(allotmentEvent.TotalTokensToDistribute) ? "0" : allotmentEvent.TotalTokensToDistribute,
                        StartDate = allotmentEvent.StartDate,
                        FinishDate = allotmentEvent.FinishDate,
                        TokenDecimals = allotmentEvent.TokenDecimals,
