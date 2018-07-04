@@ -8,5 +8,4 @@ export interface Balance {
   frozenSVT?: FrozenBalance[];
   totalFrozenSVT?: BigNumber;
   svtDecimals?: number;
-  actualSVTbalance?: BigNumber;
 }

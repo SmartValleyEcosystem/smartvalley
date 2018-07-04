@@ -52,13 +52,14 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
 
     this.timer = <NodeJS.Timer>setInterval(async () => await this.getAllotmentEventTimeLeft(), 1000);
     if (this.authenticationService.isAuthenticated()) {
+      const userBalance = new UserBalance(this.model.balance);
       this.user = this.userContext.getCurrentUser();
       this.userHasBid = this.model.event.userHasBid(this.user.id);
       this.userBid = this.model.event.getUserBid(this.user.id);
       this.actualShare = this.model.event.getActualShare(this.user.id);
       this.percentShare = this.model.event.getPercentShare(this.user.id);
-      this.potentialShare = this.model.event.getPotentialShare(this.model.balance.actualSVTbalance);
-      this.potentialPercentShare = this.model.event.getPotentialPercentShare(this.model.balance.actualSVTbalance);
+      this.potentialShare = this.model.event.getPotentialShare(userBalance.actualSVTbalance);
+      this.potentialPercentShare = this.model.event.getPotentialPercentShare(userBalance.actualSVTbalance);
       this.canReceiveTokens = this.finished && this.userHasBid && !this.model.event.isCollected(this.user.id);
       await this.loadUserTransactionsAsync();
     }
