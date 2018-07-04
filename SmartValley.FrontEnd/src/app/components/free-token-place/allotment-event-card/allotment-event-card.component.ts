@@ -72,7 +72,6 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
   public async showParticipateDialogAsync() {
     if (await this.authenticationService.authenticateAsync()) {
       const participateResult = await this.dialogService.showParticipateDialogAsync(<AllotmentEventParticipateDialogData>{
-        userSvtBalance: this.model.balance.svtBalance,
         allotmentEventTotalBid: this.model.event.totalBid,
         existingUserBid: this.userBid,
         tokenBalance: this.model.event.totalTokens,
