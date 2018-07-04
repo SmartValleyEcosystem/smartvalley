@@ -11,6 +11,7 @@ import {User} from '../../services/authentication/user';
 import {UserContext} from '../../services/authentication/user-context';
 import {AllotmentEventService} from '../../services/allotment-event/allotment-event.service';
 import {AuthenticationService} from '../../services/authentication/authentication-service';
+import {UserBalance} from '../../services/balance/user-balance';
 
 @Component({
   selector: 'app-free-token-place',
@@ -26,6 +27,7 @@ export class FreeTokenPlaceComponent implements OnInit {
   public pageSize = 10;
   public showFrozenTooltip = false;
   public balance: Balance;
+  public userBalance: UserBalance;
   public isAllotmentEventsLoaded = false;
   public user: User;
   public showReceiveTokensButton = false;
@@ -38,10 +40,17 @@ export class FreeTokenPlaceComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.balance = await this.balanceService.getTokenBalanceAsync();
+    await this.getBalanceAsync()
     await this.loadAllotmentEventsAsync();
     this.isAllotmentEventsLoaded = true;
     this.userContext.userContextChanged.subscribe(async () => await this.loadAllotmentEventsAsync());
+    this.userContext.userContextChanged.subscribe(async () => await this.getBalanceAsync());
+    this.showReceiveTokensButton = await this.balanceService.canReceiveTokensAsync();
+  }
+
+  public async getBalanceAsync() {
+    this.balance = await this.balanceService.getTokenBalanceAsync();
+    this.userBalance = new UserBalance(this.balance);
   }
 
   public finishEvent(id: number) {
@@ -59,10 +68,12 @@ export class FreeTokenPlaceComponent implements OnInit {
     this.allotmentEvents = events.items.map(i => new AllotmentEventCard(i));
     const projectResponse = await this.loadProjectsAsync();
 
+
     this.allotmentEvents.map(a => {
-      a.balance = this.balance;
+      a.balance = new UserBalance(this.balance);
       a.project = projectResponse.find((p) => p.id === a.event.projectId);
     });
+
     this.activeEvents = this.allotmentEvents.filter(a => a.event.status === AllotmentEventStatus.InProgress);
     this.finishedEvents = this.allotmentEvents.filter(a => a.event.status === AllotmentEventStatus.Finished);
 
@@ -92,7 +103,7 @@ export class FreeTokenPlaceComponent implements OnInit {
     const reciveTokens = await this.balanceService.receiveTokensAsync();
     if (reciveTokens) {
       this.showReceiveTokensButton = false;
-      this.balance = await this.balanceService.getTokenBalanceAsync();
+      await this.getBalanceAsync();
     }
   }
 }

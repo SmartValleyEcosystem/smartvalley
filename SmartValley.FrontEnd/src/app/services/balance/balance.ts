@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js';
 export interface Balance {
   ethBalance: BigNumber;
   wasEtherReceived: boolean;
-  svt?: BigNumber;
+  svtBalance?: BigNumber;
   frozenSVT?: FrozenBalance[];
   totalFrozenSVT?: BigNumber;
   svtDecimals?: number;

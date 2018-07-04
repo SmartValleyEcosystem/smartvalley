@@ -14,6 +14,7 @@ import {TransactionRequest} from '../../../api/transaction/requests/transaction-
 import {EthereumTransactionStatusEnum} from '../../../api/transaction/ethereum-transaction-status.enum';
 import {TransactionApiClient} from '../../../api/transaction/transaction-api-client';
 import BigNumber from 'bignumber.js';
+import {UserBalance} from '../../../services/balance/user-balance';
 
 @Component({
   selector: 'app-allotment-event-card',
@@ -51,13 +52,14 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
 
     this.timer = <NodeJS.Timer>setInterval(async () => await this.getAllotmentEventTimeLeft(), 1000);
     if (this.authenticationService.isAuthenticated()) {
+      const userBalance = new UserBalance(this.model.balance);
       this.user = this.userContext.getCurrentUser();
       this.userHasBid = this.model.event.userHasBid(this.user.id);
       this.userBid = this.model.event.getUserBid(this.user.id);
       this.actualShare = this.model.event.getActualShare(this.user.id);
       this.percentShare = this.model.event.getPercentShare(this.user.id);
-      this.potentialShare = this.model.event.getPotentialShare(this.model.balance.svt);
-      this.potentialPercentShare = this.model.event.getPotentialPercentShare(this.model.balance.svt);
+      this.potentialShare = this.model.event.getPotentialShare(userBalance.actualSVTbalance);
+      this.potentialPercentShare = this.model.event.getPotentialPercentShare(userBalance.actualSVTbalance);
       this.canReceiveTokens = this.finished && this.userHasBid && !this.model.event.isCollected(this.user.id);
       await this.loadUserTransactionsAsync();
     }
@@ -70,13 +72,13 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
   public async showParticipateDialogAsync() {
     if (await this.authenticationService.authenticateAsync()) {
       const participateResult = await this.dialogService.showParticipateDialogAsync(<AllotmentEventParticipateDialogData>{
-        userSvtBalance: this.model.balance.svt,
         allotmentEventTotalBid: this.model.event.totalBid,
         existingUserBid: this.userBid,
         tokenBalance: this.model.event.totalTokens,
         tokenDecimals: this.model.event.tokenDecimals,
         svtDecimals: this.model.balance.svtDecimals,
-        tokenTicker: this.model.event.tokenTicker
+        tokenTicker: this.model.event.tokenTicker,
+        actualSVTbalance: new UserBalance(this.model.balance).actualSVTbalance
       });
       if (participateResult) {
         this.model.transaction = await this.allotmentEventService.participateAsync(this.model.event.id,

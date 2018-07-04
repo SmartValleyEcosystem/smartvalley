@@ -86,7 +86,7 @@ export class BalanceService {
     }
     return <Balance>{
       ethBalance: eth,
-      svt: svt,
+      svtBalance: svt,
       frozenSVT: frozenBalances,
       totalFrozenSVT: totalFrozenSVT,
       svtDecimals: decimals
