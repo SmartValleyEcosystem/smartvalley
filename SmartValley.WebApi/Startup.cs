@@ -17,7 +17,6 @@ using Nethereum.Web3;
 using NServiceBus;
 using Serilog;
 using Serilog.Core;
-using Serilog.Sinks.Elasticsearch;
 using SmartValley.Application;
 using SmartValley.Application.AzureStorage;
 using SmartValley.Application.Email;
@@ -163,9 +162,7 @@ namespace SmartValley.WebApi
             services.AddTransient<IEthereumTransactionRepository, EthereumTransactionRepository>();
 
             var logger = CreateLogger();
-            Log.Logger = logger;
-
-            services.AddSingleton<ILogger>(logger);
+            services.AddSingleton(logger.ForContext("Source", "api"));
 
             var serviceProvider = services.BuildServiceProvider();
             var siteOptions = serviceProvider.GetService<SiteOptions>();
@@ -175,9 +172,41 @@ namespace SmartValley.WebApi
             var dataProtectionProvider = serviceProvider.GetService<IDataProtectionProvider>();
             services.AddSingleton<IMessageSession>(
                 provider => EndpointConfigurator
-                            .StartAsync(Configuration, _currentEnvironment.ContentRootPath, dataProtectionProvider, logger)
+                            .StartAsync(Configuration, _currentEnvironment.ContentRootPath, dataProtectionProvider, logger.ForContext("Source", "nservicebus"))
                             .GetAwaiter()
                             .GetResult());
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // ReSharper disable once UnusedMember.Global
+        public void Configure(IApplicationBuilder application, IHostingEnvironment environment, ILoggerFactory loggerFactory)
+        {
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddDebug();
+            loggerFactory.AddSerilog(application.ApplicationServices.GetService<ILogger>());
+
+            application.UseCors(CorsPolicyName);
+
+            if (environment.IsDevelopment())
+            {
+                application.UseDeveloperExceptionPage();
+                application.UseSwagger();
+                application.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "SmartValley API V1"); });
+            }
+
+            application.UseAuthentication();
+            application.Use(async (context, next) =>
+                    {
+                        await next();
+                        if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
+                        {
+                            context.Request.Path = "/index.html";
+                            await next();
+                        }
+                    })
+               .UseDefaultFiles(new DefaultFilesOptions {DefaultFileNames = new List<string> {"index.html"}})
+               .UseStaticFiles()
+               .UseMvc();
         }
 
         private Logger CreateLogger()
@@ -213,38 +242,6 @@ namespace SmartValley.WebApi
             var storageProvider = new ProjectStorageProvider(serviceProvider.GetService<AzureStorageOptions>());
             storageProvider.InitializeAsync().Wait();
             return storageProvider;
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        // ReSharper disable once UnusedMember.Global
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-        {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-            loggerFactory.AddSerilog();
-
-            app.UseCors(CorsPolicyName);
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "SmartValley API V1"); });
-            }
-
-            app.UseAuthentication();
-            app.Use(async (context, next) =>
-                    {
-                        await next();
-                        if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
-                        {
-                            context.Request.Path = "/index.html";
-                            await next();
-                        }
-                    })
-               .UseDefaultFiles(new DefaultFilesOptions {DefaultFileNames = new List<string> {"index.html"}})
-               .UseStaticFiles()
-               .UseMvc();
         }
 
         private void ConfigureCorsPolicy(IServiceCollection services, SiteOptions siteOptions)

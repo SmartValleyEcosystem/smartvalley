@@ -48,7 +48,7 @@ namespace SmartValley.WebApi
             var endpointConfiguration = new EndpointConfiguration(EndpointName);
             SetLicense(configuration, endpointConfiguration);
 
-            LogManager.Use<SerilogFactory>();
+            LogManager.Use<SerilogFactory>().WithLogger(logger);
 
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             ConfigureTransport(endpointConfiguration, connectionString);
