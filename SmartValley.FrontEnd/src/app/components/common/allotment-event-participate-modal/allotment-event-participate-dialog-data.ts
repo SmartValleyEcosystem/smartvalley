@@ -8,4 +8,5 @@ export interface AllotmentEventParticipateDialogData {
     tokenDecimals: number;
     svtDecimals: number;
     tokenTicker: string;
+    actualSVTbalance?: BigNumber;
 }

@@ -5,7 +5,7 @@
 
 export const environment = {
     production: false,
-    baseUrl: 'http://localhost:5000',
+    baseUrl: 'https://smartvalleymvp-staging.azurewebsites.net/',
     network_id: '4',
     etherscan_host: 'https://rinkeby.etherscan.io'
   }
