@@ -89,8 +89,7 @@ export class AllotmentEvent {
   }
 
   public getPotentialShare(svtBalance: BigNumber) {
-    const percent = this.getPotentialPercentShare(svtBalance);
-    return percent.dividedBy(100).mul(this.totalTokens);
+    return this.getPotentialPercentShare(svtBalance).dividedBy(100).mul(this.totalTokens);
   }
 
   public getActualShare(userId: number) {

@@ -14,6 +14,7 @@ export class AllotmentEventCard {
 
   constructor(event: AllotmentEvent) {
     this.event = event;
+    this.transaction = '';
     this.timer = <AllotmentEventTimer>{
       days: '00',
       hours: '00',
