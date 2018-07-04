@@ -46,6 +46,7 @@ namespace SmartValley.Ethereum.Contracts.AllotmentEvent
                 ToDateTimeOffset(dto.FinishTimestamp),
                 dto.TokenDecimals,
                 dto.TokenTicker,
+                eventResult.TotalTokens,
                 participants);
         }
 

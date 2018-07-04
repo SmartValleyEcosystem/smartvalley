@@ -16,7 +16,5 @@ namespace SmartValley.Domain.Services
         Task PublishAsync(long allotmentEventId);
 
         Task UpdateAsync(long id);
-
-        Task<IReadOnlyCollection<TokenBalance>> GetTokensBalancesAsync(IReadOnlyCollection<long> eventIds);
     }
 }

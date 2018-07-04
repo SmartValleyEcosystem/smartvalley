@@ -18,7 +18,7 @@ export class AllotmentEvent {
   public tokenDecimals: number;
   public tokenTicker: string;
   public participants: Array<AllotmentEventParticipant>;
-  public totalTokens?: BigNumber;
+  public totalTokens: BigNumber;
 
   public totalBid = new BigNumber(0);
 
@@ -32,6 +32,7 @@ export class AllotmentEvent {
               finishDate: Date | null,
               tokenDecimals: number,
               tokenTicker: string,
+              totalTokens: string,
               participants: Array<AllotmentEventParticipantResponse>) {
     this.id = id;
     this.name = name;
@@ -43,6 +44,7 @@ export class AllotmentEvent {
     this.finishDate = finishDate;
     this.tokenDecimals = tokenDecimals;
     this.tokenTicker = tokenTicker;
+    this.totalTokens = new BigNumber(totalTokens);
     this.participants = participants.map(i => AllotmentEventParticipant.create(i));
 
     this.participants.map(i => this.totalBid = this.totalBid.plus(i.bid));
@@ -60,6 +62,7 @@ export class AllotmentEvent {
       response.finishDate,
       response.tokenDecimals,
       response.tokenTicker,
+      response.totalTokens,
       response.participants);
   }
 

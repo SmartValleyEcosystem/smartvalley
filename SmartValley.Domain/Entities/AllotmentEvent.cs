@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using SmartValley.Domain.Core;
 
 namespace SmartValley.Domain.Entities
@@ -26,6 +27,8 @@ namespace SmartValley.Domain.Entities
         public DateTimeOffset? FinishDate { get; set; }
 
         public int TokenDecimals { get; set; }
+
+        public string TotalTokensToDistribute { get; set; }
 
         public string TokenTicker { get; set; }
 

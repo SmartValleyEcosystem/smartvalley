@@ -12,5 +12,6 @@ export interface AllotmentEventResponse {
   finishDate?: Date;
   tokenDecimals: number;
   tokenTicker: string;
+  totalTokens: string;
   participants: Array<AllotmentEventParticipantResponse>;
 }
