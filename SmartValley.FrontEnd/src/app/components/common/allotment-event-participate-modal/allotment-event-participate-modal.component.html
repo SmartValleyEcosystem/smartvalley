@@ -8,6 +8,7 @@
          placeholder="{{ 'ParticipateModal.MAX' | translate }} {{ data.userSvtBalance | formatNumber : 3 : data.svtDecimals }} {{ 'ParticipateModal.SVT' | translate }}"
          class="input" type="text">
   <p class="description error" *ngIf="isNewBidGreatherThanBalance">{{ 'ParticipateModal.NotEnoughBalance' | translate }}</p>
+  <p class="description error" *ngIf="isUserWantCloseEmptyModal">{{ 'ParticipateModal.EnterParticipateValue' | translate }}</p>
   <p class="description" *ngIf="isDescriptionShow && newBid.greaterThan(0)">
     {{ 'ParticipateModal.YouReceive' | translate }}
     <strong>{{ computedShare | formatNumber : 0 : data.tokenDecimals }} {{ data.tokenTicker }}</strong>

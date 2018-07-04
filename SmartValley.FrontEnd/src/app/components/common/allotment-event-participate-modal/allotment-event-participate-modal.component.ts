@@ -28,6 +28,7 @@ export class AllotmentEventParticipateModalComponent implements OnInit {
   public isDescriptionShow = false;
   public computedShare: BigNumber;
   public isNewBidGreatherThanBalance = false;
+  public isUserWantCloseEmptyModal = false;
 
   async ngOnInit() {
     const today = new Date();
@@ -38,6 +39,7 @@ export class AllotmentEventParticipateModalComponent implements OnInit {
 
   public getComputedShare() {
     this.isNewBidGreatherThanBalance = false;
+    this.isUserWantCloseEmptyModal = false;
     if (this.inputString) {
       this.newBid = new BigNumber(this.inputString, 10).shift(this.data.svtDecimals);
     } else {
@@ -56,16 +58,14 @@ export class AllotmentEventParticipateModalComponent implements OnInit {
   }
 
   public submit() {
-    if (!this.newBid && !this.inputString) {
-      this.participateModalComponent.close();
+    if (!this.newBid || !this.inputString) {
+      this.isUserWantCloseEmptyModal = true;
       return;
     }
-    if (this.newBid && this.newBid.greaterThan(this.data.actualSVTbalance)) {
+    if (this.newBid.greaterThan(this.data.actualSVTbalance)) {
       this.isNewBidGreatherThanBalance = true;
       return;
     }
-    if (this.newBid) {
-      this.participateModalComponent.close(this.newBid);
-    }
+    this.participateModalComponent.close(this.newBid);
   }
 }

@@ -57,8 +57,8 @@ export class AllotmentEventCardComponent implements OnInit, OnDestroy {
       this.userBid = this.model.event.getUserBid(this.user.id);
       this.actualShare = this.model.event.getActualShare(this.user.id);
       this.percentShare = this.model.event.getPercentShare(this.user.id);
-      this.potentialShare = this.model.event.getPotentialShare(this.model.balance.svtBalance);
-      this.potentialPercentShare = this.model.event.getPotentialPercentShare(this.model.balance.svtBalance);
+      this.potentialShare = this.model.event.getPotentialShare(this.model.balance.actualSVTbalance);
+      this.potentialPercentShare = this.model.event.getPotentialPercentShare(this.model.balance.actualSVTbalance);
       this.canReceiveTokens = this.finished && this.userHasBid && !this.model.event.isCollected(this.user.id);
       await this.loadUserTransactionsAsync();
     }
