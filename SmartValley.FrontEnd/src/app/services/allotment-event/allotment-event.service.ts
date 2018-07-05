@@ -29,7 +29,7 @@ export class AllotmentEventService {
       items: [],
       totalCount: 0
     };
-    allotmentEvents.items = allotmentEventsResponse.items.map(i => AllotmentEvent.create(i)).filter(i => i.eventContractAddress);
+    allotmentEvents.items = allotmentEventsResponse.items.map(i => AllotmentEvent.create(i));
     allotmentEvents.totalCount = allotmentEventsResponse.totalCount;
     return allotmentEvents;
   }
