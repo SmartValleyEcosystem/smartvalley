@@ -64,14 +64,16 @@ export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit 
   }
 
   public ngOnInit() {
-    this.selectedItemLabel = '';
-    this.selectedItemValue = '';
+    if (!isUndefined(this.defaultValue)) {
+      this.setDefaultValue(this.defaultValue);
+    } else {
+      this.selectedItemLabel = '';
+      this.selectedItemValue = '';
+    }
+
     this.isSelectListHovered = false;
     this.isSearchInputInFocus = false;
     this.hideSelectList();
-    if (!isUndefined(this.defaultValue)) {
-      this.setDefaultValue(this.defaultValue);
-    }
   }
 
   public setDefaultValue(value) {
