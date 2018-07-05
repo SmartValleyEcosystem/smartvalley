@@ -32,7 +32,9 @@
         <td>
           <span (click)="showExpertEditDialog(rowData)" class="edit-icon"
                 title="{{ 'AdminExpertList.Edit' | translate }}"></span>
-          <img (click)="deleteExpertAsync(rowData.address)" src="/assets/img/controls/delete.svg" alt="{{ 'AdminExpertList.Delete' | translate }}">
+          <span (click)="deleteExpertAsync(rowData.address)" class="delete-icon"
+                title="{{ 'AdminExpertList.Delete' | translate }}">
+          </span>
         </td>
       </tr>
     </ng-template>
