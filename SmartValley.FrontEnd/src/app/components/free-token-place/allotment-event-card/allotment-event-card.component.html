@@ -61,7 +61,7 @@
       <button *ngIf="!userHasBid" (click)="showParticipateDialogAsync()" class="material-btn">{{ 'FreeTokenPlace.Participate' | translate }}</button>
       <button *ngIf="userHasBid" (click)="showParticipateDialogAsync()" class="material-btn material-btn__action">{{ 'FreeTokenPlace.AddSVT' | translate }}</button>
     </div>
-    <div *ngIf="canReceiveTokens" class="start-btn-wrapper">
+    <div *ngIf="canReceiveTokens && model.transaction == ''" class="start-btn-wrapper">
       <button (click)="showReceiveTokensModalAsync()" class="material-btn">{{ 'FreeTokenPlace.Receive' | translate }} {{model.event.tokenTicker}}</button>
     </div>
   </div>
