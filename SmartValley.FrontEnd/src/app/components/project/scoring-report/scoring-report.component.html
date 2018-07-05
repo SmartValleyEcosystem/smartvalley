@@ -174,13 +174,13 @@
           <p class="question">
             {{ 'ScoringReport.Conclusion' | translate }}
           </p>
-          <table class="scoring-results">
-            <tr *ngFor="let conclusion of scoringInfo.scoringInfo.conclusions; let coclusionIndex = index;">
-              <td *ngIf="!isAdmin">{{ 'ScoringReport.Expert' | translate }} {{ estimateIndex + 1 }}</td>
-              <td *ngIf="isAdmin">{{getExpertById(conclusion.expertId).firstName}} {{getExpertById(conclusion.expertId).secondName}}</td>
-              <td class="conclusion-description" colspan="2">{{ conclusion.conslusion }}</td>
-            </tr>
-          </table>
+          <div class="scoring-results">
+            <div *ngFor="let conclusion of scoringInfo.scoringInfo.conclusions; let coclusionIndex = index;">
+              <div *ngIf="!isAdmin">{{ 'ScoringReport.Expert' | translate }} {{ coclusionIndex + 1 }}</div>
+              <div *ngIf="isAdmin">{{getExpertById(conclusion.expertId).firstName}} {{getExpertById(conclusion.expertId).secondName}}</div>
+              <div class="conclusion-description" colspan="2">{{ conclusion.conslusion }}</div>
+            </div>
+          </div>
         </div>
 
       </div>
