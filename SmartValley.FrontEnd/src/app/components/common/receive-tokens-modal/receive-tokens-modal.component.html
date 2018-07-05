@@ -5,7 +5,7 @@
   <form (ngSubmit)="submit()">
     <div>
       <span>{{ 'ReceiveTokensModal.TotalTokens' | translate }}</span>
-      <span class="value">{{ data.totalTokens | formatNumber: 3: data.tokenDecimals }} {{data.tokenTicker}}</span>
+      <span class="value">{{ data.totalTokens | formatNumber: 0: data.tokenDecimals }} {{data.tokenTicker}}</span>
     </div>
     <div>
       <span>{{ 'ReceiveTokensModal.TotalBid' | translate }}</span>
@@ -17,7 +17,7 @@
     </div>
     <div class="your-tokens">
       <span>{{ 'ReceiveTokensModal.YourTokens' | translate }}</span>
-      <span class="value">{{ data.userTokens | formatNumber: 3: data.tokenDecimals }} {{ data.tokenTicker }}</span>
+      <span class="value">{{ data.userTokens | formatNumber: 0: data.tokenDecimals }} {{ data.tokenTicker }}</span>
     </div>
     <div class="actions-container">
       <button (click)="submit()" class="material-btn material-btn__action save-btn">{{ 'ReceiveTokensModal.ReceiveBtn' | translate }}
