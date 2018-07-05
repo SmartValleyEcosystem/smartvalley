@@ -54,15 +54,27 @@ export class NewAllotmentEventModalComponent implements OnInit {
     }
   }
 
+  public prepareDate(date: Date): Date {
+    return new Date(
+        Date.UTC(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate()
+        )
+    );
+  }
+
   public async submitFormAsync() {
     this.isFormSubmited = true;
+    const finishDate = this.prepareDate(this.form.value['finishDate']);
     if (this.form.valid) {
       await this.allotmentEventService.createAndPublishAsync(this.form.value['eventName'],
         this.form.value['tokenAddress'],
         this.form.value['tokenDecimals'],
         this.form.value['ticker'],
         this.form.value['project'],
-        this.form.value['finishDate'] === '' ? null : this.form.value['finishDate']);
+        this.form.value['finishDate'] === '' ? null : finishDate
+      );
       this.dialogRef.close(true);
     }
   }
