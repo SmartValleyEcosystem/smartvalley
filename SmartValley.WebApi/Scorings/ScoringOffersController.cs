@@ -71,17 +71,8 @@ namespace SmartValley.WebApi.Scorings
             if (request.ExpertId.HasValue && request.ExpertId.Value != User.GetUserId() && !isAdmin || !request.ExpertId.HasValue && !isAdmin)
                 return Unauthorized();
 
-            var query = new OffersQuery
-                        {
-                            ExpertId = request.ExpertId,
-                            OrderBy = request.OrderBy,
-                            SortDirection = request.SortDirection,
-                            Statuses = request.Statuses ?? new List<ScoringOfferStatus>(),
-                            Offset = request.Offset,
-                            Count = request.Count,
-                            ScoringId = request.ScoringId,
-                            ProjectId = request.ProjectId
-                        };
+            var query = new OffersQuery(request.Offset, request.Count, request.Statuses, request.ExpertId, 
+                                        request.ScoringId, request.ProjectId, request.OrderBy, request.SortDirection);
             var now = _clock.UtcNow;
             var offers = await _scoringService.QueryOffersAsync(query, now);
 

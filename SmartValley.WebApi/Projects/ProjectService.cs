@@ -80,7 +80,7 @@ namespace SmartValley.WebApi.Projects
                 return false;
             }
 
-            var offersQuery = new OffersQuery {ExpertId = userId, ScoringId = project.Scoring.Id, Count = 1, Offset = 0};
+            var offersQuery = new OffersQuery(0, 1, expertId: userId, scoringId: project.Scoring.Id);
             var offers = await _scoringOffersRepository.GetAsync(offersQuery, _clock.UtcNow);
 
             return offers.Any();

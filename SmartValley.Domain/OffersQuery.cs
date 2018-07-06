@@ -5,20 +5,39 @@ namespace SmartValley.Domain
 {
     public class OffersQuery
     {
-        public int Offset { get; set; }
+        public OffersQuery(int offset,
+                           int count,
+                           IReadOnlyCollection<ScoringOfferStatus> statuses = null,
+                           long? expertId = null,
+                           long? scoringId = null,
+                           long? projectId = null,
+                           ScoringOffersOrderBy? orderBy = null,
+                           SortDirection? sortDirection = null)
+        {
+            Offset = offset;
+            Count = count;
+            ExpertId = expertId;
+            ScoringId = scoringId;
+            ProjectId = projectId;
+            Statuses = statuses ?? new ScoringOfferStatus[0];
+            OrderBy = orderBy;
+            SortDirection = sortDirection;
+        }
 
-        public int Count { get; set; }
+        public int Offset { get; }
 
-        public long? ExpertId { get; set; }
+        public int Count { get; }
 
-        public long? ScoringId { get; set; }
+        public long? ExpertId { get; }
 
-        public long? ProjectId { get; set; }
+        public long? ScoringId { get; }
 
-        public IReadOnlyCollection<ScoringOfferStatus> Statuses { get; set; }
+        public long? ProjectId { get; }
 
-        public ScoringOffersOrderBy? OrderBy { get; set; }
+        public IReadOnlyCollection<ScoringOfferStatus> Statuses { get; }
 
-        public SortDirection? SortDirection { get; set; }
+        public ScoringOffersOrderBy? OrderBy { get; }
+
+        public SortDirection? SortDirection { get; }
     }
 }
