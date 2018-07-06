@@ -29,7 +29,7 @@ export class BalanceService {
               private smartValleyTokenContractClient: SmartValleyTokenContractClient,
               private minterContractClient: MinterContractClient) {
     this.userContext.userContextChanged.subscribe(async () => await this.updateBalanceAsync());
-    this.balanceThreshold = new BigNumber(5e16);
+    this.balanceThreshold = new BigNumber('0.005');
   }
 
   public async updateBalanceAsync(): Promise<void> {
