@@ -25,8 +25,13 @@
             </div>
             <div class="info-wrapper" *ngIf="info.answer">
               <p *ngIf="info.title" class="info-title">{{ ('EditScoringApplication.' + info.title) | translate }}</p>
-              <p *ngIf="info.questionControlType !== questionTypeComboBox" class="info-description" [innerHtml]="info.answer | translateBinaryAnswer">
-              </p>
+              <p *ngIf="info.questionControlType !== questionTypeComboBox" class="info-description">
+                <quill-editor class="main-text tooltip-formatted-text" [modules]="editorOptions" placeholder=""
+                              [formats]="editorFormats"
+                              [readOnly]="true"
+                              [ngModel]="info.answer | translateBinaryAnswer"
+                              [ngModelOptions]="{standalone:true}">
+                </quill-editor>
               <p *ngIf="info.questionControlType == questionTypeComboBox" class="info-description">{{
                 ('EditScoringApplication.' + info.answer) | translate }}</p>
             </div>
