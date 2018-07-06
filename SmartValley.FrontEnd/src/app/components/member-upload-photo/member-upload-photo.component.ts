@@ -47,7 +47,12 @@ export class MemberUploadPhotoComponent implements ControlValueAccessor, OnChang
       this.imgUrl = e.target.result;
       this.inputElement.nativeElement.value = null;
     };
-    this.value = event.srcElement.files[0];
+
+    if ( event.srcElement ) {
+      this.value = event.srcElement.files[0];
+    } else {
+      this.value = event.target.files[0];
+    }
 
     if (this.maxFileSize < this.value.size) {
       this.deleteFile();

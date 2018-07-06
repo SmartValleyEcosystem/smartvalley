@@ -52,7 +52,11 @@ export class FileUploaderComponent implements ControlValueAccessor, OnChanges, O
       this.inputElement.nativeElement.value = null;
     };
 
-    this.value = event.srcElement.files[0];
+    if ( event.srcElement ) {
+      this.value = event.srcElement.files[0];
+    } else {
+      this.value = event.target.files[0];
+    }
 
     if (this.maxFileSize < this.value.size) {
       this.deleteFile();
