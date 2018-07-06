@@ -32,6 +32,7 @@
                               [ngModel]="info.answer | translateBinaryAnswer"
                               [ngModelOptions]="{standalone:true}">
                 </quill-editor>
+              </p>
               <p *ngIf="info.questionControlType == questionTypeComboBox" class="info-description">{{
                 ('EditScoringApplication.' + info.answer) | translate }}</p>
             </div>
