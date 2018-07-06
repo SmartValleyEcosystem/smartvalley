@@ -44,8 +44,7 @@
       </ng-template>
       <div class="content">
         <h2 class="settings-title">{{ scoringInfo.areaName }}</h2>
-        <div class="scoring-question" *ngFor="let criteria of scoringInfo.scoringInfo.criteria; let index = index; let last = last;"
-             class="criteria settings-block"
+        <div class="criteria settings-block scoring-question" *ngFor="let criteria of scoringInfo.scoringInfo.criteria; let index = index; let last = last;"
              [attr.data-selected]="false"
              (click)="changeActiveQuestion(index)"
              [class.settings-block-last]="last"
@@ -142,19 +141,12 @@
               {{ 'ScoringReport.Score' | translate }}
               <span class="question-hint__icon">
                 ?
-                <div class="question-hint__tooltip">
+                <div class="question-hint__tooltip" *ngIf="hintsArray.length">
                   <div class="question-hint__tooltip-arrow"></div>
                   <ul>
-                    <li class="list-title">{{ 'ScoringReport.IfProjectChosen' | translate }}</li>
-                    <li>{{ 'ScoringReport.Project2Points' | translate }}</li>
-                    <li>{{ 'ScoringReport.Project1Points' | translate }}</li>
-                    <li>{{ 'ScoringReport.Project0Points' | translate }}</li>
-                  </ul>
-                  <ul>
-                    <li class="list-title">{{ 'ScoringReport.IfSecurityChosen' | translate }}</li>
-                    <li>{{ 'ScoringReport.Security2Points' | translate }}</li>
-                    <li>{{ 'ScoringReport.Security1Points' | translate }}</li>
-                    <li>{{ 'ScoringReport.Security0Points' | translate }}</li>
+                    <li *ngFor="let option of getHintOptions(criteria.scoringCriterionId)">
+                      {{option.score}} &mdash; {{option.description}}
+                    </li>
                   </ul>
                 </div>
               </span>
