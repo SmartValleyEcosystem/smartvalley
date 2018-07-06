@@ -54,8 +54,10 @@ export class FileUploaderComponent implements ControlValueAccessor, OnChanges, O
 
     if ( event.srcElement ) {
       this.value = event.srcElement.files[0];
+      this.fileName = event.srcElement.files[0].name;
     } else {
       this.value = event.target.files[0];
+      this.fileName = event.target.files[0].name;
     }
 
     if (this.maxFileSize < this.value.size) {
@@ -63,8 +65,6 @@ export class FileUploaderComponent implements ControlValueAccessor, OnChanges, O
       this.onMaxSizeError.emit();
       return;
     }
-
-    this.fileName = event.srcElement.files[0].name;
 
     if (!acceptedFormats.includes(event.target.files[0].type)) {
         this.deleteFile();
