@@ -15,6 +15,7 @@ import {QuestionControlType} from '../../../api/scoring-application/question-con
 import {ProjectComponent} from '../project.component';
 import {UserContext} from '../../../services/authentication/user-context';
 import {ExpertResponse} from '../../../api/expert/expert-response';
+import {ScoringCriterionOption} from '../../../services/criteria/scoring-criterion-option';
 
 @Component({
   selector: 'app-scoring-report',
@@ -32,6 +33,7 @@ export class ScoringReportComponent implements OnInit {
   public criterionIsReady = false;
   public isAdmin = false;
   public experts: ExpertResponse[] = [];
+  public hintsArray: { id: number; options: ScoringCriterionOption[]}[] = [];
 
   public ScoringStatus = ScoringStatus;
 
@@ -70,6 +72,13 @@ export class ScoringReportComponent implements OnInit {
       const criterionPromptsResponse = await this.estimatesApiClient.getCriterionPromptsAsync(this.projectId, item.areaType);
       this.criterionPrompts = this.criterionPrompts.concat(criterionPromptsResponse.items);
     }
+    const hints = this.scoringCriterionResponse.map( s => s.criteria.map(c => {
+      return [{
+        id: c.id,
+        options: c.options
+      }];
+    }).reduce((l, r) => l.concat(r)));
+    this.hintsArray = hints.reduce( (l, r) => l.concat(r));
     this.criterionIsReady = true;
     this.questionsActivity = [true];
   }
@@ -80,6 +89,10 @@ export class ScoringReportComponent implements OnInit {
       return criterionPrompts.prompts;
     }
     return null;
+  }
+
+  public getHintOptions(id: number): ScoringCriterionOption[] {
+    return this.hintsArray.find(h => h.id === id).options;
   }
 
   public getExpertById(expertId: number) {
