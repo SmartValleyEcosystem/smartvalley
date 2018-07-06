@@ -29,7 +29,8 @@
                 <quill-editor class="main-text tooltip-formatted-text" [modules]="editorOptions" placeholder=""
                               [formats]="editorFormats"
                               [readOnly]="true"
-                              [ngModel]="info.answer | translateBinaryAnswer">
+                              [ngModel]="info.answer | translateBinaryAnswer"
+                              [ngModelOptions]="{standalone:true}">
                 </quill-editor>
               </p>
               <p *ngIf="info.questionControlType == questionTypeComboBox" class="info-description">{{
